@@ -1,0 +1,35 @@
+{
+  "template_id": "huixin",
+  "template_name": "慧新",
+  "topic": "制造企业数字化培训落地方案",
+  "target_audience": "制造企业业务负责人",
+  "purpose": "客户汇报",
+  "style": "慧新",
+  "page_count": 4,
+  "key_points": [
+    "培训目标",
+    "阶段路径",
+    "能力建设",
+    "实施保障"
+  ],
+  "must_have_sections": [
+    "现状",
+    "方案",
+    "路线图",
+    "收益"
+  ],
+  "constraints": {
+    "brand_colors": [
+      "#A8D86B",
+      "#0F95B6"
+    ],
+    "logo_required": false,
+    "language": "zh-CN"
+  },
+  "outline_approved": false,
+  "prompts_approved": false,
+  "output": {
+    "directory": "./artifacts",
+    "pptx_filename": "deck.pptx"
+  }
+}

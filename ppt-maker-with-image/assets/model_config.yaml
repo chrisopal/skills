@@ -1,0 +1,9 @@
+text_model: "openai/gpt-4o"
+image_model: "google/gemini-3.1-flash-image-preview"
+aspect_ratio: "16:9"
+resolution: "3840x2160"
+default_output_mode: "image_pptx"
+language: "zh-CN"
+font_preferences:
+  cjk: "Microsoft YaHei"
+  latin: "Arial"

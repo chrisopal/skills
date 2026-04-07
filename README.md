@@ -1,3 +1,14 @@
+# skills
+
+这个仓库用于存放可独立安装的 skill 目录。
+
+当前包含：
+
+- `industrial-ai-architect`：工业数字化与 AI 战略架构 skill
+- `ppt-maker-with-image`：图片优先的 PPT 生成与 PPTX 组装 skill
+
+---
+
 # industrial-ai-architect Skill
 
 这是一个用于“**工业数字化与 AI 战略架构**”场景的技能。它的目标是把业务问题转化为可执行的策略与落地方案，并给出：

@@ -1,0 +1,4 @@
+interface:
+  display_name: "PPT Maker With Image"
+  short_description: "面向图片化PPT生成与PPTX组装的可复用五步工作流"
+  default_prompt: "使用 $ppt-maker-with-image 先确认需求，再生成大纲、逐页提示词、图片化页面，并最终组装出 pptx 文件。"

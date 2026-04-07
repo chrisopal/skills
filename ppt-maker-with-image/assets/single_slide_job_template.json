@@ -1,0 +1,12 @@
+{
+  "title": "",
+  "template_id": "",
+  "template_name": "",
+  "language": "zh-CN",
+  "prompt": "",
+  "output": {
+    "directory": "./single-slide-artifacts",
+    "image_filename": "single_slide.png",
+    "pptx_filename": "single_slide.pptx"
+  }
+}

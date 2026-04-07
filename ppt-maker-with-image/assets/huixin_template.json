@@ -1,0 +1,36 @@
+{
+  "template_id": "huixin",
+  "template_name": "慧新",
+  "language": "zh-CN",
+  "style_summary": "白底、绿色主色、Teal辅色、灰中性，信息密度高但清晰可读",
+  "canvas": {
+    "aspect_ratio": "16:9",
+    "background_color": "#FFFFFF",
+    "section_background_color": "#F5F7FA"
+  },
+  "colors": {
+    "primary_green": "#A8D86B",
+    "secondary_teal": "#0F95B6",
+    "neutral_gray": "#D9D9D9",
+    "text_primary": "#1E1E1E",
+    "text_secondary": "#6B7280",
+    "divider": "#E5E7EB"
+  },
+  "emphasis_rules": {
+    "green": "关键数字、关键词、核心模块",
+    "teal": "结构线、二级标题、按钮",
+    "gray": "背景层、分区底"
+  },
+  "shape_rules": {
+    "corner_radius_px": 14,
+    "stroke_pt": "1-1.25",
+    "shadow_black_opacity": "5-8%"
+  },
+  "icon_rules": {
+    "style": "线性图标统一笔画",
+    "forbidden": [
+      "3D拟物"
+    ]
+  },
+  "prompt_block": "慧新这套模版的提示词，语言：中文。严格使用以下风格与配色（白底、绿色主色、Teal辅色、灰中性），信息密度高但清晰可读。"
+}

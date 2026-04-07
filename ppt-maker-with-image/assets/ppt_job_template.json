@@ -1,0 +1,30 @@
+{
+  "template_id": "",
+  "template_name": "",
+  "topic": "",
+  "target_audience": "",
+  "purpose": "",
+  "style": "",
+  "page_count": 8,
+  "key_points": [],
+  "must_have_sections": [],
+  "constraints": {
+    "brand_colors": [],
+    "logo_required": false,
+    "language": "zh-CN"
+  },
+  "outline_approved": false,
+  "prompts_approved": false,
+  "master_style": {
+    "style_keywords": [],
+    "color_strategy": "",
+    "layout_principles": [],
+    "forbidden_elements": []
+  },
+  "outline": [],
+  "slides": [],
+  "output": {
+    "directory": "./artifacts",
+    "pptx_filename": "deck.pptx"
+  }
+}

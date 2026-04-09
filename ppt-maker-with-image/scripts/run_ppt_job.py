@@ -17,6 +17,30 @@ from assemble_pptx import assemble_pptx
 from validate_job import validate_job_data
 
 
+TEMPLATE_VARIANT_BUNDLES = {
+    "huixin": {
+        "aliases": ["慧新"],
+        "preset_asset": "huixin_template.json",
+        "brief_asset": "huixin_master_style_brief.json",
+    },
+    "huixin-product-solution": {
+        "aliases": ["慧新-产品及解决方案介绍", "慧新产品及解决方案介绍", "产品及解决方案介绍风格"],
+        "preset_asset": "huixin_product_solution_template.json",
+        "brief_asset": "huixin_product_solution_master_style_brief.json",
+    },
+    "huixin-market-promo": {
+        "aliases": ["慧新-市场宣传", "慧新市场宣传", "市场宣传风格"],
+        "preset_asset": "huixin_market_promo_template.json",
+        "brief_asset": "huixin_market_promo_master_style_brief.json",
+    },
+    "huixin-internal-meeting": {
+        "aliases": ["慧新-内部会议", "慧新内部会议", "内部会议风格"],
+        "preset_asset": "huixin_internal_meeting_template.json",
+        "brief_asset": "huixin_internal_meeting_master_style_brief.json",
+    },
+}
+
+
 def skill_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
@@ -71,6 +95,27 @@ def load_asset_json(name: str) -> dict[str, Any]:
     return load_json(skill_root() / "assets" / name)
 
 
+def resolve_template_variant_key(template_id: str | None, template_name: str | None) -> str | None:
+    normalized_id = (template_id or "").strip().lower()
+    normalized_name = (template_name or "").strip()
+    if normalized_id in TEMPLATE_VARIANT_BUNDLES:
+        return normalized_id
+    for key, bundle in TEMPLATE_VARIANT_BUNDLES.items():
+        if normalized_name and normalized_name in bundle["aliases"]:
+            return key
+    return None
+
+
+def load_template_variant_bundle(template_id: str | None, template_name: str | None) -> dict[str, Any] | None:
+    key = resolve_template_variant_key(template_id, template_name)
+    if not key:
+        return None
+    bundle = TEMPLATE_VARIANT_BUNDLES[key]
+    preset = load_asset_json(bundle["preset_asset"])
+    brief = load_asset_json(bundle["brief_asset"])
+    return {"key": key, "preset": preset, "brief": brief}
+
+
 def resolve_output_dir(job: dict[str, Any], cli_output_dir: str, job_path: Path) -> Path:
     if cli_output_dir:
         return Path(cli_output_dir).expanduser().resolve()
@@ -94,6 +139,8 @@ def call_text_model(
     *,
     temperature: float = 0.3,
 ) -> dict[str, Any]:
+    if "json" not in prompt.lower():
+        prompt = f"{prompt}\n\nReturn valid JSON only."
     response = client.post(
         "/chat/completions",
         json={
@@ -152,13 +199,12 @@ def load_prompt_template(name: str) -> str:
 
 
 def ensure_huixin_assets(job: dict[str, Any]) -> None:
-    template_id = (job.get("template_id") or "").strip().lower()
-    template_name = (job.get("template_name") or "").strip()
-    if template_id == "huixin" or template_name == "慧新":
+    bundle = load_template_variant_bundle(job.get("template_id"), job.get("template_name"))
+    if bundle:
         if not job.get("master_style"):
-            job["master_style"] = load_asset_json("huixin_master_style_brief.json")
+            job["master_style"] = bundle["brief"]
         if not job.get("style"):
-            job["style"] = "慧新"
+            job["style"] = bundle["preset"]["template_name"]
 
 
 def build_requirement_summary(job: dict[str, Any]) -> dict[str, Any]:
@@ -201,9 +247,8 @@ def generate_master_style(
         }
     if client is None:
         raise RuntimeError("OpenRouter client is not configured")
-    template_preset = {}
-    if (job.get("template_id") or "").strip().lower() == "huixin" or job.get("template_name") == "慧新":
-        template_preset = load_asset_json("huixin_template.json")
+    bundle = load_template_variant_bundle(job.get("template_id"), job.get("template_name"))
+    template_preset = bundle["preset"] if bundle else {}
     prompt = load_prompt_template("Master Style Brief Generation Prompt").format(
         requirement_json=json.dumps(build_requirement_summary(job), ensure_ascii=False, indent=2),
         template_preset_json=json.dumps(template_preset, ensure_ascii=False, indent=2),

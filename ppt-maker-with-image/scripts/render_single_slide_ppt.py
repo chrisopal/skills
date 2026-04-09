@@ -6,9 +6,9 @@ from pathlib import Path
 
 from run_ppt_job import (
     call_image_model,
-    load_asset_json,
     load_json,
     load_prompt_template,
+    load_template_variant_bundle,
     load_yaml,
     openrouter_client,
 )
@@ -119,11 +119,9 @@ def resolve_single_slide_output_dir(job: dict, cli_value: str, job_path: str) ->
 
 
 def build_template_prefix(template_id: str, template_name: str) -> str:
-    normalized_id = template_id.strip().lower()
-    normalized_name = template_name.strip()
-    if normalized_id == "huixin" or normalized_name == "慧新":
-        brief = load_asset_json("huixin_master_style_brief.json")
-        prompt_block = brief.get("prompt_block", "")
+    bundle = load_template_variant_bundle(template_id, template_name)
+    if bundle:
+        prompt_block = bundle["brief"].get("prompt_block", "")
         return f"{prompt_block}\n\n"
     return ""
 

@@ -1,5 +1,27 @@
 # Template Presets
 
+## 慧新模板家族
+
+All `慧新` family presets share the same base tone:
+
+- 白底为主
+- 绿色主色 `#A8D86B`
+- Teal 辅色 `#0F95B6`
+- 灰中性 `#D9D9D9`
+- 中文表达
+- 高信息密度但清晰可读
+- 统一线性图标
+
+Supported template ids:
+
+- `huixin`
+- `huixin-product-solution`
+- `huixin-market-promo`
+- `huixin-internal-meeting`
+
+Use the base `慧新` preset for通用咨询风。
+Use the 3 variants when the user needs a stronger presentation intent while keeping the same overall color family.
+
 ## 慧新
 
 When the user selects `慧新`, use the following style block in Chinese as a deck-level template constraint and propagate it into every per-slide prompt.
@@ -122,3 +144,48 @@ Use the following structure as the default `master_style_brief` for `慧新`.
   ]
 }
 ```
+
+## 慧新-产品及解决方案介绍
+
+Use `template_id: huixin-product-solution` when the deck is mainly about product capability explanation, solution introduction, architecture value, or offer packaging.
+
+Key style shift on top of base `慧新`:
+
+- 更偏产品卡片与能力模块
+- 更适合产品介绍、方案介绍、客户价值页
+- 更强调“能力 -> 方案 -> 价值”
+
+Asset files:
+
+- `assets/huixin_product_solution_template.json`
+- `assets/huixin_product_solution_master_style_brief.json`
+
+## 慧新-市场宣传
+
+Use `template_id: huixin-market-promo` when the deck needs stronger headline impact, market communication, campaign value, or selling-point expression.
+
+Key style shift on top of base `慧新`:
+
+- 更偏标题主张与亮点数字
+- 更适合宣传页、活动页、市场介绍页
+- 更强调“卖点 -> 场景 -> 证明 -> 转化”
+
+Asset files:
+
+- `assets/huixin_market_promo_template.json`
+- `assets/huixin_market_promo_master_style_brief.json`
+
+## 慧新-内部会议
+
+Use `template_id: huixin-internal-meeting` when the deck is for internal sync, progress review, issue tracking, decision alignment, or milestone management.
+
+Key style shift on top of base `慧新`:
+
+- 更偏管理视角和进展闭环
+- 更适合周会、月会、项目会、经营会
+- 更强调“结论 -> 进展 -> 问题 -> 行动”
+
+Asset files:
+
+- `assets/huixin_internal_meeting_template.json`
+- `assets/huixin_internal_meeting_master_style_brief.json`

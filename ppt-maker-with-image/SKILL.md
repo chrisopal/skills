@@ -27,6 +27,15 @@ Read [references/prompt-templates.md](./references/prompt-templates.md) when dra
 Read [references/model-config.md](./references/model-config.md) when choosing or wiring model roles.
 Read [references/template-presets.md](./references/template-presets.md) when the user asks for a named template style such as `慧新`.
 
+## Template Family
+
+The skill now supports the `慧新` template family with multiple variants that keep the same white/green/teal/gray tone while shifting the presentation style:
+
+- `huixin`
+- `huixin-product-solution`
+- `huixin-market-promo`
+- `huixin-internal-meeting`
+
 ## Inputs To Confirm
 
 Never jump straight to slide generation if these inputs are still ambiguous:

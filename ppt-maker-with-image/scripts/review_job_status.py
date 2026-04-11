@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from run_ppt_job import load_json, resolve_output_dir
-from validate_job import validate_job_data
+from validate_job import find_missing_required_fields, has_confirmed_template
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -15,16 +15,8 @@ def build_parser() -> argparse.ArgumentParser:
         description="Review the current PPT job status and recommend the next action."
     )
     parser.add_argument("job", help="Path to job.json")
-    parser.add_argument(
-        "--output-dir",
-        default="",
-        help="Optional override for artifacts directory",
-    )
-    parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Print machine-readable JSON output",
-    )
+    parser.add_argument("--output-dir", default="", help="Optional override for artifacts directory")
+    parser.add_argument("--json", action="store_true", help="Print machine-readable JSON output")
     return parser
 
 
@@ -47,7 +39,7 @@ def determine_stage(job: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     images_dir = output_dir / "images"
     pptx_path = output_dir / job.get("output", {}).get("pptx_filename", "deck.pptx")
 
-    required_missing = validate_job_data(job)
+    required_missing = find_missing_required_fields(job)
     master_style = read_optional_json(master_style_path)
     outline = read_optional_json(outline_path)
     slide_prompts = read_optional_json(slide_prompts_path)
@@ -60,7 +52,7 @@ def determine_stage(job: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     if required_missing:
         stage = "input_incomplete"
         issues.extend([f"缺少必要字段: {field}" for field in required_missing])
-        next_steps.append("补全 job.json 中的主题、受众、用途、风格和页数等必要字段。")
+        next_steps.append("补全 topic / target_audience / purpose / style / page_count 这些必填字段。")
         next_steps.append("运行: python scripts/validate_job.py path/to/job.json")
         return {
             "stage": stage,
@@ -75,14 +67,24 @@ def determine_stage(job: dict[str, Any], output_dir: Path) -> dict[str, Any]:
             },
         }
 
-    if master_style is None:
+    if not job.get("requirement_confirmed"):
+        stage = "waiting_for_requirement_confirmation"
+        next_steps.append("查看并确认 requirement_summary，然后将 job.json 中 requirement_confirmed 设为 true。")
+    elif not has_confirmed_template(job):
+        stage = "waiting_for_template_confirmation"
+        if job.get("recommended_template_id") and job.get("recommended_template_name"):
+            issues.append(
+                f"已推荐模板：{job['recommended_template_name']} ({job['recommended_template_id']})，但尚未确认。"
+            )
+        next_steps.append("将推荐模板写入 job.json 的 template_id / template_name 后重新运行。")
+    elif master_style is None:
         stage = "ready_for_master_style"
         next_steps.append("运行主流程脚本生成 master style 和后续中间产物。")
         next_steps.append("运行: python scripts/run_ppt_job.py path/to/job.json")
     elif outline is None:
         stage = "ready_for_outline"
         next_steps.append("已有 master style，但还没有 outline.json。")
-        next_steps.append("运行: python scripts/run_ppt_job.py path/to/job.json --auto-approve-outline")
+        next_steps.append("运行: python scripts/run_ppt_job.py path/to/job.json")
     elif not job.get("outline_approved"):
         stage = "waiting_for_outline_review"
         issues.append("大纲已生成，但 job.json 中 outline_approved 仍为 false。")
@@ -91,11 +93,11 @@ def determine_stage(job: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     elif slide_prompts is None:
         stage = "ready_for_slide_prompts"
         next_steps.append("大纲已确认，但还没有 slide_prompts.json。")
-        next_steps.append("运行: python scripts/run_ppt_job.py path/to/job.json --auto-approve-outline")
+        next_steps.append("运行: python scripts/run_ppt_job.py path/to/job.json")
     elif not job.get("prompts_approved"):
         stage = "waiting_for_prompt_review"
-        issues.append("逐页提示词已生成，但 job.json 中 prompts_approved 仍为 false。")
-        next_steps.append("检查 artifacts/slide_prompts.json，必要时手动修改。")
+        issues.append("逐页结构化页面意图与 compiled prompts 已生成，但 prompts_approved 仍为 false。")
+        next_steps.append("检查 artifacts/slide_prompts.json，必要时手动修改结构化字段。")
         next_steps.append("修改后运行: python scripts/sync_job_artifacts.py path/to/job.json --approve-prompts")
     elif image_count < expected_pages:
         stage = "ready_for_image_generation"
@@ -106,9 +108,7 @@ def determine_stage(job: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     elif not pptx_path.exists():
         stage = "ready_for_pptx_assembly"
         next_steps.append("图片已齐全，但尚未组装成 pptx。")
-        next_steps.append(
-            "运行: python scripts/assemble_pptx.py --images artifacts/images/slide_01.png ... --output artifacts/deck.pptx"
-        )
+        next_steps.append("运行: python scripts/assemble_pptx.py --images artifacts/images/slide_01.png ... --output artifacts/deck.pptx")
     else:
         stage = "completed"
         next_steps.append("当前 job 已完成。")
@@ -122,6 +122,8 @@ def determine_stage(job: dict[str, Any], output_dir: Path) -> dict[str, Any]:
         slides = slide_prompts.get("slides", [])
         if expected_pages and slides and len(slides) != expected_pages:
             issues.append(f"slide_prompts.json 页数为 {len(slides)}，与 job.page_count={expected_pages} 不一致。")
+        if slides and any(not slide.get("compiled_prompt") for slide in slides):
+            issues.append("slide_prompts.json 中存在缺少 compiled_prompt 的页面。")
 
     return {
         "stage": stage,

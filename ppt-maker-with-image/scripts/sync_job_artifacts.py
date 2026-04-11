@@ -12,21 +12,9 @@ def build_parser() -> argparse.ArgumentParser:
         description="Sync edited artifacts such as outline.json and slide_prompts.json back into job.json."
     )
     parser.add_argument("job", help="Path to job.json")
-    parser.add_argument(
-        "--output-dir",
-        default="",
-        help="Optional override for artifacts directory",
-    )
-    parser.add_argument(
-        "--approve-outline",
-        action="store_true",
-        help="Set outline_approved=true after syncing outline.json",
-    )
-    parser.add_argument(
-        "--approve-prompts",
-        action="store_true",
-        help="Set prompts_approved=true after syncing slide_prompts.json",
-    )
+    parser.add_argument("--output-dir", default="", help="Optional override for artifacts directory")
+    parser.add_argument("--approve-outline", action="store_true", help="Set outline_approved=true after syncing outline.json")
+    parser.add_argument("--approve-prompts", action="store_true", help="Set prompts_approved=true after syncing slide_prompts.json")
     return parser
 
 

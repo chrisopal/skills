@@ -16,9 +16,35 @@ Extract and confirm the following fields from the user's request:
 - must-have sections
 - hard constraints
 
-Return:
-1. a concise summary of what is already clear
-2. only the missing questions required to continue
+Return JSON only:
+- summary
+- missing_fields
+- recommended_follow_up_questions
+```
+
+## Template Recommendation Prompt
+
+Use this pattern when requirement fields are complete but no concrete template has been confirmed:
+
+```text
+You are a presentation template recommender.
+Choose the best template for the following requirement.
+
+Requirement:
+{requirement_json}
+
+Available templates:
+{templates_json}
+
+Return JSON only:
+- recommended_template_id
+- recommended_template_name
+- reason
+
+Constraints:
+- choose exactly one template
+- prioritize consistency with purpose, audience, and stated style
+- if the style clearly matches one template, choose that exact template
 ```
 
 ## Outline Generation Prompt
@@ -32,17 +58,25 @@ Based on the confirmed requirement below, generate a complete PPT deck outline.
 Requirement:
 {requirement_json}
 
-Return:
-- storyline summary
-- deck structure
-- exactly {page_count} slides
-- for each slide: page_no, title, subtitle, purpose, layout_type, key_blocks
+Return JSON only:
+- storyline
+- deck_structure
+- slides
+
+Each slide must contain:
+- page_no
+- title
+- subtitle
+- purpose
+- layout_type
+- key_blocks
 
 Constraints:
 - keep the narrative coherent
 - match the audience and scenario
 - avoid redundant slides
 - keep language concise and presentation-ready
+- make each page role clear and non-overlapping
 ```
 
 ## Master Style Brief Generation Prompt
@@ -59,7 +93,7 @@ Requirement:
 Template preset:
 {template_preset_json}
 
-Return a JSON object containing:
+Return JSON only with:
 - visual_positioning
 - deck_voice
 - color_strategy
@@ -83,8 +117,8 @@ Constraints:
 Use this pattern after the outline is confirmed:
 
 ```text
-You are a presentation visual prompt designer.
-Given the confirmed requirement, the deck-level style brief, and the approved outline, generate image prompts for every slide in one batch.
+You are a presentation page-intent designer.
+Given the confirmed requirement, the deck-level style brief, and the approved outline, generate structured page intents for every slide in one batch.
 
 Requirement:
 {requirement_json}
@@ -95,30 +129,37 @@ Master style:
 Outline:
 {outline_json}
 
-Return for each slide:
+Return JSON only:
+- slides
+
+Each slide item must contain:
 - page_no
 - title
-- slide_role
+- subtitle
+- page_goal
+- layout_type
 - key_blocks
-- image_prompt
+- visual_focus
+- detail_notes
 
 Constraints:
 - maintain a consistent visual system across all slides
-- keep prompts specific to layout, hierarchy, and modules
-- avoid random page furniture and microcopy
-- optimize for full-slide image rendering
+- preserve a coherent deck narrative
+- keep structure suitable for later deterministic prompt compilation
+- avoid vague filler descriptions
+- write visible page content and invisible guidance separately in intent fields
 ```
 
 ## Image Rendering Wrapper Prompt
 
-Use this pattern when sending a prompt to an image model:
+Use this pattern when sending a compiled prompt to an image model:
 
 ```text
 You are a professional slide designer. Generate a complete presentation slide as an image.
 The output must be a 16:9 slide image at {resolution}.
 Render the full slide itself, including all intended text and visual elements.
 Do not generate a background only.
-Do not add page numbers, watermarks, corner labels, or extra decorative microcopy unless explicitly requested.
+Do not add page numbers, watermarks, corner labels, template names, 16:9 text, audience labels, or extra decorative microcopy unless explicitly requested.
 
 Slide specification:
 {image_prompt}
@@ -126,11 +167,11 @@ Slide specification:
 
 ## Single Slide Prompt Regeneration Prompt
 
-Use this pattern when regenerating one slide after manual edits or review feedback:
+Use this pattern only when a future flow needs the model to rewrite page-intent fields. The default v1 implementation recompiles deterministically instead of relying on this prompt.
 
 ```text
-You are a presentation visual prompt designer.
-Regenerate the image prompt for a single slide while preserving deck-level consistency.
+You are a presentation page-intent editor.
+Refine the current slide intent while preserving deck-level consistency.
 
 Requirement:
 {requirement_json}
@@ -150,16 +191,13 @@ Existing slide prompt:
 Additional instruction:
 {regeneration_instruction}
 
-Return a JSON object containing:
+Return JSON only with:
 - page_no
 - title
-- slide_role
+- subtitle
+- page_goal
+- layout_type
 - key_blocks
-- image_prompt
-
-Constraints:
-- preserve the same deck-level style and template rules
-- only adjust what is necessary for this slide
-- keep the slide aligned with the deck narrative
-- avoid extra corner labels, decorative microcopy, and random page furniture
+- visual_focus
+- detail_notes
 ```

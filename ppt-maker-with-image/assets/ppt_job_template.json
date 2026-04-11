@@ -1,6 +1,10 @@
 {
   "template_id": "",
   "template_name": "",
+  "requirement_confirmed": false,
+  "recommended_template_id": "",
+  "recommended_template_name": "",
+  "requirement_summary": "",
   "topic": "",
   "target_audience": "",
   "purpose": "",

@@ -4,7 +4,11 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from PIL import Image, ImageDraw
+
+from assemble_pptx import assemble_pptx
 from run_ppt_job import (
+    build_single_slide_compiled_prompt,
     call_image_model,
     load_json,
     load_prompt_template,
@@ -12,8 +16,6 @@ from run_ppt_job import (
     load_yaml,
     openrouter_client,
 )
-from assemble_pptx import assemble_pptx
-from PIL import Image, ImageDraw
 
 
 def skill_root() -> Path:
@@ -24,61 +26,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Generate a single-slide image and assemble a one-slide PPTX."
     )
-    parser.add_argument(
-        "--job",
-        default="",
-        help="Path to single_slide_job.json",
-    )
-    parser.add_argument(
-        "--prompt",
-        default="",
-        help="Single-slide prompt text",
-    )
-    parser.add_argument(
-        "--prompt-file",
-        default="",
-        help="Path to a file containing the single-slide prompt",
-    )
-    parser.add_argument(
-        "--title",
-        default="",
-        help="Slide title used for output naming or placeholder rendering",
-    )
-    parser.add_argument(
-        "--template-id",
-        default="",
-        help="Optional template id such as huixin",
-    )
-    parser.add_argument(
-        "--template-name",
-        default="",
-        help="Optional template name such as 慧新",
-    )
+    parser.add_argument("--job", default="", help="Path to single_slide_job.json")
+    parser.add_argument("--prompt", default="", help="Single-slide prompt text")
+    parser.add_argument("--prompt-file", default="", help="Path to a file containing the single-slide prompt")
+    parser.add_argument("--title", default="", help="Slide title used for output naming or placeholder rendering")
+    parser.add_argument("--template-id", default="", help="Optional template id such as huixin")
+    parser.add_argument("--template-name", default="", help="Optional template name such as 慧新")
     parser.add_argument(
         "--config",
         default=str(skill_root() / "assets" / "model_config.yaml"),
         help="Path to model config yaml",
     )
-    parser.add_argument(
-        "--output-dir",
-        default="",
-        help="Output directory",
-    )
-    parser.add_argument(
-        "--image-name",
-        default="",
-        help="Output image filename",
-    )
-    parser.add_argument(
-        "--pptx-name",
-        default="",
-        help="Output pptx filename",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Generate a placeholder slide instead of calling a live image model",
-    )
+    parser.add_argument("--output-dir", default="", help="Output directory")
+    parser.add_argument("--image-name", default="", help="Output image filename")
+    parser.add_argument("--pptx-name", default="", help="Output pptx filename")
+    parser.add_argument("--dry-run", action="store_true", help="Generate a placeholder slide instead of calling a live image model")
     return parser
 
 
@@ -118,14 +80,6 @@ def resolve_single_slide_output_dir(job: dict, cli_value: str, job_path: str) ->
     return path.resolve()
 
 
-def build_template_prefix(template_id: str, template_name: str) -> str:
-    bundle = load_template_variant_bundle(template_id, template_name)
-    if bundle:
-        prompt_block = bundle["brief"].get("prompt_block", "")
-        return f"{prompt_block}\n\n"
-    return ""
-
-
 def create_placeholder_single_slide(title: str, prompt_text: str, image_path: Path) -> None:
     image = Image.new("RGB", (1920, 1080), "#FFFFFF")
     draw = ImageDraw.Draw(image)
@@ -134,7 +88,7 @@ def create_placeholder_single_slide(title: str, prompt_text: str, image_path: Pa
     draw.text((140, 145), title, fill="#1E1E1E")
     draw.rounded_rectangle((100, 320, 900, 950), radius=26, fill="#F5F7FA", outline="#A8D86B")
     draw.rounded_rectangle((980, 320, 1820, 950), radius=26, fill="#F5F7FA", outline="#0F95B6")
-    preview_text = prompt_text[:120] + ("..." if len(prompt_text) > 120 else "")
+    preview_text = prompt_text[:140] + ("..." if len(prompt_text) > 140 else "")
     draw.text((140, 360), preview_text, fill="#6B7280")
     image.save(image_path)
 
@@ -144,7 +98,6 @@ def main() -> int:
     args = parser.parse_args()
 
     job = load_job_payload(args.job)
-
     prompt_text = read_prompt_text(args) or str(job.get("prompt", "")).strip()
     if not prompt_text:
         parser.error("Provide --prompt, --prompt-file, or --job")
@@ -159,8 +112,8 @@ def main() -> int:
     image_path = output_dir / resolve_output_value(job, args.image_name, "image_filename", "single_slide.png")
     pptx_path = output_dir / resolve_output_value(job, args.pptx_name, "pptx_filename", "single_slide.pptx")
 
-    prompt_prefix = build_template_prefix(template_id, template_name)
-    slide_spec = f"{prompt_prefix}{prompt_text}".strip()
+    bundle = load_template_variant_bundle(template_id, template_name)
+    slide_spec = build_single_slide_compiled_prompt(title, prompt_text, bundle)
 
     if args.dry_run:
         create_placeholder_single_slide(title, slide_spec, image_path)

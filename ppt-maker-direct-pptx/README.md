@@ -1,6 +1,6 @@
 # ppt-maker-direct-pptx
 
-这是一个“确认式 + 直接绘制 PPTX”的 skill。
+这是一个“确认式 + 使用 PptxGenJS 直接绘制 PPTX”的 skill。
 
 它保留了 `ppt-maker-with-image` 的前半段流程：
 
@@ -13,7 +13,9 @@
 
 - 不再生成整页图片
 - 而是根据 `master_style + slide_prompts + slide_specs`
-- 直接绘制为 PowerPoint 原生对象
+- 生成 `slides/slide-01.js` 等 PptxGenJS 模块
+- 生成 `slides/compile.js`
+- 再绘制为 PowerPoint 原生对象
 - 输出可编辑的 `.pptx`
 
 ## 典型用途

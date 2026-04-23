@@ -1,0 +1,68 @@
+{
+  "template_id": "huixin-product-solution",
+  "template_name": "慧新-产品及解决方案介绍",
+  "language": "zh-CN",
+  "status": "confirmed",
+  "visual_positioning": "白底商务科技，偏产品化与解决方案介绍，突出能力、方案架构与客户价值",
+  "deck_voice": "清晰、可信、产品化、方案导向，强调功能结构与业务收益",
+  "color_strategy": {
+    "primary_green": "#A8D86B",
+    "secondary_teal": "#0F95B6",
+    "neutral_gray": "#D9D9D9",
+    "background": "#FFFFFF",
+    "section_background": "#F5F7FA",
+    "text_primary": "#1E1E1E",
+    "text_secondary": "#6B7280",
+    "divider": "#E5E7EB"
+  },
+  "typography": {
+    "title_font": "Microsoft YaHei",
+    "body_font": "Microsoft YaHei",
+    "page_title": "38-46px, bold",
+    "section_title": "22-28px, bold, teal",
+    "subtitle": "18-22px, medium, gray",
+    "body_text": "16-18px, regular",
+    "caption": "12-14px, gray"
+  },
+  "title_hierarchy_rules": [
+    "主标题聚焦产品或解决方案名称",
+    "副标题补充适用场景、客户价值或一句话定位",
+    "二级标题用于能力分组，不超过 3 层视觉层次",
+    "关键价值点和差异化能力优先用绿色强调"
+  ],
+  "layout_system": {
+    "grid": "12-column",
+    "margins": "左右 56-72px，上下 40-56px",
+    "module_spacing": "20-28px",
+    "module_shapes": "圆角矩形，R=14px",
+    "stroke": "1-1.25pt",
+    "shadow": "5-8% black"
+  },
+  "module_layout_patterns": [
+    "产品总览 + 3-4个能力卡片",
+    "双栏：左场景痛点 / 右解决方案",
+    "产品架构分层图",
+    "功能矩阵或方案价值对照",
+    "客户场景 + 收益模块"
+  ],
+  "chart_rules": [
+    "优先使用能力矩阵、架构分层图、方案流程图、价值对照表",
+    "避免复杂技术图例和过度流程箭头",
+    "图表主强调使用绿色，结构辅助使用 teal，底层说明使用浅灰"
+  ],
+  "icon_rules": [
+    "统一线性图标",
+    "适度使用产品模块图标与场景图标",
+    "禁止 3D 拟物图标",
+    "禁止大面积插画化装饰"
+  ],
+  "forbidden_elements": [
+    "花哨营销口号",
+    "深色大背景",
+    "过多页边角说明文字",
+    "复杂渐变",
+    "3D 图表",
+    "产品截图无边界堆叠"
+  ],
+  "prompt_block": "语言：中文。延续慧新白底、绿色主色、Teal辅色、灰中性。整体偏产品及解决方案介绍风格：强调能力卡片、架构分层、客户价值和方案结构化表达，保持克制与可读性。"
+}

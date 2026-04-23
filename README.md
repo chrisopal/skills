@@ -23,6 +23,13 @@
 - 目录：[`ppt-maker-with-image/`](./ppt-maker-with-image/)
 - 说明：[`ppt-maker-with-image/README.md`](./ppt-maker-with-image/README.md)
 
+### 3. ppt-maker-direct-pptx
+
+面向直接绘制可编辑 PPTX 的生成流程：需求确认、大纲、逐页页面意图、直接绘制每页 native PowerPoint 对象。
+
+- 目录：[`ppt-maker-direct-pptx/`](./ppt-maker-direct-pptx/)
+- 说明：[`ppt-maker-direct-pptx/README.md`](./ppt-maker-direct-pptx/README.md)
+
 ## 推荐使用方式
 
 按目录安装单个 skill，而不是把整个仓库根目录当作一个 skill。
@@ -41,6 +48,14 @@ ln -sfn ~/.codex/skills/chrisopal-skills/ppt-maker-with-image ~/.codex/skills/pp
 mkdir -p ~/.codex/skills
 git clone https://github.com/chrisopal/skills.git ~/.codex/skills/chrisopal-skills
 ln -sfn ~/.codex/skills/chrisopal-skills/industrial-ai-architect ~/.codex/skills/industrial-ai-architect
+```
+
+例如安装 `ppt-maker-direct-pptx`：
+
+```bash
+mkdir -p ~/.codex/skills
+git clone https://github.com/chrisopal/skills.git ~/.codex/skills/chrisopal-skills
+ln -sfn ~/.codex/skills/chrisopal-skills/ppt-maker-direct-pptx ~/.codex/skills/ppt-maker-direct-pptx
 ```
 
 ## 仓库目标

@@ -1,0 +1,68 @@
+{
+  "template_id": "huixin-internal-meeting",
+  "template_name": "慧新-内部会议",
+  "language": "zh-CN",
+  "status": "confirmed",
+  "visual_positioning": "白底管理会议风，强调进展复盘、决策对齐、问题闭环与行动项",
+  "deck_voice": "高效、对齐、管理视角、执行导向，适合周会、月会、项目会和经营例会",
+  "color_strategy": {
+    "primary_green": "#A8D86B",
+    "secondary_teal": "#0F95B6",
+    "neutral_gray": "#D9D9D9",
+    "background": "#FFFFFF",
+    "section_background": "#F5F7FA",
+    "text_primary": "#1E1E1E",
+    "text_secondary": "#6B7280",
+    "divider": "#E5E7EB"
+  },
+  "typography": {
+    "title_font": "Microsoft YaHei",
+    "body_font": "Microsoft YaHei",
+    "page_title": "34-42px, bold",
+    "section_title": "22-28px, bold, teal",
+    "subtitle": "16-20px, medium, gray",
+    "body_text": "15-17px, regular",
+    "caption": "12-14px, gray"
+  },
+  "title_hierarchy_rules": [
+    "主标题体现会议主题或项目主题",
+    "副标题补充时间范围、会议目的或本次结论",
+    "二级标题用于议题拆分、问题项和行动项",
+    "结论、责任人、里程碑优先用绿色强调"
+  ],
+  "layout_system": {
+    "grid": "12-column",
+    "margins": "左右 56-72px，上下 40-56px",
+    "module_spacing": "18-26px",
+    "module_shapes": "圆角矩形，R=14px",
+    "stroke": "1-1.25pt",
+    "shadow": "5-8% black"
+  },
+  "module_layout_patterns": [
+    "会议结论 + 进展模块",
+    "双栏：问题 / 行动计划",
+    "决策清单 + 责任人 + 时间节点",
+    "里程碑时间轴",
+    "状态看板或议题矩阵"
+  ],
+  "chart_rules": [
+    "优先使用进展条、里程碑时间轴、状态矩阵、任务清单表",
+    "避免复杂营销图表和夸张宣传数字样式",
+    "用绿色强调完成项和关键动作，用teal组织议题结构"
+  ],
+  "icon_rules": [
+    "统一线性图标",
+    "适合使用议题、行动、风险、里程碑类图标",
+    "禁止 3D 拟物图标",
+    "禁止娱乐化装饰图标"
+  ],
+  "forbidden_elements": [
+    "市场宣传口号",
+    "超大Hero视觉",
+    "装饰性大图",
+    "花哨CTA按钮",
+    "无关背景纹理",
+    "3D图表"
+  ],
+  "prompt_block": "语言：中文。延续慧新白底、绿色主色、Teal辅色、灰中性。整体偏内部会议风格：突出会议结论、进展、问题、行动计划、责任人与里程碑，管理视角清晰，结构紧凑。"
+}

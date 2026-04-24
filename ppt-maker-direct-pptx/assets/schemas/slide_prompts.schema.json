@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ppt-maker-direct-pptx slide_prompts.json",
+  "type": "object",
+  "required": ["slides", "quality_checklist"],
+  "properties": {
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["page_no", "title", "page_goal", "layout_type", "key_blocks", "compiled_prompt"],
+        "properties": {
+          "page_no": {"type": "integer", "minimum": 1},
+          "title": {"type": "string", "minLength": 1},
+          "subtitle": {"type": "string"},
+          "page_goal": {"type": "string"},
+          "layout_type": {"type": "string"},
+          "key_blocks": {"type": "array"},
+          "image_placeholders": {"type": "array"},
+          "core_message": {"type": "string"},
+          "copy_content": {"type": "object"},
+          "chart_advice": {"type": "object"},
+          "compiled_prompt": {"type": "string"}
+        }
+      }
+    },
+    "quality_checklist": {"type": "object"}
+  }
+}

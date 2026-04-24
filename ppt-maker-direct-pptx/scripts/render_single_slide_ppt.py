@@ -14,6 +14,7 @@ from run_ppt_job import (
     load_template_variant_bundle,
     load_yaml,
     openrouter_client,
+    validate_runtime_config,
     write_json,
 )
 from ppt_renderer import build_slide_specs
@@ -132,6 +133,12 @@ def main() -> int:
     spec_path = output_dir / resolve_output_value(job, args.spec_name, "slide_spec_filename", "single_slide_spec.json")
     pptx_path = output_dir / resolve_output_value(job, args.pptx_name, "pptx_filename", "single_slide.pptx")
     config = load_yaml(Path(args.config).expanduser().resolve())
+    runtime_issues = validate_runtime_config(config, require_live_models=not args.dry_run)
+    if runtime_issues:
+        print("[ERROR] Runtime preflight failed:")
+        for issue in runtime_issues:
+            print(f"- {issue}")
+        return 1
 
     bundle = load_template_variant_bundle(template_id, template_name)
     compiled_prompt = build_single_slide_compiled_prompt(title, prompt_text, bundle)

@@ -803,7 +803,13 @@ def write_slide_module(
                 break
             repair_prompt = build_repair_prompt(spec, master_style, theme, script, last_error)
             script = extract_js_code(js_generator(repair_prompt))
-    raise RuntimeError(f"Failed to generate valid {filename}: {last_error}")
+    print(f"[WARN] Failed to generate valid {filename} after repair attempts: {last_error}")
+    print(f"[WARN] Falling back to deterministic PptxGenJS layout for {filename}.")
+    path.write_text(deterministic_slide_js(spec, theme, total_slides), encoding="utf-8")
+    try:
+        validate_slide_module(slides_dir, filename, spec)
+    except Exception as exc:  # noqa: BLE001 - preserve both generated and fallback failure context.
+        raise RuntimeError(f"Failed to generate valid {filename}; deterministic fallback also failed: {exc}") from exc
 
 
 def render_ppt_from_specs(

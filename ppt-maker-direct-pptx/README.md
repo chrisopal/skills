@@ -4,8 +4,8 @@
 
 ## 能做什么
 
-- 需求确认：主题、目标客户、用途、风格、页数必须完整。
-- 模板确认：支持慧新 4 套模板，也可继续扩展模板 preset。
+- 需求确认：主题、目标客户、用途、风格、页数、重点内容必须完整。
+- 模板确认：支持慧新 4 套模板和深色英文商务样例，也可通过 manifest 继续扩展模板 preset。
 - 大纲确认：先生成 `outline.json`，确认后才进入每页内容。
 - 页面意图确认：每页包含标题、副标题、核心观点、页面文案、版式、视觉元素、图片占位、图表建议、演讲备注和最终生成提示词。
 - 直接绘制 PPTX：最后生成 `slides/slide-XX.js`，用 PptxGenJS 绘制原生文本框、形状、线条、卡片、流程、图表占位和图片占位。
@@ -70,6 +70,8 @@ image_model: "google/gemini-3.1-flash-image-preview"
 
 如需换模型，修改 `assets/model_config.yaml` 或运行脚本时传入 `--config path/to/model_config.yaml`。
 
+首次 live 使用前必须确认 `OPENROUTER_API_KEY`、`OPENROUTER_BASE_URL` 和模型 ID 已配置正确。脚本会在 live run 前做 preflight；缺少 API key、Node/npm 或模型配置时会先给出可操作错误。
+
 ## 模板
 
 内置慧新模板：
@@ -78,8 +80,9 @@ image_model: "google/gemini-3.1-flash-image-preview"
 - `huixin-product-solution`：产品及解决方案介绍风，偏能力架构、场景、价值证明。
 - `huixin-market-promo`：市场宣传风，偏卖点、价值主张和视觉冲击。
 - `huixin-internal-meeting`：内部会议风，偏状态、风险、决策和行动项。
+- `dark-english-business`：深色英文商务风，适合英文、全球化、高管、董事会或投资人场景。
 
-对应文件位于 `assets/huixin*_template.json` 和 `assets/huixin*_master_style_brief.json`。
+模板通过 `assets/template_manifest.json` 注册。新增模板时添加一条 manifest 记录，并提供对应的 `*_template.json` 与 `*_master_style_brief.json`。
 
 ## 多页生成
 
@@ -229,6 +232,12 @@ python3 scripts/regenerate_single_slide.py /tmp/my_ppt_job.json \
 python3 scripts/validate_job.py /tmp/my_ppt_job.json
 ```
 
+如果手工改过中间产物，也可以校验 artifacts：
+
+```bash
+python3 scripts/validate_job.py /tmp/my_ppt_job.json --artifacts artifacts/robot-factory
+```
+
 查看当前缺少什么产物，以及下一步建议：
 
 ```bash
@@ -262,8 +271,10 @@ artifacts/robot-factory/
 
 ## 常见问题
 
-- 如果脚本提示缺少需求字段，先补齐 `topic / target_audience / purpose / style / page_count`，并设置 `requirement_confirmed=true`。
+- 如果脚本提示缺少需求字段，先补齐 `topic / target_audience / purpose / style / page_count / key_points`，并设置 `requirement_confirmed=true`。
 - 如果未确认模板，先填写 `template_id` 和 `template_name`，或按脚本推荐结果确认后再继续。
+- 如果 JS 模型生成的页面模块验证失败，脚本会打印 warning 并降级到 deterministic editable layout，保证整套 PPTX 继续产出。
+- 如果图片 API 失败，脚本会打印 warning、生成本地占位 PNG，并在 `image_manifest.json` / `slide_specs.json` 中写入 `fallback_reason`。
 - 如果 PPT 页面文字重叠，优先修改 `slide_prompts.json` 的结构化页面意图，减少单页 key blocks 或明确 `image_placeholders` 的位置，再运行单页重生成。
 - 如果需要图片但不想花费模型额度，使用 `--image-dry-run` 或 `generate_image_assets.py --dry-run`。
 - 如果要换模型，只改环境变量和 `assets/model_config.yaml`，不要把密钥写入 Git。

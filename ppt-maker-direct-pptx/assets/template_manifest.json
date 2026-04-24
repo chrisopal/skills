@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "templates": [
+    {
+      "template_id": "huixin",
+      "aliases": ["慧新"],
+      "preset_asset": "huixin_template.json",
+      "brief_asset": "huixin_master_style_brief.json"
+    },
+    {
+      "template_id": "huixin-product-solution",
+      "aliases": ["慧新-产品及解决方案介绍", "慧新产品及解决方案介绍", "产品及解决方案介绍风格"],
+      "preset_asset": "huixin_product_solution_template.json",
+      "brief_asset": "huixin_product_solution_master_style_brief.json"
+    },
+    {
+      "template_id": "huixin-market-promo",
+      "aliases": ["慧新-市场宣传", "慧新市场宣传", "市场宣传风格"],
+      "preset_asset": "huixin_market_promo_template.json",
+      "brief_asset": "huixin_market_promo_master_style_brief.json"
+    },
+    {
+      "template_id": "huixin-internal-meeting",
+      "aliases": ["慧新-内部会议", "慧新内部会议", "内部会议风格"],
+      "preset_asset": "huixin_internal_meeting_template.json",
+      "brief_asset": "huixin_internal_meeting_master_style_brief.json"
+    },
+    {
+      "template_id": "dark-english-business",
+      "aliases": ["Dark English Business", "dark english", "English dark", "英文深色商务", "深色英文商务"],
+      "preset_asset": "dark_english_business_template.json",
+      "brief_asset": "dark_english_business_master_style_brief.json"
+    }
+  ]
+}

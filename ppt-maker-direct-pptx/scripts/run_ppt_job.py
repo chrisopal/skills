@@ -5,6 +5,7 @@ import argparse
 import copy
 import json
 import os
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -13,10 +14,10 @@ import yaml
 
 from generate_image_assets import generate_assets_for_specs
 from ppt_renderer import build_slide_specs, render_ppt_from_specs
-from validate_job import find_missing_required_fields, has_confirmed_template
+from validate_job import find_missing_required_fields, has_confirmed_template, validate_artifacts
 
 
-TEMPLATE_VARIANT_BUNDLES = {
+LEGACY_TEMPLATE_VARIANT_BUNDLES = {
     "huixin": {
         "aliases": ["慧新"],
         "preset_asset": "huixin_template.json",
@@ -104,22 +105,47 @@ def load_asset_json(name: str) -> dict[str, Any]:
     return load_json(skill_root() / "assets" / name)
 
 
+def load_template_registry() -> dict[str, dict[str, Any]]:
+    manifest_path = skill_root() / "assets" / "template_manifest.json"
+    if not manifest_path.exists():
+        return copy.deepcopy(LEGACY_TEMPLATE_VARIANT_BUNDLES)
+    manifest = load_json(manifest_path)
+    raw_templates = manifest.get("templates", [])
+    registry: dict[str, dict[str, Any]] = {}
+    for item in raw_templates:
+        if not isinstance(item, dict):
+            continue
+        template_id = str(item.get("template_id") or "").strip()
+        preset_asset = str(item.get("preset_asset") or "").strip()
+        brief_asset = str(item.get("brief_asset") or "").strip()
+        if not template_id or not preset_asset or not brief_asset:
+            continue
+        registry[template_id] = {
+            "aliases": [str(alias).strip() for alias in item.get("aliases", []) if str(alias).strip()],
+            "preset_asset": preset_asset,
+            "brief_asset": brief_asset,
+        }
+    return registry or copy.deepcopy(LEGACY_TEMPLATE_VARIANT_BUNDLES)
+
+
 def resolve_template_variant_key(template_id: str | None, template_name: str | None) -> str | None:
+    registry = load_template_registry()
     normalized_id = (template_id or "").strip().lower()
     normalized_name = (template_name or "").strip()
-    if normalized_id in TEMPLATE_VARIANT_BUNDLES:
+    if normalized_id in registry:
         return normalized_id
-    for key, bundle in TEMPLATE_VARIANT_BUNDLES.items():
+    for key, bundle in registry.items():
         if normalized_name and normalized_name in bundle["aliases"]:
             return key
     return None
 
 
 def load_template_variant_bundle(template_id: str | None, template_name: str | None) -> dict[str, Any] | None:
+    registry = load_template_registry()
     key = resolve_template_variant_key(template_id, template_name)
     if not key:
         return None
-    bundle = TEMPLATE_VARIANT_BUNDLES[key]
+    bundle = registry[key]
     preset = load_asset_json(bundle["preset_asset"])
     brief = load_asset_json(bundle["brief_asset"])
     return {"key": key, "preset": preset, "brief": brief}
@@ -127,7 +153,7 @@ def load_template_variant_bundle(template_id: str | None, template_name: str | N
 
 def available_template_choices() -> list[dict[str, str]]:
     result: list[dict[str, str]] = []
-    for key, bundle in TEMPLATE_VARIANT_BUNDLES.items():
+    for key, bundle in load_template_registry().items():
         preset = load_asset_json(bundle["preset_asset"])
         result.append(
             {
@@ -137,6 +163,36 @@ def available_template_choices() -> list[dict[str, str]]:
             }
         )
     return result
+
+
+def validate_runtime_config(
+    config: dict[str, Any],
+    *,
+    require_live_models: bool,
+    require_node: bool = True,
+    require_npm: bool = True,
+    require_image_model: bool = False,
+) -> list[str]:
+    issues: list[str] = []
+    if not isinstance(config, dict):
+        return ["model_config.yaml must parse to a mapping."]
+    if not str(config.get("text_model") or "").strip():
+        issues.append("model_config.yaml missing text_model.")
+    if not str(config.get("pptx_js_model") or config.get("text_model") or "").strip():
+        issues.append("model_config.yaml missing pptx_js_model or text_model.")
+    if require_image_model and not str(config.get("image_model") or config.get("pptx_image_model") or "").strip():
+        issues.append("model_config.yaml missing image_model for live image generation.")
+    if require_live_models and not os.getenv("OPENROUTER_API_KEY", "").strip():
+        issues.append(
+            "OPENROUTER_API_KEY is required for live model calls. "
+            "Configure OPENROUTER_BASE_URL if your provider URL is not https://openrouter.ai/api/v1, "
+            "and verify model ids in model_config.yaml. Use --dry-run for local placeholder output."
+        )
+    if require_node and shutil.which("node") is None:
+        issues.append("node is required to validate and compile PptxGenJS slide modules.")
+    if require_npm and shutil.which("npm") is None:
+        issues.append("npm is required to install pptxgenjs in the generated slides workspace.")
+    return issues
 
 
 def resolve_output_dir(job: dict[str, Any], cli_output_dir: str, job_path: Path) -> Path:
@@ -164,18 +220,24 @@ def call_text_model(
 ) -> dict[str, Any]:
     if "json" not in prompt.lower():
         prompt = f"{prompt}\n\nReturn valid JSON only."
-    response = client.post(
-        "/chat/completions",
-        json={
-            "model": model,
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": temperature,
-            "response_format": {"type": "json_object"},
-        },
-    )
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
-    return json.loads(content)
+    try:
+        response = client.post(
+            "/chat/completions",
+            json={
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": temperature,
+                "response_format": {"type": "json_object"},
+            },
+        )
+        response.raise_for_status()
+        content = response.json()["choices"][0]["message"]["content"]
+        return json.loads(content)
+    except (httpx.HTTPError, KeyError, json.JSONDecodeError) as exc:
+        raise RuntimeError(
+            f"Text model call failed for {model}: {exc}. "
+            "Check model_config.yaml, OPENROUTER_API_KEY, provider availability, and the provider response format."
+        ) from exc
 
 
 def call_text_completion(
@@ -185,16 +247,22 @@ def call_text_completion(
     *,
     temperature: float = 0.2,
 ) -> str:
-    response = client.post(
-        "/chat/completions",
-        json={
-            "model": model,
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": temperature,
-        },
-    )
-    response.raise_for_status()
-    return response.json()["choices"][0]["message"]["content"]
+    try:
+        response = client.post(
+            "/chat/completions",
+            json={
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": temperature,
+            },
+        )
+        response.raise_for_status()
+        return response.json()["choices"][0]["message"]["content"]
+    except (httpx.HTTPError, KeyError) as exc:
+        raise RuntimeError(
+            f"Pptx JS model call failed for {model}: {exc}. "
+            "Check model_config.yaml, OPENROUTER_API_KEY, and provider availability."
+        ) from exc
 
 
 def build_js_generator(client: httpx.Client | None, config: dict[str, Any], *, dry_run: bool):
@@ -259,7 +327,9 @@ def heuristic_template_recommendation(job: dict[str, Any]) -> dict[str, str]:
         str(job.get(field, "") or "")
         for field in ("style", "purpose", "topic", "target_audience")
     ).lower()
-    if any(word in combined for word in ["市场", "宣传", "活动", "发布", "品牌"]):
+    if any(word in combined for word in ["dark", "black", "english", "英文", "global", "international"]):
+        key = "dark-english-business"
+    elif any(word in combined for word in ["市场", "宣传", "活动", "发布", "品牌"]):
         key = "huixin-market-promo"
     elif any(word in combined for word in ["会议", "周会", "月会", "复盘", "经营会", "项目会", "内部"]):
         key = "huixin-internal-meeting"
@@ -288,6 +358,7 @@ def recommend_template(
 
     prompt = load_prompt_template("Template Recommendation Prompt").format(
         requirement_json=json.dumps(build_requirement_summary(job), ensure_ascii=False, indent=2),
+        page_count=job.get("page_count", ""),
         templates_json=json.dumps(available_template_choices(), ensure_ascii=False, indent=2),
     )
     result = call_text_model(client, config["text_model"], prompt)
@@ -1157,6 +1228,16 @@ def persist_stage(output_dir: Path, name: str, data: dict[str, Any]) -> Path:
     return path
 
 
+def print_artifact_validation_errors(job: dict[str, Any], output_dir: Path) -> bool:
+    issues = validate_artifacts(job, output_dir)
+    if not issues:
+        return False
+    print("[ERROR] Artifact schema validation failed:")
+    for issue in issues:
+        print(f"- {issue}")
+    return True
+
+
 def main() -> int:
     parser = build_parser()
     args = parser.parse_args()
@@ -1164,6 +1245,18 @@ def main() -> int:
     job_path = Path(args.job).expanduser().resolve()
     job = load_json(job_path)
     config = load_yaml(Path(args.config).expanduser().resolve())
+    image_generation_config = job.get("image_generation", {}) if isinstance(job.get("image_generation"), dict) else {}
+    image_dry_run = args.dry_run or args.image_dry_run or bool(image_generation_config.get("dry_run"))
+    runtime_issues = validate_runtime_config(
+        config,
+        require_live_models=not args.dry_run,
+        require_image_model=(args.generate_images or bool(image_generation_config.get("enabled"))) and not image_dry_run,
+    )
+    if runtime_issues:
+        print("[ERROR] Runtime preflight failed:")
+        for issue in runtime_issues:
+            print(f"- {issue}")
+        return 1
     client = None if args.dry_run else openrouter_client(config)
 
     try:
@@ -1192,9 +1285,9 @@ def main() -> int:
             return 0
 
         slide_specs = persist_slide_specs(output_dir, slide_prompts, job, master_style)
-        image_generation_config = job.get("image_generation", {}) if isinstance(job.get("image_generation"), dict) else {}
+        if print_artifact_validation_errors(job, output_dir):
+            return 1
         should_generate_images = args.generate_images or bool(image_generation_config.get("enabled"))
-        image_dry_run = args.dry_run or args.image_dry_run or bool(image_generation_config.get("dry_run"))
         if should_generate_images:
             image_dir = output_dir / "generated-images"
             slide_specs, image_assets = generate_assets_for_specs(

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from run_ppt_job import load_json, resolve_output_dir
-from validate_job import find_missing_required_fields, has_confirmed_template
+from validate_job import find_missing_required_fields, has_confirmed_template, validate_artifacts
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -56,7 +56,7 @@ def determine_stage(job: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     if required_missing:
         stage = "input_incomplete"
         issues.extend([f"缺少必要字段: {field}" for field in required_missing])
-        next_steps.append("补全 topic / target_audience / purpose / style / page_count 这些必填字段。")
+        next_steps.append("补全 topic / target_audience / purpose / style / page_count / key_points 这些必填字段。")
         next_steps.append("运行: python scripts/validate_job.py path/to/job.json")
     elif not job.get("requirement_confirmed"):
         stage = "waiting_for_requirement_confirmation"
@@ -113,6 +113,9 @@ def determine_stage(job: dict[str, Any], output_dir: Path) -> dict[str, Any]:
     if placeholder_count and asset_count < placeholder_count:
         issues.append(f"存在 {placeholder_count} 个图片占位，但只有 {asset_count} 个已生成图片资产。")
         next_steps.append("如需图片，运行: python scripts/generate_image_assets.py --slide-specs artifacts/slide_specs.json --master-style artifacts/master_style.json")
+    artifact_schema_issues = validate_artifacts(job, output_dir)
+    if artifact_schema_issues:
+        issues.extend(artifact_schema_issues)
 
     return {
         "stage": stage,

@@ -1,0 +1,70 @@
+{
+  "template_id": "dark-english-business",
+  "template_name": "Dark English Business",
+  "language": "en-US",
+  "status": "confirmed",
+  "visual_positioning": "Executive dark-mode business deck for board, strategy, investor, and global stakeholder presentations",
+  "deck_voice": "Concise, analytical, confident, and decision-oriented",
+  "color_strategy": {
+    "background": "#0B1020",
+    "section_background": "#111A2E",
+    "primary_blue": "#38BDF8",
+    "secondary_teal": "#22D3EE",
+    "accent_green": "#F59E0B",
+    "neutral_gray": "#334155",
+    "text_primary": "#F8FAFC",
+    "text_secondary": "#CBD5E1",
+    "divider": "#243044"
+  },
+  "typography": {
+    "title_font": "Arial",
+    "body_font": "Arial",
+    "page_title": "34-42px, bold",
+    "section_title": "22-28px, semibold, cyan",
+    "subtitle": "17-21px, medium, slate",
+    "body_text": "15-18px, regular",
+    "caption": "11-13px, slate"
+  },
+  "title_hierarchy_rules": [
+    "Use one clear headline per slide.",
+    "Use subtitles only for context or a business implication.",
+    "Keep body copy short and scannable.",
+    "Use amber only for decisive metrics or priority signals."
+  ],
+  "layout_system": {
+    "grid": "12-column",
+    "margins": "56-72px left/right, 40-56px top/bottom",
+    "module_spacing": "20-28px",
+    "module_shapes": "rounded rectangles, R=12px",
+    "stroke": "1-1.25pt",
+    "shadow": "10-14% black"
+  },
+  "module_layout_patterns": [
+    "headline insight plus 3 executive proof points",
+    "two-column comparison",
+    "four-card business matrix",
+    "milestone roadmap",
+    "decision bar plus supporting modules"
+  ],
+  "chart_rules": [
+    "Use flat 2D charts only.",
+    "Prefer bar, line, matrix, waterfall, and milestone charts.",
+    "Keep grid lines low contrast.",
+    "Use cyan for structure and amber for the main takeaway."
+  ],
+  "icon_rules": [
+    "Use consistent thin-line icons.",
+    "Keep icons secondary to the message.",
+    "Avoid decorative icon clusters."
+  ],
+  "forbidden_elements": [
+    "white slide background",
+    "cartoon illustration",
+    "large rainbow gradients",
+    "random corner labels",
+    "watermarks",
+    "3D charts",
+    "text-heavy poster layouts"
+  ],
+  "prompt_block": "Language: English. Use a deep navy dark-mode executive style with slate panels, cyan structure, amber emphasis, and concise business copy. Keep every page readable, restrained, analytical, and appropriate for board-level or global stakeholder presentations."
+}

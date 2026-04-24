@@ -1,0 +1,35 @@
+{
+  "template_id": "dark-english-business",
+  "template_name": "Dark English Business",
+  "language": "en-US",
+  "style_summary": "Dark executive business style with navy background, cyan structure, amber emphasis, and concise English copy",
+  "canvas": {
+    "aspect_ratio": "16:9",
+    "background_color": "#0B1020",
+    "section_background_color": "#111A2E"
+  },
+  "colors": {
+    "primary_blue": "#38BDF8",
+    "secondary_teal": "#22D3EE",
+    "accent_green": "#F59E0B",
+    "neutral_gray": "#334155",
+    "text_primary": "#F8FAFC",
+    "text_secondary": "#CBD5E1",
+    "divider": "#243044"
+  },
+  "emphasis_rules": {
+    "cyan": "structure lines, section labels, and active states",
+    "amber": "critical numbers, decisions, and executive emphasis",
+    "slate": "panels, dividers, and secondary backgrounds"
+  },
+  "shape_rules": {
+    "corner_radius_px": 12,
+    "stroke_pt": "1-1.25",
+    "shadow_black_opacity": "10-14%"
+  },
+  "icon_rules": {
+    "style": "thin-line executive icons",
+    "forbidden": ["3D icons", "cartoon graphics"]
+  },
+  "prompt_block": "Dark English Business template. Language: English. Use a deep navy background, slate panels, cyan structure lines, amber emphasis, and concise executive copy. Keep the deck modern, restrained, readable, and suitable for board or investor-facing business presentations."
+}

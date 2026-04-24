@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ppt-maker-direct-pptx outline.json",
+  "type": "object",
+  "required": ["slides"],
+  "properties": {
+    "storyline": {"type": "string"},
+    "deck_structure": {"type": "array"},
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["page_no", "title"],
+        "properties": {
+          "page_no": {"type": "integer", "minimum": 1},
+          "title": {"type": "string", "minLength": 1},
+          "subtitle": {"type": "string"},
+          "purpose": {"type": "string"},
+          "layout_type": {"type": "string"},
+          "key_blocks": {"type": "array"},
+          "image_placeholders": {"$ref": "#/$defs/image_placeholders"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "image_placeholders": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/image_placeholder"}
+    },
+    "image_placeholder": {
+      "type": "object",
+      "required": ["prompt"],
+      "properties": {
+        "id": {"type": "string"},
+        "role": {"type": "string"},
+        "purpose": {"type": "string"},
+        "prompt": {"type": "string", "minLength": 1},
+        "required": {"type": "boolean"},
+        "placement": {"$ref": "#/$defs/placement"}
+      }
+    },
+    "placement": {
+      "type": "object",
+      "required": ["x", "y", "w", "h"],
+      "properties": {
+        "x": {"type": "number", "minimum": 0, "maximum": 13.333},
+        "y": {"type": "number", "minimum": 0, "maximum": 7.5},
+        "w": {"type": "number", "exclusiveMinimum": 0, "maximum": 13.333},
+        "h": {"type": "number", "exclusiveMinimum": 0, "maximum": 7.5}
+      }
+    }
+  }
+}

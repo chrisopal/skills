@@ -24,6 +24,7 @@ Follow this sequence unless the user explicitly narrows scope:
 6. Generate one page-level PptxGenJS module per slide, validate the modules, and compile them into a `.pptx` file.
 
 Read [references/workflow.md](./references/workflow.md) first.
+Read [references/conversational-mode.md](./references/conversational-mode.md) when running the workflow directly in chat without `job.json`.
 Read [references/prompt-templates.md](./references/prompt-templates.md) when drafting requirement checks, template recommendation, outline prompts, and page-intent prompts.
 Read [references/model-config.md](./references/model-config.md) when choosing or wiring model roles.
 Read [references/template-presets.md](./references/template-presets.md) when the user asks for a named template style such as `慧新`.
@@ -34,6 +35,7 @@ This skill supports two modes:
 
 - Conversational mode:
   ask for missing fields, recommend a template if needed, confirm outline, confirm page intents, and only then draw the deck.
+  Use `references/conversational-mode.md`; do not rely on `references/prompt-templates.md` script parsing sections as the only guidance.
 - `job.json` mode:
   the script workflow keeps the same confirmation gates through explicit flags and structured artifacts.
 
@@ -42,10 +44,11 @@ This skill supports two modes:
 For multi-slide generation, the workflow must not continue until all of these are complete:
 
 - `topic`
-- `target_audience`
+- `target_audience` / 目标客户
 - `purpose`
 - `style`
 - `page_count`
+- `key_points` / 重点内容
 
 The first version also requires:
 
@@ -53,6 +56,16 @@ The first version also requires:
 - a confirmed template selection through `template_id/template_name`, or a style value that exactly matches a known preset
 
 If no concrete template is selected, the skill may recommend one, but it must stop and wait for confirmation.
+
+Before first live use, remind the user to configure:
+
+- `OPENROUTER_API_KEY`
+- `OPENROUTER_BASE_URL` when not using `https://openrouter.ai/api/v1`
+- `assets/model_config.yaml` model ids: `text_model`, `pptx_js_model`, and optional `image_model`
+
+Conversational mode must explicitly confirm target customer, style, page count, and key points before generating the outline.
+It must explicitly ask the user to confirm the outline before slide prompts.
+It must explicitly ask the user to confirm every page's content prompt/page intent before rendering.
 
 ## Structured Page Intents
 
@@ -189,13 +202,31 @@ If the job needs validation before running, use:
 
 - `python scripts/validate_job.py path/to/job.json`
 
+If you manually edited artifacts and want schema-style validation, use:
+
+- `python scripts/validate_job.py path/to/job.json --artifacts path/to/artifacts`
+
+`review_job_status.py` also reports artifact schema issues.
+
 The job template, model config, template preset, and Python dependency list live in:
 
 - `assets/ppt_job_template.json`
 - `assets/single_slide_job_template.json`
 - `assets/model_config.yaml`
+- `assets/template_manifest.json`
+- `assets/schemas/outline.schema.json`
+- `assets/schemas/slide_prompts.schema.json`
+- `assets/schemas/slide_specs.schema.json`
 - `assets/huixin_master_style_brief.json`
 - `assets/python_requirements.txt`
+
+Template variants are registered in `assets/template_manifest.json`. A template entry must provide `template_id`, `aliases`, `preset_asset`, and `brief_asset`.
+
+Runtime behavior:
+
+- scripts perform a Node/npm/model-key preflight before live runs
+- JS generation failure prints a warning and falls back to deterministic editable PptxGenJS layouts
+- image generation failure prints a warning, writes a local placeholder PNG, and records `fallback_reason`
 
 ## Output Expectations
 

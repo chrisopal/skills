@@ -14,6 +14,7 @@ from run_ppt_job import (
     openrouter_client,
     resolve_output_dir,
     skill_root,
+    validate_runtime_config,
     write_json,
 )
 from ppt_renderer import build_slide_specs, render_ppt_from_specs
@@ -71,6 +72,12 @@ def main() -> int:
         return 0
 
     config = load_yaml(Path(args.config).expanduser().resolve())
+    runtime_issues = validate_runtime_config(config, require_live_models=not args.dry_run)
+    if runtime_issues:
+        print("[ERROR] Runtime preflight failed:")
+        for issue in runtime_issues:
+            print(f"- {issue}")
+        return 1
     client = None if args.dry_run else openrouter_client(config)
     try:
         js_generator = build_js_generator(client, config, dry_run=args.dry_run)

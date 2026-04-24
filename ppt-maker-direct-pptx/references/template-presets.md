@@ -18,9 +18,11 @@ Supported template ids:
 - `huixin-product-solution`
 - `huixin-market-promo`
 - `huixin-internal-meeting`
+- `dark-english-business`
 
 Use the base `慧新` preset for通用咨询风。
 Use the 3 variants when the user needs a stronger presentation intent while keeping the same overall color family.
+Use `dark-english-business` for English, global, board, investor, executive, or dark-mode business decks.
 
 ## 慧新
 
@@ -189,3 +191,20 @@ Asset files:
 
 - `assets/huixin_internal_meeting_template.json`
 - `assets/huixin_internal_meeting_master_style_brief.json`
+
+## Dark English Business
+
+Use `template_id: dark-english-business` when the deck is for English-language executive, board, investor, strategy, or global stakeholder communication and the user wants a dark-mode business style.
+
+Key style:
+
+- deep navy background with slate panels
+- cyan structure and amber emphasis
+- concise English copy
+- restrained board-level business tone
+- no cartoon visuals, random labels, or poster-like pages
+
+Asset files:
+
+- `assets/dark_english_business_template.json`
+- `assets/dark_english_business_master_style_brief.json`

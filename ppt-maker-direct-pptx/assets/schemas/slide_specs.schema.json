@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ppt-maker-direct-pptx slide_specs.json",
+  "type": "object",
+  "required": ["slides"],
+  "properties": {
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["page_no", "title", "visible_content", "layout_regions", "template_variant", "script_path"],
+        "properties": {
+          "page_no": {"type": "integer", "minimum": 1},
+          "title": {"type": "string", "minLength": 1},
+          "subtitle": {"type": "string"},
+          "layout_type": {"type": "string"},
+          "visible_content": {
+            "type": "object",
+            "required": ["title", "blocks", "image_placeholders", "image_assets"]
+          },
+          "image_placeholders": {"type": "array"},
+          "image_assets": {"type": "array"},
+          "layout_regions": {
+            "type": "object",
+            "required": ["content", "images", "mode"]
+          },
+          "invisible_guidance": {"type": "object"},
+          "template_variant": {"type": "object"},
+          "script_path": {"type": "string"}
+        }
+      }
+    }
+  }
+}

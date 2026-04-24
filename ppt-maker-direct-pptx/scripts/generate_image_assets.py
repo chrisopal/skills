@@ -187,6 +187,7 @@ def apply_manifest_to_specs(slide_specs: dict[str, Any], assets: list[dict[str, 
                 "path": asset["path"],
                 "caption": asset.get("purpose", ""),
                 "placement": asset.get("placement", {}),
+                "fallback_reason": asset.get("fallback_reason", ""),
             }
             for asset in by_page.get(page_no, [])
         ]
@@ -208,11 +209,24 @@ def generate_assets_for_specs(
     for placeholder in collect_placeholders(slide_specs):
         filename = f"slide_{placeholder['page_no']:02d}_{clean_filename(placeholder['placeholder_id'])}.png"
         image_path = output_dir / filename
+        fallback_reason = ""
         if dry_run:
             draw_placeholder_png(image_path, placeholder, master_style)
         else:
-            generate_model_image(image_path, prompt_for_image(master_style, placeholder), config)
-        assets.append({**placeholder, "path": str(image_path)})
+            try:
+                generate_model_image(image_path, prompt_for_image(master_style, placeholder), config)
+            except Exception as exc:  # noqa: BLE001 - image providers can fail with provider-specific exceptions.
+                fallback_reason = str(exc)
+                print(
+                    f"[WARN] Image generation failed for slide {placeholder['page_no']} "
+                    f"{placeholder['placeholder_id']}: {fallback_reason}"
+                )
+                print("[WARN] Falling back to local dry-run placeholder PNG for this image.")
+                draw_placeholder_png(image_path, placeholder, master_style)
+        asset = {**placeholder, "path": str(image_path)}
+        if fallback_reason:
+            asset["fallback_reason"] = fallback_reason
+        assets.append(asset)
     return apply_manifest_to_specs(slide_specs, assets), assets
 
 

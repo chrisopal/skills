@@ -1,0 +1,16 @@
+.omx/
+.tmp/
+
+**/__pycache__/
+**/*.pyc
+**/.DS_Store
+
+**/node_modules/
+**/package-lock.json
+
+**/artifacts/
+**/single-slide-artifacts/
+**/image-assets/
+**/images/generated/
+
+!.gitkeep

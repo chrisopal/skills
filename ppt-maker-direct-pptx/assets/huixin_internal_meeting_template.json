@@ -1,0 +1,36 @@
+{
+  "template_id": "huixin-internal-meeting",
+  "template_name": "慧新-内部会议",
+  "language": "zh-CN",
+  "style_summary": "延续慧新白底绿+Teal+灰配色，突出会议纪要、决策对齐、进展管理与行动闭环",
+  "canvas": {
+    "aspect_ratio": "16:9",
+    "background_color": "#FFFFFF",
+    "section_background_color": "#F5F7FA"
+  },
+  "colors": {
+    "primary_green": "#A8D86B",
+    "secondary_teal": "#0F95B6",
+    "neutral_gray": "#D9D9D9",
+    "text_primary": "#1E1E1E",
+    "text_secondary": "#6B7280",
+    "divider": "#E5E7EB"
+  },
+  "emphasis_rules": {
+    "green": "结论、重点动作、关键进展、里程碑状态",
+    "teal": "结构线、议题标题、会议标签、状态说明",
+    "gray": "背景层、会议纪要底板、次要说明"
+  },
+  "shape_rules": {
+    "corner_radius_px": 14,
+    "stroke_pt": "1-1.25",
+    "shadow_black_opacity": "5-8%"
+  },
+  "icon_rules": {
+    "style": "线性图标统一笔画",
+    "forbidden": [
+      "3D拟物"
+    ]
+  },
+  "prompt_block": "慧新-内部会议模版，语言：中文。保持慧新白底、绿色主色、Teal辅色、灰中性，但整体偏内部会议风格：强调结论、进展、待办、责任人和时间节点，管理视角更强。"
+}

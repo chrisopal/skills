@@ -1,0 +1,71 @@
+{
+  "template_id": "huixin",
+  "template_name": "慧新",
+  "language": "zh-CN",
+  "status": "confirmed",
+  "visual_positioning": "正式商务、科技咨询、白底高密度信息表达",
+  "deck_voice": "理性、克制、专业、结构化，强调解决方案与管理价值",
+  "color_strategy": {
+    "primary_green": "#A8D86B",
+    "secondary_teal": "#0F95B6",
+    "neutral_gray": "#D9D9D9",
+    "background": "#FFFFFF",
+    "section_background": "#F5F7FA",
+    "text_primary": "#1E1E1E",
+    "text_secondary": "#6B7280",
+    "divider": "#E5E7EB"
+  },
+  "typography": {
+    "title_font": "Microsoft YaHei",
+    "body_font": "Microsoft YaHei",
+    "page_title": "36-44px, bold",
+    "section_title": "24-30px, bold, teal",
+    "subtitle": "18-22px, medium, gray",
+    "body_text": "16-18px, regular",
+    "caption": "12-14px, gray"
+  },
+  "title_hierarchy_rules": [
+    "每页只允许一个主标题",
+    "副标题只补充场景或结论，不重复主标题",
+    "二级标题用于分区，不超过 2 种视觉样式",
+    "关键词和数字优先用绿色强调"
+  ],
+  "layout_system": {
+    "grid": "12-column",
+    "margins": "左右 56-72px，上下 40-56px",
+    "module_spacing": "20-28px",
+    "module_shapes": "圆角矩形，R=14px",
+    "stroke": "1-1.25pt",
+    "shadow": "5-8% black"
+  },
+  "module_layout_patterns": [
+    "单页结论 + 3-4个核心模块",
+    "双栏对照",
+    "四卡片矩阵",
+    "三阶段路径/路线图",
+    "顶部结论条 + 下方内容模块"
+  ],
+  "chart_rules": [
+    "图表统一使用扁平化 2D 风格",
+    "优先使用柱状图、折线图、矩阵图、流程图、里程碑图",
+    "禁止 3D 图表、复杂渐变、重装饰背景",
+    "图表主强调使用绿色，结构辅助使用 teal，网格和底层使用浅灰"
+  ],
+  "icon_rules": [
+    "统一线性图标",
+    "线条粗细一致",
+    "禁止 3D 拟物图标",
+    "图标仅作为信息辅助，不喧宾夺主"
+  ],
+  "forbidden_elements": [
+    "深色大背景",
+    "大面积高饱和渐变",
+    "页边角随机小字",
+    "花哨装饰线",
+    "厚重投影",
+    "3D 图表",
+    "3D 拟物图标",
+    "无意义纹理背景"
+  ],
+  "prompt_block": "语言：中文。严格使用白底、绿色主色、Teal辅色、灰中性。信息密度高但清晰可读。标题层级明确，图表为扁平化2D风格，模块布局规则化，禁止页边角随机小字与3D拟物元素。"
+}

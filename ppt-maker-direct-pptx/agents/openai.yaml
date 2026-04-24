@@ -1,0 +1,4 @@
+interface:
+  display_name: "PPT Maker Direct PPTX"
+  short_description: "面向直接绘制可编辑PPTX的确认式工作流"
+  default_prompt: "使用 $ppt-maker-direct-pptx 先确认需求，再确认大纲和每页页面意图，最后直接绘制出可编辑的 pptx 文件。"

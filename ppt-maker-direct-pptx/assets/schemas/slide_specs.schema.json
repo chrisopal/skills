@@ -18,7 +18,10 @@
             "type": "object",
             "required": ["title", "blocks", "image_placeholders", "image_assets"]
           },
-          "image_placeholders": {"type": "array"},
+          "image_placeholders": {
+            "type": "array",
+            "items": {"$ref": "#/$defs/image_placeholder"}
+          },
           "image_assets": {"type": "array"},
           "layout_regions": {
             "type": "object",
@@ -27,6 +30,49 @@
           "invisible_guidance": {"type": "object"},
           "template_variant": {"type": "object"},
           "script_path": {"type": "string"}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "image_placeholder": {
+      "type": "object",
+      "required": ["prompt"],
+      "properties": {
+        "id": {"type": "string"},
+        "role": {"type": "string"},
+        "purpose": {"type": "string"},
+        "prompt": {"type": "string", "minLength": 1},
+        "required": {"type": "boolean"},
+        "placement": {
+          "type": "object",
+          "required": ["x", "y", "w", "h"],
+          "properties": {
+            "x": {"type": "number", "minimum": 0, "maximum": 13.333},
+            "y": {"type": "number", "minimum": 0, "maximum": 7.5},
+            "w": {"type": "number", "exclusiveMinimum": 0, "maximum": 13.333},
+            "h": {"type": "number", "exclusiveMinimum": 0, "maximum": 7.5}
+          }
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "placeholder", "generated", "skipped", "regenerating"],
+          "default": "placeholder"
+        },
+        "generated_path": {"type": ["string", "null"]},
+        "fallback_reason": {"type": ["string", "null"]},
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["ts", "from", "to"],
+            "properties": {
+              "ts": {"type": "string", "format": "date-time"},
+              "from": {"type": "string"},
+              "to": {"type": "string"},
+              "reason": {"type": "string"}
+            }
+          }
         }
       }
     }

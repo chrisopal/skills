@@ -1,0 +1,35 @@
+{
+  "pattern_id": "evidence_grid",
+  "description": "Customer / case-study evidence wall: 3-6 cards each carrying logo slot, headline, and metric.",
+  "slots": [
+    {"name": "case_1_logo", "required": false, "max_chars": 24, "accepts_image": true},
+    {"name": "case_1_headline", "required": true, "max_chars": 40},
+    {"name": "case_1_metric", "required": true, "max_chars": 30},
+    {"name": "case_2_logo", "required": false, "max_chars": 24, "accepts_image": true},
+    {"name": "case_2_headline", "required": true, "max_chars": 40},
+    {"name": "case_2_metric", "required": true, "max_chars": 30},
+    {"name": "case_3_logo", "required": false, "max_chars": 24, "accepts_image": true},
+    {"name": "case_3_headline", "required": true, "max_chars": 40},
+    {"name": "case_3_metric", "required": true, "max_chars": 30},
+    {"name": "case_4_logo", "required": false, "max_chars": 24, "accepts_image": true},
+    {"name": "case_4_headline", "required": false, "max_chars": 40},
+    {"name": "case_4_metric", "required": false, "max_chars": 30},
+    {"name": "case_5_logo", "required": false, "max_chars": 24, "accepts_image": true},
+    {"name": "case_5_headline", "required": false, "max_chars": 40},
+    {"name": "case_5_metric", "required": false, "max_chars": 30},
+    {"name": "case_6_logo", "required": false, "max_chars": 24, "accepts_image": true},
+    {"name": "case_6_headline", "required": false, "max_chars": 40},
+    {"name": "case_6_metric", "required": false, "max_chars": 30}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.4}
+  },
+  "style_hooks": {
+    "card_fill": "color_strategy.background",
+    "logo_frame": "color_strategy.divider",
+    "metric_color": "color_strategy.primary_green"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><g><rect x='40' y='160' width='390' height='240' rx='14' stroke='#A8D86B'/><rect x='60' y='180' width='80' height='60' fill='#F5F7FA'/><text x='60' y='280' font-size='20' font-weight='700'>{case_1_headline}</text><text x='60' y='340' font-size='28' fill='#A8D86B' font-weight='800'>{case_1_metric}</text></g><g><rect x='450' y='160' width='390' height='240' rx='14' stroke='#A8D86B'/><rect x='470' y='180' width='80' height='60' fill='#F5F7FA'/><text x='470' y='280' font-size='20' font-weight='700'>{case_2_headline}</text><text x='470' y='340' font-size='28' fill='#A8D86B' font-weight='800'>{case_2_metric}</text></g><g><rect x='860' y='160' width='380' height='240' rx='14' stroke='#A8D86B'/><rect x='880' y='180' width='80' height='60' fill='#F5F7FA'/><text x='880' y='280' font-size='20' font-weight='700'>{case_3_headline}</text><text x='880' y='340' font-size='28' fill='#A8D86B' font-weight='800'>{case_3_metric}</text></g><g><rect x='40' y='420' width='390' height='240' rx='14' stroke='#A8D86B' stroke-dasharray='4 4'/><text x='60' y='540' font-size='20' font-weight='700'>{case_4_headline}</text><text x='60' y='600' font-size='28' fill='#A8D86B' font-weight='800'>{case_4_metric}</text></g><g><rect x='450' y='420' width='390' height='240' rx='14' stroke='#A8D86B' stroke-dasharray='4 4'/><text x='470' y='540' font-size='20' font-weight='700'>{case_5_headline}</text><text x='470' y='600' font-size='28' fill='#A8D86B' font-weight='800'>{case_5_metric}</text></g><g><rect x='860' y='420' width='380' height='240' rx='14' stroke='#A8D86B' stroke-dasharray='4 4'/><text x='880' y='540' font-size='20' font-weight='700'>{case_6_headline}</text><text x='880' y='600' font-size='28' fill='#A8D86B' font-weight='800'>{case_6_metric}</text></g></svg>",
+  "js_renderer": "slides/renderers/evidence_grid.js"
+}

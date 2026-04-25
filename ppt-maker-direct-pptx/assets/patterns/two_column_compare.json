@@ -1,0 +1,26 @@
+{
+  "pattern_id": "two_column_compare",
+  "description": "Side-by-side comparison: two titled columns of points and an optional verdict band.",
+  "slots": [
+    {"name": "left_title", "required": true, "max_chars": 30},
+    {"name": "left_point_1", "required": true, "max_chars": 80},
+    {"name": "left_point_2", "required": false, "max_chars": 80},
+    {"name": "left_point_3", "required": false, "max_chars": 80},
+    {"name": "right_title", "required": true, "max_chars": 30},
+    {"name": "right_point_1", "required": true, "max_chars": 80},
+    {"name": "right_point_2", "required": false, "max_chars": 80},
+    {"name": "right_point_3", "required": false, "max_chars": 80},
+    {"name": "verdict", "required": false, "max_chars": 100}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.4}
+  },
+  "style_hooks": {
+    "left_accent": "color_strategy.primary_green",
+    "right_accent": "color_strategy.secondary_teal",
+    "verdict_fill": "color_strategy.section_background"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><g><rect x='40' y='160' width='580' height='400' rx='14' stroke='#A8D86B' fill='#fff'/><text x='60' y='210' font-size='24' font-weight='700'>{left_title}</text><text x='60' y='270' font-size='16'>{left_point_1}</text><text x='60' y='330' font-size='16'>{left_point_2}</text><text x='60' y='390' font-size='16'>{left_point_3}</text></g><g><rect x='660' y='160' width='580' height='400' rx='14' stroke='#0F95B6' fill='#fff'/><text x='680' y='210' font-size='24' font-weight='700'>{right_title}</text><text x='680' y='270' font-size='16'>{right_point_1}</text><text x='680' y='330' font-size='16'>{right_point_2}</text><text x='680' y='390' font-size='16'>{right_point_3}</text></g><rect x='40' y='600' width='1200' height='80' fill='#F5F7FA'/><text x='60' y='650' font-size='20'>{verdict}</text></svg>",
+  "js_renderer": "slides/renderers/two_column_compare.js"
+}

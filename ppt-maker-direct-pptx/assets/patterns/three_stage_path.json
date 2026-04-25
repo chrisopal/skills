@@ -1,0 +1,26 @@
+{
+  "pattern_id": "three_stage_path",
+  "description": "Three sequential stages connected as a roadmap; each stage carries phase/title/deliverable.",
+  "slots": [
+    {"name": "stage_1_phase", "required": true, "max_chars": 16},
+    {"name": "stage_1_title", "required": true, "max_chars": 30},
+    {"name": "stage_1_deliverable", "required": true, "max_chars": 80},
+    {"name": "stage_2_phase", "required": true, "max_chars": 16},
+    {"name": "stage_2_title", "required": true, "max_chars": 30},
+    {"name": "stage_2_deliverable", "required": true, "max_chars": 80},
+    {"name": "stage_3_phase", "required": true, "max_chars": 16},
+    {"name": "stage_3_title", "required": true, "max_chars": 30},
+    {"name": "stage_3_deliverable", "required": true, "max_chars": 80}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.8, "w": 12.333, "h": 5.0}
+  },
+  "style_hooks": {
+    "stage_fill": "color_strategy.background",
+    "connector": "color_strategy.secondary_teal",
+    "phase_color": "color_strategy.primary_green"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><line x1='80' y1='400' x2='1200' y2='400' stroke='#0F95B6' stroke-width='2'/><g><circle cx='220' cy='400' r='28' fill='#A8D86B'/><text x='220' y='406' text-anchor='middle' font-size='16' font-weight='700' fill='#fff'>1</text><rect x='80' y='250' width='280' height='100' rx='14' fill='#fff' stroke='#A8D86B'/><text x='100' y='285' font-size='14' fill='#6B7280'>{stage_1_phase}</text><text x='100' y='320' font-size='22' font-weight='700'>{stage_1_title}</text><text x='100' y='480' font-size='14'>{stage_1_deliverable}</text></g><g><circle cx='640' cy='400' r='28' fill='#A8D86B'/><text x='640' y='406' text-anchor='middle' font-size='16' font-weight='700' fill='#fff'>2</text><rect x='500' y='250' width='280' height='100' rx='14' fill='#fff' stroke='#A8D86B'/><text x='520' y='285' font-size='14' fill='#6B7280'>{stage_2_phase}</text><text x='520' y='320' font-size='22' font-weight='700'>{stage_2_title}</text><text x='520' y='480' font-size='14'>{stage_2_deliverable}</text></g><g><circle cx='1060' cy='400' r='28' fill='#A8D86B'/><text x='1060' y='406' text-anchor='middle' font-size='16' font-weight='700' fill='#fff'>3</text><rect x='920' y='250' width='280' height='100' rx='14' fill='#fff' stroke='#A8D86B'/><text x='940' y='285' font-size='14' fill='#6B7280'>{stage_3_phase}</text><text x='940' y='320' font-size='22' font-weight='700'>{stage_3_title}</text><text x='940' y='480' font-size='14'>{stage_3_deliverable}</text></g></svg>",
+  "js_renderer": "slides/renderers/three_stage_path.js"
+}

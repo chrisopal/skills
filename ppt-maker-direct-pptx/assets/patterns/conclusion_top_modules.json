@@ -1,0 +1,27 @@
+{
+  "pattern_id": "conclusion_top_modules",
+  "description": "Top headline conclusion bar with 3-4 supporting content modules below.",
+  "slots": [
+    {"name": "headline", "required": true, "max_chars": 80, "description": "One-line conclusion / takeaway"},
+    {"name": "module_1_title", "required": true, "max_chars": 24},
+    {"name": "module_1_body", "required": true, "max_chars": 120},
+    {"name": "module_2_title", "required": true, "max_chars": 24},
+    {"name": "module_2_body", "required": true, "max_chars": 120},
+    {"name": "module_3_title", "required": true, "max_chars": 24},
+    {"name": "module_3_body", "required": true, "max_chars": 120},
+    {"name": "module_4_title", "required": false, "max_chars": 24},
+    {"name": "module_4_body", "required": false, "max_chars": 120}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.4},
+    "content": {"x": 0.5, "y": 2.0, "w": 12.333, "h": 4.8}
+  },
+  "style_hooks": {
+    "headline_bar_fill": "color_strategy.section_background",
+    "module_card_fill": "color_strategy.background",
+    "module_accent": "color_strategy.primary_green",
+    "card_radius": "layout_system.module_shapes"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><rect x='40' y='40' width='1200' height='130' fill='#F5F7FA'/><text x='80' y='120' font-size='32' font-weight='700'>{headline}</text><g><rect x='40' y='200' width='290' height='480' rx='14' fill='#fff' stroke='#A8D86B'/><text x='60' y='260' font-size='22' font-weight='700'>{module_1_title}</text><text x='60' y='320' font-size='16' fill='#1E1E1E'>{module_1_body}</text></g><g><rect x='350' y='200' width='290' height='480' rx='14' fill='#fff' stroke='#A8D86B'/><text x='370' y='260' font-size='22' font-weight='700'>{module_2_title}</text><text x='370' y='320' font-size='16'>{module_2_body}</text></g><g><rect x='660' y='200' width='290' height='480' rx='14' fill='#fff' stroke='#A8D86B'/><text x='680' y='260' font-size='22' font-weight='700'>{module_3_title}</text><text x='680' y='320' font-size='16'>{module_3_body}</text></g><g><rect x='970' y='200' width='270' height='480' rx='14' fill='#fff' stroke='#0F95B6' stroke-dasharray='4 4'/><text x='990' y='260' font-size='22' font-weight='700'>{module_4_title}</text><text x='990' y='320' font-size='16'>{module_4_body}</text></g></svg>",
+  "js_renderer": "slides/renderers/conclusion_top_modules.js"
+}

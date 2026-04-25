@@ -1,0 +1,22 @@
+{
+  "pattern_id": "cover",
+  "description": "Deck cover: large title, supporting subtitle, organization block, optional hero visual.",
+  "slots": [
+    {"name": "title", "required": true, "max_chars": 40},
+    {"name": "subtitle", "required": false, "max_chars": 80},
+    {"name": "org_block", "required": false, "max_chars": 60},
+    {"name": "cover_visual", "required": false, "accepts_image": true, "description": "Optional hero image / brand artwork"}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.6, "y": 2.2, "w": 8.0, "h": 1.6},
+    "content": {"x": 0.6, "y": 3.9, "w": 8.0, "h": 3.0},
+    "images": {"x": 8.8, "y": 0.5, "w": 4.0, "h": 6.5}
+  },
+  "style_hooks": {
+    "title_color": "color_strategy.text_primary",
+    "accent_color": "color_strategy.primary_green",
+    "background": "color_strategy.background"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff' stroke='#ccc'/><rect x='60' y='220' width='760' height='130' fill='#f5f7fa'/><text x='80' y='305' font-size='42' font-weight='700'>{title}</text><rect x='60' y='380' width='760' height='80' fill='#fff' stroke='#eee'/><text x='80' y='430' font-size='22' fill='#6B7280'>{subtitle}</text><rect x='60' y='600' width='400' height='60' fill='none' stroke='#eee'/><text x='80' y='640' font-size='18' fill='#6B7280'>{org_block}</text><rect x='870' y='60' width='350' height='600' fill='#f5f7fa' stroke='#0F95B6' stroke-dasharray='4 4'/><text x='1045' y='370' font-size='18' fill='#0F95B6' text-anchor='middle'>{cover_visual}</text></svg>",
+  "js_renderer": "slides/renderers/cover.js"
+}

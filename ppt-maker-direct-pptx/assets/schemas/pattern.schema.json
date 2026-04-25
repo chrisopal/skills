@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ppt-maker-direct-pptx pattern definition",
+  "type": "object",
+  "required": [
+    "pattern_id",
+    "slots",
+    "layout_regions",
+    "wireframe_template",
+    "js_renderer"
+  ],
+  "properties": {
+    "pattern_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$",
+      "minLength": 1
+    },
+    "description": {"type": "string"},
+    "slots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/slot"}
+    },
+    "layout_regions": {
+      "type": "object",
+      "required": ["title", "content"],
+      "properties": {
+        "title": {"$ref": "#/$defs/region"},
+        "content": {"$ref": "#/$defs/region"},
+        "images": {"$ref": "#/$defs/region"}
+      },
+      "additionalProperties": false
+    },
+    "style_hooks": {
+      "type": "object",
+      "additionalProperties": {"type": "string"},
+      "description": "Maps pattern-render parameters to master_style field paths"
+    },
+    "wireframe_template": {
+      "type": "string",
+      "minLength": 1,
+      "description": "SVG template with {slot_name} placeholders"
+    },
+    "js_renderer": {
+      "type": "string",
+      "pattern": "^slides/renderers/[a-z0-9_]+\\.js$"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "slot": {
+      "type": "object",
+      "required": ["name", "required"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_\\[\\]]*$",
+          "minLength": 1
+        },
+        "required": {"type": "boolean"},
+        "max_chars": {"type": "integer", "minimum": 1},
+        "min_chars": {"type": "integer", "minimum": 0},
+        "accepts_image": {"type": "boolean"},
+        "description": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "region": {
+      "type": "object",
+      "required": ["x", "y", "w", "h"],
+      "properties": {
+        "x": {"type": "number", "minimum": 0, "maximum": 13.333},
+        "y": {"type": "number", "minimum": 0, "maximum": 7.5},
+        "w": {"type": "number", "exclusiveMinimum": 0, "maximum": 13.333},
+        "h": {"type": "number", "exclusiveMinimum": 0, "maximum": 7.5}
+      },
+      "additionalProperties": false
+    }
+  }
+}

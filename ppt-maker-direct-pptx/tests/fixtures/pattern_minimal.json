@@ -1,0 +1,25 @@
+{
+  "pattern_id": "kpi_strip",
+  "description": "Single-row 4-cell KPI band with value/label",
+  "slots": [
+    {"name": "kpi_1_value", "required": true, "max_chars": 12},
+    {"name": "kpi_1_label", "required": true, "max_chars": 24},
+    {"name": "kpi_2_value", "required": true, "max_chars": 12},
+    {"name": "kpi_2_label", "required": true, "max_chars": 24},
+    {"name": "kpi_3_value", "required": false, "max_chars": 12},
+    {"name": "kpi_3_label", "required": false, "max_chars": 24},
+    {"name": "kpi_4_value", "required": false, "max_chars": 12},
+    {"name": "kpi_4_label", "required": false, "max_chars": 24}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.0}
+  },
+  "style_hooks": {
+    "card_radius": "layout_system.module_shapes",
+    "card_shadow": "pattern_palette.card_shadow",
+    "value_color": "color_strategy.primary_green"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect x='40' y='40' width='1200' height='80' fill='#eee'/><text x='60' y='90'>{title_placeholder}</text><g><rect x='40' y='160' width='280' height='200'/><text x='80' y='240' font-size='48'>{kpi_1_value}</text><text x='80' y='320'>{kpi_1_label}</text></g></svg>",
+  "js_renderer": "slides/renderers/kpi_strip.js"
+}

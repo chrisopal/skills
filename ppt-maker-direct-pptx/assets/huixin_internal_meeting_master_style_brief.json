@@ -3,6 +3,8 @@
   "template_name": "慧新-内部会议",
   "language": "zh-CN",
   "status": "confirmed",
+  "source": "preset",
+  "parent_template_id": null,
   "visual_positioning": "白底管理会议风，强调进展复盘、决策对齐、问题闭环与行动项",
   "deck_voice": "高效、对齐、管理视角、执行导向，适合周会、月会、项目会和经营例会",
   "color_strategy": {

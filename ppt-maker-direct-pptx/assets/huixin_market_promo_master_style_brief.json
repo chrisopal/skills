@@ -3,6 +3,8 @@
   "template_name": "慧新-市场宣传",
   "language": "zh-CN",
   "status": "confirmed",
+  "source": "preset",
+  "parent_template_id": null,
   "visual_positioning": "白底商务传播风，强调品牌主张、场景吸引力与市场信息转化",
   "deck_voice": "鲜明、简洁、可信、增长导向，适合宣传页、活动页、方案亮点页",
   "color_strategy": {

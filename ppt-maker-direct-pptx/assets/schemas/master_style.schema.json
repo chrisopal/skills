@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ppt-maker-direct-pptx master_style.json",
+  "type": "object",
+  "required": [
+    "template_id",
+    "template_name",
+    "language",
+    "color_strategy",
+    "typography",
+    "source"
+  ],
+  "properties": {
+    "template_id": {"type": "string", "minLength": 1},
+    "template_name": {"type": "string", "minLength": 1},
+    "language": {"type": "string", "minLength": 2},
+    "status": {"type": "string"},
+    "visual_positioning": {"type": "string"},
+    "deck_voice": {"type": "string"},
+    "color_strategy": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "string"}
+    },
+    "typography": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"type": "string"}
+    },
+    "title_hierarchy_rules": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "layout_system": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "module_layout_patterns": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "chart_rules": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "icon_rules": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "forbidden_elements": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "prompt_block": {"type": "string"},
+    "source": {
+      "type": "string",
+      "enum": ["preset", "nl_generated", "reference_extracted", "hybrid"]
+    },
+    "parent_template_id": {
+      "type": ["string", "null"]
+    },
+    "lock_fields": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true,
+      "description": "Dotted paths of fields the user has locked against later LLM rewrites"
+    },
+    "pattern_palette": {
+      "type": "object",
+      "properties": {
+        "card_shadow": {"type": "string"},
+        "connector_weight": {"type": "string"},
+        "icon_style": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "description": "Per-field confidence (0..1) for nl_generated / reference_extracted sources"
+    }
+  },
+  "additionalProperties": false
+}

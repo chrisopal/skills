@@ -64,6 +64,11 @@ def main() -> int:
 
     prompt_index, slide = find_slide_by_page_no(slide_prompts.get("slides", []), args.page_no)
     slide["compiled_prompt"] = compile_slide_prompt(job, master_style, slide, additional_instruction=args.instruction)
+    # Regenerated content needs explicit user re-confirmation; flip intent_status
+    # back to pending_review unless the slide is still in draft.
+    current_intent_status = slide.get("intent_status", "draft")
+    if current_intent_status not in ("draft",):
+        slide["intent_status"] = "pending_review"
     slide_prompts["slides"][prompt_index] = slide
     write_json(slide_prompts_path, slide_prompts)
     print(f"[OK] Updated slide prompt: {slide_prompts_path} page {args.page_no}")

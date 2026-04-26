@@ -1,0 +1,27 @@
+{
+  "pattern_id": "architecture_layers",
+  "description": "Stacked technical architecture layers; each layer has a name and component summary.",
+  "slots": [
+    {"name": "layer_1_name", "required": true, "max_chars": 30},
+    {"name": "layer_1_components", "required": true, "max_chars": 140},
+    {"name": "layer_2_name", "required": true, "max_chars": 30},
+    {"name": "layer_2_components", "required": true, "max_chars": 140},
+    {"name": "layer_3_name", "required": true, "max_chars": 30},
+    {"name": "layer_3_components", "required": true, "max_chars": 140},
+    {"name": "layer_4_name", "required": false, "max_chars": 30},
+    {"name": "layer_4_components", "required": false, "max_chars": 140},
+    {"name": "layer_5_name", "required": false, "max_chars": 30},
+    {"name": "layer_5_components", "required": false, "max_chars": 140}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.4}
+  },
+  "style_hooks": {
+    "layer_band_fill": "color_strategy.section_background",
+    "layer_name_color": "color_strategy.secondary_teal",
+    "components_color": "color_strategy.text_primary"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><g><rect x='40' y='160' width='1200' height='90' fill='#F5F7FA' stroke='#0F95B6'/><text x='60' y='200' font-size='22' font-weight='700' fill='#0F95B6'>{layer_1_name}</text><text x='60' y='230' font-size='16'>{layer_1_components}</text></g><g><rect x='40' y='260' width='1200' height='90' fill='#F5F7FA' stroke='#0F95B6'/><text x='60' y='300' font-size='22' font-weight='700' fill='#0F95B6'>{layer_2_name}</text><text x='60' y='330' font-size='16'>{layer_2_components}</text></g><g><rect x='40' y='360' width='1200' height='90' fill='#F5F7FA' stroke='#0F95B6'/><text x='60' y='400' font-size='22' font-weight='700' fill='#0F95B6'>{layer_3_name}</text><text x='60' y='430' font-size='16'>{layer_3_components}</text></g><g><rect x='40' y='460' width='1200' height='90' fill='#F5F7FA' stroke='#0F95B6'/><text x='60' y='500' font-size='22' font-weight='700' fill='#0F95B6'>{layer_4_name}</text><text x='60' y='530' font-size='16'>{layer_4_components}</text></g><g><rect x='40' y='560' width='1200' height='90' fill='#F5F7FA' stroke='#0F95B6'/><text x='60' y='600' font-size='22' font-weight='700' fill='#0F95B6'>{layer_5_name}</text><text x='60' y='630' font-size='16'>{layer_5_components}</text></g></svg>",
+  "js_renderer": "slides/renderers/architecture_layers.js"
+}

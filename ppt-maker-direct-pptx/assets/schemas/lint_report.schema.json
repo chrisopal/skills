@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ppt-maker-direct-pptx lint_report.json",
+  "type": "object",
+  "required": ["ts", "gate", "results"],
+  "properties": {
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp when the lint run started"
+    },
+    "gate": {
+      "type": "string",
+      "enum": ["gate_4", "gate_5", "gate_7"]
+    },
+    "results": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/result"}
+    },
+    "deck_level": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/deck_result"}
+    },
+    "overrides": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/override"}
+    },
+    "fixes_applied": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/fix"},
+      "description": "Set by auto_fix_lint.py when it patches issues"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "category": {
+      "type": "string",
+      "enum": ["schema", "layout_geometry", "style_consistency", "content_quality"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["pass", "warn", "fail"]
+    },
+    "result": {
+      "type": "object",
+      "required": ["category", "rule", "severity"],
+      "properties": {
+        "page_no": {"type": "integer", "minimum": 1},
+        "category": {"$ref": "#/$defs/category"},
+        "rule": {"type": "string", "minLength": 1},
+        "severity": {"$ref": "#/$defs/severity"},
+        "detail": {"type": "string"},
+        "auto_fixable": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "deck_result": {
+      "type": "object",
+      "required": ["category", "rule", "severity"],
+      "properties": {
+        "category": {"$ref": "#/$defs/category"},
+        "rule": {"type": "string", "minLength": 1},
+        "severity": {"$ref": "#/$defs/severity"},
+        "detail": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "override": {
+      "type": "object",
+      "required": ["rule", "ts", "actor"],
+      "properties": {
+        "page_no": {"type": "integer", "minimum": 1},
+        "rule": {"type": "string", "minLength": 1},
+        "ts": {"type": "string", "format": "date-time"},
+        "actor": {"type": "string", "minLength": 1},
+        "reason": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "fix": {
+      "type": "object",
+      "required": ["page_no", "rule", "ts", "diff_summary"],
+      "properties": {
+        "page_no": {"type": "integer", "minimum": 1},
+        "rule": {"type": "string", "minLength": 1},
+        "ts": {"type": "string", "format": "date-time"},
+        "diff_summary": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  }
+}

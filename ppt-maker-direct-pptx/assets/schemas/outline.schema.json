@@ -18,12 +18,18 @@
           "purpose": {"type": "string"},
           "layout_type": {"type": "string"},
           "key_blocks": {"type": "array"},
-          "image_placeholders": {"$ref": "#/$defs/image_placeholders"}
+          "image_placeholders": {"$ref": "#/$defs/image_placeholders"},
+          "outline_status": {"$ref": "#/$defs/page_status"}
         }
       }
     }
   },
   "$defs": {
+    "page_status": {
+      "type": "string",
+      "enum": ["draft", "pending_review", "locked", "needs_rework"],
+      "default": "draft"
+    },
     "image_placeholders": {
       "type": "array",
       "items": {"$ref": "#/$defs/image_placeholder"}

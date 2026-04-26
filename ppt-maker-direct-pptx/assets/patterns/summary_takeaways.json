@@ -1,0 +1,23 @@
+{
+  "pattern_id": "summary_takeaways",
+  "description": "Closing summary with 3-5 numbered takeaways and an optional next-step call-to-action.",
+  "slots": [
+    {"name": "takeaway_1", "required": true, "max_chars": 80},
+    {"name": "takeaway_2", "required": true, "max_chars": 80},
+    {"name": "takeaway_3", "required": true, "max_chars": 80},
+    {"name": "takeaway_4", "required": false, "max_chars": 80},
+    {"name": "takeaway_5", "required": false, "max_chars": 80},
+    {"name": "next_step", "required": false, "max_chars": 100}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.4}
+  },
+  "style_hooks": {
+    "takeaway_fill": "color_strategy.background",
+    "marker_color": "color_strategy.primary_green",
+    "next_step_fill": "color_strategy.section_background"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><g><rect x='40' y='150' width='1200' height='80' rx='14' fill='#fff' stroke='#A8D86B'/><circle cx='90' cy='190' r='22' fill='#A8D86B'/><text x='90' y='197' font-size='18' font-weight='700' fill='#fff' text-anchor='middle'>1</text><text x='130' y='197' font-size='20'>{takeaway_1}</text></g><g><rect x='40' y='240' width='1200' height='80' rx='14' fill='#fff' stroke='#A8D86B'/><circle cx='90' cy='280' r='22' fill='#A8D86B'/><text x='90' y='287' font-size='18' font-weight='700' fill='#fff' text-anchor='middle'>2</text><text x='130' y='287' font-size='20'>{takeaway_2}</text></g><g><rect x='40' y='330' width='1200' height='80' rx='14' fill='#fff' stroke='#A8D86B'/><circle cx='90' cy='370' r='22' fill='#A8D86B'/><text x='90' y='377' font-size='18' font-weight='700' fill='#fff' text-anchor='middle'>3</text><text x='130' y='377' font-size='20'>{takeaway_3}</text></g><g><rect x='40' y='420' width='1200' height='80' rx='14' fill='#fff' stroke='#A8D86B' stroke-dasharray='4 4'/><circle cx='90' cy='460' r='22' fill='#A8D86B'/><text x='90' y='467' font-size='18' font-weight='700' fill='#fff' text-anchor='middle'>4</text><text x='130' y='467' font-size='20'>{takeaway_4}</text></g><g><rect x='40' y='510' width='1200' height='80' rx='14' fill='#fff' stroke='#A8D86B' stroke-dasharray='4 4'/><circle cx='90' cy='550' r='22' fill='#A8D86B'/><text x='90' y='557' font-size='18' font-weight='700' fill='#fff' text-anchor='middle'>5</text><text x='130' y='557' font-size='20'>{takeaway_5}</text></g><rect x='40' y='610' width='1200' height='70' fill='#F5F7FA'/><text x='60' y='655' font-size='22' fill='#0F95B6'>{next_step}</text></svg>",
+  "js_renderer": "slides/renderers/summary_takeaways.js"
+}

@@ -3,6 +3,8 @@
   "template_name": "Dark English Business",
   "language": "en-US",
   "status": "confirmed",
+  "source": "preset",
+  "parent_template_id": null,
   "visual_positioning": "Executive dark-mode business deck for board, strategy, investor, and global stakeholder presentations",
   "deck_voice": "Concise, analytical, confident, and decision-oriented",
   "color_strategy": {

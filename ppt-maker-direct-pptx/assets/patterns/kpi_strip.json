@@ -1,0 +1,34 @@
+{
+  "pattern_id": "kpi_strip",
+  "description": "Single-row 4-cell KPI band; each cell shows a value plus label, with optional unit and trend.",
+  "slots": [
+    {"name": "kpi_1_value", "required": true, "max_chars": 12},
+    {"name": "kpi_1_label", "required": true, "max_chars": 24},
+    {"name": "kpi_1_unit", "required": false, "max_chars": 12},
+    {"name": "kpi_1_trend", "required": false, "max_chars": 16},
+    {"name": "kpi_2_value", "required": true, "max_chars": 12},
+    {"name": "kpi_2_label", "required": true, "max_chars": 24},
+    {"name": "kpi_2_unit", "required": false, "max_chars": 12},
+    {"name": "kpi_2_trend", "required": false, "max_chars": 16},
+    {"name": "kpi_3_value", "required": false, "max_chars": 12},
+    {"name": "kpi_3_label", "required": false, "max_chars": 24},
+    {"name": "kpi_3_unit", "required": false, "max_chars": 12},
+    {"name": "kpi_3_trend", "required": false, "max_chars": 16},
+    {"name": "kpi_4_value", "required": false, "max_chars": 12},
+    {"name": "kpi_4_label", "required": false, "max_chars": 24},
+    {"name": "kpi_4_unit", "required": false, "max_chars": 12},
+    {"name": "kpi_4_trend", "required": false, "max_chars": 16}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.0}
+  },
+  "style_hooks": {
+    "card_radius": "layout_system.module_shapes",
+    "card_shadow": "pattern_palette.card_shadow",
+    "value_color": "color_strategy.primary_green",
+    "trend_color": "color_strategy.secondary_teal"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><g><rect x='40' y='200' width='280' height='320' rx='14' fill='#fff' stroke='#A8D86B'/><text x='60' y='280' font-size='16' fill='#6B7280'>{kpi_1_label}</text><text x='60' y='370' font-size='56' font-weight='800' fill='#A8D86B'>{kpi_1_value}</text><text x='60' y='420' font-size='16' fill='#6B7280'>{kpi_1_unit}</text><text x='60' y='470' font-size='14' fill='#0F95B6'>{kpi_1_trend}</text></g><g><rect x='340' y='200' width='280' height='320' rx='14' fill='#fff' stroke='#A8D86B'/><text x='360' y='280' font-size='16' fill='#6B7280'>{kpi_2_label}</text><text x='360' y='370' font-size='56' font-weight='800' fill='#A8D86B'>{kpi_2_value}</text><text x='360' y='420' font-size='16' fill='#6B7280'>{kpi_2_unit}</text><text x='360' y='470' font-size='14' fill='#0F95B6'>{kpi_2_trend}</text></g><g><rect x='640' y='200' width='280' height='320' rx='14' fill='#fff' stroke='#A8D86B'/><text x='660' y='280' font-size='16' fill='#6B7280'>{kpi_3_label}</text><text x='660' y='370' font-size='56' font-weight='800' fill='#A8D86B'>{kpi_3_value}</text><text x='660' y='420' font-size='16' fill='#6B7280'>{kpi_3_unit}</text><text x='660' y='470' font-size='14' fill='#0F95B6'>{kpi_3_trend}</text></g><g><rect x='940' y='200' width='280' height='320' rx='14' fill='#fff' stroke='#A8D86B'/><text x='960' y='280' font-size='16' fill='#6B7280'>{kpi_4_label}</text><text x='960' y='370' font-size='56' font-weight='800' fill='#A8D86B'>{kpi_4_value}</text><text x='960' y='420' font-size='16' fill='#6B7280'>{kpi_4_unit}</text><text x='960' y='470' font-size='14' fill='#0F95B6'>{kpi_4_trend}</text></g></svg>",
+  "js_renderer": "slides/renderers/kpi_strip.js"
+}

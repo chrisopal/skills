@@ -1,0 +1,18 @@
+{
+  "pattern_id": "freeform",
+  "description": "Fallback pattern for slides that need custom layouts not covered by the named patterns. Slot data is minimal; the page intent must additionally supply layout_design and grid coordinates.",
+  "slots": [
+    {"name": "headline", "required": true, "max_chars": 80, "description": "One-line slide headline / main message"},
+    {"name": "note", "required": false, "max_chars": 200, "description": "Optional supporting text rendered below the headline"}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.4}
+  },
+  "style_hooks": {
+    "headline_color": "color_strategy.text_primary",
+    "note_color": "color_strategy.text_secondary"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff' stroke='#ccc' stroke-dasharray='8 4'/><text x='60' y='110' font-size='34' font-weight='700'>{headline}</text><text x='60' y='200' font-size='18' fill='#6B7280'>{note}</text><text x='60' y='400' font-size='14' fill='#999'>[ freeform — supply layout_design + grid in page intent ]</text></svg>",
+  "js_renderer": "slides/renderers/freeform.js"
+}

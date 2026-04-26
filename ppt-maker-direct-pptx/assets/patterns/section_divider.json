@@ -1,0 +1,20 @@
+{
+  "pattern_id": "section_divider",
+  "description": "Section break with large numeric chapter marker, section title, optional agenda anchor.",
+  "slots": [
+    {"name": "section_no", "required": true, "max_chars": 8, "description": "e.g. '01' or 'Part 1'"},
+    {"name": "section_title", "required": true, "max_chars": 40},
+    {"name": "agenda_anchor", "required": false, "max_chars": 80}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.6, "y": 2.2, "w": 12.1, "h": 1.6},
+    "content": {"x": 0.6, "y": 3.9, "w": 12.1, "h": 3.0}
+  },
+  "style_hooks": {
+    "section_no_color": "color_strategy.primary_green",
+    "title_color": "color_strategy.text_primary",
+    "accent_line": "color_strategy.secondary_teal"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><text x='80' y='250' font-size='160' font-weight='800' fill='#A8D86B'>{section_no}</text><line x1='80' y1='280' x2='1200' y2='280' stroke='#0F95B6' stroke-width='2'/><text x='80' y='360' font-size='48' font-weight='700'>{section_title}</text><text x='80' y='430' font-size='20' fill='#6B7280'>{agenda_anchor}</text></svg>",
+  "js_renderer": "slides/renderers/section_divider.js"
+}

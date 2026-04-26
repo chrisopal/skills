@@ -3,6 +3,8 @@
   "template_name": "慧新-产品及解决方案介绍",
   "language": "zh-CN",
   "status": "confirmed",
+  "source": "preset",
+  "parent_template_id": null,
   "visual_positioning": "白底商务科技，偏产品化与解决方案介绍，突出能力、方案架构与客户价值",
   "deck_voice": "清晰、可信、产品化、方案导向，强调功能结构与业务收益",
   "color_strategy": {

@@ -1,0 +1,59 @@
+{
+  "topic": "FY26 Q1 业务回顾",
+  "target_audience": "C-suite",
+  "purpose": "annual_review",
+  "page_count": 3,
+  "key_points": [
+    "营收增长 38%，超出年初指引",
+    "运营成本下降 12%",
+    "Q2 重点拓展华东市场"
+  ],
+  "must_have_sections": [
+    "封面",
+    "关键指标",
+    "下一步行动"
+  ],
+  "language": "zh-CN",
+  "template_id": "huixin",
+  "output": {
+    "directory": "artifacts",
+    "pptx_filename": "fy26q1-review.pptx"
+  },
+  "v2_gates": {
+    "gate_1_requirement": {
+      "status": "done",
+      "summary": "all 5 required fields present",
+      "ts": "2026-04-26T14:24:00Z"
+    },
+    "gate_2_style": {
+      "status": "done",
+      "summary": "wrote master_style.json from preset huixin",
+      "ts": "2026-04-26T14:24:00Z"
+    },
+    "gate_3_style_preview": {
+      "status": "done",
+      "summary": "pattern catalog ready at /Users/guojiexie/Development/skills/.worktrees/direct-pptx-v2/ppt-maker-direct-pptx/e2e-demo/artifacts/pattern_catalog/0b5da1857fbb",
+      "ts": "2026-04-26T14:24:00Z"
+    },
+    "gate_4_outline": {
+      "status": "done",
+      "summary": "schema lint: 0 per-page result(s)",
+      "ts": "2026-04-26T14:24:00Z"
+    },
+    "gate_5_intent": {
+      "status": "done",
+      "summary": "intent lint + 3 wireframe(s)",
+      "ts": "2026-04-26T14:24:00Z"
+    },
+    "gate_6_image_plan": {
+      "status": "done",
+      "summary": "0 placeholder(s) — counts={'pending': 0, 'placeholder': 0, 'skipped': 0, 'generated': 0, 'regenerating': 0}",
+      "ts": "2026-04-26T14:24:00Z"
+    },
+    "gate_7_pre_render": {
+      "status": "done",
+      "summary": "deck ready_for_render=True, locked_intent=3/3",
+      "ts": "2026-04-26T14:24:00Z"
+    }
+  }
+}

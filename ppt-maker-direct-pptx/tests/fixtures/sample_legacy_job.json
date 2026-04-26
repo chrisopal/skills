@@ -1,0 +1,38 @@
+{
+  "template_id": "",
+  "template_name": "",
+  "requirement_confirmed": false,
+  "recommended_template_id": "",
+  "recommended_template_name": "",
+  "requirement_summary": "",
+  "topic": "",
+  "target_audience": "",
+  "purpose": "",
+  "style": "",
+  "page_count": 8,
+  "key_points": [],
+  "must_have_sections": [],
+  "constraints": {
+    "brand_colors": [],
+    "logo_required": false,
+    "language": "zh-CN"
+  },
+  "outline_approved": false,
+  "prompts_approved": false,
+  "master_style": {
+    "style_keywords": [],
+    "color_strategy": "",
+    "layout_principles": [],
+    "forbidden_elements": []
+  },
+  "outline": [],
+  "slides": [],
+  "image_generation": {
+    "enabled": false,
+    "dry_run": false
+  },
+  "output": {
+    "directory": "./artifacts",
+    "pptx_filename": "deck.pptx"
+  }
+}

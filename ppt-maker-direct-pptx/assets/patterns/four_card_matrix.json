@@ -1,0 +1,30 @@
+{
+  "pattern_id": "four_card_matrix",
+  "description": "Four-cell 2x2 matrix where each cell carries a label, headline value, and supporting description.",
+  "slots": [
+    {"name": "cell_1_label", "required": true, "max_chars": 30},
+    {"name": "cell_1_value", "required": true, "max_chars": 16},
+    {"name": "cell_1_desc", "required": true, "max_chars": 100},
+    {"name": "cell_2_label", "required": true, "max_chars": 30},
+    {"name": "cell_2_value", "required": true, "max_chars": 16},
+    {"name": "cell_2_desc", "required": true, "max_chars": 100},
+    {"name": "cell_3_label", "required": true, "max_chars": 30},
+    {"name": "cell_3_value", "required": true, "max_chars": 16},
+    {"name": "cell_3_desc", "required": true, "max_chars": 100},
+    {"name": "cell_4_label", "required": true, "max_chars": 30},
+    {"name": "cell_4_value", "required": true, "max_chars": 16},
+    {"name": "cell_4_desc", "required": true, "max_chars": 100}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.4}
+  },
+  "style_hooks": {
+    "card_fill": "color_strategy.background",
+    "cell_accent": "color_strategy.primary_green",
+    "value_color": "color_strategy.text_primary",
+    "card_radius": "layout_system.module_shapes"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><g><rect x='40' y='140' width='600' height='240' rx='14' fill='#fff' stroke='#A8D86B'/><text x='60' y='180' font-size='16' fill='#6B7280'>{cell_1_label}</text><text x='60' y='250' font-size='52' font-weight='800'>{cell_1_value}</text><text x='60' y='320' font-size='16'>{cell_1_desc}</text></g><g><rect x='660' y='140' width='580' height='240' rx='14' fill='#fff' stroke='#A8D86B'/><text x='680' y='180' font-size='16' fill='#6B7280'>{cell_2_label}</text><text x='680' y='250' font-size='52' font-weight='800'>{cell_2_value}</text><text x='680' y='320' font-size='16'>{cell_2_desc}</text></g><g><rect x='40' y='400' width='600' height='240' rx='14' fill='#fff' stroke='#A8D86B'/><text x='60' y='440' font-size='16' fill='#6B7280'>{cell_3_label}</text><text x='60' y='510' font-size='52' font-weight='800'>{cell_3_value}</text><text x='60' y='580' font-size='16'>{cell_3_desc}</text></g><g><rect x='660' y='400' width='580' height='240' rx='14' fill='#fff' stroke='#A8D86B'/><text x='680' y='440' font-size='16' fill='#6B7280'>{cell_4_label}</text><text x='680' y='510' font-size='52' font-weight='800'>{cell_4_value}</text><text x='680' y='580' font-size='16'>{cell_4_desc}</text></g></svg>",
+  "js_renderer": "slides/renderers/four_card_matrix.js"
+}

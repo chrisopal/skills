@@ -3,6 +3,8 @@
   "template_name": "慧新",
   "language": "zh-CN",
   "status": "confirmed",
+  "source": "preset",
+  "parent_template_id": null,
   "visual_positioning": "正式商务、科技咨询、白底高密度信息表达",
   "deck_voice": "理性、克制、专业、结构化，强调解决方案与管理价值",
   "color_strategy": {

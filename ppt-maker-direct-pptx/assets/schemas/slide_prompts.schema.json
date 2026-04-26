@@ -20,10 +20,28 @@
           "core_message": {"type": "string"},
           "copy_content": {"type": "object"},
           "chart_advice": {"type": "object"},
-          "compiled_prompt": {"type": "string"}
+          "compiled_prompt": {"type": "string"},
+          "intent_status": {"$ref": "#/$defs/page_status"},
+          "pattern_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "layout_mode": {
+            "type": "string",
+            "enum": ["pattern", "custom"],
+            "default": "custom"
+          },
+          "slots": {"type": "object"}
         }
       }
     },
     "quality_checklist": {"type": "object"}
+  },
+  "$defs": {
+    "page_status": {
+      "type": "string",
+      "enum": ["draft", "pending_review", "locked", "needs_rework"],
+      "default": "draft"
+    }
   }
 }

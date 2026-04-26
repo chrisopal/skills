@@ -35,6 +35,11 @@ def main() -> int:
 
     if outline_path.exists():
         outline_payload = load_json(outline_path)
+        if args.approve_outline:
+            for slide in outline_payload.get("slides", []) or []:
+                if slide.get("outline_status") not in ("locked",):
+                    slide["outline_status"] = "locked"
+            write_json(outline_path, outline_payload)
         job["storyline"] = outline_payload.get("storyline", job.get("storyline", ""))
         job["outline"] = outline_payload.get("slides", [])
         if args.approve_outline:
@@ -42,6 +47,11 @@ def main() -> int:
 
     if slide_prompts_path.exists():
         slides_payload = load_json(slide_prompts_path)
+        if args.approve_prompts:
+            for slide in slides_payload.get("slides", []) or []:
+                if slide.get("intent_status") not in ("locked",):
+                    slide["intent_status"] = "locked"
+            write_json(slide_prompts_path, slides_payload)
         job["slides"] = slides_payload.get("slides", [])
         if args.approve_prompts:
             job["prompts_approved"] = True

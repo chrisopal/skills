@@ -1,6 +1,35 @@
+# Provider-neutral LLM config. The skill speaks the OpenAI Chat Completions
+# wire format, so any compatible endpoint works (OpenAI, Azure OpenAI,
+# OpenRouter, Groq, Together, DeepSeek, local vLLM/Ollama, ...).
+#
+# Resolution order (first non-empty wins):
+#   api_key   LLM_API_KEY  →  OPENROUTER_API_KEY
+#   base_url  LLM_BASE_URL →  OPENROUTER_BASE_URL  →  this file's `base_url`
+#   model     LLM_TEXT_MODEL  →  this file's `text_model`
+#
+# See references/byo-llm-providers.md for ready-to-paste configs per provider.
+
+# Optional. When unset, base URL is taken from the env vars above.
+# base_url: "https://api.openai.com/v1"
+
+# Optional hint used for image-generation routing and diagnostics.
+# Valid values: openai | azure | openrouter | groq | together | deepseek
+#               | anthropic | ollama | vllm | openai-compatible
+# When omitted, provider is inferred from base_url.
+# provider: "openrouter"
+
+# Optional image route override:
+#   - images_api : POST /v1/images/generations  (OpenAI / Azure)
+#   - chat       : POST /v1/chat/completions with image content (OpenRouter,
+#                  Anthropic, multimodal-via-chat providers)
+# When omitted, the route is inferred from base_url.
+# image_route: "chat"
+
 text_model: "openai/gpt-5.4-mini"
 pptx_js_model: "openai/gpt-5.4-mini"
 image_model: "google/gemini-3.1-flash-image-preview"
+image_size: "1024x1024"
+
 aspect_ratio: "16:9"
 resolution: "3840x2160"
 default_output_mode: "direct_pptx"

@@ -6,7 +6,7 @@
 
 - [`industrial-ai-architect`](./industrial-ai-architect/README.md)：工业数字化、智能工厂、AI 战略架构、方案蓝图、路线图和业务落地设计。
 - [`ppt-maker-with-image`](./ppt-maker-with-image/README.md)：图片优先的 PPT 生成流程，包含需求确认、大纲、逐页提示词、图片生成和 PPTX 组装。
-- [`ppt-maker-direct-pptx`](./ppt-maker-direct-pptx/README.md)：确认式 PPT 生成流程，输出可编辑 PowerPoint 原生对象，支持 OpenRouter 文本模型、图片资产生成、慧新模板体系和 PptxGenJS 绘制。
+- [`ppt-maker-direct-pptx`](./ppt-maker-direct-pptx/README.md)：七道闸确认式 PPT 生成，输出可编辑 PowerPoint 原生对象。12 个 layout pattern + 5 内置预设 + 自然语言/参考图自定义风格 + 自动 lint + 状态机断点续做，兼容任意 OpenAI 协议 LLM（OpenAI / OpenRouter / Azure / Groq / Together / DeepSeek / vLLM / Ollama / LiteLLM）。
 
 ## 推荐安装方式
 
@@ -54,7 +54,7 @@ git pull
 ## 安全说明
 
 - 不要把 API key 写入本仓库。
-- 需要模型调用的 skill 使用环境变量读取密钥，例如 `OPENROUTER_API_KEY`。
+- 需要模型调用的 skill 使用环境变量读取密钥（`LLM_API_KEY` 或者 legacy `OPENROUTER_API_KEY`）。
 - 提交前建议执行密钥扫描。示例命令里的前缀请按实际供应商替换，避免把真实密钥或完整密钥前缀写入仓库文档：
 
 ```bash

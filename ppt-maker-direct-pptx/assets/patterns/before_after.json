@@ -1,0 +1,27 @@
+{
+  "pattern_id": "before_after",
+  "description": "Before/After contrast: two stacked or side-by-side states with optional delta highlight.",
+  "slots": [
+    {"name": "before_title", "required": true, "max_chars": 24},
+    {"name": "before_point_1", "required": true, "max_chars": 80},
+    {"name": "before_point_2", "required": false, "max_chars": 80},
+    {"name": "before_point_3", "required": false, "max_chars": 80},
+    {"name": "after_title", "required": true, "max_chars": 24},
+    {"name": "after_point_1", "required": true, "max_chars": 80},
+    {"name": "after_point_2", "required": false, "max_chars": 80},
+    {"name": "after_point_3", "required": false, "max_chars": 80},
+    {"name": "delta_callout", "required": false, "max_chars": 80}
+  ],
+  "layout_regions": {
+    "title": {"x": 0.5, "y": 0.4, "w": 12.333, "h": 1.0},
+    "content": {"x": 0.5, "y": 1.6, "w": 12.333, "h": 5.4}
+  },
+  "style_hooks": {
+    "before_fill": "color_strategy.section_background",
+    "after_fill": "color_strategy.background",
+    "after_accent": "color_strategy.primary_green",
+    "delta_color": "color_strategy.secondary_teal"
+  },
+  "wireframe_template": "<svg viewBox='0 0 1280 720'><rect width='1280' height='720' fill='#fff'/><g><rect x='40' y='160' width='560' height='400' rx='14' fill='#F5F7FA' stroke='#D9D9D9'/><text x='60' y='205' font-size='20' fill='#6B7280'>Before</text><text x='60' y='245' font-size='26' font-weight='700'>{before_title}</text><text x='60' y='305' font-size='16'>{before_point_1}</text><text x='60' y='345' font-size='16'>{before_point_2}</text><text x='60' y='385' font-size='16'>{before_point_3}</text></g><g><rect x='680' y='160' width='560' height='400' rx='14' fill='#fff' stroke='#A8D86B'/><text x='700' y='205' font-size='20' fill='#A8D86B'>After</text><text x='700' y='245' font-size='26' font-weight='700'>{after_title}</text><text x='700' y='305' font-size='16'>{after_point_1}</text><text x='700' y='345' font-size='16'>{after_point_2}</text><text x='700' y='385' font-size='16'>{after_point_3}</text></g><rect x='40' y='600' width='1200' height='80' fill='#F5F7FA' stroke='#0F95B6'/><text x='60' y='650' font-size='22' fill='#0F95B6' font-weight='700'>{delta_callout}</text></svg>",
+  "js_renderer": "slides/renderers/before_after.js"
+}

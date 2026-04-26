@@ -31,6 +31,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--manifest", default="", help="Optional image_manifest.json output path")
     parser.add_argument("--dry-run", action="store_true", help="Generate local placeholder PNGs without calling a model")
     parser.add_argument("--skip-update-slide-specs", action="store_true", help="Do not write image_assets back to slide_specs.json")
+    parser.add_argument(
+        "--respect-status",
+        action="store_true",
+        help="Process only placeholders with status in {pending, regenerating}; "
+             "set status=generated on success and status=placeholder + fallback_reason on failure.",
+    )
+    parser.add_argument(
+        "--ids",
+        default="",
+        help="Comma-separated list of placeholder ids to process (overrides status filter).",
+    )
     return parser
 
 
@@ -52,7 +63,29 @@ def clean_filename(value: str) -> str:
     return value or "image"
 
 
-def collect_placeholders(slide_specs: dict[str, Any]) -> list[dict[str, Any]]:
+ACTIONABLE_STATUSES = {"pending", "regenerating"}
+
+
+def collect_placeholders(
+    slide_specs: dict[str, Any],
+    *,
+    respect_status: bool = False,
+    target_ids: list[str] | None = None,
+) -> list[dict[str, Any]]:
+    """Collect placeholders to process.
+
+    Legacy behavior (respect_status=False, target_ids=None): every placeholder
+    with a non-empty prompt is queued for generation, matching the
+    pre-state-machine flow that the existing tests depend on.
+
+    State-machine behavior (respect_status=True): only placeholders whose
+    `status` is missing or in {pending, regenerating} are queued. When
+    target_ids is provided, only matching ids are processed regardless of
+    status (so users can force a regeneration of an already-generated
+    placeholder).
+    """
+
+    target_set = set(target_ids or [])
     placeholders: list[dict[str, Any]] = []
     for slide in slide_specs.get("slides", []):
         page_no = int(slide.get("page_no") or len(placeholders) + 1)
@@ -61,6 +94,13 @@ def collect_placeholders(slide_specs: dict[str, Any]) -> list[dict[str, Any]]:
             if not prompt:
                 continue
             placeholder_id = str(item.get("id") or f"p{page_no}_img{idx}").strip()
+            status = item.get("status")
+            if target_set:
+                if placeholder_id not in target_set:
+                    continue
+            elif respect_status:
+                if status is not None and status not in ACTIONABLE_STATUSES:
+                    continue
             placeholders.append(
                 {
                     "page_no": page_no,
@@ -69,6 +109,7 @@ def collect_placeholders(slide_specs: dict[str, Any]) -> list[dict[str, Any]]:
                     "purpose": item.get("purpose", prompt),
                     "prompt": prompt,
                     "placement": item.get("placement") if isinstance(item.get("placement"), dict) else {},
+                    "_source_item": item,
                 }
             )
     return placeholders
@@ -203,10 +244,14 @@ def generate_assets_for_specs(
     output_dir: Path,
     *,
     dry_run: bool,
+    respect_status: bool = False,
+    target_ids: list[str] | None = None,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     output_dir.mkdir(parents=True, exist_ok=True)
     assets: list[dict[str, Any]] = []
-    for placeholder in collect_placeholders(slide_specs):
+    for placeholder in collect_placeholders(
+        slide_specs, respect_status=respect_status, target_ids=target_ids,
+    ):
         filename = f"slide_{placeholder['page_no']:02d}_{clean_filename(placeholder['placeholder_id'])}.png"
         image_path = output_dir / filename
         fallback_reason = ""
@@ -223,6 +268,18 @@ def generate_assets_for_specs(
                 )
                 print("[WARN] Falling back to local dry-run placeholder PNG for this image.")
                 draw_placeholder_png(image_path, placeholder, master_style)
+        # Mutate the original placeholder dict in slide_specs so status flips persist.
+        source_item = placeholder.pop("_source_item", None)
+        if respect_status and isinstance(source_item, dict):
+            if fallback_reason:
+                source_item["status"] = "placeholder"
+                source_item["fallback_reason"] = fallback_reason
+            elif not dry_run:
+                source_item["status"] = "generated"
+                source_item["generated_path"] = str(image_path)
+                source_item.pop("fallback_reason", None)
+            else:
+                source_item["status"] = "placeholder"
         asset = {**placeholder, "path": str(image_path)}
         if fallback_reason:
             asset["fallback_reason"] = fallback_reason
@@ -243,7 +300,16 @@ def main() -> int:
     output_dir = Path(args.output_dir).expanduser().resolve() if args.output_dir else slide_specs_path.parent / "generated-images"
     manifest_path = Path(args.manifest).expanduser().resolve() if args.manifest else slide_specs_path.parent / "image_manifest.json"
 
-    updated_specs, assets = generate_assets_for_specs(slide_specs, master_style, config, output_dir, dry_run=args.dry_run)
+    target_ids = [s.strip() for s in args.ids.split(",") if s.strip()] if args.ids else None
+    updated_specs, assets = generate_assets_for_specs(
+        slide_specs,
+        master_style,
+        config,
+        output_dir,
+        dry_run=args.dry_run,
+        respect_status=args.respect_status or bool(target_ids),
+        target_ids=target_ids,
+    )
     write_json(manifest_path, {"assets": assets})
     if not args.skip_update_slide_specs:
         write_json(slide_specs_path, updated_specs)

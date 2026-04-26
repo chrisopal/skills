@@ -82,12 +82,22 @@ def normalize_blocks(key_blocks: list[Any]) -> list[dict[str, Any]]:
 
 
 def normalize_placeholders(placeholders: list[Any], page_no: int) -> list[dict[str, Any]]:
+    """Normalize image placeholders, dropping any whose status is 'skipped'.
+
+    A 'skipped' placeholder is the user's explicit "this page does not need
+    an image" signal from gate 6; we therefore neither reserve a region nor
+    pass it through to the renderer, which lets the layout reflow.
+    """
+
     normalized: list[dict[str, Any]] = []
     for idx, item in enumerate(placeholders or [], start=1):
         if not isinstance(item, dict):
             continue
         prompt = str(item.get("prompt") or item.get("purpose") or "").strip()
         if not prompt:
+            continue
+        status = item.get("status")
+        if status == "skipped":
             continue
         normalized.append(
             {
@@ -97,6 +107,7 @@ def normalize_placeholders(placeholders: list[Any], page_no: int) -> list[dict[s
                 "prompt": prompt,
                 "placement": item.get("placement") if isinstance(item.get("placement"), dict) else {},
                 "required": bool(item.get("required", False)),
+                "status": status if status else "placeholder",
             }
         )
     return normalized

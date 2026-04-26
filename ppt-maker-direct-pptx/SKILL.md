@@ -28,6 +28,9 @@ Read [references/conversational-mode.md](./references/conversational-mode.md) wh
 Read [references/prompt-templates.md](./references/prompt-templates.md) when drafting requirement checks, template recommendation, outline prompts, and page-intent prompts.
 Read [references/model-config.md](./references/model-config.md) when choosing or wiring model roles.
 Read [references/template-presets.md](./references/template-presets.md) when the user asks for a named template style such as `慧新`.
+Read [references/v2-flow.md](./references/v2-flow.md) for the seven-gate v2 orchestration (run_ppt_job_v2.py, custom styles, pattern library, automated lint, page state machine).
+Read [references/state-machines.md](./references/state-machines.md) when working with page-level status transitions or image placeholder lifecycle.
+Read [references/lint-rules.md](./references/lint-rules.md) for the catalog of every lint rule, severity, and auto-fix capability.
 
 ## Modes
 

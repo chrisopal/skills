@@ -79,7 +79,31 @@ Show the user the structured intents or a concise review table before rendering.
 Treat this as a hard gate: do not render the PPTX until the user confirms every page's content prompt/page intent.
 If the user edits one page, update that page and re-show the affected prompt before rendering.
 
-## 5. Rendering And Fallback Expectations
+## 5. v2 Optional Gates
+
+When the user opts into the v2 flow (`run_ppt_job_v2.py`), three additional
+gates run between the existing four:
+
+- **gate_3 style preview** (between style and outline): run
+  `render_pattern_catalog.py` against the chosen master_style and ask the
+  user to confirm the deck-wide visual direction (color swap + 12 pattern
+  previews). Don't continue until the user confirms.
+- **gate_6 image plan** (between intent and render): list every page's
+  `image_placeholder.status` histogram. Ask the user which pages should
+  have real images vs. stay as styled placeholders vs. be skipped entirely.
+  Confirm before any costly image generation.
+- **gate_7 pre-render** (right before render): run the full lint pipeline
+  (`run_all_lints.py --gate gate_7`) and show the dashboard
+  (`dashboard.py`). Any `fail` result blocks the gate; surface the
+  dashboard and ask the user whether to fix manually, run
+  `auto_fix_lint.py`, or override.
+
+Style customization is allowed at gate 2: instead of selecting one of the
+five shipped presets, the user can describe a new style ("深蓝紫色赛博朋克
+科技风") or upload a reference image. The orchestrator dispatches to
+`define_style.py {nl|reference|preset}` accordingly.
+
+## 6. Rendering And Fallback Expectations
 
 When rendering:
 

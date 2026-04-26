@@ -28,6 +28,7 @@ Read [references/conversational-mode.md](./references/conversational-mode.md) wh
 Read [references/prompt-templates.md](./references/prompt-templates.md) when drafting requirement checks, template recommendation, outline prompts, and page-intent prompts.
 Read [references/model-config.md](./references/model-config.md) when choosing or wiring model roles.
 Read [references/template-presets.md](./references/template-presets.md) when the user asks for a named template style such as `慧新`.
+Read [references/byo-llm-providers.md](./references/byo-llm-providers.md) when configuring the skill against any OpenAI-compatible endpoint (OpenAI / Azure / OpenRouter / Groq / Together / DeepSeek / vLLM / Ollama / LiteLLM proxy).
 Read [references/v2-flow.md](./references/v2-flow.md) for the seven-gate v2 orchestration (run_ppt_job_v2.py, custom styles, pattern library, automated lint, page state machine).
 Read [references/state-machines.md](./references/state-machines.md) when working with page-level status transitions or image placeholder lifecycle.
 Read [references/lint-rules.md](./references/lint-rules.md) for the catalog of every lint rule, severity, and auto-fix capability.
@@ -62,9 +63,10 @@ If no concrete template is selected, the skill may recommend one, but it must st
 
 Before first live use, remind the user to configure:
 
-- `OPENROUTER_API_KEY`
-- `OPENROUTER_BASE_URL` when not using `https://openrouter.ai/api/v1`
+- `LLM_API_KEY` (or legacy `OPENROUTER_API_KEY`)
+- `LLM_BASE_URL` (or legacy `OPENROUTER_BASE_URL`); examples: `https://api.openai.com/v1`, `https://openrouter.ai/api/v1`, `https://api.groq.com/openai/v1`, `http://localhost:11434/v1`
 - `assets/model_config.yaml` model ids: `text_model`, `pptx_js_model`, and optional `image_model`
+- See [references/byo-llm-providers.md](./references/byo-llm-providers.md) for ready-to-paste configs per provider
 
 Conversational mode must explicitly confirm target customer, style, page count, and key points before generating the outline.
 It must explicitly ask the user to confirm the outline before slide prompts.

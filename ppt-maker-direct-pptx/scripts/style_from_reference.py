@@ -135,15 +135,36 @@ def build_master_style(
 
 
 def _default_vision_caller_from_env() -> Callable[[bytes, str], Any]:
+    """OpenAI-compatible vision caller. Resolves provider config in order:
+        api_key   LLM_API_KEY  →  OPENROUTER_API_KEY
+        base_url  LLM_BASE_URL →  OPENROUTER_BASE_URL
+        model     LLM_VISION_MODEL  →  OPENROUTER_VISION_MODEL  →  LLM_TEXT_MODEL
+    """
+
     import httpx  # local import to keep tests light
 
-    api_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+    api_key = (os.environ.get("LLM_API_KEY") or os.environ.get("OPENROUTER_API_KEY") or "").strip()
     if not api_key:
         raise ReferenceStyleError(
-            "OPENROUTER_API_KEY is required for live reference style extraction."
+            "LLM API key is required. Set LLM_API_KEY (or legacy OPENROUTER_API_KEY)."
         )
-    base_url = os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-    model = os.environ.get("OPENROUTER_VISION_MODEL", "anthropic/claude-3.5-sonnet")
+    base_url = (
+        os.environ.get("LLM_BASE_URL") or os.environ.get("OPENROUTER_BASE_URL") or ""
+    ).strip()
+    if not base_url:
+        raise ReferenceStyleError(
+            "LLM base URL is required. Set LLM_BASE_URL (or legacy OPENROUTER_BASE_URL)."
+        )
+    model = (
+        os.environ.get("LLM_VISION_MODEL")
+        or os.environ.get("OPENROUTER_VISION_MODEL")
+        or os.environ.get("LLM_TEXT_MODEL")
+        or ""
+    ).strip()
+    if not model:
+        raise ReferenceStyleError(
+            "LLM vision model is required. Set LLM_VISION_MODEL (or LLM_TEXT_MODEL)."
+        )
     client = httpx.Client(
         base_url=base_url,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},

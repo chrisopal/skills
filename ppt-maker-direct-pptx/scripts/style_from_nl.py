@@ -107,17 +107,41 @@ def generate_style_from_nl(
 
 
 def _default_caller_from_env() -> Callable[[str], Any]:
-    """Build the production OpenRouter-backed caller. Imported lazily."""
+    """Build a production-grade OpenAI-compatible caller.
+
+    Reads any provider config in this order:
+        api_key   LLM_API_KEY  →  OPENROUTER_API_KEY
+        base_url  LLM_BASE_URL →  OPENROUTER_BASE_URL
+        model     LLM_TEXT_MODEL  →  OPENROUTER_TEXT_MODEL
+    No hardcoded base URL or model — explicit config is required.
+    """
 
     import httpx
 
-    api_key = os.environ.get("OPENROUTER_API_KEY", "").strip()
+    api_key = (os.environ.get("LLM_API_KEY") or os.environ.get("OPENROUTER_API_KEY") or "").strip()
     if not api_key:
         raise StyleGenerationError(
-            "OPENROUTER_API_KEY is required for live NL style generation."
+            "LLM API key is required for live NL style generation. "
+            "Set LLM_API_KEY (or legacy OPENROUTER_API_KEY)."
         )
-    base_url = os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-    model = os.environ.get("OPENROUTER_TEXT_MODEL", "anthropic/claude-3.5-sonnet")
+    base_url = (
+        os.environ.get("LLM_BASE_URL") or os.environ.get("OPENROUTER_BASE_URL") or ""
+    ).strip()
+    if not base_url:
+        raise StyleGenerationError(
+            "LLM base URL is required. Set LLM_BASE_URL (or legacy OPENROUTER_BASE_URL). "
+            "Examples: https://api.openai.com/v1, https://openrouter.ai/api/v1, "
+            "https://api.groq.com/openai/v1, http://localhost:11434/v1."
+        )
+    model = (
+        os.environ.get("LLM_TEXT_MODEL")
+        or os.environ.get("OPENROUTER_TEXT_MODEL")
+        or ""
+    ).strip()
+    if not model:
+        raise StyleGenerationError(
+            "LLM text model is required. Set LLM_TEXT_MODEL (or model_config.yaml text_model)."
+        )
     client = httpx.Client(
         base_url=base_url,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},

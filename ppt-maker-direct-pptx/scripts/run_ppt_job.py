@@ -17,6 +17,19 @@ from ppt_renderer import build_slide_specs, render_ppt_from_specs
 from validate_job import find_missing_required_fields, has_confirmed_template, validate_artifacts
 
 
+def _resolve_api_key() -> str:
+    return (os.getenv("LLM_API_KEY") or os.getenv("OPENROUTER_API_KEY") or "").strip()
+
+
+def _resolve_base_url(config: dict) -> str:
+    return (
+        os.getenv("LLM_BASE_URL")
+        or os.getenv("OPENROUTER_BASE_URL")
+        or (config.get("base_url") if isinstance(config, dict) else None)
+        or ""
+    ).strip()
+
+
 LEGACY_TEMPLATE_VARIANT_BUNDLES = {
     "huixin": {
         "aliases": ["慧新"],
@@ -182,11 +195,18 @@ def validate_runtime_config(
         issues.append("model_config.yaml missing pptx_js_model or text_model.")
     if require_image_model and not str(config.get("image_model") or config.get("pptx_image_model") or "").strip():
         issues.append("model_config.yaml missing image_model for live image generation.")
-    if require_live_models and not os.getenv("OPENROUTER_API_KEY", "").strip():
+    if require_live_models and not _resolve_api_key():
         issues.append(
-            "OPENROUTER_API_KEY is required for live model calls. "
-            "Configure OPENROUTER_BASE_URL if your provider URL is not https://openrouter.ai/api/v1, "
-            "and verify model ids in model_config.yaml. Use --dry-run for local placeholder output."
+            "LLM API key is required for live model calls. "
+            "Set LLM_API_KEY (or legacy OPENROUTER_API_KEY) in the environment. "
+            "Use --dry-run for local placeholder output."
+        )
+    if require_live_models and not _resolve_base_url(config):
+        issues.append(
+            "LLM base URL is required for live model calls. "
+            "Set LLM_BASE_URL, legacy OPENROUTER_BASE_URL, or `base_url` in model_config.yaml. "
+            "Examples: https://api.openai.com/v1 (OpenAI), https://openrouter.ai/api/v1 (OpenRouter), "
+            "https://api.groq.com/openai/v1 (Groq), http://localhost:11434/v1 (Ollama)."
         )
     if require_node and shutil.which("node") is None:
         issues.append("node is required to validate and compile PptxGenJS slide modules.")
@@ -292,15 +312,31 @@ def load_prompt_template(name: str) -> str:
 
 
 def openrouter_client(config: dict[str, Any]) -> httpx.Client | None:
-    api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+    """Build an OpenAI-compatible HTTP client.
+
+    Despite the legacy name, this works against any OpenAI-compatible
+    /chat/completions endpoint. Resolution order:
+        api_key   LLM_API_KEY  →  OPENROUTER_API_KEY
+        base_url  LLM_BASE_URL →  OPENROUTER_BASE_URL  →  config["base_url"]
+
+    Returns None when no api_key or base_url is configured.
+    """
+
+    api_key = _resolve_api_key()
     if not api_key:
         return None
-    base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+    base_url = _resolve_base_url(config)
+    if not base_url:
+        return None
     return httpx.Client(
         base_url=base_url,
         headers=build_openrouter_headers(api_key),
         timeout=httpx.Timeout(180.0, connect=20.0),
     )
+
+
+# Provider-neutral alias; new code should use llm_client.
+llm_client = openrouter_client
 
 
 def normalize_selected_template(job: dict[str, Any]) -> dict[str, Any] | None:

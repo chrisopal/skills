@@ -188,32 +188,95 @@ def extract_image_url(payload: dict[str, Any]) -> str:
     raise ValueError("No image URL found in model response")
 
 
+def _detect_image_route(base_url: str, config: dict[str, Any]) -> str:
+    """Pick the image-generation API route. Explicit `image_route` in config
+    wins; otherwise infer from base_url (OpenAI/Azure → /v1/images/generations,
+    everything else → /chat/completions with image-in-message)."""
+
+    explicit = (config.get("image_route") or "").strip().lower()
+    if explicit in {"images_api", "chat"}:
+        return explicit
+    haystack = (base_url or "").lower()
+    if "openrouter.ai" in haystack:
+        return "chat"
+    if "openai.com" in haystack or "azure" in haystack:
+        return "images_api"
+    return "chat"
+
+
+def _generate_via_chat(client: httpx.Client, model: str, prompt: str, path: Path) -> None:
+    response = client.post(
+        "/chat/completions",
+        json={
+            "model": model,
+            "messages": [{"role": "user", "content": prompt}],
+            "temperature": 0.2,
+        },
+    )
+    response.raise_for_status()
+    image_url = extract_image_url(response.json())
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if image_url.startswith("data:image/"):
+        path.write_bytes(decode_data_uri(image_url))
+    else:
+        image_response = httpx.get(image_url, timeout=120.0)
+        image_response.raise_for_status()
+        path.write_bytes(image_response.content)
+
+
+def _generate_via_images_api(client: httpx.Client, model: str, prompt: str, path: Path, *, size: str) -> None:
+    response = client.post(
+        "/images/generations",
+        json={
+            "model": model,
+            "prompt": prompt,
+            "size": size,
+            "n": 1,
+            "response_format": "b64_json",
+        },
+    )
+    response.raise_for_status()
+    payload = response.json()
+    data = (payload.get("data") or [{}])[0]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if data.get("b64_json"):
+        path.write_bytes(base64.b64decode(data["b64_json"]))
+    elif data.get("url"):
+        image_response = httpx.get(data["url"], timeout=120.0)
+        image_response.raise_for_status()
+        path.write_bytes(image_response.content)
+    else:
+        raise ValueError("No image data in /images/generations response")
+
+
 def generate_model_image(path: Path, prompt: str, config: dict[str, Any]) -> None:
-    api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
+    api_key = (os.getenv("LLM_API_KEY") or os.getenv("OPENROUTER_API_KEY") or "").strip()
     if not api_key:
-        raise RuntimeError("OPENROUTER_API_KEY is not configured")
-    base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+        raise RuntimeError(
+            "LLM API key is required for live image generation. "
+            "Set LLM_API_KEY (or legacy OPENROUTER_API_KEY)."
+        )
+    base_url = (
+        os.getenv("LLM_BASE_URL")
+        or os.getenv("OPENROUTER_BASE_URL")
+        or (config.get("base_url") if isinstance(config, dict) else None)
+        or ""
+    ).strip()
+    if not base_url:
+        raise RuntimeError(
+            "LLM base URL is required. Set LLM_BASE_URL (or legacy OPENROUTER_BASE_URL), "
+            "or add `base_url` to model_config.yaml."
+        )
     model = config.get("image_model") or config.get("pptx_image_model")
     if not model:
         raise RuntimeError("Configure image_model or pptx_image_model in model_config.yaml")
+    route = _detect_image_route(base_url, config)
+    size = config.get("image_size", "1024x1024")
     with httpx.Client(base_url=base_url, headers=openrouter_headers(api_key), timeout=httpx.Timeout(180.0, connect=20.0)) as client:
-        response = client.post(
-            "/chat/completions",
-            json={
-                "model": model,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.2,
-            },
-        )
-        response.raise_for_status()
-        image_url = extract_image_url(response.json())
-        path.parent.mkdir(parents=True, exist_ok=True)
-        if image_url.startswith("data:image/"):
-            path.write_bytes(decode_data_uri(image_url))
+        if route == "images_api":
+            _generate_via_images_api(client, model, prompt, path, size=size)
         else:
-            image_response = httpx.get(image_url, timeout=120.0)
-            image_response.raise_for_status()
-            path.write_bytes(image_response.content)
+            _generate_via_chat(client, model, prompt, path)
 
 
 def apply_manifest_to_specs(slide_specs: dict[str, Any], assets: list[dict[str, Any]]) -> dict[str, Any]:

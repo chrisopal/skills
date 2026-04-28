@@ -107,6 +107,7 @@ Constraints:
 - keep prompts specific to layout, hierarchy, and modules
 - avoid random page furniture and microcopy
 - optimize for full-slide image rendering
+- image_prompt must contain page-specific visible content and layout intent only; do not restate font-size ranges, spacing values, margin values, radius values, stroke values, shadow values, or caption-size labels.
 ```
 
 ## Image Rendering Wrapper Prompt
@@ -119,6 +120,9 @@ The output must be a 16:9 slide image at {resolution}.
 Render the full slide itself, including all intended text and visual elements.
 Do not generate a background only.
 Do not add page numbers, watermarks, corner labels, or extra decorative microcopy unless explicitly requested.
+Visible slide copy must only include presentation content.
+Treat all style measurements, font sizes, spacing values, radius values, stroke values, and shadow values as invisible design instructions.
+Never render measurement labels or design annotations such as "40-56px", "20-28px", "56-72px", "Caption: 12-14px", "R=14px", "stroke=1pt", red boxes, rulers, alignment guides, wireframes, or prompt/schema text.
 
 Slide specification:
 {image_prompt}

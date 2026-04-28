@@ -92,8 +92,14 @@ Requirement:
 Master style:
 {master_style_json}
 
+Page intent:
+{page_intent_json}
+
 Outline:
 {outline_json}
+
+Style header:
+{style_header}
 
 Return for each slide:
 - page_no

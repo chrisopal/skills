@@ -2,23 +2,27 @@
 from __future__ import annotations
 
 import argparse
-import base64
-import json
-import os
-from io import BytesIO
 from pathlib import Path
 from typing import Any
 
-import httpx
-import yaml
-from PIL import Image, ImageDraw
-
-from assemble_pptx import assemble_pptx
+from llm.config import load_model_config
+from pipeline.common import (
+    ensure_huixin_assets,
+    load_json,
+    resolve_output_dir,
+    skill_root,
+    write_json,
+)
+from pipeline.manifest import STAGE_ARTIFACTS, load_manifest, write_manifest
+from pipeline.stage_assemble import run_stage as run_assemble_stage
+from pipeline.stage_master_style import run_stage as run_master_style_stage
+from pipeline.stage_outline import run_stage as run_outline_stage
+from pipeline.stage_page_intent import run_stage as run_page_intent_stage
+from pipeline.stage_render import RENDER_METADATA_FILENAME, run_stage as run_render_stage
+from pipeline.stage_slide_prompts import run_stage as run_slide_prompts_stage
+from pipeline._stage_utils import build_provider_capabilities
 from validate_job import validate_job_data
-
-
-def skill_root() -> Path:
-    return Path(__file__).resolve().parents[1]
+from style.header import build_style_header
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -54,285 +58,44 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def load_json(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def write_json(path: Path, data: dict[str, Any] | list[Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-
-
-def load_yaml(path: Path) -> dict[str, Any]:
-    return yaml.safe_load(path.read_text(encoding="utf-8"))
-
-
-def load_asset_json(name: str) -> dict[str, Any]:
-    return load_json(skill_root() / "assets" / name)
-
-
-def resolve_output_dir(job: dict[str, Any], cli_output_dir: str, job_path: Path) -> Path:
-    if cli_output_dir:
-        return Path(cli_output_dir).expanduser().resolve()
-    output_dir = job.get("output", {}).get("directory")
-    if output_dir:
-        return (job_path.parent / output_dir).resolve()
-    return (job_path.parent / "artifacts").resolve()
-
-
-def build_openrouter_headers(api_key: str) -> dict[str, str]:
-    return {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-    }
-
-
-def call_text_model(
-    client: httpx.Client,
-    model: str,
-    prompt: str,
-    *,
-    temperature: float = 0.3,
-) -> dict[str, Any]:
-    response = client.post(
-        "/chat/completions",
-        json={
-            "model": model,
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": temperature,
-            "response_format": {"type": "json_object"},
-        },
-    )
-    response.raise_for_status()
-    content = response.json()["choices"][0]["message"]["content"]
-    return json.loads(content)
-
-
-def call_image_model(
-    client: httpx.Client,
-    model: str,
-    prompt: str,
-    resolution: str,
-) -> bytes:
-    response = client.post(
-        "/chat/completions",
-        json={
-            "model": model,
-            "messages": [{"role": "user", "content": prompt}],
-            "modalities": ["image", "text"],
-            "temperature": 0.1,
-            "image_config": {"aspect_ratio": "16:9", "image_size": "4K"},
-        },
-    )
-    response.raise_for_status()
-    message = response.json()["choices"][0]["message"]
-    images = message.get("images") or []
-    for image in images:
-        image_url = image.get("image_url", {}).get("url", "")
-        if image_url.startswith("data:"):
-            return base64.b64decode(image_url.split(",", 1)[1])
-        if image_url.startswith("http"):
-            image_response = httpx.get(image_url, timeout=60.0)
-            image_response.raise_for_status()
-            return image_response.content
-    raise ValueError("No image data returned from image model")
-
-
-def load_prompt_template(name: str) -> str:
-    content = (skill_root() / "references" / "prompt-templates.md").read_text(encoding="utf-8")
-    anchor = f"## {name}"
-    start = content.index(anchor)
-    next_idx = content.find("\n## ", start + 1)
-    block = content[start: next_idx if next_idx != -1 else len(content)]
-    first = block.find("```text")
-    last = block.rfind("```")
-    if first == -1 or last == -1 or last <= first:
-        raise ValueError(f"Prompt template not found: {name}")
-    return block[first + len("```text"):last].strip()
-
-
-def ensure_huixin_assets(job: dict[str, Any]) -> None:
-    template_id = (job.get("template_id") or "").strip().lower()
-    template_name = (job.get("template_name") or "").strip()
-    if template_id == "huixin" or template_name == "慧新":
-        if not job.get("master_style"):
-            job["master_style"] = load_asset_json("huixin_master_style_brief.json")
-        if not job.get("style"):
-            job["style"] = "慧新"
-
-
-def build_requirement_summary(job: dict[str, Any]) -> dict[str, Any]:
-    return {
-        "template_id": job.get("template_id"),
-        "template_name": job.get("template_name"),
-        "topic": job.get("topic"),
-        "target_audience": job.get("target_audience"),
-        "purpose": job.get("purpose"),
-        "style": job.get("style"),
-        "page_count": job.get("page_count"),
-        "key_points": job.get("key_points", []),
-        "must_have_sections": job.get("must_have_sections", []),
-        "constraints": job.get("constraints", {}),
-    }
-
-
-def generate_master_style(
-    job: dict[str, Any],
-    client: httpx.Client | None,
-    config: dict[str, Any],
-    *,
-    dry_run: bool,
-) -> dict[str, Any]:
-    if job.get("master_style"):
-        return job["master_style"]
-    if dry_run:
-        return {
-            "visual_positioning": "正式、专业、结构化",
-            "deck_voice": "理性、克制、信息清晰",
-            "color_strategy": {"background": "#FFFFFF"},
-            "typography": {"title_font": "Microsoft YaHei", "body_font": "Microsoft YaHei"},
-            "title_hierarchy_rules": ["每页一个主标题"],
-            "layout_system": {"grid": "12-column"},
-            "module_layout_patterns": ["双栏对照", "四卡片矩阵"],
-            "chart_rules": ["扁平化 2D 图表"],
-            "icon_rules": ["统一线性图标"],
-            "forbidden_elements": ["3D图表", "随机角标"],
-            "prompt_block": "语言：中文，白底，结构化布局。"
-        }
-    if client is None:
-        raise RuntimeError("OpenRouter client is not configured")
-    template_preset = {}
-    if (job.get("template_id") or "").strip().lower() == "huixin" or job.get("template_name") == "慧新":
-        template_preset = load_asset_json("huixin_template.json")
-    prompt = load_prompt_template("Master Style Brief Generation Prompt").format(
-        requirement_json=json.dumps(build_requirement_summary(job), ensure_ascii=False, indent=2),
-        template_preset_json=json.dumps(template_preset, ensure_ascii=False, indent=2),
-    )
-    return call_text_model(client, config["text_model"], prompt)
-
-
-def generate_outline(
-    job: dict[str, Any],
-    master_style: dict[str, Any],
-    client: httpx.Client | None,
-    config: dict[str, Any],
-    *,
-    dry_run: bool,
-) -> dict[str, Any]:
-    if job.get("outline"):
-        return {"storyline": job.get("storyline", ""), "slides": job["outline"]}
-    if dry_run:
-        slides = []
-        for idx in range(1, int(job["page_count"]) + 1):
-            slides.append(
-                {
-                    "page_no": idx,
-                    "title": f"{job['topic']} - 第{idx}页",
-                    "subtitle": "",
-                    "purpose": "支撑整体叙事",
-                    "layout_type": "content",
-                    "key_blocks": job.get("key_points", [])[:3] or [f"关键模块{idx}A", f"关键模块{idx}B"],
-                }
-            )
-        return {"storyline": f"围绕{job['topic']}逐步展开", "slides": slides}
-    if client is None:
-        raise RuntimeError("OpenRouter client is not configured")
-    prompt = load_prompt_template("Outline Generation Prompt").format(
-        requirement_json=json.dumps(build_requirement_summary(job), ensure_ascii=False, indent=2),
-        page_count=job["page_count"],
-    )
-    return call_text_model(client, config["text_model"], prompt)
-
-
-def generate_slide_prompts(
-    job: dict[str, Any],
-    master_style: dict[str, Any],
-    outline_payload: dict[str, Any],
-    client: httpx.Client | None,
-    config: dict[str, Any],
-    *,
-    dry_run: bool,
-) -> dict[str, Any]:
-    if job.get("slides"):
-        return {"slides": job["slides"]}
-    if dry_run:
-        slides = []
-        for slide in outline_payload["slides"]:
-            slides.append(
-                {
-                    "page_no": slide["page_no"],
-                    "title": slide["title"],
-                    "slide_role": slide.get("purpose", ""),
-                    "key_blocks": slide.get("key_blocks", []),
-                    "image_prompt": f"中文PPT页面，标题为《{slide['title']}》，白底，结构清晰，包含{','.join(slide.get('key_blocks', []))}。",
-                }
-            )
-        return {"slides": slides}
-    if client is None:
-        raise RuntimeError("OpenRouter client is not configured")
-    prompt = load_prompt_template("Per-Slide Prompt Generation Prompt").format(
-        requirement_json=json.dumps(build_requirement_summary(job), ensure_ascii=False, indent=2),
-        master_style_json=json.dumps(master_style, ensure_ascii=False, indent=2),
-        outline_json=json.dumps(outline_payload, ensure_ascii=False, indent=2),
-    )
-    return call_text_model(client, config["text_model"], prompt)
-
-
-def create_placeholder_image(title: str, page_no: int, output_path: Path) -> None:
-    image = Image.new("RGB", (1920, 1080), "#FFFFFF")
-    draw = ImageDraw.Draw(image)
-    draw.rectangle((80, 80, 1840, 1000), outline="#0F95B6", width=8)
-    draw.rounded_rectangle((120, 160, 1800, 300), radius=28, fill="#F5F7FA", outline="#E5E7EB")
-    draw.text((160, 185), f"{page_no}. {title}", fill="#1E1E1E")
-    draw.rounded_rectangle((120, 360, 860, 900), radius=28, fill="#F5F7FA", outline="#A8D86B")
-    draw.rounded_rectangle((940, 360, 1800, 900), radius=28, fill="#F5F7FA", outline="#0F95B6")
-    image.save(output_path)
-
-
-def render_images(
-    slide_prompts: dict[str, Any],
-    client: httpx.Client | None,
-    config: dict[str, Any],
-    output_dir: Path,
-    *,
-    dry_run: bool,
-) -> list[Path]:
-    image_dir = output_dir / "images"
-    image_dir.mkdir(parents=True, exist_ok=True)
-    image_paths: list[Path] = []
-    for slide in slide_prompts["slides"]:
-        output_path = image_dir / f"slide_{int(slide['page_no']):02d}.png"
-        if dry_run:
-            create_placeholder_image(slide["title"], int(slide["page_no"]), output_path)
-        else:
-            if client is None:
-                raise RuntimeError("OpenRouter client is not configured")
-            prompt = load_prompt_template("Image Rendering Wrapper Prompt").format(
-                resolution=config.get("resolution", "3840x2160"),
-                image_prompt=slide["image_prompt"],
-            )
-            image_bytes = call_image_model(client, config["image_model"], prompt, config.get("resolution", "3840x2160"))
-            output_path.write_bytes(image_bytes)
-        image_paths.append(output_path)
-    return image_paths
-
-
-def persist_stage(output_dir: Path, name: str, data: dict[str, Any]) -> Path:
+def persist_stage(output_dir: Path, name: str, data: Any) -> Path:
     path = output_dir / name
     write_json(path, data)
     return path
 
 
-def openrouter_client(config: dict[str, Any]) -> httpx.Client | None:
-    api_key = os.getenv("OPENROUTER_API_KEY", "").strip()
-    if not api_key:
-        return None
-    base_url = os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
-    return httpx.Client(
-        base_url=base_url,
-        headers=build_openrouter_headers(api_key),
-        timeout=httpx.Timeout(180.0, connect=20.0),
-    )
+def update_manifest(
+    manifest: dict[str, object],
+    *,
+    stage_name: str,
+    artifact: str,
+    status: str = "completed",
+) -> None:
+    stages = manifest.setdefault("stages", {})
+    if not isinstance(stages, dict):
+        stages = {}
+        manifest["stages"] = stages
+    payload = {"status": status, "artifact": artifact}
+    stages[stage_name] = payload
+
+
+def write_status_manifest(output_dir: Path, manifest: dict[str, object], job: dict[str, Any]) -> None:
+    pptx_name = job.get("output", {}).get("pptx_filename", "deck.pptx")
+    manifest["artifacts"] = {
+        "master_style": (output_dir / STAGE_ARTIFACTS["master_style"]).exists(),
+        "outline": (output_dir / STAGE_ARTIFACTS["outline"]).exists(),
+        "page_intent": (output_dir / STAGE_ARTIFACTS["page_intent"]).exists(),
+        "slide_prompts": (output_dir / STAGE_ARTIFACTS["slide_prompts"]).exists(),
+        "images": len(sorted((output_dir / STAGE_ARTIFACTS["render"]).glob("slide_*.png"))),
+        "pptx": (output_dir / pptx_name).exists(),
+    }
+    write_manifest(output_dir, manifest)
+
+
+def maybe_attach_render_metadata(output_dir: Path, manifest: dict[str, object]) -> None:
+    metadata_path = output_dir / RENDER_METADATA_FILENAME
+    if metadata_path.exists():
+        manifest["render_metadata"] = load_json(metadata_path)
 
 
 def main() -> int:
@@ -341,7 +104,7 @@ def main() -> int:
 
     job_path = Path(args.job).expanduser().resolve()
     job = load_json(job_path)
-    config = load_yaml(Path(args.config).expanduser().resolve())
+    model_config = load_model_config(Path(args.config).expanduser().resolve())
 
     missing = validate_job_data(job)
     if missing:
@@ -353,35 +116,88 @@ def main() -> int:
     ensure_huixin_assets(job)
     output_dir = resolve_output_dir(job, args.output_dir, job_path)
     output_dir.mkdir(parents=True, exist_ok=True)
-    client = None if args.dry_run else openrouter_client(config)
+    manifest = load_manifest(output_dir)
+    manifest.update(
+        {
+            "artifact_names": dict(STAGE_ARTIFACTS),
+            "job_path": str(job_path),
+            "output_dir": str(output_dir),
+            "dry_run": args.dry_run,
+            "provider_capabilities": build_provider_capabilities(model_config),
+            "text_provider": model_config.text.provider,
+            "text_model": model_config.text.model,
+            "image_provider": model_config.image.provider,
+            "image_model": model_config.image.model,
+            "current_stage": "master_style",
+        }
+    )
+    write_status_manifest(output_dir, manifest, job)
 
-    try:
-        master_style = generate_master_style(job, client, config, dry_run=args.dry_run)
-        persist_stage(output_dir, "master_style.json", master_style)
+    master_style = run_master_style_stage(job, model_config, dry_run=args.dry_run)
+    persist_stage(output_dir, STAGE_ARTIFACTS["master_style"], master_style)
+    update_manifest(manifest, stage_name="master_style", artifact=STAGE_ARTIFACTS["master_style"])
+    manifest["current_stage"] = "outline"
+    write_status_manifest(output_dir, manifest, job)
 
-        outline_payload = generate_outline(job, master_style, client, config, dry_run=args.dry_run)
-        persist_stage(output_dir, "outline.json", outline_payload)
-        if not (args.auto_approve_outline or job.get("outline_approved")):
-            print(f"[STOP] 已生成大纲：{output_dir / 'outline.json'}")
-            print("请确认并修改后，将 job.json 中的 outline_approved 设为 true，或使用 --auto-approve-outline 继续。")
-            return 0
-
-        slide_prompts = generate_slide_prompts(job, master_style, outline_payload, client, config, dry_run=args.dry_run)
-        persist_stage(output_dir, "slide_prompts.json", slide_prompts)
-        if not (args.auto_approve_prompts or job.get("prompts_approved")):
-            print(f"[STOP] 已生成逐页提示词：{output_dir / 'slide_prompts.json'}")
-            print("请确认并修改后，将 job.json 中的 prompts_approved 设为 true，或使用 --auto-approve-prompts 继续。")
-            return 0
-
-        image_paths = render_images(slide_prompts, client, config, output_dir, dry_run=args.dry_run)
-        pptx_name = job.get("output", {}).get("pptx_filename", "deck.pptx")
-        pptx_path = output_dir / pptx_name
-        assemble_pptx(image_paths, pptx_path)
-        print(f"[OK] PPTX 已生成：{pptx_path}")
+    outline_payload = run_outline_stage(job, model_config, dry_run=args.dry_run)
+    persist_stage(output_dir, STAGE_ARTIFACTS["outline"], outline_payload)
+    update_manifest(manifest, stage_name="outline", artifact=STAGE_ARTIFACTS["outline"])
+    if not (args.auto_approve_outline or job.get("outline_approved")):
+        manifest["current_stage"] = "outline_review"
+        write_status_manifest(output_dir, manifest, job)
+        print(f"[STOP] 已生成大纲：{output_dir / STAGE_ARTIFACTS['outline']}")
+        print("请确认并修改后，将 job.json 中的 outline_approved 设为 true，或使用 --auto-approve-outline 继续。")
         return 0
-    finally:
-        if client is not None:
-            client.close()
+
+    manifest["current_stage"] = "page_intent"
+    write_status_manifest(output_dir, manifest, job)
+    page_intent_payload = run_page_intent_stage(
+        job,
+        model_config,
+        master_style,
+        outline_payload,
+        dry_run=args.dry_run,
+    )
+    persist_stage(output_dir, STAGE_ARTIFACTS["page_intent"], page_intent_payload)
+    update_manifest(manifest, stage_name="page_intent", artifact=STAGE_ARTIFACTS["page_intent"])
+    style_header = build_style_header(master_style, page_intent_payload)
+
+    manifest["current_stage"] = "slide_prompts"
+    write_status_manifest(output_dir, manifest, job)
+    slide_prompts = run_slide_prompts_stage(
+        job,
+        model_config,
+        master_style,
+        outline_payload,
+        style_header=style_header,
+        page_intent=page_intent_payload,
+        dry_run=args.dry_run,
+    )
+    persist_stage(output_dir, STAGE_ARTIFACTS["slide_prompts"], slide_prompts)
+    update_manifest(manifest, stage_name="slide_prompts", artifact=STAGE_ARTIFACTS["slide_prompts"])
+    if not (args.auto_approve_prompts or job.get("prompts_approved")):
+        manifest["current_stage"] = "slide_prompts_review"
+        write_status_manifest(output_dir, manifest, job)
+        print(f"[STOP] 已生成逐页提示词：{output_dir / STAGE_ARTIFACTS['slide_prompts']}")
+        print("请确认并修改后，将 job.json 中的 prompts_approved 设为 true，或使用 --auto-approve-prompts 继续。")
+        return 0
+
+    manifest["current_stage"] = "render"
+    write_status_manifest(output_dir, manifest, job)
+    image_paths = run_render_stage(job, model_config, slide_prompts, output_dir, dry_run=args.dry_run)
+    update_manifest(manifest, stage_name="render", artifact=STAGE_ARTIFACTS["render"])
+    manifest["rendered_images"] = len(image_paths)
+    maybe_attach_render_metadata(output_dir, manifest)
+    manifest["current_stage"] = "assemble"
+    write_status_manifest(output_dir, manifest, job)
+
+    pptx_name = job.get("output", {}).get("pptx_filename", "deck.pptx")
+    pptx_path = run_assemble_stage(image_paths, output_dir, pptx_name=pptx_name)
+    update_manifest(manifest, stage_name="assemble", artifact=pptx_name)
+    manifest["current_stage"] = "completed"
+    write_status_manifest(output_dir, manifest, job)
+    print(f"[OK] PPTX 已生成：{pptx_path}")
+    return 0
 
 
 if __name__ == "__main__":

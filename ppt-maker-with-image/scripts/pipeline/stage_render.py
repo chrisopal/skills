@@ -1,14 +1,26 @@
 from __future__ import annotations
 
+from json import dumps
 from pathlib import Path
 from typing import Any
 
 from llm.config import ModelConfig
 from llm.image import ImageRenderRequest, build_image_provider
 from llm.image.base import ReferenceImage
+from llm.image.gemini import GeminiImageProvider
+from llm.image.openai import OpenAIImageProvider
+from llm.image.openrouter import OpenRouterImageProvider
 from PIL import Image, ImageDraw
 
 from .common import load_prompt_template
+
+
+RENDER_METADATA_FILENAME = "render_metadata.json"
+_REFERENCE_IMAGE_SUPPORT_BY_PROVIDER = {
+    "gemini": GeminiImageProvider.supports_reference_images,
+    "openai": OpenAIImageProvider.supports_reference_images,
+    "openrouter": OpenRouterImageProvider.supports_reference_images,
+}
 
 
 def create_placeholder_image(title: str, page_no: int, output_path: Path) -> None:
@@ -41,9 +53,37 @@ def _use_first_slide_reference(job: dict[str, Any]) -> bool:
     )
 
 
+def _reference_source(job: dict[str, Any]) -> Any:
+    return _consistency_config(job).get("reference_source")
+
+
 def _seed(job: dict[str, Any]) -> int | None:
     value = _consistency_config(job).get("seed")
     return value if isinstance(value, int) else None
+
+
+def _provider_supports_reference_images(provider: Any, provider_name: str) -> bool:
+    if provider is not None:
+        return bool(getattr(provider, "supports_reference_images", False))
+    return bool(_REFERENCE_IMAGE_SUPPORT_BY_PROVIDER.get(provider_name.strip().lower(), False))
+
+
+def _write_render_metadata(
+    output_dir: Path,
+    *,
+    use_reference_image: bool,
+    provider_supports_reference_images: bool,
+    reference_source: Any,
+    fallback_reason: str | None,
+) -> None:
+    payload = {
+        "use_reference_image": use_reference_image,
+        "provider_supports_reference_images": provider_supports_reference_images,
+        "reference_source": reference_source,
+        "fallback_reason": fallback_reason,
+    }
+    path = output_dir / RENDER_METADATA_FILENAME
+    path.write_text(dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def run_stage(
@@ -58,10 +98,16 @@ def run_stage(
     image_dir.mkdir(parents=True, exist_ok=True)
     image_paths: list[Path] = []
     use_reference = _use_first_slide_reference(job)
+    reference_source = _reference_source(job)
     seed = _seed(job)
     first_slide_bytes: bytes | None = None
 
     provider = None if dry_run else build_image_provider(config, provider_name=config.image.provider)
+    provider_supports_reference_images = _provider_supports_reference_images(provider, config.image.provider)
+    fallback_reason = None
+    if use_reference and not provider_supports_reference_images:
+        fallback_reason = "provider_does_not_support_reference_images"
+    reference_mode_enabled = use_reference and provider_supports_reference_images
     try:
         for slide in slide_prompts.get("slides", []):
             output_path = image_dir / f"slide_{int(slide['page_no']):02d}.png"
@@ -71,7 +117,7 @@ def run_stage(
                 page_no = int(slide["page_no"])
                 reference_images = (
                     [ReferenceImage(data=first_slide_bytes, mime_type="image/png")]
-                    if use_reference and page_no > 1 and first_slide_bytes
+                    if reference_mode_enabled and page_no > 1 and first_slide_bytes
                     else None
                 )
                 request = ImageRenderRequest(
@@ -91,4 +137,11 @@ def run_stage(
         if provider is not None:
             provider.close()
 
+    _write_render_metadata(
+        output_dir,
+        use_reference_image=use_reference,
+        provider_supports_reference_images=provider_supports_reference_images,
+        reference_source=reference_source,
+        fallback_reason=fallback_reason,
+    )
     return image_paths

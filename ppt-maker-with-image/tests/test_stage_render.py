@@ -4,6 +4,7 @@ from pathlib import Path
 
 from llm.config import ModelConfig, ModelRoleConfig, ProviderConfig
 from pipeline import stage_render
+from pipeline.common import load_json
 
 
 class _FakeProvider:
@@ -21,6 +22,10 @@ class _FakeProvider:
 
     def close(self) -> None:
         pass
+
+
+class _NoReferenceProvider(_FakeProvider):
+    supports_reference_images = False
 
 
 def _model_config() -> ModelConfig:
@@ -64,6 +69,44 @@ def test_stage_render_routes_first_slide_as_reference_for_following_slides(
     assert provider.requests[2].reference_images[0].data == first_slide_bytes
     assert provider.requests[1].seed == 123
     assert provider.requests[2].seed == 123
+    metadata = load_json(tmp_path / stage_render.RENDER_METADATA_FILENAME)
+    assert metadata == {
+        "use_reference_image": True,
+        "provider_supports_reference_images": True,
+        "reference_source": "first_slide",
+        "fallback_reason": None,
+    }
+
+
+def test_stage_render_falls_back_cleanly_when_provider_lacks_reference_support(
+    tmp_path: Path, monkeypatch
+) -> None:
+    provider = _NoReferenceProvider()
+    monkeypatch.setattr(stage_render, "build_image_provider", lambda *_args, **_kwargs: provider)
+
+    paths = stage_render.run_stage(
+        {"consistency": {"use_reference_image": True, "reference_source": "first_slide"}},
+        _model_config(),
+        {
+            "slides": [
+                {"page_no": 1, "title": "一", "image_prompt": "one"},
+                {"page_no": 2, "title": "二", "image_prompt": "two"},
+            ]
+        },
+        tmp_path,
+        dry_run=False,
+    )
+
+    assert len(paths) == 2
+    assert provider.requests[0].reference_images is None
+    assert provider.requests[1].reference_images is None
+    metadata = load_json(tmp_path / stage_render.RENDER_METADATA_FILENAME)
+    assert metadata == {
+        "use_reference_image": True,
+        "provider_supports_reference_images": False,
+        "reference_source": "first_slide",
+        "fallback_reason": "provider_does_not_support_reference_images",
+    }
 
 
 def test_stage_render_keeps_reference_disabled_by_default(tmp_path: Path, monkeypatch) -> None:

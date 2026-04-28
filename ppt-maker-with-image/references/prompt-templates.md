@@ -148,8 +148,14 @@ Requirement:
 Master style:
 {master_style_json}
 
+Page intent:
+{page_intent_json}
+
 Whole outline:
 {outline_json}
+
+Style header:
+{style_header}
 
 Current slide:
 {slide_json}
@@ -169,7 +175,10 @@ Return a JSON object containing:
 
 Constraints:
 - preserve the same deck-level style and template rules
+- treat `style_header` as the only deck-level style source when it is provided
 - only adjust what is necessary for this slide
 - keep the slide aligned with the deck narrative
 - avoid extra corner labels, decorative microcopy, and random page furniture
+- image_prompt must contain page-specific visible content and layout intent only; do not restate font-size ranges, spacing values, margin values, radius values, stroke values, shadow values, or caption-size labels.
+- treat all style measurements, font sizes, spacing values, radius values, stroke values, and shadow values as invisible design instructions rather than visible slide copy.
 ```

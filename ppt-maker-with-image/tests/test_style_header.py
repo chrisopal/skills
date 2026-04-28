@@ -26,6 +26,7 @@ def test_build_style_header_merge_master_style_and_page_intent() -> None:
 def test_build_style_header_marks_measurements_as_invisible_constraints() -> None:
     header = build_style_header(
         {
+            "color_strategy": {"primary": "#A8D86B", "secondary": "#0F95B6"},
             "layout_system": {"margins": "左右 56-72px，上下 40-56px", "module_spacing": "20-28px"},
             "typography": {"caption": "12-14px, gray", "page_title": "36-44px, bold"},
         }
@@ -35,6 +36,8 @@ def test_build_style_header_marks_measurements_as_invisible_constraints() -> Non
     assert "不要把" in header
     assert "px" in header
     assert "Caption" not in header
+    assert "#A8D86B" in header
+    assert "#0F95B6" in header
     assert "margins: 左右 56-72px，上下 40-56px" in header
     assert "caption: 12-14px, gray" in header
 

@@ -50,6 +50,7 @@ def build_style_header(
     style_sections: list[tuple[str, Any]] = [
         ("视觉定位", master_style.get("visual_positioning")),
         ("风格语气", master_style.get("deck_voice")),
+        ("配色策略", master_style.get("color_strategy")),
         ("版式系统", master_style.get("layout_system")),
         ("字体", master_style.get("typography")),
         ("标题层级", master_style.get("title_hierarchy_rules")),

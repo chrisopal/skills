@@ -132,3 +132,38 @@ def test_openrouter_url_download_status_errors_are_wrapped(monkeypatch: pytest.M
         provider.render(request)
 
     assert isinstance(exc_info.value.__cause__, httpx.HTTPStatusError)
+
+
+def test_openrouter_sends_reference_images_as_multimodal_content(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    recorded: dict[str, object] = {}
+    response = _json_response(
+        "POST",
+        "https://openrouter.ai/api/v1/chat/completions",
+        {"choices": [{"message": {"images": [{"image_url": {"url": "data:image/png;base64,aW1hZ2U="}}]}}]},
+    )
+
+    class _RecordingClient(_FakeClient):
+        def post(self, *_args, **kwargs) -> httpx.Response:
+            recorded.update(kwargs)
+            return response
+
+    monkeypatch.setattr(openrouter_module.httpx, "Client", lambda timeout=60.0: _RecordingClient(response))
+
+    provider = OpenRouterImageProvider(ProviderConfig(name="openrouter"), api_key="test-key")
+    request = ImageRenderRequest(
+        prompt="render slide 2",
+        model="openrouter-model",
+        reference_images=[b"reference-bytes"],
+        seed=123,
+    )
+
+    provider.render(request)
+
+    payload = recorded["json"]
+    content = payload["messages"][0]["content"]
+    assert isinstance(content, list)
+    assert content[0]["type"] == "text"
+    assert content[1]["type"] == "image_url"
+    assert content[1]["image_url"]["url"].startswith("data:image/png;base64,")

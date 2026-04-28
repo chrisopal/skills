@@ -11,6 +11,9 @@ from .base import ImageProvider, ImageRenderRequest
 
 
 class OpenRouterImageProvider(ImageProvider):
+    supports_reference_images = True
+    supports_seed = False
+
     def __init__(self, config: ProviderConfig, *, api_key: str) -> None:
         self._config = config
         self._api_key = api_key
@@ -18,7 +21,12 @@ class OpenRouterImageProvider(ImageProvider):
     def render(self, request: ImageRenderRequest) -> bytes:
         payload = {
             "model": request.model,
-            "messages": [{"role": "user", "content": request.prompt}],
+            "messages": [
+                {
+                    "role": "user",
+                    "content": _build_message_content(request.prompt, request.reference_images),
+                }
+            ],
             "modalities": ["image", "text"],
             "temperature": 0.1,
             "image_config": {
@@ -58,6 +66,16 @@ def _fetch_bytes(url: str) -> bytes:
         return response.content
     except Exception as exc:
         raise ProviderError(f"OpenRouter image download failed: {url}") from exc
+
+
+def _build_message_content(prompt: str, reference_images: Any) -> Any:
+    if not reference_images:
+        return prompt
+    content: list[dict[str, Any]] = [{"type": "text", "text": prompt}]
+    for image_bytes in reference_images:
+        encoded = base64.b64encode(image_bytes).decode("ascii")
+        content.append({"type": "image_url", "image_url": {"url": f"data:image/png;base64,{encoded}"}})
+    return content
 
 
 def _openrouter_image_size(resolution: str) -> str:

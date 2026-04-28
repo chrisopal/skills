@@ -9,6 +9,7 @@ from typing import Any
 from assemble_pptx import assemble_pptx
 from llm import complete_json
 from llm.config import ModelConfig, load_model_config
+from llm.image.base import ReferenceImage
 from pipeline.common import (
     build_requirement_summary,
     ensure_huixin_assets,
@@ -123,6 +124,40 @@ def rebuild_pptx_if_possible(job: dict[str, Any], output_dir: Path, slide_prompt
     assemble_pptx(image_paths, output_dir / pptx_name)
 
 
+def load_first_slide_reference(
+    job: dict[str, Any],
+    output_dir: Path,
+    *,
+    page_no: int,
+) -> list[ReferenceImage] | None:
+    consistency = job.get("consistency")
+    if not isinstance(consistency, dict):
+        return None
+    if not bool(consistency.get("use_reference_image")):
+        return None
+    if consistency.get("reference_source") != "first_slide":
+        return None
+    if page_no <= 1:
+        return None
+
+    reference_path = output_dir / "images" / "slide_01.png"
+    if not reference_path.exists():
+        return None
+
+    return [ReferenceImage(data=reference_path.read_bytes(), mime_type="image/png")]
+
+
+def resolve_reference_images_for_provider(
+    requested_reference_images: list[ReferenceImage] | None,
+    provider: Any,
+) -> list[ReferenceImage] | None:
+    if not requested_reference_images:
+        return None
+    if not bool(getattr(provider, "supports_reference_images", False)):
+        return None
+    return requested_reference_images
+
+
 def main() -> int:
     parser = build_parser()
     args = parser.parse_args()
@@ -187,11 +222,16 @@ def main() -> int:
 
         image_provider = build_image_provider(config)
         try:
+            requested_reference_images = load_first_slide_reference(job, output_dir, page_no=args.page_no)
             request = ImageRenderRequest(
                 prompt=build_image_render_prompt(updated_prompt.get("image_prompt", ""), config.resolution),
                 model=config.image.model,
                 resolution=config.resolution,
                 aspect_ratio=config.aspect_ratio,
+                reference_images=resolve_reference_images_for_provider(
+                    requested_reference_images,
+                    image_provider,
+                ),
             )
             image_path.write_bytes(image_provider.render(request))
         finally:

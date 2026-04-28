@@ -35,6 +35,8 @@ def test_build_style_header_marks_measurements_as_invisible_constraints() -> Non
     assert "不要把" in header
     assert "px" in header
     assert "Caption" not in header
+    assert "margins: 左右 56-72px，上下 40-56px" in header
+    assert "caption: 12-14px, gray" in header
 
 
 def test_build_style_header_forbids_visible_design_annotations() -> None:

@@ -7,6 +7,7 @@ from llm.config import ModelConfig, ModelRoleConfig, ProviderConfig, read_provid
 from llm.errors import ProviderError, UnsupportedFeatureError
 from llm.image import build_image_provider
 from llm.image.base import ImageRenderRequest, ReferenceImage
+from llm.image.gemini import GeminiImageProvider
 from llm.image.openai import OpenAIImageProvider
 from llm.image.openrouter import OpenRouterImageProvider
 from llm.image import openai as openai_module
@@ -159,7 +160,6 @@ def test_openrouter_sends_reference_images_as_multimodal_content(
             ReferenceImage(data=b"reference-bytes", mime_type="image/webp"),
             ReferenceImage(data=b"second-ref", mime_type="image/png"),
         ],
-        seed=123,
     )
 
     provider.render(request)
@@ -172,3 +172,51 @@ def test_openrouter_sends_reference_images_as_multimodal_content(
     assert content[1]["image_url"]["url"] == "data:image/webp;base64,cmVmZXJlbmNlLWJ5dGVz"
     assert content[2]["type"] == "image_url"
     assert content[2]["image_url"]["url"] == "data:image/png;base64,c2Vjb25kLXJlZg=="
+
+
+def test_provider_capability_info_reports_feature_flags() -> None:
+    assert OpenRouterImageProvider(ProviderConfig(name="openrouter"), api_key="test-key").capability_info == {
+        "supports_reference_images": True,
+        "supports_seed": False,
+    }
+    assert OpenAIImageProvider(ProviderConfig(name="openai"), api_key="test-key").capability_info == {
+        "supports_reference_images": False,
+        "supports_seed": False,
+    }
+    assert GeminiImageProvider(ProviderConfig(name="gemini"), api_key="test-key").capability_info == {
+        "supports_reference_images": False,
+        "supports_seed": False,
+    }
+
+
+@pytest.mark.parametrize(
+    ("provider", "render_request", "match"),
+    [
+        (
+            OpenRouterImageProvider(ProviderConfig(name="openrouter"), api_key="test-key"),
+            ImageRenderRequest(prompt="prompt", model="openrouter-model", seed=123),
+            "does not support seed",
+        ),
+        (
+            OpenAIImageProvider(ProviderConfig(name="openai"), api_key="test-key"),
+            ImageRenderRequest(
+                prompt="prompt",
+                model="gpt-image-1",
+                reference_images=[ReferenceImage(data=b"reference")],
+            ),
+            "does not support reference images",
+        ),
+        (
+            GeminiImageProvider(ProviderConfig(name="gemini"), api_key="test-key"),
+            ImageRenderRequest(prompt="prompt", model="gemini-image", seed=123),
+            "does not support seed",
+        ),
+    ],
+)
+def test_providers_reject_unsupported_features(
+    provider: object,
+    render_request: ImageRenderRequest,
+    match: str,
+) -> None:
+    with pytest.raises(UnsupportedFeatureError, match=match):
+        provider.render(render_request)

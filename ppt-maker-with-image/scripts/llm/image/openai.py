@@ -18,6 +18,7 @@ class OpenAIImageProvider(ImageProvider):
         self._api_key = api_key
 
     def render(self, request: ImageRenderRequest) -> bytes:
+        self._validate_request(request)
         payload = {
             "model": request.model,
             "prompt": request.prompt,

@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Sequence
 
+from ..errors import UnsupportedFeatureError
+
 
 @dataclass(frozen=True)
 class ReferenceImage:
@@ -36,6 +38,12 @@ class ImageProvider(ABC):
             "supports_reference_images": self.supports_reference_images,
             "supports_seed": self.supports_seed,
         }
+
+    def _validate_request(self, request: ImageRenderRequest) -> None:
+        if request.seed is not None and not self.supports_seed:
+            raise UnsupportedFeatureError("This image provider does not support seed")
+        if request.reference_images and not self.supports_reference_images:
+            raise UnsupportedFeatureError("This image provider does not support reference images")
 
     def close(self) -> None:
         """Hook for providers that hold network clients."""

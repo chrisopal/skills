@@ -68,6 +68,14 @@ def _provider_supports_reference_images(provider: Any, provider_name: str) -> bo
     return bool(_REFERENCE_IMAGE_SUPPORT_BY_PROVIDER.get(provider_name.strip().lower(), False))
 
 
+def _resolve_seed_for_provider(provider: Any, requested_seed: int | None) -> int | None:
+    if requested_seed is None:
+        return None
+    if not bool(getattr(provider, "supports_seed", False)):
+        return None
+    return requested_seed
+
+
 def _write_render_metadata(
     output_dir: Path,
     *,
@@ -125,7 +133,7 @@ def run_stage(
                     model=config.image.model,
                     resolution=config.resolution,
                     aspect_ratio=config.aspect_ratio,
-                    seed=seed,
+                    seed=_resolve_seed_for_provider(provider, seed),
                     reference_images=reference_images,
                 )
                 rendered = provider.render(request)

@@ -28,6 +28,10 @@ class _NoReferenceProvider(_FakeProvider):
     supports_reference_images = False
 
 
+class _NoSeedProvider(_FakeProvider):
+    supports_seed = False
+
+
 def _model_config() -> ModelConfig:
     return ModelConfig(
         default_provider="openrouter",
@@ -76,6 +80,42 @@ def test_stage_render_routes_first_slide_as_reference_for_following_slides(
         "reference_source": "first_slide",
         "fallback_reason": None,
     }
+
+
+def test_stage_render_omits_seed_when_provider_lacks_seed_support(tmp_path: Path, monkeypatch) -> None:
+    provider = _NoSeedProvider()
+    monkeypatch.setattr(stage_render, "build_image_provider", lambda *_args, **_kwargs: provider)
+
+    paths = stage_render.run_stage(
+        {"consistency": {"seed": 123}},
+        _model_config(),
+        {
+            "slides": [
+                {"page_no": 1, "title": "一", "image_prompt": "one"},
+                {"page_no": 2, "title": "二", "image_prompt": "two"},
+            ]
+        },
+        tmp_path,
+        dry_run=False,
+    )
+
+    assert len(paths) == 2
+    assert [request.seed for request in provider.requests] == [None, None]
+
+
+def test_stage_render_preserves_seed_when_provider_supports_seed(tmp_path: Path, monkeypatch) -> None:
+    provider = _FakeProvider()
+    monkeypatch.setattr(stage_render, "build_image_provider", lambda *_args, **_kwargs: provider)
+
+    stage_render.run_stage(
+        {"consistency": {"seed": 456}},
+        _model_config(),
+        {"slides": [{"page_no": 1, "title": "一", "image_prompt": "one"}]},
+        tmp_path,
+        dry_run=False,
+    )
+
+    assert [request.seed for request in provider.requests] == [456]
 
 
 def test_stage_render_falls_back_cleanly_when_provider_lacks_reference_support(

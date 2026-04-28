@@ -94,8 +94,9 @@ def test_regenerate_single_prompt_uses_style_header_page_intent_and_provider_mod
 
 
 class _FakeImageProvider:
-    def __init__(self, *, supports_reference_images: bool) -> None:
+    def __init__(self, *, supports_reference_images: bool, supports_seed: bool = True) -> None:
         self.supports_reference_images = supports_reference_images
+        self.supports_seed = supports_seed
         self.requests = []
 
     def render(self, request):
@@ -158,6 +159,7 @@ def _run_render_only(
     page_no: int,
     consistency: dict[str, object] | None,
     provider_supports_reference_images: bool,
+    provider_supports_seed: bool = True,
     first_slide_bytes: bytes | None = None,
 ) -> _FakeImageProvider:
     job_path, output_dir = _write_single_slide_job(tmp_path, consistency=consistency)
@@ -166,7 +168,10 @@ def _run_render_only(
         image_path.parent.mkdir(parents=True, exist_ok=True)
         image_path.write_bytes(first_slide_bytes)
 
-    provider = _FakeImageProvider(supports_reference_images=provider_supports_reference_images)
+    provider = _FakeImageProvider(
+        supports_reference_images=provider_supports_reference_images,
+        supports_seed=provider_supports_seed,
+    )
     monkeypatch.setattr(regenerate_single_slide, "load_model_config", lambda _path: _model_config())
     monkeypatch.setattr(llm_image, "build_image_provider", lambda *_args, **_kwargs: provider)
     monkeypatch.setattr(stage_render, "build_image_render_prompt", lambda image_prompt, _resolution: image_prompt)
@@ -262,3 +267,33 @@ def test_regenerate_single_slide_falls_back_when_provider_lacks_reference_suppor
     )
 
     assert provider.requests[0].reference_images is None
+
+
+def test_regenerate_single_slide_omits_seed_when_provider_lacks_seed_support(
+    tmp_path: Path, monkeypatch
+) -> None:
+    provider = _run_render_only(
+        monkeypatch,
+        tmp_path,
+        page_no=2,
+        consistency={"seed": 789},
+        provider_supports_reference_images=True,
+        provider_supports_seed=False,
+    )
+
+    assert provider.requests[0].seed is None
+
+
+def test_regenerate_single_slide_preserves_seed_when_provider_supports_seed(
+    tmp_path: Path, monkeypatch
+) -> None:
+    provider = _run_render_only(
+        monkeypatch,
+        tmp_path,
+        page_no=2,
+        consistency={"seed": 789},
+        provider_supports_reference_images=True,
+        provider_supports_seed=True,
+    )
+
+    assert provider.requests[0].seed == 789

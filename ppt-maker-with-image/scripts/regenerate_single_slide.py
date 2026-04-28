@@ -158,6 +158,21 @@ def resolve_reference_images_for_provider(
     return requested_reference_images
 
 
+def resolve_seed_for_provider(
+    job: dict[str, Any],
+    provider: Any,
+) -> int | None:
+    consistency = job.get("consistency")
+    if not isinstance(consistency, dict):
+        return None
+    requested_seed = consistency.get("seed")
+    if not isinstance(requested_seed, int):
+        return None
+    if not bool(getattr(provider, "supports_seed", False)):
+        return None
+    return requested_seed
+
+
 def main() -> int:
     parser = build_parser()
     args = parser.parse_args()
@@ -228,6 +243,7 @@ def main() -> int:
                 model=config.image.model,
                 resolution=config.resolution,
                 aspect_ratio=config.aspect_ratio,
+                seed=resolve_seed_for_provider(job, image_provider),
                 reference_images=resolve_reference_images_for_provider(
                     requested_reference_images,
                     image_provider,

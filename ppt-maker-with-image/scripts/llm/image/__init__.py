@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ..config import ModelConfig, ProviderConfig, read_provider_key
+from ..config import DEFAULT_PROVIDER_KEY_ENVS, ModelConfig, ProviderConfig, read_provider_key
 from ..errors import UnsupportedFeatureError
 from .base import ImageProvider, ImageRenderRequest
 from .gemini import GeminiImageProvider
@@ -14,17 +14,26 @@ def build_image_provider(
     provider_name: str | None = None,
 ) -> ImageProvider:
     resolved_name = (provider_name or config.image.provider).strip().lower()
-    provider_config = config.get_provider(resolved_name)
-    if provider_config is None:
-        raise UnsupportedFeatureError(f"Image provider is not configured: {resolved_name}")
-
     if resolved_name == "openrouter":
+        provider_config = _resolve_provider_config(config, resolved_name)
         return OpenRouterImageProvider(provider_config, api_key=_require_provider_key(provider_config, config))
     if resolved_name == "openai":
+        provider_config = _resolve_provider_config(config, resolved_name)
         return OpenAIImageProvider(provider_config, api_key=_require_provider_key(provider_config, config))
     if resolved_name == "gemini":
+        provider_config = _resolve_provider_config(config, resolved_name)
         return GeminiImageProvider(provider_config, api_key=_require_provider_key(provider_config, config))
     raise UnsupportedFeatureError(f"Image provider is not supported: {resolved_name}")
+
+
+def _resolve_provider_config(config: ModelConfig, provider_name: str) -> ProviderConfig:
+    provider_config = config.get_provider(provider_name)
+    if provider_config is not None:
+        return provider_config
+    return ProviderConfig(
+        name=provider_name,
+        api_key_env=DEFAULT_PROVIDER_KEY_ENVS.get(provider_name),
+    )
 
 
 def _require_provider_key(provider_config: ProviderConfig, config: ModelConfig) -> str:

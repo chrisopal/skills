@@ -84,7 +84,7 @@ def read_provider_key(
     providers: Mapping[str, ProviderConfig] | None = None,
     env: Mapping[str, str] | None = None,
 ) -> str | None:
-    environ = env or os.environ
+    environ = os.environ if env is None else env
     if isinstance(provider, ProviderConfig):
         config = provider
     else:

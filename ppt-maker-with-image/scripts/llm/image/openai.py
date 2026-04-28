@@ -39,11 +39,18 @@ class OpenAIImageProvider(ImageProvider):
 
         image_url = data.get("url", "")
         if image_url.startswith("http"):
-            response = httpx.get(image_url, timeout=60.0)
-            response.raise_for_status()
-            return response.content
+            return _fetch_bytes(image_url)
 
         raise ProviderError("OpenAI did not return image data")
+
+
+def _fetch_bytes(url: str) -> bytes:
+    try:
+        response = httpx.get(url, timeout=60.0)
+        response.raise_for_status()
+        return response.content
+    except Exception as exc:
+        raise ProviderError(f"OpenAI image download failed: {url}") from exc
 
 
 def _openai_image_size(aspect_ratio: str, resolution: str) -> str:

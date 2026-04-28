@@ -47,10 +47,17 @@ def _extract_image_bytes(message: dict[str, Any]) -> bytes:
         if image_url.startswith("data:"):
             return base64.b64decode(image_url.split(",", 1)[1])
         if image_url.startswith("http"):
-            response = httpx.get(image_url, timeout=60.0)
-            response.raise_for_status()
-            return response.content
+            return _fetch_bytes(image_url)
     raise ProviderError("OpenRouter did not return image data")
+
+
+def _fetch_bytes(url: str) -> bytes:
+    try:
+        response = httpx.get(url, timeout=60.0)
+        response.raise_for_status()
+        return response.content
+    except Exception as exc:
+        raise ProviderError(f"OpenRouter image download failed: {url}") from exc
 
 
 def _openrouter_image_size(resolution: str) -> str:

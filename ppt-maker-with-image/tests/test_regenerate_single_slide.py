@@ -19,7 +19,23 @@ def _model_config() -> ModelConfig:
     )
 
 
-def test_regenerate_single_prompt_uses_style_header_and_page_intent(monkeypatch) -> None:
+def _provider_fallback_model_config() -> ModelConfig:
+    return ModelConfig(
+        default_provider="openrouter",
+        text=ModelRoleConfig(provider="openrouter", model=""),
+        image=ModelRoleConfig(provider="openrouter", model="test-image-model"),
+        providers={
+            "openrouter": ProviderConfig(
+                name="openrouter",
+                api_key_env="OPENROUTER_API_KEY",
+                base_url="https://openrouter.ai/api/v1",
+                text_model="provider-text-model",
+            )
+        },
+    )
+
+
+def test_regenerate_single_prompt_uses_style_header_page_intent_and_provider_model_fallback(monkeypatch) -> None:
     recorded: dict[str, object] = {}
     style_header = "【不可见设计约束】只作为版式控制。"
     page_intent = {
@@ -38,11 +54,6 @@ def test_regenerate_single_prompt_uses_style_header_and_page_intent(monkeypatch)
         }
 
     monkeypatch.setattr(regenerate_single_slide, "complete_json", _fake_complete_json)
-    monkeypatch.setattr(
-        regenerate_single_slide,
-        "_text_call_config",
-        lambda *_args, **_kwargs: ("test-text-model", "test-key", "https://openrouter.ai/api/v1"),
-    )
 
     payload = regenerate_single_slide.regenerate_single_prompt(
         {
@@ -60,11 +71,11 @@ def test_regenerate_single_prompt_uses_style_header_and_page_intent(monkeypatch)
         style_header=style_header,
         page_intent=page_intent,
         dry_run=False,
-        config=_model_config(),
+        config=_provider_fallback_model_config(),
     )
 
     assert payload["image_prompt"].startswith(style_header)
-    assert recorded["model"] == "test-text-model"
+    assert recorded["model"] == "provider-text-model"
     message = recorded["messages"][0]["content"]
     assert "Page intent:" in message
     assert '"global_intent": "突出经营结论"' in message

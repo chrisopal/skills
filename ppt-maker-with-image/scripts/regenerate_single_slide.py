@@ -8,7 +8,7 @@ from typing import Any
 
 from assemble_pptx import assemble_pptx
 from llm import complete_json
-from llm.config import ModelConfig, load_model_config, read_provider_key
+from llm.config import ModelConfig, load_model_config
 from pipeline.common import (
     build_requirement_summary,
     ensure_huixin_assets,
@@ -18,6 +18,7 @@ from pipeline.common import (
     skill_root,
     write_json,
 )
+from pipeline._stage_utils import _text_config
 from style.header import build_style_header
 
 
@@ -52,15 +53,6 @@ def find_slide_by_page_no(slides: list[dict[str, Any]], page_no: int) -> tuple[i
     raise ValueError(f"Slide with page_no={page_no} not found")
 
 
-def _text_call_config(config: ModelConfig) -> tuple[str, str | None, str | None]:
-    provider = config.get_provider(config.text.provider)
-    return (
-        config.text.model,
-        read_provider_key(config.text.provider, providers=config.providers),
-        provider.base_url if provider else None,
-    )
-
-
 def regenerate_single_prompt(
     job: dict[str, Any],
     master_style: dict[str, Any],
@@ -92,7 +84,7 @@ def regenerate_single_prompt(
             "image_prompt": prompt,
         }
 
-    model, api_key, base_url = _text_call_config(config)
+    model, api_key, base_url = _text_config(config)
     prompt_master_style = {} if style_header.strip() else master_style
     prompt = load_prompt_template("Single Slide Prompt Regeneration Prompt").format(
         requirement_json=json.dumps(build_requirement_summary(job), ensure_ascii=False, indent=2),

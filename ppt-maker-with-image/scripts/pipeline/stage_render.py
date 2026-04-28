@@ -1,0 +1,94 @@
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+from llm.config import ModelConfig
+from llm.image import ImageRenderRequest, build_image_provider
+from llm.image.base import ReferenceImage
+from PIL import Image, ImageDraw
+
+from .common import load_prompt_template
+
+
+def create_placeholder_image(title: str, page_no: int, output_path: Path) -> None:
+    image = Image.new("RGB", (1920, 1080), "#FFFFFF")
+    draw = ImageDraw.Draw(image)
+    draw.rectangle((80, 80, 1840, 1000), outline="#0F95B6", width=8)
+    draw.rounded_rectangle((120, 160, 1800, 300), radius=28, fill="#F5F7FA", outline="#E5E7EB")
+    draw.text((160, 185), f"{page_no}. {title}", fill="#1E1E1E")
+    draw.rounded_rectangle((120, 360, 860, 900), radius=28, fill="#F5F7FA", outline="#A8D86B")
+    draw.rounded_rectangle((940, 360, 1800, 900), radius=28, fill="#F5F7FA", outline="#0F95B6")
+    image.save(output_path)
+
+
+def build_image_render_prompt(image_prompt: str, resolution: str) -> str:
+    return load_prompt_template("Image Rendering Wrapper Prompt").format(
+        resolution=resolution,
+        image_prompt=image_prompt,
+    )
+
+
+def _consistency_config(job: dict[str, Any]) -> dict[str, Any]:
+    consistency = job.get("consistency")
+    return consistency if isinstance(consistency, dict) else {}
+
+
+def _use_first_slide_reference(job: dict[str, Any]) -> bool:
+    consistency = _consistency_config(job)
+    return bool(consistency.get("use_reference_image")) and consistency.get(
+        "reference_source", "first_slide"
+    ) == "first_slide"
+
+
+def _seed(job: dict[str, Any]) -> int | None:
+    value = _consistency_config(job).get("seed")
+    return value if isinstance(value, int) else None
+
+
+def run_stage(
+    job: dict[str, Any],
+    config: ModelConfig,
+    slide_prompts: dict[str, Any],
+    output_dir: Path,
+    *,
+    dry_run: bool,
+) -> list[Path]:
+    image_dir = output_dir / "images"
+    image_dir.mkdir(parents=True, exist_ok=True)
+    image_paths: list[Path] = []
+    use_reference = _use_first_slide_reference(job)
+    seed = _seed(job)
+    first_slide_bytes: bytes | None = None
+
+    provider = None if dry_run else build_image_provider(config, provider_name=config.image.provider)
+    try:
+        for slide in slide_prompts.get("slides", []):
+            output_path = image_dir / f"slide_{int(slide['page_no']):02d}.png"
+            if dry_run:
+                create_placeholder_image(slide.get("title", ""), int(slide["page_no"]), output_path)
+            else:
+                page_no = int(slide["page_no"])
+                reference_images = (
+                    [ReferenceImage(data=first_slide_bytes, mime_type="image/png")]
+                    if use_reference and page_no > 1 and first_slide_bytes
+                    else None
+                )
+                request = ImageRenderRequest(
+                    prompt=build_image_render_prompt(slide.get("image_prompt", ""), config.resolution),
+                    model=config.image.model,
+                    resolution=config.resolution,
+                    aspect_ratio=config.aspect_ratio,
+                    seed=seed,
+                    reference_images=reference_images,
+                )
+                rendered = provider.render(request)
+                output_path.write_bytes(rendered)
+                if page_no == 1:
+                    first_slide_bytes = rendered
+            image_paths.append(output_path)
+    finally:
+        if provider is not None:
+            provider.close()
+
+    return image_paths

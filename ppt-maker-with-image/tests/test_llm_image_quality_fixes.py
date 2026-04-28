@@ -71,6 +71,21 @@ def test_read_provider_key_explicit_empty_env_does_not_fallback(
     assert read_provider_key(ProviderConfig(name="openai"), env={}) is None
 
 
+def test_read_provider_key_prefers_explicit_api_key_env() -> None:
+    provider = ProviderConfig(name="openai", api_key_env="CUSTOM_KEY")
+
+    assert (
+        read_provider_key(
+            provider,
+            env={
+                "CUSTOM_KEY": "from-custom-env",
+                "OPENAI_API_KEY": "from-default-env",
+            },
+        )
+        == "from-custom-env"
+    )
+
+
 def test_openai_url_download_errors_are_wrapped(monkeypatch: pytest.MonkeyPatch) -> None:
     response = _json_response(
         "POST",

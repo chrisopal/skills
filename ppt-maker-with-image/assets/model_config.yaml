@@ -1,5 +1,14 @@
+default_provider: "openrouter"
+text_provider: "openrouter"
 text_model: "openai/gpt-4o"
+image_provider: "openrouter"
 image_model: "google/gemini-3.1-flash-image-preview"
+text:
+  provider: "openrouter"
+  model: "openai/gpt-4o"
+image:
+  provider: "openrouter"
+  model: "google/gemini-3.1-flash-image-preview"
 aspect_ratio: "16:9"
 resolution: "3840x2160"
 default_output_mode: "image_pptx"
@@ -7,3 +16,32 @@ language: "zh-CN"
 font_preferences:
   cjk: "Microsoft YaHei"
   latin: "Arial"
+providers:
+  openai:
+    api_key_env: "OPENAI_API_KEY"
+    base_url: "https://api.openai.com/v1"
+    text_model: "gpt-4o"
+    image_model: "gpt-image-1"
+  anthropic:
+    api_key_env: "ANTHROPIC_API_KEY"
+    base_url: "https://api.anthropic.com"
+    text_model: "claude-3-5-sonnet-latest"
+  openrouter:
+    api_key_env: "OPENROUTER_API_KEY"
+    base_url: "https://openrouter.ai/api/v1"
+    text_model: "openai/gpt-4o"
+    image_model: "google/gemini-3.1-flash-image-preview"
+  azure:
+    api_key_env: "AZURE_OPENAI_API_KEY"
+    base_url: ""
+    api_version: "2024-10-21"
+    text_model: "gpt-4o"
+    image_model: "gpt-image-1"
+  ollama:
+    api_key_env: ""
+    base_url: "http://localhost:11434/v1"
+    text_model: "llama3.1"
+  gemini:
+    api_key_env: "GEMINI_API_KEY"
+    text_model: "gemini-2.0-flash"
+    image_model: "gemini-2.5-flash-image-preview"

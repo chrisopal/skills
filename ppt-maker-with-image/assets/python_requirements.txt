@@ -2,3 +2,5 @@ httpx>=0.28
 PyYAML>=6.0
 python-pptx>=1.0.2
 Pillow>=11.0
+litellm>=1.51
+google-genai>=0.5

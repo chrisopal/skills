@@ -6,6 +6,12 @@ from typing import Sequence
 
 
 @dataclass(frozen=True)
+class ReferenceImage:
+    data: bytes
+    mime_type: str = "image/png"
+
+
+@dataclass(frozen=True)
 class ImageRenderRequest:
     prompt: str
     model: str
@@ -13,7 +19,7 @@ class ImageRenderRequest:
     aspect_ratio: str = "16:9"
     mime_type: str = "image/png"
     seed: int | None = None
-    reference_images: Sequence[bytes] | None = None
+    reference_images: Sequence[ReferenceImage] | None = None
 
 
 class ImageProvider(ABC):

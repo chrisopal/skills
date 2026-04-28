@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 import base64
-from typing import Any
+from typing import Any, Sequence
 
 import httpx
 
 from ..config import ProviderConfig
 from ..errors import ProviderError
-from .base import ImageProvider, ImageRenderRequest
+from .base import ImageProvider, ImageRenderRequest, ReferenceImage
 
 
 class OpenRouterImageProvider(ImageProvider):
@@ -68,13 +68,18 @@ def _fetch_bytes(url: str) -> bytes:
         raise ProviderError(f"OpenRouter image download failed: {url}") from exc
 
 
-def _build_message_content(prompt: str, reference_images: Any) -> Any:
+def _build_message_content(prompt: str, reference_images: Sequence[ReferenceImage] | None) -> Any:
     if not reference_images:
         return prompt
     content: list[dict[str, Any]] = [{"type": "text", "text": prompt}]
-    for image_bytes in reference_images:
-        encoded = base64.b64encode(image_bytes).decode("ascii")
-        content.append({"type": "image_url", "image_url": {"url": f"data:image/png;base64,{encoded}"}})
+    for reference_image in reference_images:
+        encoded = base64.b64encode(reference_image.data).decode("ascii")
+        content.append(
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:{reference_image.mime_type};base64,{encoded}"},
+            }
+        )
     return content
 
 

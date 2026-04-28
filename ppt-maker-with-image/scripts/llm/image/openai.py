@@ -11,7 +11,7 @@ from .base import ImageProvider, ImageRenderRequest
 
 class OpenAIImageProvider(ImageProvider):
     supports_reference_images = False
-    supports_seed = True
+    supports_seed = False
 
     def __init__(self, config: ProviderConfig, *, api_key: str) -> None:
         self._config = config

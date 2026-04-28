@@ -6,7 +6,7 @@ import pytest
 from llm.config import ModelConfig, ModelRoleConfig, ProviderConfig, read_provider_key
 from llm.errors import ProviderError, UnsupportedFeatureError
 from llm.image import build_image_provider
-from llm.image.base import ImageRenderRequest
+from llm.image.base import ImageRenderRequest, ReferenceImage
 from llm.image.openai import OpenAIImageProvider
 from llm.image.openrouter import OpenRouterImageProvider
 from llm.image import openai as openai_module
@@ -155,7 +155,10 @@ def test_openrouter_sends_reference_images_as_multimodal_content(
     request = ImageRenderRequest(
         prompt="render slide 2",
         model="openrouter-model",
-        reference_images=[b"reference-bytes"],
+        reference_images=[
+            ReferenceImage(data=b"reference-bytes", mime_type="image/webp"),
+            ReferenceImage(data=b"second-ref", mime_type="image/png"),
+        ],
         seed=123,
     )
 
@@ -166,4 +169,6 @@ def test_openrouter_sends_reference_images_as_multimodal_content(
     assert isinstance(content, list)
     assert content[0]["type"] == "text"
     assert content[1]["type"] == "image_url"
-    assert content[1]["image_url"]["url"].startswith("data:image/png;base64,")
+    assert content[1]["image_url"]["url"] == "data:image/webp;base64,cmVmZXJlbmNlLWJ5dGVz"
+    assert content[2]["type"] == "image_url"
+    assert content[2]["image_url"]["url"] == "data:image/png;base64,c2Vjb25kLXJlZg=="

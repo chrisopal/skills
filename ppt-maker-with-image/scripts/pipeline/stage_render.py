@@ -36,9 +36,9 @@ def _consistency_config(job: dict[str, Any]) -> dict[str, Any]:
 
 def _use_first_slide_reference(job: dict[str, Any]) -> bool:
     consistency = _consistency_config(job)
-    return bool(consistency.get("use_reference_image")) and consistency.get(
-        "reference_source", "first_slide"
-    ) == "first_slide"
+    return bool(consistency.get("use_reference_image")) and consistency.get("reference_source") == (
+        "first_slide"
+    )
 
 
 def _seed(job: dict[str, Any]) -> int | None:

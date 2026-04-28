@@ -12,10 +12,12 @@ class _FakeProvider:
 
     def __init__(self) -> None:
         self.requests = []
+        self.render_count = 0
 
     def render(self, request):
         self.requests.append(request)
-        return b"image-bytes"
+        self.render_count += 1
+        return f"image-bytes-{self.render_count}".encode()
 
     def close(self) -> None:
         pass
@@ -53,13 +55,15 @@ def test_stage_render_routes_first_slide_as_reference_for_following_slides(
     )
 
     assert len(paths) == 3
+    first_slide_bytes = b"image-bytes-1"
     assert provider.requests[0].reference_images is None
     assert provider.requests[1].reference_images is not None
-    assert provider.requests[1].reference_images[0].data == b"image-bytes"
+    assert provider.requests[1].reference_images[0].data == first_slide_bytes
     assert provider.requests[1].reference_images[0].mime_type == "image/png"
     assert provider.requests[2].reference_images is not None
-    assert provider.requests[2].reference_images[0].data == b"image-bytes"
+    assert provider.requests[2].reference_images[0].data == first_slide_bytes
     assert provider.requests[1].seed == 123
+    assert provider.requests[2].seed == 123
 
 
 def test_stage_render_keeps_reference_disabled_by_default(tmp_path: Path, monkeypatch) -> None:
@@ -68,6 +72,27 @@ def test_stage_render_keeps_reference_disabled_by_default(tmp_path: Path, monkey
 
     stage_render.run_stage(
         {},
+        _model_config(),
+        {
+            "slides": [
+                {"page_no": 1, "title": "一", "image_prompt": "one"},
+                {"page_no": 2, "title": "二", "image_prompt": "two"},
+            ]
+        },
+        tmp_path,
+        dry_run=False,
+    )
+
+    assert provider.requests[0].reference_images is None
+    assert provider.requests[1].reference_images is None
+
+
+def test_stage_render_requires_explicit_first_slide_reference_source(tmp_path: Path, monkeypatch) -> None:
+    provider = _FakeProvider()
+    monkeypatch.setattr(stage_render, "build_image_provider", lambda *_args, **_kwargs: provider)
+
+    stage_render.run_stage(
+        {"consistency": {"use_reference_image": True}},
         _model_config(),
         {
             "slides": [

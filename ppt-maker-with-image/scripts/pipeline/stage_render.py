@@ -11,6 +11,7 @@ from llm.image.gemini import GeminiImageProvider
 from llm.image.openai import OpenAIImageProvider
 from llm.image.openrouter import OpenRouterImageProvider
 from PIL import Image, ImageDraw
+from style.header import sanitize_image_prompt
 
 from .common import load_prompt_template
 
@@ -20,6 +21,17 @@ _REFERENCE_IMAGE_SUPPORT_BY_PROVIDER = {
     "gemini": GeminiImageProvider.supports_reference_images,
     "openai": OpenAIImageProvider.supports_reference_images,
     "openrouter": OpenRouterImageProvider.supports_reference_images,
+}
+_WRAPPER_REPHRASES = {
+    "Treat all style measurements, font sizes, spacing values, radius values, stroke values, and shadow values as invisible design instructions.": (
+        "Treat all style measurements, font sizing, layout-rhythm details, corner-rounding details, "
+        "line-weight details, and depth-effect details as invisible design instructions."
+    ),
+    'Never render measurement labels or design annotations such as "40-56px", "20-28px", "56-72px", "Caption: 12-14px", "R=14px", "stroke=1pt", red boxes, rulers, alignment guides, wireframes, or prompt/schema text.': (
+        "Never render measurement labels or design annotations such as numeric size labels, "
+        "corner-rounding notation, line-weight notation, red boxes, rulers, alignment guides, "
+        "wireframes, or prompt/schema text."
+    ),
 }
 
 
@@ -35,9 +47,12 @@ def create_placeholder_image(title: str, page_no: int, output_path: Path) -> Non
 
 
 def build_image_render_prompt(image_prompt: str, resolution: str) -> str:
-    return load_prompt_template("Image Rendering Wrapper Prompt").format(
+    wrapper_prompt = load_prompt_template("Image Rendering Wrapper Prompt")
+    for source, target in _WRAPPER_REPHRASES.items():
+        wrapper_prompt = wrapper_prompt.replace(source, target)
+    return wrapper_prompt.format(
         resolution=resolution,
-        image_prompt=image_prompt,
+        image_prompt=sanitize_image_prompt(image_prompt),
     )
 
 

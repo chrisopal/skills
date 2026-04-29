@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 
 from llm.config import ModelConfig, ModelRoleConfig, ProviderConfig
 from pipeline import stage_render
@@ -30,6 +31,16 @@ class _NoReferenceProvider(_FakeProvider):
 
 class _NoSeedProvider(_FakeProvider):
     supports_seed = False
+
+
+def _assert_prompt_sanitized(text: str) -> None:
+    assert not re.search(r"\b(?:px|pt)\b", text, flags=re.IGNORECASE)
+    assert not re.search(r"\b(?:stroke|shadow|margin|margins|spacing|caption)\b", text, flags=re.IGNORECASE)
+    assert "R=" not in text
+    assert not re.search(
+        r"\b(?:40\s*-\s*56|56\s*-\s*72|20\s*-\s*28|24\s*-\s*30|12\s*-\s*14|16\s*-\s*18|18\s*-\s*22|36\s*-\s*44)\b",
+        text,
+    )
 
 
 def _model_config() -> ModelConfig:
@@ -116,6 +127,34 @@ def test_stage_render_preserves_seed_when_provider_supports_seed(tmp_path: Path,
     )
 
     assert [request.seed for request in provider.requests] == [456]
+
+
+def test_stage_render_sanitizes_existing_slide_prompts_at_render_boundary(
+    tmp_path: Path, monkeypatch
+) -> None:
+    provider = _FakeProvider()
+    monkeypatch.setattr(stage_render, "build_image_provider", lambda *_args, **_kwargs: provider)
+
+    raw_prompt = (
+        "Design a white-background business slide with margins 56-72px, spacing 20-28px, "
+        "rounded cards R=14px, stroke 1pt, subtle shadow, caption 12-14px, "
+        "page title 36-44px, clear hierarchy and green highlights."
+    )
+
+    stage_render.run_stage(
+        {},
+        _model_config(),
+        {"slides": [{"page_no": 1, "title": "一", "image_prompt": raw_prompt}]},
+        tmp_path,
+        dry_run=False,
+    )
+
+    assert len(provider.requests) == 1
+    request_prompt = provider.requests[0].prompt
+    assert "white-background business slide" in request_prompt
+    assert "green highlights" in request_prompt
+    assert "clear hierarchy" in request_prompt
+    _assert_prompt_sanitized(request_prompt)
 
 
 def test_stage_render_falls_back_cleanly_when_provider_lacks_reference_support(

@@ -16,6 +16,7 @@ _EXPLICIT_RANGE_RE = re.compile(
     r"\b(?:40\s*-\s*56|56\s*-\s*72|20\s*-\s*28|24\s*-\s*30|12\s*-\s*14|16\s*-\s*18|18\s*-\s*22|36\s*-\s*44)\b"
 )
 _RADIUS_RE = re.compile(r"R\s*=\s*\d+(?:\.\d+)?(?:\s*(?:px|pt))?", re.IGNORECASE)
+_DANGLING_RADIUS_RE = re.compile(r"\bR\s*=\s*", re.IGNORECASE)
 _FORBIDDEN_WORD_RE = re.compile(r"\b(?:margins?|spacing|caption|stroke|shadow)\b\s*[:=]?", re.IGNORECASE)
 _FORBIDDEN_UNIT_RE = re.compile(r"\b(?:px|pt)\b", re.IGNORECASE)
 _FORBIDDEN_LINE_MARKERS = (
@@ -80,6 +81,7 @@ def _clean_free_text(value: Any) -> str:
     text = _MEASUREMENT_RE.sub("", text)
     text = _EXPLICIT_RANGE_RE.sub("", text)
     text = _RADIUS_RE.sub("", text)
+    text = _DANGLING_RADIUS_RE.sub("", text)
     text = _FORBIDDEN_WORD_RE.sub("", text)
     text = _FORBIDDEN_UNIT_RE.sub("", text)
     text = _HEX_COLOR_RE.sub("", text)

@@ -16,6 +16,8 @@ _EXPLICIT_RANGE_RE = re.compile(
     r"\b(?:40\s*-\s*56|56\s*-\s*72|20\s*-\s*28|24\s*-\s*30|12\s*-\s*14|16\s*-\s*18|18\s*-\s*22|36\s*-\s*44)\b"
 )
 _RADIUS_RE = re.compile(r"R\s*=\s*\d+(?:\.\d+)?(?:\s*(?:px|pt))?", re.IGNORECASE)
+_FORBIDDEN_WORD_RE = re.compile(r"\b(?:margins?|spacing|caption|stroke|shadow)\b\s*[:=]?", re.IGNORECASE)
+_FORBIDDEN_UNIT_RE = re.compile(r"\b(?:px|pt)\b", re.IGNORECASE)
 _FORBIDDEN_LINE_MARKERS = (
     "【版式系统】",
     "【字体】",
@@ -29,6 +31,9 @@ _FORBIDDEN_LINE_MARKERS = (
 )
 _WHITESPACE_RE = re.compile(r"[ \t]+")
 _PUNCT_RE = re.compile(r"(?:\s*[;,:，；]\s*){2,}")
+_SPACE_BEFORE_PUNCT_RE = re.compile(r"\s+([,.;:，。；])")
+_EMPTY_WITH_AND_RE = re.compile(r"\bwith\s+and\b", re.IGNORECASE)
+_DANGLING_CONNECTOR_RE = re.compile(r"\b(?:and|with)\b(?=\s*[,.;:，。；]|$)", re.IGNORECASE)
 
 
 def _join_lines(lines: list[str]) -> str:
@@ -57,6 +62,11 @@ def _safe_int(item: Any, fallback: str = "") -> str:
 def _normalize_text(text: str) -> str:
     cleaned = text.strip()
     cleaned = _WHITESPACE_RE.sub(" ", cleaned)
+    cleaned = _SPACE_BEFORE_PUNCT_RE.sub(r"\1", cleaned)
+    cleaned = _EMPTY_WITH_AND_RE.sub("with", cleaned)
+    cleaned = _DANGLING_CONNECTOR_RE.sub("", cleaned)
+    cleaned = _WHITESPACE_RE.sub(" ", cleaned)
+    cleaned = _SPACE_BEFORE_PUNCT_RE.sub(r"\1", cleaned)
     cleaned = re.sub(r"\s*([。！？])", r"\1", cleaned)
     cleaned = _PUNCT_RE.sub("；", cleaned)
     return cleaned.strip("；,，:： ")
@@ -70,6 +80,8 @@ def _clean_free_text(value: Any) -> str:
     text = _MEASUREMENT_RE.sub("", text)
     text = _EXPLICIT_RANGE_RE.sub("", text)
     text = _RADIUS_RE.sub("", text)
+    text = _FORBIDDEN_WORD_RE.sub("", text)
+    text = _FORBIDDEN_UNIT_RE.sub("", text)
     text = _HEX_COLOR_RE.sub("", text)
     return _normalize_text(text)
 
@@ -141,7 +153,11 @@ def _summarize_typography(value: Any) -> str:
 def _contains_forbidden_spec(text: str) -> bool:
     lowered = text.lower()
     return any(marker.lower() in lowered for marker in _FORBIDDEN_LINE_MARKERS) or bool(
-        _MEASUREMENT_RE.search(text) or _EXPLICIT_RANGE_RE.search(text) or _RADIUS_RE.search(text)
+        _MEASUREMENT_RE.search(text)
+        or _EXPLICIT_RANGE_RE.search(text)
+        or _RADIUS_RE.search(text)
+        or _FORBIDDEN_WORD_RE.search(text)
+        or _FORBIDDEN_UNIT_RE.search(text)
     )
 
 

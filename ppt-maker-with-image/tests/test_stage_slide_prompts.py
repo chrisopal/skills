@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from llm.config import ModelConfig, ModelRoleConfig, ProviderConfig
 from pipeline import stage_slide_prompts
 from style.header import build_style_header
@@ -21,30 +23,16 @@ def _model_config() -> ModelConfig:
 
 
 def _assert_no_raw_specs(text: str) -> None:
-    forbidden_tokens = [
-        "px",
-        "pt",
-        "R=",
-        "stroke",
-        "shadow",
-        "margin",
-        "spacing",
-        "caption",
-        "【版式系统】",
-        "【字体】",
-        "primary_green:",
-        "40-56",
-        "56-72",
-        "20-28",
-        "24-30",
-        "12-14",
-        "16-18",
-        "18-22",
-        "36-44",
-    ]
-    lowered = text.lower()
-    for token in forbidden_tokens:
-        assert token.lower() not in lowered
+    assert not re.search(r"\b(?:px|pt)\b", text, flags=re.IGNORECASE)
+    assert not re.search(r"\b(?:stroke|shadow|margin|margins|spacing|caption)\b", text, flags=re.IGNORECASE)
+    assert "R=" not in text
+    assert "【版式系统】" not in text
+    assert "【字体】" not in text
+    assert "primary_green:" not in text.lower()
+    assert not re.search(
+        r"\b(?:40\s*-\s*56|56\s*-\s*72|20\s*-\s*28|24\s*-\s*30|12\s*-\s*14|16\s*-\s*18|18\s*-\s*22|36\s*-\s*44)\b",
+        text,
+    )
 
 
 def test_stage_slide_prompts_omits_raw_master_style_when_style_header_present(monkeypatch) -> None:
@@ -145,8 +133,9 @@ def test_stage_slide_prompts_sanitizes_raw_spec_fragments_from_final_image_promp
                     "slide_role": "intro",
                     "key_blocks": ["背景"],
                     "image_prompt": (
-                        "Create a slide titled '封面' with white background and green highlights.\n"
+                        "Create a slide titled '封面' with white background and green highlights, rounded cards, and Microsoft YaHei.\n"
                         "【字体】page_title: 36-44px, bold\n"
+                        "Design slide with margins 56-72px and caption 12-14px, keep the hierarchy clean.\n"
                         "margins: 左右 56-72px，上下 40-56px\n"
                         "caption: 12-14px, gray"
                     ),
@@ -181,6 +170,8 @@ def test_stage_slide_prompts_sanitizes_raw_spec_fragments_from_final_image_promp
     assert "Create a slide titled '封面'" in final_prompt
     assert "白底" in final_prompt
     assert "绿色" in final_prompt
+    assert "rounded cards" in final_prompt
     assert "Microsoft YaHei" in final_prompt
+    assert "hierarchy clean" in final_prompt
     assert "设计规范页" in final_prompt
     _assert_no_raw_specs(final_prompt)

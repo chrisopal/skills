@@ -1,33 +1,21 @@
 from __future__ import annotations
 
-from style.header import build_style_header
+import re
+
+from style.header import build_style_header, sanitize_image_prompt
 
 
 def _assert_no_raw_specs(text: str) -> None:
-    forbidden_tokens = [
-        "px",
-        "pt",
-        "R=",
-        "stroke",
-        "shadow",
-        "margin",
-        "spacing",
-        "caption",
-        "【版式系统】",
-        "【字体】",
-        "primary_green:",
-        "40-56",
-        "56-72",
-        "20-28",
-        "24-30",
-        "12-14",
-        "16-18",
-        "18-22",
-        "36-44",
-    ]
-    lowered = text.lower()
-    for token in forbidden_tokens:
-        assert token.lower() not in lowered
+    assert not re.search(r"\b(?:px|pt)\b", text, flags=re.IGNORECASE)
+    assert not re.search(r"\b(?:stroke|shadow|margin|margins|spacing|caption)\b", text, flags=re.IGNORECASE)
+    assert "R=" not in text
+    assert "【版式系统】" not in text
+    assert "【字体】" not in text
+    assert "primary_green:" not in text.lower()
+    assert not re.search(
+        r"\b(?:40\s*-\s*56|56\s*-\s*72|20\s*-\s*28|24\s*-\s*30|12\s*-\s*14|16\s*-\s*18|18\s*-\s*22|36\s*-\s*44)\b",
+        text,
+    )
 
 
 def test_build_style_header_merge_master_style_and_page_intent() -> None:
@@ -81,3 +69,19 @@ def test_build_style_header_forbids_visible_design_annotations() -> None:
     assert "辅助线" in header
     assert "标尺" in header
     _assert_no_raw_specs(header)
+
+
+def test_sanitize_image_prompt_removes_banned_words_from_freeform_prompt_text() -> None:
+    prompt = (
+        "Design slide with margins 56-72px and caption 12-14px, white background, "
+        "green highlights, rounded cards, Microsoft YaHei, clear business hierarchy."
+    )
+
+    sanitized = sanitize_image_prompt(prompt)
+
+    assert "white background" in sanitized
+    assert "green highlights" in sanitized
+    assert "rounded cards" in sanitized
+    assert "Microsoft YaHei" in sanitized
+    assert "business hierarchy" in sanitized
+    _assert_no_raw_specs(sanitized)

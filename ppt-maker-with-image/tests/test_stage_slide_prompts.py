@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from llm.config import ModelConfig, ModelRoleConfig, ProviderConfig
 from pipeline import stage_slide_prompts
+from style.header import build_style_header
 
 
 def _model_config() -> ModelConfig:
@@ -19,9 +20,55 @@ def _model_config() -> ModelConfig:
     )
 
 
+def _assert_no_raw_specs(text: str) -> None:
+    forbidden_tokens = [
+        "px",
+        "pt",
+        "R=",
+        "stroke",
+        "shadow",
+        "margin",
+        "spacing",
+        "caption",
+        "【版式系统】",
+        "【字体】",
+        "primary_green:",
+        "40-56",
+        "56-72",
+        "20-28",
+        "24-30",
+        "12-14",
+        "16-18",
+        "18-22",
+        "36-44",
+    ]
+    lowered = text.lower()
+    for token in forbidden_tokens:
+        assert token.lower() not in lowered
+
+
 def test_stage_slide_prompts_omits_raw_master_style_when_style_header_present(monkeypatch) -> None:
     recorded: dict[str, object] = {}
-    style_header = "【不可见设计约束】只作为版式控制。"
+    style_header = build_style_header(
+        {
+            "prompt_block": "白底，绿色主色，teal 辅色，咨询风。",
+            "color_strategy": {
+                "primary_green": "#A8D86B",
+                "secondary_teal": "#0F95B6",
+                "background": "#FFFFFF",
+                "section_background": "#F5F7FA",
+            },
+            "layout_system": {
+                "margins": "左右 56-72px，上下 40-56px",
+                "module_spacing": "20-28px",
+                "module_shapes": "圆角矩形，R=14px",
+                "stroke": "1-1.25pt",
+                "shadow": "5-8% black",
+            },
+            "typography": {"title_font": "Microsoft YaHei", "page_title": "36-44px, bold"},
+        },
+        {"global_intent": "突出经营结论"},
+    )
     page_intent = {
         "global_intent": "突出经营结论",
         "slides": [{"page_no": 1, "intent": "先讲背景", "slide_role": "intro", "key_blocks": ["背景"]}],
@@ -73,3 +120,67 @@ def test_stage_slide_prompts_omits_raw_master_style_when_style_header_present(mo
     assert style_header in message
     assert "36-44px" not in message
     assert "Master style:\n{}" in message
+    assert "白底" in payload["slides"][0]["image_prompt"]
+    assert "Microsoft YaHei" in payload["slides"][0]["image_prompt"]
+    assert "设计规范页" in payload["slides"][0]["image_prompt"]
+    _assert_no_raw_specs(payload["slides"][0]["image_prompt"])
+
+
+def test_stage_slide_prompts_sanitizes_raw_spec_fragments_from_final_image_prompt(monkeypatch) -> None:
+    style_header = build_style_header(
+        {
+            "prompt_block": "白底，绿色主色，teal 辅色，咨询风。",
+            "layout_system": {"margins": "左右 56-72px，上下 40-56px", "module_spacing": "20-28px"},
+            "typography": {"title_font": "Microsoft YaHei", "page_title": "36-44px, bold"},
+        },
+        {"global_intent": "聚焦业务复盘"},
+    )
+
+    def _fake_complete_json(**_kwargs):
+        return {
+            "slides": [
+                {
+                    "page_no": 1,
+                    "title": "封面",
+                    "slide_role": "intro",
+                    "key_blocks": ["背景"],
+                    "image_prompt": (
+                        "Create a slide titled '封面' with white background and green highlights.\n"
+                        "【字体】page_title: 36-44px, bold\n"
+                        "margins: 左右 56-72px，上下 40-56px\n"
+                        "caption: 12-14px, gray"
+                    ),
+                }
+            ]
+        }
+
+    monkeypatch.setattr(stage_slide_prompts, "complete_json", _fake_complete_json)
+    monkeypatch.setattr(
+        stage_slide_prompts,
+        "_text_config",
+        lambda *_args, **_kwargs: ("test-text-model", "test-key", "https://openrouter.ai/api/v1"),
+    )
+
+    payload = stage_slide_prompts.run_stage(
+        {
+            "topic": "Q2经营分析",
+            "target_audience": "管理层",
+            "purpose": "汇报",
+            "style": "咨询风",
+            "page_count": 1,
+        },
+        _model_config(),
+        {"typography": {"page_title": "36-44px, bold"}},
+        {"slides": [{"page_no": 1, "title": "封面", "purpose": "引言", "key_blocks": ["背景"]}]},
+        style_header=style_header,
+        page_intent={"global_intent": "聚焦业务复盘"},
+        dry_run=False,
+    )
+
+    final_prompt = payload["slides"][0]["image_prompt"]
+    assert "Create a slide titled '封面'" in final_prompt
+    assert "白底" in final_prompt
+    assert "绿色" in final_prompt
+    assert "Microsoft YaHei" in final_prompt
+    assert "设计规范页" in final_prompt
+    _assert_no_raw_specs(final_prompt)

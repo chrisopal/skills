@@ -8,6 +8,7 @@ from llm.config import ModelConfig
 
 from ._stage_utils import _text_config
 from .common import build_requirement_summary, load_prompt_template
+from style.header import sanitize_image_prompt
 
 
 def run_stage(
@@ -62,6 +63,6 @@ def run_stage(
         if style_header.strip():
             for slide in payload.get("slides", []):
                 image_prompt = str(slide.get("image_prompt", "")).strip()
-                slide["image_prompt"] = f"{style_header}\n\n{image_prompt}".strip()
+                slide["image_prompt"] = sanitize_image_prompt(f"{style_header}\n\n{image_prompt}")
         return payload
     raise RuntimeError("LLM slide prompt stage returned non-dict payload")

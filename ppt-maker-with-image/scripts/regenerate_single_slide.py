@@ -20,7 +20,7 @@ from pipeline.common import (
     write_json,
 )
 from pipeline._stage_utils import _text_config
-from style.header import build_style_header
+from style.header import build_style_header, sanitize_image_prompt
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -76,7 +76,7 @@ def regenerate_single_prompt(
         prompt = prompt.strip() or f"中文PPT页面，标题为《{slide_payload['title']}》，白底，结构清晰。"
         if instruction.strip():
             prompt += f" 额外要求：{instruction.strip()}。"
-        prompt = f"{style_header}\n\n{prompt}".strip() if style_header.strip() else prompt
+        prompt = sanitize_image_prompt(f"{style_header}\n\n{prompt}") if style_header.strip() else prompt
         return {
             "page_no": slide_payload["page_no"],
             "title": slide_payload["title"],
@@ -106,7 +106,7 @@ def regenerate_single_prompt(
     if isinstance(payload, dict):
         if style_header.strip():
             image_prompt = str(payload.get("image_prompt", "")).strip()
-            payload["image_prompt"] = f"{style_header}\n\n{image_prompt}".strip()
+            payload["image_prompt"] = sanitize_image_prompt(f"{style_header}\n\n{image_prompt}")
         return payload
     raise RuntimeError("Single slide prompt regeneration did not return JSON object")
 

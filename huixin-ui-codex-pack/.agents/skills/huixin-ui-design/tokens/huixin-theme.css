@@ -1,0 +1,85 @@
+:root {
+  /* Brand */
+  --hx-color-primary: #00405C;
+  --hx-color-primary-action: #0097BA;
+  --hx-color-selected-bg: #CCF5FF;
+  --hx-color-accent-green: #A5D867;
+  --hx-color-accent-teal: #0097BA;
+
+  /* Status */
+  --hx-color-success: #2BA471;
+  --hx-color-warning: #E37318;
+  --hx-color-error: #D54941;
+
+  /* Text */
+  --hx-color-text-title: #333333;
+  --hx-color-text-primary: #666666;
+  --hx-color-text-secondary: #999999;
+  --hx-color-text-inverse: #FFFFFF;
+
+  /* Border and background */
+  --hx-color-border-a: #DBDFE7;
+  --hx-color-border-b: #E3E7EE;
+  --hx-color-bg-a: #F0F2F5;
+  --hx-color-bg-b: #F5F7FA;
+  --hx-color-white: #FFFFFF;
+
+  /* Brand scale */
+  --hx-brand-1: #EDFAFF;
+  --hx-brand-2: #DAF4FF;
+  --hx-brand-3: #B9DFF0;
+  --hx-brand-4: #67BFE5;
+  --hx-brand-5: #2495C7;
+  --hx-brand-6: #036F9E;
+  --hx-brand-7: #015478;
+  --hx-brand-8: #00405C;
+  --hx-brand-9: #063449;
+  --hx-brand-10: #01283A;
+
+  /* Typography */
+  --hx-font-sans: "HarmonyOS Sans", "Source Han Sans SC", "思源黑体", "Microsoft YaHei", Arial, sans-serif;
+  --hx-font-number: "D-DIN-PRO", DIN, "HarmonyOS Sans", Arial, sans-serif;
+  --hx-font-weight-light: 320;
+  --hx-font-weight-regular: 400;
+  --hx-font-weight-semibold: 600;
+
+  --hx-font-h1: 36px;
+  --hx-line-h1: 54px;
+  --hx-font-h2: 24px;
+  --hx-line-h2: 36px;
+  --hx-font-h3: 20px;
+  --hx-line-h3: 30px;
+  --hx-font-h4: 18px;
+  --hx-line-h4: 28px;
+  --hx-font-h5: 16px;
+  --hx-line-h5: 24px;
+  --hx-font-body: 14px;
+  --hx-line-body: 22px;
+  --hx-font-assist: 12px;
+  --hx-line-assist: 18px;
+
+  /* Spacing */
+  --hx-space-1: 4px;
+  --hx-space-2: 8px;
+  --hx-space-3: 12px;
+  --hx-space-4: 16px;
+  --hx-space-5: 20px;
+  --hx-space-6: 24px;
+  --hx-space-7: 28px;
+  --hx-space-8: 32px;
+  --hx-space-10: 40px;
+
+  /* Radius */
+  --hx-radius-control: 3px;
+  --hx-radius-card: 6px;
+  --hx-radius-dropdown: 6px;
+  --hx-radius-dropdown-item: 3px;
+
+  /* Layout */
+  --hx-admin-sidebar-width: 232px;
+  --hx-admin-content-width: 1208px;
+  --hx-admin-margin: 24px;
+  --hx-admin-gutter: 16px;
+  --hx-front-content-width: 1128px;
+  --hx-front-gutter: 24px;
+}

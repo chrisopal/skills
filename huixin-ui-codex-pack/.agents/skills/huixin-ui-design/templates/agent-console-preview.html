@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>智能体控制台 - Huixin UI Preview</title>
+    <link rel="stylesheet" href="./agent-console-page.css" />
+  </head>
+  <body>
+    <div class="hx-agent-console">
+      <aside class="hx-console-sidebar">
+        <div class="hx-console-logo">慧新全智</div>
+        <nav class="hx-console-nav" aria-label="智能体控制台导航">
+          <a class="hx-console-nav-link hx-console-nav-link-active" href="/console">控制台</a>
+          <a class="hx-console-nav-link" href="/任务队列">任务队列</a>
+          <a class="hx-console-nav-link" href="/智能体">智能体</a>
+          <a class="hx-console-nav-link" href="/知识库">知识库</a>
+          <a class="hx-console-nav-link" href="/运行日志">运行日志</a>
+          <a class="hx-console-nav-link" href="/系统设置">系统设置</a>
+        </nav>
+      </aside>
+
+      <main class="hx-console-main">
+        <header class="hx-console-header">
+          <div>
+            <p class="hx-console-kicker">智能制造任务中枢</p>
+            <h1 class="hx-console-title">智能体控制台</h1>
+          </div>
+          <div class="hx-console-actions">
+            <button class="hx-btn hx-btn-outline" type="button">暂停调度</button>
+            <button class="hx-btn hx-btn-primary" type="button">新建任务</button>
+          </div>
+        </header>
+
+        <section class="hx-console-summary" aria-label="控制台概览">
+          <article class="hx-summary-card">
+            <span class="hx-summary-label">在线智能体</span>
+            <strong class="hx-summary-value">24</strong>
+            <span class="hx-summary-note hx-success-text">+3 本日新增</span>
+          </article>
+          <article class="hx-summary-card">
+            <span class="hx-summary-label">运行中任务</span>
+            <strong class="hx-summary-value">138</strong>
+            <span class="hx-summary-note">平均响应 1.8s</span>
+          </article>
+          <article class="hx-summary-card">
+            <span class="hx-summary-label">异常待处理</span>
+            <strong class="hx-summary-value">7</strong>
+            <span class="hx-summary-note hx-warning-text">2 项超过 SLA</span>
+          </article>
+          <article class="hx-summary-card">
+            <span class="hx-summary-label">自动化完成率</span>
+            <strong class="hx-summary-value">92.6%</strong>
+            <span class="hx-summary-note hx-success-text">+4.2%</span>
+          </article>
+        </section>
+
+        <section class="hx-console-layout">
+          <div class="hx-console-left">
+            <section class="hx-panel" aria-labelledby="agents-title">
+              <div class="hx-panel-header">
+                <h2 id="agents-title" class="hx-panel-title">智能体状态</h2>
+                <button class="hx-btn hx-btn-outline" type="button">管理</button>
+              </div>
+              <div class="hx-agent-grid">
+                <article class="hx-agent-card">
+                  <div class="hx-agent-card-header">
+                    <div>
+                      <h3 class="hx-agent-name">总控智能体</h3>
+                      <p class="hx-agent-role">任务编排</p>
+                    </div>
+                    <span class="hx-status hx-status-running">运行中</span>
+                  </div>
+                  <div class="hx-agent-meter" aria-label="总控智能体负载 76%">
+                    <span class="hx-agent-meter-fill hx-agent-meter-fill-high"></span>
+                  </div>
+                  <div class="hx-agent-meta"><span>负载 76%</span><span>队列 12</span></div>
+                </article>
+                <article class="hx-agent-card">
+                  <div class="hx-agent-card-header">
+                    <div>
+                      <h3 class="hx-agent-name">巡检智能体</h3>
+                      <p class="hx-agent-role">质量核验</p>
+                    </div>
+                    <span class="hx-status hx-status-running">运行中</span>
+                  </div>
+                  <div class="hx-agent-meter" aria-label="巡检智能体负载 48%">
+                    <span class="hx-agent-meter-fill hx-agent-meter-fill-medium"></span>
+                  </div>
+                  <div class="hx-agent-meta"><span>负载 48%</span><span>队列 6</span></div>
+                </article>
+                <article class="hx-agent-card">
+                  <div class="hx-agent-card-header">
+                    <div>
+                      <h3 class="hx-agent-name">计划智能体</h3>
+                      <p class="hx-agent-role">方案拆解</p>
+                    </div>
+                    <span class="hx-status hx-status-idle">空闲</span>
+                  </div>
+                  <div class="hx-agent-meter" aria-label="计划智能体负载 12%">
+                    <span class="hx-agent-meter-fill hx-agent-meter-fill-low"></span>
+                  </div>
+                  <div class="hx-agent-meta"><span>负载 12%</span><span>队列 0</span></div>
+                </article>
+                <article class="hx-agent-card">
+                  <div class="hx-agent-card-header">
+                    <div>
+                      <h3 class="hx-agent-name">风控智能体</h3>
+                      <p class="hx-agent-role">异常识别</p>
+                    </div>
+                    <span class="hx-status hx-status-blocked">阻塞</span>
+                  </div>
+                  <div class="hx-agent-meter" aria-label="风控智能体负载 34%">
+                    <span class="hx-agent-meter-fill hx-agent-meter-fill-medium"></span>
+                  </div>
+                  <div class="hx-agent-meta"><span>负载 34%</span><span>队列 3</span></div>
+                </article>
+              </div>
+            </section>
+
+            <section class="hx-panel" aria-labelledby="tasks-title">
+              <div class="hx-panel-header">
+                <h2 id="tasks-title" class="hx-panel-title">任务队列</h2>
+                <input class="hx-input" aria-label="搜索任务" placeholder="搜索任务编号或名称" />
+              </div>
+              <div class="hx-table-scroll">
+                <table class="hx-console-table">
+                  <thead>
+                    <tr>
+                      <th>任务</th>
+                      <th>负责人</th>
+                      <th>优先级</th>
+                      <th>进度</th>
+                      <th>预计完成</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>产线异常归因分析</strong><span>task-1048</span></td>
+                      <td>巡检智能体</td>
+                      <td><span class="hx-priority hx-priority-high">高</span></td>
+                      <td>82%</td>
+                      <td>预计 14:30 完成</td>
+                    </tr>
+                    <tr>
+                      <td><strong>设备维保计划生成</strong><span>task-1049</span></td>
+                      <td>计划智能体</td>
+                      <td><span class="hx-priority hx-priority-medium">中</span></td>
+                      <td>46%</td>
+                      <td>预计 15:10 完成</td>
+                    </tr>
+                    <tr>
+                      <td><strong>供应风险日报汇总</strong><span>task-1050</span></td>
+                      <td>风控智能体</td>
+                      <td><span class="hx-priority hx-priority-low">低</span></td>
+                      <td>28%</td>
+                      <td>等待数据同步</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <aside class="hx-console-right">
+            <section class="hx-panel" aria-labelledby="runtime-title">
+              <h2 id="runtime-title" class="hx-panel-title">运行态势</h2>
+              <div class="hx-runtime-chart" aria-label="智能体运行态势图">
+                <span class="hx-chart-bar hx-chart-bar-a"></span>
+                <span class="hx-chart-bar hx-chart-bar-b"></span>
+                <span class="hx-chart-bar hx-chart-bar-c"></span>
+                <span class="hx-chart-bar hx-chart-bar-d"></span>
+                <span class="hx-chart-bar hx-chart-bar-e"></span>
+              </div>
+              <div class="hx-runtime-legend"><span>吞吐 86%</span><span>稳定性 97%</span></div>
+            </section>
+
+            <section class="hx-panel" aria-labelledby="events-title">
+              <h2 id="events-title" class="hx-panel-title">最新事件</h2>
+              <ol class="hx-event-list">
+                <li><time>13:42</time><div><strong>总控智能体完成任务拆解</strong><p>已分配 5 个子任务至专用智能体</p></div></li>
+                <li><time>13:36</time><div><strong>巡检智能体发现异常趋势</strong><p>注塑一线良率波动超过阈值</p></div></li>
+                <li><time>13:20</time><div><strong>风控智能体等待外部数据</strong><p>供应商交付接口返回延迟</p></div></li>
+              </ol>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

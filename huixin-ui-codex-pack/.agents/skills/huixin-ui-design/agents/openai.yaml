@@ -1,0 +1,7 @@
+interface:
+  display_name: "Huixin UI Design"
+  short_description: "Apply Huixin UI Design 2.0 tokens, layout, and component standards."
+  brand_color: "#00405C"
+  default_prompt: "Use this skill to design, implement, or review frontend UI according to Huixin UI Design 2.0."
+policy:
+  allow_implicit_invocation: true

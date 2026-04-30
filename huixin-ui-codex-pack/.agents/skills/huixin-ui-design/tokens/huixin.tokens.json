@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "name": "Huixin UI Design 2.0 Tokens",
+    "version": "2025.11",
+    "description": "Machine-readable implementation tokens distilled from the Huixin online UI design specification."
+  },
+  "color": {
+    "primary": "#00405C",
+    "primaryAction": "#0097BA",
+    "selectedBg": "#CCF5FF",
+    "accentGreen": "#A5D867",
+    "accentTeal": "#0097BA",
+    "success": "#2BA471",
+    "warning": "#E37318",
+    "error": "#D54941",
+    "text": {
+      "title": "#333333",
+      "primary": "#666666",
+      "secondary": "#999999",
+      "inverse": "#FFFFFF"
+    },
+    "border": {
+      "a": "#DBDFE7",
+      "b": "#E3E7EE"
+    },
+    "background": {
+      "a": "#F0F2F5",
+      "b": "#F5F7FA",
+      "white": "#FFFFFF"
+    },
+    "brand": {
+      "1": "#EDFAFF",
+      "2": "#DAF4FF",
+      "3": "#B9DFF0",
+      "4": "#67BFE5",
+      "5": "#2495C7",
+      "6": "#036F9E",
+      "7": "#015478",
+      "8": "#00405C",
+      "9": "#063449",
+      "10": "#01283A"
+    },
+    "successScale": {
+      "1": "#E3F9E9",
+      "2": "#C6F3D7",
+      "3": "#92DAB2",
+      "4": "#56C08D",
+      "5": "#2BA471",
+      "6": "#008858",
+      "7": "#006C45",
+      "8": "#005334",
+      "9": "#003B23",
+      "10": "#002515"
+    },
+    "warningScale": {
+      "1": "#FFF1E9",
+      "2": "#FFD9C2",
+      "3": "#FFB98C",
+      "4": "#FA9550",
+      "5": "#E37318",
+      "6": "#BE5A00",
+      "7": "#954500",
+      "8": "#713300",
+      "9": "#532300",
+      "10": "#3B1700"
+    },
+    "errorScale": {
+      "1": "#FFF0ED",
+      "2": "#FFD8D2",
+      "3": "#FFB9B0",
+      "4": "#FF9285",
+      "5": "#F6685D",
+      "6": "#D54941",
+      "7": "#AD352F",
+      "8": "#881F1C",
+      "9": "#68070A",
+      "10": "#490002"
+    }
+  },
+  "font": {
+    "sans": "HarmonyOS Sans, Source Han Sans SC, 思源黑体, Microsoft YaHei, Arial, sans-serif",
+    "number": "D-DIN-PRO, DIN, HarmonyOS Sans, Arial, sans-serif",
+    "weights": {
+      "light": 320,
+      "regular": 400,
+      "semibold": 600
+    },
+    "scale": {
+      "h1": { "size": 36, "lineHeight": 54, "weight": 600 },
+      "h2": { "size": 24, "lineHeight": 36, "weight": 600 },
+      "h3": { "size": 20, "lineHeight": 30, "weight": 600 },
+      "h4": { "size": 18, "lineHeight": 28, "weight": 600 },
+      "h5": { "size": 16, "lineHeight": 24, "weight": 400 },
+      "body": { "size": 14, "lineHeight": 22, "weight": 400 },
+      "assist": { "size": 12, "lineHeight": 18, "weight": 400 }
+    }
+  },
+  "spacing": [4, 8, 12, 16, 20, 24, 28, 32, 40],
+  "radius": {
+    "control": 3,
+    "card": 6,
+    "dropdown": 6,
+    "dropdownItem": 3
+  },
+  "layout": {
+    "frontstage": {
+      "canvasWidth": 1920,
+      "contentWidth": 1128,
+      "columns": 12,
+      "columnWidth": 72,
+      "gutter": 24,
+      "gridBase": 8,
+      "mobileBreakpoint": 768
+    },
+    "admin": {
+      "canvasWidth": 1440,
+      "contentWidth": 1208,
+      "columns": 24,
+      "gutter": 16,
+      "margin": 24,
+      "sidebarWidth": 232,
+      "supportedWidths": [1366, 1440, 1920]
+    }
+  },
+  "component": {
+    "button": {
+      "height": 32,
+      "paddingY": 5,
+      "paddingX": 16,
+      "fontSize": 14,
+      "radius": 3,
+      "icon": 16,
+      "iconGap": 8
+    },
+    "input": {
+      "height": 32,
+      "paddingY": 5,
+      "paddingX": 8,
+      "fontSize": 14,
+      "radius": 3,
+      "icon": 16
+    },
+    "search": {
+      "height": 32,
+      "paddingTop": 4,
+      "paddingRight": 4,
+      "paddingBottom": 4,
+      "paddingLeft": 8,
+      "fontSize": 14,
+      "radius": 3,
+      "icon": 24
+    },
+    "form": {
+      "labelFontSize": 14,
+      "controlFontSize": 14,
+      "labelControlGap": 16,
+      "rowGap": 24,
+      "labelAlign": "right"
+    },
+    "card": {
+      "paddingY": 16,
+      "paddingX": 24,
+      "titleFontSize": 16,
+      "bodyFontSize": 14,
+      "radius": 6,
+      "headerHeight": 40
+    },
+    "tag": {
+      "height": 24,
+      "paddingY": 2,
+      "paddingX": 8,
+      "fontSize": 12,
+      "icon": 14
+    },
+    "badge": {
+      "height": 20,
+      "paddingX": 6,
+      "fontSize": 12
+    },
+    "icon": {
+      "common": 16,
+      "standard": [24, 48, 72],
+      "strokeWidth": 2
+    },
+    "empty": {
+      "titleFontSize": 20,
+      "descriptionFontSize": 14,
+      "illustrationStyle": "flat"
+    },
+    "dialog": {
+      "paddingY": 16,
+      "paddingX": 24,
+      "icon": 20,
+      "fontSize": 14
+    }
+  }
+}

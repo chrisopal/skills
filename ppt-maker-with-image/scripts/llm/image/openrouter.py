@@ -1,24 +1,35 @@
 from __future__ import annotations
 
 import base64
-from typing import Any
+import json
+import time
+from typing import Any, Sequence
 
 import httpx
 
 from ..config import ProviderConfig
 from ..errors import ProviderError
-from .base import ImageProvider, ImageRenderRequest
+from .base import ImageProvider, ImageRenderRequest, ReferenceImage
 
 
 class OpenRouterImageProvider(ImageProvider):
+    supports_reference_images = True
+    supports_seed = False
+
     def __init__(self, config: ProviderConfig, *, api_key: str) -> None:
         self._config = config
         self._api_key = api_key
 
     def render(self, request: ImageRenderRequest) -> bytes:
+        self._validate_request(request)
         payload = {
             "model": request.model,
-            "messages": [{"role": "user", "content": request.prompt}],
+            "messages": [
+                {
+                    "role": "user",
+                    "content": _build_message_content(request.prompt, request.reference_images),
+                }
+            ],
             "modalities": ["image", "text"],
             "temperature": 0.1,
             "image_config": {
@@ -31,14 +42,44 @@ class OpenRouterImageProvider(ImageProvider):
             "Content-Type": "application/json",
         }
         base_url = (self._config.base_url or "https://openrouter.ai/api/v1").rstrip("/")
-        try:
-            with httpx.Client(timeout=60.0) as client:
-                response = client.post(f"{base_url}/chat/completions", headers=headers, json=payload)
-                response.raise_for_status()
-                message = response.json()["choices"][0]["message"]
-        except Exception as exc:
-            raise ProviderError(f"OpenRouter image render failed for model `{request.model}`") from exc
-        return _extract_image_bytes(message)
+        timeout = httpx.Timeout(300.0, connect=120.0)
+        last_exc: Exception | None = None
+        for attempt in range(3):
+            try:
+                with httpx.Client(timeout=timeout) as client:
+                    response = client.post(f"{base_url}/chat/completions", headers=headers, json=payload)
+                    response.raise_for_status()
+            except (httpx.TimeoutException, httpx.TransportError) as exc:
+                last_exc = exc
+                if attempt < 2:
+                    time.sleep(2 * (attempt + 1))
+                    continue
+                break
+            except Exception as exc:
+                raise ProviderError(f"OpenRouter image render failed for model `{request.model}`") from exc
+
+            try:
+                message = _extract_response_message(response)
+            except (json.JSONDecodeError, KeyError, IndexError, TypeError) as exc:
+                last_exc = exc
+                if attempt < 2:
+                    time.sleep(2 * (attempt + 1))
+                    continue
+                break
+            except Exception as exc:
+                raise ProviderError(f"OpenRouter image render failed for model `{request.model}`") from exc
+            try:
+                return _extract_image_bytes(message)
+            except ProviderError:
+                raise
+            except Exception as exc:
+                raise ProviderError(f"OpenRouter image render failed for model `{request.model}`") from exc
+
+        raise ProviderError(f"OpenRouter image render failed for model `{request.model}`") from last_exc
+
+
+def _extract_response_message(response: httpx.Response) -> dict[str, Any]:
+    return response.json()["choices"][0]["message"]
 
 
 def _extract_image_bytes(message: dict[str, Any]) -> bytes:
@@ -52,12 +93,37 @@ def _extract_image_bytes(message: dict[str, Any]) -> bytes:
 
 
 def _fetch_bytes(url: str) -> bytes:
-    try:
-        response = httpx.get(url, timeout=60.0)
-        response.raise_for_status()
-        return response.content
-    except Exception as exc:
-        raise ProviderError(f"OpenRouter image download failed: {url}") from exc
+    timeout = httpx.Timeout(300.0, connect=120.0)
+    last_exc: Exception | None = None
+    for attempt in range(3):
+        try:
+            response = httpx.get(url, timeout=timeout)
+            response.raise_for_status()
+            return response.content
+        except (httpx.TimeoutException, httpx.TransportError) as exc:
+            last_exc = exc
+            if attempt < 2:
+                time.sleep(2 * (attempt + 1))
+                continue
+            break
+        except Exception as exc:
+            raise ProviderError(f"OpenRouter image download failed: {url}") from exc
+    raise ProviderError(f"OpenRouter image download failed: {url}") from last_exc
+
+
+def _build_message_content(prompt: str, reference_images: Sequence[ReferenceImage] | None) -> Any:
+    if not reference_images:
+        return prompt
+    content: list[dict[str, Any]] = [{"type": "text", "text": prompt}]
+    for reference_image in reference_images:
+        encoded = base64.b64encode(reference_image.data).decode("ascii")
+        content.append(
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:{reference_image.mime_type};base64,{encoded}"},
+            }
+        )
+    return content
 
 
 def _openrouter_image_size(resolution: str) -> str:

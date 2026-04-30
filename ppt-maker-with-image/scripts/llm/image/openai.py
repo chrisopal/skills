@@ -10,11 +10,15 @@ from .base import ImageProvider, ImageRenderRequest
 
 
 class OpenAIImageProvider(ImageProvider):
+    supports_reference_images = False
+    supports_seed = False
+
     def __init__(self, config: ProviderConfig, *, api_key: str) -> None:
         self._config = config
         self._api_key = api_key
 
     def render(self, request: ImageRenderRequest) -> bytes:
+        self._validate_request(request)
         payload = {
             "model": request.model,
             "prompt": request.prompt,

@@ -1,12 +1,18 @@
 from __future__ import annotations
 
 import json
+import time
 from typing import Any, Mapping, Sequence
 
 from .errors import ProviderError, UnsupportedFeatureError
 
 
 MessageList = Sequence[Mapping[str, Any]]
+JSON_MODE_SYSTEM_MESSAGE = {
+    "role": "system",
+    "content": "Return only valid JSON. Do not include markdown fences or explanatory prose.",
+}
+JSON_PARSE_MAX_ATTEMPTS = 3
 
 
 def complete_text(
@@ -63,17 +69,34 @@ def complete_json(
     extra_headers: Mapping[str, str] | None = None,
     **kwargs: Any,
 ) -> Any:
-    content = complete_text(
-        model=model,
-        messages=messages,
-        api_key=api_key,
-        base_url=base_url,
-        temperature=temperature,
-        response_format={"type": "json_object"},
-        extra_headers=extra_headers,
-        **kwargs,
-    )
-    return _parse_json_content(content)
+    request_messages = _with_json_instruction(messages)
+    last_exc: ProviderError | None = None
+
+    for attempt in range(JSON_PARSE_MAX_ATTEMPTS):
+        content = complete_text(
+            model=model,
+            messages=request_messages,
+            api_key=api_key,
+            base_url=base_url,
+            temperature=temperature,
+            response_format={"type": "json_object"},
+            extra_headers=extra_headers,
+            **kwargs,
+        )
+        try:
+            return _parse_json_content(content)
+        except ProviderError as exc:
+            last_exc = exc
+            if attempt < JSON_PARSE_MAX_ATTEMPTS - 1:
+                time.sleep(attempt + 1)
+                continue
+            break
+
+    raise ProviderError("Text model did not return valid JSON content") from last_exc
+
+
+def _with_json_instruction(messages: MessageList) -> list[Mapping[str, Any]]:
+    return [JSON_MODE_SYSTEM_MESSAGE, *list(messages)]
 
 
 def _coerce_content_to_text(content: Any) -> str:

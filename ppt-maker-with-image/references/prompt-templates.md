@@ -92,8 +92,14 @@ Requirement:
 Master style:
 {master_style_json}
 
+Page intent:
+{page_intent_json}
+
 Outline:
 {outline_json}
+
+Style header:
+{style_header}
 
 Return for each slide:
 - page_no
@@ -107,6 +113,7 @@ Constraints:
 - keep prompts specific to layout, hierarchy, and modules
 - avoid random page furniture and microcopy
 - optimize for full-slide image rendering
+- image_prompt must contain page-specific visible content and layout intent only; do not restate font-size ranges, spacing values, margin values, radius values, stroke values, shadow values, or caption-size labels.
 ```
 
 ## Image Rendering Wrapper Prompt
@@ -119,6 +126,9 @@ The output must be a 16:9 slide image at {resolution}.
 Render the full slide itself, including all intended text and visual elements.
 Do not generate a background only.
 Do not add page numbers, watermarks, corner labels, or extra decorative microcopy unless explicitly requested.
+Visible slide copy must only include presentation content.
+Treat all style measurements, font sizes, spacing values, radius values, stroke values, and shadow values as invisible design instructions.
+Never render measurement labels or design annotations such as "40-56px", "20-28px", "56-72px", "Caption: 12-14px", "R=14px", "stroke=1pt", red boxes, rulers, alignment guides, wireframes, or prompt/schema text.
 
 Slide specification:
 {image_prompt}
@@ -138,8 +148,14 @@ Requirement:
 Master style:
 {master_style_json}
 
+Page intent:
+{page_intent_json}
+
 Whole outline:
 {outline_json}
+
+Style header:
+{style_header}
 
 Current slide:
 {slide_json}
@@ -159,7 +175,10 @@ Return a JSON object containing:
 
 Constraints:
 - preserve the same deck-level style and template rules
+- treat `style_header` as the only deck-level style source when it is provided
 - only adjust what is necessary for this slide
 - keep the slide aligned with the deck narrative
 - avoid extra corner labels, decorative microcopy, and random page furniture
+- image_prompt must contain page-specific visible content and layout intent only; do not restate font-size ranges, spacing values, margin values, radius values, stroke values, shadow values, or caption-size labels.
+- treat all style measurements, font sizes, spacing values, radius values, stroke values, and shadow values as invisible design instructions rather than visible slide copy.
 ```

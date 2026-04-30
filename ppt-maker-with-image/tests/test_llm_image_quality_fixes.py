@@ -135,6 +135,53 @@ def test_openrouter_url_download_status_errors_are_wrapped(monkeypatch: pytest.M
     assert isinstance(exc_info.value.__cause__, httpx.HTTPStatusError)
 
 
+def test_openrouter_retries_malformed_json_render_response(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    request_url = "https://openrouter.ai/api/v1/chat/completions"
+    responses = [
+        httpx.Response(200, request=httpx.Request("POST", request_url), content=b'{"choices":[{"message":'),
+        _json_response(
+            "POST",
+            request_url,
+            {
+                "choices": [
+                    {
+                        "message": {
+                            "images": [{"image_url": {"url": "data:image/png;base64,aW1hZ2U="}}]
+                        }
+                    }
+                ]
+            },
+        ),
+    ]
+    attempts = 0
+    sleep_calls: list[int] = []
+
+    class _RetryingClient:
+        def __enter__(self) -> _RetryingClient:
+            return self
+
+        def __exit__(self, exc_type, exc, tb) -> bool:
+            return False
+
+        def post(self, *_args, **_kwargs) -> httpx.Response:
+            nonlocal attempts
+            response = responses[attempts]
+            attempts += 1
+            return response
+
+    monkeypatch.setattr(openrouter_module.httpx, "Client", lambda timeout=60.0: _RetryingClient())
+    monkeypatch.setattr(openrouter_module.time, "sleep", sleep_calls.append)
+
+    provider = OpenRouterImageProvider(ProviderConfig(name="openrouter"), api_key="test-key")
+    request = ImageRenderRequest(prompt="prompt", model="openrouter-model")
+
+    assert provider.render(request) == b"image"
+    assert attempts == 2
+    assert sleep_calls == [2]
+
+
 def test_openrouter_sends_reference_images_as_multimodal_content(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

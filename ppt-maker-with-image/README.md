@@ -73,9 +73,11 @@ python scripts/run_ppt_job.py /tmp/example-job.json
 
 - `master_style.json`
 - `outline.json`
+- `page_intent.json`
 - `slide_prompts.json`
 - `images/*.png`
 - `deck.pptx`
+- `manifest.json`
 
 如果你想直接走完，可先把 `outline_approved` 和 `prompts_approved` 设为 `true`，或者加上：
 

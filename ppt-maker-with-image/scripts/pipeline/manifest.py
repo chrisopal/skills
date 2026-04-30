@@ -6,6 +6,14 @@ from typing import Any, Mapping
 
 
 DEFAULT_MANIFEST_NAME = "manifest.json"
+STAGE_ARTIFACTS: dict[str, str] = {
+    "master_style": "master_style.json",
+    "outline": "outline.json",
+    "page_intent": "page_intent.json",
+    "slide_prompts": "slide_prompts.json",
+    "render": "images",
+    "assemble": "deck.pptx",
+}
 
 
 def manifest_path(path: str | Path, *, filename: str = DEFAULT_MANIFEST_NAME) -> Path:
@@ -18,8 +26,10 @@ def manifest_path(path: str | Path, *, filename: str = DEFAULT_MANIFEST_NAME) ->
 def load_manifest(path: str | Path) -> dict[str, Any]:
     resolved = manifest_path(path)
     if not resolved.exists():
-        return {}
-    return json.loads(resolved.read_text(encoding="utf-8"))
+        return {"provider_capabilities": {}}
+    payload = json.loads(resolved.read_text(encoding="utf-8"))
+    payload.setdefault("provider_capabilities", {})
+    return payload
 
 
 def write_manifest(path: str | Path, manifest: Mapping[str, Any]) -> Path:

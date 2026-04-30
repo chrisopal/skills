@@ -45,11 +45,6 @@ def assemble_pptx(image_paths: list[Path], output_path: Path) -> Path:
             height=prs.slide_height,
         )
 
-    if prs.slides:
-        xml_slides = prs.slides._sldIdLst  # type: ignore[attr-defined]
-        first = xml_slides[0]
-        xml_slides.remove(first)
-
     prs.save(str(output_path))
     return output_path
 

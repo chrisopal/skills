@@ -32,7 +32,19 @@ def is_missing(value) -> bool:
 
 
 def find_missing_fields(data: dict) -> list[str]:
-    return [field for field in REQUIRED_FIELDS if is_missing(data.get(field))]
+    missing: list[str] = []
+    for field in REQUIRED_FIELDS:
+        if field != "style":
+            if is_missing(data.get(field)):
+                missing.append(field)
+            continue
+
+        if not is_missing(data.get(field)):
+            continue
+        if data.get("master_style") or data.get("template_id") or data.get("template_name"):
+            continue
+        missing.append(field)
+    return missing
 
 
 def validate_job_data(data: dict) -> list[str]:

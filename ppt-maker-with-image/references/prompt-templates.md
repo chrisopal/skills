@@ -23,7 +23,7 @@ Return:
 
 ## Outline Generation Prompt
 
-Use this pattern for outline generation:
+Use this pattern for Stage 2 outline generation:
 
 ```text
 You are a senior presentation strategist.
@@ -47,7 +47,7 @@ Constraints:
 
 ## Master Style Brief Generation Prompt
 
-Use this pattern after the requirement is confirmed and before per-slide prompt generation:
+Use this pattern for Stage 1 master style generation, after the requirement is confirmed and before outline or per-slide prompt generation:
 
 ```text
 You are a senior presentation design director.
@@ -78,9 +78,36 @@ Constraints:
 - align to the named template preset if one exists
 ```
 
+## Page Intent Generation Prompt
+
+Use this pattern between outline and slide prompts:
+
+```text
+You are a senior presentation visual director.
+Turn the confirmed outline into deck-wide per-page intent guidance for image prompt generation.
+
+Requirement:
+{requirement_json}
+
+Master style:
+{master_style_json}
+
+Outline:
+{outline_json}
+
+Return a JSON object containing:
+- global_intent
+- slides: array of {{page_no, intent, slide_role, key_blocks}}
+
+Constraints:
+- keep intent concise but explicit
+- each page has exactly one intent statement
+- each slide intent must align to the deck narrative
+```
+
 ## Per-Slide Prompt Generation Prompt
 
-Use this pattern after the outline is confirmed:
+Use this pattern for Stage 3 per-slide prompt generation after the outline is confirmed:
 
 ```text
 You are a presentation visual prompt designer.
@@ -110,6 +137,8 @@ Return for each slide:
 
 Constraints:
 - maintain a consistent visual system across all slides
+- treat `style_header` as the only deck-level style source when it is provided
+- keep `slide_prompt_from_content_block` limited to page-specific content and do not repeat style tokens
 - keep prompts specific to layout, hierarchy, and modules
 - avoid random page furniture and microcopy
 - optimize for full-slide image rendering
@@ -118,7 +147,7 @@ Constraints:
 
 ## Image Rendering Wrapper Prompt
 
-Use this pattern when sending a prompt to an image model:
+Use this pattern for Stage 4 image rendering:
 
 ```text
 You are a professional slide designer. Generate a complete presentation slide as an image.

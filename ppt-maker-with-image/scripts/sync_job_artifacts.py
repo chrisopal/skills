@@ -4,7 +4,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from run_ppt_job import load_json, resolve_output_dir, write_json
+from pipeline.common import load_json, resolve_output_dir, write_json
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -27,6 +27,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Set prompts_approved=true after syncing slide_prompts.json",
     )
+    parser.add_argument(
+        "--approve-page-intent",
+        action="store_true",
+        help="Set page_intent_approved=true after syncing page_intent.json",
+    )
     return parser
 
 
@@ -40,6 +45,7 @@ def main() -> int:
 
     master_style_path = output_dir / "master_style.json"
     outline_path = output_dir / "outline.json"
+    page_intent_path = output_dir / "page_intent.json"
     slide_prompts_path = output_dir / "slide_prompts.json"
 
     if master_style_path.exists():
@@ -57,6 +63,12 @@ def main() -> int:
         job["slides"] = slides_payload.get("slides", [])
         if args.approve_prompts:
             job["prompts_approved"] = True
+
+    if page_intent_path.exists():
+        page_intent_payload = load_json(page_intent_path)
+        job["page_intent"] = page_intent_payload
+        if args.approve_page_intent:
+            job["page_intent_approved"] = True
 
     write_json(job_path, job)
     print(f"[OK] Synced artifacts back into job.json: {job_path}")

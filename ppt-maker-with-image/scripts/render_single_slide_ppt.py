@@ -4,76 +4,33 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from run_ppt_job import (
-    call_image_model,
-    load_asset_json,
-    load_json,
-    load_prompt_template,
-    load_yaml,
-    openrouter_client,
-)
-from assemble_pptx import assemble_pptx
 from PIL import Image, ImageDraw
 
-
-def skill_root() -> Path:
-    return Path(__file__).resolve().parents[1]
+from assemble_pptx import assemble_pptx
+from llm.config import load_model_config
+from llm.image import ImageRenderRequest, build_image_provider
+from pipeline.common import load_asset_json, load_json, skill_root
+from pipeline.stage_render import build_image_render_prompt
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Generate a single-slide image and assemble a one-slide PPTX."
     )
-    parser.add_argument(
-        "--job",
-        default="",
-        help="Path to single_slide_job.json",
-    )
-    parser.add_argument(
-        "--prompt",
-        default="",
-        help="Single-slide prompt text",
-    )
-    parser.add_argument(
-        "--prompt-file",
-        default="",
-        help="Path to a file containing the single-slide prompt",
-    )
-    parser.add_argument(
-        "--title",
-        default="",
-        help="Slide title used for output naming or placeholder rendering",
-    )
-    parser.add_argument(
-        "--template-id",
-        default="",
-        help="Optional template id such as huixin",
-    )
-    parser.add_argument(
-        "--template-name",
-        default="",
-        help="Optional template name such as 慧新",
-    )
+    parser.add_argument("--job", default="", help="Path to single_slide_job.json")
+    parser.add_argument("--prompt", default="", help="Single-slide prompt text")
+    parser.add_argument("--prompt-file", default="", help="Path to a file containing the single-slide prompt")
+    parser.add_argument("--title", default="", help="Slide title used for output naming or placeholder rendering")
+    parser.add_argument("--template-id", default="", help="Optional template id such as huixin")
+    parser.add_argument("--template-name", default="", help="Optional template name such as 慧新")
     parser.add_argument(
         "--config",
         default=str(skill_root() / "assets" / "model_config.yaml"),
         help="Path to model config yaml",
     )
-    parser.add_argument(
-        "--output-dir",
-        default="",
-        help="Output directory",
-    )
-    parser.add_argument(
-        "--image-name",
-        default="",
-        help="Output image filename",
-    )
-    parser.add_argument(
-        "--pptx-name",
-        default="",
-        help="Output pptx filename",
-    )
+    parser.add_argument("--output-dir", default="", help="Output directory")
+    parser.add_argument("--image-name", default="", help="Output image filename")
+    parser.add_argument("--pptx-name", default="", help="Output pptx filename")
     parser.add_argument(
         "--dry-run",
         action="store_true",
@@ -107,9 +64,7 @@ def resolve_output_value(job: dict, cli_value, key: str, default: str) -> str:
 
 
 def resolve_single_slide_output_dir(job: dict, cli_value: str, job_path: str) -> Path:
-    raw = cli_value
-    if raw in ("", None):
-        raw = job.get("output", {}).get("directory", "./single-slide-artifacts")
+    raw = cli_value or job.get("output", {}).get("directory", "./single-slide-artifacts")
     path = Path(raw).expanduser()
     if path.is_absolute():
         return path.resolve()
@@ -122,8 +77,7 @@ def build_template_prefix(template_id: str, template_name: str) -> str:
     normalized_id = template_id.strip().lower()
     normalized_name = template_name.strip()
     if normalized_id == "huixin" or normalized_name == "慧新":
-        brief = load_asset_json("huixin_master_style_brief.json")
-        prompt_block = brief.get("prompt_block", "")
+        prompt_block = load_asset_json("huixin_master_style_brief.json").get("prompt_block", "")
         return f"{prompt_block}\n\n"
     return ""
 
@@ -146,7 +100,6 @@ def main() -> int:
     args = parser.parse_args()
 
     job = load_job_payload(args.job)
-
     prompt_text = read_prompt_text(args) or str(job.get("prompt", "")).strip()
     if not prompt_text:
         parser.error("Provide --prompt, --prompt-file, or --job")
@@ -155,35 +108,29 @@ def main() -> int:
     template_id = resolve_value(job, args.template_id, "template_id", "")
     template_name = resolve_value(job, args.template_name, "template_name", "")
 
-    config = load_yaml(Path(args.config).expanduser().resolve())
+    config = load_model_config(Path(args.config).expanduser().resolve())
     output_dir = resolve_single_slide_output_dir(job, args.output_dir, args.job)
     output_dir.mkdir(parents=True, exist_ok=True)
+
     image_path = output_dir / resolve_output_value(job, args.image_name, "image_filename", "single_slide.png")
     pptx_path = output_dir / resolve_output_value(job, args.pptx_name, "pptx_filename", "single_slide.pptx")
 
-    prompt_prefix = build_template_prefix(template_id, template_name)
-    slide_spec = f"{prompt_prefix}{prompt_text}".strip()
+    slide_spec = f"{build_template_prefix(template_id, template_name)}{prompt_text}".strip()
 
     if args.dry_run:
         create_placeholder_single_slide(title, slide_spec, image_path)
     else:
-        client = openrouter_client(config)
-        if client is None:
-            raise RuntimeError("OpenRouter client is not configured")
+        provider = build_image_provider(config, provider_name=config.image.provider)
         try:
-            wrapped_prompt = load_prompt_template("Image Rendering Wrapper Prompt").format(
-                resolution=config.get("resolution", "3840x2160"),
-                image_prompt=slide_spec,
+            request = ImageRenderRequest(
+                prompt=build_image_render_prompt(slide_spec, config.resolution),
+                model=config.image.model,
+                resolution=config.resolution,
+                aspect_ratio=config.aspect_ratio,
             )
-            image_bytes = call_image_model(
-                client,
-                config["image_model"],
-                wrapped_prompt,
-                config.get("resolution", "3840x2160"),
-            )
-            image_path.write_bytes(image_bytes)
+            image_path.write_bytes(provider.render(request))
         finally:
-            client.close()
+            provider.close()
 
     assemble_pptx([image_path], pptx_path)
     print(f"[OK] Wrote image: {image_path}")

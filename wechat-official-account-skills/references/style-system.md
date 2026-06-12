@@ -84,6 +84,8 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 
 ## Cover Image
 
+封面图默认通过 `imagegen` skill 生成 raster bitmap，再按需用本地脚本叠加准确中文标题。不要默认用手写 PIL/SVG/HTML 画封面，除非 imagegen 不可用或用户明确要求确定性图形。
+
 封面统一方向：
 
 - 白底专业技术架构图风格
@@ -100,6 +102,8 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 
 ## Inline Illustrations
 
+正文插图默认通过 `imagegen` skill 生成统一风格 raster bitmap。插图的内容 brief 由写作 skill 给出，排版 skill 负责把 brief 转成 imagegen prompt、保存图片、必要时叠加短标签。
+
 适合图型：
 
 - 流程图：从输入到决策到行动到复盘
@@ -108,6 +112,13 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 - 案例路径图：业务场景 -> AI 能力 -> 人类确认 -> 系统动作 -> 指标
 
 图内文字要短，优先 4-6 个节点，不做密集表格。
+
+生成原则：
+
+- 优先让 imagegen 生成“无文字底图”，再用本地脚本叠加准确中文标签。
+- 如果需要保留在图中的中文，必须人工或脚本复核文字准确性。
+- 不使用纯代码绘制的占位图作为最终插图；代码绘图只适合流程验证或 imagegen 失败兜底。
+- 图片保存到项目工作区，例如 `assets/wechat/`，不能只留在 imagegen 默认目录。
 
 ## QA Rules
 
@@ -118,4 +129,4 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 - 封面与正文配色一致。
 - 没有 emoji 作为图标。
 - 没有大面积蓝紫科技风。
-
+- 封面和正文插图来自 imagegen 或明确记录了 fallback 原因。

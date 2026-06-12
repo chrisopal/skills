@@ -37,6 +37,16 @@ def main() -> int:
     writer = (ROOT / "wechat-article-writer" / "SKILL.md").read_text(encoding="utf-8")
     if "正文插图" not in writer or "Content Illustration Brief" not in writer:
         errors.append("writer skill must define content illustration brief")
+    layout = (ROOT / "wechat-article-layout" / "SKILL.md").read_text(encoding="utf-8")
+    style = (ROOT / "references" / "style-system.md").read_text(encoding="utf-8")
+    pipeline = (ROOT / "wechat-daily-pipeline" / "SKILL.md").read_text(encoding="utf-8")
+    for label, text in {
+        "layout": layout,
+        "style-system": style,
+        "daily-pipeline": pipeline,
+    }.items():
+        if "imagegen" not in text:
+            errors.append(f"{label} must require imagegen for visual assets")
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1

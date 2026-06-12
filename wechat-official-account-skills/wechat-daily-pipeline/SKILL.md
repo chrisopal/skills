@@ -56,8 +56,9 @@ Forbidden:
    - conversational Chinese body
    - technical clarity + enterprise landing value
 4. Prepare visuals:
-   - cover image
-   - inline diagram based on the writer's brief, only when it improves understanding
+   - generate cover image with `imagegen`
+   - generate inline diagram with `imagegen` based on the writer's brief, only when it improves understanding
+   - use local overlay/resizing only for exact labels and final dimensions
    - unified style from `style-system.md`
 5. Layout:
    - apply WeChat HTML style
@@ -110,5 +111,6 @@ If paths differ, adapt to the current workspace and report the paths used.
 
 - If credentials or IP whitelist fail, produce local Markdown/HTML/assets and report the blocker.
 - If cover generation fails, create a precise cover prompt and continue with article draft.
+- If imagegen is unavailable, use a clearly reported fallback asset and include the fallback reason in the audit package.
 - If review fails, do not save to WeChat unless the user explicitly asks for a flawed draft.
 - If WeChat API saves the draft, always read it back when possible.

@@ -7,6 +7,7 @@
 - [`industrial-ai-architect`](./industrial-ai-architect/README.md)：工业数字化、智能工厂、AI 战略架构、方案蓝图、路线图和业务落地设计。
 - [`ppt-maker-with-image`](./ppt-maker-with-image/README.md)：图片优先的 PPT 生成流程，包含需求确认、大纲、逐页提示词、图片生成和 PPTX 组装。
 - [`ppt-maker-direct-pptx`](./ppt-maker-direct-pptx/README.md)：七道闸确认式 PPT 生成，输出可编辑 PowerPoint 原生对象。12 个 layout pattern + 5 内置预设 + 自然语言/参考图自定义风格 + 自动 lint + 状态机断点续做，兼容任意 OpenAI 协议 LLM（OpenAI / OpenRouter / Azure / Groq / Together / DeepSeek / vLLM / Ollama / LiteLLM）。
+- [`wechat-official-account-skills`](./wechat-official-account-skills/)：微信公众号「智能体架构笔记」运营技能包，覆盖选题、写作、排版配图、审稿、运营复盘和每日端到端草稿生成。
 
 ## 推荐安装方式
 
@@ -18,6 +19,12 @@ git clone https://github.com/chrisopal/skills.git ~/.codex/skills/chrisopal-skil
 ln -sfn ~/.codex/skills/chrisopal-skills/ppt-maker-direct-pptx ~/.codex/skills/ppt-maker-direct-pptx
 ln -sfn ~/.codex/skills/chrisopal-skills/ppt-maker-with-image ~/.codex/skills/ppt-maker-with-image
 ln -sfn ~/.codex/skills/chrisopal-skills/industrial-ai-architect ~/.codex/skills/industrial-ai-architect
+ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-topic-planner ~/.codex/skills/wechat-topic-planner
+ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-article-writer ~/.codex/skills/wechat-article-writer
+ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-article-layout ~/.codex/skills/wechat-article-layout
+ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-article-reviewer ~/.codex/skills/wechat-article-reviewer
+ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-account-operator ~/.codex/skills/wechat-account-operator
+ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-daily-pipeline ~/.codex/skills/wechat-daily-pipeline
 ```
 
 如果你的客户端使用 `~/.agents/skills`：
@@ -26,6 +33,7 @@ ln -sfn ~/.codex/skills/chrisopal-skills/industrial-ai-architect ~/.codex/skills
 mkdir -p ~/.agents/skills
 ln -sfn ~/.codex/skills/chrisopal-skills/industrial-ai-architect ~/.agents/skills/industrial-ai-architect
 ln -sfn ~/.codex/skills/chrisopal-skills/ppt-maker-direct-pptx ~/.agents/skills/ppt-maker-direct-pptx
+ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-daily-pipeline ~/.agents/skills/wechat-daily-pipeline
 ```
 
 ## 只安装某个 skill

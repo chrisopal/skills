@@ -52,7 +52,7 @@ Recommended outputs:
 
 ## Inline Illustration Types
 
-Choose one only when it improves understanding:
+Consume the writer's `正文插图` brief. Choose or generate an inline illustration only when it improves understanding:
 
 - flow diagram: business input -> AI judgment -> human confirmation -> system action -> metric
 - layer diagram: model, context, tool, workflow, governance
@@ -60,6 +60,15 @@ Choose one only when it improves understanding:
 - case map: scenario -> capability -> integration -> risk -> outcome
 
 Do not add decorative images.
+
+If the writer brief says no inline illustration is needed, do not invent one unless the article has a clear visual explanation gap.
+
+For each accepted illustration, produce:
+
+- final image prompt
+- intended placement
+- output path
+- short alt/description text for the audit package
 
 ## Handoff To API
 
@@ -81,4 +90,3 @@ Before finishing:
 - verify title, digest, content, and thumb/cover exist
 - verify colors match the style system
 - verify no AppSecret or token is written into artifacts
-

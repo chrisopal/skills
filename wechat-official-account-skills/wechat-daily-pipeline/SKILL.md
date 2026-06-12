@@ -52,11 +52,12 @@ Forbidden:
    - produce writer brief
 3. Write the article:
    - title, digest, cover prompt
+   - content illustration brief or explicit no-illustration decision
    - conversational Chinese body
    - technical clarity + enterprise landing value
 4. Prepare visuals:
    - cover image
-   - inline diagram only when it improves understanding
+   - inline diagram based on the writer's brief, only when it improves understanding
    - unified style from `style-system.md`
 5. Layout:
    - apply WeChat HTML style
@@ -111,4 +112,3 @@ If paths differ, adapt to the current workspace and report the paths used.
 - If cover generation fails, create a precise cover prompt and continue with article draft.
 - If review fails, do not save to WeChat unless the user explicitly asks for a flawed draft.
 - If WeChat API saves the draft, always read it back when possible.
-

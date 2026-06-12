@@ -34,6 +34,9 @@ def main() -> int:
     for ref in ["account-positioning.md", "style-system.md", "review-checklist.md"]:
         if not (ROOT / "references" / ref).exists():
             errors.append(f"missing references/{ref}")
+    writer = (ROOT / "wechat-article-writer" / "SKILL.md").read_text(encoding="utf-8")
+    if "正文插图" not in writer or "Content Illustration Brief" not in writer:
+        errors.append("writer skill must define content illustration brief")
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
@@ -43,4 +46,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

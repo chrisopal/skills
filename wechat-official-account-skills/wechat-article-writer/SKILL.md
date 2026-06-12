@@ -58,6 +58,30 @@ Default structure:
 
 Do not force a list of future articles unless the user asks.
 
+## Content Illustration Brief / 内容配图
+
+The writer owns the illustration intent. The layout skill owns the final visual execution.
+
+When drafting an article, decide whether the reader needs an inline illustration to understand the argument. Add an illustration brief only when it clarifies structure, flow, comparison, or an enterprise case. Do not add decorative images.
+
+Use at most 1-2 inline illustrations for a normal WeChat article:
+
+- **Concept diagram**: explain a technical mechanism such as model -> context -> tool -> action.
+- **Workflow diagram**: show how AI enters an enterprise process.
+- **Comparison diagram**: show demo vs production, chatbot vs agent, tool use vs responsibility boundary.
+- **Case path diagram**: show scenario -> AI capability -> human confirmation -> system action -> metric.
+
+For each illustration, include:
+
+- placement: after which section or paragraph
+- purpose: what confusion it removes
+- diagram type: concept / workflow / comparison / case path
+- nodes: 4-6 short labels
+- key message: one sentence
+- style note: use the account visual system, not a new style
+
+If no inline illustration is needed, explicitly write `正文插图：无，本文靠文字和小节结构即可。`
+
 ## Required Metadata
 
 At the top of the Markdown draft include:
@@ -70,6 +94,8 @@ At the top of the Markdown draft include:
 建议摘要：
 
 封面提示词：
+
+正文插图：
 
 ---
 ```
@@ -84,4 +110,5 @@ Before handing off to layout or review, ensure:
 - every technical term is tied to a real problem
 - enterprise landing is not treated as an afterthought
 - the article contains at least one concrete scenario
+- the article includes a content illustration brief or explicitly says no inline illustration is needed
 - the close does not become a hard sales CTA

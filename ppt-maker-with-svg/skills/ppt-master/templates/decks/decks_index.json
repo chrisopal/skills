@@ -3,19 +3,25 @@
     "summary": "慧新咨询汇报、战略规划、智能制造诊断、数字化转型蓝图、董事会汇报模板.",
     "canvas_format": "ppt169",
     "page_count": 8,
-    "primary_color": "#0097BA"
+    "primary_color": "#4295B6"
   },
   "huixin_market_promotion": {
     "summary": "慧新品牌市场宣传、产品推广、渠道招商、客户活动、三坐标推广材料.",
     "canvas_format": "ppt169",
     "page_count": 8,
-    "primary_color": "#0097BA"
+    "primary_color": "#4295B6"
+  },
+  "huixin_management_report": {
+    "summary": "慧新公司经营汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议模板.",
+    "canvas_format": "ppt169",
+    "page_count": 10,
+    "primary_color": "#4295B6"
   },
   "huixin_product_solution": {
     "summary": "慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示.",
     "canvas_format": "ppt169",
     "page_count": 10,
-    "primary_color": "#0097BA"
+    "primary_color": "#4295B6"
   },
   "中国电信": {
     "summary": "China Telecom related briefings, 政企数字化方案, 转型规划, 内部汇报.",

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <rect x="0" y="5" width="260" height="4" fill="#B0D776"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">03 / WORK PROGRESS KANBAN</text>
+  <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <rect x="64" y="206" width="268" height="360" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <rect x="64" y="206" width="268" height="48" fill="#0B2F3A"/>
+  <text x="88" y="237" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18" font-weight="700">未启动 / 待决策</text>
+  <rect x="88" y="286" width="220" height="72" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <text x="108" y="315" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{TODO_1}}</text>
+  <text x="108" y="342" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">Owner: {{OWNER_1}}</text>
+  <rect x="88" y="384" width="220" height="72" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <text x="108" y="413" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{TODO_2}}</text>
+  <text x="108" y="440" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">Due: {{DUE_1}}</text>
+  <rect x="358" y="206" width="268" height="360" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <rect x="358" y="206" width="268" height="48" fill="#4295B6"/>
+  <text x="382" y="237" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18" font-weight="700">推进中</text>
+  <rect x="382" y="286" width="220" height="72" rx="4" fill="#FFFFFF" stroke="#4295B6"/>
+  <text x="402" y="315" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{DOING_1}}</text>
+  <rect x="402" y="334" width="142" height="8" rx="4" fill="#4295B6"/>
+  <text x="402" y="360" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PROGRESS_1}}</text>
+  <rect x="382" y="384" width="220" height="72" rx="4" fill="#FFFFFF" stroke="#4295B6"/>
+  <text x="402" y="413" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{DOING_2}}</text>
+  <rect x="402" y="432" width="112" height="8" rx="4" fill="#4295B6"/>
+  <text x="402" y="458" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PROGRESS_2}}</text>
+  <rect x="652" y="206" width="268" height="360" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <rect x="652" y="206" width="268" height="48" fill="#B0D776"/>
+  <text x="676" y="237" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">已达成</text>
+  <rect x="676" y="286" width="220" height="72" rx="4" fill="#FFFFFF" stroke="#B0D776"/>
+  <text x="696" y="315" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{DONE_1}}</text>
+  <text x="696" y="342" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{DONE_NOTE_1}}</text>
+  <rect x="676" y="384" width="220" height="72" rx="4" fill="#FFFFFF" stroke="#B0D776"/>
+  <text x="696" y="413" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{DONE_2}}</text>
+  <text x="696" y="440" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{DONE_NOTE_2}}</text>
+  <rect x="946" y="206" width="270" height="360" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <rect x="946" y="206" width="270" height="48" fill="#0B2F3A"/>
+  <text x="970" y="237" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18" font-weight="700">需管理层协调</text>
+  <text x="970" y="306" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">1. {{ESCALATION_1}}</text>
+  <text x="970" y="348" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">2. {{ESCALATION_2}}</text>
+  <text x="970" y="390" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">3. {{ESCALATION_3}}</text>
+  <rect x="970" y="484" width="144" height="36" rx="2" fill="#B0D776"/>
+  <text x="998" y="508" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">形成决议</text>
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

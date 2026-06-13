@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">02 / KPI DASHBOARD</text>
+  <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <rect x="64" y="202" width="260" height="170" rx="4" fill="#FFFFFF" stroke="#4295B6" stroke-width="2"/>
+  <text x="88" y="242" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{KPI_1_LABEL}}</text>
+  <text x="88" y="304" fill="#4295B6" font-family="Microsoft YaHei" font-size="52" font-weight="700">{{KPI_1}}</text>
+  <rect x="88" y="334" width="196" height="10" rx="5" fill="#D2D3D4"/>
+  <rect x="88" y="334" width="156" height="10" rx="5" fill="#4295B6"/>
+  <text x="88" y="360" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{KPI_1_NOTE}}</text>
+  <rect x="356" y="202" width="260" height="170" rx="4" fill="#FFFFFF" stroke="#B0D776" stroke-width="2"/>
+  <text x="380" y="242" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{KPI_2_LABEL}}</text>
+  <text x="380" y="304" fill="#B0D776" font-family="Microsoft YaHei" font-size="52" font-weight="700">{{KPI_2}}</text>
+  <rect x="380" y="334" width="196" height="10" rx="5" fill="#D2D3D4"/>
+  <rect x="380" y="334" width="172" height="10" rx="5" fill="#B0D776"/>
+  <text x="380" y="360" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{KPI_2_NOTE}}</text>
+  <rect x="648" y="202" width="260" height="170" rx="4" fill="#FFFFFF" stroke="#4295B6" stroke-width="2"/>
+  <text x="672" y="242" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{KPI_3_LABEL}}</text>
+  <text x="672" y="304" fill="#4295B6" font-family="Microsoft YaHei" font-size="52" font-weight="700">{{KPI_3}}</text>
+  <rect x="672" y="334" width="196" height="10" rx="5" fill="#D2D3D4"/>
+  <rect x="672" y="334" width="136" height="10" rx="5" fill="#4295B6"/>
+  <text x="672" y="360" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{KPI_3_NOTE}}</text>
+  <rect x="940" y="202" width="276" height="170" rx="4" fill="#0B2F3A"/>
+  <text x="964" y="242" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="15">{{KPI_4_LABEL}}</text>
+  <text x="964" y="304" fill="#B0D776" font-family="Microsoft YaHei" font-size="52" font-weight="700">{{KPI_4}}</text>
+  <rect x="964" y="334" width="208" height="10" rx="5" fill="#4B5563"/>
+  <rect x="964" y="334" width="164" height="10" rx="5" fill="#B0D776"/>
+  <text x="964" y="360" fill="#FFFFFF" fill-opacity="0.82" font-family="Microsoft YaHei" font-size="13">{{KPI_4_NOTE}}</text>
+  <rect x="64" y="420" width="720" height="150" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="88" y="456" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">目标完成趋势</text>
+  <line x1="108" y1="530" x2="736" y2="530" stroke="#D2D3D4" stroke-width="1"/>
+  <line x1="108" y1="482" x2="108" y2="542" stroke="#D2D3D4" stroke-width="1"/>
+  <polyline points="112,518 224,502 336,508 448,484 560,476 720,462" fill="none" stroke="#4295B6" stroke-width="4"/>
+  <polyline points="112,534 224,520 336,510 448,504 560,486 720,478" fill="none" stroke="#B0D776" stroke-width="4"/>
+  <text x="108" y="558" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Q1</text>
+  <text x="720" y="558" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Q4</text>
+  <rect x="820" y="420" width="396" height="150" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="844" y="456" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">管理关注</text>
+  <text x="844" y="500" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">1. {{FOCUS_1}}</text>
+  <text x="844" y="532" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">2. {{FOCUS_2}}</text>
+  <rect x="1060" y="530" width="116" height="34" rx="2" fill="#B0D776"/>
+  <text x="1084" y="553" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">纳入跟踪</text>
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

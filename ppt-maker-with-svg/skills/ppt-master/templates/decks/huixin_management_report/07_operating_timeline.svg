@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">06 / OPERATING TIMELINE</text>
+  <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <line x1="120" y1="344" x2="1160" y2="344" stroke="#4295B6" stroke-width="4"/>
+  <polygon points="1160,344 1136,330 1136,358" fill="#4295B6"/>
+  <circle cx="172" cy="344" r="16" fill="#4295B6"/>
+  <rect x="96" y="214" width="210" height="92" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <text x="120" y="250" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{MILESTONE_1}}</text>
+  <text x="120" y="282" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{MILESTONE_1_DESC}}</text>
+  <text x="132" y="390" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{PERIOD_1}}</text>
+  <circle cx="430" cy="344" r="16" fill="#4295B6"/>
+  <rect x="326" y="382" width="232" height="92" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <text x="350" y="418" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{MILESTONE_2}}</text>
+  <text x="350" y="450" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{MILESTONE_2_DESC}}</text>
+  <text x="390" y="314" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{PERIOD_2}}</text>
+  <circle cx="688" cy="344" r="16" fill="#B0D776"/>
+  <rect x="584" y="214" width="232" height="92" rx="4" fill="#F3F7FA" stroke="#B0D776" stroke-width="2"/>
+  <text x="608" y="250" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{MILESTONE_3}}</text>
+  <text x="608" y="282" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{MILESTONE_3_DESC}}</text>
+  <text x="648" y="390" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{PERIOD_3}}</text>
+  <circle cx="946" cy="344" r="16" fill="#4295B6"/>
+  <rect x="842" y="382" width="232" height="92" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <text x="866" y="418" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{MILESTONE_4}}</text>
+  <text x="866" y="450" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{MILESTONE_4_DESC}}</text>
+  <text x="906" y="314" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{PERIOD_4}}</text>
+  <rect x="64" y="542" width="1016" height="52" rx="4" fill="#0B2F3A"/>
+  <text x="88" y="576" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16">节奏机制：{{CADENCE}}</text>
+  <rect x="1100" y="542" width="116" height="52" rx="4" fill="#B0D776"/>
+  <text x="1136" y="575" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">Gate</text>
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

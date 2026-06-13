@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">04 / ISSUES AND COUNTERMEASURES</text>
+  <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <rect x="64" y="204" width="1152" height="52" fill="#0B2F3A"/>
+  <text x="86" y="237" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">问题</text>
+  <text x="312" y="237" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">影响</text>
+  <text x="488" y="237" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">根因</text>
+  <text x="706" y="237" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">对策</text>
+  <text x="956" y="237" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">责任人 / 截止</text>
+  <rect x="64" y="256" width="1152" height="82" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <text x="86" y="302" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{ISSUE_1}}</text>
+  <text x="312" y="302" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{IMPACT_1}}</text>
+  <text x="488" y="302" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{CAUSE_1}}</text>
+  <text x="706" y="302" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{ACTION_1}}</text>
+  <text x="956" y="302" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{OWNER_1}}</text>
+  <rect x="64" y="338" width="1152" height="82" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <text x="86" y="384" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{ISSUE_2}}</text>
+  <text x="312" y="384" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{IMPACT_2}}</text>
+  <text x="488" y="384" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{CAUSE_2}}</text>
+  <text x="706" y="384" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{ACTION_2}}</text>
+  <text x="956" y="384" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{OWNER_2}}</text>
+  <rect x="64" y="420" width="1152" height="82" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <text x="86" y="466" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{ISSUE_3}}</text>
+  <text x="312" y="466" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{IMPACT_3}}</text>
+  <text x="488" y="466" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{CAUSE_3}}</text>
+  <text x="706" y="466" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{ACTION_3}}</text>
+  <text x="956" y="466" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{OWNER_3}}</text>
+  <rect x="64" y="544" width="880" height="56" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <text x="88" y="579" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">管理要求：{{MANAGEMENT_REQUIREMENT}}</text>
+  <rect x="980" y="544" width="236" height="56" rx="4" fill="#B0D776"/>
+  <text x="1036" y="580" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">下次例会复盘</text>
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

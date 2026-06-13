@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
+  <polygon points="0,522 360,474 476,720 0,720" fill="#A4D968" fill-opacity="0.10"/>
+  <text x="72" y="72" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#0B2F3A" fill-opacity="0.68" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="huixin-mark">
+    <polygon points="1072,48 1082,30 1092,48 1082,66" fill="#D1D3D3"/>
+    <polygon points="1098,30 1128,30 1148,66 1118,66" fill="#A4D968"/>
+    <polygon points="1148,48 1158,30 1168,48 1158,66" fill="#D1D3D3"/>
+    <polygon points="1174,30 1204,30 1224,66 1194,66" fill="#0097BA"/>
+    <text x="1088" y="94" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="700">慧新全智</text>
+  </g>
+
+  <rect x="72" y="226" width="260" height="228" rx="20" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
+  <text x="104" y="292" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="48" font-weight="700">{{KPI_1}}</text>
+  <text x="104" y="342" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">{{VALUE_1}}</text>
+  <text x="104" y="384" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{VALUE_1_DESC}}</text>
+
+  <rect x="364" y="226" width="260" height="228" rx="20" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
+  <text x="396" y="292" fill="#A4D968" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="48" font-weight="700">{{KPI_2}}</text>
+  <text x="396" y="342" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">{{VALUE_2}}</text>
+  <text x="396" y="384" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{VALUE_2_DESC}}</text>
+
+  <rect x="656" y="226" width="260" height="228" rx="20" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
+  <text x="688" y="292" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="48" font-weight="700">{{KPI_3}}</text>
+  <text x="688" y="342" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">{{VALUE_3}}</text>
+  <text x="688" y="384" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{VALUE_3_DESC}}</text>
+
+  <rect x="948" y="226" width="260" height="228" rx="20" fill="#0B2F3A"/>
+  <text x="980" y="292" fill="#A4D968" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="48" font-weight="700">{{KPI_4}}</text>
+  <text x="980" y="342" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">{{VALUE_4}}</text>
+  <text x="980" y="384" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{VALUE_4_DESC}}</text>
+
+  <rect x="72" y="516" width="1136" height="64" rx="16" fill="#0097BA" fill-opacity="0.10" stroke="#0097BA" stroke-width="1.5"/>
+  <text x="104" y="556" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="700">{{VALUE_SUMMARY}}</text>
+  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D1D3D3" stroke-width="1.5"/>
+  <text x="72" y="686" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+</svg>

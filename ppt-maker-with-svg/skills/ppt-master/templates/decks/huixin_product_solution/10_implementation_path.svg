@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
+  <text x="72" y="72" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#0B2F3A" fill-opacity="0.68" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="huixin-mark">
+    <polygon points="1072,48 1082,30 1092,48 1082,66" fill="#D1D3D3"/>
+    <polygon points="1098,30 1128,30 1148,66 1118,66" fill="#A4D968"/>
+    <polygon points="1148,48 1158,30 1168,48 1158,66" fill="#D1D3D3"/>
+    <polygon points="1174,30 1204,30 1224,66 1194,66" fill="#0097BA"/>
+    <text x="1088" y="94" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="700">慧新全智</text>
+  </g>
+
+  <line x1="124" y1="366" x2="1156" y2="366" stroke="#D1D3D3" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="172" cy="366" r="42" fill="#0097BA"/>
+  <circle cx="436" cy="366" r="42" fill="#A4D968"/>
+  <circle cx="700" cy="366" r="42" fill="#0097BA"/>
+  <circle cx="964" cy="366" r="42" fill="#0B2F3A"/>
+  <text x="172" y="377" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26" font-weight="700">1</text>
+  <text x="436" y="377" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26" font-weight="700">2</text>
+  <text x="700" y="377" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26" font-weight="700">3</text>
+  <text x="964" y="377" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26" font-weight="700">4</text>
+
+  <rect x="72" y="438" width="224" height="122" rx="18" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
+  <text x="102" y="482" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="21" font-weight="700">{{PHASE_1}}</text>
+  <text x="102" y="516" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{PHASE_1_ACTION}}</text>
+
+  <rect x="336" y="202" width="224" height="122" rx="18" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
+  <text x="366" y="246" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="21" font-weight="700">{{PHASE_2}}</text>
+  <text x="366" y="280" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{PHASE_2_ACTION}}</text>
+
+  <rect x="600" y="438" width="224" height="122" rx="18" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
+  <text x="630" y="482" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="21" font-weight="700">{{PHASE_3}}</text>
+  <text x="630" y="516" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{PHASE_3_ACTION}}</text>
+
+  <rect x="864" y="202" width="224" height="122" rx="18" fill="#FFFFFF" stroke="#0B2F3A" stroke-width="2"/>
+  <text x="894" y="246" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="21" font-weight="700">{{PHASE_4}}</text>
+  <text x="894" y="280" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{PHASE_4_ACTION}}</text>
+
+  <rect x="72" y="604" width="1136" height="38" rx="12" fill="#0097BA"/>
+  <rect x="72" y="604" width="190" height="38" rx="12" fill="#A4D968"/>
+  <text x="104" y="629" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">交付原则</text>
+  <text x="284" y="629" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{DELIVERY_PRINCIPLE}}</text>
+  <line x1="72" y1="666" x2="1208" y2="666" stroke="#D1D3D3" stroke-width="1.5"/>
+  <text x="72" y="696" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="696" text-anchor="end" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+</svg>

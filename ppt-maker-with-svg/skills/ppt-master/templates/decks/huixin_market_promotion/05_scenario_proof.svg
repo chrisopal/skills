@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
+  <text x="72" y="72" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
+
+  <g id="huixin-mark">
+    <polygon points="1072,48 1082,30 1092,48 1082,66" fill="#D1D3D3"/>
+    <polygon points="1098,30 1128,30 1148,66 1118,66" fill="#A4D968"/>
+    <polygon points="1148,48 1158,30 1168,48 1158,66" fill="#D1D3D3"/>
+    <polygon points="1174,30 1204,30 1224,66 1194,66" fill="#0097BA"/>
+    <text x="1088" y="94" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="700">慧新全智</text>
+  </g>
+
+  <rect x="72" y="224" width="356" height="330" rx="22" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
+  <rect x="104" y="252" width="92" height="34" rx="17" fill="#0097BA"/>
+  <text x="150" y="275" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700">场景 A</text>
+  <text x="104" y="330" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="24" font-weight="700">{{SCENARIO_1_TITLE}}</text>
+  <text x="104" y="374" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{SCENARIO_1_DESC}}</text>
+  <text x="104" y="426" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="44" font-weight="700">{{METRIC_1}}</text>
+  <text x="104" y="466" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{SCENARIO_1_PROOF}}</text>
+
+  <rect x="462" y="224" width="356" height="330" rx="22" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
+  <rect x="494" y="252" width="92" height="34" rx="17" fill="#A4D968"/>
+  <text x="540" y="275" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700">场景 B</text>
+  <text x="494" y="330" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="24" font-weight="700">{{SCENARIO_2_TITLE}}</text>
+  <text x="494" y="374" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{SCENARIO_2_DESC}}</text>
+  <text x="494" y="426" fill="#A4D968" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="44" font-weight="700">{{METRIC_2}}</text>
+  <text x="494" y="466" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{SCENARIO_2_PROOF}}</text>
+
+  <rect x="852" y="224" width="356" height="330" rx="22" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
+  <rect x="884" y="252" width="92" height="34" rx="17" fill="#0097BA"/>
+  <text x="930" y="275" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700">场景 C</text>
+  <text x="884" y="330" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="24" font-weight="700">{{SCENARIO_3_TITLE}}</text>
+  <text x="884" y="374" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{SCENARIO_3_DESC}}</text>
+  <text x="884" y="426" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="44" font-weight="700">{{METRIC_3}}</text>
+  <text x="884" y="466" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{SCENARIO_3_PROOF}}</text>
+
+  <rect x="72" y="584" width="1136" height="42" rx="12" fill="#0B2F3A"/>
+  <text x="104" y="611" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{TAKEAWAY}}</text>
+  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D1D3D3" stroke-width="1.5"/>
+  <text x="72" y="686" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+</svg>

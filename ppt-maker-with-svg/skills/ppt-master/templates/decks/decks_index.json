@@ -1,0 +1,14 @@
+{
+  "huixin_market_promotion": {
+    "summary": "慧新品牌市场宣传、产品推广、渠道招商、客户活动、三坐标推广材料.",
+    "canvas_format": "ppt169",
+    "page_count": 8,
+    "primary_color": "#0097BA"
+  },
+  "huixin_product_solution": {
+    "summary": "慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示.",
+    "canvas_format": "ppt169",
+    "page_count": 10,
+    "primary_color": "#0097BA"
+  }
+}

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <text x="64" y="45" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">03 / STRATEGIC OPTIONS MATRIX</text>
+  <text x="1070" y="45" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">慧新全智</text>
+  <polygon points="1142,32 1156,18 1170,32 1156,46" fill="#0097BA"/>
+  <polygon points="1173,32 1187,18 1201,32 1187,46" fill="#A4D968"/>
+  <text x="64" y="112" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D1D3D3" stroke-width="1"/>
+  <rect x="112" y="222" width="700" height="370" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
+  <rect x="462" y="222" width="350" height="185" fill="#F3F7FA"/>
+  <rect x="112" y="407" width="350" height="185" fill="#F3F7FA"/>
+  <line x1="462" y1="222" x2="462" y2="592" stroke="#D1D3D3" stroke-width="1"/>
+  <line x1="112" y1="407" x2="812" y2="407" stroke="#D1D3D3" stroke-width="1"/>
+  <text x="398" y="624" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">可行性低</text>
+  <text x="732" y="624" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">可行性高</text>
+  <text x="38" y="416" transform="rotate(-90 38 416)" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">战略影响高</text>
+  <text x="38" y="572" transform="rotate(-90 38 572)" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">战略影响低</text>
+  <rect x="514" y="262" width="236" height="86" rx="4" fill="#0097BA"/>
+  <text x="538" y="294" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">优先推进</text>
+  <text x="538" y="324" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#FFFFFF">平台化底座与关键场景试点</text>
+  <rect x="178" y="270" width="216" height="74" rx="4" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
+  <text x="200" y="300" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0B2F3A">审慎评估</text>
+  <text x="200" y="328" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">组织重构与流程再造</text>
+  <rect x="522" y="456" width="218" height="72" rx="4" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
+  <text x="544" y="486" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0B2F3A">快速收益</text>
+  <text x="544" y="514" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">报表自动化与指标治理</text>
+  <rect x="180" y="462" width="214" height="66" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
+  <text x="202" y="490" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#4B5563">暂缓投入</text>
+  <text x="202" y="516" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">低价值边缘功能</text>
+  <rect x="872" y="222" width="344" height="370" rx="4" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
+  <text x="904" y="264" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="21" font-weight="bold" fill="#0B2F3A">决策原则</text>
+  <line x1="904" y1="286" x2="1184" y2="286" stroke="#D1D3D3" stroke-width="1"/>
+  <text x="904" y="330" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="bold" fill="#0097BA">1. 价值牵引</text>
+  <text x="904" y="360" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">优先选择影响收入、效率、质量的场景。</text>
+  <text x="904" y="410" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="bold" fill="#0097BA">2. 能力复用</text>
+  <text x="904" y="440" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">形成可复制的平台能力，而非一次性开发。</text>
+  <text x="904" y="490" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="bold" fill="#0097BA">3. 快速闭环</text>
+  <text x="904" y="520" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">{{CONTENT_AREA}}</text>
+  <rect x="904" y="552" width="184" height="28" rx="2" fill="#A4D968"/>
+  <text x="924" y="572" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="bold" fill="#0B2F3A">建议：右上象限优先</text>
+  <text x="64" y="674" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA" fill-opacity="0.72"/>
+  <rect x="0" y="0" width="420" height="720" fill="#0B2F3A"/>
+  <polygon points="420,0 510,0 310,720 220,720" fill="#0097BA"/>
+  <polygon points="504,0 538,0 338,720 304,720" fill="#A4D968"/>
+  <line x1="585" y1="126" x2="1160" y2="126" stroke="#D1D3D3" stroke-width="1"/>
+  <text x="585" y="103" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563" letter-spacing="0">HUIXIN STRATEGY CONSULTING</text>
+  <g id="brand-mark">
+    <polygon points="1082,58 1102,38 1122,58 1102,78" fill="#0097BA"/>
+    <polygon points="1126,58 1146,38 1166,58 1146,78" fill="#A4D968"/>
+    <text x="1178" y="66" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="bold" fill="#0B2F3A">慧新全智</text>
+  </g>
+  <text x="585" y="206" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="24" font-weight="bold" fill="#0097BA">战略规划与数字化转型咨询</text>
+  <text x="585" y="286" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="58" font-weight="bold" fill="#0B2F3A">{{TITLE}}</text>
+  <text x="585" y="344" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="24" fill="#4B5563">{{SUBTITLE}}</text>
+  <rect x="585" y="408" width="455" height="2" fill="#0097BA"/>
+  <rect x="585" y="426" width="126" height="34" rx="2" fill="#0097BA"/>
+  <text x="608" y="449" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF">CONFIDENTIAL</text>
+  <text x="585" y="518" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" fill="#4B5563">{{AUTHOR}}</text>
+  <text x="585" y="552" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" fill="#4B5563">{{DATE}}</text>
+  <text x="76" y="612" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#FFFFFF" fill-opacity="0.82">Structured diagnosis · Strategic choices · Execution roadmap</text>
+  <text x="76" y="646" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="42" font-weight="bold" fill="#FFFFFF">咨询汇报模板</text>
+</svg>

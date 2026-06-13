@@ -62,6 +62,27 @@ description: >
 
 For complete tool documentation, see `${SKILL_DIR}/scripts/README.md`.
 
+## Python Runtime
+
+Before running any `${SKILL_DIR}/scripts/*.py` command, choose one Python executable and reuse it for the whole PPT job.
+
+| Runtime requirement | Action |
+|---|---|
+| Python version | Use Python 3.10+; do not use macOS `/usr/bin/python3` because it can be too old for this codebase |
+| Dependencies | Install `${SKILL_DIR}/requirements.txt` into the selected environment before document conversion, template import, image analysis, SVG finalization, or PPTX export |
+| Local macOS default | Prefer `/opt/homebrew/bin/python3.13` when available; otherwise create a venv with a modern Python |
+| Command form | Use `$PYTHON ${SKILL_DIR}/scripts/...` consistently; if `python3` points to `/usr/bin/python3`, replace it with the selected `$PYTHON` |
+
+Bootstrap example:
+
+```bash
+PYTHON=/opt/homebrew/bin/python3.13
+$PYTHON -m venv ~/.cache/ppt-master-venv
+PYTHON=~/.cache/ppt-master-venv/bin/python
+$PYTHON -m pip install -r ${SKILL_DIR}/requirements.txt
+$PYTHON ${SKILL_DIR}/scripts/project_manager.py init <project_name> --format ppt169
+```
+
 > **Windows note**: if a `python3 ...` command fails (common on python.org installs, which provide `python.exe` but not `python3.exe`), rerun the same command with `python` instead.
 
 ## Template Index

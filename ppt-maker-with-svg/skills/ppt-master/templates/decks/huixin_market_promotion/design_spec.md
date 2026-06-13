@@ -4,7 +4,7 @@ kind: deck
 summary: 慧新品牌市场宣传、产品推广、渠道招商、客户活动、三坐标推广材料.
 canvas_format: ppt169
 page_count: 8
-primary_color: "#0097BA"
+primary_color: "#4295B6"
 ---
 
 # Huixin Market Promotion - Design Specification
@@ -33,9 +33,9 @@ primary_color: "#0097BA"
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| **Technology Blue** | `#0097BA` | Primary brand visual, headers, core diagrams, campaign emphasis |
-| **Vitality Green** | `#A4D968` | Value propositions, keywords, tags, growth metrics, CTA highlights |
-| **Brand Gray** | `#D1D3D3` | Background layers, auxiliary shapes, card strokes, dividers |
+| **Technology Blue** | `#4295B6` | Primary brand visual, headers, core diagrams, campaign emphasis |
+| **Vitality Green** | `#B0D776` | Value propositions, keywords, tags, growth metrics, CTA highlights |
+| **Brand Gray** | `#D2D3D4` | Background layers, auxiliary shapes, card strokes, dividers |
 | **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
 | **Deep Blue Gray** | `#0B2F3A` | Premium dark backgrounds, cover, key visual pages, high-emphasis text |
 | **White** | `#FFFFFF` | Card surfaces, negative space, reverse text |
@@ -53,7 +53,7 @@ primary_color: "#0097BA"
 
 **Primary Font**: `"Microsoft YaHei"`
 
-**SVG Font Stack**: `"Microsoft YaHei", "PingFang SC", Arial, sans-serif` — Microsoft YaHei is the design target; PingFang SC is kept only as a macOS preview fallback for Chinese rendering.
+**SVG Font**: `"Microsoft YaHei"` — all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
 
 ## V. Logo and Brand Mark
 
@@ -82,7 +82,7 @@ Usage rules:
 ### Design DNA
 
 1. Use the logo's slanted-bar geometry as the core brand language: slanted blocks, focus bands, tags, and motion lines.
-2. Use `#0097BA` as the main visual identity and `#A4D968` as the growth / CTA signal.
+2. Use `#4295B6` as the main visual identity and `#B0D776` as the growth / CTA signal.
 3. Use `#0B2F3A` for cover, key visual pages, and closing CTA to create stronger brand memory.
 4. Keep sales-facing pages clean, short, and high-contrast; prioritize slogans, keywords, metrics, and conversion messages.
 5. Prefer explicit marketing logic: brand claim → pain → solution → value → proof → action.

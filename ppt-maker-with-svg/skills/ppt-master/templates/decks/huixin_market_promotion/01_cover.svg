@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#0B2F3A"/>
-  <rect x="0" y="0" width="1280" height="14" fill="#0097BA"/>
-  <rect x="0" y="14" width="520" height="5" fill="#A4D968"/>
-  <polygon points="746,0 1280,0 1280,720 1086,720" fill="#0097BA" fill-opacity="0.22"/>
-  <polygon points="900,0 1280,0 1280,322 1028,322" fill="#0097BA" fill-opacity="0.34"/>
-  <polygon points="838,520 1280,424 1280,720 748,720" fill="#A4D968" fill-opacity="0.18"/>
-  <polygon points="808,124 882,124 940,232 866,232" fill="#A4D968"/>
-  <polygon points="948,124 1008,124 1066,232 1006,232" fill="#D1D3D3"/>
-  <polygon points="1030,124 1104,124 1162,232 1088,232" fill="#0097BA"/>
-  <polygon points="1136,124 1194,124 1252,232 1194,232" fill="#A4D968"/>
+  <rect x="0" y="0" width="1280" height="14" fill="#4295B6"/>
+  <rect x="0" y="14" width="520" height="5" fill="#B0D776"/>
+  <polygon points="746,0 1280,0 1280,720 1086,720" fill="#4295B6" fill-opacity="0.22"/>
+  <polygon points="900,0 1280,0 1280,322 1028,322" fill="#4295B6" fill-opacity="0.34"/>
+  <polygon points="838,520 1280,424 1280,720 748,720" fill="#B0D776" fill-opacity="0.18"/>
+  <polygon points="808,124 882,124 940,232 866,232" fill="#B0D776"/>
+  <polygon points="948,124 1008,124 1066,232 1006,232" fill="#D2D3D4"/>
+  <polygon points="1030,124 1104,124 1162,232 1088,232" fill="#4295B6"/>
+  <polygon points="1136,124 1194,124 1252,232 1194,232" fill="#B0D776"/>
 
   <g id="huixin-logo" transform="translate(72 48)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
 
-  <rect x="72" y="148" width="168" height="38" rx="19" fill="#0097BA"/>
-  <text x="156" y="173" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{CAMPAIGN_TAG}}</text>
-  <text x="72" y="274" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="66" font-weight="700">{{TITLE}}</text>
-  <rect x="72" y="306" width="206" height="7" rx="3.5" fill="#A4D968"/>
-  <text x="72" y="364" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26">{{SUBTITLE}}</text>
+  <rect x="72" y="148" width="168" height="38" rx="19" fill="#4295B6"/>
+  <text x="156" y="173" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{CAMPAIGN_TAG}}</text>
+  <text x="72" y="274" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="66" font-weight="700">{{TITLE}}</text>
+  <rect x="72" y="306" width="206" height="7" rx="3.5" fill="#B0D776"/>
+  <text x="72" y="364" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="26">{{SUBTITLE}}</text>
 
   <rect x="72" y="442" width="476" height="104" rx="18" fill="#FFFFFF" fill-opacity="0.08" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5"/>
-  <text x="104" y="486" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">科技品牌感 · 传播力 · 销售转化力</text>
-  <text x="104" y="522" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17">公司宣传 / 产品发布 / 市场活动 / 展会路演</text>
+  <text x="104" y="486" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">科技品牌感 · 传播力 · 销售转化力</text>
+  <text x="104" y="522" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="17">公司宣传 / 产品发布 / 市场活动 / 展会路演</text>
 
-  <text x="72" y="628" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">{{AUTHOR}}</text>
-  <text x="72" y="660" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{DATE}}</text>
-  <text x="1208" y="660" text-anchor="end" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">01</text>
+  <text x="72" y="628" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18">{{AUTHOR}}</text>
+  <text x="72" y="660" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="15">{{DATE}}</text>
+  <text x="1208" y="660" text-anchor="end" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">01</text>
 </svg>

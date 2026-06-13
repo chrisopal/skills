@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#0B2F3A"/>
-  <rect x="0" y="0" width="1280" height="14" fill="#0097BA"/>
-  <rect x="0" y="14" width="470" height="5" fill="#A4D968"/>
-  <polygon points="764,0 1280,0 1280,720 1044,720" fill="#0097BA" fill-opacity="0.18"/>
-  <polygon points="896,102 1186,102 1244,210 954,210" fill="#A4D968" fill-opacity="0.25"/>
-  <polygon points="746,424 1280,336 1280,720 640,720" fill="#0097BA" fill-opacity="0.18"/>
+  <rect x="0" y="0" width="1280" height="14" fill="#4295B6"/>
+  <rect x="0" y="14" width="470" height="5" fill="#B0D776"/>
+  <polygon points="764,0 1280,0 1280,720 1044,720" fill="#4295B6" fill-opacity="0.18"/>
+  <polygon points="896,102 1186,102 1244,210 954,210" fill="#B0D776" fill-opacity="0.25"/>
+  <polygon points="746,424 1280,336 1280,720 640,720" fill="#4295B6" fill-opacity="0.18"/>
 
   <g id="huixin-logo" transform="translate(72 48)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
 
-  <rect x="72" y="146" width="180" height="38" rx="19" fill="#0097BA"/>
-  <text x="162" y="171" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{PRODUCT_TAG}}</text>
-  <text x="72" y="274" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="58" font-weight="700">{{TITLE}}</text>
-  <rect x="72" y="306" width="214" height="7" rx="3.5" fill="#A4D968"/>
-  <text x="72" y="364" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="25">{{SUBTITLE}}</text>
+  <rect x="72" y="146" width="180" height="38" rx="19" fill="#4295B6"/>
+  <text x="162" y="171" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{PRODUCT_TAG}}</text>
+  <text x="72" y="274" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="58" font-weight="700">{{TITLE}}</text>
+  <rect x="72" y="306" width="214" height="7" rx="3.5" fill="#B0D776"/>
+  <text x="72" y="364" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="25">{{SUBTITLE}}</text>
 
   <rect x="72" y="444" width="484" height="110" rx="18" fill="#FFFFFF" fill-opacity="0.08" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5"/>
-  <text x="104" y="488" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">平台化 · 组件化 · 可扩展 · 可落地</text>
-  <text x="104" y="524" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17">软件产品 / AI平台 / 智能制造 / 行业应用方案</text>
+  <text x="104" y="488" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">平台化 · 组件化 · 可扩展 · 可落地</text>
+  <text x="104" y="524" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="17">软件产品 / AI平台 / 智能制造 / 行业应用方案</text>
 
   <rect x="792" y="292" width="320" height="220" rx="22" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.20" stroke-width="1.5"/>
-  <rect x="824" y="324" width="256" height="42" rx="12" fill="#0097BA"/>
+  <rect x="824" y="324" width="256" height="42" rx="12" fill="#4295B6"/>
   <rect x="824" y="388" width="110" height="70" rx="12" fill="#FFFFFF" fill-opacity="0.18"/>
-  <rect x="970" y="388" width="110" height="70" rx="12" fill="#A4D968" fill-opacity="0.55"/>
-  <line x1="934" y1="423" x2="970" y2="423" stroke="#D1D3D3" stroke-width="3"/>
-  <text x="952" y="544" text-anchor="middle" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14">Platform Architecture</text>
+  <rect x="970" y="388" width="110" height="70" rx="12" fill="#B0D776" fill-opacity="0.55"/>
+  <line x1="934" y1="423" x2="970" y2="423" stroke="#D2D3D4" stroke-width="3"/>
+  <text x="952" y="544" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14">Platform Architecture</text>
 
-  <text x="72" y="660" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">HUIXIN PRODUCT SOLUTION TEMPLATE</text>
-  <text x="1208" y="660" text-anchor="end" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">01</text>
+  <text x="72" y="660" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">HUIXIN PRODUCT SOLUTION TEMPLATE</text>
+  <text x="1208" y="660" text-anchor="end" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">01</text>
 </svg>

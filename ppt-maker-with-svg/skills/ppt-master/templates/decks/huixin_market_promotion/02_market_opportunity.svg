@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
-  <rect x="0" y="10" width="320" height="5" fill="#A4D968"/>
-  <text x="72" y="72" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
-  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="72" y="162" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
 
   <g id="huixin-logo" transform="translate(1016 22) scale(0.58)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
 
-  <rect x="72" y="220" width="336" height="278" rx="22" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
+  <rect x="72" y="220" width="336" height="278" rx="22" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="2"/>
   <rect x="104" y="250" width="84" height="32" rx="16" fill="#0B2F3A"/>
-  <text x="146" y="272" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700">痛点</text>
-  <text x="104" y="324" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="25" font-weight="700">{{PAIN_TITLE}}</text>
-  <text x="104" y="366" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{PAIN_POINT_1}}</text>
-  <text x="104" y="400" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{PAIN_POINT_2}}</text>
-  <text x="104" y="434" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{PAIN_POINT_3}}</text>
+  <text x="146" y="272" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">痛点</text>
+  <text x="104" y="324" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="25" font-weight="700">{{PAIN_TITLE}}</text>
+  <text x="104" y="366" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{PAIN_POINT_1}}</text>
+  <text x="104" y="400" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{PAIN_POINT_2}}</text>
+  <text x="104" y="434" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{PAIN_POINT_3}}</text>
 
-  <rect x="472" y="220" width="336" height="278" rx="22" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
-  <rect x="504" y="250" width="84" height="32" rx="16" fill="#0097BA"/>
-  <text x="546" y="272" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700">机会</text>
-  <text x="504" y="324" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="25" font-weight="700">{{OPPORTUNITY_TITLE}}</text>
-  <text x="504" y="366" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{OPPORTUNITY_1}}</text>
-  <text x="504" y="400" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{OPPORTUNITY_2}}</text>
-  <text x="504" y="434" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{OPPORTUNITY_3}}</text>
+  <rect x="472" y="220" width="336" height="278" rx="22" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="2"/>
+  <rect x="504" y="250" width="84" height="32" rx="16" fill="#4295B6"/>
+  <text x="546" y="272" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">机会</text>
+  <text x="504" y="324" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="25" font-weight="700">{{OPPORTUNITY_TITLE}}</text>
+  <text x="504" y="366" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{OPPORTUNITY_1}}</text>
+  <text x="504" y="400" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{OPPORTUNITY_2}}</text>
+  <text x="504" y="434" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{OPPORTUNITY_3}}</text>
 
-  <rect x="872" y="220" width="336" height="278" rx="22" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
-  <rect x="904" y="250" width="84" height="32" rx="16" fill="#A4D968"/>
-  <text x="946" y="272" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700">购买理由</text>
-  <text x="904" y="324" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="25" font-weight="700">{{BUYING_REASON_TITLE}}</text>
-  <text x="904" y="366" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{BUYING_REASON_1}}</text>
-  <text x="904" y="400" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{BUYING_REASON_2}}</text>
-  <text x="904" y="434" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16">{{BUYING_REASON_3}}</text>
+  <rect x="872" y="220" width="336" height="278" rx="22" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="2"/>
+  <rect x="904" y="250" width="84" height="32" rx="16" fill="#B0D776"/>
+  <text x="946" y="272" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">购买理由</text>
+  <text x="904" y="324" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="25" font-weight="700">{{BUYING_REASON_TITLE}}</text>
+  <text x="904" y="366" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{BUYING_REASON_1}}</text>
+  <text x="904" y="400" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{BUYING_REASON_2}}</text>
+  <text x="904" y="434" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16">{{BUYING_REASON_3}}</text>
 
   <rect x="72" y="552" width="1136" height="56" rx="16" fill="#0B2F3A"/>
-  <text x="104" y="588" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">{{TAKEAWAY}}</text>
-  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D1D3D3" stroke-width="1.5"/>
-  <text x="72" y="686" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
-  <text x="1208" y="686" text-anchor="end" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+  <text x="104" y="588" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18">{{TAKEAWAY}}</text>
+  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D2D3D4" stroke-width="1.5"/>
+  <text x="72" y="686" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
 </svg>

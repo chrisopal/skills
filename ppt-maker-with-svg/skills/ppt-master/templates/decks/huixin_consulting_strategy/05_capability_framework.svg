@@ -1,55 +1,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
-  <text x="64" y="45" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">04 / TARGET CAPABILITY FRAMEWORK</text>
+  <rect x="0" y="0" width="1280" height="4" fill="#4295B6"/>
+  <text x="64" y="45" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">04 / TARGET CAPABILITY FRAMEWORK</text>
   <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
-  <text x="64" y="112" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
-  <text x="64" y="154" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
-  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D1D3D3" stroke-width="1"/>
+  <text x="64" y="112" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4" stroke-width="1"/>
   <g id="pyramid">
-    <polygon points="640,218 510,338 770,338" fill="#0097BA"/>
-    <text x="640" y="292" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">战略牵引层</text>
-    <polygon points="500,352 402,446 878,446 780,352" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="640" y="404" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0B2F3A">业务能力层</text>
-    <polygon points="388,462 292,556 988,556 892,462" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="640" y="514" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0B2F3A">数据与技术底座</text>
+    <polygon points="640,218 510,338 770,338" fill="#4295B6"/>
+    <text x="640" y="292" text-anchor="middle" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#FFFFFF">战略牵引层</text>
+    <polygon points="500,352 402,446 878,446 780,352" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="640" y="404" text-anchor="middle" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#0B2F3A">业务能力层</text>
+    <polygon points="388,462 292,556 988,556 892,462" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="640" y="514" text-anchor="middle" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#0B2F3A">数据与技术底座</text>
     <rect x="292" y="574" width="696" height="44" rx="4" fill="#0B2F3A"/>
-    <text x="640" y="603" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="bold" fill="#FFFFFF">组织机制与治理保障</text>
+    <text x="640" y="603" text-anchor="middle" font-family="Microsoft YaHei" font-size="18" font-weight="bold" fill="#FFFFFF">组织机制与治理保障</text>
   </g>
   <g id="left-notes">
-    <rect x="64" y="246" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <rect x="64" y="246" width="6" height="78" fill="#0097BA"/>
-    <text x="90" y="278" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0B2F3A">北极星指标</text>
-    <text x="90" y="306" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">统一战略目标与经营口径</text>
-    <rect x="64" y="354" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <rect x="64" y="354" width="6" height="78" fill="#0097BA"/>
-    <text x="90" y="386" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0B2F3A">场景组合</text>
-    <text x="90" y="414" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">形成可复用业务解决方案</text>
-    <rect x="64" y="462" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <rect x="64" y="462" width="6" height="78" fill="#0097BA"/>
-    <text x="90" y="494" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0B2F3A">数据资产</text>
-    <text x="90" y="522" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">主数据、指标、知识沉淀</text>
+    <rect x="64" y="246" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <rect x="64" y="246" width="6" height="78" fill="#4295B6"/>
+    <text x="90" y="278" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#0B2F3A">北极星指标</text>
+    <text x="90" y="306" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">统一战略目标与经营口径</text>
+    <rect x="64" y="354" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <rect x="64" y="354" width="6" height="78" fill="#4295B6"/>
+    <text x="90" y="386" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#0B2F3A">场景组合</text>
+    <text x="90" y="414" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">形成可复用业务解决方案</text>
+    <rect x="64" y="462" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <rect x="64" y="462" width="6" height="78" fill="#4295B6"/>
+    <text x="90" y="494" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#0B2F3A">数据资产</text>
+    <text x="90" y="522" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">主数据、指标、知识沉淀</text>
   </g>
   <g id="right-notes">
-    <rect x="956" y="246" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <rect x="1210" y="246" width="6" height="78" fill="#A4D968"/>
-    <text x="982" y="278" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0B2F3A">AI 增强</text>
-    <text x="982" y="306" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">智能分析、预测、辅助决策</text>
-    <rect x="956" y="354" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <rect x="1210" y="354" width="6" height="78" fill="#A4D968"/>
-    <text x="982" y="386" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0B2F3A">运营闭环</text>
-    <text x="982" y="414" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">监控、预警、派单、复盘</text>
-    <rect x="956" y="462" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <rect x="1210" y="462" width="6" height="78" fill="#A4D968"/>
-    <text x="982" y="494" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#0B2F3A">组织保障</text>
-    <text x="982" y="522" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">{{CONTENT_AREA}}</text>
+    <rect x="956" y="246" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <rect x="1210" y="246" width="6" height="78" fill="#B0D776"/>
+    <text x="982" y="278" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#0B2F3A">AI 增强</text>
+    <text x="982" y="306" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">智能分析、预测、辅助决策</text>
+    <rect x="956" y="354" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <rect x="1210" y="354" width="6" height="78" fill="#B0D776"/>
+    <text x="982" y="386" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#0B2F3A">运营闭环</text>
+    <text x="982" y="414" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">监控、预警、派单、复盘</text>
+    <rect x="956" y="462" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <rect x="1210" y="462" width="6" height="78" fill="#B0D776"/>
+    <text x="982" y="494" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#0B2F3A">组织保障</text>
+    <text x="982" y="522" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{CONTENT_AREA}}</text>
   </g>
-  <text x="64" y="674" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
 </svg>

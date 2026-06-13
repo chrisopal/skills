@@ -1,60 +1,60 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
-  <text x="64" y="45" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">06 / VALUE CASE</text>
+  <rect x="0" y="0" width="1280" height="4" fill="#4295B6"/>
+  <text x="64" y="45" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">06 / VALUE CASE</text>
   <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
-  <text x="64" y="112" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
-  <text x="64" y="154" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
-  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D1D3D3" stroke-width="1"/>
+  <text x="64" y="112" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4" stroke-width="1"/>
   <g id="metric-row">
-    <rect x="64" y="220" width="258" height="130" rx="4" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="88" y="256" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">效率提升</text>
-    <text x="88" y="310" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="46" font-weight="bold" fill="#0097BA">+28%</text>
-    <text x="88" y="336" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">端到端周期缩短</text>
-    <rect x="356" y="220" width="258" height="130" rx="4" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="380" y="256" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">质量改善</text>
-    <text x="380" y="310" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="46" font-weight="bold" fill="#0097BA">-35%</text>
-    <text x="380" y="336" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">异常返工率下降</text>
-    <rect x="648" y="220" width="258" height="130" rx="4" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="672" y="256" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">成本优化</text>
-    <text x="672" y="310" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="46" font-weight="bold" fill="#0097BA">8-12%</text>
-    <text x="672" y="336" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">运营成本优化空间</text>
+    <rect x="64" y="220" width="258" height="130" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="88" y="256" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">效率提升</text>
+    <text x="88" y="310" font-family="Microsoft YaHei" font-size="46" font-weight="bold" fill="#4295B6">+28%</text>
+    <text x="88" y="336" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">端到端周期缩短</text>
+    <rect x="356" y="220" width="258" height="130" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="380" y="256" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">质量改善</text>
+    <text x="380" y="310" font-family="Microsoft YaHei" font-size="46" font-weight="bold" fill="#4295B6">-35%</text>
+    <text x="380" y="336" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">异常返工率下降</text>
+    <rect x="648" y="220" width="258" height="130" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="672" y="256" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">成本优化</text>
+    <text x="672" y="310" font-family="Microsoft YaHei" font-size="46" font-weight="bold" fill="#4295B6">8-12%</text>
+    <text x="672" y="336" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">运营成本优化空间</text>
     <rect x="940" y="220" width="276" height="130" rx="4" fill="#0B2F3A"/>
-    <text x="964" y="256" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#FFFFFF" fill-opacity="0.82">综合价值</text>
-    <text x="964" y="310" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="46" font-weight="bold" fill="#A4D968">可量化</text>
-    <text x="964" y="336" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#FFFFFF" fill-opacity="0.82">价值闭环管理</text>
+    <text x="964" y="256" font-family="Microsoft YaHei" font-size="15" fill="#FFFFFF" fill-opacity="0.82">综合价值</text>
+    <text x="964" y="310" font-family="Microsoft YaHei" font-size="46" font-weight="bold" fill="#B0D776">可量化</text>
+    <text x="964" y="336" font-family="Microsoft YaHei" font-size="13" fill="#FFFFFF" fill-opacity="0.82">价值闭环管理</text>
   </g>
-  <rect x="64" y="394" width="748" height="182" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
+  <rect x="64" y="394" width="748" height="182" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
   <rect x="64" y="394" width="748" height="38" fill="#F3F7FA"/>
-  <text x="88" y="419" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="bold" fill="#0B2F3A">价值测算框架</text>
-  <line x1="64" y1="464" x2="812" y2="464" stroke="#D1D3D3" stroke-width="1"/>
-  <line x1="64" y1="510" x2="812" y2="510" stroke="#D1D3D3" stroke-width="1"/>
-  <line x1="248" y1="432" x2="248" y2="576" stroke="#D1D3D3" stroke-width="1"/>
-  <line x1="438" y1="432" x2="438" y2="576" stroke="#D1D3D3" stroke-width="1"/>
-  <line x1="628" y1="432" x2="628" y2="576" stroke="#D1D3D3" stroke-width="1"/>
-  <text x="88" y="458" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="bold" fill="#4B5563">指标</text>
-  <text x="278" y="458" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="bold" fill="#4B5563">当前基线</text>
-  <text x="468" y="458" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="bold" fill="#4B5563">目标状态</text>
-  <text x="658" y="458" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="bold" fill="#4B5563">管理含义</text>
-  <text x="88" y="494" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">交付周期</text>
-  <text x="278" y="494" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">T+15</text>
-  <text x="468" y="494" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#0097BA">T+10</text>
-  <text x="658" y="494" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">提升响应效率</text>
-  <text x="88" y="540" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">一次通过率</text>
-  <text x="278" y="540" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">82%</text>
-  <text x="468" y="540" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#0097BA">95%</text>
-  <text x="658" y="540" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">降低返工成本</text>
-  <rect x="872" y="394" width="344" height="182" rx="4" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-  <text x="904" y="434" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0B2F3A">落地建议</text>
-  <text x="904" y="478" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">{{CONTENT_AREA}}</text>
-  <rect x="904" y="520" width="184" height="32" rx="2" fill="#A4D968"/>
-  <text x="928" y="542" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="bold" fill="#0B2F3A">建立价值仪表盘</text>
-  <text x="64" y="674" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+  <text x="88" y="419" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">价值测算框架</text>
+  <line x1="64" y1="464" x2="812" y2="464" stroke="#D2D3D4" stroke-width="1"/>
+  <line x1="64" y1="510" x2="812" y2="510" stroke="#D2D3D4" stroke-width="1"/>
+  <line x1="248" y1="432" x2="248" y2="576" stroke="#D2D3D4" stroke-width="1"/>
+  <line x1="438" y1="432" x2="438" y2="576" stroke="#D2D3D4" stroke-width="1"/>
+  <line x1="628" y1="432" x2="628" y2="576" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="88" y="458" font-family="Microsoft YaHei" font-size="14" font-weight="bold" fill="#4B5563">指标</text>
+  <text x="278" y="458" font-family="Microsoft YaHei" font-size="14" font-weight="bold" fill="#4B5563">当前基线</text>
+  <text x="468" y="458" font-family="Microsoft YaHei" font-size="14" font-weight="bold" fill="#4B5563">目标状态</text>
+  <text x="658" y="458" font-family="Microsoft YaHei" font-size="14" font-weight="bold" fill="#4B5563">管理含义</text>
+  <text x="88" y="494" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">交付周期</text>
+  <text x="278" y="494" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">T+15</text>
+  <text x="468" y="494" font-family="Microsoft YaHei" font-size="14" fill="#4295B6">T+10</text>
+  <text x="658" y="494" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">提升响应效率</text>
+  <text x="88" y="540" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">一次通过率</text>
+  <text x="278" y="540" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">82%</text>
+  <text x="468" y="540" font-family="Microsoft YaHei" font-size="14" fill="#4295B6">95%</text>
+  <text x="658" y="540" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">降低返工成本</text>
+  <rect x="872" y="394" width="344" height="182" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="904" y="434" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#0B2F3A">落地建议</text>
+  <text x="904" y="478" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">{{CONTENT_AREA}}</text>
+  <rect x="904" y="520" width="184" height="32" rx="2" fill="#B0D776"/>
+  <text x="928" y="542" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">建立价值仪表盘</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
 </svg>

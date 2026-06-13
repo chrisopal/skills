@@ -1,29 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA"/>
-  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
-  <rect x="64" y="80" width="1152" height="510" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-  <rect x="64" y="80" width="12" height="510" fill="#0097BA"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#4295B6"/>
+  <rect x="64" y="80" width="1152" height="510" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <rect x="64" y="80" width="12" height="510" fill="#4295B6"/>
   <polygon points="992,80 1216,80 1216,590 1112,590" fill="#0B2F3A"/>
-  <polygon points="1050,80 1082,80 1202,590 1170,590" fill="#A4D968"/>
+  <polygon points="1050,80 1082,80 1202,590 1170,590" fill="#B0D776"/>
   <g id="huixin-logo" transform="translate(1004 112) scale(0.70)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#A4D968" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#B0D776" stroke-width="3"/>
   </g>
-  <text x="136" y="192" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="48" font-weight="bold" fill="#0B2F3A">{{TITLE}}</text>
-  <text x="136" y="252" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" fill="#4B5563">{{SUBTITLE}}</text>
-  <line x1="136" y1="306" x2="762" y2="306" stroke="#D1D3D3" stroke-width="1"/>
-  <text x="136" y="366" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">建议下一步</text>
-  <rect x="136" y="398" width="166" height="48" rx="2" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-  <text x="166" y="428" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="bold" fill="#0B2F3A">确认试点范围</text>
-  <rect x="324" y="398" width="166" height="48" rx="2" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-  <text x="354" y="428" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="bold" fill="#0B2F3A">建立项目机制</text>
-  <rect x="512" y="398" width="166" height="48" rx="2" fill="#A4D968"/>
-  <text x="542" y="428" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="bold" fill="#0B2F3A">启动蓝图设计</text>
-  <text x="136" y="512" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563">Strategic clarity, measurable value, disciplined execution.</text>
-  <text x="64" y="674" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+  <text x="136" y="192" font-family="Microsoft YaHei" font-size="48" font-weight="bold" fill="#0B2F3A">{{TITLE}}</text>
+  <text x="136" y="252" font-family="Microsoft YaHei" font-size="22" fill="#4B5563">{{SUBTITLE}}</text>
+  <line x1="136" y1="306" x2="762" y2="306" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="136" y="366" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">建议下一步</text>
+  <rect x="136" y="398" width="166" height="48" rx="2" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="166" y="428" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">确认试点范围</text>
+  <rect x="324" y="398" width="166" height="48" rx="2" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="354" y="428" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">建立项目机制</text>
+  <rect x="512" y="398" width="166" height="48" rx="2" fill="#B0D776"/>
+  <text x="542" y="428" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">启动蓝图设计</text>
+  <text x="136" y="512" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">Strategic clarity, measurable value, disciplined execution.</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
 </svg>

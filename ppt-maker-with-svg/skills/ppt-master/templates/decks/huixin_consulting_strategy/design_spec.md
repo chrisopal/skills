@@ -4,7 +4,7 @@ kind: deck
 category: brand
 summary: 慧新咨询汇报、战略规划、智能制造诊断、数字化转型蓝图、董事会汇报模板.
 keywords: [huixin, consulting, strategy, transformation, board-report]
-primary_color: "#0097BA"
+primary_color: "#4295B6"
 canvas_format: ppt169
 replication_mode: standard
 page_count: 8
@@ -32,9 +32,9 @@ placeholders:
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| Technology Blue | `#0097BA` | Titles, key conclusions, section numbers, chart primary color, process spine |
-| Vitality Green | `#A4D968` | Insight tags, growth metrics, opportunity points, recommendations |
-| Light Gray | `#D1D3D3` | Dividers, table strokes, weak information, structure lines |
+| Technology Blue | `#4295B6` | Titles, key conclusions, section numbers, chart primary color, process spine |
+| Vitality Green | `#B0D776` | Insight tags, growth metrics, opportunity points, recommendations |
+| Light Gray | `#D2D3D4` | Dividers, table strokes, weak information, structure lines |
 | Wordmark Black | `#000000` | Official Huixin wordmark on light backgrounds |
 | Deep Gray | `#4B5563` | Body text, footnotes, secondary labels |
 | Light Blue Gray | `#F3F7FA` | Background panels, table fills, neutral analysis areas |
@@ -44,7 +44,7 @@ placeholders:
 ## III. Typography
 
 - Primary font: `"Microsoft YaHei"`.
-- SVG fallback stack: `"Microsoft YaHei", "PingFang SC", Arial, sans-serif`.
+- SVG font: `"Microsoft YaHei"`; all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
 - Titles are bold and concise. Body text should stay short, structured, and conclusion-oriented.
 
 ## IV. Signature Design Elements

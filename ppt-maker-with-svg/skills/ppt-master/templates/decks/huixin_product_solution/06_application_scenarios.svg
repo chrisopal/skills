@@ -1,53 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
-  <polygon points="930,0 1280,0 1280,720 1134,720" fill="#0097BA" fill-opacity="0.05"/>
-  <text x="72" y="72" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
-  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="72" y="162" fill="#0B2F3A" fill-opacity="0.68" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <polygon points="930,0 1280,0 1280,720 1134,720" fill="#4295B6" fill-opacity="0.05"/>
+  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#0B2F3A" fill-opacity="0.68" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
   <g id="huixin-logo" transform="translate(1016 22) scale(0.58)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
 
-  <rect x="72" y="224" width="260" height="316" rx="20" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
-  <rect x="104" y="256" width="92" height="32" rx="16" fill="#0097BA"/>
-  <text x="150" y="278" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700">场景 1</text>
-  <rect x="104" y="322" width="72" height="54" rx="12" fill="#0097BA" fill-opacity="0.12"/>
-  <circle cx="140" cy="349" r="14" fill="#0097BA"/>
-  <text x="104" y="426" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">{{SCENARIO_1}}</text>
-  <text x="104" y="468" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{SCENARIO_1_DESC}}</text>
+  <rect x="72" y="224" width="260" height="316" rx="20" fill="#FFFFFF" stroke="#4295B6" stroke-width="2"/>
+  <rect x="104" y="256" width="92" height="32" rx="16" fill="#4295B6"/>
+  <text x="150" y="278" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">场景 1</text>
+  <rect x="104" y="322" width="72" height="54" rx="12" fill="#4295B6" fill-opacity="0.12"/>
+  <circle cx="140" cy="349" r="14" fill="#4295B6"/>
+  <text x="104" y="426" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{SCENARIO_1}}</text>
+  <text x="104" y="468" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_1_DESC}}</text>
 
-  <rect x="364" y="224" width="260" height="316" rx="20" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
-  <rect x="396" y="256" width="92" height="32" rx="16" fill="#A4D968"/>
-  <text x="442" y="278" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700">场景 2</text>
-  <rect x="396" y="322" width="72" height="54" rx="12" fill="#A4D968" fill-opacity="0.22"/>
-  <circle cx="432" cy="349" r="14" fill="#A4D968"/>
-  <text x="396" y="426" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">{{SCENARIO_2}}</text>
-  <text x="396" y="468" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{SCENARIO_2_DESC}}</text>
+  <rect x="364" y="224" width="260" height="316" rx="20" fill="#FFFFFF" stroke="#B0D776" stroke-width="2"/>
+  <rect x="396" y="256" width="92" height="32" rx="16" fill="#B0D776"/>
+  <text x="442" y="278" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">场景 2</text>
+  <rect x="396" y="322" width="72" height="54" rx="12" fill="#B0D776" fill-opacity="0.22"/>
+  <circle cx="432" cy="349" r="14" fill="#B0D776"/>
+  <text x="396" y="426" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{SCENARIO_2}}</text>
+  <text x="396" y="468" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_2_DESC}}</text>
 
-  <rect x="656" y="224" width="260" height="316" rx="20" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
+  <rect x="656" y="224" width="260" height="316" rx="20" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="2"/>
   <rect x="688" y="256" width="92" height="32" rx="16" fill="#0B2F3A"/>
-  <text x="734" y="278" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700">场景 3</text>
-  <rect x="688" y="322" width="72" height="54" rx="12" fill="#D1D3D3" fill-opacity="0.45"/>
+  <text x="734" y="278" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">场景 3</text>
+  <rect x="688" y="322" width="72" height="54" rx="12" fill="#D2D3D4" fill-opacity="0.45"/>
   <circle cx="724" cy="349" r="14" fill="#0B2F3A"/>
-  <text x="688" y="426" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">{{SCENARIO_3}}</text>
-  <text x="688" y="468" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{SCENARIO_3_DESC}}</text>
+  <text x="688" y="426" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{SCENARIO_3}}</text>
+  <text x="688" y="468" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_3_DESC}}</text>
 
   <rect x="948" y="224" width="260" height="316" rx="20" fill="#0B2F3A"/>
-  <rect x="980" y="256" width="92" height="32" rx="16" fill="#A4D968"/>
-  <text x="1026" y="278" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700">场景 4</text>
+  <rect x="980" y="256" width="92" height="32" rx="16" fill="#B0D776"/>
+  <text x="1026" y="278" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">场景 4</text>
   <rect x="980" y="322" width="72" height="54" rx="12" fill="#FFFFFF" fill-opacity="0.13"/>
-  <circle cx="1016" cy="349" r="14" fill="#A4D968"/>
-  <text x="980" y="426" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700">{{SCENARIO_4}}</text>
-  <text x="980" y="468" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15">{{SCENARIO_4_DESC}}</text>
+  <circle cx="1016" cy="349" r="14" fill="#B0D776"/>
+  <text x="980" y="426" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{SCENARIO_4}}</text>
+  <text x="980" y="468" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_4_DESC}}</text>
 
-  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D1D3D3" stroke-width="1.5"/>
-  <text x="72" y="686" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
-  <text x="1208" y="686" text-anchor="end" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D2D3D4" stroke-width="1.5"/>
+  <text x="72" y="686" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
 </svg>

@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
-  <polygon points="980,0 1280,0 1280,176 1060,176" fill="#0097BA" fill-opacity="0.08"/>
-  <rect x="72" y="56" width="104" height="30" rx="15" fill="#0097BA"/>
-  <text x="124" y="77" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700">{{SECTION_NAME}}</text>
-  <text x="72" y="126" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="34" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="72" y="164" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <polygon points="980,0 1280,0 1280,176 1060,176" fill="#4295B6" fill-opacity="0.08"/>
+  <rect x="72" y="56" width="104" height="30" rx="15" fill="#4295B6"/>
+  <text x="124" y="77" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="126" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="164" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17">{{KEY_MESSAGE}}</text>
 
   <g id="huixin-logo" transform="translate(1016 22) scale(0.58)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
 
-  <line x1="72" y1="200" x2="1208" y2="200" stroke="#D1D3D3" stroke-width="2"/>
-  <rect x="72" y="232" width="1136" height="356" rx="22" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="2"/>
-  <polygon points="72,232 360,232 306,588 72,588" fill="#0097BA" fill-opacity="0.05"/>
-  <polygon points="982,232 1208,232 1208,588 910,588" fill="#A4D968" fill-opacity="0.10"/>
-  <path d="M108 268 L122 268 M108 268 L108 282" stroke="#0097BA" stroke-width="2" stroke-opacity="0.7"/>
-  <path d="M1172 268 L1158 268 M1172 268 L1172 282" stroke="#0097BA" stroke-width="2" stroke-opacity="0.7"/>
-  <path d="M108 552 L122 552 M108 552 L108 538" stroke="#0097BA" stroke-width="2" stroke-opacity="0.35"/>
-  <path d="M1172 552 L1158 552 M1172 552 L1172 538" stroke="#0097BA" stroke-width="2" stroke-opacity="0.35"/>
+  <line x1="72" y1="200" x2="1208" y2="200" stroke="#D2D3D4" stroke-width="2"/>
+  <rect x="72" y="232" width="1136" height="356" rx="22" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="2"/>
+  <polygon points="72,232 360,232 306,588 72,588" fill="#4295B6" fill-opacity="0.05"/>
+  <polygon points="982,232 1208,232 1208,588 910,588" fill="#B0D776" fill-opacity="0.10"/>
+  <path d="M108 268 L122 268 M108 268 L108 282" stroke="#4295B6" stroke-width="2" stroke-opacity="0.7"/>
+  <path d="M1172 268 L1158 268 M1172 268 L1172 282" stroke="#4295B6" stroke-width="2" stroke-opacity="0.7"/>
+  <path d="M108 552 L122 552 M108 552 L108 538" stroke="#4295B6" stroke-width="2" stroke-opacity="0.35"/>
+  <path d="M1172 552 L1158 552 M1172 552 L1172 538" stroke="#4295B6" stroke-width="2" stroke-opacity="0.35"/>
 
-  <text x="640" y="398" text-anchor="middle" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="2">{{CONTENT_AREA}}</text>
-  <text x="640" y="438" text-anchor="middle" fill="#D1D3D3" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14">Flexible content area: table / diagram / quote / feature grid</text>
+  <text x="640" y="398" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="30" font-weight="700" letter-spacing="2">{{CONTENT_AREA}}</text>
+  <text x="640" y="438" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14">Flexible content area: table / diagram / quote / feature grid</text>
 
-  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D1D3D3" stroke-width="1.5"/>
-  <text x="72" y="686" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
-  <text x="1208" y="686" text-anchor="end" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D2D3D4" stroke-width="1.5"/>
+  <text x="72" y="686" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
 </svg>

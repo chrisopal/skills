@@ -4,7 +4,7 @@ kind: deck
 summary: 慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示.
 canvas_format: ppt169
 page_count: 10
-primary_color: "#0097BA"
+primary_color: "#4295B6"
 ---
 
 # Huixin Product Solution - Design Specification
@@ -33,9 +33,9 @@ primary_color: "#0097BA"
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| **Technology Blue** | `#0097BA` | Platform architecture, system modules, navigation, process lines |
-| **Vitality Green** | `#A4D968` | AI capabilities, value points, highlights, product advantages, metrics |
-| **Brand Gray** | `#D1D3D3` | Module borders, structural partitions, connection lines, auxiliary notes |
+| **Technology Blue** | `#4295B6` | Platform architecture, system modules, navigation, process lines |
+| **Vitality Green** | `#B0D776` | AI capabilities, value points, highlights, product advantages, metrics |
+| **Brand Gray** | `#D2D3D4` | Module borders, structural partitions, connection lines, auxiliary notes |
 | **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
 | **Deep Blue Gray** | `#0B2F3A` | Titles, body text, premium background blocks, technical base layer |
 | **White** | `#FFFFFF` | Page background, card surfaces, reverse text |
@@ -53,7 +53,7 @@ primary_color: "#0097BA"
 
 **Primary Font**: `"Microsoft YaHei"`
 
-**SVG Font Stack**: `"Microsoft YaHei", "PingFang SC", Arial, sans-serif` — Microsoft YaHei is the design target; PingFang SC is kept only as a macOS preview fallback for Chinese rendering.
+**SVG Font**: `"Microsoft YaHei"` — all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
 
 ## V. Logo and Brand Mark
 

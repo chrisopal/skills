@@ -1,61 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
-  <text x="64" y="45" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">02 / DIAGNOSIS ISSUE TREE</text>
+  <rect x="0" y="0" width="1280" height="4" fill="#4295B6"/>
+  <text x="64" y="45" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">02 / DIAGNOSIS ISSUE TREE</text>
   <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
-    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
-    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
-    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
-    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
-    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
-  <text x="64" y="112" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
-  <text x="64" y="154" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
-  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D1D3D3" stroke-width="1"/>
+  <text x="64" y="112" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4" stroke-width="1"/>
   <rect x="64" y="226" width="250" height="104" rx="4" fill="#0B2F3A"/>
-  <text x="92" y="265" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">核心问题</text>
-  <text x="92" y="298" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#FFFFFF" fill-opacity="0.86">增长、效率、质量无法同时提升</text>
-  <line x1="314" y1="278" x2="392" y2="278" stroke="#0097BA" stroke-width="3"/>
-  <line x1="392" y1="278" x2="392" y2="528" stroke="#0097BA" stroke-width="3"/>
+  <text x="92" y="265" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#FFFFFF">核心问题</text>
+  <text x="92" y="298" font-family="Microsoft YaHei" font-size="15" fill="#FFFFFF" fill-opacity="0.86">增长、效率、质量无法同时提升</text>
+  <line x1="314" y1="278" x2="392" y2="278" stroke="#4295B6" stroke-width="3"/>
+  <line x1="392" y1="278" x2="392" y2="528" stroke="#4295B6" stroke-width="3"/>
   <g id="branch-process">
-    <line x1="392" y1="248" x2="448" y2="248" stroke="#0097BA" stroke-width="2"/>
-    <rect x="448" y="198" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="472" y="232" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="19" font-weight="bold" fill="#0B2F3A">流程体系</text>
-    <text x="472" y="266" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">端到端责任链不清晰</text>
-    <rect x="706" y="198" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="728" y="234" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">断点 1：跨部门交接</text>
-    <text x="728" y="266" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">断点 2：异常升级慢</text>
-    <line x1="674" y1="248" x2="706" y2="248" stroke="#D1D3D3" stroke-width="2"/>
+    <line x1="392" y1="248" x2="448" y2="248" stroke="#4295B6" stroke-width="2"/>
+    <rect x="448" y="198" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="472" y="232" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#0B2F3A">流程体系</text>
+    <text x="472" y="266" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">端到端责任链不清晰</text>
+    <rect x="706" y="198" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="728" y="234" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 1：跨部门交接</text>
+    <text x="728" y="266" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 2：异常升级慢</text>
+    <line x1="674" y1="248" x2="706" y2="248" stroke="#D2D3D4" stroke-width="2"/>
   </g>
   <g id="branch-data">
-    <line x1="392" y1="378" x2="448" y2="378" stroke="#0097BA" stroke-width="2"/>
-    <rect x="448" y="328" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="472" y="362" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="19" font-weight="bold" fill="#0B2F3A">数据底座</text>
-    <text x="472" y="396" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">系统孤岛导致口径不一</text>
-    <rect x="706" y="328" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="728" y="364" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">断点 3：数据分散</text>
-    <text x="728" y="396" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">断点 4：指标滞后</text>
-    <line x1="674" y1="378" x2="706" y2="378" stroke="#D1D3D3" stroke-width="2"/>
+    <line x1="392" y1="378" x2="448" y2="378" stroke="#4295B6" stroke-width="2"/>
+    <rect x="448" y="328" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="472" y="362" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#0B2F3A">数据底座</text>
+    <text x="472" y="396" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">系统孤岛导致口径不一</text>
+    <rect x="706" y="328" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="728" y="364" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 3：数据分散</text>
+    <text x="728" y="396" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 4：指标滞后</text>
+    <line x1="674" y1="378" x2="706" y2="378" stroke="#D2D3D4" stroke-width="2"/>
   </g>
   <g id="branch-org">
-    <line x1="392" y1="508" x2="448" y2="508" stroke="#0097BA" stroke-width="2"/>
-    <rect x="448" y="458" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="472" y="492" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="19" font-weight="bold" fill="#0B2F3A">组织能力</text>
-    <text x="472" y="526" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" fill="#4B5563">业务与技术协同机制不足</text>
-    <rect x="706" y="458" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D1D3D3" stroke-width="1"/>
-    <text x="728" y="494" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">断点 5：角色模糊</text>
-    <text x="728" y="526" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">断点 6：能力缺口</text>
-    <line x1="674" y1="508" x2="706" y2="508" stroke="#D1D3D3" stroke-width="2"/>
+    <line x1="392" y1="508" x2="448" y2="508" stroke="#4295B6" stroke-width="2"/>
+    <rect x="448" y="458" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="472" y="492" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#0B2F3A">组织能力</text>
+    <text x="472" y="526" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">业务与技术协同机制不足</text>
+    <rect x="706" y="458" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <text x="728" y="494" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 5：角色模糊</text>
+    <text x="728" y="526" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 6：能力缺口</text>
+    <line x1="674" y1="508" x2="706" y2="508" stroke="#D2D3D4" stroke-width="2"/>
   </g>
-  <rect x="974" y="198" width="242" height="360" rx="4" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
-  <rect x="974" y="198" width="242" height="42" fill="#0097BA"/>
-  <text x="1000" y="226" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" font-weight="bold" fill="#FFFFFF">管理层判断</text>
-  <text x="1000" y="284" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="42" font-weight="bold" fill="#A4D968">70%</text>
-  <text x="1000" y="318" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">瓶颈来自体系协同</text>
-  <line x1="1000" y1="348" x2="1190" y2="348" stroke="#D1D3D3" stroke-width="1"/>
-  <text x="1000" y="386" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">{{CONTENT_AREA}}</text>
-  <text x="1000" y="428" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">建议优先治理流程、数据、组织</text>
-  <text x="1000" y="456" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#4B5563">三类基础能力。</text>
-  <text x="64" y="674" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+  <rect x="974" y="198" width="242" height="360" rx="4" fill="#FFFFFF" stroke="#4295B6" stroke-width="2"/>
+  <rect x="974" y="198" width="242" height="42" fill="#4295B6"/>
+  <text x="1000" y="226" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#FFFFFF">管理层判断</text>
+  <text x="1000" y="284" font-family="Microsoft YaHei" font-size="42" font-weight="bold" fill="#B0D776">70%</text>
+  <text x="1000" y="318" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">瓶颈来自体系协同</text>
+  <line x1="1000" y1="348" x2="1190" y2="348" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="1000" y="386" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">{{CONTENT_AREA}}</text>
+  <text x="1000" y="428" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">建议优先治理流程、数据、组织</text>
+  <text x="1000" y="456" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">三类基础能力。</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
 </svg>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
+  <rect x="0" y="6" width="340" height="4" fill="#B0D776"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">01 / COURSE OBJECTIVES</text>
+  <g id="huixin-logo" transform="translate(1002 22) scale(0.72)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="106" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="64" y="188" width="348" height="368" rx="6" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="94" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="24" font-weight="700">学习目标</text>
+  <circle cx="106" cy="286" r="15" fill="#4295B6"/>
+  <text x="106" y="292" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">1</text>
+  <text x="136" y="292" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">{{OBJECTIVE_1}}</text>
+  <circle cx="106" cy="346" r="15" fill="#4295B6"/>
+  <text x="106" y="352" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">2</text>
+  <text x="136" y="352" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">{{OBJECTIVE_2}}</text>
+  <circle cx="106" cy="406" r="15" fill="#4295B6"/>
+  <text x="106" y="412" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">3</text>
+  <text x="136" y="412" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">{{OBJECTIVE_3}}</text>
+  <rect x="94" y="474" width="270" height="42" rx="4" fill="#B0D776"/>
+  <text x="229" y="501" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">学完能够直接应用</text>
+
+  <rect x="444" y="188" width="348" height="368" rx="6" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="474" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="24" font-weight="700">预期产出</text>
+  <rect x="474" y="274" width="276" height="54" rx="4" fill="#F3F7FA"/>
+  <text x="494" y="307" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{OUTCOME_1}}</text>
+  <rect x="474" y="350" width="276" height="54" rx="4" fill="#F3F7FA"/>
+  <text x="494" y="383" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{OUTCOME_2}}</text>
+  <rect x="474" y="426" width="276" height="54" rx="4" fill="#F3F7FA"/>
+  <text x="494" y="459" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{OUTCOME_3}}</text>
+  <line x1="474" y1="522" x2="750" y2="522" stroke="#4295B6" stroke-width="2"/>
+
+  <rect x="824" y="188" width="392" height="368" rx="6" fill="#0B2F3A"/>
+  <text x="858" y="232" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="24" font-weight="700">适用对象与课堂约定</text>
+  <text x="858" y="286" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="17">对象：{{AUDIENCE}}</text>
+  <text x="858" y="330" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="17">时长：{{DURATION}}</text>
+  <text x="858" y="374" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="17">形式：讲解 + 演示 + 练习 + 复盘</text>
+  <rect x="858" y="432" width="290" height="58" rx="4" fill="#FFFFFF" fill-opacity="0.10"/>
+  <text x="882" y="467" fill="#B0D776" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{LEARNING_RULE}}</text>
+  <polygon points="1168,498 1216,498 1216,556 1138,556" fill="#B0D776"/>
+
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

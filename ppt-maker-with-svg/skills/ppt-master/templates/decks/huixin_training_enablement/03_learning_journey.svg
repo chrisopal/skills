@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
+  <rect x="0" y="6" width="420" height="4" fill="#B0D776"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">02 / LEARNING JOURNEY</text>
+  <g id="huixin-logo" transform="translate(1002 22) scale(0.72)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="106" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <line x1="145" y1="358" x2="1115" y2="358" stroke="#D2D3D4" stroke-width="6" stroke-linecap="round"/>
+  <line x1="145" y1="358" x2="650" y2="358" stroke="#4295B6" stroke-width="6" stroke-linecap="round"/>
+  <g id="journey-module-1" transform="translate(92 220)">
+    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#4295B6" stroke-width="2"/>
+    <circle cx="88" cy="138" r="26" fill="#4295B6"/>
+    <text x="88" y="148" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">1</text>
+    <text x="24" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="20" font-weight="700">{{MODULE_1}}</text>
+    <text x="24" y="74" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{MODULE_1_TIME}}</text>
+  </g>
+  <g id="journey-module-2" transform="translate(316 392)">
+    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <circle cx="88" cy="-34" r="26" fill="#4295B6"/>
+    <text x="88" y="-24" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">2</text>
+    <text x="24" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="20" font-weight="700">{{MODULE_2}}</text>
+    <text x="24" y="74" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{MODULE_2_TIME}}</text>
+  </g>
+  <g id="journey-module-3" transform="translate(540 220)">
+    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#B0D776" stroke-width="2"/>
+    <circle cx="88" cy="138" r="26" fill="#B0D776"/>
+    <text x="88" y="148" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="28" font-weight="700">3</text>
+    <text x="24" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="20" font-weight="700">{{MODULE_3}}</text>
+    <text x="24" y="74" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{MODULE_3_TIME}}</text>
+  </g>
+  <g id="journey-module-4" transform="translate(764 392)">
+    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+    <circle cx="88" cy="-34" r="26" fill="#D2D3D4"/>
+    <text x="88" y="-24" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="28" font-weight="700">4</text>
+    <text x="24" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="20" font-weight="700">{{MODULE_4}}</text>
+    <text x="24" y="74" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{MODULE_4_TIME}}</text>
+  </g>
+  <g id="journey-module-5" transform="translate(988 220)">
+    <rect x="0" y="0" width="176" height="104" rx="6" fill="#0B2F3A"/>
+    <circle cx="88" cy="138" r="26" fill="#B0D776"/>
+    <text x="88" y="148" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="28" font-weight="700">5</text>
+    <text x="24" y="42" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="20" font-weight="700">{{MODULE_5}}</text>
+    <text x="24" y="74" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14">{{MODULE_5_TIME}}</text>
+  </g>
+  <rect x="64" y="584" width="1152" height="44" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="88" y="612" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">学习节奏：</text>
+  <text x="178" y="612" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{JOURNEY_NOTE}}</text>
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

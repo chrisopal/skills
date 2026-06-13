@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
+  <rect x="0" y="6" width="420" height="4" fill="#B0D776"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">06 / CASE PRACTICE</text>
+  <g id="huixin-logo" transform="translate(1002 22) scale(0.72)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="106" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="64" y="188" width="442" height="404" rx="8" fill="#0B2F3A"/>
+  <text x="100" y="236" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="25" font-weight="700">案例背景</text>
+  <text x="100" y="286" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="17">{{CASE_CONTEXT}}</text>
+  <rect x="100" y="342" width="332" height="92" rx="6" fill="#FFFFFF" fill-opacity="0.10"/>
+  <text x="124" y="378" fill="#B0D776" font-family="Microsoft YaHei" font-size="18" font-weight="700">角色</text>
+  <text x="124" y="412" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="15">{{ROLE_DESCRIPTION}}</text>
+  <rect x="100" y="470" width="144" height="36" rx="3" fill="#4295B6"/>
+  <text x="172" y="494" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{CASE_TAG}}</text>
+
+  <rect x="538" y="188" width="314" height="188" rx="8" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="568" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">练习任务</text>
+  <text x="568" y="276" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{TASK_1}}</text>
+  <text x="568" y="318" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{TASK_2}}</text>
+  <rect x="568" y="338" width="104" height="28" rx="3" fill="#B0D776"/>
+  <text x="620" y="357" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="12" font-weight="700">15 MIN</text>
+
+  <rect x="884" y="188" width="332" height="188" rx="8" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="914" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">需要判断</text>
+  <text x="914" y="276" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{DECISION_1}}</text>
+  <text x="914" y="318" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{DECISION_2}}</text>
+  <line x1="914" y1="342" x2="1134" y2="342" stroke="#4295B6" stroke-width="3"/>
+
+  <rect x="538" y="408" width="678" height="184" rx="8" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="568" y="452" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">小组讨论记录</text>
+  <line x1="568" y1="492" x2="1170" y2="492" stroke="#D2D3D4" stroke-width="1"/>
+  <line x1="568" y1="532" x2="1170" y2="532" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="568" y="568" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">结论：{{GROUP_CONCLUSION}}</text>
+
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

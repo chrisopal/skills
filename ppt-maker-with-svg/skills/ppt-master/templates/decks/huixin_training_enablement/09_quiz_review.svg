@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
+  <rect x="0" y="6" width="390" height="4" fill="#B0D776"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">08 / QUIZ AND REVIEW</text>
+  <g id="huixin-logo" transform="translate(1002 22) scale(0.72)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="106" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="64" y="188" width="548" height="390" rx="8" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="94" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="24" font-weight="700">课堂测验</text>
+  <rect x="94" y="268" width="476" height="64" rx="5" fill="#FFFFFF"/>
+  <text x="118" y="307" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">Q1. {{QUESTION_1}}</text>
+  <rect x="94" y="350" width="476" height="64" rx="5" fill="#FFFFFF"/>
+  <text x="118" y="389" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">Q2. {{QUESTION_2}}</text>
+  <rect x="94" y="432" width="476" height="64" rx="5" fill="#FFFFFF"/>
+  <text x="118" y="471" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">Q3. {{QUESTION_3}}</text>
+  <rect x="94" y="518" width="132" height="34" rx="3" fill="#4295B6"/>
+  <text x="160" y="540" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">个人作答</text>
+
+  <rect x="644" y="188" width="250" height="180" rx="8" fill="#0B2F3A"/>
+  <text x="674" y="232" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="23" font-weight="700">答案区</text>
+  <text x="674" y="278" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="16">A1：{{ANSWER_1}}</text>
+  <text x="674" y="318" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="16">A2：{{ANSWER_2}}</text>
+  <text x="674" y="358" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="16">A3：{{ANSWER_3}}</text>
+
+  <rect x="926" y="188" width="290" height="180" rx="8" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="956" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="23" font-weight="700">错题复盘</text>
+  <text x="956" y="278" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{REVIEW_POINT_1}}</text>
+  <text x="956" y="318" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{REVIEW_POINT_2}}</text>
+  <line x1="956" y1="344" x2="1158" y2="344" stroke="#B0D776" stroke-width="4"/>
+
+  <rect x="644" y="404" width="572" height="174" rx="8" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="674" y="448" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="23" font-weight="700">本节回顾</text>
+  <rect x="674" y="482" width="148" height="42" rx="3" fill="#FFFFFF"/>
+  <text x="748" y="509" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{RECAP_1}}</text>
+  <rect x="846" y="482" width="148" height="42" rx="3" fill="#FFFFFF"/>
+  <text x="920" y="509" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{RECAP_2}}</text>
+  <rect x="1018" y="482" width="148" height="42" rx="3" fill="#B0D776"/>
+  <text x="1092" y="509" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{RECAP_3}}</text>
+
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

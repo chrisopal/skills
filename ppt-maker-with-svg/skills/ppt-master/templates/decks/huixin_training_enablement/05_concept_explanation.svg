@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
+  <rect x="0" y="6" width="300" height="4" fill="#B0D776"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">04 / CONCEPT EXPLANATION</text>
+  <g id="huixin-logo" transform="translate(1002 22) scale(0.72)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="106" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="64" y="188" width="520" height="388" rx="8" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <rect x="64" y="188" width="12" height="388" fill="#4295B6"/>
+  <text x="104" y="246" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="28" font-weight="700">{{CONCEPT_NAME}}</text>
+  <text x="104" y="296" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">定义：{{CONCEPT_DEFINITION}}</text>
+  <line x1="104" y1="330" x2="534" y2="330" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="104" y="378" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="20" font-weight="700">讲解要点</text>
+  <circle cx="116" cy="420" r="5" fill="#4295B6"/>
+  <text x="136" y="426" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{POINT_1}}</text>
+  <circle cx="116" cy="462" r="5" fill="#4295B6"/>
+  <text x="136" y="468" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{POINT_2}}</text>
+  <circle cx="116" cy="504" r="5" fill="#4295B6"/>
+  <text x="136" y="510" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{POINT_3}}</text>
+
+  <rect x="624" y="188" width="264" height="174" rx="8" fill="#0B2F3A"/>
+  <text x="654" y="232" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">示例</text>
+  <text x="654" y="274" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="16">{{EXAMPLE}}</text>
+  <rect x="654" y="306" width="100" height="30" rx="3" fill="#B0D776"/>
+  <text x="704" y="326" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">DEMO</text>
+
+  <rect x="920" y="188" width="296" height="174" rx="8" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="950" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">常见误区</text>
+  <text x="950" y="274" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{CAUTION}}</text>
+  <line x1="950" y1="318" x2="1166" y2="318" stroke="#B0D776" stroke-width="3"/>
+
+  <rect x="624" y="402" width="592" height="174" rx="8" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="654" y="448" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">课堂带走</text>
+  <text x="654" y="494" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">{{TAKEAWAY}}</text>
+  <polygon points="1058,510 1216,510 1216,576 1018,576" fill="#B0D776"/>
+  <text x="1110" y="550" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">记住这一点</text>
+
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

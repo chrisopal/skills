@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
+  <rect x="0" y="6" width="440" height="4" fill="#B0D776"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">07 / WORKSHOP TASK</text>
+  <g id="huixin-logo" transform="translate(1002 22) scale(0.72)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="106" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="64" y="188" width="1152" height="82" rx="8" fill="#0B2F3A"/>
+  <text x="100" y="238" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="26" font-weight="700">任务说明：{{WORKSHOP_TASK}}</text>
+  <rect x="1038" y="212" width="128" height="34" rx="3" fill="#B0D776"/>
+  <text x="1102" y="235" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{TIMEBOX}}</text>
+
+  <rect x="64" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="94" y="352" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">输入材料</text>
+  <circle cx="106" cy="398" r="5" fill="#4295B6"/>
+  <text x="126" y="404" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{INPUT_1}}</text>
+  <circle cx="106" cy="440" r="5" fill="#4295B6"/>
+  <text x="126" y="446" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{INPUT_2}}</text>
+  <circle cx="106" cy="482" r="5" fill="#4295B6"/>
+  <text x="126" y="488" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{INPUT_3}}</text>
+
+  <rect x="354" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="384" y="352" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">分工角色</text>
+  <text x="384" y="402" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">主持：{{ROLE_1}}</text>
+  <text x="384" y="444" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">记录：{{ROLE_2}}</text>
+  <text x="384" y="486" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">汇报：{{ROLE_3}}</text>
+  <rect x="384" y="506" width="138" height="28" rx="3" fill="#F3F7FA"/>
+  <text x="453" y="525" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="12" font-weight="700">GROUP WORK</text>
+
+  <rect x="644" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="674" y="352" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">输出要求</text>
+  <text x="674" y="402" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{OUTPUT_1}}</text>
+  <text x="674" y="444" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{OUTPUT_2}}</text>
+  <text x="674" y="486" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{OUTPUT_3}}</text>
+  <line x1="674" y1="520" x2="860" y2="520" stroke="#B0D776" stroke-width="4"/>
+
+  <rect x="934" y="308" width="282" height="238" rx="8" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="964" y="352" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">汇报模板</text>
+  <rect x="964" y="384" width="206" height="34" rx="3" fill="#F3F7FA"/>
+  <rect x="964" y="432" width="206" height="34" rx="3" fill="#F3F7FA"/>
+  <rect x="964" y="480" width="206" height="34" rx="3" fill="#F3F7FA"/>
+  <text x="984" y="406" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">1. {{REPORT_LINE_1}}</text>
+  <text x="984" y="454" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">2. {{REPORT_LINE_2}}</text>
+  <text x="984" y="502" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">3. {{REPORT_LINE_3}}</text>
+
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

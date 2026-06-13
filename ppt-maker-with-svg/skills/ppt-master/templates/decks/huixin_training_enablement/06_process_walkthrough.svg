@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
+  <rect x="0" y="6" width="360" height="4" fill="#B0D776"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">05 / PROCESS WALKTHROUGH</text>
+  <g id="huixin-logo" transform="translate(1002 22) scale(0.72)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+  </g>
+  <text x="64" y="106" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="76" y="196" width="1128" height="320" rx="10" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <line x1="160" y1="356" x2="1088" y2="356" stroke="#D2D3D4" stroke-width="4"/>
+  <g id="process-step-1" transform="translate(112 244)">
+    <circle cx="48" cy="112" r="38" fill="#4295B6"/>
+    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="38" font-weight="700">1</text>
+    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_1}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_1_NOTE}}</text>
+  </g>
+  <g id="process-step-2" transform="translate(340 244)">
+    <circle cx="48" cy="112" r="38" fill="#4295B6"/>
+    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="38" font-weight="700">2</text>
+    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_2}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_2_NOTE}}</text>
+  </g>
+  <g id="process-step-3" transform="translate(568 244)">
+    <circle cx="48" cy="112" r="38" fill="#B0D776"/>
+    <text x="48" y="126" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">3</text>
+    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_3}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_3_NOTE}}</text>
+  </g>
+  <g id="process-step-4" transform="translate(796 244)">
+    <circle cx="48" cy="112" r="38" fill="#4295B6"/>
+    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="38" font-weight="700">4</text>
+    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_4}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_4_NOTE}}</text>
+  </g>
+  <g id="process-step-5" transform="translate(1024 244)">
+    <circle cx="48" cy="112" r="38" fill="#0B2F3A"/>
+    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="38" font-weight="700">5</text>
+    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_5}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_5_NOTE}}</text>
+  </g>
+
+  <rect x="76" y="548" width="708" height="58" rx="5" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
+  <text x="102" y="583" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">讲师提示：</text>
+  <text x="194" y="583" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{FACILITATOR_TIP}}</text>
+  <rect x="824" y="548" width="380" height="58" rx="5" fill="#B0D776"/>
+  <text x="1014" y="584" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">现场演示 / 学员跟练</text>
+
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

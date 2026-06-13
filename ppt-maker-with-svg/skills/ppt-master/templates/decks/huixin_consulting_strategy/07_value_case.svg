@@ -2,9 +2,14 @@
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
   <text x="64" y="45" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">06 / VALUE CASE</text>
-  <text x="1070" y="45" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" fill="#4B5563">慧新全智</text>
-  <polygon points="1142,32 1156,18 1170,32 1156,46" fill="#0097BA"/>
-  <polygon points="1173,32 1187,18 1201,32 1187,46" fill="#A4D968"/>
+  <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
+  </g>
   <text x="64" y="112" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
   <text x="64" y="154" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
   <line x1="64" y1="178" x2="1216" y2="178" stroke="#D1D3D3" stroke-width="1"/>

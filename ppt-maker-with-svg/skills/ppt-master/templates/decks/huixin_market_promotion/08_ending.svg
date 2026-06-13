@@ -6,12 +6,13 @@
   <path d="M0 518 C150 456 272 616 456 548 C628 484 742 370 936 424 C1080 464 1166 560 1280 512 L1280 720 L0 720 Z" fill="#0097BA" fill-opacity="0.18"/>
   <path d="M746 120 C900 50 1116 94 1210 232 C1300 364 1218 526 1044 558 C872 590 712 504 700 354 C692 248 664 156 746 120 Z" fill="#FFFFFF" fill-opacity="0.08"/>
 
-  <g id="huixin-logo">
-    <polygon points="510,104 525,78 540,104 525,130" fill="#D1D3D3"/>
-    <polygon points="548,78 596,78 626,130 578,130" fill="#A4D968"/>
-    <polygon points="626,104 641,78 656,104 641,130" fill="#D1D3D3"/>
-    <polygon points="664,78 712,78 742,130 694,130" fill="#0097BA"/>
-    <text x="522" y="178" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="34" font-weight="700">慧新全智</text>
+  <g id="huixin-logo" transform="translate(506 78) scale(1.02)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
+    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="32" font-weight="700">慧新全智</text>
+    <line x1="140" y1="46" x2="286" y2="46" stroke="#0097BA" stroke-width="3"/>
   </g>
 
   <text x="640" y="296" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="48" font-weight="700">{{CTA}}</text>

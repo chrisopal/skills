@@ -35,6 +35,7 @@ placeholders:
 | Technology Blue | `#0097BA` | Titles, key conclusions, section numbers, chart primary color, process spine |
 | Vitality Green | `#A4D968` | Insight tags, growth metrics, opportunity points, recommendations |
 | Light Gray | `#D1D3D3` | Dividers, table strokes, weak information, structure lines |
+| Wordmark Black | `#000000` | Official Huixin wordmark on light backgrounds |
 | Deep Gray | `#4B5563` | Body text, footnotes, secondary labels |
 | Light Blue Gray | `#F3F7FA` | Background panels, table fills, neutral analysis areas |
 | Dark Blue Gray | `#0B2F3A` | Cover accent, executive titles, high-emphasis text |
@@ -48,13 +49,19 @@ placeholders:
 
 ## IV. Signature Design Elements
 
-- Executive header: small section label, page number, thin blue top rule, and compact Huixin mark.
+- Executive header: small section label, page number, thin blue top rule, and compact official Huixin lockup.
 - Consulting conclusion bar: every analysis page starts with a one-line key message beneath the title.
 - Framework language: issue tree, four-quadrant matrix, pyramid capability model, phased roadmap, and value case table.
-- Geometry: flat rectangles, fine rules, small slanted brand tabs, no heavy shadow, no complex texture.
+- Geometry: flat rectangles, fine rules, slanted-bar brand tabs derived from the official Huixin logo, no heavy shadow, no complex texture.
 - Accent usage: green appears only for insight, opportunity, value uplift, or recommendation emphasis.
 
-## V. Page Roster
+## V. Logo and Brand Mark
+
+- Official lockup: four right-leaning slanted bars in gray / green / gray / blue, the `慧新全智` wordmark, and a technology-blue underline.
+- Light pages use the black wordmark. Dark cover/ending accents may use the white wordmark for contrast.
+- Do not use the older two-diamond shorthand; preserve the horizontal logo lockup and slanted-bar proportions.
+
+## VI. Page Roster
 
 | SVG | Page Role | Description |
 | --- | --- | --- |
@@ -67,6 +74,6 @@ placeholders:
 | `07_value_case.svg` | Value case | KPI value case with baseline, target, uplift, and management implications. |
 | `08_ending.svg` | Ending | Minimal executive closing page with next-step callout and brand mark. |
 
-## VI. Placeholder Overrides
+## VII. Placeholder Overrides
 
 The consulting template leads with `{{KEY_MESSAGE}}` on analysis pages because management-consulting pages usually communicate the answer first, then support it with structured evidence.

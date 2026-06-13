@@ -6,12 +6,13 @@
   <text x="72" y="72" fill="#0097BA" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
   <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
   <text x="72" y="162" fill="#0B2F3A" fill-opacity="0.68" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
-  <g id="huixin-mark">
-    <polygon points="1072,48 1082,30 1092,48 1082,66" fill="#D1D3D3"/>
-    <polygon points="1098,30 1128,30 1148,66 1118,66" fill="#A4D968"/>
-    <polygon points="1148,48 1158,30 1168,48 1158,66" fill="#D1D3D3"/>
-    <polygon points="1174,30 1204,30 1224,66 1194,66" fill="#0097BA"/>
-    <text x="1088" y="94" fill="#0B2F3A" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="700">慧新全智</text>
+  <g id="huixin-logo" transform="translate(1016 22) scale(0.58)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
   </g>
 
   <rect x="72" y="226" width="260" height="228" rx="20" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>

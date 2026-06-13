@@ -36,6 +36,7 @@ primary_color: "#0097BA"
 | **Technology Blue** | `#0097BA` | Primary brand visual, headers, core diagrams, campaign emphasis |
 | **Vitality Green** | `#A4D968` | Value propositions, keywords, tags, growth metrics, CTA highlights |
 | **Brand Gray** | `#D1D3D3` | Background layers, auxiliary shapes, card strokes, dividers |
+| **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
 | **Deep Blue Gray** | `#0B2F3A` | Premium dark backgrounds, cover, key visual pages, high-emphasis text |
 | **White** | `#FFFFFF` | Card surfaces, negative space, reverse text |
 
@@ -58,13 +59,14 @@ primary_color: "#0097BA"
 
 | Asset | Description |
 | --- | --- |
-| **Inline Huixin Mark** | The SVG templates reconstruct the Huixin brand mark with vector polygons and text; no external logo asset is required for this first template. |
+| **Official Huixin Lockup** | Reconstructed from the supplied Huixin logo: four right-leaning slanted bars in gray / green / gray / blue, the `慧新全智` wordmark, and a technology-blue underline. |
 
 Usage rules:
 
-1. Keep the mark at the top-right on light pages.
-2. Use white text only on dark teal blocks.
-3. Do not stretch the geometric mark; preserve the diamond / ribbon proportions.
+1. Keep the full lockup at the top-right on light pages.
+2. Use the black wordmark on light backgrounds and the white wordmark only on dark blue-gray backgrounds.
+3. Preserve the horizontal logo lockup, slanted-bar proportions, and blue underline.
+4. Do not replace the official lockup with the older two-diamond shorthand.
 
 ## VI. Page Structure
 
@@ -79,7 +81,7 @@ Usage rules:
 
 ### Design DNA
 
-1. Use the logo's slanted geometry as the core brand language: slanted blocks, focus bands, tags, and motion lines.
+1. Use the logo's slanted-bar geometry as the core brand language: slanted blocks, focus bands, tags, and motion lines.
 2. Use `#0097BA` as the main visual identity and `#A4D968` as the growth / CTA signal.
 3. Use `#0B2F3A` for cover, key visual pages, and closing CTA to create stronger brand memory.
 4. Keep sales-facing pages clean, short, and high-contrast; prioritize slogans, keywords, metrics, and conversion messages.

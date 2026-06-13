@@ -36,6 +36,7 @@ primary_color: "#0097BA"
 | **Technology Blue** | `#0097BA` | Platform architecture, system modules, navigation, process lines |
 | **Vitality Green** | `#A4D968` | AI capabilities, value points, highlights, product advantages, metrics |
 | **Brand Gray** | `#D1D3D3` | Module borders, structural partitions, connection lines, auxiliary notes |
+| **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
 | **Deep Blue Gray** | `#0B2F3A` | Titles, body text, premium background blocks, technical base layer |
 | **White** | `#FFFFFF` | Page background, card surfaces, reverse text |
 
@@ -58,14 +59,15 @@ primary_color: "#0097BA"
 
 | Asset | Description |
 | --- | --- |
-| **Inline Huixin Mark** | The SVG templates reconstruct the Huixin brand mark with vector polygons and text; no external logo asset is required. |
+| **Official Huixin Lockup** | Reconstructed from the supplied Huixin logo: four right-leaning slanted bars in gray / green / gray / blue, the `慧新全智` wordmark, and a technology-blue underline. |
 
 Usage rules:
 
-1. Use the slanted logo geometry as the core product visual language.
+1. Use the slanted-bar logo geometry as the core product visual language.
 2. Keep the mark in the top-right on light technical pages.
-3. Use white brand text only on deep blue-gray backgrounds.
-4. Do not add cyberpunk glow, unnecessary 3D, or complex gradients.
+3. Use the black wordmark on light backgrounds and the white wordmark only on deep blue-gray backgrounds.
+4. Preserve the horizontal logo lockup, slanted-bar proportions, and blue underline.
+5. Do not add cyberpunk glow, unnecessary 3D, or complex gradients.
 
 ## VI. Page Structure
 

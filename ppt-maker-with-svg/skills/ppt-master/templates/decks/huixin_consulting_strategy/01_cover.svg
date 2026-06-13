@@ -6,17 +6,20 @@
   <polygon points="504,0 538,0 338,720 304,720" fill="#A4D968"/>
   <line x1="585" y1="126" x2="1160" y2="126" stroke="#D1D3D3" stroke-width="1"/>
   <text x="585" y="103" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#4B5563" letter-spacing="0">HUIXIN STRATEGY CONSULTING</text>
-  <g id="brand-mark">
-    <polygon points="1082,58 1102,38 1122,58 1102,78" fill="#0097BA"/>
-    <polygon points="1126,58 1146,38 1166,58 1146,78" fill="#A4D968"/>
-    <text x="1178" y="66" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="bold" fill="#0B2F3A">慧新全智</text>
+  <g id="huixin-logo" transform="translate(990 42) scale(0.72)">
+    <polygon points="0,10 14,10 31,44 17,44" fill="#D1D3D3"/>
+    <polygon points="24,10 43,10 60,44 41,44" fill="#A4D968"/>
+    <polygon points="51,10 65,10 82,44 68,44" fill="#D1D3D3"/>
+    <polygon points="75,10 101,10 118,44 92,44" fill="#0097BA"/>
+    <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="28" font-weight="700">慧新全智</text>
+    <line x1="140" y1="44" x2="268" y2="44" stroke="#0097BA" stroke-width="3"/>
   </g>
   <text x="585" y="206" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="24" font-weight="bold" fill="#0097BA">战略规划与数字化转型咨询</text>
   <text x="585" y="286" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="58" font-weight="bold" fill="#0B2F3A">{{TITLE}}</text>
   <text x="585" y="344" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="24" fill="#4B5563">{{SUBTITLE}}</text>
   <rect x="585" y="408" width="455" height="2" fill="#0097BA"/>
-  <rect x="585" y="426" width="126" height="34" rx="2" fill="#0097BA"/>
-  <text x="608" y="449" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF">CONFIDENTIAL</text>
+  <rect x="585" y="426" width="112" height="34" rx="2" fill="#0097BA"/>
+  <text x="609" y="448" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">内部材料</text>
   <text x="585" y="518" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" fill="#4B5563">{{AUTHOR}}</text>
   <text x="585" y="552" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="17" fill="#4B5563">{{DATE}}</text>
   <text x="76" y="612" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" fill="#FFFFFF" fill-opacity="0.82">Structured diagnosis · Strategic choices · Execution roadmap</text>

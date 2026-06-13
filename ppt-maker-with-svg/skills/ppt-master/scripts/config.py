@@ -17,6 +17,7 @@ Usage:
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 import json
+import os
 
 
 # ============================================================
@@ -39,6 +40,119 @@ PROJECTS_DIR = REPO_ROOT / 'projects'
 
 # Template subdirectories
 CHART_TEMPLATES_DIR = TEMPLATES_DIR / 'charts'
+
+
+# ============================================================
+# Environment Configuration
+# ============================================================
+
+USER_CONFIG_DIR = Path.home() / '.ppt-master'
+USER_ENV_FILE = USER_CONFIG_DIR / '.env'
+
+
+def get_env_candidates() -> list[Path]:
+    """Return the supported .env lookup order."""
+    return [
+        Path.cwd() / '.env',
+        PROJECT_ROOT / '.env',
+        REPO_ROOT / '.env',
+        USER_ENV_FILE,
+    ]
+
+
+def resolve_env_path() -> Path:
+    """
+    Return the first existing .env path.
+
+    If no candidate exists, return the CWD .env path so callers can no-op
+    consistently while still showing a useful default location in messages.
+    """
+    candidates = get_env_candidates()
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return candidates[0]
+
+
+def strip_env_quotes(value: str) -> str:
+    """Strip matching surrounding quotes from a .env value."""
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in ("'", '"'):
+        return value[1:-1]
+    return value
+
+
+def strip_inline_env_comment(value: str) -> str:
+    """Strip an unquoted inline ``#`` comment from a .env value.
+
+    Matches standard dotenv behavior: a ``#`` outside surrounding quotes
+    starts a comment and is dropped along with the rest of the line. To keep
+    a literal ``#`` in the value, wrap it in single or double quotes.
+    """
+    stripped = value.lstrip()
+    if stripped.startswith(('"', "'")):
+        quote = stripped[0]
+        end = stripped.find(quote, 1)
+        if end != -1:
+            head = value[: len(value) - len(stripped) + end + 1]
+            tail = value[len(head):]
+            hash_pos = tail.find('#')
+            if hash_pos == -1:
+                return value
+            return head + tail[:hash_pos]
+        return value
+    hash_pos = value.find('#')
+    if hash_pos == -1:
+        return value
+    return value[:hash_pos]
+
+
+def load_prefixed_env_file(
+    prefixes: tuple[str, ...],
+    *,
+    deprecated_keys: Optional[dict[str, str]] = None,
+) -> Optional[Path]:
+    """
+    Load matching keys from the first supported .env file.
+
+    Existing process environment variables always win. Keys outside the
+    requested prefixes are ignored so one shared .env can hold image, search,
+    and narration credentials without leaking unrelated values into the
+    process.
+    """
+    env_path = resolve_env_path()
+    if not env_path.exists():
+        return None
+
+    deprecated_keys = deprecated_keys or {}
+    with env_path.open('r', encoding='utf-8') as fh:
+        for lineno, raw_line in enumerate(fh, start=1):
+            line = raw_line.strip()
+            if not line or line.startswith('#'):
+                continue
+            if line.startswith('export '):
+                line = line[7:].lstrip()
+            if '=' not in line:
+                raise ValueError(
+                    f"Invalid line in {env_path}:{lineno}. Expected KEY=VALUE."
+                )
+
+            key, value = line.split('=', 1)
+            key = key.strip()
+            if not key:
+                raise ValueError(
+                    f"Invalid line in {env_path}:{lineno}. Missing variable name."
+                )
+            if not any(key.startswith(prefix) for prefix in prefixes):
+                continue
+            if key in deprecated_keys:
+                raise ValueError(
+                    f"Unsupported key in {env_path}:{lineno}: {key}\n"
+                    f"{deprecated_keys[key]}"
+                )
+            cleaned = strip_inline_env_comment(value).strip()
+            os.environ.setdefault(key, strip_env_quotes(cleaned))
+
+    return env_path
 
 
 # ============================================================
@@ -578,21 +692,29 @@ class Config:
 # Command Line Interface
 # ============================================================
 
+def print_usage() -> None:
+    """Print CLI usage information."""
+    print("PPT Master - Configuration Management Tool\n")
+    print("Usage:")
+    print("  python3 scripts/config.py list-formats     # List all canvas formats")
+    print("  python3 scripts/config.py list-colors      # List all color schemes")
+    print("  python3 scripts/config.py list-industries  # List all industry colors")
+    print("  python3 scripts/config.py export           # Export configuration to JSON")
+    print("  python3 scripts/config.py format <key>     # View a specific canvas format")
+
+
 def main() -> None:
     """Command line entry point."""
     import sys
 
     if len(sys.argv) < 2:
-        print("PPT Master - Configuration Management Tool\n")
-        print("Usage:")
-        print("  python3 scripts/config.py list-formats     # List all canvas formats")
-        print("  python3 scripts/config.py list-colors      # List all color schemes")
-        print("  python3 scripts/config.py list-industries  # List all industry colors")
-        print("  python3 scripts/config.py export           # Export configuration to JSON")
-        print("  python3 scripts/config.py format <key>     # View a specific canvas format")
+        print_usage()
         return
 
     command = sys.argv[1]
+    if command in {"-h", "--help", "help"}:
+        print_usage()
+        return
 
     if command == 'list-formats':
         print("\nCanvas Format List:\n")

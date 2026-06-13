@@ -19,7 +19,17 @@ The `layouts/` directory contains pre-built page layout templates organized by d
 - **Academic Defense**: Academic defense style, research-oriented
 
 - **Human browsing**: [layouts/README.md](./layouts/README.md)
-- **Slim lookup (opt-in)**: [layouts/layouts_index.json](./layouts/layouts_index.json) — only consulted when the user explicitly opts into the template flow
+- **Slim lookup (discovery only)**: [layouts/layouts_index.json](./layouts/layouts_index.json) — used to answer "what templates exist?". Step 3 triggers on an explicit directory path supplied by the user, not on names from this index.
+
+## Brand Identity Presets
+
+The `brands/` directory holds brand-only templates: identity bundles (color / typography / logo / voice / icon style) without an SVG page roster. Brands follow the **same explicit-path trigger rule as layout templates** — at SKILL.md Step 3 the user supplies the brand directory path to apply it; bare brand names never trigger. Both layout and brand inputs land in the same project directory (`<project_path>/templates/`). When supplied together, Step 3 fuses them into a single `design_spec.md` (brand wins on identity tokens, layout wins on page structure) — see `SKILL.md` Step 3 for the precedence table.
+
+A brand is structurally a layout template minus its page roster. Use a brand when the user wants identity locking with free page layout; use a layout template when fixed page structures are also required.
+
+- **Human browsing**: [brands/README.md](./brands/README.md)
+- **Discovery index (no trigger)**: [brands/brands_index.json](./brands/brands_index.json) — answers "what brands exist?"; Step 3 still requires an explicit directory path from the user
+- **Creation workflow**: [`../workflows/create-brand.md`](../workflows/create-brand.md)
 
 ## Visualization Templates
 
@@ -43,13 +53,15 @@ The `charts/` directory contains 57 standardized visualization templates. For ba
 
 ## Icon Library
 
-The `icons/` directory contains 6700+ vector icons across three active libraries:
+The `icons/` directory contains 11,600+ vector icons across five libraries:
 
 | Library | Style | Count |
 |---------|-------|-------|
-| `chunk` | fill / straight-line geometry | 640 |
-| `tabler-filled` | fill / solid | 1000+ |
+| `chunk-filled` | fill / straight-line geometry | 640 |
+| `tabler-filled` | fill / bezier-curve forms | 1000+ |
 | `tabler-outline` | stroke / line | 5000+ |
+| `phosphor-duotone` | duotone / single color + 0.2 opacity backplate | 1200+ |
+| `simple-icons` | brand logos (company / product marks) | 3400+ |
 
 - **Usage & style rules**: [icons/README.md](./icons/README.md)
 - **Search icons**: `ls skills/ppt-master/templates/icons/<library>/ | grep <keyword>`

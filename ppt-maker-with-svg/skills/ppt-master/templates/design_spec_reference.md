@@ -1,8 +1,8 @@
 # {project_name} - Design Spec
 
-> This document is the human-readable design narrative — rationale, audience, style, color choices, content outline. It is read once by downstream roles for context.
+> Human-readable design narrative — rationale, audience, style, color choices, content outline. Read once by downstream roles for context.
 >
-> The machine-readable execution contract lives in `spec_lock.md` (short form of color / typography / icon / image decisions). Executor re-reads `spec_lock.md` before every SVG page to resist context-compression drift. Keep the two files in sync; if they diverge, `spec_lock.md` wins.
+> Machine-readable execution contract: `spec_lock.md` (color / typography / icon / image short form). Executor re-reads `spec_lock.md` before every SVG page to resist context-compression drift. Keep both in sync; on divergence, `spec_lock.md` wins.
 
 ## I. Project Information
 
@@ -40,7 +40,7 @@
 
 ### Color Scheme
 
-> Strategist should determine specific color values based on project content, industry, and brand colors
+> Strategist: determine values from project content, industry, brand colors.
 
 | Role | HEX | Purpose |
 | ---- | --- | ------- |
@@ -57,6 +57,15 @@
 | **Warning** | `#......` | Issue markers (red family) |
 
 > **Reference**: Industry colors in `references/strategist.md` or `scripts/config.py` under `INDUSTRY_COLORS`
+
+### AI Image Strategy (fill only when §VIII has `ai` rows)
+
+- **Image Rendering**: [one of the 20 names in `references/image-renderings/_index.md` (e.g. `vector-illustration`), or `custom`]
+- **Image Rendering Behavior**: [required when Rendering is `custom`; one-paragraph prose per `image-renderings/_index.md §1.5`]
+- **Image Palette**: [one of the 14 names in `references/image-palettes/_index.md` (e.g. `cool-corporate`), or `custom`]
+- **Image Palette Behavior**: [required when Palette is `custom`; one-paragraph prose per `image-palettes/_index.md §2`]
+
+> Strategist: lock these once per deck in h.5; every AI image inherits them. Cross-check the rendering × palette compatibility matrix in `image-palettes/_index.md` — avoid `✗` combinations (matrix only covers presets; when either dimension is `custom`, Strategist owns the compatibility judgment). Leave the section out entirely if §VIII has no `ai` rows. Omit the `Behavior` rows whenever the corresponding dimension is a preset name.
 
 ### Gradient Scheme (if needed, using SVG syntax)
 
@@ -80,16 +89,16 @@
 
 ### Font Plan
 
-> **Per-role families are expected, not optional.** Title / Body / Emphasis / Code may each use a different family — for example, a display serif for titles paired with a geometric sans for body. A deck is not required to stick to one family throughout. See [strategist.md §g — Font Combinations](../references/strategist.md) for common starting directions; you are free to propose a combination not in that list.
+> **Per-role families are expected, not optional.** Title / Body / Emphasis / Code may each use a different family (e.g., display serif title + geometric sans body). One family throughout is not required. See [strategist.md §g — Font Combinations](../references/strategist.md) for starting directions; you may propose a combination not listed.
 >
-> **⚠️ PPT-safe stack discipline (HARD rule).** PPTX stores a single `typeface` per text run — no runtime fallback. Every stack below MUST end with a cross-platform pre-installed font (`"Microsoft YaHei", sans-serif` / `SimSun, serif` / `Arial, sans-serif` / `"Times New Roman", serif` / `Consolas, "Courier New", monospace`). Stacks that lead with a non-pre-installed font (Inter / Google Fonts families / brand typefaces) are only allowed when this spec explicitly notes the font-install or font-embedding requirement.
+> **⚠️ PPT-safe stack discipline (HARD rule).** PPTX stores a single `typeface` per run — no runtime fallback. Every stack MUST end with a cross-platform pre-installed font: `"Microsoft YaHei", sans-serif` / `SimSun, serif` / `Arial, sans-serif` / `"Times New Roman", serif` / `Consolas, "Courier New", monospace`. Stacks led by a non-preinstalled font (Inter / Google Fonts / brand typefaces) are allowed only when this spec notes the font-install or embedding requirement.
 
 **Typography direction**: [Fill in one phrase, e.g., "modern CJK sans" / "academic serif" / "brand-specific: McKinsey Bower (requires font install)"]
 
 Two views on the same font decisions — fill both, keep them consistent:
 
-- **Role breakdown** (below table) — lists the *pieces* for each role: what CJK font, what Latin font, what CSS generic fallback. This is the human-readable design language.
-- **Per-role font stacks** (after the table) — the *ordered* CSS `font-family` strings that actually go into SVG `font-family=""` attributes and into `spec_lock.md`'s `*_family` lines. Order matters because it controls browser character rendering (Latin-led vs. CJK-led) — so this view is the **actual data**, not derivable from the table alone.
+- **Role breakdown** (table below) — lists the *pieces* per role: CJK font, Latin font, CSS generic fallback. Human-readable design language.
+- **Per-role font stacks** (after the table) — the *ordered* CSS `font-family` strings that actually go into SVG `font-family=""` and `spec_lock.md`'s `*_family` lines. Order controls browser rendering (Latin-led vs. CJK-led), so this is the **actual data** — not derivable from the table alone.
 
 | Role | Chinese | English | Fallback tail |
 | ---- | ------- | ------- | ------------- |
@@ -105,21 +114,21 @@ Two views on the same font decisions — fill both, keep them consistent:
 - Emphasis: `[Fill in stack, or write "same as Body" to omit the override]`
 - Code: `[Fill in monospace stack, e.g. Consolas, "Courier New", monospace]`
 
-> **Stack ordering — why it matters**: CSS `font-family` falls back font-by-font (not char-by-char with all fonts parallel) — the browser uses the **first installed** font in the stack for everything it can render, and only skips to the next font when that font lacks a glyph for a specific character. So:
-> - `Georgia, "Microsoft YaHei", serif` → Latin characters render in Georgia (elegant serif), CJK characters fall through to Microsoft YaHei. **Use this when Latin typography is the primary design statement** (academic / editorial / Latin-heavy covers).
-> - `"Microsoft YaHei", Georgia, serif` → Everything renders in Microsoft YaHei (including Latin, using YaHei's Latin glyphs — a different design tone). **Use this when the deck is CJK-primary and Latin characters are incidental**.
+> **Stack ordering — why it matters**: CSS `font-family` falls back font-by-font (not char-by-char) — the browser uses the **first installed** font for everything it can render, skipping to the next only when a glyph is missing. So:
+> - `Georgia, "Microsoft YaHei", serif` → Latin in Georgia (elegant serif), CJK falls through to Microsoft YaHei. **Use when Latin typography is the primary design statement** (academic / editorial / Latin-heavy covers).
+> - `"Microsoft YaHei", Georgia, serif` → Everything in Microsoft YaHei (Latin uses YaHei's Latin glyphs — a different design tone). **Use when the deck is CJK-primary and Latin is incidental**.
 >
-> The converter (`drawingml_utils.py parse_font_family`) maps these to PPTX `<a:latin>` / `<a:ea>` typefaces regardless of order — but the browser preview and the SVG's native rendering reflect stack order, so pick the order that matches your design intent.
+> The converter (`drawingml_utils.py parse_font_family`) maps these to PPTX `<a:latin>` / `<a:ea>` regardless of order — but browser preview and SVG native rendering reflect stack order. Pick the order matching your design intent.
 
-> **Why two views**: the role breakdown is compact and shows font role assignment at a glance; the stacks carry the ordering information the breakdown can't encode. Keep the fonts consistent between the two — the table's cells should be exactly the fonts that appear in the stacks (in any order).
+> **Why two views**: the breakdown shows role assignment at a glance; stacks carry the ordering info the breakdown can't encode. Keep both consistent — table cells should be exactly the fonts in the stacks (any order).
 
 ### Font Size Hierarchy
 
-> **Ramp discipline, not a fixed menu.** The `body` baseline is the single anchor; every other size is a ratio of it. The table below is a **ramp** — each row gives the allowed ratio band for that role, and Executor may pick any px value inside the band during generation (e.g., 40px hero number, 13px chart annotation, 72px cover headline) without having to pre-declare every intermediate value in `spec_lock.md`.
-> **Unit convention**: Use px uniformly (SVG native unit) to avoid pt/px conversion errors.
-> **Baseline selection**: Drive by **content density**, not design style.
+> **Ramp discipline, not a fixed menu.** `body` is the single anchor; every other size is a ratio of it. Each row below gives the role's allowed ratio band — Executor may pick any px value inside the band (e.g., 40px hero number, 13px chart annotation, 72px cover headline) without pre-declaring intermediates in `spec_lock.md`.
+> **Unit**: px uniformly (SVG native) to avoid pt/px conversion errors.
+> **Baseline selection**: drive by **content density**, not design style.
 
-**Baseline**: Body font size = [fill in]px (any reasonable integer — `18` and `24` are the two most commonly used values, but `16` for chart-heavy pages, `20`/`22` for medium density, `28-32` for poster / cover-like decks are all valid. Drive by content density, not design style.)
+**Baseline**: Body font size = [fill in]px (any reasonable integer — `18` and `24` are most common; `16` for chart-heavy, `20`/`22` for medium density, `28-32` for poster / cover decks are all valid. Drive by content density.)
 
 | Purpose | Ratio to body | Example @ body=24 (relaxed) | Example @ body=18 (dense) | Weight |
 | ------- | ------------- | --------------------------- | ------------------------- | ------ |
@@ -132,9 +141,9 @@ Two views on the same font decisions — fill both, keep them consistent:
 | Annotation / caption | 0.7-0.85x | 17-20px | 13-15px | Regular |
 | Page number / footnote | 0.5-0.65x | 12-16px | 9-12px | Regular |
 
-> The two px columns are illustrations for the most common baselines only. For any other `body` value, multiply by each row's ratio — the checker (`svg_quality_checker._check_spec_lock_drift`) reads the live `body` from `spec_lock.md` and applies the ratio bands, so no code change is needed to support a different baseline.
+> The two px columns are illustrations for common baselines. For any other `body` value, multiply by each row's ratio — the checker (`svg_quality_checker._check_spec_lock_drift`) reads the live `body` from `spec_lock.md` and applies the bands, so no code change is needed for a different baseline.
 
-> Sizes outside **every** band remain forbidden — surface the need and extend `spec_lock.md typography` (e.g., add `cover_title: 96`) rather than invent a one-off value.
+> Sizes outside **every** band remain forbidden — surface the need and extend `spec_lock.md typography` (e.g., `cover_title: 96`) rather than invent a one-off value.
 
 ---
 
@@ -148,7 +157,7 @@ Two views on the same font decisions — fill both, keep them consistent:
 
 ### Layout Pattern Library (combine or break as content demands)
 
-> **Principle — proportion follows information weight, not preset ratios.** The table below is a **pattern library**, not a menu. Executor may combine two patterns on one page, break the grid entirely for a `breathing` page, or propose a pattern not listed here when the content calls for it. Defaulting every page to a symmetric grid is what produces the "AI-generated" look — vary intentionally.
+> **Principle — proportion follows information weight, not preset ratios.** The table below is a pattern library, not a menu. Combine two patterns on one page, break the grid entirely for a `breathing` page, or propose a pattern not listed when content calls for it. Defaulting every page to a symmetric grid produces the "AI-generated" look — vary intentionally.
 
 | Pattern | Suitable Scenarios |
 | ------- | ----------------- |
@@ -166,7 +175,7 @@ Two views on the same font decisions — fill both, keep them consistent:
 
 ### Spacing Specification
 
-> Spacing defaults depend on **container type**. Cards are one option, not the universal default. The tables below split by container type; a page may use only one set (e.g., a `breathing` page with no cards only consults the universal and non-card entries).
+> Spacing defaults depend on **container type**. Cards are one option, not the universal default. Tables below split by container type; a page may consult only one set (e.g., a `breathing` page with no cards uses only universal + non-card entries).
 
 **Universal** (any container type):
 
@@ -189,10 +198,10 @@ Two views on the same font decisions — fill both, keep them consistent:
 
 **Non-card containers** (naked text blocks / full-bleed imagery / divider-separated content — typical for `breathing` pages or minimalist designs):
 
-- Block-to-block vertical rhythm is carried by **whitespace**, not gutters — block gaps tend to run wider than card gaps since there is no container edge to help separate content.
-- **Line-height (leading)**: 1.4-1.6× body font size — standard typographic convention.
-- **Full-bleed text placement**: inset text away from the image's visual focal points; legibility over photographic backgrounds typically requires a gradient or opacity overlay layer.
-- **Content width** is driven by reading comfort and image composition, not by a card grid slot — avoid back-computing "column width" when there is no column.
+- Vertical rhythm carried by **whitespace**, not gutters — block gaps run wider than card gaps since there's no container edge to separate content.
+- **Line-height**: 1.4-1.6× body font size.
+- **Full-bleed text placement**: inset text away from the image's focal points; legibility over photographic backgrounds typically needs a gradient or opacity overlay.
+- **Content width** is driven by reading comfort and image composition, not a card grid slot — don't back-compute "column width" when there's no column.
 
 ---
 
@@ -200,46 +209,82 @@ Two views on the same font decisions — fill both, keep them consistent:
 
 ### Source
 
-- **Built-in icon library**: `templates/icons/` (6700+ icons across three libraries)
-- **Usage method**: Placeholder format `{{icon:category/icon-name}}`
+- **Built-in icon library**: `templates/icons/` (11,600+ icons across five libraries; see `templates/icons/README.md`)
+- **Usage method**: SVG placeholder `<use data-icon="library/icon-name" .../>`; Design Spec should list approved `library/icon-name` entries for Executor.
 
 ### Recommended Icon List (fill as needed)
 
 | Purpose | Icon Path | Page |
 | ------- | --------- | ---- |
-| [example] | `{{icon:interface/check-circle}}` | Slide XX |
+| [example] | `chunk-filled/circle-checkmark` | Slide XX |
 
 ---
 
 ## VII. Visualization Reference List (if needed)
 
-> When the presentation includes data visualization or infographic-style structured information design, Strategist selects visualization types from `templates/charts/charts_index.json` and lists them here for the Executor to reference. The path remains under `templates/charts/` for backward compatibility.
+> When pages map to a chart-library template (data charts OR structural patterns — team rosters, agendas, frameworks, etc.), Strategist lists them here for Executor reference. Single combined table — `summary-quote` column is the anti-fabrication audit, `path` + `usage` columns serve Executor lookup.
 
-| Visualization Type | Reference Template | Used In |
-| ------------------ | ------------------ | ------- |
-| [e.g. grouped_bar_chart] | `templates/charts/grouped_bar_chart.svg` | Slide 05 |
+Catalog read: 71 templates
+
+| Page | Template | Path | Summary-quote (verbatim from `charts_index.json`) | Usage |
+| ---- | -------- | ---- | ------------------------------------------------- | ----- |
+| P05 | grouped_bar_chart | `templates/charts/grouped_bar_chart.svg` | "Pick for 2-4 series side-by-side across the same categories (e.g. YoY/QoQ). Skip if showing composition within each category (use stacked_bar_chart)." | YoY revenue comparison by product line |
+
+**Runners-up considered** (3 entries minimum, drawn from real second-best matches in this deck):
+
+- `<key_A>` | rejected for P05: `<reason citing this deck's specifics>`
+- `<key_B>` | rejected for P##: `<reason>`
+- `<key_C>` | rejected for P##: `<reason>`
+
+> **Audit rule**: `Summary-quote` must be copy-pasted verbatim — paraphrasing breaks the audit. Every template name listed must `grep` cleanly inside `charts_index.json` (so misspellings/inventions fail). If fewer than 3 viz pages exist, list what exists and note "fewer than 3 viz pages"; runners-up still required for each page that does exist.
 
 ---
 
 ## VIII. Image Resource List (if needed)
 
-| Filename | Dimensions | Ratio | Purpose | Type | Status | Generation Description |
-| -------- | --------- | ----- | ------- | ---- | ------ | --------------------- |
-| cover_bg.png | {canvas_info['dimensions']} | [ratio] | Cover background | [Background/Photography/Illustration/Diagram/Decorative] | [Pending/Existing/Placeholder] | [AI generation prompt] |
+| Filename | Dimensions | Ratio | Purpose | Type | Layout pattern | Acquire Via | Status | Reference | text_policy | page_role |
+| -------- | --------- | ----- | ------- | ---- | -------------- | ----------- | ------ | --------- | ----------- | --------- |
+| cover_bg.png | {canvas_info['dimensions']} | [ratio] | Atmospheric cover backdrop — SVG title overlays the calm region | Background | #1 full-bleed background with floating title + #29 two-stop scrim | ai | Pending | [subject + intent + composition, no style/HEX] | none | hero_page |
+| comparison_p07.png | {canvas_info['dimensions']} | [ratio] | Three-panel approach comparison — panel labels stay inside the image | Diagram | #44 background image + native network/architecture diagram | ai | Pending | Three side-by-side schematic motifs comparing approach A / B / C, panel labels rendered inside each motif | embedded | local |
+| formula_001.png | [actual dimensions from formula manifest / image_analysis] | [ratio] | Block equation on P03 | Latex Formula | formula-block | formula | Rendered | `E = mc^2` — energy-mass equation | | |
 
-**Status descriptions**:
+> **Layout pattern column is MANDATORY** — for non-formula rows, value is one or more `#<id> <name>` joined by ` + ` drawn verbatim from [`references/image-layout-patterns.md`](../references/image-layout-patterns.md) (Primary + optional Modifiers). Empty cells, paraphrased names, or invented ids invalidate the row. Formula rows are the only exception; use `formula-inline` or `formula-block`. See `strategist.md §h` GATE for the three-layer requirement (read → produce → image-as-canvas coverage).
 
-- **Pending** - Needs AI generation, provide detailed description
-- **Existing** - User already has image, place in `images/`
-- **Placeholder** - Not yet processed, use dashed border placeholder in SVG
+**Type** (free-form category tag; common values):
 
-**Type descriptions** (used by Image_Generator for prompt strategy selection):
+- `Background` — cover / chapter / full-bleed atmosphere
+- `Photography` — real-world photo
+- `Illustration` — vector / flat / painterly art
+- `Diagram` — schematic / architecture / flowchart
+- `Portrait` — single-subject person
+- `Latex Formula` — formula PNG rendered by `latex_render.py`
 
-- **Background** - Full-page background for covers/chapters, reserve text area
-- **Photography** - Real scenes, people, products, architecture
-- **Illustration** - Flat design, vector style, cartoon, concept diagrams
-- **Diagram** - Flowcharts, architecture diagrams, concept maps
-- **Decorative** - Partial decorations, textures, borders, dividers
+**Status**:
+
+- **Pending** — needs AI generation or web sourcing
+- **Rendered** — deterministic formula asset already exists under `images/`
+- **Existing** — user-supplied, place in `images/`
+- **Placeholder** — not yet processed, use dashed border in SVG
+
+**Acquire Via**:
+
+- `ai` — Step 5 Image_Generator
+- `web` — Step 5 Image_Searcher
+- `formula` — already rendered by `latex_render.py` before this spec was written
+- `user` — user-supplied
+- `placeholder` — intentionally deferred
+
+**text_policy** (`ai` rows only; AI judges per row, no global default bias):
+
+- `none` — image carries no text; SVG overlays all labels
+- `embedded` — image contains in-artwork text: decorative lettering, a designed title, hand-lettered keywords, or stable visual identifiers (axis labels, subplot letters, unit symbols). Body copy / data points / long quotes never go inside the image regardless — they must stay editable. Embedded text is frozen into the raster, so the exact characters are named literally in the prompt
+
+**page_role** (`ai` rows only; leave blank for default):
+
+- *blank / `local`* — image is a region block on an SVG page
+- `hero_page` — image is the page's main voice; SVG overlay is minimal or empty. Use on covers, chapter dividers, mood transitions, single-number data heroes, closing quotes. Same rendering and palette as the rest of the deck regardless
+
+**Reference grammar** (`ai` rows): write **subject + intent + composition** only. Do NOT repeat style words ("flat design", "modern") or HEX values — both are already locked deck-wide by `design_spec §III AI Image Strategy` (rendering + palette) and `§III Color Scheme` (HEX triplet). Image_Generator's prompt assembler injects them.
 
 ---
 
@@ -258,13 +303,14 @@ Two views on the same font decisions — fill both, keep them consistent:
 
 - **Layout**: [Choose a pattern from §V, combine two, or break the grid as the content demands]
 - **Title**: [Page title]
+- **Core message**: [the one thing this page exists to land — its spine, always phrased as one assertion sentence (prose by nature). One per page; can't name it → merge or cut the page.]
 - **Visualization**: [visualization_type] (see VII. Visualization Reference List)
-- **Content**:
-  - [Point 1]
-  - [Point 2]
-  - [Point 3]
+- **Content**: write each block in the phrasing that fits it (prose / bullet / keyword / … any phrasing the content calls for) and write it already in that mode, so the texture itself carries the intent — a prose block reads as a real sentence, not a fragment. One page may mix modes; blocks still sit under the core message, never replace it:
+  - [a connected sentence or two that argues the point]
+  - [parallel fragment] · [parallel fragment] · [parallel fragment]
+  - [label] / [label] / [label]
 
-> **Visualization field**: Only add when the page includes data visualization or structured infographic elements. Visualization type must be listed in section VII.
+> **Visualization field**: add only when the page has data visualization or structured infographic elements. Type must be listed in §VII.
 
 ---
 
@@ -274,10 +320,10 @@ Two views on the same font decisions — fill both, keep them consistent:
 
 ## X. Speaker Notes Requirements
 
-Generate corresponding speaker note files for each page, saved to the `notes/` directory:
+One speaker note file per page, saved to `notes/`:
 
-- **File naming**: Match SVG names, e.g., `01_cover.md`
-- **Content includes**: Script key points, timing cues, transition phrases
+- **Filename**: match SVG name (e.g., `01_cover.md`)
+- **Content**: script key points, timing cues, transition phrases
 
 ---
 
@@ -291,6 +337,7 @@ Generate corresponding speaker note files for each page, saved to the `notes/` d
 4. Transparency uses `fill-opacity` / `stroke-opacity`; `rgba()` FORBIDDEN
 5. FORBIDDEN: `mask`, `<style>`, `class`, `foreignObject`
 6. FORBIDDEN: `textPath`, `animate*`, `script`
+7. Text characters: write typography & symbols as raw Unicode (em dash `—`, en dash `–`, `©`, `®`, `→`, NBSP, etc.); HTML named entities (`&nbsp;`, `&mdash;`, `&copy;`, `&reg;` …) are FORBIDDEN. XML reserved chars in text MUST be escaped as `&amp;` `&lt;` `&gt;` `&quot;` `&apos;` (e.g. `R&amp;D`, `error &lt; 5%`). See shared-standards.md §1.0
 7. `marker-start` / `marker-end` conditionally allowed: `<marker>` must be in `<defs>`, `orient="auto"`, shape must be triangle / diamond / circle (see shared-standards.md §1.1)
 8. `clipPath` conditionally allowed **only on `<image>` elements**: `<clipPath>` in `<defs>`, single shape child (circle / ellipse / rect with rx,ry / path / polygon). Do NOT apply to shapes / groups / text — draw the target geometry directly with the matching native element (`<circle>` / `<ellipse>` / `<rect rx>` / `<polygon>` / `<path>`). See shared-standards.md §1.2
 

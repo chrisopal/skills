@@ -8,6 +8,13 @@ Configuration keys:
   BFL_MODEL     (optional)
 """
 
+import sys
+
+if __name__ == "__main__" and any(arg in {"-h", "--help", "help"} for arg in sys.argv[1:]):
+    print(__doc__)
+    print("Use via: python3 skills/ppt-master/scripts/image_gen.py \"prompt\" --backend bfl")
+    raise SystemExit(0)
+
 import os
 import time
 
@@ -61,7 +68,7 @@ def _submit_request(url: str, headers: dict, payload: dict) -> dict:
     return response.json()
 
 
-def _generate_image(api_key: str, prompt: str, negative_prompt: str = None,
+def _generate_image(api_key: str, prompt: str,
                     aspect_ratio: str = "1:1", image_size: str = "1K",
                     output_dir: str = None, filename: str = None,
                     model: str = DEFAULT_MODEL, base_url: str = DEFAULT_BASE_URL) -> str:
@@ -86,12 +93,8 @@ def _generate_image(api_key: str, prompt: str, negative_prompt: str = None,
         "Content-Type": "application/json",
     }
 
-    final_prompt = prompt
-    if negative_prompt:
-        final_prompt += f"\n\nAvoid the following: {negative_prompt}"
-
     payload = {
-        "prompt": final_prompt,
+        "prompt": prompt,
         "prompt_upsampling": False,
         "output_format": "png",
     }
@@ -108,7 +111,7 @@ def _generate_image(api_key: str, prompt: str, negative_prompt: str = None,
 
     print("[Black Forest Labs]")
     print(f"  Model:        {normalized_model}")
-    print(f"  Prompt:       {final_prompt[:120]}{'...' if len(final_prompt) > 120 else ''}")
+    print(f"  Prompt:       {prompt[:120]}{'...' if len(prompt) > 120 else ''}")
     print(f"  Aspect Ratio: {aspect_ratio}")
     print()
     print("  [..] Submitting request...", end="", flush=True)
@@ -138,14 +141,14 @@ def _generate_image(api_key: str, prompt: str, negative_prompt: str = None,
     return download_image(image_url, path)
 
 
-def generate(prompt: str, negative_prompt: str = None,
+def generate(prompt: str,
              aspect_ratio: str = "1:1", image_size: str = "1K",
              output_dir: str = None, filename: str = None,
              model: str = None, max_retries: int = MAX_RETRIES) -> str:
     """Generate an image with retries using the BFL backend."""
     api_key = require_api_key(
         "BFL_API_KEY",
-        message="No API key found. Set BFL_API_KEY in the current environment or the project-root .env.",
+        message="No API key found. Set BFL_API_KEY in the current environment or a .env file.",
     )
     base_url = os.environ.get("BFL_BASE_URL") or DEFAULT_BASE_URL
     resolved_model = model or os.environ.get("BFL_MODEL") or DEFAULT_MODEL
@@ -156,7 +159,6 @@ def generate(prompt: str, negative_prompt: str = None,
             return _generate_image(
                 api_key=api_key,
                 prompt=prompt,
-                negative_prompt=negative_prompt,
                 aspect_ratio=aspect_ratio,
                 image_size=image_size,
                 output_dir=output_dir,

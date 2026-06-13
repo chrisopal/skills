@@ -6,7 +6,20 @@ Common technical constraints for PPT Master, eliminating cross-role file duplica
 
 ## 1. SVG Banned Features Blacklist
 
-The following features are **absolutely forbidden** when generating SVGs — PPT export will break if any are used:
+The following are **forbidden** in generated SVGs — PPT export breaks otherwise:
+
+### 1.0 Text characters: must be well-formed XML
+
+SVG is strict XML. Two rules for all text and attribute values:
+
+| Character category | Required form | Forbidden form |
+|---|---|---|
+| Typography & symbols (em dash, en dash, ©, ®, →, ·, NBSP, full-width punctuation, emoji…) | **Raw Unicode characters** — write `—` `–` `©` `®` `→` directly | HTML named entities — `&mdash;` `&ndash;` `&copy;` `&reg;` `&rarr;` `&middot;` `&nbsp;` `&hellip;` `&bull;` etc. |
+| XML reserved characters (`&`, `<`, `>`, `"`, `'`) | **XML entities only** — `&amp;` `&lt;` `&gt;` `&quot;` `&apos;` (e.g. `R&amp;D`, `error &lt; 5%`) | Bare `&` `<` `>` (e.g. `R&D`, `error < 5%`) |
+
+One offending character invalidates the file and aborts export. Numeric refs (`&#160;` / `&#xa0;`) are XML-legal but discouraged.
+
+**Structural blacklist** (in addition to the character rules above):
 
 | Banned Feature | Description |
 |----------------|-------------|
@@ -26,7 +39,15 @@ The following features are **absolutely forbidden** when generating SVGs — PPT
 >
 > **`clipPath` on `<image>` is conditionally allowed** — see §1.2 for constraints. The converter maps qualifying clip shapes to native DrawingML picture geometry (`<a:prstGeom>` or `<a:custGeom>`).
 >
-> **Replacing `<mask>` effects** — DrawingML has no continuous per-pixel alpha channel, so `<mask>` cannot be mapped. Route by effect type: image gradient overlays (vignette, fade, tint) → stacked `<rect>` with `<linearGradient>` / `<radialGradient>` (see §6 Image Overlay); non-rectangular image crop (circle, rounded, hexagon) → `clipPath` on `<image>` (see §1.2); inner glow / soft-edge → `<filter>` with `<feGaussianBlur>` (see §6 Glow Effect); drop shadow → filter shadow or layered rect (see §6 Shadow). Effects requiring true pixel-level alpha — text-knockout image fills, arbitrary alpha composites — have no PPT-side path and MUST be baked into the source image at the Image_Generator stage.
+> **`<pattern>` fills are conditionally allowed** — see §7 *Pattern Fill* for the required `data-pptx-pattern` annotation and the closed OOXML preset enum. Hand-drawn pattern geometry is NOT honored; the converter emits the named PPTX preset only. Missing or invalid preset values produce diagonal stripes (warning) or schema-failed PPTX (error).
+>
+> **Replacing `<mask>` effects** — DrawingML has no per-pixel alpha. Route by effect:
+> - Image gradient overlay (vignette/fade/tint) → stacked `<rect>` with `<linearGradient>`/`<radialGradient>` (§6 Image Overlay)
+> - Non-rectangular image crop (circle/rounded/hexagon) → `clipPath` on `<image>` (§1.2)
+> - Inner glow / soft-edge → `<filter>` with `<feGaussianBlur>` (§6 Glow)
+> - Drop shadow → filter shadow or layered rect (§6 Shadow)
+>
+> Pixel-level alpha effects (text-knockout image fills, arbitrary alpha composites) have no PPT path — bake into the source image at Image_Generator stage.
 
 ---
 
@@ -44,9 +65,8 @@ The following features are **absolutely forbidden** when generating SVGs — PPT
 
 **Use boundary**:
 
-- Use `marker-start` / `marker-end` only for connector arrows where the line is primary.
-- Do **not** use `marker` for block / chunky / wide solid arrows where the arrow body is the main visual object.
-- For those solid arrows, draw a standalone closed `<path>` / `<polygon>` and reference `templates/charts/chevron_process.svg` or `templates/charts/process_flow.svg`.
+- `marker-start` / `marker-end`: only for connector arrows where the line is primary
+- For block / chunky / solid arrows (arrow body is the visual object), use standalone closed `<path>` / `<polygon>`; see `templates/charts/chevron_process.svg` or `templates/charts/process_flow.svg`
 
 **Supported DrawingML mapping**:
 
@@ -70,7 +90,7 @@ The following features are **absolutely forbidden** when generating SVGs — PPT
       marker-end="url(#arrowHead)"/>
 ```
 
-> ⚠️ Unclassifiable marker shapes (curved paths, multi-segment, >4 vertices, etc.) are **silently dropped** by the converter with a warning — the line will still render, but without an arrow. Fall back to manual `<polygon>` triangles when you need exotic arrow shapes.
+> ⚠️ Unclassifiable marker shapes (curved paths, multi-segment, >4 vertices) are silently dropped — line renders without arrow. Use a manual `<polygon>` for exotic shapes.
 
 ---
 
@@ -87,9 +107,9 @@ The following features are **absolutely forbidden** when generating SVGs — PPT
 
 **Use boundary**:
 
-- Use `clip-path` **only** for cropping `<image>` elements into non-rectangular shapes (circular avatars, rounded photo frames, hexagonal portraits, etc.).
-- Do **not** use `clip-path` on shapes (`<rect>`, `<circle>`, `<path>`, `<g>`, `<text>`, etc.) — draw the target shape directly instead. A rect clipped to a circle is just a circle; draw the `<circle>`.
-- PowerPoint's SVG renderer **does not render `clipPath` correctly** (images become invisible, shapes lose clipping). The Native PPTX converter handles it, but the SVG reference version will display incorrectly.
+- Only on `<image>` for non-rectangular crops (circular avatars, rounded frames, hexagons)
+- NOT on shapes (`<rect>`/`<circle>`/`<path>`/`<g>`/`<text>`) — draw the target shape directly. A rect clipped to a circle is just a circle.
+- PowerPoint's SVG renderer doesn't handle `clipPath`; only the Native PPTX converter does.
 
 **Supported DrawingML mapping**:
 
@@ -123,7 +143,7 @@ The following features are **absolutely forbidden** when generating SVGs — PPT
        clip-path="url(#cardClip)" preserveAspectRatio="xMidYMid slice"/>
 ```
 
-> ⚠️ `clip-path` on non-image elements is **FORBIDDEN** — the quality checker will report it as an error. For shapes, draw the target geometry directly; for groups, restructure the layout.
+> ⚠️ `clip-path` on non-image elements is FORBIDDEN — quality checker errors out. Draw target geometry directly.
 
 ---
 
@@ -137,35 +157,13 @@ The following features are **absolutely forbidden** when generating SVGs — PPT
 
 **Mnemonic**: PPT does not recognize rgba, group opacity, or image opacity.
 
-> Arrows: prefer `marker-end` with a qualifying `<marker>` (see §1.1) for connector lines — the converter produces native DrawingML arrow heads that auto-rotate. For block arrows / chunky arrows, use a standalone closed shape instead of `marker`; see `templates/charts/chevron_process.svg` for phase arrows and `templates/charts/process_flow.svg` for mixed flow layouts.
+> Arrows: prefer `marker-end` for connector lines (§1.1) — converter produces native auto-rotating arrow heads. For block/chunky arrows, use standalone closed shapes; see `templates/charts/chevron_process.svg` and `templates/charts/process_flow.svg`.
 
 ---
 
 ## 3. Canvas Format Quick Reference
 
-### Presentations
-
-| Format | viewBox | Dimensions | Ratio |
-|--------|---------|------------|-------|
-| PPT 16:9 | `0 0 1280 720` | 1280x720 | 16:9 |
-| PPT 4:3 | `0 0 1024 768` | 1024x768 | 4:3 |
-
-### Social Media
-
-| Format | viewBox | Dimensions | Ratio |
-|--------|---------|------------|-------|
-| Xiaohongshu (RED) | `0 0 1242 1660` | 1242x1660 | 3:4 |
-| WeChat Moments / Instagram Post | `0 0 1080 1080` | 1080x1080 | 1:1 |
-| Story / TikTok Vertical | `0 0 1080 1920` | 1080x1920 | 9:16 |
-
-### Marketing Materials
-
-| Format | viewBox | Dimensions | Ratio |
-|--------|---------|------------|-------|
-| WeChat Article Header | `0 0 900 383` | 900x383 | 2.35:1 |
-| Landscape Banner | `0 0 1920 1080` | 1920x1080 | 16:9 |
-| Portrait Poster | `0 0 1080 1920` | 1080x1920 | 9:16 |
-| A4 Print (150dpi) | `0 0 1240 1754` | 1240x1754 | 1:1.414 |
+> See [`canvas-formats.md`](canvas-formats.md) for the full format table (presentations / social / marketing) and the format-selection decision tree.
 
 ---
 
@@ -173,16 +171,16 @@ The following features are **absolutely forbidden** when generating SVGs — PPT
 
 - **viewBox** must match the canvas dimensions (`width`/`height` must match `viewBox`)
 - **Background**: Use `<rect>` to define the page background color
-- **`<tspan>` has two purposes**: (1) manual line breaks within a `<text>` (use `dy` / explicit `y`); (2) inline run formatting on the **same** line — local color, weight, size — without splitting the line into separate text frames. `<foreignObject>` is FORBIDDEN. See "Single logical line = single `<text>`" rule below.
-- **Fonts**: Every `font-family` stack MUST end with a cross-platform pre-installed family (Microsoft YaHei / SimSun / Arial / Times New Roman / Consolas / etc.); `@font-face` is FORBIDDEN. See [`strategist.md §g — PPT-safe font discipline`](strategist.md) for the full HARD rule and seed combinations.
-- **Styles**: Use inline styles only (`fill="..."` `font-size="..."`); `<style>` / `class` are FORBIDDEN (`id` inside `<defs>` is legitimate)
-- **Colors**: Use HEX values; for transparency use `fill-opacity` / `stroke-opacity`
-- **Image references**: `<image href="../images/xxx.png" preserveAspectRatio="xMidYMid slice"/>`
-- **Icon placeholders**: `<use data-icon="chunk/name" x="" y="" width="48" height="48" fill="#HEX"/>` (default library); or `tabler-filled/name` / `tabler-outline/name` when that library is chosen for the deck. (auto-embedded during post-processing). Always include the library prefix. **One presentation = one library — never mix libraries.**
+- **`<tspan>`** has two purposes: (1) manual line breaks (use `dy` or explicit `y`); (2) inline run formatting on the same line (color/weight/size). `<foreignObject>` is FORBIDDEN. See "Single logical line" rule below.
+- **Fonts**: every `font-family` stack MUST end with a pre-installed family (Microsoft YaHei / SimSun / Arial / Times New Roman / Consolas …); `@font-face` is FORBIDDEN. Full rule: [`strategist.md §g`](strategist.md).
+- **Styles**: inline only (`fill=""`, `font-size=""`); `<style>`/`class` FORBIDDEN (`id` inside `<defs>` is fine)
+- **Colors**: HEX only; transparency via `fill-opacity`/`stroke-opacity`
+- **Images**: `<image href="../images/xxx.png" preserveAspectRatio="xMidYMid slice"/>`
+- **Icons**: `<use data-icon="<library>/<name>" x="" y="" width="48" height="48" fill="#HEX"/>` (auto-embedded post-processing). Always include library prefix. One stylistic library per deck (`chunk-filled`/`tabler-filled`/`tabler-outline`/`phosphor-duotone`); `simple-icons` only for real brand marks. See [`../templates/icons/README.md`](../templates/icons/README.md).
 
 ### Inline Text Runs (Single Logical Line = Single `<text>`)
 
-A logical single line of text — **even with mixed colors, weights, or sizes** — MUST be one `<text>` element containing inline `<tspan>` children, **never** multiple adjacent `<text>` elements positioned side by side. The `svg_to_pptx` converter maps each inline `<tspan>` to a run (`<a:r>`) within the same PowerPoint text frame, preserving the formatting variation while keeping the line as **one editable shape** in PPT.
+One logical line — even with mixed colors/weights/sizes — MUST be one `<text>` with inline `<tspan>` children. Never use multiple adjacent `<text>` elements. The converter maps each `<tspan>` to a `<a:r>` run within the same PPT text frame, keeping the line as one editable shape.
 
 ✅ **DO** — one `<text>` → one text frame with three runs:
 
@@ -200,9 +198,9 @@ A logical single line of text — **even with mixed colors, weights, or sizes** 
 <text x="240" y="200" font-size="24" fill="#333333">效率提升</text>
 ```
 
-**⚠️ Inline tspans must NOT carry `x` / `y` / `dy`.** Any of those marks the tspan as a new line, and the post-processing `flatten_tspan` step will split it into a separate text frame — defeating the purpose. `dx` is safe (used for kerning/spacing nudges and stays inline). Only set `x` / `y` / `dy` on tspans that genuinely start a new line.
+**⚠️ Inline tspans must NOT carry `x`/`y`/`dy`** — those mark a new line, and `flatten_tspan` will split into a separate text frame. `dx` is safe (kerning, stays inline). Only set `x`/`y`/`dy` on tspans that genuinely start a new line.
 
-**Multi-line `<text>` with per-line inline emphasis is supported.** An outer line-break tspan (carrying `x` + `dy` or `y`) MAY contain nested inline tspans for color/weight/size — `flatten_tspan` and the converter both walk nested tspans and emit one run per styled segment:
+**Multi-line `<text>` with per-line emphasis works**: an outer line-break tspan (with `x` + `dy` or `y`) MAY contain nested inline tspans for color/weight/size — converter walks nested tspans and emits one run per styled segment:
 
 ```xml
 <text x="80" y="190" font-size="18" fill="#333333">
@@ -219,17 +217,17 @@ A logical single line of text — **even with mixed colors, weights, or sizes** 
 </text>
 ```
 
-Any `x` on a tspan starts a new line in `flatten_tspan`'s eyes, so the two columns become two independent `<text>` frames in PPT — fragile to edit as one row. For two-column layouts, write two `<text>` elements (or a real two-column structure) instead.
+`x` on a tspan starts a new line, splitting into two independent text frames. For two-column layouts, write two `<text>` elements.
 
-**Default behavior — lift key information out of running text.** Body paragraphs and conclusions rendered as uniform-styled text waste the inline-run capability and read as walls of text. By default, wrap the following in `<tspan fill="..." font-weight="bold">`:
+**Default — lift key information.** Uniform-styled paragraphs read as walls of text. Wrap these in `<tspan fill="..." font-weight="bold">`:
 
 - **Numerical results** — percentages, multipliers (`10x`), absolute amounts (`¥120万`)
 - **Contrasts** — gain/loss, before/after, target/actual
 - **One or two load-bearing nouns per sentence** — the term that carries the insight
 
-Do **NOT** highlight: connectives, common verbs, every noun, decorative adjectives, or structural text (footer / axis label / legend / page number / simple field labels).
+Do NOT highlight: connectives, common verbs, every noun, decorative adjectives, structural text (footer/axis/legend/page number/labels).
 
-Color choice: prefer the deck's primary brand color for emphasis; reserve semantic green/red for text that genuinely encodes positive/negative.
+Color: use the deck's primary brand color for emphasis. Reserve green/red for actual positive/negative semantics.
 
 ❌ **DON'T** — uniform-styled paragraph buries the insight:
 
@@ -249,9 +247,13 @@ Color choice: prefer the deck's primary brand color for emphasis; reserve semant
 
 ### Element Grouping (Mandatory)
 
-Logically related elements **MUST** be wrapped in `<g>` tags. This produces PowerPoint groups in the exported PPTX, making slides easier to select, move, and edit.
+Wrap logically related elements in top-level `<g id="...">` groups. Produces PowerPoint groups in PPTX, making slides easier to select/move/edit and providing stable anchors for optional per-element entrance animation.
 
-> ⚠️ **Only `<g opacity="...">` is banned** (see §2). Plain `<g>` for structural grouping is required.
+> ⚠️ Only `<g opacity="...">` is banned (§2). Plain `<g>` for grouping is required.
+
+**Animation-ready rule**: direct children of `<svg>` should be semantic groups, not raw drawing atoms. Aim for **3–8 top-level content `<g id>` groups per slide** (the 3–8 budget excludes page chrome — see below); each content group becomes one entrance step under the chosen `--animation-trigger` mode (one click in `on-click`, one cascade slot in `after-previous`, parallel in `with-previous`).
+
+**Chrome groups are excluded automatically.** The exporter treats top-level groups whose id contains chrome tokens as page chrome and skips them in the animation sequence — they appear together with the slide. Tokens (matched against id after splitting on `-` / `_`): `background`, `bg`, `decoration` / `decorations` / `decor`, `header`, `footer`, `chrome`, `watermark`, `pagenumber` / `pagenum` / `page-number`, `nav`, `logo`, `rule`. So `<g id="bg-texture">`, `<g id="cover-footer">`, `<g id="p03-header">`, `<g id="bottom-decor">`, `<g id="nav">`, `<g id="logo-area">`, `<g id="column-rule">` all skip animation while keeping their `<g>` wrapper for editing/grouping. Use these naming conventions for chrome — do **not** strip the `<g>` wrapper.
 
 **What to group**:
 
@@ -265,20 +267,27 @@ Logically related elements **MUST** be wrapped in `<g>` tags. This produces Powe
 | Page footer | Page number + branding |
 | Decorative cluster | Related decorative shapes (rings, orbs, dots) |
 
+**Do not**:
+
+- Put the whole slide into one giant `<g>`; that leaves only one animation step.
+- Leave many top-level `<rect>` / `<text>` / `<path>` elements ungrouped; fallback animation is capped at 8 primitives and dense flat pages may skip animation.
+- Split every icon, text line, or decorative mark into separate top-level groups; that creates too many click steps.
+- Use anonymous top-level groups. Every top-level semantic group needs a descriptive `id`.
+
 **Example**:
 
 ```xml
 <g id="card-benefits-1">
   <!-- This card floats over a colored panel — shadow is appropriate. On a flat white canvas, omit the filter. -->
   <rect x="60" y="115" width="565" height="260" rx="20" fill="#FFFFFF" filter="url(#shadow)"/>
-  <use data-icon="bolt" x="108" y="163" width="44" height="44" fill="#0071E3"/>
+  <use data-icon="chunk-filled/bolt" x="108" y="163" width="44" height="44" fill="#0071E3"/>
   <text x="105" y="270" font-size="56" font-weight="bold" fill="#0071E3">10×</text>
   <text x="250" y="270" font-size="30" font-weight="bold" fill="#1D1D1F">Faster</text>
   <text x="105" y="310" font-size="18" fill="#6E6E73">Reduce production time from days to hours.</text>
 </g>
 ```
 
-**Naming convention**: Use descriptive `id` attributes on `<g>` tags (e.g., `card-1`, `step-discover`, `header`, `footer`). IDs are optional but recommended for readability.
+**Naming**: descriptive `id` on top-level `<g>` is **required** (e.g., `card-1`, `step-discover`, `header`, `footer`). Each top-level `<g id>` becomes one anchor for per-element entrance animation in PPTX export; without it, the exporter falls back to at most 8 top-level primitives or skips animation on dense pages.
 
 ---
 
@@ -293,17 +302,46 @@ python3 scripts/total_md_split.py <project_path>
 # 2. SVG post-processing (icon embedding, image crop/embed, text flattening, rounded rect to path)
 python3 scripts/finalize_svg.py <project_path>
 
-# 3. Export PPTX (from svg_final/, embeds speaker notes by default)
-python3 scripts/svg_to_pptx.py <project_path> -s final
-# Output: exports/<project_name>_<timestamp>.pptx + exports/<project_name>_<timestamp>_svg.pptx
+# 3. Export PPTX (embeds speaker notes by default)
+python3 scripts/svg_to_pptx.py <project_path>
+# Output (default-flow mode):
+#   exports/<project_name>_<timestamp>.pptx           ← native pptx (canonical output)
+#   backup/<timestamp>/svg_output/                    ← Executor SVG source backup (always written)
+#
+# Add --svg-snapshot to additionally emit:
+#   exports/<project_name>_<timestamp>_svg.pptx      ← SVG snapshot pptx (sibling of native pptx)
 ```
+
+**Optional animation flags** (only when the user asks):
+- `-t <effect>` — page transition (`fade` / `push` / `wipe` / `split` / `strips` / `cover` / `random` / `none`; default `fade`)
+- `-a <effect>` — per-element entrance animation (`fade` / `auto` / `mixed` / `random` / one of 22 named effects / `none`; default `auto`, maps effect from group id — image-like ids cycle zoom/dissolve/circle/box/diamond/wheel, other matches map to a single effect, unmatched ids cycle fade/wipe/fly/zoom). Anchors on top-level `<g id="...">` groups.
+- `--animation-trigger {on-click,with-previous,after-previous}` — Start mode matching PowerPoint's animation-pane Start dropdown. Default `after-previous` (cascade on slide entry; pace via `--animation-stagger <seconds>`); `on-click` advances per click; `with-previous` plays all groups together.
+- `--animation-config <path>` — optional object-level animation sidecar. Default: `<project>/animations.json` when present.
+- `--auto-advance <seconds>` — kiosk-style auto-play
+
+**Optional recorded narration** (only when the user asks for narrated/video export):
+
+```bash
+python3 scripts/notes_to_audio.py <project_path> --voice zh-CN-XiaoxiaoNeural
+python3 scripts/svg_to_pptx.py <project_path> --recorded-narration audio
+```
+
+- `notes_to_audio.py` reads split `notes/*.md` files and writes one audio file per slide to `audio/`. Default `edge` output is MP3; configured cloud providers may output MP3 or WAV depending on provider settings.
+- `--recorded-narration audio` prepares PowerPoint's recorded timings and narrations: every slide needs matching `m4a` / `mp3` / `wav` audio, every duration must be readable by `ffprobe`, and `on-click` object animation is rejected.
+- `--recorded-narration audio` embeds matching audio, keeps speaker notes, and sets slide timings from audio duration.
+- `--narration-audio-dir audio` is the lower-level embedding path for partial audio coverage; it does not prepare a complete recorded-timings export.
+- Long-audio import and automatic long-audio splitting are not supported.
+
+Full reference: [`animations.md`](animations.md).
 
 **Prohibited**:
 - NEVER use `cp` as a substitute for `finalize_svg.py`
-- NEVER export directly from `svg_output/` — MUST export from `svg_final/` (use `-s final`)
-- NEVER add extra flags like `--only`
+- NEVER force `-s output` for the legacy/preview pptx (PowerPoint's internal SVG parser drops icons and rounded corners). Default auto-split already gives native the high-fidelity source it needs without affecting legacy.
+- NEVER use `--only` (it suppresses one of the two output files)
 
-**Re-run rule**: Any modification to `svg_output/` after post-processing has completed (including page revisions, additions, or deletions) requires re-running Steps 2 and 3. Step 1 only needs re-running if `notes/total.md` was also modified.
+> Source-directory split: by default `svg_to_pptx.py` reads `svg_output/` for the native pptx (preserves icon `<use>`, image `preserveAspectRatio` → `srcRect`, rounded rect `rx/ry` → `prstGeom roundRect`) and `svg_final/` for the legacy/preview pptx (PowerPoint's internal SVG parser needs the flattened form). Pass `-s output` or `-s final` only when you specifically want both products to read from a single source.
+
+**Re-run rule**: Any change to `svg_output/` after post-processing requires re-running Steps 2-3. Step 1 only re-runs if `notes/total.md` changed.
 
 ---
 
@@ -313,54 +351,53 @@ python3 scripts/svg_to_pptx.py <project_path> -s final
 
 ### Shadow
 
-> **Shadow is an aesthetic ingredient, not a default treatment.** Restraint, not abundance, produces the "designed" feel. The principles below override any temptation to add shadow "for depth" — read them before reaching for any shadow filter.
+> **Shadow is restraint, not default.** The "designed" feel comes from absence, not abundance.
 
-#### When to use shadow
+#### When to use
 
-Add shadow ONLY when the element genuinely floats above another layer:
-- A card / quote bubble / annotation **sitting on a photo or colored panel**
-- The single primary CTA or "recommended" item that needs to be **picked out from peers**
-- An overlay layer (callout, tooltip, modal-style emphasis)
-- A floating image card on a textured background
+Only when the element genuinely floats above another layer:
+- Card / quote bubble / annotation on a photo or colored panel
+- Single primary CTA or "recommended" item picked out from peers
+- Overlay layer (callout, tooltip, modal emphasis)
+- Floating image card on a textured background
 
-#### When NOT to use shadow
+#### When NOT to use
 
-Skip shadow entirely on:
-- **Background panels / section dividers / decorative bars** — they are the floor, the floor doesn't lift
-- **Equal peer cards in a 2/3/4-up grid** — if all are lifted, none are; keep all flat
-- **Containers that already have a visible border, gradient fill, or strong background tint** — the "this is a container" job is done; adding shadow is redundant and reads as PPT-template clutter
-- **Body-text paragraph containers** — reading surfaces should sit on the floor, lifting them disrupts scan rhythm
-- **Decorative lines / dividers / icons themselves** — they are symbols, not objects
-- **Pages with only one content container** — there is no second layer to lift above
-- **Dark backgrounds** — black shadows vanish on dark; use a 1px low-opacity white stroke or subtle outer glow instead
+- Background panels / dividers / decorative bars — they are the floor
+- Equal peer cards in a 2/3/4-up grid — keep all flat
+- Containers with visible border, gradient fill, or strong tint — redundant
+- Body-text paragraph containers — disrupts scan rhythm
+- Decorative lines / dividers / icons — they are symbols, not objects
+- Pages with only one content container — no second layer to lift above
+- Dark backgrounds — black shadows vanish; use 1px low-opacity white stroke or outer glow
 
-**Per-page budget**: at most 2–3 shadowed elements per slide. If you find yourself adding shadow to a 4th element, something else needs to lose its shadow first.
+**Per-page budget**: ≤2-3 shadowed elements. If you reach for a 4th, drop one first.
 
 #### Single light source per page
 
-All `feOffset` values on a single page must share the same `dx` and `dy` direction. Real shadows obey one sun. Mixing dy=+6 on some cards and dy=-4 on others looks broken even when the viewer can't articulate why. Default: `dx="0"` with `dy="4"` to `dy="8"` (light from upper front).
+All `feOffset` on a page must share the same `dx`/`dy` direction. Default: `dx="0"`, `dy="4"`-`dy="8"` (light from upper front).
 
 #### Restraint over visibility
 
-The high-end aesthetic standard is **"the shadow is felt, not seen."** If a viewer notices "there's a shadow here," it is already too strong.
-- Default `flood-opacity`: **0.06–0.12** for resting cards
-- Maximum `flood-opacity`: **0.20** for genuinely raised elements (CTA, overlay)
-- Above 0.20 = Office 2007 hard-shadow look — avoid
-- Color: near-black with low opacity, OR a darker tint of the page background. Brand-colored shadow only on accent elements that share that hue family.
+Standard: "the shadow is felt, not seen." If noticed, it's too strong.
+- Resting cards: `flood-opacity` 0.06-0.12
+- Raised elements (CTA, overlay): max `flood-opacity` 0.20
+- Above 0.20 = Office 2007 hard-shadow look
+- Color: near-black at low opacity, or a darker tint of background. Brand-color shadow only on accent elements sharing that hue.
 
 #### Two-tier elevation maximum
 
-A page may have at most two non-floor elevation levels. More tiers fragment visual hierarchy.
+A page may have at most two non-floor tiers.
 
 | Tier | When | dy | stdDeviation | flood-opacity |
 |------|------|----|--------------|---------------|
 | Floor (no shadow) | Backgrounds, peer-grid cards, dividers, body-text containers | — | — | — |
-| Resting | Cards on photos/panels, secondary callouts | 2–4 | 4–8 | 0.06–0.10 |
-| Raised | Primary CTA, focused/recommended card, overlay | 6–10 | 10–16 | 0.12–0.20 |
+| Resting | Cards on photos/panels, secondary callouts | 2-4 | 4-8 | 0.06-0.10 |
+| Raised | Primary CTA, focused/recommended card, overlay | 6-10 | 10-16 | 0.12-0.20 |
 
 #### Don't stack visual-weight tools
 
-A container's "look at me" budget is small. Pick **one** of: shadow, visible border, gradient fill, strong background tint. Stacking shadow + border + rounded + gradient = instant template look.
+Pick **one** per container: shadow, border, gradient fill, or strong tint. Stacking = instant template look.
 
 ---
 
@@ -411,7 +448,7 @@ Best for: accent buttons, brand-colored cards. Use the element's own color famil
 </filter>
 ```
 
-Replace `flood-color` with the element's brand color; keep `flood-opacity` between 0.12–0.20 (above 0.20 reads as Office 2007 hard-shadow). Reserve colored shadow for the **single primary CTA / accent element per page** — using it on every button defeats the "this one is special" cue.
+Replace `flood-color` with the element's brand color. Keep `flood-opacity` 0.12-0.20. Reserve for the single primary CTA per page — using on every button defeats the cue.
 
 #### Glow Effect
 
@@ -439,7 +476,7 @@ flood-color:    brand color or accent color (NOT black)
 flood-opacity:  0.35–0.55  (stronger than shadow for visibility)
 ```
 
-**Key difference from shadow**: No `<feOffset>` element (or dx=0/dy=0). The converter uses this to distinguish glow from shadow.
+**vs shadow**: no `<feOffset>` (or dx=0/dy=0). The converter uses this to distinguish glow from shadow.
 
 #### Layered Rect Shadow — High-Compatibility Fallback
 
@@ -612,6 +649,43 @@ Gradients defined in `<defs>` and referenced via `fill="url(#id)"` convert to na
 <circle cx="640" cy="360" r="300" fill="url(#spotBg)"/>
 ```
 
+### Pattern Fill — `<pattern>` with PPTX preset annotation
+
+`<pattern>` fills convert to native PPTX `<a:pattFill prst="...">` — but only PPTX's built-in preset patterns are reachable. The converter does **not** render hand-drawn `<path>` geometry inside the pattern; instead it reads two annotations off the `<pattern>` element and emits the matching DrawingML preset.
+
+**Required annotations**:
+
+| Attribute | Purpose | Without it |
+|---|---|---|
+| `data-pptx-pattern="<preset>"` | Names the PPTX preset (one of the enum below) | Falls back to `ltUpDiag` — diagonal stripes, not your geometry |
+| Child `<rect fill="<bg-hex>"/>` | Background color of the pattern tile | `bg` falls back to `#FFFFFF`, painting over the page background |
+
+The child `<path>`'s `stroke` becomes the foreground color (the pattern's line color).
+
+```xml
+<defs>
+  <pattern id="bpGrid" x="0" y="0" width="40" height="40"
+           patternUnits="userSpaceOnUse" data-pptx-pattern="lgGrid">
+    <rect width="40" height="40" fill="#0E2A47"/>
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2D4A6B" stroke-width="0.6"/>
+  </pattern>
+</defs>
+<rect width="1280" height="720" fill="url(#bpGrid)"/>
+```
+
+**Valid `data-pptx-pattern` values** (OOXML `ST_PresetPatternVal` — closed enum, anything outside makes PowerPoint open with "needs to be repaired"):
+
+| Category | Values |
+|---|---|
+| Grids | `smGrid` · `lgGrid` · `dotGrid` *(no `ltGrid` — common typo)* |
+| Diagonal lines | `ltUpDiag` · `ltDnDiag` · `dkUpDiag` · `dkDnDiag` · `wdUpDiag` · `wdDnDiag` · `dashUpDiag` · `dashDnDiag` · `diagCross` |
+| Horizontal / vertical lines | `horz` · `vert` · `ltHorz` · `ltVert` · `dkHorz` · `dkVert` · `narHorz` · `narVert` · `dashHorz` · `dashVert` · `cross` |
+| Percent fills | `pct5` · `pct10` · `pct20` · `pct25` · `pct30` · `pct40` · `pct50` · `pct60` · `pct70` · `pct75` · `pct80` · `pct90` |
+| Checks & confetti | `smCheck` · `lgCheck` · `smConfetti` · `lgConfetti` |
+| Decorative | `horzBrick` · `diagBrick` · `weave` · `plaid` · `trellis` · `zigZag` · `wave` · `sphere` · `divot` · `shingle` · `solidDmnd` · `openDmnd` · `dotDmnd` |
+
+> `svg_quality_checker.py` warns on missing `data-pptx-pattern` and errors on values outside the enum. Catch these pre-export — PowerPoint's repair dialog hides which pattern broke.
+
 ### transform: rotate — Element Rotation
 
 Rotation converts to native PPTX `<a:xfrm rot="...">`. Supported on all element types: `rect`, `circle`, `ellipse`, `line`, `path`, `polygon`, `polyline`, `image`, and `text`.
@@ -630,7 +704,7 @@ Rotation converts to native PPTX `<a:xfrm rot="...">`. Supported on all element 
 
 ### Arc Paths — Donut / Pie Charts
 
-When drawing donut or pie chart sectors with `<path>`, the arc endpoint coordinates must be calculated precisely using trigonometry. **Never estimate or approximate arc endpoints** — even small errors produce wildly incorrect shapes.
+Calculate arc endpoint coordinates precisely with trigonometry. Never estimate — small errors produce wildly wrong shapes.
 
 **Calculation formula** (center `cx,cy`, radius `r`, angle `θ` in degrees):
 ```
@@ -656,11 +730,11 @@ Large-arc flag: 1 (270° > 180°)
 
 ### Polygon Arrows on Diagonal Lines
 
-> For connector lines, prefer `marker-end` / `marker-start` (see §1.1). For chunky / wide solid / non-connector arrows, use standalone polygon or path geometry instead of `marker`.
+> For connector lines prefer `marker-end`/`marker-start` (§1.1). For chunky/wide solid/non-connector arrows, use standalone polygon or path.
 
-When using `<polygon>` triangles as arrowheads, arrows on **horizontal or vertical lines** can use simple point offsets. But arrows on **diagonal lines** must have their triangle vertices rotated to match the line direction.
+Horizontal/vertical lines can use simple point offsets for `<polygon>` arrowheads. Diagonal lines need triangle vertices rotated to match line direction.
 
-**Method**: Calculate the triangle points using the line's direction vector:
+**Method** — calculate triangle points using the line's direction vector:
 
 ```
 Given line from (x1,y1) to (x2,y2):
@@ -683,7 +757,7 @@ Back2: (370-8.1+3.7, 430-8.8-3.4) = (365.6, 417.8)
 <polygon points="370,430 365.6,417.8 358.2,424.6" fill="#C8A96E"/>
 ```
 
-⚠️ **Never use a fixed downward/rightward triangle on a diagonal line** — the arrow will point in the wrong direction.
+⚠️ Never use a fixed downward/rightward triangle on a diagonal line — arrow will point wrong.
 
 ---
 

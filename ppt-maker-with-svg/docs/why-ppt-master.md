@@ -26,18 +26,13 @@ In the exported PPTX, every shape, text box, gradient, and shadow is a native Po
 
 ---
 
-## 2. Predictable Cost — No Subscription Required
+## 2. Transparent Cost — You Pay Your AI Provider, Not Another Subscription
 
-PPT Master itself is free and open source. No subscriptions, no credits to purchase. The only cost comes from your own AI editor — and it's remarkably low:
+PPT Master itself is free and open source. The only cost is your own AI model usage.
 
-| Model | Requests per PPT | Cost |
-|---|:---:|:---:|
-| Sonnet | ~2 | ~$0.08 |
-| Opus | ~6 | ~$0.24 |
+AI tools across the industry are shifting to usage-based billing — you pay for what you actually consume. PPT Master works with this model naturally: there's no separate PPT subscription, no proprietary credits, no per-seat fee for a presentation platform on top of what you're already paying for AI.
 
-With VS Code Copilot ($10/month), producing dozens of presentations per month costs just a few dollars total. No credit limits, no seat fees, no getting locked out when "this month's quota" runs out.
-
-For comparison, Gamma subscriptions run $8–20/month, Beautiful.ai $12–45/month, and MS Copilot around $30/month — regardless of how much you actually use.
+For comparison, Gamma subscriptions run $8–20/month, Beautiful.ai $12–45/month — regardless of how much you actually use them. PPT Master adds zero cost on top of your existing AI spend.
 
 ---
 
@@ -65,7 +60,7 @@ The choice is yours. PPT Master doesn't make that decision for you.
 
 Three built-in styles: General (training, tech talks), Consultant (business reports, data visualization), and Consultant Top (MBB level — investment memos, strategic plans, government briefings).
 
-The [examples/](../examples/) directory contains 15 projects and 229 pages spanning government fiscal analysis, AI architecture design, Zen philosophy, pixel-art gaming, and more.
+The [examples/](../examples/) directory contains all example projects, spanning government fiscal analysis, AI architecture design, Zen philosophy, pixel-art gaming, editorial reports, and more.
 
 ### Full Source-Document Input
 
@@ -86,7 +81,7 @@ Being honest about limitations:
 | **Setup required** | Install Python, clone repo, configure AI editor. Not a "open browser and go" experience. |
 | **Slower generation** | 10–20 min for a 10-page deck (serial page-by-page for cross-slide consistency). SaaS tools take seconds. |
 | **No collaboration** | Local files, no real-time co-editing, no share links. |
-| **No visual UI** | All interaction through AI chat — no drag-and-drop canvas. |
+| **No full freeform canvas** | The browser live preview supports direct edits — select to change text/color/font/size, drag or arrow-key to reposition, with undo — plus click-to-annotate for AI rewrites. What it isn't is a full Gamma/Canva-style freeform canvas: no on-canvas resize handles, and re-exporting to PPTX stays a chat step. |
 
 **If you want zero-setup, instant slides in a browser** — Gamma and Canva are excellent choices.
 

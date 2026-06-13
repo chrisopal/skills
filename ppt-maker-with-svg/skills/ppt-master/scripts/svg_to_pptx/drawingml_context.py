@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 from xml.etree import ElementTree as ET
 from dataclasses import dataclass, field
+
+AffineMatrix = tuple[float, float, float, float, float, float]
+IDENTITY_MATRIX: AffineMatrix = (1.0, 0.0, 0.0, 1.0, 0.0, 0.0)
 
 
 @dataclass
@@ -30,12 +34,25 @@ class ConvertContext:
     translate_y: float = 0.0
     scale_x: float = 1.0
     scale_y: float = 1.0
+    transform_matrix: AffineMatrix = IDENTITY_MATRIX
+    use_transform_matrix: bool = False
     filter_id: str | None = None
     media_files: dict[str, bytes] = field(default_factory=dict)
     rel_entries: list[dict[str, str]] = field(default_factory=list)
     rel_id_counter: int = 2  # rId1 reserved for slideLayout
     svg_dir: Path | None = None
     inherited_styles: dict[str, str] = field(default_factory=dict)
+    # Recursion depth — only the depth==0 (root) context records anim targets.
+    depth: int = 0
+    # Top-level <g id="..."> groups, recorded as (shape_id, svg_id) in z-order.
+    # Used by the PPTX builder to emit per-element entrance timing.
+    anim_targets: list = field(default_factory=list)
+    # Default-on flag: merge mergeable paragraph blocks into one editable
+    # text frame with multiple <a:p>. Disable it for strict line fidelity.
+    merge_paragraphs: bool = True
+    # Optional per-element conversion diagnostics. Shared by child contexts so
+    # callers can inspect native / skipped / unsupported decisions per slide.
+    trace_events: list[dict[str, Any]] | None = None
 
     def next_id(self) -> int:
         """Allocate the next shape ID."""
@@ -55,6 +72,7 @@ class ConvertContext:
         dy: float = 0,
         sx: float = 1.0,
         sy: float = 1.0,
+        transform_matrix: AffineMatrix | None = None,
         filter_id: str | None = None,
         style_overrides: dict[str, str] | None = None,
     ) -> ConvertContext:
@@ -65,9 +83,36 @@ class ConvertContext:
             dy: Y translation delta.
             sx: X scale factor.
             sy: Y scale factor.
+            transform_matrix: Full affine transform to accumulate for
+                converters that can faithfully map it to DrawingML.
             filter_id: Override filter ID.
             style_overrides: Style attribute overrides from child element.
         """
+        local_matrix = transform_matrix or IDENTITY_MATRIX
+        # When first crossing from scalar to matrix mode, fold accumulated
+        # translate_x/y and scale_x/y into the matrix base. Otherwise the
+        # ancestor's scalar transform — which matrix-path readers (e.g.
+        # <image>) never look at — is silently lost, and the descendant
+        # lands at raw SVG coordinates (typically near (0,0)).
+        if transform_matrix is not None and not self.use_transform_matrix:
+            base_matrix: AffineMatrix = (
+                self.scale_x, 0.0,
+                0.0, self.scale_y,
+                self.translate_x, self.translate_y,
+            )
+        else:
+            base_matrix = self.transform_matrix
+        a1, b1, c1, d1, e1, f1 = base_matrix
+        a2, b2, c2, d2, e2, f2 = local_matrix
+        combined_matrix: AffineMatrix = (
+            a1 * a2 + c1 * b2,
+            b1 * a2 + d1 * b2,
+            a1 * c2 + c1 * d2,
+            b1 * c2 + d1 * d2,
+            a1 * e2 + c1 * f2 + e1,
+            b1 * e2 + d1 * f2 + f1,
+        )
+
         merged = dict(self.inherited_styles)
 
         if style_overrides:
@@ -96,12 +141,19 @@ class ConvertContext:
             translate_y=self.translate_y + dy,
             scale_x=self.scale_x * sx,
             scale_y=self.scale_y * sy,
+            transform_matrix=combined_matrix,
+            use_transform_matrix=self.use_transform_matrix or transform_matrix is not None,
             filter_id=filter_id or self.filter_id,
             media_files=self.media_files,
             rel_entries=self.rel_entries,
             rel_id_counter=self.rel_id_counter,
             svg_dir=self.svg_dir,
             inherited_styles=merged,
+            depth=self.depth + 1,
+            # anim_targets is intentionally a fresh list on the child;
+            # only the root-level context's list is read by the builder.
+            merge_paragraphs=self.merge_paragraphs,
+            trace_events=self.trace_events,
         )
 
     def sync_from_child(self, child_ctx: ConvertContext) -> None:

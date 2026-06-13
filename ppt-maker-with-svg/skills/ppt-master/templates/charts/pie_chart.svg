@@ -4,6 +4,7 @@
     Purpose: Distribution and proportion analysis
     Use cases: Market share, budget allocation, demographic breakdown
     Supports: 5 segments (Recommended 3-6)
+    Convention: slices start at 12 o'clock and proceed clockwise
     -->
     <defs>
         <!-- Soft Shadow for Pie and Card -->
@@ -22,28 +23,30 @@
           font-size="32" font-weight="800" fill="#0F172A">Market Share Distribution</text>
     <text x="60" y="115" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" 
           font-size="14" font-weight="700" fill="#64748B" letter-spacing="1.5">Q3 2025 · TOTAL INDUSTRY MARKET SIZE: $12B</text>
+    <!-- chart-plot-area: pie | center: 420,400 | radius: 200 -->
     <!-- ==================== Pie Chart Graphic ==================== -->
     <g id="pieChart" transform="translate(420, 400)" filter="url(#softShadow)">
         <!-- 
         Center: (420, 400)
         Radius: 200px
         Start Angle: -90° (12 o'clock)
+        Direction: Clockwise
         White stroke creates a modern separated-slice look
         -->
         <!-- Segment 1: Competitor A 35% (-90° to 36°) -->
-        <path d="M 0,0 L 0,-200 A 200,200 0 0,1 173.2,100 Z" 
+        <path d="M 0,0 L 0,-200 A 200,200 0 0,1 161.80,117.56 Z"
               fill="#3B82F6" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>
         <!-- Segment 2: Competitor B 25% (36° to 126°) -->
-        <path d="M 0,0 L 173.2,100 A 200,200 0 0,1 -117.56,162.34 Z" 
+        <path d="M 0,0 L 161.80,117.56 A 200,200 0 0,1 -117.56,161.80 Z"
               fill="#10B981" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>
         <!-- Segment 3: Competitor C 20% (126° to 198°) -->
-        <path d="M 0,0 L -117.56,162.34 A 200,200 0 0,1 -195.63,-62.93 Z" 
+        <path d="M 0,0 L -117.56,161.80 A 200,200 0 0,1 -190.21,-61.80 Z"
               fill="#F59E0B" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>
         <!-- Segment 4: Competitor D 12% (198° to 241.2°) -->
-        <path d="M 0,0 L -195.63,-62.93 A 200,200 0 0,1 -62.93,-189.87 Z" 
+        <path d="M 0,0 L -190.21,-61.80 A 200,200 0 0,1 -96.35,-175.26 Z"
               fill="#8B5CF6" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>
         <!-- Segment 5: Others 8% (241.2° to 270°) -->
-        <path d="M 0,0 L -62.93,-189.87 A 200,200 0 0,1 0,-200 Z" 
+        <path d="M 0,0 L -96.35,-175.26 A 200,200 0 0,1 0,-200 Z"
               fill="#94A3B8" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round"/>
     </g>
     <!-- ==================== Pie Chart Labels ==================== -->

@@ -1,5 +1,7 @@
 # Conversion Tools
 
+> Architecture rationale (why native-Python first with pandoc fallback, why curl_cffi for TLS impersonation): see [docs/technical-design.md "Source Content Conversion"](../../../../docs/technical-design.md#source-content-conversion).
+
 Source conversion tools turn PDFs, documents, slide decks, and web pages into Markdown before project creation.
 
 ## `source_to_md/pdf_to_md.py`
@@ -11,6 +13,11 @@ python3 scripts/source_to_md/pdf_to_md.py book.pdf
 python3 scripts/source_to_md/pdf_to_md.py book.pdf -o output.md
 python3 scripts/source_to_md/pdf_to_md.py ./pdfs
 python3 scripts/source_to_md/pdf_to_md.py ./pdfs -o ./markdown
+
+# Image extraction control (default: filtered)
+python3 scripts/source_to_md/pdf_to_md.py book.pdf --images filtered  # size/quality filters applied
+python3 scripts/source_to_md/pdf_to_md.py book.pdf --images all       # extract all images, no filtering
+python3 scripts/source_to_md/pdf_to_md.py book.pdf --images none      # skip all images (text only)
 ```
 
 Use cases:
@@ -63,6 +70,38 @@ pip install mammoth markdownify ebooklib nbconvert beautifulsoup4
 
 All paths produce the same output convention: `<input>.md` plus a sibling `<input>_files/` directory containing extracted images with relative references.
 
+## `source_to_md/excel_to_md.py`
+
+Excel workbook converter for presentation source intake.
+
+Supported formats:
+- `.xlsx`
+- `.xlsm`
+
+Unsupported by default:
+- `.xls` — resave as `.xlsx` first
+
+```bash
+python3 scripts/source_to_md/excel_to_md.py report.xlsx
+python3 scripts/source_to_md/excel_to_md.py report.xlsx -o output.md
+python3 scripts/source_to_md/excel_to_md.py report.xlsm --max-rows 200 --max-cols 40
+```
+
+Behavior:
+- preserves workbook and sheet structure in Markdown
+- exports visible sheets only
+- trims empty outer rows and columns
+- propagates merged-cell labels for readable Markdown tables
+- exports formula cells as cached values; it does not recalculate formulas
+
+Dependency:
+
+```bash
+pip install openpyxl
+```
+
+CSV/TSV files are already plain-text table sources and do not require this converter.
+
 ## `source_to_md/ppt_to_md.py`
 
 Structured PowerPoint-to-Markdown converter for Open XML slide decks.
@@ -94,11 +133,9 @@ pip install python-pptx
 
 Legacy `.ppt` is not parsed directly. Resave it as `.pptx` or export it to PDF first.
 
-## `source_to_md/web_to_md.py` / `source_to_md/web_to_md.cjs`
+## `source_to_md/web_to_md.py`
 
 Convert web pages to Markdown and download images locally.
-
-### Python version (preferred)
 
 ```bash
 python3 scripts/source_to_md/web_to_md.py https://example.com/article
@@ -113,18 +150,6 @@ fetch WeChat Official Accounts (`mp.weixin.qq.com`) and other sites that
 block Python's default TLS fingerprint. No extra flags needed. If
 `curl_cffi` is not available, it falls back to plain `requests`.
 
-### Node.js version (fallback)
-
-Retained as a backup for rare environments where `curl_cffi` can't be
-installed (e.g., uncommon Python + OS + CPU combinations without prebuilt
-wheels):
-
-```bash
-node scripts/source_to_md/web_to_md.cjs https://mp.weixin.qq.com/s/xxxx
-```
-
-For most users the Python version is sufficient — Node.js is no longer
-required for WeChat coverage.
 
 ## `rotate_images.py`
 

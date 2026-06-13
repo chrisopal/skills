@@ -8,6 +8,13 @@ Configuration keys:
   SILICONFLOW_MODEL     (optional)
 """
 
+import sys
+
+if __name__ == "__main__" and any(arg in {"-h", "--help", "help"} for arg in sys.argv[1:]):
+    print(__doc__)
+    print("Use via: python3 skills/ppt-master/scripts/image_gen.py \"prompt\" --backend siliconflow")
+    raise SystemExit(0)
+
 import os
 import time
 
@@ -97,7 +104,7 @@ def _resolve_size(aspect_ratio: str, image_size: str) -> str:
     return size
 
 
-def _generate_image(api_key: str, prompt: str, negative_prompt: str = None,
+def _generate_image(api_key: str, prompt: str,
                     aspect_ratio: str = "1:1", image_size: str = "1K",
                     output_dir: str = None, filename: str = None,
                     model: str = DEFAULT_MODEL, base_url: str = DEFAULT_ENDPOINT) -> str:
@@ -113,8 +120,6 @@ def _generate_image(api_key: str, prompt: str, negative_prompt: str = None,
         "prompt": prompt,
         "image_size": size,
     }
-    if negative_prompt:
-        payload["negative_prompt"] = negative_prompt
 
     print("[SiliconFlow]")
     print(f"  Model:        {model}")
@@ -141,14 +146,14 @@ def _generate_image(api_key: str, prompt: str, negative_prompt: str = None,
     return download_image(image_url, path)
 
 
-def generate(prompt: str, negative_prompt: str = None,
+def generate(prompt: str,
              aspect_ratio: str = "1:1", image_size: str = "1K",
              output_dir: str = None, filename: str = None,
              model: str = None, max_retries: int = MAX_RETRIES) -> str:
     """Generate an image with retries using the SiliconFlow backend."""
     api_key = require_api_key(
         "SILICONFLOW_API_KEY",
-        message="No API key found. Set SILICONFLOW_API_KEY in the current environment or the project-root .env.",
+        message="No API key found. Set SILICONFLOW_API_KEY in the current environment or a .env file.",
     )
     base_url = os.environ.get("SILICONFLOW_BASE_URL") or DEFAULT_ENDPOINT
     resolved_model = model or os.environ.get("SILICONFLOW_MODEL") or DEFAULT_MODEL
@@ -159,7 +164,6 @@ def generate(prompt: str, negative_prompt: str = None,
             return _generate_image(
                 api_key=api_key,
                 prompt=prompt,
-                negative_prompt=negative_prompt,
                 aspect_ratio=aspect_ratio,
                 image_size=image_size,
                 output_dir=output_dir,

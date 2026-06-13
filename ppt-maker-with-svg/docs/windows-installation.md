@@ -87,7 +87,6 @@ With Python and `requirements.txt` installed, you already have everything needed
 | Enhancement | Install only if… | How to install | Verify |
 |-------------|-----------------|----------------|--------|
 | **CairoSVG** — higher quality PNG fallbacks | You want crisper PNG fallbacks for Office versions that don't render SVG natively. `svglib` (already installed) is fine for most cases. | Install [GTK3 Runtime](https://github.com/nickvdp/gtk3/releases), then `pip install cairosvg` | `python -c "import cairosvg"` |
-| **Node.js** 18+ — WeChat fallback | You need to import WeChat Official Account articles **and** `curl_cffi` (part of `requirements.txt`) has no wheel for your Python version. Normally `web_to_md.py` handles WeChat through `curl_cffi`. | Download LTS from [nodejs.org](https://nodejs.org/) | `node --version` → v18+ |
 | **Pandoc** — legacy document formats | You need to convert `.doc`, `.odt`, `.rtf`, `.tex`, `.rst`, `.org`, or `.typ`. `.docx`/`.html`/`.epub`/`.ipynb` work natively in Python. | Download `.msi` from [pandoc.org](https://pandoc.org/installing.html) | `pandoc --version` |
 
 ---
@@ -111,6 +110,10 @@ With Python and `requirements.txt` installed, you already have everything needed
 4. Click OK, then **restart PowerShell**
 
 **Fix 3** — Try `python3` or `py` instead.
+
+### A `python3` command fails (exit 49 / opens Microsoft Store)
+
+The python.org installer ships `python.exe` but not `python3.exe`. **Just replace `python3` with `python` in the command** (the AI agent usually switches to `python` and continues on its own too).
 
 ### `pip install` fails with permission errors
 

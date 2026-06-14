@@ -49,7 +49,7 @@
     <rect x="956" y="462" width="260" height="78" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
     <rect x="1210" y="462" width="6" height="78" fill="#B0D776"/>
     <text x="982" y="494" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#0B2F3A">组织保障</text>
-    <text x="982" y="522" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{CONTENT_AREA}}</text>
+    <text x="982" y="520" font-family="Microsoft YaHei" font-size="12" fill="#4B5563">{{CONTENT_AREA}}</text>
   </g>
   <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
 </svg>

@@ -4,7 +4,7 @@
   <rect x="0" y="0" width="1280" height="72" fill="#F3F7FA"/>
   <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
   <rect x="0" y="5" width="220" height="4" fill="#B0D776"/>
-  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">01 / EXECUTIVE OVERVIEW</text>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">01 / OVERVIEW</text>
   <g id="huixin-logo" transform="translate(1032 18) scale(0.52)">
     <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
     <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
@@ -13,13 +13,14 @@
     <text x="140" y="34" fill="#000000" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
     <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
-  <text x="64" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="164" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <text x="64" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="164" fill="#4295B6" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{KEY_MESSAGE}}</text>
   <line x1="64" y1="188" x2="1216" y2="188" stroke="#D2D3D4" stroke-width="1"/>
   <rect x="64" y="224" width="266" height="152" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
   <rect x="64" y="224" width="266" height="42" fill="#4295B6"/>
   <text x="86" y="252" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="17" font-weight="700">年度目标</text>
-  <text x="86" y="310" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{TARGET_RATE}}</text>
+  <text x="86" y="310" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{TARGET_RATE}}</text>
+  <text x="166" y="310" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="24" font-weight="700">%</text>
   <text x="86" y="344" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{TARGET_NOTE}}</text>
   <rect x="358" y="224" width="266" height="152" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
   <rect x="358" y="224" width="266" height="42" fill="#4295B6"/>
@@ -29,24 +30,24 @@
   <rect x="652" y="224" width="266" height="152" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
   <rect x="652" y="224" width="266" height="42" fill="#4295B6"/>
   <text x="674" y="252" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="17" font-weight="700">重点工作</text>
-  <text x="674" y="310" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{WORK_DONE}}</text>
+  <text x="674" y="308" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="28" font-weight="700">{{WORK_DONE}}</text>
   <text x="674" y="344" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{WORK_NOTE}}</text>
   <rect x="946" y="224" width="270" height="152" rx="4" fill="#0B2F3A"/>
   <text x="970" y="254" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="16">管理判断</text>
-  <text x="970" y="312" fill="#B0D776" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{STATUS}}</text>
-  <text x="970" y="346" fill="#FFFFFF" fill-opacity="0.82" font-family="Microsoft YaHei" font-size="15">{{STATUS_NOTE}}</text>
+  <text x="970" y="310" fill="#B0D776" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{STATUS}}</text>
+  <text x="970" y="346" fill="#FFFFFF" fill-opacity="0.82" font-family="Microsoft YaHei" font-size="14">{{STATUS_NOTE}}</text>
   <rect x="64" y="420" width="560" height="150" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
   <text x="88" y="454" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="19" font-weight="700">本期结论</text>
   <text x="88" y="500" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{CONCLUSION_1}}</text>
   <text x="88" y="532" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{CONCLUSION_2}}</text>
   <rect x="652" y="420" width="564" height="150" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
   <text x="676" y="454" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="19" font-weight="700">下一步管理动作</text>
-  <rect x="676" y="488" width="144" height="34" rx="2" fill="#B0D776"/>
-  <text x="704" y="511" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{ACTION_1}}</text>
-  <rect x="840" y="488" width="144" height="34" rx="2" fill="#F3F7FA" stroke="#D2D3D4"/>
-  <text x="868" y="511" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{ACTION_2}}</text>
-  <rect x="1004" y="488" width="144" height="34" rx="2" fill="#F3F7FA" stroke="#D2D3D4"/>
-  <text x="1032" y="511" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{ACTION_3}}</text>
+  <rect x="676" y="488" width="162" height="34" rx="2" fill="#B0D776"/>
+  <text x="696" y="511" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="12" font-weight="700">{{ACTION_1}}</text>
+  <rect x="858" y="488" width="162" height="34" rx="2" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <text x="878" y="511" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="12" font-weight="700">{{ACTION_2}}</text>
+  <rect x="1040" y="488" width="152" height="34" rx="2" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <text x="1060" y="511" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="12" font-weight="700">{{ACTION_3}}</text>
   <text x="676" y="548" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{ACTION_NOTE}}</text>
   <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
   <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>

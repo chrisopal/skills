@@ -46,6 +46,7 @@ placeholders:
 - Primary font: `"Microsoft YaHei"`.
 - SVG font: `"Microsoft YaHei"`; all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
 - Titles are bold and concise. Body text should stay short, structured, and conclusion-oriented.
+- Cover titles should fit the left safe region; prefer a short title under 14 Chinese characters and move qualifiers into `{{SUBTITLE}}`.
 
 ## IV. Signature Design Elements
 
@@ -77,6 +78,8 @@ placeholders:
 ## VII. Placeholder Overrides
 
 The consulting template leads with `{{KEY_MESSAGE}}` on analysis pages because management-consulting pages usually communicate the answer first, then support it with structured evidence.
+
+On framework and roadmap pages, `{{CONTENT_AREA}}` is a compact callout label, not a paragraph. Keep it under roughly 18 Chinese characters, for example `价值场景牵引` or `第一阶段主线`.
 
 ## VIII. Asset Specification
 

@@ -28,7 +28,7 @@
     <rect x="356" y="374" width="224" height="106" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
     <text x="380" y="406" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#0B2F3A">Phase 2 蓝图设计</text>
     <text x="380" y="436" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">能力框架 · 数据架构 · 试点范围</text>
-    <text x="380" y="462" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{CONTENT_AREA}}</text>
+    <text x="380" y="462" font-family="Microsoft YaHei" font-size="12" fill="#4B5563">{{CONTENT_AREA}}</text>
     <line x1="438" y1="362" x2="438" y2="374" stroke="#D2D3D4" stroke-width="2"/>
     <text x="380" y="522" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">1-2 个月</text>
   </g>

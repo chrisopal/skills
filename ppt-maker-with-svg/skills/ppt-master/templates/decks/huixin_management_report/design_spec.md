@@ -88,6 +88,7 @@ Usage rules:
 3. Keep pages white or light gray, with restrained panels and fine rules.
 4. Avoid marketing slogans, heavy decoration, glowing effects, and complex gradients.
 5. Express management closure through goal -> status -> issue -> countermeasure -> owner -> deadline.
+6. Keep narrow-card placeholders short: `{{WORK_DONE}}`, `{{STATUS}}`, and `{{ACTION_1}}`-`{{ACTION_3}}` are label fields, not sentence fields. Put long explanations into the note fields or speaker notes.
 
 ## VII. Page Types
 
@@ -96,6 +97,9 @@ Usage rules:
 
 ### 2. Executive Overview (`02_executive_overview.svg`)
 - One-page summary of goals, business results, key work, risks, and next actions.
+- `{{PAGE_TITLE}}` must be filled with a real page title; do not leave generic fallback text such as "Page Title".
+- Top-row metric cards use short values only: `{{WORK_DONE}}` should be around 4-8 Chinese characters; `{{STATUS}}` should be around 3-6 Chinese characters; action chips should be concise labels.
+- `{{TARGET_RATE}}` is the numeric percentage value only, for example `107`; the percent sign is drawn as a separate unit to avoid PPT text-frame wrapping.
 
 ### 3. KPI Dashboard (`03_kpi_dashboard.svg`)
 - KPI cards, progress bars, and target-vs-actual status for management review.

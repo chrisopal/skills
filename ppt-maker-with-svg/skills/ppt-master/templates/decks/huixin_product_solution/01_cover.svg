@@ -12,12 +12,33 @@
     <line x1="140" y1="48" x2="268" y2="48" stroke="#4295B6" stroke-width="3"/>
   </g>
   <text x="72" y="160" fill="#4295B6" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{PRODUCT_TAG}}</text>
-  <text x="72" y="242" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="58" font-weight="700">{{TITLE}}</text>
-  <text x="72" y="292" fill="#4B5563" font-family="Microsoft YaHei" font-size="23">{{SUBTITLE}}</text>
+  <text x="72" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{TITLE}}</text>
+  <text x="72" y="280" fill="#4B5563" font-family="Microsoft YaHei" font-size="18">{{SUBTITLE}}</text>
   <g id="platform-preview">
     <rect x="548" y="126" width="658" height="392" rx="20" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1.5"/>
-    <image href="images/reference_visual.png" x="566" y="144" width="622" height="356" preserveAspectRatio="xMidYMid slice"/>
-    <rect x="566" y="144" width="622" height="356" fill="#FFFFFF" fill-opacity="0.08"/>
+    <text x="586" y="172" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">智慧矿山 / 智能制造平台整体架构</text>
+    <g id="architecture-stack">
+      <rect x="586" y="206" width="582" height="48" rx="12" fill="#4295B6"/>
+      <text x="877" y="237" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="17" font-weight="700">应用层：安全管理 · 生产运营 · 设备能源 · 经营分析</text>
+      <rect x="586" y="274" width="582" height="72" rx="12" fill="#FFFFFF" stroke="#4295B6" stroke-width="1.5"/>
+      <rect x="618" y="294" width="92" height="32" rx="8" fill="#4295B6" fill-opacity="0.12"/>
+      <rect x="736" y="294" width="92" height="32" rx="8" fill="#4295B6" fill-opacity="0.12"/>
+      <rect x="854" y="294" width="92" height="32" rx="8" fill="#B0D776" fill-opacity="0.3"/>
+      <rect x="972" y="294" width="92" height="32" rx="8" fill="#4295B6" fill-opacity="0.12"/>
+      <text x="664" y="316" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">业务中台</text>
+      <text x="782" y="316" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">数据中台</text>
+      <text x="900" y="316" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">AI中台</text>
+      <text x="1018" y="316" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">集成中台</text>
+      <rect x="586" y="366" width="582" height="58" rx="12" fill="#F3F7FA" stroke="#D2D3D4"/>
+      <text x="630" y="402" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">数据湖</text>
+      <circle cx="760" cy="395" r="18" fill="#4295B6"/>
+      <circle cx="842" cy="395" r="18" fill="#4295B6" fill-opacity="0.72"/>
+      <circle cx="924" cy="395" r="18" fill="#B0D776"/>
+      <line x1="778" y1="395" x2="824" y2="395" stroke="#D2D3D4" stroke-width="3"/>
+      <line x1="860" y1="395" x2="906" y2="395" stroke="#D2D3D4" stroke-width="3"/>
+      <rect x="586" y="444" width="582" height="42" rx="12" fill="#0B2F3A"/>
+      <text x="877" y="471" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16" font-weight="700">边缘接入 · 工业网关 · 设备感知 · 安全隔离</text>
+    </g>
   </g>
   <g id="capability-row">
     <rect x="72" y="382" width="404" height="64" rx="14" fill="#FFFFFF" stroke="#D2D3D4"/>
@@ -37,7 +58,7 @@
     <text x="140" y="591" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{CAPABILITY_3}}</text>
   </g>
   <polygon points="548,558 1122,558 1208,626 634,626" fill="#0B2F3A"/>
-  <text x="592" y="598" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="24" font-weight="700">{{KEY_MESSAGE}}</text>
+  <text x="592" y="596" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{KEY_MESSAGE}}</text>
   <rect x="72" y="666" width="180" height="6" fill="#4295B6"/>
   <rect x="252" y="666" width="72" height="6" fill="#B0D776"/>
 </svg>

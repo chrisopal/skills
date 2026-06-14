@@ -20,14 +20,49 @@
   <text x="326" y="210" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{AUTHOR}}</text>
   <g id="dashboard-visual">
     <rect x="72" y="272" width="1136" height="338" rx="10" fill="#FFFFFF" stroke="#D2D3D4"/>
-    <image href="images/reference_visual.png" x="90" y="290" width="1100" height="302" preserveAspectRatio="xMidYMid slice"/>
-    <rect x="90" y="290" width="1100" height="302" fill="#FFFFFF" fill-opacity="0.08"/>
+    <g transform="translate(104 304)">
+      <rect x="0" y="0" width="226" height="62" rx="8" fill="#F3F7FA" stroke="#D2D3D4"/>
+      <text x="18" y="24" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">营业收入（万元）</text>
+      <text x="18" y="52" fill="#4295B6" font-family="Microsoft YaHei" font-size="28" font-weight="700">68,250</text>
+      <rect x="0" y="78" width="226" height="62" rx="8" fill="#F3F7FA" stroke="#D2D3D4"/>
+      <text x="18" y="102" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">毛利率</text>
+      <text x="18" y="130" fill="#4295B6" font-family="Microsoft YaHei" font-size="28" font-weight="700">32.8%</text>
+      <rect x="0" y="156" width="226" height="62" rx="8" fill="#F3F7FA" stroke="#D2D3D4"/>
+      <text x="18" y="180" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">客户满意度</text>
+      <text x="18" y="208" fill="#B0D776" font-family="Microsoft YaHei" font-size="28" font-weight="700">92.1</text>
+    </g>
+    <g transform="translate(374 304)">
+      <rect x="0" y="0" width="398" height="218" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="18" y="30" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">重点项目进展</text>
+      <line x1="18" y1="52" x2="370" y2="52" stroke="#D2D3D4"/>
+      <rect x="18" y="78" width="244" height="10" rx="5" fill="#D2D3D4"/>
+      <rect x="18" y="78" width="188" height="10" rx="5" fill="#4295B6"/>
+      <rect x="18" y="118" width="244" height="10" rx="5" fill="#D2D3D4"/>
+      <rect x="18" y="118" width="156" height="10" rx="5" fill="#4295B6"/>
+      <rect x="18" y="158" width="244" height="10" rx="5" fill="#D2D3D4"/>
+      <rect x="18" y="158" width="218" height="10" rx="5" fill="#B0D776"/>
+      <text x="286" y="86" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">MES平台</text>
+      <text x="286" y="126" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">数据中台</text>
+      <text x="286" y="166" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">设备联网</text>
+    </g>
+    <g transform="translate(816 304)">
+      <rect x="0" y="0" width="340" height="218" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="20" y="30" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">风险热力图</text>
+      <rect x="42" y="66" width="58" height="58" rx="6" fill="#B0D776"/>
+      <rect x="108" y="66" width="58" height="58" rx="6" fill="#F4C542"/>
+      <rect x="174" y="66" width="58" height="58" rx="6" fill="#F97316"/>
+      <rect x="42" y="132" width="58" height="58" rx="6" fill="#B0D776"/>
+      <rect x="108" y="132" width="58" height="58" rx="6" fill="#B0D776"/>
+      <rect x="174" y="132" width="58" height="58" rx="6" fill="#F4C542"/>
+      <text x="270" y="96" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">高影响</text>
+      <text x="270" y="164" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">中影响</text>
+    </g>
   </g>
   <g id="kpi-footer">
     <rect x="72" y="630" width="1136" height="52" rx="8" fill="#0B2F3A"/>
-    <text x="104" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="23" font-weight="700">{{KPI_1}}</text>
-    <text x="284" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="23" font-weight="700">{{KPI_2}}</text>
-    <text x="464" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="23" font-weight="700">{{KPI_3}}</text>
-    <text x="644" y="662" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16">稳健经营 · 目标导向 · 管理闭环</text>
+    <text x="104" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KPI_1}} 达成率</text>
+    <text x="304" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KPI_2}} 收入</text>
+    <text x="504" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KPI_3}} 利润</text>
+    <text x="724" y="662" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15">稳健经营 · 目标导向 · 管理闭环</text>
   </g>
 </svg>

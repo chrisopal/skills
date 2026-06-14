@@ -12,16 +12,35 @@
     <line x1="140" y1="48" x2="268" y2="48" stroke="#4295B6" stroke-width="3"/>
   </g>
   <text x="72" y="172" fill="#4295B6" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{SECTION_NAME}}</text>
-  <text x="72" y="255" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="56" font-weight="700">{{TITLE}}</text>
-  <text x="72" y="306" fill="#4B5563" font-family="Microsoft YaHei" font-size="23">{{SUBTITLE}}</text>
+  <text x="72" y="250" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="46" font-weight="700">{{TITLE}}</text>
+  <text x="72" y="300" fill="#4B5563" font-family="Microsoft YaHei" font-size="19">{{SUBTITLE}}</text>
   <rect x="72" y="350" width="430" height="122" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
   <text x="104" y="392" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{KEY_MESSAGE}}</text>
   <line x1="104" y1="420" x2="448" y2="420" stroke="#D2D3D4"/>
   <text x="104" y="452" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{AUTHOR}} · {{DATE}}</text>
   <g id="consulting-visual">
     <rect x="552" y="112" width="656" height="468" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
-    <image href="images/reference_visual.png" x="568" y="128" width="624" height="436" preserveAspectRatio="xMidYMid slice"/>
-    <rect x="568" y="128" width="624" height="436" fill="#FFFFFF" fill-opacity="0.16"/>
+    <text x="586" y="158" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">数字化转型战略蓝图</text>
+    <polygon points="604,492 732,278 860,492" fill="#B0D776"/>
+    <polygon points="640,432 732,278 824,432" fill="#4295B6"/>
+    <polygon points="682,362 732,278 782,362" fill="#0B2F3A"/>
+    <text x="732" y="338" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">愿景</text>
+    <text x="732" y="415" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">能力体系</text>
+    <text x="732" y="476" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">业务价值</text>
+    <g transform="translate(908 190)">
+      <rect x="0" y="0" width="238" height="56" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+      <text x="20" y="34" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">关键问题树</text>
+      <line x1="36" y1="76" x2="36" y2="236" stroke="#D2D3D4"/>
+      <rect x="66" y="78" width="172" height="34" rx="4" fill="#4295B6"/>
+      <rect x="66" y="134" width="172" height="34" rx="4" fill="#4295B6" fill-opacity="0.72"/>
+      <rect x="66" y="190" width="172" height="34" rx="4" fill="#B0D776"/>
+      <line x1="36" y1="95" x2="66" y2="95" stroke="#D2D3D4"/>
+      <line x1="36" y1="151" x2="66" y2="151" stroke="#D2D3D4"/>
+      <line x1="36" y1="207" x2="66" y2="207" stroke="#D2D3D4"/>
+      <text x="152" y="100" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13">价值场景不足</text>
+      <text x="152" y="156" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13">数据底座薄弱</text>
+      <text x="152" y="212" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">组织协同低效</text>
+    </g>
   </g>
   <g id="method-strip">
     <rect x="72" y="536" width="1136" height="92" rx="4" fill="#F3F7FA"/>

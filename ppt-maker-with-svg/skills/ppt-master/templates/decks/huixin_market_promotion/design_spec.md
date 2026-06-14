@@ -198,6 +198,6 @@ Usage rules:
 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
-| `images/reference_visual.png` | Imagegen-generated MES marketing visual sample | Used on the cover as a polished reference visual and right-side hero panel. It can be replaced by a project-specific product rendering or campaign image. |
+| `images/reference_visual.png` | Imagegen-generated MES marketing visual reference | Optional reference only. Do not paste it as fixed slide content; use it to guide custom project imagery when a real MES product screenshot or campaign visual is available. |
 
-The bitmap reference is a visual accelerator, not the editable information layer. Keep business messages, metrics, CTA, logo geometry, and page structure as SVG text and shapes.
+The default template pages must remain editable SVG. Keep business messages, metrics, CTA, logo geometry, MES dashboards, and page structure as SVG text and shapes.

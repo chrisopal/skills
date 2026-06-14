@@ -17,8 +17,25 @@
   <text x="348" y="168" fill="#4B5563" font-family="Microsoft YaHei" font-size="22">{{SUBTITLE}}</text>
   <g id="learning-visual">
     <rect x="348" y="216" width="830" height="332" rx="18" fill="#F3F7FA" stroke="#D2D3D4"/>
-    <image href="images/reference_visual.png" x="366" y="234" width="794" height="296" preserveAspectRatio="xMidYMid slice"/>
-    <rect x="366" y="234" width="794" height="296" fill="#FFFFFF" fill-opacity="0.1"/>
+    <text x="382" y="264" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="24" font-weight="700">学习旅程地图</text>
+    <text x="382" y="296" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">从认知到实战，形成可落地的业务动作</text>
+    <g transform="translate(386 340)">
+      <polygon points="0,0 134,0 164,54 134,108 0,108 30,54" fill="#4295B6"/>
+      <polygon points="154,0 288,0 318,54 288,108 154,108 184,54" fill="#4295B6" fill-opacity="0.82"/>
+      <polygon points="308,0 442,0 472,54 442,108 308,108 338,54" fill="#4295B6" fill-opacity="0.68"/>
+      <polygon points="462,0 596,0 626,54 596,108 462,108 492,54" fill="#B0D776"/>
+      <polygon points="616,0 750,0 780,54 750,108 616,108 646,54" fill="#B0D776" fill-opacity="0.86"/>
+      <text x="82" y="46" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">01</text>
+      <text x="82" y="76" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">认知与价值</text>
+      <text x="236" y="46" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">02</text>
+      <text x="236" y="76" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">方案与产品</text>
+      <text x="390" y="46" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">03</text>
+      <text x="390" y="76" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">场景与应用</text>
+      <text x="544" y="46" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="28" font-weight="700">04</text>
+      <text x="544" y="76" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">实施与交付</text>
+      <text x="698" y="46" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="28" font-weight="700">05</text>
+      <text x="698" y="76" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">客户成功</text>
+    </g>
   </g>
   <g id="course-side">
     <rect x="72" y="242" width="160" height="170" rx="18" fill="#FFFFFF" fill-opacity="0.08"/>

@@ -21,31 +21,50 @@
   </g>
   <rect x="72" y="146" width="142" height="34" rx="17" fill="#B0D776"/>
   <text x="143" y="169" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{CAMPAIGN_TAG}}</text>
-  <text x="72" y="256" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="68" font-weight="700">{{TITLE}}</text>
-  <text x="72" y="316" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{SUBTITLE}}</text>
-  <line x1="72" y1="354" x2="180" y2="354" stroke="#B0D776" stroke-width="6"/>
-  <text x="72" y="402" fill="#4B5563" font-family="Microsoft YaHei" font-size="20">数字化 · 智能化 · 精益化</text>
+  <text x="72" y="242" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{TITLE}}</text>
+  <text x="72" y="294" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{SUBTITLE}}</text>
+  <line x1="72" y1="342" x2="180" y2="342" stroke="#B0D776" stroke-width="6"/>
+  <text x="72" y="390" fill="#4B5563" font-family="Microsoft YaHei" font-size="19">数字化 · 智能化 · 精益化</text>
   <g id="hero-visual">
     <rect x="592" y="118" width="618" height="358" rx="22" fill="#FFFFFF" fill-opacity="0.94"/>
-    <image href="images/reference_visual.png" x="604" y="130" width="594" height="334" preserveAspectRatio="xMidYMid slice"/>
-    <rect x="604" y="130" width="594" height="334" fill="#4295B6" fill-opacity="0.08"/>
+    <rect x="624" y="158" width="380" height="230" rx="18" fill="#0B2F3A"/>
+    <rect x="650" y="188" width="152" height="74" rx="10" fill="#FFFFFF" fill-opacity="0.12"/>
+    <polyline points="668,236 692,218 724,226 756,198 784,206" fill="none" stroke="#B0D776" stroke-width="4"/>
+    <rect x="828" y="188" width="140" height="30" rx="8" fill="#4295B6"/>
+    <rect x="828" y="232" width="140" height="18" rx="6" fill="#FFFFFF" fill-opacity="0.18"/>
+    <rect x="828" y="262" width="110" height="18" rx="6" fill="#FFFFFF" fill-opacity="0.18"/>
+    <circle cx="694" cy="328" r="34" fill="#4295B6" fill-opacity="0.85"/>
+    <circle cx="786" cy="328" r="34" fill="#B0D776" fill-opacity="0.85"/>
+    <circle cx="878" cy="328" r="34" fill="#FFFFFF" fill-opacity="0.18"/>
+    <text x="624" y="430" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">MES 数据驾驶舱 · 过程透明 · 质量闭环</text>
+    <g transform="translate(1040 170)">
+      <rect x="0" y="0" width="126" height="52" rx="14" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <circle cx="24" cy="26" r="14" fill="#B0D776"/>
+      <text x="48" y="31" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">计划协同</text>
+      <rect x="0" y="72" width="126" height="52" rx="14" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <circle cx="24" cy="98" r="14" fill="#B0D776"/>
+      <text x="48" y="103" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">生产执行</text>
+      <rect x="0" y="144" width="126" height="52" rx="14" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <circle cx="24" cy="170" r="14" fill="#B0D776"/>
+      <text x="48" y="175" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">质量追溯</text>
+    </g>
     <polygon points="592,118 746,118 714,164 592,164" fill="#B0D776"/>
-    <text x="618" y="149" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">MES MARKETING VISUAL</text>
+    <text x="618" y="149" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">MES VALUE STORY</text>
   </g>
   <g id="value-strip">
     <rect x="72" y="534" width="1042" height="92" rx="22" fill="#FFFFFF" fill-opacity="0.08"/>
     <g transform="translate(104 560)">
-      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{METRIC_1}}</text>
+      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="26" font-weight="700">{{METRIC_1}}</text>
       <text x="0" y="32" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_1_PROOF}}</text>
     </g>
     <line x1="342" y1="556" x2="342" y2="608" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.5"/>
     <g transform="translate(392 560)">
-      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{METRIC_2}}</text>
+      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="26" font-weight="700">{{METRIC_2}}</text>
       <text x="0" y="32" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_2_PROOF}}</text>
     </g>
     <line x1="630" y1="556" x2="630" y2="608" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.5"/>
     <g transform="translate(656 560)">
-      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{METRIC_3}}</text>
+      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="26" font-weight="700">{{METRIC_3}}</text>
       <text x="0" y="32" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_3_PROOF}}</text>
     </g>
     <polygon points="946,534 1114,534 1062,626 894,626" fill="#4295B6"/>

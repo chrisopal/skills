@@ -125,4 +125,4 @@ Usage rules:
 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
-| `images/reference_visual.png` | Imagegen-generated quarterly operations report dashboard sample | Used on the cover as a high-density management dashboard reference. KPI cards, project lists, risk matrices, timelines, and action tables remain editable SVG structures on internal pages. |
+| `images/reference_visual.png` | Imagegen-generated quarterly operations report dashboard reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific dashboard visuals. KPI cards, project lists, risk matrices, timelines, and action tables remain editable SVG structures. |

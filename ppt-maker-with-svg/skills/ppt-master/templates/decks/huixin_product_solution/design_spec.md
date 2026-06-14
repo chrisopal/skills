@@ -184,6 +184,6 @@ Usage rules:
 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
-| `images/reference_visual.png` | Imagegen-generated smart mine / intelligent manufacturing platform architecture sample | Used on the cover as a product-solution visual reference. Architecture, modules, flows, and value metrics remain editable SVG shapes in the working pages. |
+| `images/reference_visual.png` | Imagegen-generated smart mine / intelligent manufacturing platform architecture reference | Optional reference only. Do not paste it as fixed slide content; use it to guide custom industry visuals when real project screenshots or scenario images are supplied. |
 
-The bitmap reference should not replace the architecture pages. Keep product diagrams, deployment topologies, capability maps, and implementation paths as editable SVG geometry unless the project explicitly supplies real product screenshots.
+The bitmap reference should not replace architecture content. Keep product diagrams, deployment topologies, capability maps, and implementation paths as editable SVG geometry unless the project explicitly supplies real product screenshots.

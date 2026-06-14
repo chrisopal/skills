@@ -65,7 +65,7 @@ placeholders:
 
 | SVG | Page Role | Description |
 | --- | --- | --- |
-| `01_cover.svg` | Cover | Executive consulting cover with conclusion card, method strip, and imagegen-generated strategy blueprint reference visual. |
+| `01_cover.svg` | Cover | Executive consulting cover with conclusion card, method strip, pyramid, and issue-tree visual. |
 | `02_executive_summary.svg` | Executive summary | One-line conclusion, three strategic findings, and quantified implication row. |
 | `03_diagnosis_issue_tree.svg` | Diagnosis issue tree | MECE issue tree for current-state diagnosis and root-cause framing. |
 | `04_strategy_matrix.svg` | Strategy matrix | Four-quadrant option assessment using impact and feasibility axes. |
@@ -82,4 +82,4 @@ The consulting template leads with `{{KEY_MESSAGE}}` on analysis pages because m
 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
-| `images/reference_visual.png` | Imagegen-generated digital transformation consulting blueprint sample | Used on the cover as a high-fidelity consulting visual reference. Framework pages still use editable SVG issue trees, matrices, pyramids, roadmaps, and value tables. |
+| `images/reference_visual.png` | Imagegen-generated digital transformation consulting blueprint reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific visuals. Framework pages use editable SVG issue trees, matrices, pyramids, roadmaps, and value tables. |

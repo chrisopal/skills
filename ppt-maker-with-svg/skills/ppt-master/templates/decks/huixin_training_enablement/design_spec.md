@@ -186,4 +186,4 @@ Usage rules:
 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
-| `images/reference_visual.png` | Imagegen-generated enterprise training journey sample | Used on the cover as a courseware visual reference. Learning objectives, journey maps, frameworks, practice tasks, quizzes, and action plans remain editable SVG elements. |
+| `images/reference_visual.png` | Imagegen-generated enterprise training journey reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific courseware visuals. Learning objectives, journey maps, frameworks, practice tasks, quizzes, and action plans remain editable SVG elements. |

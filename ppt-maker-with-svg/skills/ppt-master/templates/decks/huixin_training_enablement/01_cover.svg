@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
-  <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA"/>
-  <rect x="0" y="0" width="1280" height="16" fill="#4295B6"/>
-  <rect x="0" y="16" width="500" height="5" fill="#B0D776"/>
-  <polygon points="0,0 430,0 318,720 0,720" fill="#0B2F3A"/>
-  <polygon points="352,0 442,0 256,720 166,720" fill="#4295B6" fill-opacity="0.92"/>
-  <polygon points="442,0 478,0 292,720 256,720" fill="#B0D776"/>
-  <polygon points="1008,96 1228,96 1264,164 1044,164" fill="#D2D3D4" fill-opacity="0.42"/>
-  <polygon points="934,520 1274,450 1274,720 838,720" fill="#4295B6" fill-opacity="0.10"/>
-
-  <g id="huixin-logo" transform="translate(72 56)">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="292" height="720" fill="#0B2F3A"/>
+  <polygon points="1048,0 1280,0 1280,192 1120,192" fill="#4295B6"/>
+  <polygon points="1112,0 1280,0 1280,122 1162,122" fill="#B0D776" fill-opacity="0.78"/>
+  <g id="huixin-logo" transform="translate(72 44) scale(0.7)">
     <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
     <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
     <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
     <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
-    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#B0D776" stroke-width="3"/>
+    <text x="140" y="36" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="30" font-weight="700">慧新全智</text>
+    <line x1="140" y1="48" x2="268" y2="48" stroke="#4295B6" stroke-width="3"/>
   </g>
-
-  <text x="575" y="106" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">HUIXIN TRAINING ENABLEMENT</text>
-  <line x1="575" y1="128" x2="1154" y2="128" stroke="#D2D3D4" stroke-width="1.2"/>
-  <rect x="575" y="170" width="156" height="38" rx="4" fill="#4295B6"/>
-  <text x="653" y="195" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{COURSE_TAG}}</text>
-  <text x="575" y="292" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="58" font-weight="700">{{TITLE}}</text>
-  <text x="575" y="354" fill="#4B5563" font-family="Microsoft YaHei" font-size="24">{{SUBTITLE}}</text>
-  <rect x="575" y="404" width="424" height="2" fill="#4295B6"/>
-  <text x="575" y="462" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">培训对象：{{AUDIENCE}}</text>
-  <text x="575" y="500" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">讲师 / 组织者：{{FACILITATOR}}</text>
-  <text x="575" y="538" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">日期：{{DATE}}</text>
-  <rect x="575" y="588" width="136" height="38" rx="3" fill="#B0D776"/>
-  <text x="643" y="613" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">课程开始</text>
-  <text x="72" y="612" fill="#FFFFFF" fill-opacity="0.82" font-family="Microsoft YaHei" font-size="16">Learn · Practice · Apply · Improve</text>
-  <text x="72" y="650" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="42" font-weight="700">培训赋能模板</text>
+  <text x="72" y="186" fill="#B0D776" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{COURSE_TAG}}</text>
+  <text x="348" y="122" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="50" font-weight="700">{{TITLE}}</text>
+  <text x="348" y="168" fill="#4B5563" font-family="Microsoft YaHei" font-size="22">{{SUBTITLE}}</text>
+  <g id="learning-visual">
+    <rect x="348" y="216" width="830" height="332" rx="18" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <image href="images/reference_visual.png" x="366" y="234" width="794" height="296" preserveAspectRatio="xMidYMid slice"/>
+    <rect x="366" y="234" width="794" height="296" fill="#FFFFFF" fill-opacity="0.1"/>
+  </g>
+  <g id="course-side">
+    <rect x="72" y="242" width="160" height="170" rx="18" fill="#FFFFFF" fill-opacity="0.08"/>
+    <text x="152" y="306" text-anchor="middle" fill="#B0D776" font-family="Microsoft YaHei" font-size="48" font-weight="700">05</text>
+    <text x="152" y="342" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18">课程模块</text>
+    <line x1="104" y1="374" x2="200" y2="374" stroke="#FFFFFF" stroke-opacity="0.32"/>
+    <text x="152" y="398" text-anchor="middle" fill="#FFFFFF" fill-opacity="0.82" font-family="Microsoft YaHei" font-size="13">{{MODULE_COUNT}}</text>
+    <text x="152" y="422" text-anchor="middle" fill="#FFFFFF" fill-opacity="0.66" font-family="Microsoft YaHei" font-size="12">{{DATE}}</text>
+  </g>
+  <g id="learning-strip">
+    <rect x="348" y="584" width="830" height="56" rx="16" fill="#0B2F3A"/>
+    <circle cx="388" cy="612" r="16" fill="#4295B6"/>
+    <circle cx="562" cy="612" r="16" fill="#4295B6"/>
+    <circle cx="736" cy="612" r="16" fill="#4295B6"/>
+    <circle cx="910" cy="612" r="16" fill="#B0D776"/>
+    <circle cx="1084" cy="612" r="16" fill="#B0D776"/>
+    <line x1="404" y1="612" x2="546" y2="612" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2"/>
+    <line x1="578" y1="612" x2="720" y2="612" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2"/>
+    <line x1="752" y1="612" x2="894" y2="612" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2"/>
+    <line x1="926" y1="612" x2="1068" y2="612" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2"/>
+    <text x="388" y="618" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">1</text>
+    <text x="562" y="618" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">2</text>
+    <text x="736" y="618" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">3</text>
+    <text x="910" y="618" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">4</text>
+    <text x="1084" y="618" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">5</text>
+  </g>
 </svg>

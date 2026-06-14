@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA"/>
-  <rect x="0" y="0" width="1280" height="16" fill="#4295B6"/>
-  <rect x="0" y="16" width="420" height="5" fill="#B0D776"/>
-  <rect x="0" y="0" width="430" height="720" fill="#0B2F3A"/>
-  <polygon points="430,0 518,0 324,720 236,720" fill="#4295B6" fill-opacity="0.92"/>
-  <polygon points="518,0 552,0 358,720 324,720" fill="#B0D776"/>
-  <g id="huixin-logo" transform="translate(72 58)">
+  <rect x="0" y="0" width="1280" height="96" fill="#FFFFFF"/>
+  <line x1="0" y1="96" x2="1280" y2="96" stroke="#D2D3D4"/>
+  <g id="huixin-logo" transform="translate(72 27) scale(0.68)">
     <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
     <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
     <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
     <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
-    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#B0D776" stroke-width="3"/>
+    <text x="140" y="36" fill="#000000" font-family="Microsoft YaHei" font-size="30" font-weight="700">慧新全智</text>
+    <line x1="140" y1="48" x2="268" y2="48" stroke="#4295B6" stroke-width="3"/>
   </g>
-  <text x="610" y="104" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">HUIXIN MANAGEMENT REPORT</text>
-  <line x1="610" y1="126" x2="1162" y2="126" stroke="#D2D3D4" stroke-width="1.2"/>
-  <text x="610" y="210" fill="#4295B6" font-family="Microsoft YaHei" font-size="24" font-weight="700">{{REPORT_TAG}}</text>
-  <text x="610" y="292" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="54" font-weight="700">{{TITLE}}</text>
-  <text x="610" y="352" fill="#4B5563" font-family="Microsoft YaHei" font-size="24">{{SUBTITLE}}</text>
-  <rect x="610" y="408" width="460" height="2" fill="#4295B6"/>
-  <rect x="610" y="430" width="112" height="34" rx="2" fill="#4295B6"/>
-  <text x="634" y="452" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">内部汇报</text>
-  <text x="610" y="526" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">{{AUTHOR}}</text>
-  <text x="610" y="560" fill="#4B5563" font-family="Microsoft YaHei" font-size="17">{{DATE}}</text>
-  <text x="72" y="616" fill="#FFFFFF" fill-opacity="0.84" font-family="Microsoft YaHei" font-size="16">Steady operation · Clear targets · Closed-loop management</text>
-  <text x="72" y="650" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="42" font-weight="700">公司汇报模板</text>
+  <text x="424" y="58" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{DATE}}</text>
+  <rect x="72" y="128" width="1136" height="112" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <rect x="72" y="128" width="210" height="112" rx="8" fill="#4295B6"/>
+  <text x="104" y="174" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="26" font-weight="700">{{TITLE}}</text>
+  <text x="104" y="210" fill="#FFFFFF" fill-opacity="0.86" font-family="Microsoft YaHei" font-size="17">{{SUBTITLE}}</text>
+  <text x="326" y="174" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{KEY_MESSAGE}}</text>
+  <text x="326" y="210" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{AUTHOR}}</text>
+  <g id="dashboard-visual">
+    <rect x="72" y="272" width="1136" height="338" rx="10" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <image href="images/reference_visual.png" x="90" y="290" width="1100" height="302" preserveAspectRatio="xMidYMid slice"/>
+    <rect x="90" y="290" width="1100" height="302" fill="#FFFFFF" fill-opacity="0.08"/>
+  </g>
+  <g id="kpi-footer">
+    <rect x="72" y="630" width="1136" height="52" rx="8" fill="#0B2F3A"/>
+    <text x="104" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="23" font-weight="700">{{KPI_1}}</text>
+    <text x="284" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="23" font-weight="700">{{KPI_2}}</text>
+    <text x="464" y="662" fill="#B0D776" font-family="Microsoft YaHei" font-size="23" font-weight="700">{{KPI_3}}</text>
+    <text x="644" y="662" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16">稳健经营 · 目标导向 · 管理闭环</text>
+  </g>
 </svg>

@@ -120,3 +120,9 @@ Usage rules:
 
 ### 10. Risk Matrix (`10_risk_matrix.svg`)
 - Risk level matrix with mitigation actions and management asks.
+
+## VIII. Asset Specification
+
+| Asset | Purpose | Usage |
+| --- | --- | --- |
+| `images/reference_visual.png` | Imagegen-generated quarterly operations report dashboard sample | Used on the cover as a high-density management dashboard reference. KPI cards, project lists, risk matrices, timelines, and action tables remain editable SVG structures on internal pages. |

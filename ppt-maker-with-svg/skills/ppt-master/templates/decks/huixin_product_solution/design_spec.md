@@ -182,4 +182,8 @@ Usage rules:
 
 ## XIII. Asset Specification
 
-This product-solution deck uses no mandatory bitmap assets. Product interfaces can be represented with editable geometry placeholders unless a project supplies actual screenshots.
+| Asset | Purpose | Usage |
+| --- | --- | --- |
+| `images/reference_visual.png` | Imagegen-generated smart mine / intelligent manufacturing platform architecture sample | Used on the cover as a product-solution visual reference. Architecture, modules, flows, and value metrics remain editable SVG shapes in the working pages. |
+
+The bitmap reference should not replace the architecture pages. Keep product diagrams, deployment topologies, capability maps, and implementation paths as editable SVG geometry unless the project explicitly supplies real product screenshots.

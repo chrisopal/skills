@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
-  <rect x="0" y="0" width="1280" height="720" fill="#0B2F3A"/>
-  <rect x="0" y="0" width="1280" height="14" fill="#4295B6"/>
-  <rect x="0" y="14" width="520" height="5" fill="#B0D776"/>
-  <polygon points="746,0 1280,0 1280,720 1086,720" fill="#4295B6" fill-opacity="0.22"/>
-  <polygon points="900,0 1280,0 1280,322 1028,322" fill="#4295B6" fill-opacity="0.34"/>
-  <polygon points="838,520 1280,424 1280,720 748,720" fill="#B0D776" fill-opacity="0.18"/>
-  <polygon points="808,124 882,124 940,232 866,232" fill="#B0D776"/>
-  <polygon points="948,124 1008,124 1066,232 1006,232" fill="#D2D3D4"/>
-  <polygon points="1030,124 1104,124 1162,232 1088,232" fill="#4295B6"/>
-  <polygon points="1136,124 1194,124 1252,232 1194,232" fill="#B0D776"/>
-
-  <g id="huixin-logo" transform="translate(72 48)">
+  <defs>
+    <linearGradient id="deepBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B2F3A"/>
+      <stop offset="1" stop-color="#4295B6"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <polygon points="0,0 1280,0 1280,720 778,720 566,592 0,592" fill="url(#deepBlue)"/>
+  <polygon points="662,0 1280,0 1280,604 838,604" fill="#4295B6" fill-opacity="0.14"/>
+  <polygon points="730,48 1202,48 1130,102 694,102" fill="#FFFFFF" fill-opacity="0.12"/>
+  <polygon points="714,126 1222,126 1166,172 678,172" fill="#FFFFFF" fill-opacity="0.08"/>
+  <g id="huixin-logo" transform="translate(72 40) scale(0.86)">
     <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
     <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
     <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
     <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
-    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+    <text x="140" y="36" fill="#000000" font-family="Microsoft YaHei" font-size="30" font-weight="700">慧新全智</text>
+    <line x1="140" y1="48" x2="268" y2="48" stroke="#4295B6" stroke-width="3"/>
   </g>
-
-  <rect x="72" y="148" width="168" height="38" rx="19" fill="#4295B6"/>
-  <text x="156" y="173" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{CAMPAIGN_TAG}}</text>
-  <text x="72" y="274" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="66" font-weight="700">{{TITLE}}</text>
-  <rect x="72" y="306" width="206" height="7" rx="3.5" fill="#B0D776"/>
-  <text x="72" y="364" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="26">{{SUBTITLE}}</text>
-
-  <rect x="72" y="442" width="476" height="104" rx="18" fill="#FFFFFF" fill-opacity="0.08" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5"/>
-  <text x="104" y="486" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">科技品牌感 · 传播力 · 销售转化力</text>
-  <text x="104" y="522" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="17">公司宣传 / 产品发布 / 市场活动 / 展会路演</text>
-
-  <text x="72" y="628" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18">{{AUTHOR}}</text>
-  <text x="72" y="660" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="15">{{DATE}}</text>
-  <text x="1208" y="660" text-anchor="end" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">01</text>
+  <rect x="72" y="146" width="142" height="34" rx="17" fill="#B0D776"/>
+  <text x="143" y="169" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{CAMPAIGN_TAG}}</text>
+  <text x="72" y="256" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="68" font-weight="700">{{TITLE}}</text>
+  <text x="72" y="316" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{SUBTITLE}}</text>
+  <line x1="72" y1="354" x2="180" y2="354" stroke="#B0D776" stroke-width="6"/>
+  <text x="72" y="402" fill="#4B5563" font-family="Microsoft YaHei" font-size="20">数字化 · 智能化 · 精益化</text>
+  <g id="hero-visual">
+    <rect x="592" y="118" width="618" height="358" rx="22" fill="#FFFFFF" fill-opacity="0.94"/>
+    <image href="images/reference_visual.png" x="604" y="130" width="594" height="334" preserveAspectRatio="xMidYMid slice"/>
+    <rect x="604" y="130" width="594" height="334" fill="#4295B6" fill-opacity="0.08"/>
+    <polygon points="592,118 746,118 714,164 592,164" fill="#B0D776"/>
+    <text x="618" y="149" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">MES MARKETING VISUAL</text>
+  </g>
+  <g id="value-strip">
+    <rect x="72" y="534" width="1042" height="92" rx="22" fill="#FFFFFF" fill-opacity="0.08"/>
+    <g transform="translate(104 560)">
+      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{METRIC_1}}</text>
+      <text x="0" y="32" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_1_PROOF}}</text>
+    </g>
+    <line x1="342" y1="556" x2="342" y2="608" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.5"/>
+    <g transform="translate(392 560)">
+      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{METRIC_2}}</text>
+      <text x="0" y="32" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_2_PROOF}}</text>
+    </g>
+    <line x1="630" y1="556" x2="630" y2="608" stroke="#FFFFFF" stroke-opacity="0.28" stroke-width="1.5"/>
+    <g transform="translate(656 560)">
+      <text x="0" y="0" fill="#B0D776" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{METRIC_3}}</text>
+      <text x="0" y="32" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15">{{SCENARIO_3_PROOF}}</text>
+    </g>
+    <polygon points="946,534 1114,534 1062,626 894,626" fill="#4295B6"/>
+    <text x="1004" y="586" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{CTA}}</text>
+  </g>
+  <text x="72" y="672" fill="#FFFFFF" fill-opacity="0.82" font-family="Microsoft YaHei" font-size="14">{{AUTHOR}} · {{DATE}}</text>
 </svg>

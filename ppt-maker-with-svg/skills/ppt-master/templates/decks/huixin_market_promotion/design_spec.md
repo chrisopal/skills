@@ -167,7 +167,7 @@ Usage rules:
 2. Use plain hex colors with `fill-opacity` / `stroke-opacity`; do not use `rgba()`.
 3. Do not use `<style>`, `class`, `foreignObject`, `textPath`, animation tags, or external scripts.
 4. Keep all placeholder text in `{{PLACEHOLDER}}` form.
-5. Use vector geometry for the Huixin mark; no mandatory image asset is required.
+5. Use vector geometry for the Huixin mark; the cover may use packaged reference imagery as a visual sample while keeping titles, metrics, and CTA editable in SVG.
 
 ## XII. Placeholder Specification
 
@@ -196,4 +196,8 @@ Usage rules:
 
 ## XIII. Asset Specification
 
-This first Huixin market-promotion deck has no mandatory bitmap assets. Page templates reconstruct the brand mark directly in SVG so the template remains portable.
+| Asset | Purpose | Usage |
+| --- | --- | --- |
+| `images/reference_visual.png` | Imagegen-generated MES marketing visual sample | Used on the cover as a polished reference visual and right-side hero panel. It can be replaced by a project-specific product rendering or campaign image. |
+
+The bitmap reference is a visual accelerator, not the editable information layer. Keep business messages, metrics, CTA, logo geometry, and page structure as SVG text and shapes.

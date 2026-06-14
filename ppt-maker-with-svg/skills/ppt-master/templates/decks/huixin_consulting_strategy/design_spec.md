@@ -65,7 +65,7 @@ placeholders:
 
 | SVG | Page Role | Description |
 | --- | --- | --- |
-| `01_cover.svg` | Cover | White consulting cover with blue vertical thesis band, restrained brand mark, title and subtitle block. |
+| `01_cover.svg` | Cover | Executive consulting cover with conclusion card, method strip, and imagegen-generated strategy blueprint reference visual. |
 | `02_executive_summary.svg` | Executive summary | One-line conclusion, three strategic findings, and quantified implication row. |
 | `03_diagnosis_issue_tree.svg` | Diagnosis issue tree | MECE issue tree for current-state diagnosis and root-cause framing. |
 | `04_strategy_matrix.svg` | Strategy matrix | Four-quadrant option assessment using impact and feasibility axes. |
@@ -77,3 +77,9 @@ placeholders:
 ## VII. Placeholder Overrides
 
 The consulting template leads with `{{KEY_MESSAGE}}` on analysis pages because management-consulting pages usually communicate the answer first, then support it with structured evidence.
+
+## VIII. Asset Specification
+
+| Asset | Purpose | Usage |
+| --- | --- | --- |
+| `images/reference_visual.png` | Imagegen-generated digital transformation consulting blueprint sample | Used on the cover as a high-fidelity consulting visual reference. Framework pages still use editable SVG issue trees, matrices, pyramids, roadmaps, and value tables. |

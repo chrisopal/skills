@@ -161,7 +161,7 @@ Usage rules:
 2. Use plain hex colors with `fill-opacity` / `stroke-opacity`; do not use `rgba()`.
 3. Do not use `<style>`, `class`, `foreignObject`, `textPath`, animation tags, or external scripts.
 4. Keep all placeholder text in `{{PLACEHOLDER}}` form.
-5. Use vector geometry for the Huixin mark; no mandatory image asset is required.
+5. Use vector geometry for the Huixin mark; the cover may use packaged reference imagery while keeping course titles, module path, and progress markers editable in SVG.
 
 ## XII. Placeholder Specification
 
@@ -181,3 +181,9 @@ Usage rules:
 | `{{QUESTION_N}}` | Quiz or reflection question |
 | `{{ACTION_N}}` | Post-training action item |
 | `{{PAGE_NUM}}` | Page number |
+
+## XIII. Asset Specification
+
+| Asset | Purpose | Usage |
+| --- | --- | --- |
+| `images/reference_visual.png` | Imagegen-generated enterprise training journey sample | Used on the cover as a courseware visual reference. Learning objectives, journey maps, frameworks, practice tasks, quizzes, and action plans remain editable SVG elements. |

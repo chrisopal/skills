@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
-  <rect x="0" y="0" width="1280" height="720" fill="#0B2F3A"/>
-  <rect x="0" y="0" width="1280" height="14" fill="#4295B6"/>
-  <rect x="0" y="14" width="470" height="5" fill="#B0D776"/>
-  <polygon points="764,0 1280,0 1280,720 1044,720" fill="#4295B6" fill-opacity="0.18"/>
-  <polygon points="896,102 1186,102 1244,210 954,210" fill="#B0D776" fill-opacity="0.25"/>
-  <polygon points="746,424 1280,336 1280,720 640,720" fill="#4295B6" fill-opacity="0.18"/>
-
-  <g id="huixin-logo" transform="translate(72 48)">
+  <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA"/>
+  <rect x="0" y="0" width="1280" height="84" fill="#FFFFFF"/>
+  <line x1="0" y1="84" x2="1280" y2="84" stroke="#D2D3D4" stroke-width="1.5"/>
+  <g id="huixin-logo" transform="translate(72 22) scale(0.7)">
     <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
     <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
     <polygon points="51,10 65,10 82,44 68,44" fill="#D2D3D4"/>
     <polygon points="75,10 101,10 118,44 92,44" fill="#4295B6"/>
-    <text x="140" y="34" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="28" font-weight="700">慧新全智</text>
-    <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
+    <text x="140" y="36" fill="#000000" font-family="Microsoft YaHei" font-size="30" font-weight="700">慧新全智</text>
+    <line x1="140" y1="48" x2="268" y2="48" stroke="#4295B6" stroke-width="3"/>
   </g>
-
-  <rect x="72" y="146" width="180" height="38" rx="19" fill="#4295B6"/>
-  <text x="162" y="171" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{PRODUCT_TAG}}</text>
-  <text x="72" y="274" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="58" font-weight="700">{{TITLE}}</text>
-  <rect x="72" y="306" width="214" height="7" rx="3.5" fill="#B0D776"/>
-  <text x="72" y="364" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="25">{{SUBTITLE}}</text>
-
-  <rect x="72" y="444" width="484" height="110" rx="18" fill="#FFFFFF" fill-opacity="0.08" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5"/>
-  <text x="104" y="488" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">平台化 · 组件化 · 可扩展 · 可落地</text>
-  <text x="104" y="524" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="17">软件产品 / AI平台 / 智能制造 / 行业应用方案</text>
-
-  <rect x="792" y="292" width="320" height="220" rx="22" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.20" stroke-width="1.5"/>
-  <rect x="824" y="324" width="256" height="42" rx="12" fill="#4295B6"/>
-  <rect x="824" y="388" width="110" height="70" rx="12" fill="#FFFFFF" fill-opacity="0.18"/>
-  <rect x="970" y="388" width="110" height="70" rx="12" fill="#B0D776" fill-opacity="0.55"/>
-  <line x1="934" y1="423" x2="970" y2="423" stroke="#D2D3D4" stroke-width="3"/>
-  <text x="952" y="544" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14">Platform Architecture</text>
-
-  <text x="72" y="660" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">HUIXIN PRODUCT SOLUTION TEMPLATE</text>
-  <text x="1208" y="660" text-anchor="end" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">01</text>
+  <text x="72" y="160" fill="#4295B6" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{PRODUCT_TAG}}</text>
+  <text x="72" y="242" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="58" font-weight="700">{{TITLE}}</text>
+  <text x="72" y="292" fill="#4B5563" font-family="Microsoft YaHei" font-size="23">{{SUBTITLE}}</text>
+  <g id="platform-preview">
+    <rect x="548" y="126" width="658" height="392" rx="20" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1.5"/>
+    <image href="images/reference_visual.png" x="566" y="144" width="622" height="356" preserveAspectRatio="xMidYMid slice"/>
+    <rect x="566" y="144" width="622" height="356" fill="#FFFFFF" fill-opacity="0.08"/>
+  </g>
+  <g id="capability-row">
+    <rect x="72" y="382" width="404" height="64" rx="14" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <circle cx="108" cy="414" r="17" fill="#4295B6"/>
+    <text x="108" y="421" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="17" font-weight="700">1</text>
+    <text x="140" y="407" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{MODULE_1}}</text>
+    <text x="140" y="431" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{CAPABILITY_1}}</text>
+    <rect x="72" y="462" width="404" height="64" rx="14" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <circle cx="108" cy="494" r="17" fill="#B0D776"/>
+    <text x="108" y="501" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">2</text>
+    <text x="140" y="487" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{MODULE_2}}</text>
+    <text x="140" y="511" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{CAPABILITY_2}}</text>
+    <rect x="72" y="542" width="404" height="64" rx="14" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <circle cx="108" cy="574" r="17" fill="#0B2F3A"/>
+    <text x="108" y="581" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="17" font-weight="700">3</text>
+    <text x="140" y="567" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{MODULE_3}}</text>
+    <text x="140" y="591" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{CAPABILITY_3}}</text>
+  </g>
+  <polygon points="548,558 1122,558 1208,626 634,626" fill="#0B2F3A"/>
+  <text x="592" y="598" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="24" font-weight="700">{{KEY_MESSAGE}}</text>
+  <rect x="72" y="666" width="180" height="6" fill="#4295B6"/>
+  <rect x="252" y="666" width="72" height="6" fill="#B0D776"/>
 </svg>

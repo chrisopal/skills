@@ -88,6 +88,17 @@ Usage rules:
 4. Keep information density moderate: enough for product selling, not overloaded consulting pages.
 5. Express platformization through layers, reusable components, flows, and scalable deployment options.
 
+### Architecture Density Contract
+
+Product architecture pages must feel like mature enterprise software architecture, not a simple three-row stack. When a page uses `04_product_architecture.svg` or an architecture/chart layout:
+
+1. Show at least five visible architecture strata: user/application, business process, platform services, data/AI, and integration/foundation.
+2. Fill the body with 12-18 editable module nodes distributed across the strata; avoid empty bands, oversized labels, or only 3-4 broad rectangles.
+3. Include a right-side output or value column with 3-4 short deliverables such as dashboards, evidence packages, risk alerts, or APIs.
+4. Draw at least two cross-layer arrows or data-flow cues so the page reads as a system, not a static list.
+5. Keep the architecture visually full but readable: use compact 13-15px module labels, short noun phrases, and move long explanation into the speaker notes.
+6. Do not paste an architecture screenshot as the main content. AI images may be used only as faint blueprint backgrounds; architecture modules, labels, connectors, and layer boundaries remain editable SVG/PPT geometry.
+
 ## VII. Page Types
 
 ### 1. Cover Page (`01_cover.svg`)
@@ -100,7 +111,8 @@ Usage rules:
 - Shows the solution as a central platform with scenario, data, AI, and business value connections.
 
 ### 4. Product Architecture (`04_product_architecture.svg`)
-- Layered product architecture for software platform and digital solution presentations.
+- Dense multi-layer product architecture for software platform and digital solution presentations.
+- Must preserve the Architecture Density Contract: five strata, 12-18 module nodes, right-side output column, integration base, and cross-layer flow cues.
 
 ### 5. Core Capabilities (`05_core_capabilities.svg`)
 - Six modular capability cards for product features and system modules.

@@ -2,10 +2,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
-  <rect x="0" y="10" width="300" height="5" fill="#B0D776"/>
-  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
-  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="72" y="162" fill="#0B2F3A" fill-opacity="0.68" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <text x="72" y="68" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="120" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="156" fill="#4295B6" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{KEY_MESSAGE}}</text>
   <g id="huixin-logo" transform="translate(1016 22) scale(0.58)">
     <polygon points="0,10 14,10 31,44 17,44" fill="#D2D3D4"/>
     <polygon points="24,10 43,10 60,44 41,44" fill="#B0D776"/>
@@ -15,31 +15,98 @@
     <line x1="140" y1="44" x2="268" y2="44" stroke="#4295B6" stroke-width="3"/>
   </g>
 
-  <rect x="72" y="220" width="1136" height="70" rx="16" fill="#4295B6"/>
-  <text x="104" y="264" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{LAYER_1}}</text>
-  <text x="314" y="264" fill="#FFFFFF" fill-opacity="0.85" font-family="Microsoft YaHei" font-size="16">{{LAYER_1_DESC}}</text>
+  <g id="architecture-frame">
+    <rect x="72" y="196" width="1136" height="424" rx="12" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1.5"/>
+    <rect x="86" y="214" width="86" height="386" rx="10" fill="#0B2F3A"/>
+    <text x="129" y="246" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">架构分层</text>
+    <line x1="190" y1="238" x2="1118" y2="238" stroke="#D2D3D4" stroke-width="1.2"/>
+    <line x1="190" y1="312" x2="1118" y2="312" stroke="#D2D3D4" stroke-width="1.2"/>
+    <line x1="190" y1="386" x2="1118" y2="386" stroke="#D2D3D4" stroke-width="1.2"/>
+    <line x1="190" y1="460" x2="1118" y2="460" stroke="#D2D3D4" stroke-width="1.2"/>
+    <line x1="190" y1="534" x2="1118" y2="534" stroke="#D2D3D4" stroke-width="1.2"/>
+  </g>
 
-  <rect x="72" y="312" width="1136" height="86" rx="16" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="2"/>
-  <rect x="104" y="336" width="156" height="38" rx="12" fill="#4295B6" fill-opacity="0.12"/>
-  <text x="182" y="361" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{MODULE_1}}</text>
-  <rect x="296" y="336" width="156" height="38" rx="12" fill="#4295B6" fill-opacity="0.12"/>
-  <text x="374" y="361" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{MODULE_2}}</text>
-  <rect x="488" y="336" width="156" height="38" rx="12" fill="#4295B6" fill-opacity="0.12"/>
-  <text x="566" y="361" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{MODULE_3}}</text>
-  <rect x="680" y="336" width="156" height="38" rx="12" fill="#4295B6" fill-opacity="0.12"/>
-  <text x="758" y="361" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{MODULE_4}}</text>
-  <rect x="872" y="336" width="156" height="38" rx="12" fill="#4295B6" fill-opacity="0.12"/>
-  <text x="950" y="361" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{MODULE_5}}</text>
+  <g id="layer-1-portal">
+    <text x="112" y="296" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14" font-weight="700">用户门户</text>
+    <rect x="206" y="252" width="146" height="40" rx="8" fill="#4295B6"/>
+    <text x="279" y="278" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PORTAL_1}}</text>
+    <rect x="370" y="252" width="146" height="40" rx="8" fill="#4295B6" fill-opacity="0.86"/>
+    <text x="443" y="278" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PORTAL_2}}</text>
+    <rect x="534" y="252" width="146" height="40" rx="8" fill="#4295B6" fill-opacity="0.72"/>
+    <text x="607" y="278" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PORTAL_3}}</text>
+    <rect x="698" y="252" width="146" height="40" rx="8" fill="#4295B6" fill-opacity="0.58"/>
+    <text x="771" y="278" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PORTAL_4}}</text>
+    <rect x="862" y="252" width="146" height="40" rx="8" fill="#B0D776"/>
+    <text x="935" y="278" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PORTAL_5}}</text>
+  </g>
 
-  <rect x="72" y="420" width="1136" height="86" rx="16" fill="#FFFFFF" stroke="#B0D776" stroke-width="2"/>
-  <text x="104" y="470" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="20" font-weight="700">{{LAYER_3}}</text>
-  <text x="322" y="470" fill="#0B2F3A" fill-opacity="0.72" font-family="Microsoft YaHei" font-size="16">{{LAYER_3_DESC}}</text>
-  <rect x="924" y="442" width="220" height="40" rx="14" fill="#B0D776"/>
-  <text x="1034" y="468" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{AI_ENGINE}}</text>
+  <g id="layer-2-business">
+    <text x="112" y="370" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14" font-weight="700">业务流程</text>
+    <rect x="206" y="326" width="190" height="42" rx="8" fill="#FFFFFF" stroke="#4295B6"/>
+    <text x="301" y="353" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PROCESS_1}}</text>
+    <rect x="416" y="326" width="190" height="42" rx="8" fill="#FFFFFF" stroke="#4295B6"/>
+    <text x="511" y="353" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PROCESS_2}}</text>
+    <rect x="626" y="326" width="190" height="42" rx="8" fill="#FFFFFF" stroke="#4295B6"/>
+    <text x="721" y="353" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PROCESS_3}}</text>
+    <rect x="836" y="326" width="190" height="42" rx="8" fill="#FFFFFF" stroke="#4295B6"/>
+    <text x="931" y="353" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{PROCESS_4}}</text>
+  </g>
 
-  <rect x="72" y="528" width="1136" height="86" rx="16" fill="#0B2F3A"/>
-  <text x="104" y="578" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="20" font-weight="700">{{LAYER_4}}</text>
-  <text x="322" y="578" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="16">{{LAYER_4_DESC}}</text>
+  <g id="layer-3-service">
+    <text x="112" y="444" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14" font-weight="700">平台服务</text>
+    <rect x="206" y="400" width="146" height="44" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="279" y="428" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{SERVICE_1}}</text>
+    <rect x="370" y="400" width="146" height="44" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="443" y="428" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{SERVICE_2}}</text>
+    <rect x="534" y="400" width="146" height="44" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="607" y="428" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{SERVICE_3}}</text>
+    <rect x="698" y="400" width="146" height="44" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="771" y="428" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{SERVICE_4}}</text>
+    <rect x="862" y="400" width="146" height="44" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="935" y="428" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{SERVICE_5}}</text>
+  </g>
+
+  <g id="layer-4-data-ai">
+    <text x="112" y="518" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14" font-weight="700">数据智能</text>
+    <rect x="206" y="474" width="170" height="44" rx="8" fill="#FFFFFF" stroke="#B0D776"/>
+    <text x="291" y="502" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{DATA_1}}</text>
+    <rect x="394" y="474" width="170" height="44" rx="8" fill="#FFFFFF" stroke="#B0D776"/>
+    <text x="479" y="502" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{DATA_2}}</text>
+    <rect x="582" y="474" width="170" height="44" rx="8" fill="#FFFFFF" stroke="#B0D776"/>
+    <text x="667" y="502" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{DATA_3}}</text>
+    <rect x="770" y="474" width="170" height="44" rx="8" fill="#FFFFFF" stroke="#B0D776"/>
+    <text x="855" y="502" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{DATA_4}}</text>
+    <rect x="958" y="474" width="130" height="44" rx="8" fill="#B0D776"/>
+    <text x="1023" y="502" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{AI_ENGINE}}</text>
+  </g>
+
+  <g id="layer-5-integration">
+    <text x="112" y="592" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14" font-weight="700">集成底座</text>
+    <rect x="206" y="548" width="882" height="44" rx="8" fill="#0B2F3A"/>
+    <text x="238" y="576" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{INTEGRATION_BASE}}</text>
+  </g>
+
+  <g id="architecture-output">
+    <rect x="1128" y="252" width="56" height="340" rx="10" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="1128" y="252" width="56" height="46" rx="10" fill="#4295B6"/>
+    <text x="1156" y="282" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">输出</text>
+    <text x="1156" y="342" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{OUTPUT_1}}</text>
+    <line x1="1138" y1="365" x2="1174" y2="365" stroke="#D2D3D4"/>
+    <text x="1156" y="416" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{OUTPUT_2}}</text>
+    <line x1="1138" y1="439" x2="1174" y2="439" stroke="#D2D3D4"/>
+    <text x="1156" y="490" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{OUTPUT_3}}</text>
+    <line x1="1138" y1="513" x2="1174" y2="513" stroke="#D2D3D4"/>
+    <text x="1156" y="564" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{OUTPUT_4}}</text>
+  </g>
+
+  <g id="data-flow">
+    <path d="M 1070 572 L 1118 572" fill="none" stroke="#B0D776" stroke-width="3"/>
+    <polygon points="1118,572 1098,562 1098,582" fill="#B0D776"/>
+    <path d="M 1090 424 L 1118 424" fill="none" stroke="#4295B6" stroke-width="3"/>
+    <polygon points="1118,424 1098,414 1098,434" fill="#4295B6"/>
+    <path d="M 1090 276 L 1118 276" fill="none" stroke="#4295B6" stroke-width="3"/>
+    <polygon points="1118,276 1098,266 1098,286" fill="#4295B6"/>
+  </g>
 
   <line x1="72" y1="652" x2="1208" y2="652" stroke="#D2D3D4" stroke-width="1.5"/>
   <text x="72" y="686" fill="#0B2F3A" fill-opacity="0.6" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>

@@ -37,6 +37,10 @@ def main() -> int:
     writer = (ROOT / "wechat-article-writer" / "SKILL.md").read_text(encoding="utf-8")
     if "正文插图" not in writer or "Content Illustration Brief" not in writer:
         errors.append("writer skill must define content illustration brief")
+    topic = (ROOT / "wechat-topic-planner" / "SKILL.md").read_text(encoding="utf-8")
+    for term in ["目标读者价值", "专业壁垒", "传播潜力", "转化潜力", "可持续性", "下一周内容排期"]:
+        if term not in topic:
+            errors.append(f"topic planner missing scoring/output term: {term}")
     layout = (ROOT / "wechat-article-layout" / "SKILL.md").read_text(encoding="utf-8")
     style = (ROOT / "references" / "style-system.md").read_text(encoding="utf-8")
     pipeline = (ROOT / "wechat-daily-pipeline" / "SKILL.md").read_text(encoding="utf-8")

@@ -3,7 +3,7 @@ deck_id: huixin_product_solution
 kind: deck
 summary: 慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示.
 canvas_format: ppt169
-page_count: 19
+page_count: 20
 primary_color: "#4295B6"
 ---
 
@@ -94,7 +94,7 @@ Every generated page that uses this deck should include at least one visible Hui
 3. Favor architecture clarity over decorative intensity.
 4. Keep information density moderate on ordinary content pages, but architecture and process pages should be visually full and module-rich.
 5. Express platformization through layers, reusable components, flows, and scalable deployment options.
-6. Product-solution decks should include more than one architecture type when the source content supports it: business architecture, functional architecture, system/technical architecture, data architecture, integration architecture, technical route, deployment architecture, swimlane process flow, and dense business process network should be distinct page forms, not one repeated card grid.
+6. Product-solution decks should include more than one architecture type when the source content supports it: business architecture, functional architecture, system/technical architecture, data architecture, integration architecture, technical route, deployment architecture, swimlane process flow, dense business process diagram, and implementation stage plan should be distinct page forms, not one repeated card grid.
 7. When no real screenshots are supplied, use the `16_feature_detail_screenshot.svg` empty-screen frame rather than inventing fake UI details. The placeholder should be visually polished and clearly replaceable.
 
 ### Architecture Density Contract
@@ -118,6 +118,7 @@ For industrial software solution decks, use the dedicated complex diagram pages 
 4. **Business process diagram (`19_business_process_diagram.svg`)**: use this when the source describes end-to-end business flows with a main path, resource coordination, quality / review gates, exception handling, and loopback relationships. Prefer a dense but clean editable process diagram. Reference images may inform structure density only; do not copy their exact titles, nodes, colors, or screenshots.
 5. **Functional architecture (`12_function_architecture.svg`)**: use module matrices and layered platform bands for application modules, API middle platform, common platform, and data acquisition.
 6. **Data architecture (`14_data_architecture.svg`)**: use governance framework rows for standards, quality, security, organization, workflow, tools, portal, functions, data scope, and foundation. The page should feel like a full data-management framework, not only source-to-dashboard flow.
+7. **Implementation stage plan (`20_implementation_stage_plan.svg`)**: use this when the source describes phased delivery, rollout roadmap, implementation planning, product deployment stages, or digital transformation implementation steps. Reference images may inform the four-stage planning rhythm only; keep Huixin's clean product-solution style and use product-solution content, not the reference page's text.
 
 ### Default AI Image and Screenshot Policy
 
@@ -188,6 +189,9 @@ When using this deck, Strategist should normally include image resources unless 
 ### 19. Business Process Diagram (`19_business_process_diagram.svg`)
 - Dense generic business process diagram for end-to-end process explanation across trigger, task split, resource coordination, execution, review / quality gate, exception handling, loopback, and performance recap.
 
+### 20. Implementation Stage Plan (`20_implementation_stage_plan.svg`)
+- Complex four-stage implementation planning page with phase goals, key focus items, build strategies, and deliverables. Use for roadmap, project rollout, implementation planning, and phased product deployment.
+
 ## VIII. SVG Page Roster
 
 | File | Role | Description |
@@ -211,6 +215,7 @@ When using this deck, Strategist should normally include image resources unless 
 | `17_business_process_flow.svg` | process_flow | Business / implementation / data process flow |
 | `18_case_study_triptych.svg` | case_study | Three-part customer case: pain, solution, value |
 | `19_business_process_diagram.svg` | business_process_diagram | Dense generic business process diagram with main path, branches and loopbacks |
+| `20_implementation_stage_plan.svg` | implementation_stage_plan | Complex phased implementation plan with goals, focus items, strategies and deliverables |
 
 ## IX. Layout Modes
 

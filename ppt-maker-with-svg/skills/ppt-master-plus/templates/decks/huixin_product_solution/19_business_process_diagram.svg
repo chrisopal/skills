@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <marker id="flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#4295B6"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <image href="images/huixin_logo_light.png" x="1036" y="30" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="72" y="70" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#4295B6">04 / BUSINESS PROCESS DIAGRAM</text>
+  <text x="72" y="124" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700" fill="#0B2F3A">业务流程图：主流程、支路与闭环协同</text>
+  <text x="72" y="160" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#4295B6">适合承载复杂业务关系，但保持慧新产品方案模板的清爽模块语言。</text>
+  <rect x="72" y="198" width="1136" height="420" rx="14" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <g fill="none" stroke="#4295B6" stroke-width="1.7" marker-end="url(#flow)">
+    <path d="M184 282 L322 282 L322 350 L414 350"/>
+    <path d="M506 350 L598 350"/>
+    <path d="M690 350 L786 350"/>
+    <path d="M878 350 L970 350"/>
+    <path d="M460 394 L460 450"/>
+    <path d="M644 394 L644 450"/>
+    <path d="M832 394 L832 450"/>
+    <path d="M1016 394 L1016 450"/>
+    <path d="M552 482 L598 482"/>
+    <path d="M736 482 L786 482"/>
+    <path d="M924 482 L970 482"/>
+    <path d="M1016 514 C1016 560 890 560 736 514"/>
+    <path d="M644 514 C610 560 500 560 460 514"/>
+  </g>
+  <g font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle">
+    <rect x="102" y="256" width="82" height="52" rx="10" fill="#4295B6"/><text x="143" y="286" fill="#FFFFFF">订单计划</text>
+    <rect x="414" y="324" width="92" height="52" rx="10" fill="#FFFFFF" stroke="#4295B6"/><text x="460" y="355" fill="#0B2F3A">任务拆分</text>
+    <rect x="598" y="324" width="92" height="52" rx="10" fill="#FFFFFF" stroke="#4295B6"/><text x="644" y="355" fill="#0B2F3A">物料齐套</text>
+    <rect x="786" y="324" width="92" height="52" rx="10" fill="#FFFFFF" stroke="#4295B6"/><text x="832" y="355" fill="#0B2F3A">工序执行</text>
+    <rect x="970" y="324" width="92" height="52" rx="10" fill="#B0D776"/><text x="1016" y="355" fill="#0B2F3A">完工入库</text>
+    <rect x="414" y="450" width="92" height="52" rx="10" fill="#FFFFFF" stroke="#D2D3D4"/><text x="460" y="481" fill="#0B2F3A">BOM校验</text>
+    <rect x="598" y="450" width="92" height="52" rx="10" fill="#FFFFFF" stroke="#D2D3D4"/><text x="644" y="481" fill="#0B2F3A">领料发料</text>
+    <rect x="786" y="450" width="92" height="52" rx="10" fill="#FFFFFF" stroke="#D2D3D4"/><text x="832" y="481" fill="#0B2F3A">报工采集</text>
+    <rect x="970" y="450" width="92" height="52" rx="10" fill="#FFFFFF" stroke="#B0D776"/><text x="1016" y="481" fill="#0B2F3A">质量判定</text>
+    <rect x="218" y="424" width="110" height="42" rx="10" fill="#FFFFFF" stroke="#D2D3D4"/><text x="273" y="451" fill="#0B2F3A">仓储作业</text>
+    <rect x="218" y="506" width="110" height="42" rx="10" fill="#FFFFFF" stroke="#D2D3D4"/><text x="273" y="533" fill="#0B2F3A">设备联动</text>
+    <rect x="1090" y="424" width="86" height="42" rx="10" fill="#0B2F3A"/><text x="1133" y="451" fill="#FFFFFF">异常</text>
+    <rect x="1090" y="506" width="86" height="42" rx="10" fill="#0B2F3A"/><text x="1133" y="533" fill="#FFFFFF">返修</text>
+  </g>
+  <g stroke="#B0D776" stroke-width="1.7" fill="none" marker-end="url(#flow)">
+    <path d="M328 445 L414 476"/>
+    <path d="M328 527 C420 568 590 554 598 502"/>
+    <path d="M1062 476 L1090 445"/>
+    <path d="M1062 496 L1090 527"/>
+  </g>
+  <rect x="108" y="336" width="210" height="72" rx="12" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <text x="132" y="365" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#0B2F3A">流程设计提示</text>
+  <text x="132" y="392" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563">主流程清晰，异常和返修作为闭环支路。</text>
+  <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Source: 慧新产品解决方案模板样张</text>
+  <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">04</text>
+</svg>

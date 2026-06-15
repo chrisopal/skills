@@ -3,7 +3,7 @@ deck_id: huixin_product_solution
 kind: deck
 summary: 慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示.
 canvas_format: ppt169
-page_count: 18
+page_count: 19
 primary_color: "#4295B6"
 ---
 
@@ -92,14 +92,14 @@ Every generated page that uses this deck should include at least one visible Hui
 1. Communicate enterprise software maturity through clean modules and clear hierarchy.
 2. Use blue for system structure and green for AI / value / innovation signals.
 3. Favor architecture clarity over decorative intensity.
-4. Keep information density moderate: enough for product selling, not overloaded consulting pages.
+4. Keep information density moderate on ordinary content pages, but architecture and process pages should be visually full and module-rich.
 5. Express platformization through layers, reusable components, flows, and scalable deployment options.
-6. Product-solution decks should include more than one architecture type when the source content supports it: business architecture, functional architecture, system architecture, data architecture, integration architecture, technical route, deployment architecture, and process flow should be distinct page forms, not one repeated card grid.
+6. Product-solution decks should include more than one architecture type when the source content supports it: business architecture, functional architecture, system/technical architecture, data architecture, integration architecture, technical route, deployment architecture, swimlane process flow, and dense business process network should be distinct page forms, not one repeated card grid.
 7. When no real screenshots are supplied, use the `16_feature_detail_screenshot.svg` empty-screen frame rather than inventing fake UI details. The placeholder should be visually polished and clearly replaceable.
 
 ### Architecture Density Contract
 
-Product architecture pages must feel like mature enterprise software architecture, not a simple three-row stack. When a page uses `04_product_architecture.svg` or any of the architecture templates (`11`-`15`):
+Product architecture pages must feel like mature enterprise software architecture, not a simple three-row stack. When a page uses `04_product_architecture.svg` or any of the architecture templates (`11`-`15`, `17`, `19`):
 
 1. Show at least five visible architecture strata: user/application, business process, platform services, data/AI, and integration/foundation.
 2. Fill the body with 12-18 editable module nodes distributed across the strata; avoid empty bands, oversized labels, or only 3-4 broad rectangles.
@@ -107,6 +107,17 @@ Product architecture pages must feel like mature enterprise software architectur
 4. Draw at least two cross-layer arrows or data-flow cues so the page reads as a system, not a static list.
 5. Keep the architecture visually full but readable: use compact 13-15px module labels, short noun phrases, and move long explanation into the speaker notes.
 6. Do not paste an architecture screenshot as the main content. AI images may be used only as faint blueprint backgrounds; architecture modules, labels, connectors, and layer boundaries remain editable SVG/PPT geometry.
+
+### Complex Diagram Page Contract
+
+For industrial software solution decks, use the dedicated complex diagram pages when the user asks for architecture, integration, functional map, data governance, or process flow:
+
+1. **Technical / system architecture (`13_system_architecture.svg`)**: use 6-8 horizontal technical strata with client, access, gateway, service governance, service, data/middleware, and infrastructure rows. Include a CI/CD or operations column and a short checklist.
+2. **Integration architecture (`15_integration_architecture.svg`)**: use a dark enterprise system map with ERP/PLM/SRM/WMS/WCS/RCS and platform modules connected by editable arrows. Use this for “平台集成架构”, “系统集成”, “一体化方案”.
+3. **Business process swimlane (`17_business_process_flow.svg`)**: use 3-5 vertical swimlanes with staged process nodes and cross-lane handoff arrows.
+4. **Business process diagram (`19_business_process_diagram.svg`)**: use this when the source describes end-to-end business flows with a main path, resource coordination, quality / review gates, exception handling, and loopback relationships. Prefer a dense but clean editable process diagram. Reference images may inform structure density only; do not copy their exact titles, nodes, colors, or screenshots.
+5. **Functional architecture (`12_function_architecture.svg`)**: use module matrices and layered platform bands for application modules, API middle platform, common platform, and data acquisition.
+6. **Data architecture (`14_data_architecture.svg`)**: use governance framework rows for standards, quality, security, organization, workflow, tools, portal, functions, data scope, and foundation. The page should feel like a full data-management framework, not only source-to-dashboard flow.
 
 ### Default AI Image and Screenshot Policy
 
@@ -154,25 +165,28 @@ When using this deck, Strategist should normally include image resources unless 
 - Value-chain or business domain architecture page for showing business stages, support capabilities, and operating model.
 
 ### 12. Function Architecture (`12_function_architecture.svg`)
-- Product functional map with core product area, feature clusters, and common capability layer.
+- Dense product functional map with factory application module matrix, API middle platform, shared platform services, data acquisition layer, and external system column.
 
 ### 13. System Architecture (`13_system_architecture.svg`)
-- System-layer architecture for users, access, services, data, foundation, and governance axis.
+- Technical / system-layer architecture with client, access, gateway, service governance, services, data/middleware, infrastructure, and CI/CD operations column.
 
 ### 14. Data Architecture (`14_data_architecture.svg`)
-- Data source to data platform to governance to data-service flow.
+- Data governance and management architecture covering data standards, quality, security, organization, workflows, tools, portal, functions, data scope, and foundation.
 
 ### 15. Integration Architecture (`15_integration_architecture.svg`)
-- Hub-and-spoke integration architecture for connecting enterprise systems, protocols, middleware, and security controls.
+- Dark enterprise integration map for ERP, PLM, SRM, WMS, WCS/RCS, production execution, warehouse, quality, equipment, and unified technical platform interactions.
 
 ### 16. Feature Detail With Screenshot (`16_feature_detail_screenshot.svg`)
 - Detailed product function explanation page with a large replaceable system screenshot placeholder and side highlights.
 
 ### 17. Business Process Flow (`17_business_process_flow.svg`)
-- Five-step process flow for business process, implementation process, approval flow, or data/service flow.
+- Swimlane process flow for warehouse, production, quality, approval, service, and on-site execution processes.
 
 ### 18. Case Study Triptych (`18_case_study_triptych.svg`)
 - Customer case page using the three-part narrative: customer pain, implemented solution, value gains. Includes replaceable screenshot / product / customer site placeholders.
+
+### 19. Business Process Diagram (`19_business_process_diagram.svg`)
+- Dense generic business process diagram for end-to-end process explanation across trigger, task split, resource coordination, execution, review / quality gate, exception handling, loopback, and performance recap.
 
 ## VIII. SVG Page Roster
 
@@ -196,6 +210,7 @@ When using this deck, Strategist should normally include image resources unless 
 | `16_feature_detail_screenshot.svg` | feature_detail | Product feature detail with screenshot placeholder |
 | `17_business_process_flow.svg` | process_flow | Business / implementation / data process flow |
 | `18_case_study_triptych.svg` | case_study | Three-part customer case: pain, solution, value |
+| `19_business_process_diagram.svg` | business_process_diagram | Dense generic business process diagram with main path, branches and loopbacks |
 
 ## IX. Layout Modes
 
@@ -203,7 +218,7 @@ When using this deck, Strategist should normally include image resources unless 
 | --- | --- |
 | **Solution Pitch** | cover → pain → overview → architecture → value |
 | **Product Deep Dive** | overview → architecture → capabilities → technical route → deployment |
-| **Architecture Deep Dive** | business architecture → function architecture → system architecture → data architecture → integration architecture → deployment architecture |
+| **Architecture Deep Dive** | business architecture → function architecture → system/technical architecture → data architecture → integration architecture → deployment architecture |
 | **Industry Proposal** | pain → scenario → solution overview → business architecture → case study → customer value → implementation |
 | **Sales Enablement** | core capabilities and customer value pages with shorter copy and larger metrics |
 | **Case Selling** | pain → solution overview → feature detail screenshot → case study triptych → value → implementation |
@@ -253,6 +268,7 @@ When using this deck, Strategist should normally include image resources unless 
 | `{{PAIN_*}}` | Customer pain text blocks on case pages |
 | `{{SOLUTION_*}}` | Solution actions on case pages |
 | `{{VALUE_*}}` | Case value metrics and benefit descriptions |
+| `{{PROCESS_*}}` | Dense process network nodes, handoffs, exception paths and loopback relationships |
 
 ## XIII. Asset Specification
 

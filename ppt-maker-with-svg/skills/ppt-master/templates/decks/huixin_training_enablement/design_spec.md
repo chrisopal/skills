@@ -62,7 +62,7 @@ keywords: [huixin, training, enablement, courseware, workshop]
 
 | Asset | Description |
 | --- | --- |
-| **Official Huixin Lockup** | Reconstructed from the supplied Huixin logo: four right-leaning slanted bars in gray / green / gray / blue, the `慧新全智` wordmark, and a logo-blue underline. |
+| **Official Huixin Lockup** | Embedded from the official Huixin logo assets: use the light logo on white or light backgrounds and the dark-background logo with white wordmark on deep color fields. |
 
 Usage rules:
 
@@ -161,7 +161,7 @@ Usage rules:
 2. Use plain hex colors with `fill-opacity` / `stroke-opacity`; do not use `rgba()`.
 3. Do not use `<style>`, `class`, `foreignObject`, `textPath`, animation tags, or external scripts.
 4. Keep all placeholder text in `{{PLACEHOLDER}}` form.
-5. Use vector geometry for the Huixin mark; the cover may use packaged reference imagery while keeping course titles, module path, and progress markers editable in SVG.
+5. Use the official embedded Huixin logo asset; keep course titles, module path, and progress markers editable in SVG.
 
 ## XII. Placeholder Specification
 

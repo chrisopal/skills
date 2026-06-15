@@ -59,7 +59,7 @@ primary_color: "#4295B6"
 
 | Asset | Description |
 | --- | --- |
-| **Official Huixin Lockup** | Reconstructed from the supplied Huixin logo: four right-leaning slanted bars in gray / green / gray / blue, the `慧新全智` wordmark, and a technology-blue underline. |
+| **Official Huixin Lockup** | Embedded from the official Huixin logo assets: use the light logo on white or light backgrounds and the dark-background logo with white wordmark on deep color fields. |
 
 Usage rules:
 

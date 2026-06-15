@@ -58,7 +58,7 @@ placeholders:
 
 ## V. Logo and Brand Mark
 
-- Official lockup: four right-leaning slanted bars in gray / green / gray / blue, the `慧新全智` wordmark, and a technology-blue underline.
+- Official lockup: embedded from the official Huixin logo assets; use the light logo on white or light backgrounds and the dark-background logo with white wordmark on deep color fields.
 - Light pages use the black wordmark. Dark cover/ending accents may use the white wordmark for contrast.
 - Do not use the older two-diamond shorthand; preserve the horizontal logo lockup and slanted-bar proportions.
 

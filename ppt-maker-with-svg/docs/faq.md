@@ -53,7 +53,7 @@ By default, mergeable body-text paragraphs export as one editable PowerPoint tex
 If you need strict line-layout fidelity, re-export with `--no-merge`:
 
 ```bash
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project_path> --no-merge
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project_path> --no-merge
 ```
 
 With `--no-merge`, every visual line becomes its own PowerPoint text frame. This preserves the SVG's exact line layout pixel-for-pixel, which matters for covers, charts, tables, and any page with tight typographic alignment.
@@ -87,16 +87,16 @@ If your workflow specifically requires Excel-driven data editing, manually creat
 Yes. Page transitions (`fade` 0.4s by default) and per-element entrance animations (`auto` effect with `after-previous` cascade by default — effect mapped from each group's SVG id, with image-like ids cycling a visual pool for variation) are both controlled by `svg_to_pptx.py` flags — `-t/--transition` for page-level and `-a/--animation` for element-level. Common one-liners:
 
 ```bash
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -t push       # different transition
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -t none       # disable transitions
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -a none       # disable per-element animation
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation fade        # use a single effect instead of mixed
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation-trigger on-click   # presenter-paced reveals
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -t push       # different transition
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -t none       # disable transitions
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -a none       # disable per-element animation
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --animation fade        # use a single effect instead of mixed
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --animation-trigger on-click   # presenter-paced reveals
 ```
 
 `on-click` is for live presentations. Narrated/video export via `--recorded-narration` rejects it because PPT Master writes page timings, not object-level click timings; use `after-previous` or `with-previous` for narrated decks.
 
-Full effect list, anchor logic (top-level `<g id="...">`), fallback behavior, and limitations: see [Animations & Transitions](../skills/ppt-master/references/animations.md).
+Full effect list, anchor logic (top-level `<g id="...">`), fallback behavior, and limitations: see [Animations & Transitions](../skills/ppt-master-plus/references/animations.md).
 
 ## Q: Which AI model works best?
 
@@ -155,7 +155,7 @@ For post-generation fixes, simply tell the AI: "Page 3 has a layout issue — th
 
 Yes — this is the **template fill** route, separate from the SVG generation pipeline. Give the AI your existing `.pptx` plus your material (or a topic) and ask it to "fill this deck with the new content" or "fill this back into the template". It treats your deck as a native slide library, lets you pick only the pages that fit the new story (reorder freely, and reuse one page for several output slides), and writes the new text — plus native table cells and chart data — straight into the original OOXML.
 
-The output stays 100% native-editable PowerPoint: the original design, layouts, images, and animations are preserved, and only the selected pages are exported. It deliberately does **not** change layouts, add pages, or swap images — a deck's page structure encodes its logic (lead-then-detail, comparison, progression), so pick pages whose structure already fits your content rather than forcing it in. For a fresh structure or a different page count, use create-template (next question) instead. Full steps: [template-fill workflow](../skills/ppt-master/workflows/template-fill-pptx.md).
+The output stays 100% native-editable PowerPoint: the original design, layouts, images, and animations are preserved, and only the selected pages are exported. It deliberately does **not** change layouts, add pages, or swap images — a deck's page structure encodes its logic (lead-then-detail, comparison, progression), so pick pages whose structure already fits your content rather than forcing it in. For a fresh structure or a different page count, use create-template (next question) instead. Full steps: [template-fill workflow](../skills/ppt-master-plus/workflows/template-fill-pptx.md).
 
 ---
 
@@ -188,4 +188,4 @@ The AI agent will handle the rest — analyzing your screenshots, building the l
 
 ---
 
-> For more questions, see [SKILL.md](../skills/ppt-master/SKILL.md) and [AGENTS.md](../AGENTS.md)
+> For more questions, see [SKILL.md](../skills/ppt-master-plus/SKILL.md) and [AGENTS.md](../AGENTS.md)

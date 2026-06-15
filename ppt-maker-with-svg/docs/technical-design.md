@@ -116,7 +116,7 @@ The non-obvious bit of the project layout is `import-sources`'s **asymmetric def
 
 ## Canvas Format System
 
-PPT Master is not PPT-only — the same SVG → DrawingML pipeline produces square posters, 9:16 stories, A4 prints. Format-specific conventions (ratios, safe zones, brand areas) live in [`references/canvas-formats.md`](../skills/ppt-master/references/canvas-formats.md).
+PPT Master is not PPT-only — the same SVG → DrawingML pipeline produces square posters, 9:16 stories, A4 prints. Format-specific conventions (ratios, safe zones, brand areas) live in [`references/canvas-formats.md`](../skills/ppt-master-plus/references/canvas-formats.md).
 
 The architectural choice worth flagging: **viewBox is in pixels, not absolute units.** Pixel space makes layout reasoning unambiguous for the AI Executor (`x="100"` is unambiguously left + 100px) and inspectable in any browser. Conversion to PowerPoint's EMU happens once at export — picking pixels means the rest of the pipeline (Strategist, Executor, quality checker, post-processing) never thinks in EMU, which would be hostile both to AI generation and to human debugging.
 
@@ -152,7 +152,7 @@ PPT Master uses **role switching within one main agent** rather than parallel su
 
 ## Execution Discipline
 
-The pipeline is enforced by an 8-rule set in [`SKILL.md` § Global Execution Discipline](../skills/ppt-master/SKILL.md) — that file is authoritative; the rules live there. They look bureaucratic but exist because LLMs default to "let me solve the whole problem in this turn", which is exactly the wrong shape for a serial pipeline where each step's output is bounded, checkpointed, and consumed by the next. The rules collectively close failure modes that surfaced repeatedly in practice: out-of-order execution, AI proxying user design decisions, cross-phase bundling, missing prerequisites, speculative pre-work, sub-agent context loss, page-batching drift, and long-deck color/font drift.
+The pipeline is enforced by an 8-rule set in [`SKILL.md` § Global Execution Discipline](../skills/ppt-master-plus/SKILL.md) — that file is authoritative; the rules live there. They look bureaucratic but exist because LLMs default to "let me solve the whole problem in this turn", which is exactly the wrong shape for a serial pipeline where each step's output is bounded, checkpointed, and consumed by the next. The rules collectively close failure modes that surfaced repeatedly in practice: out-of-order execution, AI proxying user design decisions, cross-phase bundling, missing prerequisites, speculative pre-work, sub-agent context loss, page-batching drift, and long-deck color/font drift.
 
 The Role Switching Protocol (mandated read of `references/<role>.md` before mode change) serves two reinforcing purposes: forcing fresh role instructions into context overrides drift from the previous mode, and the visible marker in the conversation transcript creates an audit trail so the user can see when the agent moved between modes — critical when reviewing why a particular decision was made.
 
@@ -189,7 +189,7 @@ Two architectural decisions shape this phase:
 
 ## Image-Text Layout: Primary Structures + Modifier Layers
 
-The catalog of *how an image is placed on a slide* (full vocabulary in [`references/image-layout-patterns.md`](../skills/ppt-master/references/image-layout-patterns.md)) splits 72 numbered techniques into two layers that compose freely:
+The catalog of *how an image is placed on a slide* (full vocabulary in [`references/image-layout-patterns.md`](../skills/ppt-master-plus/references/image-layout-patterns.md)) splits 72 numbered techniques into two layers that compose freely:
 
 - **Primary Structures** (container layouts / image-as-canvas + native overlay / multi-image compositions) — the page's bones. One or more per page; cross-Primary combinations like *side-by-side comparison + image-as-canvas annotation* are legitimate.
 - **Modifier Layers** (non-rectangular clips / overlays & masks / texture / special techniques) — finish. Any number per page, stacked on top of the Primary.
@@ -200,13 +200,13 @@ The catalog of *how an image is placed on a slide* (full vocabulary in [`referen
 
 **Why composition flows through Strategist's resource list, not just Executor's improvisation.** The `Layout pattern` column in `§VIII Image Resource List` accepts a `#<id> + #<id> ...` expression — Primary id plus optional Modifier ids — so the composition is declared *before* SVG generation, audited by `svg_quality_checker`, and survives session re-entry. Pushing composition onto Executor alone would lose it on context compression in long decks; encoding it in the spec_lock-adjacent resource list makes it a piece of the design contract.
 
-**Why true hard constraints stay upstream.** Cross-cutting technical constraints (`<clipPath>` only on `<image>`, `fill-opacity` instead of `rgba()`, no `<mask>`, alpha-effect routing) live exclusively in [`shared-standards.md`](../skills/ppt-master/references/shared-standards.md). The layout patterns file points at them with one-line references rather than restating — so when a constraint relaxes (e.g., a new DrawingML feature becomes reliable), only one file changes, and a stale duplicate in patterns can't silently keep enforcing the old rule.
+**Why true hard constraints stay upstream.** Cross-cutting technical constraints (`<clipPath>` only on `<image>`, `fill-opacity` instead of `rgba()`, no `<mask>`, alpha-effect routing) live exclusively in [`shared-standards.md`](../skills/ppt-master-plus/references/shared-standards.md). The layout patterns file points at them with one-line references rather than restating — so when a constraint relaxes (e.g., a new DrawingML feature becomes reliable), only one file changes, and a stale duplicate in patterns can't silently keep enforcing the old rule.
 
 ---
 
 ## SVG Constraints: Banned Features and Conditional Allowances
 
-PowerPoint's DrawingML is a strict subset of what SVG can express. The Executor operates inside an empirically-grown blacklist (mask, style/class, `@font-face`, foreignObject, symbol+use, textPath, animate*, script/iframe …) plus narrow conditional allowances for `marker-start`/`marker-end` and image-only `clip-path`. The authoritative list and exact per-feature constraints — including the substitute-effect routing table for `<mask>` (gradient overlays, clipPath, filter shadow, source-image bake-in) — live in [`references/shared-standards.md`](../skills/ppt-master/references/shared-standards.md).
+PowerPoint's DrawingML is a strict subset of what SVG can express. The Executor operates inside an empirically-grown blacklist (mask, style/class, `@font-face`, foreignObject, symbol+use, textPath, animate*, script/iframe …) plus narrow conditional allowances for `marker-start`/`marker-end` and image-only `clip-path`. The authoritative list and exact per-feature constraints — including the substitute-effect routing table for `<mask>` (gradient overlays, clipPath, filter shadow, source-image bake-in) — live in [`references/shared-standards.md`](../skills/ppt-master-plus/references/shared-standards.md).
 
 The architectural reasons worth knowing here:
 
@@ -247,7 +247,7 @@ The post-processing stage produces four artifacts. Each one serves a workflow th
 
 ### The `svg_finalize/` package has TWO consumers
 
-This is the key insight that's easy to miss when reading the code. The same modules under `skills/ppt-master/scripts/svg_finalize/` are used in two places, for two different products.
+This is the key insight that's easy to miss when reading the code. The same modules under `skills/ppt-master-plus/scripts/svg_finalize/` are used in two places, for two different products.
 
 **Disk consumer** — `finalize_svg.py` writes `svg_output/` → `svg_final/` once per run. `svg_final/` then feeds IDE preview and the preview pptx.
 

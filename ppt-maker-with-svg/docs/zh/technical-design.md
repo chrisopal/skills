@@ -116,7 +116,7 @@ SVG 也是唯一同时满足流程中所有角色需要的格式：**AI 能可�
 
 ## Canvas 格式系统
 
-PPT Master 不只服务 PPT——同一套 SVG → DrawingML 流水线还能产出方形海报、9:16 故事、A4 印刷品。各格式特定的约定（比例、安全区、品牌区等）住在 [`references/canvas-formats.md`](../../skills/ppt-master/references/canvas-formats.md)。
+PPT Master 不只服务 PPT——同一套 SVG → DrawingML 流水线还能产出方形海报、9:16 故事、A4 印刷品。各格式特定的约定（比例、安全区、品牌区等）住在 [`references/canvas-formats.md`](../../skills/ppt-master-plus/references/canvas-formats.md)。
 
 值得标注的架构选择：**viewBox 是像素，不是绝对单位。** 像素空间让 AI Executor 思考布局没有歧义（`x="100"` 就是左缘 +100px），人类在浏览器里检查也直接。到 EMU 的换算只在导出时发生一次——选像素意味着流水线的其余环节（Strategist、Executor、质量检查、后处理）永远不需要在 EMU 思维下工作，那对 AI 生成和人类调试都是敌对的。
 
@@ -152,7 +152,7 @@ PPT Master 用的是**单主代理内的角色切换**，不是并行子代理�
 
 ## 执行纪律
 
-流水线由 [`SKILL.md` § 全局执行纪律](../../skills/ppt-master/SKILL.md) 中的 8 条规则强制——那份文件是权威，规则住在那里。它们看起来很官僚，但存在的理由是：LLM 默认行为是「让我在这一 turn 里把整个问题搞定」，而这恰好是串行流水线最不该有的形状——串行流水线要求每一步的输出都是有界、过 checkpoint、被下一步消费的。这套规则共同关闭了实际反复出现的失败模式：乱序执行、AI 代为做用户设计决策、跨阶段打包、前置条件未满足、投机预先准备、子代理上下文丢失、分批漂移、长 deck 色彩字体漂移。
+流水线由 [`SKILL.md` § 全局执行纪律](../../skills/ppt-master-plus/SKILL.md) 中的 8 条规则强制——那份文件是权威，规则住在那里。它们看起来很官僚，但存在的理由是：LLM 默认行为是「让我在这一 turn 里把整个问题搞定」，而这恰好是串行流水线最不该有的形状——串行流水线要求每一步的输出都是有界、过 checkpoint、被下一步消费的。这套规则共同关闭了实际反复出现的失败模式：乱序执行、AI 代为做用户设计决策、跨阶段打包、前置条件未满足、投机预先准备、子代理上下文丢失、分批漂移、长 deck 色彩字体漂移。
 
 角色切换协议（切换模式前必须 `read_file references/<role>.md`）有两个互相支撑的作用：把新鲜的角色指令载入上下文，覆盖前一模式的漂移；对话 transcript 中的可见标记构成审计轨迹，让用户能看到 agent 何时切换了模式——回看一个具体决策为什么这样做时，这条线索很关键。
 
@@ -189,7 +189,7 @@ Strategist 阶段产出两份看起来冗余但服务不同对象的产物：
 
 ## 图文版式：Primary 主结构 + Modifier 修饰层
 
-「图片**怎么放上幻灯片**」的词表（完整词汇在 [`references/image-layout-patterns.md`](../../skills/ppt-master/references/image-layout-patterns.md)）把 72 条编号技法拆成两层、自由组合：
+「图片**怎么放上幻灯片**」的词表（完整词汇在 [`references/image-layout-patterns.md`](../../skills/ppt-master-plus/references/image-layout-patterns.md)）把 72 条编号技法拆成两层、自由组合：
 
 - **Primary 主结构**（容器布局 / 图作画布 + 原生覆盖 / 多图组合）—— 页面的骨架。一页可一个也可多个；跨 Primary 的组合，如「侧边对比 + 图作画布的注解卡」，是合规的。
 - **Modifier 修饰层**（非矩形裁剪 / 遮罩与叠加 / 纹理 / 特殊技法）—— 装饰层。一页可叠任意多个，附着在 Primary 之上。
@@ -200,13 +200,13 @@ Strategist 阶段产出两份看起来冗余但服务不同对象的产物：
 
 **为什么组合走 Strategist 资源列表，不只交给 Executor 临场发挥。** `§VIII 图片资源列表` 的 `Layout pattern` 列接受 `#<id> + #<id> ...` 表达式——Primary id 加可选 Modifier id——所以组合在 SVG 生成**之前**就被声明、被 `svg_quality_checker` 审计、并能在 session 重入后存活。把组合责任只压在 Executor 身上，长 deck 上下文压缩时就会丢；把它编码进 spec_lock 旁的资源列表，组合就成为设计契约的一部分。
 
-**为什么真正的硬约束留在上游。** 跨切的技术硬约束（`<clipPath>` 只能用在 `<image>` 上、用 `fill-opacity` 而非 `rgba()`、禁 `<mask>`、alpha 效果的路由表）独家住在 [`shared-standards.md`](../../skills/ppt-master/references/shared-standards.md)。版式词表只用一行指针指向它们，不复述——这样某条约束放开时（比如某个 DrawingML 特性变得可靠），只有一个文件要改，词表里也不会留下一份过期副本继续暗中强制旧规则。
+**为什么真正的硬约束留在上游。** 跨切的技术硬约束（`<clipPath>` 只能用在 `<image>` 上、用 `fill-opacity` 而非 `rgba()`、禁 `<mask>`、alpha 效果的路由表）独家住在 [`shared-standards.md`](../../skills/ppt-master-plus/references/shared-standards.md)。版式词表只用一行指针指向它们，不复述——这样某条约束放开时（比如某个 DrawingML 特性变得可靠），只有一个文件要改，词表里也不会留下一份过期副本继续暗中强制旧规则。
 
 ---
 
 ## SVG 约束：禁用特性与条件允许
 
-PowerPoint 的 DrawingML 是 SVG 表达力的严格子集。Executor 在一份经验生长起来的黑名单（mask、style/class、`@font-face`、foreignObject、symbol+use、textPath、animate*、script/iframe ……）里运行，外加对 `marker-start`/`marker-end` 和仅 `<image>` 上的 `clip-path` 的窄条件允许。权威清单和每条特性的具体约束——包括 `<mask>` 的替代效果路由表（渐变叠加、clipPath、filter shadow、源图烘焙）——住在 [`references/shared-standards.md`](../../skills/ppt-master/references/shared-standards.md)。
+PowerPoint 的 DrawingML 是 SVG 表达力的严格子集。Executor 在一份经验生长起来的黑名单（mask、style/class、`@font-face`、foreignObject、symbol+use、textPath、animate*、script/iframe ……）里运行，外加对 `marker-start`/`marker-end` 和仅 `<image>` 上的 `clip-path` 的窄条件允许。权威清单和每条特性的具体约束——包括 `<mask>` 的替代效果路由表（渐变叠加、clipPath、filter shadow、源图烘焙）——住在 [`references/shared-standards.md`](../../skills/ppt-master-plus/references/shared-standards.md)。
 
 值得在架构层标记的理由：
 
@@ -247,7 +247,7 @@ PowerPoint 的 DrawingML 是 SVG 表达力的严格子集。Executor 在一份�
 
 ### `svg_finalize/` 包有**两种**消费者
 
-这是读代码时容易忽略的关键事实。同一组 `skills/ppt-master/scripts/svg_finalize/` 下的模块，在两个地方被使用，服务两份不同的产物。
+这是读代码时容易忽略的关键事实。同一组 `skills/ppt-master-plus/scripts/svg_finalize/` 下的模块，在两个地方被使用，服务两份不同的产物。
 
 **写盘消费者** —— `finalize_svg.py` 每次运行都把 `svg_output/` → `svg_final/` 写到磁盘一次。`svg_final/` 随后供 IDE 预览和 preview pptx 使用。
 

@@ -4,8 +4,8 @@ Conventions and style guides for contributors and AI agents working in this repo
 
 | Rule | Scope |
 |---|---|
-| [`prompt-style.md`](./prompt-style.md) | Style guide for files under `skills/ppt-master/references/` — voice, sectioning, table-first, forbidden patterns |
-| [`code-style.md`](./code-style.md) | Style guide for Python under `skills/ppt-master/scripts/` — file headers, imports, CLI entry points, error handling, no-tests rule |
+| [`prompt-style.md`](./prompt-style.md) | Style guide for files under `skills/ppt-master-plus/references/` — voice, sectioning, table-first, forbidden patterns |
+| [`code-style.md`](./code-style.md) | Style guide for Python under `skills/ppt-master-plus/scripts/` — file headers, imports, CLI entry points, error handling, no-tests rule |
 
 When adding a new rule file:
 

@@ -20,11 +20,11 @@ PPT Master 的"模板"是一份**结构 + 风格**的预设包：包含若干页
 
 在对话里把模板目录的路径写进去（位置不重要，只要明确即可）：
 
-> "用这个模板做：`skills/ppt-master/templates/layouts/academic_defense/`" ✅
+> "用这个模板做：`skills/ppt-master-plus/templates/layouts/academic_defense/`" ✅
 > "用上次那个模板：`projects/last_deck/template/`" ✅
 > "做一份产品介绍，模板用 `/Users/me/Desktop/our_brand_v3/`" ✅
 
-AI 会把这个目录里的 SVG、`design_spec.md` 和素材复制到项目目录，然后进入 Strategist 阶段。路径可以是任意位置——内置库的 `skills/ppt-master/templates/layouts/` 下、上一个项目的 `template/` 文件夹、或者磁盘上其他任何地方都行。
+AI 会把这个目录里的 SVG、`design_spec.md` 和素材复制到项目目录，然后进入 Strategist 阶段。路径可以是任意位置——内置库的 `skills/ppt-master-plus/templates/layouts/` 下、上一个项目的 `template/` 文件夹、或者磁盘上其他任何地方都行。
 
 ### 什么**不会**触发模板流程
 
@@ -40,9 +40,9 @@ AI 会把这个目录里的 SVG、`design_spec.md` 和素材复制到项目目�
 
 模板按三种身份分目录：
 
-- [`templates/brands/README.md`](../../skills/ppt-master/templates/brands/README.md) — 仅身份预设（color / typography / logo / voice / icon style），无 SVG 页面；Anthropic、Google
-- [`templates/layouts/README.md`](../../skills/ppt-master/templates/layouts/README.md) — 仅结构样板（canvas / page structure / page types / SVG roster），无身份；academic_defense、government_blue/red、ai_ops、medical_university、pixel_retro、psychology_attachment
-- [`templates/decks/README.md`](../../skills/ppt-master/templates/decks/README.md) — 完整 PPT 复刻（身份 + 结构 + 中间段）；招商银行、中国电建_*、中汽研_*、重庆大学、中国电信
+- [`templates/brands/README.md`](../../skills/ppt-master-plus/templates/brands/README.md) — 仅身份预设（color / typography / logo / voice / icon style），无 SVG 页面；Anthropic、Google
+- [`templates/layouts/README.md`](../../skills/ppt-master-plus/templates/layouts/README.md) — 仅结构样板（canvas / page structure / page types / SVG roster），无身份；academic_defense、government_blue/red、ai_ops、medical_university、pixel_retro、psychology_attachment
+- [`templates/decks/README.md`](../../skills/ppt-master-plus/templates/decks/README.md) — 完整 PPT 复刻（身份 + 结构 + 中间段）；招商银行、中国电建_*、中汽研_*、重庆大学、中国电信
 
 完整数据模型与三类的合成 / 冲突解决规则见 [`templates-architecture.md`](./templates-architecture.md)。
 
@@ -111,7 +111,7 @@ AI 会把这个目录里的 SVG、`design_spec.md` 和素材复制到项目目�
 
 ### 入口：`/create-template` 工作流
 
-完整规范见 [`workflows/create-template.md`](../../skills/ppt-master/workflows/create-template.md)。本节是面向用户的简要版本——你只需要在 IDE 对话里说：
+完整规范见 [`workflows/create-template.md`](../../skills/ppt-master-plus/workflows/create-template.md)。本节是面向用户的简要版本——你只需要在 IDE 对话里说：
 
 ```
 请用 /create-template 工作流，基于下面的参考材料生成一个新模板。
@@ -121,7 +121,7 @@ AI 会把这个目录里的 SVG、`design_spec.md` 和素材复制到项目目�
 
 ### 第一步：准备参考材料
 
-**强烈推荐：直接给原始 `.pptx` 文件。** 当前的 PPTX 导入管线已经做到接近高保真还原——工作流会用 [`pptx_template_import.py`](../../skills/ppt-master/scripts/pptx_template_import.py) 直接读取 OOXML，提取主题色、字体、每个 master 的主题摘要、母版/版式结构、placeholder 元数据和可复用图片资源。它会输出作为机器事实源的 layered `svg/`，以及用于视觉预览的自包含 `svg-flat/`，再交给 Template_Designer 重建出干净可维护的 SVG。封面、章节、装饰繁复的页面都能稳定还原，这是目前最靠谱的派生路径。
+**强烈推荐：直接给原始 `.pptx` 文件。** 当前的 PPTX 导入管线已经做到接近高保真还原——工作流会用 [`pptx_template_import.py`](../../skills/ppt-master-plus/scripts/pptx_template_import.py) 直接读取 OOXML，提取主题色、字体、每个 master 的主题摘要、母版/版式结构、placeholder 元数据和可复用图片资源。它会输出作为机器事实源的 layered `svg/`，以及用于视觉预览的自包含 `svg-flat/`，再交给 Template_Designer 重建出干净可维护的 SVG。封面、章节、装饰繁复的页面都能稳定还原，这是目前最靠谱的派生路径。
 
 也可以基于品牌指南从零设计：提供 logo、主色 HEX、字体、调性描述、几张氛围参考图，AI 会现场设计页面骨架。适合品牌方还没有成型 PPT、只有 VI 手册的场景。
 
@@ -171,16 +171,16 @@ AI 会把这个目录里的 SVG、`design_spec.md` 和素材复制到项目目�
 
 模板生成完，工作流会：
 
-1. 跑 [`svg_quality_checker.py`](../../skills/ppt-master/scripts/svg_quality_checker.py) 验证（硬门，不通过不入库）
-2. 把模板 ID 注册到 [`layouts_index.json`](../../skills/ppt-master/templates/layouts/layouts_index.json)
-3. 同步 [`templates/layouts/README.md`](../../skills/ppt-master/templates/layouts/README.md) 表格
+1. 跑 [`svg_quality_checker.py`](../../skills/ppt-master-plus/scripts/svg_quality_checker.py) 验证（硬门，不通过不入库）
+2. 把模板 ID 注册到 [`layouts_index.json`](../../skills/ppt-master-plus/templates/layouts/layouts_index.json)
+3. 同步 [`templates/layouts/README.md`](../../skills/ppt-master-plus/templates/layouts/README.md) 表格
 
-注册让模板**可被发现**——下次有人问"有哪些模板可用？"时，AI 会从索引里把它列出来。要在新项目里用它，仍然按 SKILL.md Step 3 的规则：在第一条消息里把目录路径写出来，例如 `用这个模板：skills/ppt-master/templates/layouts/<your_template_id>/`。
+注册让模板**可被发现**——下次有人问"有哪些模板可用？"时，AI 会从索引里把它列出来。要在新项目里用它，仍然按 SKILL.md Step 3 的规则：在第一条消息里把目录路径写出来，例如 `用这个模板：skills/ppt-master-plus/templates/layouts/<your_template_id>/`。
 
 ### 派生后的目录长什么样
 
 ```
-skills/ppt-master/templates/layouts/<your_template_id>/
+skills/ppt-master-plus/templates/layouts/<your_template_id>/
 ├── design_spec.md          # 设计规范，§VI 列出全部页面
 ├── 01_cover.svg
 ├── 02_chapter.svg
@@ -197,7 +197,7 @@ skills/ppt-master/templates/layouts/<your_template_id>/
 `mirror` 模板按源页序号每页一张 SVG，**SVG 内部没有占位符**：
 
 ```
-skills/ppt-master/templates/layouts/<your_template_id>/
+skills/ppt-master-plus/templates/layouts/<your_template_id>/
 ├── design_spec.md          # frontmatter 设 replication_mode: mirror；§V Page Roster 逐页描述
 ├── 001_cover.svg
 ├── 002_toc.svg
@@ -213,7 +213,7 @@ skills/ppt-master/templates/layouts/<your_template_id>/
 
 二者别搞混：
 
-- **派生新模板** = 入全局库，在 `skills/ppt-master/templates/layouts/` 下，未来所有项目都能调用
+- **派生新模板** = 入全局库，在 `skills/ppt-master-plus/templates/layouts/` 下，未来所有项目都能调用
 - **项目级定制** = 只在 `projects/<project>/templates/` 里改这一份 deck 的页面，不入库、不影响其他项目
 
 `/create-template` 工作流只做前者。后者直接在项目目录里改 SVG 即可，不需要走这个流程。
@@ -234,7 +234,7 @@ skills/ppt-master/templates/layouts/<your_template_id>/
 
 ## 相关文档
 
-- [`workflows/create-template.md`](../../skills/ppt-master/workflows/create-template.md) — 完整工作流规范（面向 AI 执行）
-- [`templates/layouts/README.md`](../../skills/ppt-master/templates/layouts/README.md) — 现有模板一览
-- [`references/template-designer.md`](../../skills/ppt-master/references/template-designer.md) — 模板设计师角色定义和 SVG 技术约束
+- [`workflows/create-template.md`](../../skills/ppt-master-plus/workflows/create-template.md) — 完整工作流规范（面向 AI 执行）
+- [`templates/layouts/README.md`](../../skills/ppt-master-plus/templates/layouts/README.md) — 现有模板一览
+- [`references/template-designer.md`](../../skills/ppt-master-plus/references/template-designer.md) — 模板设计师角色定义和 SVG 技术约束
 - [常见问题：如何制作自定义模板](./faq.md#q-如何制作自定义模板) — FAQ 简版

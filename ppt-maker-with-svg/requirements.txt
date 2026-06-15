@@ -6,6 +6,6 @@
 #
 # Install / 安装方式：
 #   pip install -r requirements.txt                     # from repo root / 仓库根目录
-#   pip install -r skills/ppt-master/requirements.txt   # from anywhere / 任意位置
+#   pip install -r skills/ppt-master-plus/requirements.txt   # from anywhere / 任意位置
 #
--r skills/ppt-master/requirements.txt
+-r skills/ppt-master-plus/requirements.txt

@@ -53,7 +53,7 @@ PPT Master 可以在任何能读取文件和执行命令的 AI 编程代理中�
 如果你需要严格保持逐行版式，重新导出时加上 `--no-merge`：
 
 ```bash
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project_path> --no-merge
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project_path> --no-merge
 ```
 
 使用 `--no-merge` 时，SVG 里的每一视觉行都会变成一个独立的 PowerPoint 文本框。这样能**逐像素保留 SVG 的版式**，适合封面、图表、表格、以及任何对版式精度敏感的页面。
@@ -87,11 +87,11 @@ PPT Master 本身免费开源，唯一的成本来自你自己的 AI 模型用�
 可以。页间转场（默认 `fade` 0.4s）和页内元素入场动画（默认 `auto` 效果 + `after-previous` 自动级联，根据每个 group 的 SVG id 自动映射效果——图片类 id 在视觉池中循环以产生 deck 内变化）都通过 `svg_to_pptx.py` 的参数控制——`-t/--transition` 控制页级，`-a/--animation` 控制元素级。常用一行命令：
 
 ```bash
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -t push       # 换转场效果
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -t none       # 关闭转场
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -a none       # 关闭页内动画
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation fade        # 改用单一效果（仍是默认级联）
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation-trigger on-click   # 改为单击触发，演讲者控制节奏
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -t push       # 换转场效果
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -t none       # 关闭转场
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -a none       # 关闭页内动画
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --animation fade        # 改用单一效果（仍是默认级联）
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --animation-trigger on-click   # 改为单击触发，演讲者控制节奏
 ```
 
 `on-click` 适合现场演示。通过 `--recorded-narration` 做旁白/视频导出时会拒绝它，因为 PPT Master 只写页面级计时，不生成对象级点击计时；带旁白的 deck 请使用 `after-previous` 或 `with-previous`。
@@ -157,7 +157,7 @@ python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation-trigger o
 
 可以——这就是 **套模板（template fill）** 路径，独立于 SVG 生成管线。把你现成的 `.pptx` 连同素材（或一个主题）给 AI，说「套模板 / 把这些填回去」。它会把你的 deck 当作原生页面库，只挑适合新内容的页面（可乱序、可重复），把新文字——以及原生表格单元格、图表数据——直接写回原始 OOXML。
 
-输出仍是 100% 原生可编辑的 PowerPoint：原设计、母版、图片、动画都保留，且只导出选中的页面。它刻意**不**改版式、不加页、不换图——一份 deck 的页面结构本身承载着逻辑（总分、对比、递进），所以应挑选结构本就契合内容的页面，而不是硬塞进去。若需要全新结构或不同页数，请改用 create-template（见下一问）。完整步骤：[套模板工作流](../../skills/ppt-master/workflows/template-fill-pptx.md)。
+输出仍是 100% 原生可编辑的 PowerPoint：原设计、母版、图片、动画都保留，且只导出选中的页面。它刻意**不**改版式、不加页、不换图——一份 deck 的页面结构本身承载着逻辑（总分、对比、递进），所以应挑选结构本就契合内容的页面，而不是硬塞进去。若需要全新结构或不同页数，请改用 create-template（见下一问）。完整步骤：[套模板工作流](../../skills/ppt-master-plus/workflows/template-fill-pptx.md)。
 
 ---
 
@@ -190,4 +190,4 @@ AI 代理会自动完成后续工作 — 分析截图、构建布局定义、注
 
 ---
 
-> 更多问题可先查看 [skills/ppt-master/SKILL.md](../../skills/ppt-master/SKILL.md) 与 [AGENTS.md](../../AGENTS.md)
+> 更多问题可先查看 [skills/ppt-master-plus/SKILL.md](../../skills/ppt-master-plus/SKILL.md) 与 [AGENTS.md](../../AGENTS.md)

@@ -20,11 +20,11 @@ The workflow **defaults to free design** — it will not ask whether you want a 
 
 Send a path to a template directory in your initial message. Anywhere in the sentence is fine; the path just has to be unambiguous:
 
-> "use this template: `skills/ppt-master/templates/layouts/academic_defense/`" ✅
+> "use this template: `skills/ppt-master-plus/templates/layouts/academic_defense/`" ✅
 > "用这个模板做汇报：`projects/last_deck/template/`" ✅
 > "做一份产品介绍，模板用 `/Users/me/Desktop/our_brand_v3/`" ✅
 
-The AI copies that directory's SVGs, `design_spec.md`, and assets into your project, then proceeds to the Strategist phase. The path can point to anywhere — the built-in library under `skills/ppt-master/templates/layouts/`, a previous project's `template/` folder, or any other location on disk.
+The AI copies that directory's SVGs, `design_spec.md`, and assets into your project, then proceeds to the Strategist phase. The path can point to anywhere — the built-in library under `skills/ppt-master-plus/templates/layouts/`, a previous project's `template/` folder, or any other location on disk.
 
 ### What does NOT trigger the template flow
 
@@ -40,9 +40,9 @@ To browse what's available in the built-in library, ask "what templates are avai
 
 Templates are organized into three kinds, each in its own directory:
 
-- [`templates/brands/README.md`](../skills/ppt-master/templates/brands/README.md) — identity-only presets (color / typography / logo / voice / icon style), no SVG pages; Anthropic, Google
-- [`templates/layouts/README.md`](../skills/ppt-master/templates/layouts/README.md) — structure-only patterns (canvas / page structure / page types / SVG roster), no identity; academic_defense, government_blue/red, ai_ops, medical_university, pixel_retro, psychology_attachment
-- [`templates/decks/README.md`](../skills/ppt-master/templates/decks/README.md) — full-PPT replicas (identity + structure + middle segments); 招商银行, 中国电建_*, 中汽研_*, 重庆大学, 中国电信
+- [`templates/brands/README.md`](../skills/ppt-master-plus/templates/brands/README.md) — identity-only presets (color / typography / logo / voice / icon style), no SVG pages; Anthropic, Google
+- [`templates/layouts/README.md`](../skills/ppt-master-plus/templates/layouts/README.md) — structure-only patterns (canvas / page structure / page types / SVG roster), no identity; academic_defense, government_blue/red, ai_ops, medical_university, pixel_retro, psychology_attachment
+- [`templates/decks/README.md`](../skills/ppt-master-plus/templates/decks/README.md) — full-PPT replicas (identity + structure + middle segments); 招商银行, 中国电建_*, 中汽研_*, 重庆大学, 中国电信
 
 Full data model + fusion / conflict-resolution rules: [`docs/zh/templates-architecture.md`](./zh/templates-architecture.md) (Chinese only for now).
 
@@ -111,7 +111,7 @@ Turn a PPT you like, a brand guideline, or an existing PPTX file into a PPT Mast
 
 ### Entry point: the `/create-template` workflow
 
-Full spec in [`workflows/create-template.md`](../skills/ppt-master/workflows/create-template.md). This section is the user-facing short version — in your IDE, just say:
+Full spec in [`workflows/create-template.md`](../skills/ppt-master-plus/workflows/create-template.md). This section is the user-facing short version — in your IDE, just say:
 
 ```
 Please use the /create-template workflow to generate a new template based on the reference materials below.
@@ -121,7 +121,7 @@ The workflow will then **mandatorily** confirm a template brief with you before 
 
 ### Step 1 — Prepare reference material
 
-**Strongly recommended: hand over the original `.pptx` file.** The current PPTX import pipeline achieves near-high-fidelity reconstruction — the workflow uses [`pptx_template_import.py`](../skills/ppt-master/scripts/pptx_template_import.py) to read OOXML directly, extracting theme colors, fonts, per-master themes, master/layout structure, placeholder metadata, and reusable image assets. It emits a layered `svg/` view as the machine-readable template source plus a self-contained `svg-flat/` view for visual preview, then hands the package to Template_Designer which rebuilds clean, maintainable SVGs. Covers, chapter dividers, and decoration-heavy pages all reproduce reliably. This is by far the most dependable derivation path today.
+**Strongly recommended: hand over the original `.pptx` file.** The current PPTX import pipeline achieves near-high-fidelity reconstruction — the workflow uses [`pptx_template_import.py`](../skills/ppt-master-plus/scripts/pptx_template_import.py) to read OOXML directly, extracting theme colors, fonts, per-master themes, master/layout structure, placeholder metadata, and reusable image assets. It emits a layered `svg/` view as the machine-readable template source plus a self-contained `svg-flat/` view for visual preview, then hands the package to Template_Designer which rebuilds clean, maintainable SVGs. Covers, chapter dividers, and decoration-heavy pages all reproduce reliably. This is by far the most dependable derivation path today.
 
 You can also design from scratch from a brand guideline: provide a logo, primary color HEX, fonts, tone description, and a few mood references — the AI will design the page skeletons on the spot. This suits brands that don't yet have a finished PPT, only a VI manual.
 
@@ -171,16 +171,16 @@ This is the most easily confused decision when deriving a template.
 
 After generation, the workflow:
 
-1. Runs [`svg_quality_checker.py`](../skills/ppt-master/scripts/svg_quality_checker.py) (hard gate — no entry without passing)
-2. Registers the template ID in [`layouts_index.json`](../skills/ppt-master/templates/layouts/layouts_index.json)
-3. Syncs the table in [`templates/layouts/README.md`](../skills/ppt-master/templates/layouts/README.md)
+1. Runs [`svg_quality_checker.py`](../skills/ppt-master-plus/scripts/svg_quality_checker.py) (hard gate — no entry without passing)
+2. Registers the template ID in [`layouts_index.json`](../skills/ppt-master-plus/templates/layouts/layouts_index.json)
+3. Syncs the table in [`templates/layouts/README.md`](../skills/ppt-master-plus/templates/layouts/README.md)
 
-Registration makes the template **discoverable** — when someone asks "what templates are available?", the AI lists it from the index. To use it in a new project, follow the SKILL.md Step 3 rule: name its directory path in your first message, e.g. `use this template: skills/ppt-master/templates/layouts/<your_template_id>/`.
+Registration makes the template **discoverable** — when someone asks "what templates are available?", the AI lists it from the index. To use it in a new project, follow the SKILL.md Step 3 rule: name its directory path in your first message, e.g. `use this template: skills/ppt-master-plus/templates/layouts/<your_template_id>/`.
 
 ### What a derived template looks like
 
 ```
-skills/ppt-master/templates/layouts/<your_template_id>/
+skills/ppt-master-plus/templates/layouts/<your_template_id>/
 ├── design_spec.md          # design spec; §VI lists every page
 ├── 01_cover.svg
 ├── 02_chapter.svg
@@ -197,7 +197,7 @@ skills/ppt-master/templates/layouts/<your_template_id>/
 A `mirror` template emits one SVG per source slide, named by source order, with **no** placeholders inside:
 
 ```
-skills/ppt-master/templates/layouts/<your_template_id>/
+skills/ppt-master-plus/templates/layouts/<your_template_id>/
 ├── design_spec.md          # frontmatter sets replication_mode: mirror; §V Page Roster describes every page in detail
 ├── 001_cover.svg
 ├── 002_toc.svg
@@ -213,7 +213,7 @@ skills/ppt-master/templates/layouts/<your_template_id>/
 
 Don't confuse the two:
 
-- **Derive a new template** = enter the global library at `skills/ppt-master/templates/layouts/`, available to all future projects
+- **Derive a new template** = enter the global library at `skills/ppt-master-plus/templates/layouts/`, available to all future projects
 - **Project-level customization** = edit only the SVGs under `projects/<project>/templates/` for this one deck; not registered, no impact elsewhere
 
 `/create-template` is for the former. For the latter, just edit the SVGs in the project directory directly — no workflow needed.
@@ -234,7 +234,7 @@ Common misconceptions to avoid:
 
 ## Related docs
 
-- [`workflows/create-template.md`](../skills/ppt-master/workflows/create-template.md) — full workflow spec (AI-facing)
-- [`templates/layouts/README.md`](../skills/ppt-master/templates/layouts/README.md) — current template catalog
-- [`references/template-designer.md`](../skills/ppt-master/references/template-designer.md) — Template_Designer role definition and SVG technical constraints
+- [`workflows/create-template.md`](../skills/ppt-master-plus/workflows/create-template.md) — full workflow spec (AI-facing)
+- [`templates/layouts/README.md`](../skills/ppt-master-plus/templates/layouts/README.md) — current template catalog
+- [`references/template-designer.md`](../skills/ppt-master-plus/references/template-designer.md) — Template_Designer role definition and SVG technical constraints
 - [FAQ: how do I create a custom template?](./faq.md) — short FAQ version

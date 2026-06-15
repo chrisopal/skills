@@ -1,22 +1,21 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "ppt-master",
+  "name": "ppt-master-plus",
   "owner": {
-    "name": "Hugo He",
-    "email": "heyug3@gmail.com",
-    "url": "https://github.com/hugohe3"
+    "name": "Chrisopal",
+    "url": "https://github.com/chrisopal"
   },
   "metadata": {
-    "description": "PPT Master skill — AI generates natively editable PPTX from any document",
+    "description": "PPT Master Plus skill — AI generates natively editable PPTX from any document",
     "version": "2.7.0"
   },
   "plugins": [
     {
-      "name": "ppt-master",
+      "name": "ppt-master-plus",
       "source": {
         "source": "git-subdir",
-        "url": "https://github.com/hugohe3/ppt-master.git",
-        "path": "skills"
+        "url": "https://github.com/chrisopal/skills.git",
+        "path": "ppt-maker-with-svg/skills"
       },
       "description": "Generate natively editable PPTX from PDF / DOCX / URL / Markdown — real DrawingML shapes, text boxes, charts, and animations. Note: run `pip install -r requirements.txt` inside the installed plugin directory for the Python post-processing scripts to work.",
       "author": {
@@ -24,8 +23,8 @@
         "email": "heyug3@gmail.com",
         "url": "https://www.hehugo.com/"
       },
-      "homepage": "https://github.com/hugohe3/ppt-master",
-      "repository": "https://github.com/hugohe3/ppt-master",
+      "homepage": "https://github.com/chrisopal/skills/tree/main/ppt-maker-with-svg",
+      "repository": "https://github.com/chrisopal/skills",
       "license": "MIT",
       "category": "productivity",
       "keywords": [

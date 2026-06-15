@@ -15,17 +15,17 @@ PPT Master 导出的 PPTX 同时支持**页间转场**（page transition）与**
 
 默认动画是全局策略。若需要更具体的演示节奏，例如标题先淡入、图表第二个出现、关键注释最后飞入，可以使用可选的 `animations.json` sidecar。SVG 仍然只保存静态视觉结构；sidecar 只控制 PPTX 导出动画。
 
-当用户要求调整动画顺序、效果、时长或具体对象出现方式时，运行独立 [`customize-animations`](../../skills/ppt-master/workflows/customize-animations.md) 工作流。
+当用户要求调整动画顺序、效果、时长或具体对象出现方式时，运行独立 [`customize-animations`](../../skills/ppt-master-plus/workflows/customize-animations.md) 工作流。
 
 ```bash
 # 从真实顶层 <g id> 锚点生成可编辑模板
-python3 skills/ppt-master/scripts/animation_config.py scaffold <project>
+python3 skills/ppt-master-plus/scripts/animation_config.py scaffold <project>
 
 # 导出前校验引用是否存在
-python3 skills/ppt-master/scripts/animation_config.py validate <project>
+python3 skills/ppt-master-plus/scripts/animation_config.py validate <project>
 
 # 导出时会自动读取 <project>/animations.json
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project>
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project>
 ```
 
 最小 sidecar：
@@ -60,13 +60,13 @@ python3 skills/ppt-master/scripts/svg_to_pptx.py <project>
 
 ```bash
 # 换效果
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -t push --transition-duration 0.6
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -t push --transition-duration 0.6
 
 # 关闭转场
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -t none
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -t none
 
 # 每 5 秒自动翻页（展厅 / 自动循环）
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --auto-advance 5
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --auto-advance 5
 ```
 
 可选效果：`fade`、`push`、`wipe`、`split`、`strips`、`cover`、`random`。
@@ -87,23 +87,23 @@ python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --auto-advance 5
 
 ```bash
 # 默认即开启：auto 效果 + after-previous 触发，无需任何参数
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project>
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project>
 
 # 关闭页内动画
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> -a none
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> -a none
 
 # 改用单一效果（仍走默认的 after-previous 自动级联）
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation fade
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --animation fade
 
 # 改为单击触发（演讲者控制节奏）
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation-trigger on-click
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --animation-trigger on-click
 
 # 自定义节奏
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation mixed \
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --animation mixed \
         --animation-stagger 0.6 --animation-duration 0.5
 
 # 所有组进入页面时同时入场
-python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation-trigger with-previous
+python3 skills/ppt-master-plus/scripts/svg_to_pptx.py <project> --animation-trigger with-previous
 ```
 
 22 种单一效果：`appear`、`fade`、`fly`、`cut`、`zoom`、`wipe`、`split`、`blinds`、`checkerboard`、`dissolve`、`random_bars`、`peek`、`wheel`、`box`、`circle`、`diamond`、`plus`、`strips`、`wedge`、`stretch`、`expand`、`swivel`。再加三种自动模式：
@@ -137,7 +137,7 @@ python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation-trigger w
 - 顶层可见图元 ≤ 8 → 每个图元作为一个锚点（设上限以避免密集页面出现 70+ 次点击）。
 - 顶层可见图元 > 8 → 该页跳过页内动画。页面照常显示，只是不带入场。
 
-无论是否打算开启动画，Executor 都应该把逻辑分块包进 `<g id>`。`skills/ppt-master/references/shared-standards.md` 已将这一点列为强制要求。
+无论是否打算开启动画，Executor 都应该把逻辑分块包进 `<g id>`。`skills/ppt-master-plus/references/shared-standards.md` 已将这一点列为强制要求。
 
 ## 限制
 
@@ -160,4 +160,4 @@ python3 skills/ppt-master/scripts/svg_to_pptx.py <project> --animation-trigger w
 | 元素入场放慢 | `--animation-duration 0.5` |
 | after-previous 拉大间隔 | `--animation-stagger 0.8` |
 
-完整 `svg_to_pptx.py` 参考：[`scripts/docs/svg-pipeline.md`](../../skills/ppt-master/scripts/docs/svg-pipeline.md)。
+完整 `svg_to_pptx.py` 参考：[`scripts/docs/svg-pipeline.md`](../../skills/ppt-master-plus/scripts/docs/svg-pipeline.md)。

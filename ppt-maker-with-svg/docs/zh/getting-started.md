@@ -23,7 +23,7 @@
 | **就要这份 deck,换成新内容** | 套模板(template fill) | 挑出合适的页面,把文字 / 表格 / 图表数据直接写回原文件。设计、版式、图片、动画都保留;输出就是同一份 deck,原生可编辑。最快;但受限于现有页面。 |
 | **基于这份 deck 的风格生成新 deck** | create-template | 把 `.pptx` 解析成可复用的风格资产包,再走 SVG 管线**重新生成**——结构自由、页数任意。更灵活;完整重建。 |
 
-前者:把 `.pptx` 连同素材(或一个主题)给 AI,说「套模板」——见 [套模板工作流](../../skills/ppt-master/workflows/template-fill-pptx.md)。本节其余部分讲 create-template。
+前者:把 `.pptx` 连同素材(或一个主题)给 AI,说「套模板」——见 [套模板工作流](../../skills/ppt-master-plus/workflows/template-fill-pptx.md)。本节其余部分讲 create-template。
 
 **想基于某份现成 PPT 的风格重新生成 deck,必须显式走 create-template 流程——别直接丢个 `.pptx` 指望 AI 自动处理。** AI 默认走自由设计,不会主动切进创建模板的流程;不显式启动它,生成过程就容易错乱。先用 create-template 把那份 `.pptx` 复刻成 PPT Master 模板:
 
@@ -37,13 +37,13 @@
 
 | 位置 | 路径 | 说明 |
 |---|---|---|
-| **注册进 skill 库** | `skills/ppt-master/templates/layouts/<id>/` | 全局,所有项目可复用;跑 `register_template.py` 后,问"有哪些模板"时会被列出来 |
+| **注册进 skill 库** | `skills/ppt-master-plus/templates/layouts/<id>/` | 全局,所有项目可复用;跑 `register_template.py` 后,问"有哪些模板"时会被列出来 |
 | **放进项目里** | `projects/<project>/templates/` | 项目本地;给路径即用,无需注册 |
 
 无论放哪,生成时都靠在对话里给出它的**目录路径**来引用——工作流只认显式路径,绝不认裸模板名:
 
 ```
-你：用 sources/report.pdf 做 deck,模板用 skills/ppt-master/templates/layouts/academic_defense/
+你：用 sources/report.pdf 做 deck,模板用 skills/ppt-master-plus/templates/layouts/academic_defense/
 ```
 
 完整说明 → [模板指南](./templates-guide.md)
@@ -76,7 +76,7 @@
 
 PPT Master 最初是纯对话设计;可视化编辑是在很多用户提出后融入的(建立在 [@WodenJay](https://github.com/WodenJay) 的 [PR #85](https://github.com/hugohe3/ppt-master/pull/85) 之上)。
 
-完整说明 → [实时预览工作流](../../skills/ppt-master/workflows/live-preview.md)
+完整说明 → [实时预览工作流](../../skills/ppt-master-plus/workflows/live-preview.md)
 
 ---
 
@@ -117,7 +117,7 @@ PPT Master 最初是纯对话设计;可视化编辑是在很多用户提出后�
 
 | 情况 | 先试这个 |
 |---|---|
-| AI 跑偏或漏了步骤 | 让它重新读 `skills/ppt-master/SKILL.md`。 |
+| AI 跑偏或漏了步骤 | 让它重新读 `skills/ppt-master-plus/SKILL.md`。 |
 | 视觉质量不理想 | 换成大上下文 Claude 模型 + `gpt-image-2`——harness 决定下限,模型决定上限。 |
 | 文字溢出或元素重叠 | 重跑那一页,或用实时预览修;详见 [FAQ](./faq.md)。 |
 | 没有生图 API key | 零配置的网络图片搜索仍可作为兜底;见 [FAQ](./faq.md)。 |

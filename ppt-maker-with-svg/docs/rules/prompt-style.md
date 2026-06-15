@@ -1,6 +1,6 @@
 # Reference Document Style Guide
 
-> Style rules for files under `skills/ppt-master/references/`. Follow these when writing or reviewing role definitions and shared specs.
+> Style rules for files under `skills/ppt-master-plus/references/`. Follow these when writing or reviewing role definitions and shared specs.
 
 The reference layer drives runtime LLM behavior. Style consistency across these files matters as much as correctness — divergent voice / structure forces the model to re-interpret each file from scratch and bloats the loaded context.
 
@@ -187,7 +187,7 @@ The canonical exemplars to model new files after:
 
 | If you're writing... | Model after |
 |---|---|
-| A role reference (Image_X / Strategist-style) | [`image-searcher.md`](../skills/ppt-master/references/image-searcher.md), [`strategist.md`](../skills/ppt-master/references/strategist.md) |
-| A shared spec across roles | [`image-base.md`](../skills/ppt-master/references/image-base.md), [`shared-standards.md`](../skills/ppt-master/references/shared-standards.md) |
-| A technical / format spec | [`canvas-formats.md`](../skills/ppt-master/references/canvas-formats.md), [`svg-image-embedding.md`](../skills/ppt-master/references/svg-image-embedding.md), [`image-layout-spec.md`](../skills/ppt-master/references/image-layout-spec.md) |
-| Workflow runbook | [`workflows/verify-charts.md`](../skills/ppt-master/workflows/verify-charts.md) |
+| A role reference (Image_X / Strategist-style) | [`image-searcher.md`](../skills/ppt-master-plus/references/image-searcher.md), [`strategist.md`](../skills/ppt-master-plus/references/strategist.md) |
+| A shared spec across roles | [`image-base.md`](../skills/ppt-master-plus/references/image-base.md), [`shared-standards.md`](../skills/ppt-master-plus/references/shared-standards.md) |
+| A technical / format spec | [`canvas-formats.md`](../skills/ppt-master-plus/references/canvas-formats.md), [`svg-image-embedding.md`](../skills/ppt-master-plus/references/svg-image-embedding.md), [`image-layout-spec.md`](../skills/ppt-master-plus/references/image-layout-spec.md) |
+| Workflow runbook | [`workflows/verify-charts.md`](../skills/ppt-master-plus/workflows/verify-charts.md) |

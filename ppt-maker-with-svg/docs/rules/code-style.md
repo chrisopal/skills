@@ -1,6 +1,6 @@
 # Python Code Style Guide
 
-> Style rules for Python code under `skills/ppt-master/scripts/` and any Python that ships with the skill. Derived from the de facto patterns in the existing codebase.
+> Style rules for Python code under `skills/ppt-master-plus/scripts/` and any Python that ships with the skill. Derived from the de facto patterns in the existing codebase.
 
 These rules are pragmatic, not exhaustive. They capture the conventions readers actually encounter — anything PEP 8 hands you for free is assumed.
 
@@ -206,10 +206,10 @@ Common functionality lives in two designated submodules. New scripts use these, 
 
 | Module | Owns |
 |---|---|
-| [`image_backends/backend_common.py`](../skills/ppt-master/scripts/image_backends/backend_common.py) | HTTP download, retry, image format detection, save-with-Pillow-transcode |
-| [`image_sources/provider_common.py`](../skills/ppt-master/scripts/image_sources/provider_common.py) | License classification, query simplification, scoring, attribution text, dataclasses |
-| [`project_utils.py`](../skills/ppt-master/scripts/project_utils.py) | Canvas formats, project path conventions |
-| [`error_helper.py`](../skills/ppt-master/scripts/error_helper.py) | User-facing error message templates |
+| [`image_backends/backend_common.py`](../skills/ppt-master-plus/scripts/image_backends/backend_common.py) | HTTP download, retry, image format detection, save-with-Pillow-transcode |
+| [`image_sources/provider_common.py`](../skills/ppt-master-plus/scripts/image_sources/provider_common.py) | License classification, query simplification, scoring, attribution text, dataclasses |
+| [`project_utils.py`](../skills/ppt-master-plus/scripts/project_utils.py) | Canvas formats, project path conventions |
+| [`error_helper.py`](../skills/ppt-master-plus/scripts/error_helper.py) | User-facing error message templates |
 
 **Forbidden — duplicating logic that exists in a shared helper**. If a helper is missing a feature, extend the helper, don't fork it inside your new script.
 
@@ -321,7 +321,7 @@ Existing files take precedence. If a current script contradicts a rule here, dec
 
 | If you're writing... | Model after |
 |---|---|
-| A small CLI utility | [`total_md_split.py`](../skills/ppt-master/scripts/total_md_split.py), [`gemini_watermark_remover.py`](../skills/ppt-master/scripts/gemini_watermark_remover.py) |
-| A multi-backend / dispatcher CLI | [`image_search.py`](../skills/ppt-master/scripts/image_search.py), [`image_gen.py`](../skills/ppt-master/scripts/image_gen.py) |
-| A library / shared helper | [`image_sources/provider_common.py`](../skills/ppt-master/scripts/image_sources/provider_common.py), [`image_backends/backend_common.py`](../skills/ppt-master/scripts/image_backends/backend_common.py) |
-| A class-based checker / validator | [`svg_quality_checker.py`](../skills/ppt-master/scripts/svg_quality_checker.py) |
+| A small CLI utility | [`total_md_split.py`](../skills/ppt-master-plus/scripts/total_md_split.py), [`gemini_watermark_remover.py`](../skills/ppt-master-plus/scripts/gemini_watermark_remover.py) |
+| A multi-backend / dispatcher CLI | [`image_search.py`](../skills/ppt-master-plus/scripts/image_search.py), [`image_gen.py`](../skills/ppt-master-plus/scripts/image_gen.py) |
+| A library / shared helper | [`image_sources/provider_common.py`](../skills/ppt-master-plus/scripts/image_sources/provider_common.py), [`image_backends/backend_common.py`](../skills/ppt-master-plus/scripts/image_backends/backend_common.py) |
+| A class-based checker / validator | [`svg_quality_checker.py`](../skills/ppt-master-plus/scripts/svg_quality_checker.py) |

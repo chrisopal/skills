@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#4B5563" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="huixin-logo" transform="translate(1016 28) scale(0.58)" data-logo-variant="light">
+    <polygon points="0,0 12,0 31,41 19,41" fill="#D2D3D4"/>
+    <polygon points="30,0 46,0 65,41 49,41" fill="#B0D776"/>
+    <polygon points="61,0 73,0 92,41 80,41" fill="#D2D3D4"/>
+    <polygon points="91,0 116,0 135,41 110,41" fill="#4295B6"/>
+    <text x="154" y="27" fill="#000000" font-family="Microsoft YaHei" font-size="23" font-weight="700">慧新全智</text>
+    <rect x="154" y="34" width="90" height="4" fill="#4295B6"/>
+  </g>
+  <g id="business-architecture-map">
+    <rect x="72" y="210" width="1136" height="392" rx="18" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1.5"/>
+    <rect x="96" y="238" width="168" height="322" rx="14" fill="#0B2F3A"/>
+    <text x="180" y="274" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="20" font-weight="700">{{BUSINESS_DOMAIN}}</text>
+    <polygon points="126,318 146,318 164,354 144,354" fill="#D2D3D4"/>
+    <polygon points="156,318 181,318 199,354 174,354" fill="#B0D776"/>
+    <polygon points="191,318 216,318 234,354 209,354" fill="#4295B6"/>
+    <text x="180" y="412" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14">{{DOMAIN_NOTE}}</text>
+    <g id="value-chain">
+      <rect x="304" y="246" width="170" height="86" rx="14" fill="#FFFFFF" stroke="#4295B6" stroke-width="1.5"/>
+      <text x="389" y="282" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{STAGE_1}}</text>
+      <text x="389" y="310" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_1_DESC}}</text>
+      <polygon points="494,289 522,275 522,303" fill="#4295B6"/>
+      <rect x="542" y="246" width="170" height="86" rx="14" fill="#FFFFFF" stroke="#4295B6" stroke-width="1.5"/>
+      <text x="627" y="282" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{STAGE_2}}</text>
+      <text x="627" y="310" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_2_DESC}}</text>
+      <polygon points="732,289 760,275 760,303" fill="#B0D776"/>
+      <rect x="780" y="246" width="170" height="86" rx="14" fill="#FFFFFF" stroke="#B0D776" stroke-width="1.5"/>
+      <text x="865" y="282" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{STAGE_3}}</text>
+      <text x="865" y="310" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_3_DESC}}</text>
+      <polygon points="970,289 998,275 998,303" fill="#4295B6"/>
+      <rect x="1018" y="246" width="150" height="86" rx="14" fill="#0B2F3A"/>
+      <text x="1093" y="282" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{STAGE_4}}</text>
+      <text x="1093" y="310" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">{{STAGE_4_DESC}}</text>
+    </g>
+    <g id="support-capabilities">
+      <rect x="304" y="382" width="864" height="54" rx="12" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="334" y="415" fill="#4295B6" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{SUPPORT_LAYER_1}}</text>
+      <text x="520" y="415" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{SUPPORT_LAYER_1_DESC}}</text>
+      <rect x="304" y="456" width="864" height="54" rx="12" fill="#FFFFFF" stroke="#B0D776"/>
+      <text x="334" y="489" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{SUPPORT_LAYER_2}}</text>
+      <text x="520" y="489" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{SUPPORT_LAYER_2_DESC}}</text>
+    </g>
+  </g>
+  <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
+</svg>

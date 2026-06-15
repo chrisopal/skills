@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#4B5563" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="data-architecture">
+    <rect x="72" y="226" width="220" height="300" rx="18" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="2"/>
+    <text x="104" y="270" fill="#4295B6" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{SOURCE_TITLE}}</text>
+    <text x="104" y="314" fill="#4B5563" font-family="Microsoft YaHei" font-size="15"><tspan x="104" dy="0">{{DATA_SOURCE_1}}</tspan><tspan x="104" dy="30">{{DATA_SOURCE_2}}</tspan><tspan x="104" dy="30">{{DATA_SOURCE_3}}</tspan><tspan x="104" dy="30">{{DATA_SOURCE_4}}</tspan></text>
+    <polygon points="318,370 352,352 352,388" fill="#4295B6"/>
+    <rect x="378" y="226" width="260" height="300" rx="18" fill="#F3F7FA" stroke="#4295B6" stroke-width="2"/>
+    <text x="410" y="270" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{DATA_PLATFORM}}</text>
+    <rect x="410" y="306" width="196" height="40" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="410" y="362" width="196" height="40" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="410" y="418" width="196" height="40" rx="8" fill="#FFFFFF" stroke="#B0D776"/>
+    <text x="508" y="331" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14">{{DATA_MODULE_1}}</text>
+    <text x="508" y="387" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14">{{DATA_MODULE_2}}</text>
+    <text x="508" y="443" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14">{{DATA_MODULE_3}}</text>
+    <polygon points="664,370 698,352 698,388" fill="#B0D776"/>
+    <rect x="724" y="226" width="220" height="300" rx="18" fill="#FFFFFF" stroke="#B0D776" stroke-width="2"/>
+    <text x="756" y="270" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{GOVERNANCE_TITLE}}</text>
+    <text x="756" y="314" fill="#4B5563" font-family="Microsoft YaHei" font-size="15"><tspan x="756" dy="0">{{GOV_1}}</tspan><tspan x="756" dy="30">{{GOV_2}}</tspan><tspan x="756" dy="30">{{GOV_3}}</tspan><tspan x="756" dy="30">{{GOV_4}}</tspan></text>
+    <polygon points="970,370 1004,352 1004,388" fill="#4295B6"/>
+    <rect x="1030" y="226" width="178" height="300" rx="18" fill="#0B2F3A"/>
+    <text x="1119" y="270" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{SERVICE_TITLE}}</text>
+    <rect x="1054" y="314" width="130" height="38" rx="8" fill="#FFFFFF" fill-opacity="0.12"/>
+    <rect x="1054" y="372" width="130" height="38" rx="8" fill="#B0D776"/>
+    <rect x="1054" y="430" width="130" height="38" rx="8" fill="#FFFFFF" fill-opacity="0.12"/>
+    <text x="1119" y="338" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">{{DATA_SERVICE_1}}</text>
+    <text x="1119" y="396" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{DATA_SERVICE_2}}</text>
+    <text x="1119" y="454" text-anchor="middle" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">{{DATA_SERVICE_3}}</text>
+  </g>
+  <rect x="72" y="574" width="1136" height="42" rx="12" fill="#4295B6" fill-opacity="0.10"/>
+  <text x="104" y="601" fill="#4295B6" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{DATA_SUMMARY}}</text>
+  <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
+</svg>

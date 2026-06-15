@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#4B5563" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="feature-detail">
+    <rect x="72" y="216" width="688" height="392" rx="18" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="106" y="252" width="620" height="312" rx="14" fill="#FFFFFF" stroke="#4295B6" stroke-width="2" stroke-dasharray="10,6"/>
+    <text x="416" y="392" text-anchor="middle" fill="#4295B6" font-family="Microsoft YaHei" font-size="24" font-weight="700">{{SCREENSHOT_PLACEHOLDER}}</text>
+    <text x="416" y="426" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">系统截图 / 产品界面 / 可替换为空图占位</text>
+    <polygon points="126,282 146,282 166,322 146,322" fill="#D2D3D4"/>
+    <polygon points="158,282 184,282 204,322 178,322" fill="#B0D776"/>
+    <polygon points="196,282 222,282 242,322 216,322" fill="#4295B6"/>
+    <rect x="800" y="216" width="408" height="392" rx="18" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="834" y="264" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="24" font-weight="700">{{FEATURE_NAME}}</text>
+    <text x="834" y="304" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{FEATURE_DESC}}</text>
+    <rect x="834" y="348" width="328" height="56" rx="12" fill="#4295B6" fill-opacity="0.12"/>
+    <text x="858" y="382" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{HIGHLIGHT_1}}</text>
+    <rect x="834" y="424" width="328" height="56" rx="12" fill="#B0D776" fill-opacity="0.24"/>
+    <text x="858" y="458" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{HIGHLIGHT_2}}</text>
+    <rect x="834" y="500" width="328" height="56" rx="12" fill="#F3F7FA"/>
+    <text x="858" y="534" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{HIGHLIGHT_3}}</text>
+  </g>
+  <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
+</svg>

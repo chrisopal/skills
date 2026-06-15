@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#4B5563" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="huixin-logo" transform="translate(1016 28) scale(0.58)" data-logo-variant="light">
+    <polygon points="0,0 12,0 31,41 19,41" fill="#D2D3D4"/>
+    <polygon points="30,0 46,0 65,41 49,41" fill="#B0D776"/>
+    <polygon points="61,0 73,0 92,41 80,41" fill="#D2D3D4"/>
+    <polygon points="91,0 116,0 135,41 110,41" fill="#4295B6"/>
+    <text x="154" y="27" fill="#000000" font-family="Microsoft YaHei" font-size="23" font-weight="700">慧新全智</text>
+    <rect x="154" y="34" width="90" height="4" fill="#4295B6"/>
+  </g>
+  <g id="function-map">
+    <rect x="72" y="214" width="1136" height="394" rx="18" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="104" y="246" width="220" height="318" rx="16" fill="#0B2F3A"/>
+    <text x="214" y="286" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{CORE_PRODUCT}}</text>
+    <text x="214" y="322" text-anchor="middle" fill="#B0D776" font-family="Microsoft YaHei" font-size="14">{{CORE_PRODUCT_DESC}}</text>
+    <g id="function-cluster-1">
+      <rect x="366" y="246" width="238" height="136" rx="14" fill="#FFFFFF" stroke="#4295B6"/>
+      <rect x="386" y="268" width="86" height="28" rx="14" fill="#4295B6"/>
+      <text x="429" y="287" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{GROUP_1}}</text>
+      <text x="386" y="326" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{FUNC_1}}</text>
+      <text x="386" y="354" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{FUNC_1_DESC}}</text>
+    </g>
+    <g id="function-cluster-2">
+      <rect x="636" y="246" width="238" height="136" rx="14" fill="#FFFFFF" stroke="#B0D776"/>
+      <rect x="656" y="268" width="86" height="28" rx="14" fill="#B0D776"/>
+      <text x="699" y="287" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{GROUP_2}}</text>
+      <text x="656" y="326" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{FUNC_2}}</text>
+      <text x="656" y="354" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{FUNC_2_DESC}}</text>
+    </g>
+    <g id="function-cluster-3">
+      <rect x="906" y="246" width="238" height="136" rx="14" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <rect x="926" y="268" width="86" height="28" rx="14" fill="#0B2F3A"/>
+      <text x="969" y="287" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{GROUP_3}}</text>
+      <text x="926" y="326" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{FUNC_3}}</text>
+      <text x="926" y="354" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{FUNC_3_DESC}}</text>
+    </g>
+    <rect x="366" y="424" width="778" height="76" rx="14" fill="#FFFFFF" stroke="#4295B6"/>
+    <text x="396" y="456" fill="#4295B6" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{COMMON_CAPABILITY}}</text>
+    <text x="396" y="484" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{COMMON_CAPABILITY_DESC}}</text>
+    <polygon points="330,400 356,386 356,414" fill="#4295B6"/>
+  </g>
+  <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
+</svg>

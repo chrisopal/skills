@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#4B5563" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="integration-architecture">
+    <rect x="72" y="216" width="1136" height="394" rx="18" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="498" y="300" width="284" height="160" rx="24" fill="#0B2F3A"/>
+    <text x="640" y="356" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="24" font-weight="700">{{INTEGRATION_HUB}}</text>
+    <text x="640" y="392" text-anchor="middle" fill="#B0D776" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{HUB_DESC}}</text>
+    <rect x="536" y="414" width="208" height="28" rx="14" fill="#4295B6"/>
+    <text x="640" y="433" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13">{{HUB_PROTOCOL}}</text>
+    <g id="external-systems">
+      <rect x="116" y="246" width="198" height="86" rx="14" fill="#FFFFFF" stroke="#4295B6"/>
+      <text x="215" y="280" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{SYSTEM_1}}</text>
+      <text x="215" y="306" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{SYSTEM_1_DESC}}</text>
+      <rect x="116" y="468" width="198" height="86" rx="14" fill="#FFFFFF" stroke="#B0D776"/>
+      <text x="215" y="502" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{SYSTEM_2}}</text>
+      <text x="215" y="528" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{SYSTEM_2_DESC}}</text>
+      <rect x="966" y="246" width="198" height="86" rx="14" fill="#FFFFFF" stroke="#4295B6"/>
+      <text x="1065" y="280" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{SYSTEM_3}}</text>
+      <text x="1065" y="306" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{SYSTEM_3_DESC}}</text>
+      <rect x="966" y="468" width="198" height="86" rx="14" fill="#FFFFFF" stroke="#B0D776"/>
+      <text x="1065" y="502" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{SYSTEM_4}}</text>
+      <text x="1065" y="528" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{SYSTEM_4_DESC}}</text>
+    </g>
+    <line x1="314" y1="289" x2="498" y2="346" stroke="#4295B6" stroke-width="3"/>
+    <line x1="314" y1="511" x2="498" y2="414" stroke="#B0D776" stroke-width="3"/>
+    <line x1="782" y1="346" x2="966" y2="289" stroke="#4295B6" stroke-width="3"/>
+    <line x1="782" y1="414" x2="966" y2="511" stroke="#B0D776" stroke-width="3"/>
+    <rect x="420" y="530" width="440" height="42" rx="12" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="640" y="557" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{INTEGRATION_SECURITY}}</text>
+  </g>
+  <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
+</svg>

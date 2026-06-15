@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <text x="72" y="72" fill="#4295B6" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#4B5563" font-family="Microsoft YaHei" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="system-architecture">
+    <rect x="72" y="214" width="1136" height="394" rx="18" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="104" y="242" width="1010" height="48" rx="10" fill="#4295B6"/>
+    <text x="138" y="273" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{USER_LAYER}}</text>
+    <rect x="104" y="312" width="1010" height="60" rx="10" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="138" y="348" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{ACCESS_LAYER}}</text>
+    <rect x="104" y="394" width="1010" height="78" rx="10" fill="#FFFFFF" stroke="#4295B6"/>
+    <text x="138" y="426" fill="#4295B6" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{SERVICE_LAYER}}</text>
+    <rect x="300" y="414" width="128" height="34" rx="8" fill="#4295B6" fill-opacity="0.12"/>
+    <rect x="448" y="414" width="128" height="34" rx="8" fill="#4295B6" fill-opacity="0.12"/>
+    <rect x="596" y="414" width="128" height="34" rx="8" fill="#B0D776" fill-opacity="0.35"/>
+    <rect x="744" y="414" width="128" height="34" rx="8" fill="#4295B6" fill-opacity="0.12"/>
+    <text x="364" y="436" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{SERVICE_1}}</text>
+    <text x="512" y="436" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{SERVICE_2}}</text>
+    <text x="660" y="436" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{SERVICE_3}}</text>
+    <text x="808" y="436" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{SERVICE_4}}</text>
+    <rect x="104" y="494" width="1010" height="48" rx="10" fill="#F3F7FA" stroke="#B0D776"/>
+    <text x="138" y="524" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{DATA_LAYER}}</text>
+    <rect x="104" y="562" width="1010" height="28" rx="8" fill="#0B2F3A"/>
+    <text x="609" y="582" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{FOUNDATION_LAYER}}</text>
+    <rect x="1132" y="242" width="44" height="348" rx="12" fill="#B0D776"/>
+    <text x="1154" y="422" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700" transform="rotate(90 1154 422)">{{GOVERNANCE_AXIS}}</text>
+  </g>
+  <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PAGE_NUM}}</text>
+</svg>

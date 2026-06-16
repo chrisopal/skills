@@ -1,11 +1,11 @@
 ---
 deck_id: huixin_management_report
 kind: deck
-summary: 慧新公司经营汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议模板；包含财务分析、事业部/产品线业绩、销售月报、经营复盘、销售漏斗、商机管理、人员变化、转型汇报和决策事项页.
+summary: 慧新公司经营汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议模板；包含财务分析、事业部/产品线业绩、销售月报、经营复盘、销售漏斗、商机管理、人员变化、Excel数据概览、销售预测、人员月度组合图、人员类型饼图和决策事项页.
 canvas_format: ppt169
-page_count: 20
+page_count: 25
 primary_color: "#4295B6"
-keywords: [huixin, management-report, business-review, kpi, executive-meeting, finance, sales, opportunity, staffing]
+keywords: [huixin, management-report, business-review, kpi, executive-meeting, finance, sales, opportunity, staffing, excel, forecast, chart]
 ---
 
 # Huixin Management Report - Design Specification
@@ -16,7 +16,7 @@ keywords: [huixin, management-report, business-review, kpi, executive-meeting, f
 | --- | --- |
 | **Template Name** | huixin_management_report |
 | **Display Name** | 慧新公司经营汇报模板 |
-| **Use Cases** | 年度汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议、销售月报、财务分析、商机复盘、组织人力汇报、转型推进汇报 |
+| **Use Cases** | 年度汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议、销售月报、财务分析、商机复盘、组织人力汇报、Excel数据汇总、销售预测、人员统计图表、转型推进汇报 |
 | **Design Tone** | Steady, clear, formal, trustworthy, management-closed-loop oriented |
 | **Theme Mode** | White / light gray business reporting theme based on Huixin logo colors |
 
@@ -92,6 +92,9 @@ Usage rules:
 7. For finance, sales, opportunity, staffing, and decision pages, prefer table-first reporting: place numbers, stage, owner, deadline, and latest progress in visible cells.
 8. Long Chinese text must be shortened or split across multiple placeholder lines before rendering; do not let table text cross cell boundaries.
 9. Use charts only when they support a management question: budget variance, funnel conversion, business-unit comparison, product-line mix, headcount change, or roadmap progress.
+10. Excel-driven report pages must keep the source sheet, calculation basis, visible table, and management conclusion traceable on the slide.
+11. For sales forecast and staffing statistics, combine dense tables with one readable chart; do not replace source numbers with chart-only visuals.
+12. When using workbook data, normalize sheet names and metric names before rendering; use `{{SHEET_*}}`, `{{MONTH_*}}`, `{{TYPE_*}}`, and `{{STAGE_*}}` placeholders for reusable templates.
 
 ## VII. Page Types
 
@@ -167,6 +170,26 @@ Usage rules:
 ### 20. Decision Items (`20_decision_items.svg`)
 - Management decision page with decision count, resource ask, recommendation, risks, and decision-status table.
 - Use for高层会议决策事项、资源申请、预算审批 and会后闭环.
+
+### 21. Excel Data Overview (`21_excel_data_overview.svg`)
+- Workbook intake and data-quality page showing source sheets, row counts, calculation chain, summary metrics, and validation status.
+- Use when the user provides Excel / CSV / CRM exports and wants traceable management reporting from raw data.
+
+### 22. Sales Forecast Table (`22_sales_forecast_table.svg`)
+- Sales forecast page with yearly target, forecast total, gap, monthly target/actual/forecast table, and trend chart.
+- Use for销售预测、回款预测、年度目标达成预测 and月度经营预测.
+
+### 23. Opportunity Pipeline Stats (`23_opportunity_pipeline_stats.svg`)
+- Opportunity pipeline statistics page with stage amount bars, weighted pipeline KPIs, stage table, and key opportunity list.
+- Use for商机管理、销售漏斗健康、重点客户跟进 and commit forecast.
+
+### 24. Staffing Monthly Combo (`24_staffing_monthly_combo.svg`)
+- Monthly staffing page with joiner/leaver bars, headcount line, staffing summary cards, and management focus.
+- Use for各月份人员变化、净增趋势、关键岗位补位 and组织容量管理.
+
+### 25. Staff Type Pie (`25_staff_type_pie.svg`)
+- Personnel type distribution page with editable pie chart, type table, ratios, and staffing action notes.
+- Use for人员类型占比、团队结构分析、研发/交付/销售/产品/职能结构汇报.
 
 ## VIII. Asset Specification
 

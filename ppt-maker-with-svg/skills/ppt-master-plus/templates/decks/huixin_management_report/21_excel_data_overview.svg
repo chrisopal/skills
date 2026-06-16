@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">21 / EXCEL DATA OVERVIEW</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="108" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="146" fill="#4295B6" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="workbook-sources">
+    <rect x="64" y="178" width="310" height="374" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="92" y="214" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">Excel 数据源</text>
+    <rect x="92" y="238" width="254" height="46" fill="#F3F7FA"/>
+    <rect x="92" y="300" width="254" height="46" fill="#F3F7FA"/>
+    <rect x="92" y="362" width="254" height="46" fill="#F3F7FA"/>
+    <rect x="92" y="424" width="254" height="46" fill="#F3F7FA"/>
+    <text x="112" y="266" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SHEET_1_NAME}}</text>
+    <text x="292" y="266" text-anchor="end" fill="#4295B6" font-family="Microsoft YaHei" font-size="14">{{SHEET_1_ROWS}}</text>
+    <text x="112" y="328" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SHEET_2_NAME}}</text>
+    <text x="292" y="328" text-anchor="end" fill="#4295B6" font-family="Microsoft YaHei" font-size="14">{{SHEET_2_ROWS}}</text>
+    <text x="112" y="390" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SHEET_3_NAME}}</text>
+    <text x="292" y="390" text-anchor="end" fill="#4295B6" font-family="Microsoft YaHei" font-size="14">{{SHEET_3_ROWS}}</text>
+    <text x="112" y="452" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{SHEET_4_NAME}}</text>
+    <text x="292" y="452" text-anchor="end" fill="#4295B6" font-family="Microsoft YaHei" font-size="14">{{SHEET_4_ROWS}}</text>
+    <line x1="92" y1="506" x2="346" y2="506" stroke="#D2D3D4"/>
+    <text x="92" y="532" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">更新周期：{{REFRESH_CYCLE}}</text>
+  </g>
+
+  <g id="data-processing-flow">
+    <rect x="406" y="178" width="438" height="174" rx="6" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="434" y="214" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">统计口径与处理链路</text>
+    <rect x="434" y="244" width="100" height="58" rx="4" fill="#FFFFFF" stroke="#4295B6"/>
+    <rect x="582" y="244" width="100" height="58" rx="4" fill="#FFFFFF" stroke="#4295B6"/>
+    <rect x="730" y="244" width="84" height="58" rx="4" fill="#FFFFFF" stroke="#B0D776"/>
+    <text x="484" y="277" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">原始表</text>
+    <text x="632" y="277" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">汇总计算</text>
+    <text x="772" y="277" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">图表输出</text>
+    <line x1="534" y1="273" x2="582" y2="273" stroke="#4295B6" stroke-width="3"/>
+    <polygon points="582,273 570,266 570,280" fill="#4295B6"/>
+    <line x1="682" y1="273" x2="730" y2="273" stroke="#B0D776" stroke-width="3"/>
+    <polygon points="730,273 718,266 718,280" fill="#B0D776"/>
+  </g>
+
+  <g id="summary-metrics">
+    <rect x="876" y="178" width="340" height="174" rx="6" fill="#0B2F3A"/>
+    <text x="904" y="214" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="21" font-weight="700">本期汇总指标</text>
+    <text x="904" y="258" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">{{METRIC_1_LABEL}}</text>
+    <text x="904" y="300" fill="#B0D776" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{METRIC_1_VALUE}}</text>
+    <text x="1072" y="258" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">{{METRIC_2_LABEL}}</text>
+    <text x="1072" y="300" fill="#4295B6" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{METRIC_2_VALUE}}</text>
+  </g>
+
+  <g id="data-quality-table">
+    <rect x="406" y="382" width="810" height="170" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="406" y="382" width="810" height="34" fill="#4295B6"/>
+    <text x="430" y="405" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">检查项</text>
+    <text x="640" y="405" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">口径</text>
+    <text x="934" y="405" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">状态</text>
+    <text x="1060" y="405" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">处理人</text>
+    <rect x="406" y="416" width="810" height="34" fill="#F3F7FA"/>
+    <rect x="406" y="484" width="810" height="34" fill="#F3F7FA"/>
+    <text x="430" y="438" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{CHECK_1}}</text>
+    <text x="640" y="438" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RULE_1}}</text>
+    <text x="934" y="438" fill="#4295B6" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{STATUS_1}}</text>
+    <text x="1060" y="438" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{OWNER_1}}</text>
+    <text x="430" y="472" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{CHECK_2}}</text>
+    <text x="640" y="472" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RULE_2}}</text>
+    <text x="934" y="472" fill="#4295B6" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{STATUS_2}}</text>
+    <text x="1060" y="472" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{OWNER_2}}</text>
+    <text x="430" y="506" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{CHECK_3}}</text>
+    <text x="640" y="506" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RULE_3}}</text>
+    <text x="934" y="506" fill="#4295B6" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{STATUS_3}}</text>
+    <text x="1060" y="506" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{OWNER_3}}</text>
+  </g>
+
+  <g id="bottom-summary">
+    <rect x="64" y="586" width="1152" height="50" rx="4" fill="#0B2F3A"/>
+    <text x="92" y="618" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16">管理结论：{{MANAGEMENT_SUMMARY}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

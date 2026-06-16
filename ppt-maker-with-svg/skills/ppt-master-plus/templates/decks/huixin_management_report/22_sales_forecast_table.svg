@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">22 / SALES FORECAST TABLE</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="108" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="146" fill="#4295B6" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="forecast-kpis">
+    <rect x="64" y="176" width="260" height="92" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="88" y="208" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">年度目标</text>
+    <text x="88" y="252" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{YEAR_TARGET}}</text>
+    <rect x="344" y="176" width="260" height="92" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="368" y="208" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">预测达成</text>
+    <text x="368" y="252" fill="#4295B6" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{FORECAST_TOTAL}}</text>
+    <rect x="624" y="176" width="260" height="92" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="648" y="208" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">缺口金额</text>
+    <text x="648" y="252" fill="#D8665B" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{SALES_GAP}}</text>
+    <rect x="904" y="176" width="312" height="92" rx="4" fill="#0B2F3A"/>
+    <text x="928" y="208" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="13">管理判断</text>
+    <text x="928" y="250" fill="#B0D776" font-family="Microsoft YaHei" font-size="28" font-weight="700">{{COMMIT_STATUS}}</text>
+  </g>
+
+  <g id="forecast-table">
+    <rect x="64" y="304" width="560" height="286" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="64" y="304" width="560" height="36" fill="#4295B6"/>
+    <text x="86" y="328" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">月份</text>
+    <text x="176" y="328" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">目标</text>
+    <text x="270" y="328" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">实际</text>
+    <text x="364" y="328" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">预测</text>
+    <text x="468" y="328" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">偏差</text>
+    <rect x="64" y="340" width="560" height="34" fill="#F3F7FA"/>
+    <rect x="64" y="408" width="560" height="34" fill="#F3F7FA"/>
+    <rect x="64" y="476" width="560" height="34" fill="#F3F7FA"/>
+    <rect x="64" y="544" width="560" height="34" fill="#F3F7FA"/>
+    <text x="86" y="362" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{MONTH_1}}</text>
+    <text x="176" y="362" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TARGET_1}}</text>
+    <text x="270" y="362" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTUAL_1}}</text>
+    <text x="364" y="362" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{FORECAST_1}}</text>
+    <text x="468" y="362" fill="#D8665B" font-family="Microsoft YaHei" font-size="13">{{GAP_1}}</text>
+    <text x="86" y="396" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{MONTH_2}}</text>
+    <text x="176" y="396" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TARGET_2}}</text>
+    <text x="270" y="396" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTUAL_2}}</text>
+    <text x="364" y="396" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{FORECAST_2}}</text>
+    <text x="468" y="396" fill="#D8665B" font-family="Microsoft YaHei" font-size="13">{{GAP_2}}</text>
+    <text x="86" y="430" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{MONTH_3}}</text>
+    <text x="176" y="430" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TARGET_3}}</text>
+    <text x="270" y="430" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTUAL_3}}</text>
+    <text x="364" y="430" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{FORECAST_3}}</text>
+    <text x="468" y="430" fill="#D8665B" font-family="Microsoft YaHei" font-size="13">{{GAP_3}}</text>
+    <text x="86" y="464" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{MONTH_4}}</text>
+    <text x="176" y="464" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TARGET_4}}</text>
+    <text x="270" y="464" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTUAL_4}}</text>
+    <text x="364" y="464" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{FORECAST_4}}</text>
+    <text x="468" y="464" fill="#D8665B" font-family="Microsoft YaHei" font-size="13">{{GAP_4}}</text>
+    <text x="86" y="498" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{MONTH_5}}</text>
+    <text x="176" y="498" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TARGET_5}}</text>
+    <text x="270" y="498" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTUAL_5}}</text>
+    <text x="364" y="498" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{FORECAST_5}}</text>
+    <text x="468" y="498" fill="#D8665B" font-family="Microsoft YaHei" font-size="13">{{GAP_5}}</text>
+    <text x="86" y="532" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{MONTH_6}}</text>
+    <text x="176" y="532" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TARGET_6}}</text>
+    <text x="270" y="532" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTUAL_6}}</text>
+    <text x="364" y="532" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{FORECAST_6}}</text>
+    <text x="468" y="532" fill="#D8665B" font-family="Microsoft YaHei" font-size="13">{{GAP_6}}</text>
+  </g>
+
+  <g id="forecast-chart">
+    <rect x="656" y="304" width="560" height="286" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="684" y="340" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">目标与预测走势</text>
+    <line x1="704" y1="530" x2="1168" y2="530" stroke="#D2D3D4"/>
+    <line x1="704" y1="374" x2="704" y2="530" stroke="#D2D3D4"/>
+    <polyline points="730,502 812,484 894,456 976,434 1058,408 1140,386" fill="none" stroke="#4295B6" stroke-width="4"/>
+    <polyline points="730,516 812,498 894,474 976,452 1058,438 1140,420" fill="none" stroke="#B0D776" stroke-width="4"/>
+    <circle cx="730" cy="502" r="5" fill="#4295B6"/>
+    <circle cx="812" cy="484" r="5" fill="#4295B6"/>
+    <circle cx="894" cy="456" r="5" fill="#4295B6"/>
+    <circle cx="976" cy="434" r="5" fill="#4295B6"/>
+    <circle cx="1058" cy="408" r="5" fill="#4295B6"/>
+    <circle cx="1140" cy="386" r="5" fill="#4295B6"/>
+    <text x="730" y="555" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_1}}</text>
+    <text x="812" y="555" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_2}}</text>
+    <text x="894" y="555" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_3}}</text>
+    <text x="976" y="555" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_4}}</text>
+    <text x="1058" y="555" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_5}}</text>
+    <text x="1140" y="555" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_6}}</text>
+    <rect x="970" y="326" width="16" height="4" fill="#4295B6"/>
+    <text x="996" y="333" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">预测</text>
+    <rect x="1048" y="326" width="16" height="4" fill="#B0D776"/>
+    <text x="1074" y="333" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">目标</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

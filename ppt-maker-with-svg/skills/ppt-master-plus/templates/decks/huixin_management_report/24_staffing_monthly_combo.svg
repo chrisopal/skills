@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">24 / STAFFING MONTHLY COMBO</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="108" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="146" fill="#4295B6" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="staffing-combo-chart">
+    <rect x="64" y="178" width="760" height="380" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="92" y="214" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">月度人员变化柱状折线图</text>
+    <line x1="112" y1="504" x2="782" y2="504" stroke="#D2D3D4"/>
+    <line x1="112" y1="250" x2="112" y2="504" stroke="#D2D3D4"/>
+    <rect x="154" y="420" width="20" height="84" fill="#B0D776"/>
+    <rect x="180" y="462" width="20" height="42" fill="#D8665B"/>
+    <rect x="254" y="404" width="20" height="100" fill="#B0D776"/>
+    <rect x="280" y="470" width="20" height="34" fill="#D8665B"/>
+    <rect x="354" y="386" width="20" height="118" fill="#B0D776"/>
+    <rect x="380" y="452" width="20" height="52" fill="#D8665B"/>
+    <rect x="454" y="412" width="20" height="92" fill="#B0D776"/>
+    <rect x="480" y="474" width="20" height="30" fill="#D8665B"/>
+    <rect x="554" y="396" width="20" height="108" fill="#B0D776"/>
+    <rect x="580" y="456" width="20" height="48" fill="#D8665B"/>
+    <rect x="654" y="372" width="20" height="132" fill="#B0D776"/>
+    <rect x="680" y="466" width="20" height="38" fill="#D8665B"/>
+    <polyline points="178,338 278,326 378,318 478,306 578,292 678,278" fill="none" stroke="#4295B6" stroke-width="4"/>
+    <circle cx="178" cy="338" r="5" fill="#4295B6"/>
+    <circle cx="278" cy="326" r="5" fill="#4295B6"/>
+    <circle cx="378" cy="318" r="5" fill="#4295B6"/>
+    <circle cx="478" cy="306" r="5" fill="#4295B6"/>
+    <circle cx="578" cy="292" r="5" fill="#4295B6"/>
+    <circle cx="678" cy="278" r="5" fill="#4295B6"/>
+    <text x="178" y="532" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_1}}</text>
+    <text x="278" y="532" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_2}}</text>
+    <text x="378" y="532" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_3}}</text>
+    <text x="478" y="532" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_4}}</text>
+    <text x="578" y="532" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_5}}</text>
+    <text x="678" y="532" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{MONTH_6}}</text>
+    <rect x="582" y="206" width="12" height="12" fill="#B0D776"/>
+    <text x="602" y="217" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">入职</text>
+    <rect x="642" y="206" width="12" height="12" fill="#D8665B"/>
+    <text x="662" y="217" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">离职</text>
+    <rect x="702" y="210" width="18" height="4" fill="#4295B6"/>
+    <text x="728" y="217" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">期末人数</text>
+  </g>
+
+  <g id="staffing-metrics">
+    <rect x="856" y="178" width="360" height="380" rx="6" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="884" y="214" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">人员变化摘要</text>
+    <rect x="884" y="242" width="304" height="74" fill="#FFFFFF"/>
+    <text x="908" y="270" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">期末人数</text>
+    <text x="908" y="302" fill="#4295B6" font-family="Microsoft YaHei" font-size="28" font-weight="700">{{HEADCOUNT_END}}</text>
+    <rect x="884" y="334" width="304" height="74" fill="#FFFFFF"/>
+    <text x="908" y="362" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">净增人数</text>
+    <text x="908" y="394" fill="#B0D776" font-family="Microsoft YaHei" font-size="28" font-weight="700">{{NET_CHANGE}}</text>
+    <rect x="884" y="426" width="304" height="90" fill="#FFFFFF"/>
+    <text x="908" y="454" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">关键组织动作</text>
+    <text x="908" y="486" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{ORG_ACTION}}</text>
+  </g>
+
+  <g id="monthly-table">
+    <rect x="64" y="586" width="1152" height="52" fill="#0B2F3A"/>
+    <text x="92" y="618" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16">管理关注：{{MANAGEMENT_FOCUS}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

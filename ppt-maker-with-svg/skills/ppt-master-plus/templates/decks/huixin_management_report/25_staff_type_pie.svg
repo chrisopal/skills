@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">25 / STAFF TYPE PIE</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="108" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="146" fill="#4295B6" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="type-pie">
+    <rect x="64" y="178" width="486" height="382" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="92" y="214" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">人员类型结构</text>
+    <path d="M307 372 L307 232 A140 140 0 0 1 440 329 Z" fill="#4295B6"/>
+    <path d="M307 372 L440 329 A140 140 0 0 1 350 505 Z" fill="#B0D776"/>
+    <path d="M307 372 L350 505 A140 140 0 0 1 188 468 Z" fill="#D2D3D4"/>
+    <path d="M307 372 L188 468 A140 140 0 0 1 176 290 Z" fill="#0B2F3A"/>
+    <path d="M307 372 L176 290 A140 140 0 0 1 307 232 Z" fill="#D8665B"/>
+    <circle cx="307" cy="372" r="62" fill="#FFFFFF"/>
+    <text x="307" y="360" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">总人数</text>
+    <text x="307" y="398" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="32" font-weight="700">{{TOTAL_STAFF}}</text>
+    <rect x="430" y="454" width="12" height="12" fill="#4295B6"/>
+    <text x="450" y="465" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{TYPE_1}}</text>
+    <rect x="430" y="482" width="12" height="12" fill="#B0D776"/>
+    <text x="450" y="493" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{TYPE_2}}</text>
+    <rect x="430" y="510" width="12" height="12" fill="#D2D3D4"/>
+    <text x="450" y="521" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{TYPE_3}}</text>
+  </g>
+
+  <g id="type-table">
+    <rect x="582" y="178" width="634" height="278" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="582" y="178" width="634" height="36" fill="#4295B6"/>
+    <text x="608" y="202" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">人员类型</text>
+    <text x="802" y="202" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">人数</text>
+    <text x="920" y="202" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">占比</text>
+    <text x="1036" y="202" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">管理动作</text>
+    <rect x="582" y="214" width="634" height="40" fill="#F3F7FA"/>
+    <rect x="582" y="294" width="634" height="40" fill="#F3F7FA"/>
+    <rect x="582" y="374" width="634" height="40" fill="#F3F7FA"/>
+    <text x="608" y="239" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TYPE_1}}</text>
+    <text x="802" y="239" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_1_COUNT}}</text>
+    <text x="920" y="239" fill="#4295B6" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{TYPE_1_RATIO}}</text>
+    <text x="1036" y="239" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_1_ACTION}}</text>
+    <text x="608" y="279" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TYPE_2}}</text>
+    <text x="802" y="279" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_2_COUNT}}</text>
+    <text x="920" y="279" fill="#4295B6" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{TYPE_2_RATIO}}</text>
+    <text x="1036" y="279" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_2_ACTION}}</text>
+    <text x="608" y="319" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TYPE_3}}</text>
+    <text x="802" y="319" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_3_COUNT}}</text>
+    <text x="920" y="319" fill="#4295B6" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{TYPE_3_RATIO}}</text>
+    <text x="1036" y="319" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_3_ACTION}}</text>
+    <text x="608" y="359" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TYPE_4}}</text>
+    <text x="802" y="359" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_4_COUNT}}</text>
+    <text x="920" y="359" fill="#4295B6" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{TYPE_4_RATIO}}</text>
+    <text x="1036" y="359" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_4_ACTION}}</text>
+    <text x="608" y="399" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TYPE_5}}</text>
+    <text x="802" y="399" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_5_COUNT}}</text>
+    <text x="920" y="399" fill="#4295B6" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{TYPE_5_RATIO}}</text>
+    <text x="1036" y="399" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{TYPE_5_ACTION}}</text>
+  </g>
+
+  <g id="staffing-actions">
+    <rect x="582" y="486" width="634" height="74" rx="4" fill="#0B2F3A"/>
+    <text x="610" y="516" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16" font-weight="700">结构判断</text>
+    <text x="610" y="544" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14">{{STRUCTURE_JUDGEMENT}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

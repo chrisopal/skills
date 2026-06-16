@@ -60,8 +60,11 @@ Consume the writer's `正文插图` brief. Choose or generate an inline illustra
 - layer diagram: model, context, tool, workflow, governance
 - comparison diagram: demo vs production, tool call vs responsibility boundary
 - case map: scenario -> capability -> integration -> risk -> outcome
+- high-fidelity product prototype: realistic enterprise UI or agent console showing how a named assistant would actually appear in use
 
 Do not add decorative images.
+
+If an article includes a named enterprise assistant or workflow screen and no real screenshot is available, prefer generating a `高保真系统原型图` in addition to any abstract structure diagram. The prototype should look like a believable SaaS product screenshot or Figma-level UI mockup, not a poster.
 
 Generate accepted inline illustrations with the `imagegen` skill by default. Prefer this sequence:
 
@@ -69,6 +72,16 @@ Generate accepted inline illustrations with the `imagegen` skill by default. Pre
 2. Save/copy the selected image into the project workspace, usually `assets/wechat/`.
 3. If exact Chinese labels are needed, overlay them locally after generation.
 4. Verify the final image visually before uploading to WeChat.
+
+For high-fidelity prototypes:
+
+1. Ask imagegen for a realistic enterprise software UI screenshot-style image.
+2. Use Chinese UI labels whenever readability is important.
+3. Make planning, execution, approval, and trace areas visible if the article discusses them.
+4. Keep the visual tied to the concrete scenario in the article, such as 售后处置助手 or 投标助手.
+5. If the full screenshot is too dense for mobile reading, crop or zoom the image locally to a focused version that keeps the key working area legible.
+
+Prototype captions should state what the interface shows, not how it was made.
 
 Do not use hand-drawn PIL/SVG/HTML diagrams as final assets unless imagegen fails or the user explicitly asks for deterministic code-native diagrams. If fallback is used, report the fallback reason in the audit package.
 

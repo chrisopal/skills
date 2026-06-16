@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
+  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <image href="images/huixin_logo_light.png" x="1036" y="30" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="72" y="70" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#4295B6">系统架构总览</text>
+  <text x="72" y="124" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700" fill="#0B2F3A">多系统一体化集成总览</text>
+  <text x="72" y="160" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#4295B6">跨系统流程、主数据与业务执行数据协同闭环</text>
+
+  <g id="main-architecture" data-role="architecture" data-bbox="60,188,1160,330" transform="translate(0 32)">
+    <rect x="60" y="156" width="820" height="330" rx="14" fill="#F8FAFC" stroke="#D2D3D4"/>
+    <text x="116" y="188" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700" fill="#111111">上游系统</text>
+
+    <g id="upstream-systems" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">
+      <rect x="78" y="210" width="162" height="62" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <rect x="96" y="228" width="38" height="28" rx="3" fill="#EFF6FA" stroke="#65737E" stroke-width="2"/>
+      <polyline points="101,248 109,242 116,246 126,235 132,239" fill="none" stroke="#65737E" stroke-width="2"/>
+      <text x="150" y="247" font-size="16" font-weight="700" fill="#111111">外部系统A</text>
+      <text x="150" y="267" font-size="11" fill="#6B7280">订单 / 主数据</text>
+
+      <rect x="78" y="286" width="162" height="62" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <path d="M98 301 L122 301 L136 315 L136 333 L98 333 Z" fill="#EFF6FA" stroke="#65737E" stroke-width="2"/>
+      <path d="M122 301 L122 315 L136 315" fill="none" stroke="#65737E" stroke-width="2"/>
+      <circle cx="131" cy="331" r="8" fill="#FFFFFF" stroke="#65737E" stroke-width="2"/>
+      <text x="150" y="323" font-size="16" font-weight="700" fill="#111111">外部系统B</text>
+      <text x="150" y="343" font-size="11" fill="#6B7280">设计 / 标准 / 方案</text>
+
+      <rect x="78" y="362" width="162" height="62" rx="8" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <circle cx="118" cy="387" r="24" fill="#EFF6FA" stroke="#65737E" stroke-width="2"/>
+      <path d="M104 387 Q118 374 132 387" fill="none" stroke="#65737E" stroke-width="3"/>
+      <path d="M110 395 Q118 388 126 395" fill="none" stroke="#65737E" stroke-width="3"/>
+      <circle cx="118" cy="402" r="3" fill="#65737E"/>
+      <text x="150" y="399" font-size="16" font-weight="700" fill="#111111">现场系统C</text>
+      <text x="150" y="419" font-size="11" fill="#6B7280">执行 / 参数 / 状态</text>
+    </g>
+
+    <g id="integration-arrows" stroke="#4295B6" stroke-width="2.4" fill="none">
+      <line x1="246" y1="240" x2="312" y2="240"/>
+      <polygon points="312,240 300,234 300,246" fill="#4295B6"/>
+      <line x1="246" y1="316" x2="312" y2="316"/>
+      <polygon points="312,316 300,310 300,322" fill="#4295B6"/>
+      <line x1="246" y1="392" x2="312" y2="392" stroke-dasharray="5 5"/>
+      <polygon points="312,392 300,386 300,398" fill="#4295B6"/>
+    </g>
+
+    <text x="266" y="224" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">业务主数据</text>
+    <text x="266" y="300" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">结构/规则</text>
+    <text x="266" y="376" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">执行数据</text>
+
+    <rect x="320" y="188" width="532" height="256" rx="14" fill="#FFFFFF" stroke="#4295B6" stroke-width="1.5"/>
+
+    <g id="plm-core" data-role="platform" data-bbox="342,204,226,218" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">
+      <rect x="342" y="204" width="226" height="218" rx="10" fill="#F6FBFE" stroke="#AFC8D4"/>
+      <rect x="342" y="204" width="226" height="38" rx="10" fill="#4295B6"/>
+      <text x="456" y="230" font-size="19" font-weight="700" fill="#FFFFFF" text-anchor="middle">核心系统一</text>
+      <g font-size="14" font-weight="700" fill="#111111">
+        <rect x="362" y="258" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#AFC8D4"/>
+        <text x="406" y="281" text-anchor="middle">业务对象</text>
+        <rect x="460" y="258" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#AFC8D4"/>
+        <text x="504" y="281" text-anchor="middle">主数据</text>
+        <rect x="362" y="308" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#AFC8D4"/>
+        <text x="406" y="331" text-anchor="middle">规则配置</text>
+        <rect x="460" y="308" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#AFC8D4"/>
+        <text x="504" y="331" text-anchor="middle">变更控制</text>
+        <rect x="362" y="358" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#AFC8D4"/>
+        <text x="406" y="381" text-anchor="middle">流程发布</text>
+        <rect x="460" y="358" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#AFC8D4"/>
+        <text x="504" y="381" text-anchor="middle">版本发布</text>
+      </g>
+    </g>
+
+    <g id="qms-core" data-role="platform" data-bbox="604,204,226,218" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">
+      <rect x="604" y="204" width="226" height="218" rx="10" fill="#F9FCF4" stroke="#B0D776"/>
+      <rect x="604" y="204" width="226" height="38" rx="10" fill="#6EAF45"/>
+      <text x="716" y="230" font-size="19" font-weight="700" fill="#FFFFFF" text-anchor="middle">核心系统二</text>
+      <g font-size="14" font-weight="700" fill="#111111">
+        <rect x="624" y="258" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#B0D776"/>
+        <text x="668" y="281" text-anchor="middle">业务策划</text>
+        <rect x="722" y="258" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#B0D776"/>
+        <text x="766" y="281" text-anchor="middle">执行标准</text>
+        <rect x="624" y="308" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#B0D776"/>
+        <text x="668" y="331" text-anchor="middle">业务执行</text>
+        <rect x="722" y="308" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#B0D776"/>
+        <text x="766" y="331" text-anchor="middle">过程控制</text>
+        <rect x="624" y="358" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#B0D776"/>
+        <text x="668" y="381" text-anchor="middle">异常闭环</text>
+        <rect x="722" y="358" width="88" height="36" rx="7" fill="#FFFFFF" stroke="#B0D776"/>
+        <text x="766" y="381" text-anchor="middle">追溯分析</text>
+      </g>
+    </g>
+
+    <g id="plm-qms-sync" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">
+      <line x1="570" y1="292" x2="602" y2="292" stroke="#4295B6" stroke-width="3"/>
+      <polygon points="602,292 590,286 590,298" fill="#4295B6"/>
+      <line x1="602" y1="340" x2="570" y2="340" stroke="#6EAF45" stroke-width="3"/>
+      <polygon points="570,340 582,334 582,346" fill="#6EAF45"/>
+      <text x="586" y="270" font-size="10" fill="#4B5563" text-anchor="middle">主数据/规则/标准</text>
+      <text x="586" y="372" font-size="10" fill="#4B5563" text-anchor="middle">执行问题/变更反馈</text>
+    </g>
+  </g>
+
+  <g id="right-execution" data-role="right-system-groups" data-bbox="920,206,300,282" transform="translate(0 32)" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">
+    <rect x="940" y="184" width="258" height="104" rx="10" fill="#FBFDFF" stroke="#4295B6" stroke-dasharray="4 4"/>
+    <rect x="1004" y="170" width="96" height="30" rx="15" fill="#4295B6"/>
+    <text x="1052" y="191" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">业务协同</text>
+    <g font-size="12" font-weight="700" fill="#111111">
+      <rect x="958" y="210" width="48" height="56" rx="7" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="982" y="244" text-anchor="middle">计划</text>
+      <rect x="1020" y="210" width="48" height="56" rx="7" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="1044" y="244" text-anchor="middle">执行</text>
+      <rect x="1082" y="210" width="48" height="56" rx="7" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="1106" y="244" text-anchor="middle">审核</text>
+      <rect x="1144" y="210" width="38" height="56" rx="7" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="1163" y="244" text-anchor="middle">变更</text>
+    </g>
+
+    <rect x="940" y="332" width="258" height="104" rx="10" fill="#FCFFF8" stroke="#B0D776" stroke-dasharray="4 4"/>
+    <rect x="1004" y="318" width="96" height="30" rx="15" fill="#6EAF45"/>
+    <text x="1052" y="339" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="middle">数据闭环</text>
+    <g font-size="12" font-weight="700" fill="#111111">
+      <rect x="958" y="358" width="48" height="56" rx="7" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="982" y="392" text-anchor="middle">采集</text>
+      <rect x="1020" y="358" width="48" height="56" rx="7" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="1044" y="392" text-anchor="middle">校验</text>
+      <rect x="1082" y="358" width="48" height="56" rx="7" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="1106" y="392" text-anchor="middle">分析</text>
+      <rect x="1144" y="358" width="38" height="56" rx="7" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="1163" y="392" text-anchor="middle">闭环</text>
+    </g>
+
+    <line x1="852" y1="246" x2="930" y2="246" stroke="#4295B6" stroke-width="2.3"/>
+    <polygon points="930,246 918,240 918,252" fill="#4295B6"/>
+    <line x1="930" y1="384" x2="852" y2="384" stroke="#6EAF45" stroke-width="2.3" stroke-dasharray="5 5"/>
+    <polygon points="852,384 864,378 864,390" fill="#6EAF45"/>
+    <text x="888" y="228" font-size="12" fill="#4B5563">业务输出</text>
+    <text x="888" y="370" font-size="12" fill="#4B5563">数据反馈</text>
+  </g>
+
+  <g id="legend" transform="translate(0 18)" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">
+    <line x1="452" y1="506" x2="492" y2="506" stroke="#4295B6" stroke-width="3"/>
+    <polygon points="492,506 482,501 482,511" fill="#4295B6"/>
+    <text x="506" y="511">主数据流</text>
+    <line x1="620" y1="506" x2="660" y2="506" stroke="#6EAF45" stroke-width="3"/>
+    <polygon points="660,506 650,501 650,511" fill="#6EAF45"/>
+    <text x="674" y="511">闭环反馈流</text>
+    <line x1="780" y1="506" x2="820" y2="506" stroke="#4295B6" stroke-width="2" stroke-dasharray="5 5"/>
+    <polygon points="820,506 810,501 810,511" fill="#4295B6"/>
+    <text x="834" y="511">现场数据反馈</text>
+  </g>
+
+  <g id="process-flow" data-role="process" data-bbox="60,542,1160,110" font-family="PingFang SC, Microsoft YaHei, Arial, sans-serif">
+    <rect x="60" y="542" width="1160" height="110" rx="10" fill="#FFFFFF" stroke="#D2D3D4" stroke-dasharray="4 4"/>
+    <text x="86" y="572" font-size="16" font-weight="700" fill="#111111">端到端业务流程</text>
+    <g font-size="12" font-weight="700" fill="#111111">
+      <rect x="86" y="586" width="92" height="48" rx="8" fill="#F7FBFE" stroke="#AFC8D4"/>
+      <circle cx="102" cy="602" r="10" fill="#4295B6"/><text x="102" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">1</text>
+      <text x="132" y="613" text-anchor="middle">业务触发</text>
+
+      <rect x="210" y="586" width="92" height="48" rx="8" fill="#F7FBFE" stroke="#AFC8D4"/>
+      <circle cx="226" cy="602" r="10" fill="#4295B6"/><text x="226" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">2</text>
+      <text x="256" y="613" text-anchor="middle">数据建模</text>
+
+      <rect x="334" y="586" width="92" height="48" rx="8" fill="#F7FBFE" stroke="#AFC8D4"/>
+      <circle cx="350" cy="602" r="10" fill="#4295B6"/><text x="350" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">3</text>
+      <text x="380" y="613" text-anchor="middle">规则发布</text>
+
+      <rect x="458" y="586" width="92" height="48" rx="8" fill="#FCFFF8" stroke="#B0D776"/>
+      <circle cx="474" cy="602" r="10" fill="#6EAF45"/><text x="474" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">4</text>
+      <text x="504" y="613" text-anchor="middle">协同计划</text>
+
+      <rect x="582" y="586" width="92" height="48" rx="8" fill="#FCFFF8" stroke="#B0D776"/>
+      <circle cx="598" cy="602" r="10" fill="#6EAF45"/><text x="598" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">5</text>
+      <text x="628" y="613" text-anchor="middle">业务执行</text>
+
+      <rect x="706" y="586" width="92" height="48" rx="8" fill="#F7FBFE" stroke="#AFC8D4"/>
+      <circle cx="722" cy="602" r="10" fill="#4295B6"/><text x="722" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">6</text>
+      <text x="752" y="613" text-anchor="middle">问题反馈</text>
+
+      <rect x="830" y="586" width="92" height="48" rx="8" fill="#FCFFF8" stroke="#B0D776"/>
+      <circle cx="846" cy="602" r="10" fill="#6EAF45"/><text x="846" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">7</text>
+      <text x="876" y="613" text-anchor="middle">闭环处理</text>
+
+      <rect x="954" y="586" width="92" height="48" rx="8" fill="#F7FBFE" stroke="#AFC8D4"/>
+      <circle cx="970" cy="602" r="10" fill="#4295B6"/><text x="970" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">8</text>
+      <text x="1000" y="613" text-anchor="middle">变更回写</text>
+
+      <rect x="1078" y="586" width="92" height="48" rx="8" fill="#FCFFF8" stroke="#B0D776"/>
+      <circle cx="1094" cy="602" r="10" fill="#6EAF45"/><text x="1094" y="607" font-size="11" fill="#FFFFFF" text-anchor="middle">9</text>
+      <text x="1124" y="613" text-anchor="middle">数据看板</text>
+    </g>
+    <g fill="#4295B6">
+      <polygon points="198,610 186,604 186,616"/>
+      <polygon points="322,610 310,604 310,616"/>
+      <polygon points="446,610 434,604 434,616"/>
+      <polygon points="570,610 558,604 558,616"/>
+      <polygon points="694,610 682,604 682,616"/>
+      <polygon points="818,610 806,604 806,616"/>
+      <polygon points="942,610 930,604 930,616"/>
+      <polygon points="1066,610 1054,604 1054,616"/>
+    </g>
+  </g>
+
+  <polygon points="1194,532 1280,488 1280,565 1194,610" fill="#0F95B6"/>
+  <polygon points="1030,720 1280,560 1280,640 1154,720" fill="#B0D776"/>
+  <polygon points="1214,658 1280,620 1280,650 1244,672" fill="#D2D3D4"/>
+</svg>

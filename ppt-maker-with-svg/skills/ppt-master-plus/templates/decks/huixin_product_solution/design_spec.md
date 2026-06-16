@@ -3,7 +3,7 @@ deck_id: huixin_product_solution
 kind: deck
 summary: 慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示.
 canvas_format: ppt169
-page_count: 20
+page_count: 21
 primary_color: "#4295B6"
 ---
 
@@ -15,7 +15,7 @@ primary_color: "#4295B6"
 | --- | --- |
 | **Template Name** | huixin_product_solution |
 | **Display Name** | 慧新产品解决方案模板 |
-| **Use Cases** | 软件产品、数字化平台、智能制造解决方案、AI平台、行业应用方案展示、产品功能讲解、系统架构汇报、客户案例介绍 |
+| **Use Cases** | 软件产品、数字化平台、智能制造解决方案、AI平台、行业应用方案展示、产品功能讲解、系统架构汇报、跨系统集成方案、客户案例介绍 |
 | **Design Tone** | Clean, modular, enterprise software, platform-oriented |
 | **Theme Mode** | Product solution theme based on Huixin logo colors |
 
@@ -76,7 +76,7 @@ Usage rules:
 
 Every generated page that uses this deck should include at least one visible Huixin brand-geometry cue beyond the logo: slanted bars, angled module tabs, diagonal separators, segmented chevrons, or parallelogram highlights. These cues are not decorative extras; they are the deck's icon system and should replace generic auto-generated icons wherever possible.
 
-## VI. Page Structure
+## VI. Layout Structure
 
 ### Common Layout
 
@@ -94,7 +94,7 @@ Every generated page that uses this deck should include at least one visible Hui
 3. Favor architecture clarity over decorative intensity.
 4. Keep information density moderate on ordinary content pages, but architecture and process pages should be visually full and module-rich.
 5. Express platformization through layers, reusable components, flows, and scalable deployment options.
-6. Product-solution decks should include more than one architecture type when the source content supports it: business architecture, functional architecture, system/technical architecture, data architecture, integration architecture, technical route, deployment architecture, swimlane process flow, dense business process diagram, and implementation stage plan should be distinct page forms, not one repeated card grid.
+6. Product-solution decks should include more than one architecture type when the source content supports it: business architecture, functional architecture, system/technical architecture, data architecture, integration architecture, multi-system integration overview, technical route, deployment architecture, swimlane process flow, dense business process diagram, and implementation stage plan should be distinct page forms, not one repeated card grid.
 7. When no real screenshots are supplied, use the `16_feature_detail_screenshot.svg` empty-screen frame rather than inventing fake UI details. The placeholder should be visually polished and clearly replaceable.
 
 ### Architecture Density Contract
@@ -119,6 +119,7 @@ For industrial software solution decks, use the dedicated complex diagram pages 
 5. **Functional architecture (`12_function_architecture.svg`)**: use module matrices and layered platform bands for application modules, API middle platform, common platform, and data acquisition.
 6. **Data architecture (`14_data_architecture.svg`)**: use governance framework rows for standards, quality, security, organization, workflow, tools, portal, functions, data scope, and foundation. The page should feel like a full data-management framework, not only source-to-dashboard flow.
 7. **Implementation stage plan (`20_implementation_stage_plan.svg`)**: use this when the source describes phased delivery, rollout roadmap, implementation planning, product deployment stages, or digital transformation implementation steps. Reference images may inform the four-stage planning rhythm only; keep Huixin's clean product-solution style and use product-solution content, not the reference page's text.
+8. **Multi-system integration overview (`21_multi_system_integration_overview.svg`)**: use this when the source asks for an overview of two or more systems working together, such as QMS/PLM, MES/WMS, ERP/MES, SRM/PLM, or any platform-to-platform integration. Keep the page abstract at template level: upstream systems, two core systems, right-side execution / data-closed-loop groups, and bottom end-to-end process can be specialized by downstream content, but the global template must not hard-code a specific product pair.
 
 ### Default AI Image and Screenshot Policy
 
@@ -192,6 +193,11 @@ When using this deck, Strategist should normally include image resources unless 
 ### 20. Implementation Stage Plan (`20_implementation_stage_plan.svg`)
 - Complex four-stage implementation planning page with phase goals, key focus items, build strategies, and deliverables. Use for roadmap, project rollout, implementation planning, and phased product deployment.
 
+### 21. Multi-System Integration Overview (`21_multi_system_integration_overview.svg`)
+- Generic high-density integration overview page for showing two or more business systems as a coordinated architecture.
+- Template-level labels remain abstract: upstream system group, core system one, core system two, business collaboration, data closed loop, and end-to-end process.
+- Use this page when the requested content is a cross-system integration summary rather than a single technical stack or dark enterprise system map.
+
 ## VIII. SVG Page Roster
 
 | File | Role | Description |
@@ -216,6 +222,7 @@ When using this deck, Strategist should normally include image resources unless 
 | `18_case_study_triptych.svg` | case_study | Three-part customer case: pain, solution, value |
 | `19_business_process_diagram.svg` | business_process_diagram | Dense generic business process diagram with main path, branches and loopbacks |
 | `20_implementation_stage_plan.svg` | implementation_stage_plan | Complex phased implementation plan with goals, focus items, strategies and deliverables |
+| `21_multi_system_integration_overview.svg` | multi_system_integration_overview | Generic two-or-more-system integration overview with upstream systems, dual core systems, execution/data loop groups and end-to-end process |
 
 ## IX. Layout Modes
 
@@ -223,7 +230,7 @@ When using this deck, Strategist should normally include image resources unless 
 | --- | --- |
 | **Solution Pitch** | cover → pain → overview → architecture → value |
 | **Product Deep Dive** | overview → architecture → capabilities → technical route → deployment |
-| **Architecture Deep Dive** | business architecture → function architecture → system/technical architecture → data architecture → integration architecture → deployment architecture |
+| **Architecture Deep Dive** | business architecture → function architecture → system/technical architecture → data architecture → multi-system integration overview → integration architecture → deployment architecture |
 | **Industry Proposal** | pain → scenario → solution overview → business architecture → case study → customer value → implementation |
 | **Sales Enablement** | core capabilities and customer value pages with shorter copy and larger metrics |
 | **Case Selling** | pain → solution overview → feature detail screenshot → case study triptych → value → implementation |

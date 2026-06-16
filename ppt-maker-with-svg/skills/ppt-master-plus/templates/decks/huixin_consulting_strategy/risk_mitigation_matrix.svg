@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">RISK MITIGATION MATRIX</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="risk-table">
+    <rect x="64" y="224" width="1152" height="48" fill="#0B2F3A"/>
+    <text x="88" y="255" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">风险事项</text>
+    <text x="420" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">影响</text>
+    <text x="540" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">概率</text>
+    <text x="660" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">等级</text>
+    <text x="820" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">缓解动作</text>
+    <text x="1080" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">责任人</text>
+    <g font-family="Microsoft YaHei" font-size="14" fill="#0B2F3A">
+      <rect x="64" y="272" width="1152" height="64" fill="#F3F7FA" stroke="#D2D3D4"/>
+      <text x="88" y="310">{{RISK_1}}</text><text x="420" y="310" text-anchor="middle">高</text><text x="540" y="310" text-anchor="middle">中</text><rect x="628" y="290" width="64" height="26" rx="3" fill="#4295B6"/><text x="660" y="309" text-anchor="middle" fill="#FFFFFF">高</text><text x="730" y="310">{{MITIGATION_1}}</text><text x="1080" y="310" text-anchor="middle">{{OWNER_1}}</text>
+      <rect x="64" y="336" width="1152" height="64" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="88" y="374">{{RISK_2}}</text><text x="420" y="374" text-anchor="middle">中</text><text x="540" y="374" text-anchor="middle">中</text><rect x="628" y="354" width="64" height="26" rx="3" fill="#8EBED2"/><text x="660" y="373" text-anchor="middle" fill="#0B2F3A">中</text><text x="730" y="374">{{MITIGATION_2}}</text><text x="1080" y="374" text-anchor="middle">{{OWNER_2}}</text>
+      <rect x="64" y="400" width="1152" height="64" fill="#F3F7FA" stroke="#D2D3D4"/>
+      <text x="88" y="438">{{RISK_3}}</text><text x="420" y="438" text-anchor="middle">高</text><text x="540" y="438" text-anchor="middle">高</text><rect x="628" y="418" width="64" height="26" rx="3" fill="#0B2F3A"/><text x="660" y="437" text-anchor="middle" fill="#FFFFFF">重大</text><text x="730" y="438">{{MITIGATION_3}}</text><text x="1080" y="438" text-anchor="middle">{{OWNER_3}}</text>
+      <rect x="64" y="464" width="1152" height="64" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="88" y="502">{{RISK_4}}</text><text x="420" y="502" text-anchor="middle">中</text><text x="540" y="502" text-anchor="middle">低</text><rect x="628" y="482" width="64" height="26" rx="3" fill="#B0D776"/><text x="660" y="501" text-anchor="middle" fill="#0B2F3A">可控</text><text x="730" y="502">{{MITIGATION_4}}</text><text x="1080" y="502" text-anchor="middle">{{OWNER_4}}</text>
+    </g>
+  </g>
+  <rect x="64" y="566" width="1152" height="44" rx="4" fill="#0B2F3A"/>
+  <text x="88" y="594" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#FFFFFF">管理节奏：周度风险例会、月度升级闭环、重大事项进入管理层决策清单</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

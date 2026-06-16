@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">VALUE WATERFALL</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="waterfall" font-family="Microsoft YaHei">
+    <line x1="110" y1="562" x2="1010" y2="562" stroke="#D2D3D4"/>
+    <rect x="110" y="430" width="90" height="132" fill="#4B5563"/>
+    <text x="155" y="414" text-anchor="middle" font-size="17" font-weight="bold" fill="#0B2F3A">{{BASELINE}}</text>
+    <text x="155" y="590" text-anchor="middle" font-size="13" fill="#4B5563">基准</text>
+    <rect x="250" y="384" width="90" height="178" fill="#4295B6"/>
+    <text x="295" y="368" text-anchor="middle" font-size="17" font-weight="bold" fill="#0B2F3A">{{REVENUE_UP}}</text>
+    <text x="295" y="590" text-anchor="middle" font-size="13" fill="#4B5563">收入提升</text>
+    <rect x="390" y="338" width="90" height="224" fill="#4295B6"/>
+    <text x="435" y="322" text-anchor="middle" font-size="17" font-weight="bold" fill="#0B2F3A">{{COST_DOWN}}</text>
+    <text x="435" y="590" text-anchor="middle" font-size="13" fill="#4B5563">成本下降</text>
+    <rect x="530" y="290" width="90" height="272" fill="#B0D776"/>
+    <text x="575" y="274" text-anchor="middle" font-size="17" font-weight="bold" fill="#0B2F3A">{{EFFICIENCY_UP}}</text>
+    <text x="575" y="590" text-anchor="middle" font-size="13" fill="#4B5563">效率提升</text>
+    <rect x="670" y="250" width="90" height="312" fill="#B0D776"/>
+    <text x="715" y="234" text-anchor="middle" font-size="17" font-weight="bold" fill="#0B2F3A">{{RISK_DOWN}}</text>
+    <text x="715" y="590" text-anchor="middle" font-size="13" fill="#4B5563">风险降低</text>
+    <rect x="850" y="210" width="110" height="352" fill="#0B2F3A"/>
+    <text x="905" y="194" text-anchor="middle" font-size="20" font-weight="bold" fill="#0B2F3A">{{TARGET_VALUE}}</text>
+    <text x="905" y="590" text-anchor="middle" font-size="13" fill="#4B5563">目标价值</text>
+    <line x1="200" y1="430" x2="250" y2="430" stroke="#D2D3D4" stroke-dasharray="5 5"/>
+    <line x1="340" y1="384" x2="390" y2="384" stroke="#D2D3D4" stroke-dasharray="5 5"/>
+    <line x1="480" y1="338" x2="530" y2="338" stroke="#D2D3D4" stroke-dasharray="5 5"/>
+    <line x1="620" y1="290" x2="670" y2="290" stroke="#D2D3D4" stroke-dasharray="5 5"/>
+  </g>
+  <rect x="1030" y="230" width="186" height="318" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <text x="1054" y="272" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#0B2F3A">测算口径</text>
+  <text x="1054" y="324" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">范围：{{SCOPE}}</text>
+  <text x="1054" y="374" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">周期：{{PERIOD}}</text>
+  <text x="1054" y="424" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">假设：{{ASSUMPTION}}</text>
+  <rect x="1054" y="482" width="132" height="36" rx="4" fill="#B0D776"/>
+  <text x="1120" y="506" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">{{ROI}}</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

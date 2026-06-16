@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">BUSINESS CONTEXT</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="context-columns">
+    <rect x="64" y="220" width="340" height="330" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="64" y="220" width="340" height="50" fill="#4295B6"/>
+    <text x="88" y="252" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#FFFFFF">背景事实</text>
+    <text x="88" y="312" font-family="Microsoft YaHei" font-size="16" fill="#0B2F3A">• {{FACT_1}}</text>
+    <text x="88" y="360" font-family="Microsoft YaHei" font-size="16" fill="#0B2F3A">• {{FACT_2}}</text>
+    <text x="88" y="408" font-family="Microsoft YaHei" font-size="16" fill="#0B2F3A">• {{FACT_3}}</text>
+    <text x="88" y="490" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">证据来源：{{SOURCE}}</text>
+    <rect x="470" y="220" width="340" height="330" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="470" y="220" width="340" height="50" fill="#0B2F3A"/>
+    <text x="494" y="252" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#FFFFFF">管理层核心问题</text>
+    <rect x="496" y="304" width="286" height="54" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="518" y="338" font-family="Microsoft YaHei" font-size="16" fill="#0B2F3A">{{QUESTION_1}}</text>
+    <rect x="496" y="382" width="286" height="54" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="518" y="416" font-family="Microsoft YaHei" font-size="16" fill="#0B2F3A">{{QUESTION_2}}</text>
+    <rect x="496" y="460" width="286" height="54" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="518" y="494" font-family="Microsoft YaHei" font-size="16" fill="#0B2F3A">{{QUESTION_3}}</text>
+    <rect x="876" y="220" width="340" height="330" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="876" y="220" width="340" height="50" fill="#B0D776"/>
+    <text x="900" y="252" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#0B2F3A">本报告回答</text>
+    <text x="900" y="315" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">1. {{ANSWER_1}}</text>
+    <line x1="900" y1="340" x2="1188" y2="340" stroke="#D2D3D4"/>
+    <text x="900" y="390" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">2. {{ANSWER_2}}</text>
+    <line x1="900" y1="415" x2="1188" y2="415" stroke="#D2D3D4"/>
+    <text x="900" y="465" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">3. {{ANSWER_3}}</text>
+  </g>
+  <rect x="64" y="586" width="1152" height="44" rx="4" fill="#0B2F3A"/>
+  <text x="88" y="614" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#FFFFFF">咨询判断：{{CONTENT_AREA}}</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

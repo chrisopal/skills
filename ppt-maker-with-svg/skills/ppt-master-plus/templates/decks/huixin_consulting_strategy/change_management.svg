@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">CHANGE MANAGEMENT</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="change-pillars">
+    <rect x="84" y="234" width="250" height="300" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="84" y="234" width="250" height="56" fill="#4295B6"/>
+    <text x="209" y="270" text-anchor="middle" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#FFFFFF">培训赋能</text>
+    <text x="112" y="334" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">对象：{{TRAINING_AUDIENCE}}</text>
+    <text x="112" y="382" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">内容：{{TRAINING_TOPIC}}</text>
+    <text x="112" y="430" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">节奏：{{TRAINING_CADENCE}}</text>
+    <rect x="372" y="234" width="250" height="300" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="372" y="234" width="250" height="56" fill="#0B2F3A"/>
+    <text x="497" y="270" text-anchor="middle" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#FFFFFF">沟通机制</text>
+    <text x="400" y="334" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">信息：{{COMM_MESSAGE}}</text>
+    <text x="400" y="382" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">渠道：{{COMM_CHANNEL}}</text>
+    <text x="400" y="430" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">反馈：{{COMM_FEEDBACK}}</text>
+    <rect x="660" y="234" width="250" height="300" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="660" y="234" width="250" height="56" fill="#4295B6"/>
+    <text x="785" y="270" text-anchor="middle" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#FFFFFF">制度绩效</text>
+    <text x="688" y="334" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">制度：{{POLICY}}</text>
+    <text x="688" y="382" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">指标：{{PERFORMANCE}}</text>
+    <text x="688" y="430" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">激励：{{INCENTIVE}}</text>
+    <rect x="948" y="234" width="250" height="300" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="948" y="234" width="250" height="56" fill="#B0D776"/>
+    <text x="1073" y="270" text-anchor="middle" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#0B2F3A">组织能力</text>
+    <text x="976" y="334" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">岗位：{{ROLE_CAPABILITY}}</text>
+    <text x="976" y="382" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">流程：{{PROCESS_CAPABILITY}}</text>
+    <text x="976" y="430" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">运营：{{OPERATING_CAPABILITY}}</text>
+  </g>
+  <rect x="84" y="574" width="1114" height="42" rx="4" fill="#0B2F3A"/>
+  <text x="110" y="601" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#FFFFFF">变革成功标准：{{CHANGE_SUCCESS_CRITERIA}}</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

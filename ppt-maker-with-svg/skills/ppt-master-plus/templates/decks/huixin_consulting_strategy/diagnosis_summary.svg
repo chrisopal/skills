@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">DIAGNOSIS SUMMARY</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="diagnosis-cards">
+    <rect x="64" y="218" width="350" height="330" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="92" y="262" font-family="Microsoft YaHei" font-size="32" font-weight="bold" fill="#4295B6">01</text>
+    <text x="154" y="260" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#0B2F3A">{{FINDING_1}}</text>
+    <text x="92" y="314" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">证据：{{EVIDENCE_1}}</text>
+    <text x="92" y="366" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">影响：{{IMPACT_1}}</text>
+    <rect x="92" y="428" width="250" height="40" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="112" y="454" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">管理含义：{{IMPLICATION_1}}</text>
+    <rect x="465" y="218" width="350" height="330" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="493" y="262" font-family="Microsoft YaHei" font-size="32" font-weight="bold" fill="#4295B6">02</text>
+    <text x="555" y="260" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#0B2F3A">{{FINDING_2}}</text>
+    <text x="493" y="314" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">证据：{{EVIDENCE_2}}</text>
+    <text x="493" y="366" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">影响：{{IMPACT_2}}</text>
+    <rect x="493" y="428" width="250" height="40" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="513" y="454" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">管理含义：{{IMPLICATION_2}}</text>
+    <rect x="866" y="218" width="350" height="330" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="894" y="262" font-family="Microsoft YaHei" font-size="32" font-weight="bold" fill="#B0D776">03</text>
+    <text x="956" y="260" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#0B2F3A">{{FINDING_3}}</text>
+    <text x="894" y="314" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">证据：{{EVIDENCE_3}}</text>
+    <text x="894" y="366" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">影响：{{IMPACT_3}}</text>
+    <rect x="894" y="428" width="250" height="40" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="914" y="454" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">管理含义：{{IMPLICATION_3}}</text>
+  </g>
+  <rect x="64" y="584" width="1152" height="44" rx="4" fill="#0B2F3A"/>
+  <text x="88" y="612" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#FFFFFF">总体判断：{{CONTENT_AREA}}</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

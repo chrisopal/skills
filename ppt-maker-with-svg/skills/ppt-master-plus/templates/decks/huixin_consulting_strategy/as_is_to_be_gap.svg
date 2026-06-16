@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">AS-IS / TO-BE GAP</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="gap-table">
+    <rect x="64" y="224" width="330" height="48" fill="#4B5563"/>
+    <text x="229" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="18" font-weight="bold" fill="#FFFFFF">AS-IS 现状</text>
+    <rect x="394" y="224" width="230" height="48" fill="#D2D3D4"/>
+    <text x="509" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="18" font-weight="bold" fill="#0B2F3A">Gap 差距</text>
+    <rect x="624" y="224" width="330" height="48" fill="#4295B6"/>
+    <text x="789" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="18" font-weight="bold" fill="#FFFFFF">TO-BE 目标</text>
+    <rect x="954" y="224" width="262" height="48" fill="#B0D776"/>
+    <text x="1085" y="255" text-anchor="middle" font-family="Microsoft YaHei" font-size="18" font-weight="bold" fill="#0B2F3A">关键举措</text>
+    <g font-family="Microsoft YaHei" font-size="14" fill="#0B2F3A">
+      <rect x="64" y="272" width="330" height="76" fill="#F3F7FA" stroke="#D2D3D4"/><text x="86" y="315">{{ASIS_1}}</text>
+      <rect x="394" y="272" width="230" height="76" fill="#FFFFFF" stroke="#D2D3D4"/><text x="416" y="315">{{GAP_1}}</text>
+      <rect x="624" y="272" width="330" height="76" fill="#F3F7FA" stroke="#D2D3D4"/><text x="646" y="315">{{TOBE_1}}</text>
+      <rect x="954" y="272" width="262" height="76" fill="#FFFFFF" stroke="#D2D3D4"/><text x="976" y="315">{{ACTION_1}}</text>
+      <rect x="64" y="348" width="330" height="76" fill="#FFFFFF" stroke="#D2D3D4"/><text x="86" y="391">{{ASIS_2}}</text>
+      <rect x="394" y="348" width="230" height="76" fill="#F3F7FA" stroke="#D2D3D4"/><text x="416" y="391">{{GAP_2}}</text>
+      <rect x="624" y="348" width="330" height="76" fill="#FFFFFF" stroke="#D2D3D4"/><text x="646" y="391">{{TOBE_2}}</text>
+      <rect x="954" y="348" width="262" height="76" fill="#F3F7FA" stroke="#D2D3D4"/><text x="976" y="391">{{ACTION_2}}</text>
+      <rect x="64" y="424" width="330" height="76" fill="#F3F7FA" stroke="#D2D3D4"/><text x="86" y="467">{{ASIS_3}}</text>
+      <rect x="394" y="424" width="230" height="76" fill="#FFFFFF" stroke="#D2D3D4"/><text x="416" y="467">{{GAP_3}}</text>
+      <rect x="624" y="424" width="330" height="76" fill="#F3F7FA" stroke="#D2D3D4"/><text x="646" y="467">{{TOBE_3}}</text>
+      <rect x="954" y="424" width="262" height="76" fill="#FFFFFF" stroke="#D2D3D4"/><text x="976" y="467">{{ACTION_3}}</text>
+      <rect x="64" y="500" width="330" height="76" fill="#FFFFFF" stroke="#D2D3D4"/><text x="86" y="543">{{ASIS_4}}</text>
+      <rect x="394" y="500" width="230" height="76" fill="#F3F7FA" stroke="#D2D3D4"/><text x="416" y="543">{{GAP_4}}</text>
+      <rect x="624" y="500" width="330" height="76" fill="#FFFFFF" stroke="#D2D3D4"/><text x="646" y="543">{{TOBE_4}}</text>
+      <rect x="954" y="500" width="262" height="76" fill="#F3F7FA" stroke="#D2D3D4"/><text x="976" y="543">{{ACTION_4}}</text>
+    </g>
+  </g>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

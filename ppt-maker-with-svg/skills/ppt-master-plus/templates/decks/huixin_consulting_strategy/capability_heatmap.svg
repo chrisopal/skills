@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">CAPABILITY HEATMAP</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="heatmap">
+    <rect x="170" y="220" width="910" height="52" fill="#0B2F3A"/>
+    <text x="250" y="253" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">战略</text>
+    <text x="380" y="253" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">流程</text>
+    <text x="510" y="253" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">数据</text>
+    <text x="640" y="253" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">系统</text>
+    <text x="770" y="253" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">组织</text>
+    <text x="900" y="253" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">运营</text>
+    <text x="1030" y="253" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#FFFFFF">价值</text>
+    <rect x="64" y="272" width="110" height="52" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="119" y="304" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">销售服务</text>
+    <rect x="64" y="324" width="110" height="52" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="119" y="356" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">研发工程</text>
+    <rect x="64" y="376" width="110" height="52" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="119" y="408" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">计划生产</text>
+    <rect x="64" y="428" width="110" height="52" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="119" y="460" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">质量交付</text>
+    <rect x="64" y="480" width="110" height="52" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="119" y="512" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">经营管理</text>
+    <g id="cells" stroke="#FFFFFF" stroke-width="2">
+      <rect x="170" y="272" width="130" height="52" fill="#B0D776"/><rect x="300" y="272" width="130" height="52" fill="#8EBED2"/><rect x="430" y="272" width="130" height="52" fill="#D2D3D4"/><rect x="560" y="272" width="130" height="52" fill="#8EBED2"/><rect x="690" y="272" width="130" height="52" fill="#B0D776"/><rect x="820" y="272" width="130" height="52" fill="#4295B6"/><rect x="950" y="272" width="130" height="52" fill="#B0D776"/>
+      <rect x="170" y="324" width="130" height="52" fill="#8EBED2"/><rect x="300" y="324" width="130" height="52" fill="#B0D776"/><rect x="430" y="324" width="130" height="52" fill="#D2D3D4"/><rect x="560" y="324" width="130" height="52" fill="#D2D3D4"/><rect x="690" y="324" width="130" height="52" fill="#8EBED2"/><rect x="820" y="324" width="130" height="52" fill="#4295B6"/><rect x="950" y="324" width="130" height="52" fill="#8EBED2"/>
+      <rect x="170" y="376" width="130" height="52" fill="#4295B6"/><rect x="300" y="376" width="130" height="52" fill="#8EBED2"/><rect x="430" y="376" width="130" height="52" fill="#B0D776"/><rect x="560" y="376" width="130" height="52" fill="#8EBED2"/><rect x="690" y="376" width="130" height="52" fill="#D2D3D4"/><rect x="820" y="376" width="130" height="52" fill="#4295B6"/><rect x="950" y="376" width="130" height="52" fill="#B0D776"/>
+      <rect x="170" y="428" width="130" height="52" fill="#B0D776"/><rect x="300" y="428" width="130" height="52" fill="#D2D3D4"/><rect x="430" y="428" width="130" height="52" fill="#8EBED2"/><rect x="560" y="428" width="130" height="52" fill="#4295B6"/><rect x="690" y="428" width="130" height="52" fill="#8EBED2"/><rect x="820" y="428" width="130" height="52" fill="#B0D776"/><rect x="950" y="428" width="130" height="52" fill="#4295B6"/>
+      <rect x="170" y="480" width="130" height="52" fill="#D2D3D4"/><rect x="300" y="480" width="130" height="52" fill="#8EBED2"/><rect x="430" y="480" width="130" height="52" fill="#4295B6"/><rect x="560" y="480" width="130" height="52" fill="#B0D776"/><rect x="690" y="480" width="130" height="52" fill="#D2D3D4"/><rect x="820" y="480" width="130" height="52" fill="#8EBED2"/><rect x="950" y="480" width="130" height="52" fill="#B0D776"/>
+    </g>
+  </g>
+  <g id="legend">
+    <rect x="1110" y="272" width="28" height="18" fill="#D2D3D4"/><text x="1148" y="287" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">低</text>
+    <rect x="1110" y="306" width="28" height="18" fill="#8EBED2"/><text x="1148" y="321" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">中</text>
+    <rect x="1110" y="340" width="28" height="18" fill="#4295B6"/><text x="1148" y="355" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">高</text>
+    <rect x="1110" y="374" width="28" height="18" fill="#B0D776"/><text x="1148" y="389" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">机会</text>
+  </g>
+  <rect x="64" y="576" width="1152" height="44" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <text x="88" y="604" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">优先补强：{{CONTENT_AREA}}</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

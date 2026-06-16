@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">KEY QUESTIONS</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="question-tree">
+    <rect x="64" y="238" width="256" height="90" rx="4" fill="#0B2F3A"/>
+    <text x="192" y="276" text-anchor="middle" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#FFFFFF">核心议题</text>
+    <text x="192" y="304" text-anchor="middle" font-family="Microsoft YaHei" font-size="15" fill="#FFFFFF">{{CORE_QUESTION}}</text>
+    <line x1="320" y1="283" x2="390" y2="283" stroke="#4295B6" stroke-width="2"/>
+    <line x1="390" y1="283" x2="390" y2="548" stroke="#D2D3D4" stroke-width="2"/>
+    <rect x="430" y="220" width="330" height="76" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="430" y="220" width="8" height="76" fill="#4295B6"/>
+    <text x="458" y="251" font-family="Microsoft YaHei" font-size="18" font-weight="bold" fill="#0B2F3A">问题一：战略方向</text>
+    <text x="458" y="278" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{QUESTION_1}}</text>
+    <rect x="430" y="338" width="330" height="76" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="430" y="338" width="8" height="76" fill="#4295B6"/>
+    <text x="458" y="369" font-family="Microsoft YaHei" font-size="18" font-weight="bold" fill="#0B2F3A">问题二：能力差距</text>
+    <text x="458" y="396" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{QUESTION_2}}</text>
+    <rect x="430" y="456" width="330" height="76" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="430" y="456" width="8" height="76" fill="#B0D776"/>
+    <text x="458" y="487" font-family="Microsoft YaHei" font-size="18" font-weight="bold" fill="#0B2F3A">问题三：落地路径</text>
+    <text x="458" y="514" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{QUESTION_3}}</text>
+    <rect x="820" y="220" width="396" height="312" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="850" y="260" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#0B2F3A">分析假设与验证方式</text>
+    <line x1="850" y1="282" x2="1184" y2="282" stroke="#D2D3D4"/>
+    <text x="850" y="326" font-family="Microsoft YaHei" font-size="15" fill="#0B2F3A">假设 A：{{HYPOTHESIS_1}}</text>
+    <text x="850" y="372" font-family="Microsoft YaHei" font-size="15" fill="#0B2F3A">假设 B：{{HYPOTHESIS_2}}</text>
+    <text x="850" y="418" font-family="Microsoft YaHei" font-size="15" fill="#0B2F3A">假设 C：{{HYPOTHESIS_3}}</text>
+    <rect x="850" y="462" width="300" height="38" rx="4" fill="#B0D776"/>
+    <text x="1000" y="487" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">访谈 + 数据 + 标杆验证</text>
+  </g>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

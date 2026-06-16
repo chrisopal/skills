@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#4295B6"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="48" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">MATURITY ASSESSMENT</text>
+  <text x="64" y="116" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4"/>
+  <g id="maturity-scale">
+    <text x="64" y="225" font-family="Microsoft YaHei" font-size="15" font-weight="bold" fill="#0B2F3A">成熟度等级</text>
+    <rect x="64" y="244" width="1040" height="30" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="64" y="244" width="208" height="30" fill="#D2D3D4"/>
+    <rect x="272" y="244" width="208" height="30" fill="#BFD7E2"/>
+    <rect x="480" y="244" width="208" height="30" fill="#8EBED2"/>
+    <rect x="688" y="244" width="208" height="30" fill="#4295B6"/>
+    <rect x="896" y="244" width="208" height="30" fill="#B0D776"/>
+    <text x="168" y="265" text-anchor="middle" font-family="Microsoft YaHei" font-size="13" fill="#0B2F3A">L1 初始</text>
+    <text x="376" y="265" text-anchor="middle" font-family="Microsoft YaHei" font-size="13" fill="#0B2F3A">L2 规范</text>
+    <text x="584" y="265" text-anchor="middle" font-family="Microsoft YaHei" font-size="13" fill="#0B2F3A">L3 集成</text>
+    <text x="792" y="265" text-anchor="middle" font-family="Microsoft YaHei" font-size="13" fill="#FFFFFF">L4 智能</text>
+    <text x="1000" y="265" text-anchor="middle" font-family="Microsoft YaHei" font-size="13" fill="#0B2F3A">L5 生态</text>
+  </g>
+  <g id="maturity-bars">
+    <text x="88" y="326" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">战略</text>
+    <rect x="190" y="306" width="820" height="28" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="190" y="306" width="492" height="28" fill="#4295B6"/>
+    <circle cx="682" cy="320" r="8" fill="#0B2F3A"/>
+    <text x="1038" y="326" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{SCORE_STRATEGY}}</text>
+    <text x="88" y="376" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">流程</text>
+    <rect x="190" y="356" width="820" height="28" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="190" y="356" width="410" height="28" fill="#4295B6"/>
+    <circle cx="600" cy="370" r="8" fill="#0B2F3A"/>
+    <text x="1038" y="376" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{SCORE_PROCESS}}</text>
+    <text x="88" y="426" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">数据</text>
+    <rect x="190" y="406" width="820" height="28" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="190" y="406" width="328" height="28" fill="#8EBED2"/>
+    <circle cx="518" cy="420" r="8" fill="#0B2F3A"/>
+    <text x="1038" y="426" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{SCORE_DATA}}</text>
+    <text x="88" y="476" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">系统</text>
+    <rect x="190" y="456" width="820" height="28" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="190" y="456" width="574" height="28" fill="#4295B6"/>
+    <circle cx="764" cy="470" r="8" fill="#0B2F3A"/>
+    <text x="1038" y="476" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{SCORE_SYSTEM}}</text>
+    <text x="88" y="526" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">组织</text>
+    <rect x="190" y="506" width="820" height="28" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="190" y="506" width="246" height="28" fill="#BFD7E2"/>
+    <circle cx="436" cy="520" r="8" fill="#0B2F3A"/>
+    <text x="1038" y="526" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{SCORE_ORG}}</text>
+    <text x="88" y="576" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#0B2F3A">运营</text>
+    <rect x="190" y="556" width="820" height="28" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="190" y="556" width="410" height="28" fill="#4295B6"/>
+    <circle cx="600" cy="570" r="8" fill="#0B2F3A"/>
+    <text x="1038" y="576" font-family="Microsoft YaHei" font-size="14" fill="#4B5563">{{SCORE_OPERATION}}</text>
+  </g>
+  <rect x="1128" y="306" width="88" height="278" rx="4" fill="#0B2F3A"/>
+  <text x="1172" y="356" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#FFFFFF">目标</text>
+  <text x="1172" y="392" text-anchor="middle" font-family="Microsoft YaHei" font-size="28" font-weight="bold" fill="#B0D776">{{TARGET_LEVEL}}</text>
+  <text x="1172" y="452" text-anchor="middle" font-family="Microsoft YaHei" font-size="16" font-weight="bold" fill="#FFFFFF">当前</text>
+  <text x="1172" y="488" text-anchor="middle" font-family="Microsoft YaHei" font-size="28" font-weight="bold" fill="#FFFFFF">{{CURRENT_LEVEL}}</text>
+  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

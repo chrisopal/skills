@@ -371,7 +371,7 @@ Only when the element genuinely floats above another layer:
 - Pages with only one content container — no second layer to lift above
 - Dark backgrounds — black shadows vanish; use 1px low-opacity white stroke or outer glow
 
-**Per-page budget**: ≤2-3 shadowed elements. If you reach for a 4th, drop one first.
+**Reference — not a constraint**: 2-3 shadowed elements per page usually reads cleanest; before adding a 4th, check the extra layering earns its weight — a genuinely complex dashboard may justify more.
 
 #### Single light source per page
 
@@ -380,7 +380,7 @@ All `feOffset` on a page must share the same `dx`/`dy` direction. Default: `dx="
 #### Restraint over visibility
 
 Standard: "the shadow is felt, not seen." If noticed, it's too strong.
-- Resting cards: `flood-opacity` 0.06-0.12
+- Resting cards: `flood-opacity` 0.06-0.10
 - Raised elements (CTA, overlay): max `flood-opacity` 0.20
 - Above 0.20 = Office 2007 hard-shadow look
 - Color: near-black at low opacity, or a darker tint of background. Brand-color shadow only on accent elements sharing that hue.
@@ -424,7 +424,7 @@ Best for: cards, floating panels, elevated elements. The `svg_to_pptx` converter
 Recommended parameters (see "Two-tier elevation maximum" above for tier guidance):
 ```
 stdDeviation:   4–16       (resting cards: 4–8;  raised elements: 10–16)
-flood-opacity:  0.06–0.12  (resting cards — default)
+flood-opacity:  0.06–0.10  (resting cards — default)
                 0.12–0.20  (raised elements only — primary CTA, overlay)
                 NEVER     > 0.20  (Office 2007 hard-shadow look)
 dy:             2–10       (resting: 2–4;  raised: 6–10)
@@ -653,7 +653,9 @@ Gradients defined in `<defs>` and referenced via `fill="url(#id)"` convert to na
 
 `<pattern>` fills convert to native PPTX `<a:pattFill prst="...">` — but only PPTX's built-in preset patterns are reachable. The converter does **not** render hand-drawn `<path>` geometry inside the pattern; instead it reads two annotations off the `<pattern>` element and emits the matching DrawingML preset.
 
-**Required annotations**:
+**Prefer explicit geometry when spacing matters.** A `<pattern>` renders at PowerPoint's **fixed preset density** — you cannot reproduce a specific tile size (e.g. a 40px grid). For grids / textures whose spacing or line weight is part of the design, draw the lines as **one `<path>` with all lines as subpaths** (`M40 0V720 M80 0V720 … M0 40H1280 …`, `fill="none" stroke=…`) — the converter supports `M/L/H/V` and multi-subpath, so it becomes **one editable vector shape that reproduces the exact spacing** across all four renderers. Reserve `<pattern>` + `data-pptx-pattern` for **round-tripping an existing PPTX** (decks imported via `pptx_to_svg`), where the source genuinely used a native preset fill. For pure display where no PPT-side editing is needed, `--svg-snapshot` is the other faithful option.
+
+**Required annotations** (only when you intentionally use a `<pattern>` preset):
 
 | Attribute | Purpose | Without it |
 |---|---|---|

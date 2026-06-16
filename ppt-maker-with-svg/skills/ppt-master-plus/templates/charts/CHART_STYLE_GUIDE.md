@@ -1,6 +1,6 @@
 # Chart SVG Style Guide
 
-> 本文档定义了 `templates/charts/` 下所有 SVG 图表模板的视觉规范。  
+> 本文档定义了 `templates/charts/` 下所有 SVG 图表模板的视觉规范。
 > 新增或修改图表时 **必须** 遵循以下标准，确保全库视觉一致性。
 
 ## 0. 上游规范引用
@@ -283,7 +283,7 @@ font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Micr
 ### 6.1 绝对禁止
 
 | 禁用特性 | 替代方案 |
-|---------|---------| 
+|---------|---------|
 | HTML 命名实体（`&nbsp;` `&mdash;` `&copy;` `&ndash;` `&reg;` `&hellip;` `&bull;` …） | 直接写原生 Unicode 字符（`—` `–` `©` `®` `→` NBSP …） |
 | 文本/属性值中裸写 `& < > " '` | 必须写成 XML 实体 `&amp;` `&lt;` `&gt;` `&quot;` `&apos;` |
 | `<style>` / `class` | 内联属性（`id` 在 `<defs>` 内合法） |

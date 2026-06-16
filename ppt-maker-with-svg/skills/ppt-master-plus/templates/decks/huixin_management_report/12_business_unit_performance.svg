@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">11 / BUSINESS UNIT PERFORMANCE</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="unit-summary">
+    <rect x="64" y="190" width="292" height="398" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="92" y="236" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="24" font-weight="700">事业部业绩结果</text>
+    <rect x="94" y="270" width="232" height="104" fill="#F3F7FA"/>
+    <text x="118" y="310" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">本月合同额</text>
+    <text x="118" y="354" fill="#4295B6" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{MONTH_CONTRACT}}</text>
+    <rect x="94" y="400" width="232" height="104" fill="#F3F7FA"/>
+    <text x="118" y="440" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">累计完成率</text>
+    <text x="118" y="484" fill="#B0D776" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{YTD_RATE}}</text>
+    <text x="94" y="544" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">管理判断：{{MANAGEMENT_JUDGEMENT}}</text>
+  </g>
+
+  <g id="unit-table">
+    <text x="394" y="220" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">各事业部经营业绩</text>
+    <rect x="394" y="242" width="822" height="46" fill="#0B2F3A"/>
+    <text x="418" y="272" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">事业部</text>
+    <text x="628" y="272" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">收入</text>
+    <text x="752" y="272" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">合同额</text>
+    <text x="890" y="272" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">毛利率</text>
+    <text x="1030" y="272" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="15" font-weight="700">状态</text>
+    <rect x="394" y="288" width="822" height="44" fill="#F3F7FA"/>
+    <rect x="394" y="376" width="822" height="44" fill="#F3F7FA"/>
+    <rect x="394" y="464" width="822" height="44" fill="#F3F7FA"/>
+    <line x1="394" y1="288" x2="1216" y2="288" stroke="#D2D3D4"/>
+    <line x1="394" y1="332" x2="1216" y2="332" stroke="#D2D3D4"/>
+    <line x1="394" y1="376" x2="1216" y2="376" stroke="#D2D3D4"/>
+    <line x1="394" y1="420" x2="1216" y2="420" stroke="#D2D3D4"/>
+    <line x1="394" y1="464" x2="1216" y2="464" stroke="#D2D3D4"/>
+    <line x1="394" y1="508" x2="1216" y2="508" stroke="#D2D3D4"/>
+    <text x="418" y="318" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_1}}</text>
+    <text x="628" y="318" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_1_REVENUE}}</text>
+    <text x="752" y="318" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_1_CONTRACT}}</text>
+    <text x="890" y="318" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_1_MARGIN}}</text>
+    <rect x="1030" y="298" width="82" height="24" rx="2" fill="#B0D776"/>
+    <text x="1048" y="316" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{BU_1_STATUS}}</text>
+    <text x="418" y="362" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_2}}</text>
+    <text x="628" y="362" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_2_REVENUE}}</text>
+    <text x="752" y="362" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_2_CONTRACT}}</text>
+    <text x="890" y="362" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_2_MARGIN}}</text>
+    <rect x="1030" y="342" width="82" height="24" rx="2" fill="#4295B6"/>
+    <text x="1048" y="360" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{BU_2_STATUS}}</text>
+    <text x="418" y="406" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_3}}</text>
+    <text x="628" y="406" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_3_REVENUE}}</text>
+    <text x="752" y="406" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_3_CONTRACT}}</text>
+    <text x="890" y="406" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_3_MARGIN}}</text>
+    <rect x="1030" y="386" width="82" height="24" rx="2" fill="#D2D3D4"/>
+    <text x="1048" y="404" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{BU_3_STATUS}}</text>
+    <text x="418" y="450" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_4}}</text>
+    <text x="628" y="450" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_4_REVENUE}}</text>
+    <text x="752" y="450" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_4_CONTRACT}}</text>
+    <text x="890" y="450" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15">{{BU_4_MARGIN}}</text>
+    <rect x="1030" y="430" width="82" height="24" rx="2" fill="#D8665B"/>
+    <text x="1048" y="448" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{BU_4_STATUS}}</text>
+  </g>
+
+  <g id="bar-chart">
+    <rect x="394" y="532" width="822" height="72" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <rect x="530" y="554" width="260" height="12" fill="#4295B6"/>
+    <rect x="530" y="576" width="190" height="12" fill="#B0D776"/>
+    <text x="418" y="565" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">收入贡献</text>
+    <text x="418" y="588" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">利润贡献</text>
+    <text x="812" y="566" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{CHART_NOTE_1}}</text>
+    <text x="812" y="589" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{CHART_NOTE_2}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

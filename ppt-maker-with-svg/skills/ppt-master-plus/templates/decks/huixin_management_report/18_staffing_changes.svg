@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">18 / STAFFING CHANGES</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="headcount-cards">
+    <rect x="64" y="188" width="254" height="106" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="88" y="222" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">期末人数</text>
+    <text x="88" y="270" fill="#4295B6" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{HEADCOUNT}}</text>
+    <text x="214" y="270" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">人</text>
+    <rect x="342" y="188" width="254" height="106" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="366" y="222" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">新增入职</text>
+    <text x="366" y="270" fill="#B0D776" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{JOINERS}}</text>
+    <text x="492" y="270" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">人</text>
+    <rect x="620" y="188" width="254" height="106" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="644" y="222" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">离职人数</text>
+    <text x="644" y="270" fill="#D8665B" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{LEAVERS}}</text>
+    <text x="770" y="270" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">人</text>
+    <rect x="898" y="188" width="318" height="106" rx="4" fill="#0B2F3A"/>
+    <text x="922" y="222" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14">关键岗位缺口</text>
+    <text x="922" y="270" fill="#B0D776" font-family="Microsoft YaHei" font-size="42" font-weight="700">{{KEY_GAPS}}</text>
+    <text x="1060" y="270" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16">{{GAP_NOTE}}</text>
+  </g>
+
+  <g id="staffing-chart">
+    <rect x="64" y="330" width="540" height="240" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="92" y="366" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">组织人力变化</text>
+    <line x1="120" y1="520" x2="558" y2="520" stroke="#D2D3D4"/>
+    <rect x="152" y="438" width="44" height="82" fill="#4295B6"/>
+    <rect x="230" y="406" width="44" height="114" fill="#4295B6"/>
+    <rect x="308" y="452" width="44" height="68" fill="#B0D776"/>
+    <rect x="386" y="420" width="44" height="100" fill="#4295B6"/>
+    <rect x="464" y="472" width="44" height="48" fill="#D8665B"/>
+    <text x="174" y="546" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">研发</text>
+    <text x="252" y="546" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">交付</text>
+    <text x="330" y="546" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">销售</text>
+    <text x="408" y="546" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">产品</text>
+    <text x="486" y="546" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">职能</text>
+    <text x="174" y="428" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{RD_NUM}}</text>
+    <text x="252" y="396" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{DELIVERY_NUM}}</text>
+    <text x="330" y="442" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{SALES_NUM}}</text>
+    <text x="408" y="410" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{PRODUCT_NUM}}</text>
+    <text x="486" y="462" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{FUNCTION_NUM}}</text>
+  </g>
+
+  <g id="staffing-table">
+    <rect x="636" y="330" width="580" height="240" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="664" y="366" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="21" font-weight="700">人员变化与组织动作</text>
+    <rect x="664" y="390" width="524" height="32" fill="#0B2F3A"/>
+    <text x="686" y="412" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">团队</text>
+    <text x="806" y="412" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">变化</text>
+    <text x="928" y="412" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">影响判断</text>
+    <text x="1070" y="412" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">动作</text>
+    <rect x="664" y="422" width="524" height="34" fill="#F3F7FA"/>
+    <rect x="664" y="490" width="524" height="34" fill="#F3F7FA"/>
+    <text x="686" y="444" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TEAM_1}}</text>
+    <text x="806" y="444" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{CHANGE_1}}</text>
+    <text x="928" y="444" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{IMPACT_1}}</text>
+    <text x="1070" y="444" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTION_1}}</text>
+    <text x="686" y="478" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TEAM_2}}</text>
+    <text x="806" y="478" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{CHANGE_2}}</text>
+    <text x="928" y="478" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{IMPACT_2}}</text>
+    <text x="1070" y="478" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTION_2}}</text>
+    <text x="686" y="512" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TEAM_3}}</text>
+    <text x="806" y="512" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{CHANGE_3}}</text>
+    <text x="928" y="512" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{IMPACT_3}}</text>
+    <text x="1070" y="512" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTION_3}}</text>
+    <text x="686" y="546" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13">{{TEAM_4}}</text>
+    <text x="806" y="546" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{CHANGE_4}}</text>
+    <text x="928" y="546" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{IMPACT_4}}</text>
+    <text x="1070" y="546" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{ACTION_4}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

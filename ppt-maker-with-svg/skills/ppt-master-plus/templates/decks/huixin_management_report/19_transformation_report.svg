@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">19 / TRANSFORMATION REPORT</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="transformation-roadmap">
+    <rect x="64" y="194" width="1152" height="260" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="92" y="232" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">转型路径与阶段成果</text>
+    <line x1="140" y1="330" x2="1138" y2="330" stroke="#4295B6" stroke-width="5"/>
+    <polygon points="1138,318 1170,330 1138,342" fill="#4295B6"/>
+    <circle cx="222" cy="330" r="20" fill="#4295B6"/>
+    <circle cx="470" cy="330" r="20" fill="#4295B6"/>
+    <circle cx="718" cy="330" r="20" fill="#B0D776"/>
+    <circle cx="966" cy="330" r="20" fill="#4295B6"/>
+    <rect x="132" y="244" width="260" height="64" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="380" y="352" width="260" height="64" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="628" y="244" width="260" height="64" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="876" y="352" width="260" height="64" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="160" y="272" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{PHASE_1}}</text>
+    <text x="160" y="296" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PHASE_1_RESULT}}</text>
+    <text x="408" y="380" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{PHASE_2}}</text>
+    <text x="408" y="404" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PHASE_2_RESULT}}</text>
+    <text x="656" y="272" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{PHASE_3}}</text>
+    <text x="656" y="296" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PHASE_3_RESULT}}</text>
+    <text x="904" y="380" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">{{PHASE_4}}</text>
+    <text x="904" y="404" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{PHASE_4_RESULT}}</text>
+  </g>
+
+  <g id="transformation-metrics">
+    <rect x="64" y="484" width="358" height="104" rx="4" fill="#0B2F3A"/>
+    <text x="92" y="518" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18" font-weight="700">业务协同</text>
+    <text x="92" y="562" fill="#B0D776" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{COLLAB_METRIC}}</text>
+    <text x="220" y="562" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="14">{{COLLAB_NOTE}}</text>
+    <rect x="462" y="484" width="358" height="104" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="490" y="518" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">数据闭环</text>
+    <text x="490" y="562" fill="#4295B6" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{DATA_METRIC}}</text>
+    <text x="618" y="562" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{DATA_NOTE}}</text>
+    <rect x="858" y="484" width="358" height="104" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="886" y="518" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="18" font-weight="700">组织变革</text>
+    <text x="886" y="562" fill="#4295B6" font-family="Microsoft YaHei" font-size="30" font-weight="700">{{ORG_METRIC}}</text>
+    <text x="1014" y="562" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{ORG_NOTE}}</text>
+  </g>
+
+  <g id="action-strip">
+    <rect x="64" y="610" width="1152" height="36" rx="3" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="92" y="633" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">下阶段重点：</text>
+    <text x="190" y="633" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{NEXT_STAGE_ACTIONS}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

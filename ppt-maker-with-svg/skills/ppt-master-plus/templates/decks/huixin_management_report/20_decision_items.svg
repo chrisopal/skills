@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <rect x="0" y="5" width="330" height="4" fill="#B0D776"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">20 / DECISION ITEMS</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="108" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="34" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="146" fill="#4295B6" font-family="Microsoft YaHei" font-size="18" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="decision-summary">
+    <rect x="64" y="180" width="286" height="392" rx="4" fill="#0B2F3A"/>
+    <text x="96" y="224" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="24" font-weight="700">本次需要决策</text>
+    <text x="96" y="282" fill="#B0D776" font-family="Microsoft YaHei" font-size="52" font-weight="700">{{DECISION_COUNT}}</text>
+    <text x="190" y="282" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="18">项</text>
+    <line x1="96" y1="316" x2="318" y2="316" stroke="#4295B6"/>
+    <text x="96" y="356" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="15">资源需求：{{RESOURCE_NEED}}</text>
+    <text x="96" y="392" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="15">影响范围：{{IMPACT_SCOPE}}</text>
+    <text x="96" y="428" fill="#D2D3D4" font-family="Microsoft YaHei" font-size="15">决策时点：{{DECISION_TIME}}</text>
+    <rect x="96" y="486" width="190" height="44" rx="3" fill="#B0D776"/>
+    <text x="136" y="515" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">{{RECOMMENDATION}}</text>
+  </g>
+
+  <g id="decision-table">
+    <rect x="386" y="180" width="830" height="392" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="386" y="180" width="830" height="42" fill="#4295B6"/>
+    <text x="414" y="208" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">决策事项</text>
+    <text x="600" y="208" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">推荐方案</text>
+    <text x="806" y="208" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">资源/预算</text>
+    <text x="974" y="208" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">风险与影响</text>
+    <text x="1130" y="208" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">结论</text>
+    <rect x="386" y="222" width="830" height="70" fill="#F3F7FA"/>
+    <rect x="386" y="362" width="830" height="70" fill="#F3F7FA"/>
+    <rect x="386" y="502" width="830" height="70" fill="#F3F7FA"/>
+    <line x1="580" y1="180" x2="580" y2="572" stroke="#D2D3D4"/>
+    <line x1="790" y1="180" x2="790" y2="572" stroke="#D2D3D4"/>
+    <line x1="960" y1="180" x2="960" y2="572" stroke="#D2D3D4"/>
+    <line x1="1118" y1="180" x2="1118" y2="572" stroke="#D2D3D4"/>
+    <line x1="386" y1="292" x2="1216" y2="292" stroke="#D2D3D4"/>
+    <line x1="386" y1="362" x2="1216" y2="362" stroke="#D2D3D4"/>
+    <line x1="386" y1="432" x2="1216" y2="432" stroke="#D2D3D4"/>
+    <line x1="386" y1="502" x2="1216" y2="502" stroke="#D2D3D4"/>
+    <text x="414" y="260" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{ASK_1}}</text>
+    <text x="600" y="260" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{OPTION_1}}</text>
+    <text x="806" y="260" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RESOURCE_1}}</text>
+    <text x="974" y="260" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RISK_1}}</text>
+    <rect x="1138" y="238" width="54" height="28" rx="2" fill="#B0D776"/>
+    <text x="1152" y="257" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="12" font-weight="700">{{STATUS_1}}</text>
+    <text x="414" y="330" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{ASK_2}}</text>
+    <text x="600" y="330" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{OPTION_2}}</text>
+    <text x="806" y="330" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RESOURCE_2}}</text>
+    <text x="974" y="330" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RISK_2}}</text>
+    <rect x="1138" y="308" width="54" height="28" rx="2" fill="#D2D3D4"/>
+    <text x="1152" y="327" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="12" font-weight="700">{{STATUS_2}}</text>
+    <text x="414" y="400" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{ASK_3}}</text>
+    <text x="600" y="400" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{OPTION_3}}</text>
+    <text x="806" y="400" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RESOURCE_3}}</text>
+    <text x="974" y="400" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RISK_3}}</text>
+    <rect x="1138" y="378" width="54" height="28" rx="2" fill="#4295B6"/>
+    <text x="1152" y="397" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="12" font-weight="700">{{STATUS_3}}</text>
+    <text x="414" y="470" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{ASK_4}}</text>
+    <text x="600" y="470" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{OPTION_4}}</text>
+    <text x="806" y="470" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RESOURCE_4}}</text>
+    <text x="974" y="470" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{RISK_4}}</text>
+    <rect x="1138" y="448" width="54" height="28" rx="2" fill="#D8665B"/>
+    <text x="1152" y="467" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="12" font-weight="700">{{STATUS_4}}</text>
+  </g>
+
+  <g id="next-step">
+    <rect x="64" y="602" width="1152" height="44" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="92" y="630" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">会后闭环：</text>
+    <text x="178" y="630" fill="#4B5563" font-family="Microsoft YaHei" font-size="15">{{FOLLOW_UP}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">14 / OPERATING REVIEW</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="review-loop">
+    <rect x="64" y="196" width="268" height="360" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="92" y="238" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">经营复盘结论</text>
+    <rect x="96" y="270" width="204" height="46" rx="4" fill="#4295B6"/>
+    <text x="124" y="300" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16" font-weight="700">目标：{{TARGET}}</text>
+    <rect x="96" y="340" width="204" height="46" rx="4" fill="#B0D776"/>
+    <text x="124" y="370" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">结果：{{RESULT}}</text>
+    <rect x="96" y="410" width="204" height="46" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="124" y="440" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="16" font-weight="700">偏差：{{GAP}}</text>
+    <rect x="96" y="480" width="204" height="46" rx="4" fill="#0B2F3A"/>
+    <text x="124" y="510" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16" font-weight="700">动作：{{ACTION_SUMMARY}}</text>
+  </g>
+
+  <g id="review-table">
+    <rect x="372" y="196" width="844" height="360" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <rect x="372" y="196" width="844" height="42" fill="#0B2F3A"/>
+    <text x="396" y="224" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">复盘主题</text>
+    <text x="560" y="224" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">本期表现</text>
+    <text x="742" y="224" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">原因判断</text>
+    <text x="944" y="224" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="14" font-weight="700">下月动作</text>
+    <rect x="372" y="238" width="844" height="62" fill="#F3F7FA"/>
+    <rect x="372" y="362" width="844" height="62" fill="#F3F7FA"/>
+    <rect x="372" y="486" width="844" height="70" fill="#F3F7FA"/>
+    <line x1="372" y1="300" x2="1216" y2="300" stroke="#D2D3D4"/>
+    <line x1="372" y1="362" x2="1216" y2="362" stroke="#D2D3D4"/>
+    <line x1="372" y1="424" x2="1216" y2="424" stroke="#D2D3D4"/>
+    <line x1="372" y1="486" x2="1216" y2="486" stroke="#D2D3D4"/>
+    <text x="396" y="274" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{REVIEW_1_TOPIC}}</text>
+    <text x="560" y="274" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_1_RESULT}}</text>
+    <text x="742" y="274" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_1_REASON}}</text>
+    <text x="944" y="274" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_1_ACTION}}</text>
+    <text x="396" y="336" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{REVIEW_2_TOPIC}}</text>
+    <text x="560" y="336" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_2_RESULT}}</text>
+    <text x="742" y="336" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_2_REASON}}</text>
+    <text x="944" y="336" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_2_ACTION}}</text>
+    <text x="396" y="398" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{REVIEW_3_TOPIC}}</text>
+    <text x="560" y="398" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_3_RESULT}}</text>
+    <text x="742" y="398" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_3_REASON}}</text>
+    <text x="944" y="398" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_3_ACTION}}</text>
+    <text x="396" y="460" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="15" font-weight="700">{{REVIEW_4_TOPIC}}</text>
+    <text x="560" y="460" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_4_RESULT}}</text>
+    <text x="742" y="460" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_4_REASON}}</text>
+    <text x="944" y="460" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{REVIEW_4_ACTION}}</text>
+  </g>
+
+  <g id="closure-bar">
+    <rect x="64" y="592" width="1152" height="46" rx="4" fill="#0B2F3A"/>
+    <text x="92" y="622" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="16">闭环要求：{{CLOSURE_REQUIREMENT}}</text>
+    <rect x="1038" y="598" width="144" height="34" rx="2" fill="#B0D776"/>
+    <text x="1072" y="621" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{OWNER_CADENCE}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

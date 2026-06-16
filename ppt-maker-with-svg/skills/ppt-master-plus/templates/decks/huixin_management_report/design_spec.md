@@ -1,11 +1,11 @@
 ---
 deck_id: huixin_management_report
 kind: deck
-summary: 慧新公司经营汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议模板.
+summary: 慧新公司经营汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议模板；包含财务分析、事业部/产品线业绩、销售月报、经营复盘、销售漏斗、商机管理、人员变化、转型汇报和决策事项页.
 canvas_format: ppt169
-page_count: 10
+page_count: 20
 primary_color: "#4295B6"
-keywords: [huixin, management-report, business-review, kpi, executive-meeting]
+keywords: [huixin, management-report, business-review, kpi, executive-meeting, finance, sales, opportunity, staffing]
 ---
 
 # Huixin Management Report - Design Specification
@@ -16,7 +16,7 @@ keywords: [huixin, management-report, business-review, kpi, executive-meeting]
 | --- | --- |
 | **Template Name** | huixin_management_report |
 | **Display Name** | 慧新公司经营汇报模板 |
-| **Use Cases** | 年度汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议 |
+| **Use Cases** | 年度汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议、销售月报、财务分析、商机复盘、组织人力汇报、转型推进汇报 |
 | **Design Tone** | Steady, clear, formal, trustworthy, management-closed-loop oriented |
 | **Theme Mode** | White / light gray business reporting theme based on Huixin logo colors |
 
@@ -78,7 +78,7 @@ Usage rules:
 | --- | --- |
 | **Brand Header** | Thin blue top rule, optional green achievement segment, section label, top-right Huixin lockup |
 | **Title Zone** | Left-aligned title with a concise management conclusion |
-| **Content Body** | Tables, KPI cards, kanban lanes, project lists, timelines, organization and risk matrices |
+| **Content Body** | KPI cards, charts, dense tables, kanban lanes, project lists, timelines, organization maps, risk matrices, decision tables |
 | **Footer** | Source / owner / page number with restrained divider |
 
 ### Design DNA
@@ -89,6 +89,9 @@ Usage rules:
 4. Avoid marketing slogans, heavy decoration, glowing effects, and complex gradients.
 5. Express management closure through goal -> status -> issue -> countermeasure -> owner -> deadline.
 6. Keep narrow-card placeholders short: `{{WORK_DONE}}`, `{{STATUS}}`, and `{{ACTION_1}}`-`{{ACTION_3}}` are label fields, not sentence fields. Put long explanations into the note fields or speaker notes.
+7. For finance, sales, opportunity, staffing, and decision pages, prefer table-first reporting: place numbers, stage, owner, deadline, and latest progress in visible cells.
+8. Long Chinese text must be shortened or split across multiple placeholder lines before rendering; do not let table text cross cell boundaries.
+9. Use charts only when they support a management question: budget variance, funnel conversion, business-unit comparison, product-line mix, headcount change, or roadmap progress.
 
 ## VII. Page Types
 
@@ -125,8 +128,50 @@ Usage rules:
 ### 10. Risk Matrix (`10_risk_matrix.svg`)
 - Risk level matrix with mitigation actions and management asks.
 
+### 11. Financial Analysis (`11_financial_analysis.svg`)
+- Finance page with revenue, gross margin, expense ratio, net profit, profit waterfall, and budget variance table.
+- Use for monthly/quarterly finance review and management decision meetings.
+
+### 12. Business Unit Performance (`12_business_unit_performance.svg`)
+- Business-unit performance comparison with revenue, contract, gross margin, delivery status, risks, and management actions.
+- Suitable for各事业部经营业绩复盘.
+
+### 13. Product Line Performance (`13_product_line_performance.svg`)
+- Product-line operating performance with product mix, key indicators, margin contribution, and follow-up actions.
+- Suitable for计量装备、智能工厂、智慧矿山、智慧城市、平台产品等产品线.
+
+### 14. Sales Monthly Report (`14_sales_monthly_report.svg`)
+- Sales monthly report with opportunity source table, stage distribution, signed project list, and delivery-follow-up table.
+- Dense-table layout inspired by internal sales reporting, but kept in Huixin brand style.
+
+### 15. Operating Review (`15_operating_review.svg`)
+- Management review page organized as target -> result -> gap -> action.
+- Use for经营复盘 and monthly closed-loop management.
+
+### 16. Sales Funnel (`16_sales_funnel.svg`)
+- Sales funnel conversion page with lead, qualified, quote, and contract stages plus stage actions.
+- Use for sales业务管理、漏斗健康、关键卡点 and commit forecast.
+
+### 17. Opportunity Management (`17_opportunity_management.svg`)
+- Detailed opportunity progress table with customer, opportunity id, business line, stage, amount, scene, and latest progress.
+- Use when the user provides CRM data or asks for重点售前商机进度.
+
+### 18. Staffing Changes (`18_staffing_changes.svg`)
+- People and organization change page with headcount cards, team distribution chart, and staffing action table.
+- Use for人员变化、关键岗位缺口、招聘补位 and组织能力建设.
+
+### 19. Transformation Report (`19_transformation_report.svg`)
+- Transformation progress page with phased roadmap, business/data/organization metrics, and next-stage focus.
+- Use for数字化转型、经营转型、组织变革 and management roadmap review.
+
+### 20. Decision Items (`20_decision_items.svg`)
+- Management decision page with decision count, resource ask, recommendation, risks, and decision-status table.
+- Use for高层会议决策事项、资源申请、预算审批 and会后闭环.
+
 ## VIII. Asset Specification
 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated quarterly operations report dashboard reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific dashboard visuals. KPI cards, project lists, risk matrices, timelines, and action tables remain editable SVG structures. |
+| `images/huixin_logo_light.png` | Official Huixin light-background logo | Use on white and light gray pages. |
+| `images/huixin_logo_dark.png` | Official Huixin dark-background logo | Use only on deep blue-gray or black backgrounds. |

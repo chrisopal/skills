@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="5" fill="#4295B6"/>
+  <rect x="0" y="5" width="330" height="4" fill="#B0D776"/>
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">16 / SALES FUNNEL</text>
+  <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
+  <text x="64" y="112" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <g id="funnel-summary">
+    <rect x="64" y="188" width="226" height="386" rx="4" fill="#F3F7FA" stroke="#D2D3D4"/>
+    <text x="90" y="228" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">漏斗总览</text>
+    <text x="90" y="266" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">有效商机</text>
+    <text x="90" y="314" fill="#4295B6" font-family="Microsoft YaHei" font-size="44" font-weight="700">{{OPP_COUNT}}</text>
+    <text x="184" y="314" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">个</text>
+    <line x1="90" y1="340" x2="264" y2="340" stroke="#D2D3D4"/>
+    <text x="90" y="374" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">漏斗金额</text>
+    <text x="90" y="420" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{FUNNEL_AMOUNT}}</text>
+    <text x="90" y="464" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">本月新增：{{NEW_OPP}}</text>
+    <text x="90" y="496" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">预计签约：{{COMMIT_AMOUNT}}</text>
+    <rect x="90" y="522" width="154" height="32" rx="2" fill="#B0D776"/>
+    <text x="116" y="544" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="14" font-weight="700">{{FUNNEL_HEALTH}}</text>
+  </g>
+
+  <g id="funnel-chart">
+    <rect x="330" y="188" width="500" height="386" rx="4" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="358" y="228" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">销售阶段转化</text>
+    <polygon points="438,268 722,268 684,320 476,320" fill="#4295B6"/>
+    <polygon points="476,334 684,334 650,386 510,386" fill="#5EA4C0"/>
+    <polygon points="510,400 650,400 622,452 538,452" fill="#B0D776"/>
+    <polygon points="538,466 622,466 598,518 562,518" fill="#0B2F3A"/>
+    <text x="580" y="302" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="17" font-weight="700">潜在信息 {{LEAD_COUNT}}</text>
+    <text x="580" y="368" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="17" font-weight="700">方案验证 {{QUALIFIED_COUNT}}</text>
+    <text x="580" y="434" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">客户报价 {{QUOTE_COUNT}}</text>
+    <text x="580" y="500" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="17" font-weight="700">收到合同 {{CONTRACT_COUNT}}</text>
+    <text x="372" y="544" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">关键卡点：{{BOTTLENECK}}</text>
+  </g>
+
+  <g id="stage-table">
+    <rect x="862" y="188" width="354" height="386" fill="#FFFFFF" stroke="#D2D3D4"/>
+    <text x="888" y="228" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">阶段经营动作</text>
+    <rect x="888" y="252" width="304" height="34" fill="#0B2F3A"/>
+    <text x="906" y="275" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">阶段</text>
+    <text x="990" y="275" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">目标</text>
+    <text x="1082" y="275" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="13" font-weight="700">责任动作</text>
+    <rect x="888" y="286" width="304" height="52" fill="#F3F7FA"/>
+    <rect x="888" y="390" width="304" height="52" fill="#F3F7FA"/>
+    <rect x="888" y="494" width="304" height="52" fill="#F3F7FA"/>
+    <text x="906" y="316" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{STAGE_1}}</text>
+    <text x="990" y="316" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_1_TARGET}}</text>
+    <text x="1082" y="316" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_1_ACTION}}</text>
+    <text x="906" y="368" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{STAGE_2}}</text>
+    <text x="990" y="368" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_2_TARGET}}</text>
+    <text x="1082" y="368" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_2_ACTION}}</text>
+    <text x="906" y="420" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{STAGE_3}}</text>
+    <text x="990" y="420" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_3_TARGET}}</text>
+    <text x="1082" y="420" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_3_ACTION}}</text>
+    <text x="906" y="472" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{STAGE_4}}</text>
+    <text x="990" y="472" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_4_TARGET}}</text>
+    <text x="1082" y="472" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_4_ACTION}}</text>
+    <text x="906" y="524" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="13" font-weight="700">{{STAGE_5}}</text>
+    <text x="990" y="524" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_5_TARGET}}</text>
+    <text x="1082" y="524" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">{{STAGE_5_ACTION}}</text>
+  </g>
+
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+</svg>

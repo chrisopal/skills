@@ -72,3 +72,20 @@
 - Commit/push policy:
   - Requirements source changes are committed and pushed.
   - The regenerated zip remains a local distribution artifact and is intentionally uncommitted.
+
+## 2026-06-17 16:42:14 CST
+
+- Scope: Huixin PPT Master Plus template usage rules for content-driven layout adaptation.
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_product_solution/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_market_promotion/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_management_report/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_training_enablement/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/design_spec.md`
+- Validation:
+  - `git diff --check` passed for the updated Huixin design specs and `STATUS.md`.
+  - `rg` confirmed all five Huixin PPT Master Plus design specs include `Template Adaptation Rules`.
+  - Parsed YAML frontmatter for all five updated Huixin design specs with Python / PyYAML.
+- Commit/push state: pending.
+- Remaining notes:
+  - This is a reusable template rule update only; generated PPTX, preview images, and zip artifacts remain unstaged.

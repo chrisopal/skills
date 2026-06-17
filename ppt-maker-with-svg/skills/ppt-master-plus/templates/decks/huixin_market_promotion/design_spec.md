@@ -99,6 +99,13 @@ Usage rules:
 4. Keep sales-facing pages clean, short, and high-contrast; prioritize slogans, keywords, metrics, and conversion messages.
 5. Prefer explicit marketing logic: brand claim → pain → solution → value → proof → action.
 
+### Template Adaptation Rules
+
+1. Prefer the reusable SVG page type / master when it matches the campaign story and content density.
+2. If the real promotion logic needs a different structure, derive a custom page from the same Huixin visual language instead of compressing meaning into an unsuitable base page.
+3. Custom pages must preserve Huixin's palette, white / light-gray or deep blue-gray background style, top-right logo discipline, slanted-bar brand geometry, and the deck's brand claim -> pain -> solution -> value -> proof -> action narrative.
+4. Never reduce important market evidence, value proof, scenario context, or action logic only to fit a predefined template layout.
+
 ## VII. Page Types
 
 ### Existing Editable SVG Base Pages

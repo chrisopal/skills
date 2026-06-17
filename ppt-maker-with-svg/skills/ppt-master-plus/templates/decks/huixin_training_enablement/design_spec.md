@@ -89,6 +89,13 @@ Usage rules:
 4. Use concise placeholders and modular blocks so instructors can swap course content quickly.
 5. Avoid childish icons, excessive decoration, glow effects, and marketing slogans.
 
+### Template Adaptation Rules
+
+1. Prefer the reusable SVG page type / master when it matches the learning objective, content granularity, and classroom activity.
+2. If the real course content needs a different instructional structure, derive a custom page rather than forcing the lesson into an unsuitable base page.
+3. Custom pages must preserve Huixin's palette, white / light blue-gray background style, top-right logo discipline, slanted-bar brand geometry, and the training narrative of objective -> concept -> example -> practice -> check -> action.
+4. Do not remove necessary learner context, practice instructions, quiz evidence, or action planning only to fit a predefined template layout.
+
 ## VII. Page Types
 
 ### 1. Cover Page (`01_cover.svg`)

@@ -76,6 +76,14 @@ Usage rules:
 
 Every generated page that uses this deck should include at least one visible Huixin brand-geometry cue beyond the logo: slanted bars, angled module tabs, diagonal separators, segmented chevrons, or parallelogram highlights. These cues are not decorative extras; they are the deck's icon system and should replace generic auto-generated icons wherever possible.
 
+### Template Adaptation Rules
+
+1. Prefer the reusable SVG page type / master defined in this spec when it fits the source story, content density, and expected decision path.
+2. Do not force source content into a template page when the real solution needs more layers, swimlanes, systems, data flows, actors, stages, or exception paths than the base page expresses.
+3. Custom or recomposed pages are allowed when the content requires them, but they must preserve Huixin's palette, white / light-gray technical background style, top-right logo discipline, slanted-bar brand geometry, editable SVG structure, and product-solution narrative logic.
+4. Architecture pages must communicate the actual architecture rather than the template's default layer count. If a product or integration architecture has more than five logical layers, multiple platforms, cloud / edge / device layers, AI / data / integration / security / governance layers, or complex bidirectional interfaces, redesign the diagram structure to fit the content instead of using the five-layer base unchanged.
+5. When adapting an architecture page, keep domains grouped and labeled, use blue for product / system structure, green for value / flow / checkpoints, gray for neutral boundaries / infrastructure, and preserve a clear reader path from business capability -> application / system -> data / integration -> deployment / operation.
+
 ## VI. Layout Structure
 
 ### Common Layout
@@ -101,12 +109,13 @@ Every generated page that uses this deck should include at least one visible Hui
 
 Product architecture pages must feel like mature enterprise software architecture, not a simple three-row stack. When a page uses `04_product_architecture.svg` or any of the architecture templates (`11`-`15`, `17`, `19`):
 
-1. Show at least five visible architecture strata: user/application, business process, platform services, data/AI, and integration/foundation.
+1. Use five visible architecture strata as the simple baseline: user/application, business process, platform services, data/AI, and integration/foundation. Extend, split, or regroup the strata when the source architecture is more complex.
 2. Fill the body with 12-18 editable module nodes distributed across the strata; avoid empty bands, oversized labels, or only 3-4 broad rectangles.
-3. Include a right-side output or value column with 3-4 short deliverables such as dashboards, evidence packages, risk alerts, or APIs.
+3. Include a right-side output, governance, or value column with 3-4 short deliverables such as dashboards, evidence packages, risk alerts, APIs, control points, or operating views.
 4. Draw at least two cross-layer arrows or data-flow cues so the page reads as a system, not a static list.
 5. Keep the architecture visually full but readable: use compact 13-15px module labels, short noun phrases, and move long explanation into the speaker notes.
 6. Do not paste an architecture screenshot as the main content. AI images may be used only as faint blueprint backgrounds; architecture modules, labels, connectors, and layer boundaries remain editable SVG/PPT geometry.
+7. If the architecture has many systems or domains, prioritize truthful grouping and readable relationships over preserving the template's original number of bands, columns, or nodes.
 
 ### Complex Diagram Page Contract
 
@@ -143,7 +152,7 @@ When using this deck, Strategist should normally include image resources unless 
 
 ### 4. Product Architecture (`04_product_architecture.svg`)
 - Dense multi-layer product architecture for software platform and digital solution presentations.
-- Must preserve the Architecture Density Contract: five strata, 12-18 module nodes, right-side output column, integration base, and cross-layer flow cues.
+- Use as the default for straightforward platform architecture. For complex product architecture, preserve the Architecture Density Contract while extending or recomposing strata, module groups, output columns, and cross-layer flow cues according to the real content.
 
 ### 5. Core Capabilities (`05_core_capabilities.svg`)
 - Six modular capability cards for product features and system modules.

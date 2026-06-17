@@ -96,6 +96,13 @@ Usage rules:
 11. For sales forecast and staffing statistics, combine dense tables with one readable chart; do not replace source numbers with chart-only visuals.
 12. When using workbook data, normalize sheet names and metric names before rendering; use `{{SHEET_*}}`, `{{MONTH_*}}`, `{{TYPE_*}}`, and `{{STAGE_*}}` placeholders for reusable templates.
 
+### Template Adaptation Rules
+
+1. Prefer the reusable SVG page type / master when it matches the management question, data grain, and table / chart density.
+2. If the real workbook or report logic needs more columns, time buckets, categories, owners, stages, or chart-table combinations than the base page supports, derive a custom page instead of hiding or dropping source facts.
+3. Custom pages must preserve Huixin's palette, white / light-gray background style, top-right logo discipline, slanted-bar brand geometry, and the management narrative of conclusion -> number -> issue -> countermeasure -> owner -> deadline.
+4. Table-heavy pages may add rows, columns, split panels, secondary charts, or appendix-style detail pages as long as the source sheet, calculation basis, and management conclusion remain traceable.
+
 ## VII. Page Types
 
 ### 1. Cover Page (`01_cover.svg`)

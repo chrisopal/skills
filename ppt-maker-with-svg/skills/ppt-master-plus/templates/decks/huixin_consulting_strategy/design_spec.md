@@ -80,7 +80,14 @@ placeholders:
 - Light pages use the black wordmark. Dark cover/ending accents may use the white wordmark for contrast.
 - Do not use the older two-diamond shorthand; preserve the horizontal logo lockup and slanted-bar proportions.
 
-## VI. Page Roster
+## VI. Template Adaptation Rules
+
+1. Prefer the reusable SVG page type / master when it matches the consulting question, evidence structure, and executive decision path.
+2. If the real analysis needs a different framework, more dimensions, more evidence rows, additional initiatives, or a richer target blueprint than the base page supports, derive a custom page instead of weakening the argument.
+3. Custom pages must preserve Huixin's palette, white / light-gray or deep blue-gray background style, top-right logo discipline, slanted-bar brand geometry, and the consulting narrative of question -> conclusion -> evidence -> implication -> recommendation -> decision.
+4. Do not reduce root-cause logic, maturity evidence, value assumptions, governance relationships, or decision asks only to fit a predefined template layout.
+
+## VII. Page Roster
 
 | SVG | Page Role | Description |
 | --- | --- | --- |
@@ -111,7 +118,7 @@ placeholders:
 | `change_management.svg` | Change management | Training, communication, policy, performance, and organizational capability plan. |
 | `decision_ask.svg` | Management ask | Management decision page covering decisions, recommendation, resource ask, and next step. |
 
-## VII. Placeholder Overrides
+## VIII. Placeholder Overrides
 
 The consulting template leads with `{{KEY_MESSAGE}}` on analysis pages because management-consulting pages usually communicate the answer first, then support it with structured evidence.
 
@@ -119,7 +126,7 @@ On framework and roadmap pages, `{{CONTENT_AREA}}` is a compact callout label, n
 
 For the expanded consulting pages, prioritize one-page-answer discipline: every page should express the management conclusion in `{{KEY_MESSAGE}}`, then support it with a structured framework. Use `business_context`, `key_questions`, and `section_divider` near the start of formal reports; use `decision_ask`, `governance_model`, `raci_matrix`, and `risk_mitigation_matrix` near the end for leadership decision packs and project kickoff materials.
 
-## VIII. Asset Specification
+## IX. Asset Specification
 
 | Asset | Purpose | Usage |
 | --- | --- | --- |

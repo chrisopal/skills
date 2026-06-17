@@ -5,15 +5,15 @@ This repository stores local Codex skills, PPT templates, generated examples, an
 ## Required Workflow
 
 - After every repository modification, run verification that matches the changed surface before claiming completion.
-- After verification passes, stage the relevant source, template, documentation, or configuration files and create a git commit.
+- After verification passes, stage the relevant source, template, documentation, or configuration files, create a git commit, and push the branch to its configured remote.
 - Commit messages must follow the Lore Commit Protocol when available in the active instructions: intent line first, then useful trailers such as `Tested:` and `Not-tested:`.
-- Do not leave completed, verified work uncommitted unless the user explicitly asks not to commit.
+- Do not leave completed, verified work uncommitted or unpushed unless the user explicitly asks not to commit or push.
 
 ## Artifact Policy
 
-- Do not stage or commit generated outputs unless the user explicitly asks for them.
+- Do not stage, commit, or push generated outputs unless the user explicitly asks for them.
 - Treat these as artifacts by default: preview screenshots, rendered PNG/JPG images, exported PPTX/PDF files, temporary browser outputs, local `projects/` workspaces, `.playwright-mcp/`, cache folders, and one-off validation snapshots.
-- If an artifact is needed for verification, keep it local and mention its path in the final response instead of committing it.
+- If an artifact is needed for verification, keep it local and mention its path in the final response instead of committing or pushing it.
 - When committing PPT template work, include reusable template assets and source SVG/spec/index changes, but exclude sample decks, rendered previews, and transient validation files.
 
 ## PPT Template Work
@@ -24,5 +24,5 @@ This repository stores local Codex skills, PPT templates, generated examples, an
 
 ## Status Updates
 
-- Update `STATUS.md` for meaningful repository changes, especially template library updates, workflow policy changes, verification results, and commit state.
+- Update `STATUS.md` for meaningful repository changes, especially template library updates, workflow policy changes, verification results, commit state, and push state.
 - Keep entries concise and evidence-based: scope, changed files, validation, commit state, and remaining notes.

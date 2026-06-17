@@ -41,3 +41,18 @@
   - Generated previews, local project workspaces, browser outputs, and transient validation artifacts must stay unstaged unless explicitly requested.
 - Remaining notes:
   - Existing untracked artifacts such as `.playwright-mcp/`, `projects/`, `huixin-ai-skill-training-preview.png`, `huixin-ai-skill-training-fixed-preview.png`, and `huixin-preview-snapshot.md` are intentionally not included in the commit.
+
+## 2026-06-17 09:12:57 CST
+
+- Scope: Repository workflow guardrail update for commit-and-push completion.
+- Changed files:
+  - `AGENTS.md`
+  - `STATUS.md`
+- Validation:
+  - Reviewed root workflow instructions after edit.
+  - `git diff --check` passed.
+- Commit/push policy:
+  - Future completed repository modifications must be verified, committed, and pushed to the configured remote branch.
+  - Generated previews, local project workspaces, browser outputs, and transient validation artifacts must remain unstaged and unpushed unless explicitly requested.
+- Remaining notes:
+  - Existing untracked artifacts remain local and intentionally excluded.

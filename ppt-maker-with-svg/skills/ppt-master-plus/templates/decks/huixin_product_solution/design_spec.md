@@ -1,9 +1,9 @@
 ---
 deck_id: huixin_product_solution
 kind: deck
-summary: 慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示.
+summary: 慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示；包含复杂多层分域架构、业务/功能/系统/数据/集成/技术/部署架构、多系统集成总览、流程、实施、截图和案例页.
 canvas_format: ppt169
-page_count: 21
+page_count: 22
 primary_color: "#4295B6"
 ---
 
@@ -129,6 +129,7 @@ For industrial software solution decks, use the dedicated complex diagram pages 
 6. **Data architecture (`14_data_architecture.svg`)**: use governance framework rows for standards, quality, security, organization, workflow, tools, portal, functions, data scope, and foundation. The page should feel like a full data-management framework, not only source-to-dashboard flow.
 7. **Implementation stage plan (`20_implementation_stage_plan.svg`)**: use this when the source describes phased delivery, rollout roadmap, implementation planning, product deployment stages, or digital transformation implementation steps. Reference images may inform the four-stage planning rhythm only; keep Huixin's clean product-solution style and use product-solution content, not the reference page's text.
 8. **Multi-system integration overview (`21_multi_system_integration_overview.svg`)**: use this when the source asks for an overview of two or more systems working together, such as QMS/PLM, MES/WMS, ERP/MES, SRM/PLM, or any platform-to-platform integration. Keep the page abstract at template level: upstream systems, two core systems, right-side execution / data-closed-loop groups, and bottom end-to-end process can be specialized by downstream content, but the global template must not hard-code a specific product pair.
+9. **Complex multi-domain architecture (`22_complex_multi_domain_architecture.svg`)**: use this when a solution needs a high-density architecture page with central L1-L5 or equivalent layers, left/right domain swimlanes, secondary function labels, platform support blocks, and cross-domain collaboration arrows. Use it for complex smart factory, industrial internet, multi-platform AI, data + twin + security + operations architectures where ordinary five-layer architecture or single integration overview pages are too thin.
 
 ### Default AI Image and Screenshot Policy
 
@@ -207,6 +208,11 @@ When using this deck, Strategist should normally include image resources unless 
 - Template-level labels remain abstract: upstream system group, core system one, core system two, business collaboration, data closed loop, and end-to-end process.
 - Use this page when the requested content is a cross-system integration summary rather than a single technical stack or dark enterprise system map.
 
+### 22. Complex Multi-Domain Architecture (`22_complex_multi_domain_architecture.svg`)
+- High-density architecture page with a central five-layer architecture stack, left and right domain swimlanes, bottom support platforms, and cross-domain collaboration arrows.
+- Use this when the content needs second-level functions and short explanations inside each layer, plus business / device / intelligent / governance domains around the central system stack.
+- This is the preferred page for complex smart factory, industrial internet, AI platform, data middle platform, digital twin, cyber-physical, and security-governed architectures when a simple five-layer product architecture cannot carry the meaning.
+
 ## VIII. SVG Page Roster
 
 | File | Role | Description |
@@ -232,6 +238,7 @@ When using this deck, Strategist should normally include image resources unless 
 | `19_business_process_diagram.svg` | business_process_diagram | Dense generic business process diagram with main path, branches and loopbacks |
 | `20_implementation_stage_plan.svg` | implementation_stage_plan | Complex phased implementation plan with goals, focus items, strategies and deliverables |
 | `21_multi_system_integration_overview.svg` | multi_system_integration_overview | Generic two-or-more-system integration overview with upstream systems, dual core systems, execution/data loop groups and end-to-end process |
+| `22_complex_multi_domain_architecture.svg` | complex_multi_domain_architecture | Complex high-density multi-layer architecture with central layers, left/right domain swimlanes, support platforms, secondary functions and cross-domain collaboration |
 
 ## IX. Layout Modes
 

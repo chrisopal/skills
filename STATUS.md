@@ -89,3 +89,21 @@
 - Commit/push state: pending.
 - Remaining notes:
   - This is a reusable template rule update only; generated PPTX, preview images, and zip artifacts remain unstaged.
+
+## 2026-06-17 17:26:12 CST
+
+- Scope: Huixin product solution complex multi-domain architecture template page.
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_product_solution/22_complex_multi_domain_architecture.svg`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_product_solution/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json`
+- Validation:
+  - `xmllint --noout` passed for `22_complex_multi_domain_architecture.svg`.
+  - `svg_quality_checker.py --template-mode --format ppt169` passed for `huixin_product_solution`: 22 files checked, 0 errors; the new complex multi-domain architecture page passed without warnings.
+  - JSON/frontmatter/roster consistency check passed: `design_spec.md`, SVG file count, roster table, and `decks_index.json` all report 22 pages.
+  - Browser preview rendered at `/tmp/huixin_product_solution_template_preview/22_complex_multi_domain_architecture_browser.png`.
+  - `git diff --check` passed for the changed files.
+- Commit/push state: pending.
+- Remaining notes:
+  - Existing warning-only pages in the deck still have historical top-level `<g>` id warnings; the new page does not add quality-check warnings.
+  - Imagegen/browser previews remain design references only; no generated preview or PPTX artifact is committed.

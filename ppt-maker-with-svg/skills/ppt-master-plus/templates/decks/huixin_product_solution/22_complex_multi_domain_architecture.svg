@@ -54,95 +54,125 @@
   </g>
 
   <g id="central-five-layer-architecture" font-family="Microsoft YaHei, Arial, sans-serif">
-    <rect x="248" y="180" width="730" height="374" rx="14" fill="#F8FAFC" stroke="#D2D3D4"/>
+    <rect x="248" y="180" width="730" height="392" rx="14" fill="#F8FAFC" stroke="#D2D3D4"/>
+    <text x="270" y="203" font-size="12" font-weight="700" fill="#4295B6">中间能力栈：每层包含核心系统、二级功能、数据输出与价值闭环</text>
 
     <g id="layer-l5">
-      <rect x="268" y="198" width="690" height="58" rx="6" fill="#0B2F3A"/>
-      <path d="M268,198 L404,198 L384,256 L268,256 Z" fill="#4295B6"/>
-      <text x="292" y="224" font-size="15" font-weight="700" fill="#FFFFFF">L5 全域智能决策层</text>
-      <text x="292" y="243" font-size="10" fill="#FFFFFF">智能大脑 / 全局优化</text>
-      <rect x="426" y="210" width="110" height="28" rx="4" fill="#FFFFFF" stroke="#AFC8D4"/>
-      <text x="446" y="228" font-size="11" font-weight="700" fill="#0B2F3A">智能大脑</text>
-      <text x="446" y="242" font-size="8" fill="#6B7280">策略推荐</text>
-      <rect x="550" y="210" width="110" height="28" rx="4" fill="#FFFFFF" stroke="#AFC8D4"/>
-      <text x="570" y="228" font-size="11" font-weight="700" fill="#0B2F3A">数字孪生</text>
-      <text x="570" y="242" font-size="8" fill="#6B7280">仿真推演</text>
-      <rect x="674" y="210" width="110" height="28" rx="4" fill="#FFFFFF" stroke="#AFC8D4"/>
-      <text x="694" y="228" font-size="11" font-weight="700" fill="#0B2F3A">经营测算</text>
-      <text x="694" y="242" font-size="8" fill="#6B7280">利润能耗</text>
-      <rect x="798" y="210" width="110" height="28" rx="4" fill="#FFFFFF" stroke="#AFC8D4"/>
-      <text x="818" y="228" font-size="11" font-weight="700" fill="#0B2F3A">产业协同</text>
-      <text x="818" y="242" font-size="8" fill="#6B7280">产能共享</text>
+      <rect x="268" y="214" width="690" height="62" rx="6" fill="#0B2F3A"/>
+      <path d="M268,214 L400,214 L382,276 L268,276 Z" fill="#4295B6"/>
+      <text x="292" y="238" font-size="14" font-weight="700" fill="#FFFFFF">L5 全域智能决策层</text>
+      <text x="292" y="256" font-size="9" fill="#FFFFFF">工业大模型 + 全局优化</text>
+      <g font-size="8.5" font-weight="700" fill="#0B2F3A">
+        <rect x="414" y="224" width="75" height="18" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="451.5" y="237" text-anchor="middle">战略驾驶舱</text>
+        <rect x="496" y="224" width="75" height="18" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="533.5" y="237" text-anchor="middle">全局优化</text>
+        <rect x="578" y="224" width="75" height="18" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="615.5" y="237" text-anchor="middle">经营利润</text>
+        <rect x="660" y="224" width="75" height="18" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="697.5" y="237" text-anchor="middle">碳能优化</text>
+        <rect x="414" y="249" width="75" height="18" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="451.5" y="262" text-anchor="middle">风险预判</text>
+        <rect x="496" y="249" width="75" height="18" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="533.5" y="262" text-anchor="middle">产业协同</text>
+        <rect x="578" y="249" width="75" height="18" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="615.5" y="262" text-anchor="middle">工业大模型</text>
+        <rect x="660" y="249" width="75" height="18" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="697.5" y="262" text-anchor="middle">组织自优化</text>
+      </g>
+      <rect x="752" y="224" width="178" height="43" rx="5" fill="#FFFFFF" fill-opacity="0.12" stroke="#AFC8D4"/>
+      <text x="768" y="241" font-size="9.5" font-weight="700" fill="#FFFFFF">输出：经营决策 / 风险预警</text>
+      <text x="768" y="258" font-size="8.5" fill="#FFFFFF">策略下发、指标牵引、跨工厂协同</text>
     </g>
 
     <g id="layer-l4">
-      <rect x="268" y="266" width="690" height="54" rx="6" fill="#F6FBFE" stroke="#4295B6"/>
-      <path d="M268,266 L404,266 L384,320 L268,320 Z" fill="#4295B6"/>
-      <text x="292" y="290" font-size="15" font-weight="700" fill="#FFFFFF">L4 企业运营层</text>
-      <text x="292" y="308" font-size="10" fill="#FFFFFF">集团资源协同</text>
-      <rect x="426" y="278" width="94" height="27" rx="4" fill="#FFFFFF" stroke="#AFC8D4"/>
-      <text x="444" y="296" font-size="10" font-weight="700" fill="#0B2F3A">PLM/PDM</text>
-      <rect x="532" y="278" width="94" height="27" rx="4" fill="#FFFFFF" stroke="#AFC8D4"/>
-      <text x="552" y="296" font-size="10" font-weight="700" fill="#0B2F3A">ERP经营</text>
-      <rect x="638" y="278" width="94" height="27" rx="4" fill="#FFFFFF" stroke="#AFC8D4"/>
-      <text x="654" y="296" font-size="10" font-weight="700" fill="#0B2F3A">APS/SCM</text>
-      <rect x="744" y="278" width="94" height="27" rx="4" fill="#FFFFFF" stroke="#AFC8D4"/>
-      <text x="764" y="296" font-size="10" font-weight="700" fill="#0B2F3A">客户洞察</text>
-      <text x="852" y="296" font-size="9" fill="#4B5563">研产供销服闭环</text>
+      <rect x="268" y="283" width="690" height="54" rx="6" fill="#F6FBFE" stroke="#4295B6"/>
+      <path d="M268,283 L400,283 L382,337 L268,337 Z" fill="#4295B6"/>
+      <text x="292" y="306" font-size="14" font-weight="700" fill="#FFFFFF">L4 企业运营层</text>
+      <text x="292" y="323" font-size="9" fill="#FFFFFF">研产供销财服一体化</text>
+      <g font-size="8.5" font-weight="700" fill="#0B2F3A">
+        <rect x="414" y="293" width="68" height="16" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="448" y="305" text-anchor="middle">PLM/PDM</text>
+        <rect x="489" y="293" width="68" height="16" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="523" y="305" text-anchor="middle">ERP</text>
+        <rect x="564" y="293" width="68" height="16" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="598" y="305" text-anchor="middle">APS</text>
+        <rect x="639" y="293" width="68" height="16" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="673" y="305" text-anchor="middle">SCM</text>
+        <rect x="414" y="314" width="68" height="16" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="448" y="326" text-anchor="middle">CRM</text>
+        <rect x="489" y="314" width="68" height="16" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="523" y="326" text-anchor="middle">SRM</text>
+        <rect x="564" y="314" width="68" height="16" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="598" y="326" text-anchor="middle">成本核算</text>
+        <rect x="639" y="314" width="68" height="16" rx="3" fill="#FFFFFF" stroke="#AFC8D4"/><text x="673" y="326" text-anchor="middle">售后服务</text>
+      </g>
+      <rect x="724" y="293" width="206" height="37" rx="5" fill="#FFFFFF" stroke="#AFC8D4"/>
+      <text x="740" y="308" font-size="9.5" font-weight="700" fill="#0B2F3A">端到端链路：需求 → 研发 → 采购 → 生产 → 交付</text>
+      <text x="740" y="323" font-size="8.5" fill="#4B5563">统一主数据、计划协同、经营闭环</text>
     </g>
 
     <g id="layer-l3">
-      <rect x="268" y="330" width="690" height="68" rx="6" fill="#FFFFFF" stroke="#4295B6" stroke-width="1.5"/>
-      <path d="M268,330 L404,330 L384,398 L268,398 Z" fill="#0F95B6"/>
-      <text x="292" y="356" font-size="15" font-weight="700" fill="#FFFFFF">L3 车间执行层</text>
-      <text x="292" y="375" font-size="10" fill="#FFFFFF">MES 核心 / AI执行</text>
-      <rect x="426" y="342" width="70" height="24" rx="4" fill="#F6FBFE" stroke="#AFC8D4"/>
-      <text x="448" y="358" font-size="10" font-weight="700" fill="#0B2F3A">MES</text>
-      <rect x="508" y="342" width="70" height="24" rx="4" fill="#F6FBFE" stroke="#AFC8D4"/>
-      <text x="530" y="358" font-size="10" font-weight="700" fill="#0B2F3A">WMS</text>
-      <rect x="590" y="342" width="70" height="24" rx="4" fill="#F6FBFE" stroke="#AFC8D4"/>
-      <text x="612" y="358" font-size="10" font-weight="700" fill="#0B2F3A">QMS</text>
-      <rect x="672" y="342" width="70" height="24" rx="4" fill="#F6FBFE" stroke="#AFC8D4"/>
-      <text x="694" y="358" font-size="10" font-weight="700" fill="#0B2F3A">EAM</text>
-      <rect x="754" y="342" width="70" height="24" rx="4" fill="#F6FBFE" stroke="#AFC8D4"/>
-      <text x="776" y="358" font-size="10" font-weight="700" fill="#0B2F3A">EMS</text>
-      <rect x="426" y="372" width="120" height="17" rx="3" fill="#F9FCF4" stroke="#B0D776"/>
-      <text x="446" y="385" font-size="8.5" fill="#0B2F3A">AI排产 / 工艺优化</text>
-      <rect x="560" y="372" width="120" height="17" rx="3" fill="#F9FCF4" stroke="#B0D776"/>
-      <text x="580" y="385" font-size="8.5" fill="#0B2F3A">视觉全检 / 预测</text>
-      <rect x="694" y="372" width="120" height="17" rx="3" fill="#F9FCF4" stroke="#B0D776"/>
-      <text x="714" y="385" font-size="8.5" fill="#0B2F3A">物流调度 / OEE</text>
-      <text x="836" y="385" font-size="9" fill="#4B5563">工单/追溯/成本</text>
+      <rect x="268" y="344" width="690" height="70" rx="6" fill="#FFFFFF" stroke="#4295B6" stroke-width="1.5"/>
+      <path d="M268,344 L400,344 L382,414 L268,414 Z" fill="#0F95B6"/>
+      <text x="292" y="370" font-size="14" font-weight="700" fill="#FFFFFF">L3 车间执行层</text>
+      <text x="292" y="388" font-size="9" fill="#FFFFFF">MES 核心 / AI执行智能体</text>
+      <g font-size="8.5" font-weight="700" fill="#0B2F3A">
+        <rect x="414" y="354" width="67" height="17" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="447.5" y="367" text-anchor="middle">MES</text>
+        <rect x="488" y="354" width="67" height="17" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="521.5" y="367" text-anchor="middle">WMS</text>
+        <rect x="562" y="354" width="67" height="17" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="595.5" y="367" text-anchor="middle">QMS</text>
+        <rect x="636" y="354" width="67" height="17" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="669.5" y="367" text-anchor="middle">EAM</text>
+        <rect x="710" y="354" width="67" height="17" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/><text x="743.5" y="367" text-anchor="middle">EMS</text>
+        <rect x="414" y="378" width="88" height="17" rx="3" fill="#F9FCF4" stroke="#B0D776"/><text x="458" y="391" text-anchor="middle">AI智能排产</text>
+        <rect x="509" y="378" width="88" height="17" rx="3" fill="#F9FCF4" stroke="#B0D776"/><text x="553" y="391" text-anchor="middle">工艺自适应</text>
+        <rect x="604" y="378" width="88" height="17" rx="3" fill="#F9FCF4" stroke="#B0D776"/><text x="648" y="391" text-anchor="middle">视觉全检</text>
+        <rect x="699" y="378" width="88" height="17" rx="3" fill="#F9FCF4" stroke="#B0D776"/><text x="743" y="391" text-anchor="middle">物流调度</text>
+      </g>
+      <rect x="804" y="354" width="126" height="42" rx="5" fill="#F8FAFC" stroke="#D2D3D4"/>
+      <text x="820" y="370" font-size="9.5" font-weight="700" fill="#0B2F3A">闭环：工单/物料/质量/设备</text>
+      <text x="820" y="385" font-size="8.5" fill="#4B5563">OEE、追溯、车间成本、异常处置</text>
+      <text x="820" y="400" font-size="8.5" fill="#4B5563">产线孪生、动态调度推演</text>
     </g>
 
     <g id="layer-l2">
-      <rect x="268" y="408" width="690" height="54" rx="6" fill="#F9FCF4" stroke="#B0D776"/>
-      <path d="M268,408 L404,408 L384,462 L268,462 Z" fill="#6EAF45"/>
-      <text x="292" y="432" font-size="15" font-weight="700" fill="#FFFFFF">L2 边缘控制层</text>
-      <text x="292" y="450" font-size="10" fill="#FFFFFF">实时闭环控制</text>
-      <rect x="426" y="420" width="126" height="27" rx="4" fill="#FFFFFF" stroke="#B0D776"/>
-      <text x="446" y="438" font-size="10" font-weight="700" fill="#0B2F3A">PLC/DCS/SCADA</text>
-      <rect x="566" y="420" width="126" height="27" rx="4" fill="#FFFFFF" stroke="#B0D776"/>
-      <text x="590" y="438" font-size="10" font-weight="700" fill="#0B2F3A">边缘AI</text>
-      <rect x="706" y="420" width="126" height="27" rx="4" fill="#FFFFFF" stroke="#B0D776"/>
-      <text x="726" y="438" font-size="10" font-weight="700" fill="#0B2F3A">实时数采引擎</text>
-      <text x="848" y="438" font-size="9" fill="#4B5563">本地预警/就地处置</text>
+      <rect x="268" y="421" width="690" height="54" rx="6" fill="#F9FCF4" stroke="#B0D776"/>
+      <path d="M268,421 L400,421 L382,475 L268,475 Z" fill="#6EAF45"/>
+      <text x="292" y="444" font-size="14" font-weight="700" fill="#FFFFFF">L2 边缘控制层</text>
+      <text x="292" y="461" font-size="9" fill="#FFFFFF">毫秒级控制 / 本地闭环</text>
+      <g font-size="8.5" font-weight="700" fill="#0B2F3A">
+        <rect x="414" y="431" width="70" height="16" rx="3" fill="#FFFFFF" stroke="#B0D776"/><text x="449" y="443" text-anchor="middle">PLC</text>
+        <rect x="491" y="431" width="70" height="16" rx="3" fill="#FFFFFF" stroke="#B0D776"/><text x="526" y="443" text-anchor="middle">DCS</text>
+        <rect x="568" y="431" width="70" height="16" rx="3" fill="#FFFFFF" stroke="#B0D776"/><text x="603" y="443" text-anchor="middle">SCADA</text>
+        <rect x="645" y="431" width="70" height="16" rx="3" fill="#FFFFFF" stroke="#B0D776"/><text x="680" y="443" text-anchor="middle">运动控制</text>
+        <rect x="414" y="452" width="70" height="16" rx="3" fill="#FFFFFF" stroke="#B0D776"/><text x="449" y="464" text-anchor="middle">边缘AI</text>
+        <rect x="491" y="452" width="70" height="16" rx="3" fill="#FFFFFF" stroke="#B0D776"/><text x="526" y="464" text-anchor="middle">协议转换</text>
+        <rect x="568" y="452" width="70" height="16" rx="3" fill="#FFFFFF" stroke="#B0D776"/><text x="603" y="464" text-anchor="middle">时序数据库</text>
+        <rect x="645" y="452" width="70" height="16" rx="3" fill="#FFFFFF" stroke="#B0D776"/><text x="680" y="464" text-anchor="middle">本地预警</text>
+      </g>
+      <rect x="732" y="431" width="198" height="37" rx="5" fill="#FFFFFF" stroke="#B0D776"/>
+      <text x="748" y="446" font-size="9.5" font-weight="700" fill="#0B2F3A">价值：云边协同，产线不停机</text>
+      <text x="748" y="461" font-size="8.5" fill="#4B5563">原始数据缓存、故障就地处置、低时延控制</text>
     </g>
 
     <g id="layer-l1">
-      <rect x="268" y="472" width="690" height="54" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/>
-      <path d="M268,472 L404,472 L384,526 L268,526 Z" fill="#D2D3D4"/>
-      <text x="292" y="496" font-size="15" font-weight="700" fill="#0B2F3A">L1 设备感知层</text>
-      <text x="292" y="514" font-size="10" fill="#4B5563">物理底座 / 数据源头</text>
-      <rect x="426" y="484" width="98" height="27" rx="4" fill="#F8FAFC" stroke="#D2D3D4"/>
-      <text x="446" y="502" font-size="10" font-weight="700" fill="#0B2F3A">智能装备</text>
-      <rect x="538" y="484" width="98" height="27" rx="4" fill="#F8FAFC" stroke="#D2D3D4"/>
-      <text x="558" y="502" font-size="10" font-weight="700" fill="#0B2F3A">传感/RFID</text>
-      <rect x="650" y="484" width="98" height="27" rx="4" fill="#F8FAFC" stroke="#D2D3D4"/>
-      <text x="670" y="502" font-size="10" font-weight="700" fill="#0B2F3A">AGV/立库</text>
-      <rect x="762" y="484" width="98" height="27" rx="4" fill="#F8FAFC" stroke="#D2D3D4"/>
-      <text x="782" y="502" font-size="10" font-weight="700" fill="#0B2F3A">5G专网</text>
-      <text x="874" y="502" font-size="9" fill="#4B5563">全域联网</text>
+      <rect x="268" y="482" width="690" height="54" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <path d="M268,482 L400,482 L382,536 L268,536 Z" fill="#D2D3D4"/>
+      <text x="292" y="505" font-size="14" font-weight="700" fill="#0B2F3A">L1 设备感知层</text>
+      <text x="292" y="522" font-size="9" fill="#4B5563">物理底座 / 全域数据源头</text>
+      <g font-size="8.5" font-weight="700" fill="#0B2F3A">
+        <rect x="414" y="492" width="76" height="16" rx="3" fill="#F8FAFC" stroke="#D2D3D4"/><text x="452" y="504" text-anchor="middle">数控机床</text>
+        <rect x="497" y="492" width="76" height="16" rx="3" fill="#F8FAFC" stroke="#D2D3D4"/><text x="535" y="504" text-anchor="middle">工业机器人</text>
+        <rect x="580" y="492" width="76" height="16" rx="3" fill="#F8FAFC" stroke="#D2D3D4"/><text x="618" y="504" text-anchor="middle">视觉相机</text>
+        <rect x="663" y="492" width="76" height="16" rx="3" fill="#F8FAFC" stroke="#D2D3D4"/><text x="701" y="504" text-anchor="middle">RFID/传感</text>
+        <rect x="414" y="513" width="76" height="16" rx="3" fill="#F8FAFC" stroke="#D2D3D4"/><text x="452" y="525" text-anchor="middle">AGV/立库</text>
+        <rect x="497" y="513" width="76" height="16" rx="3" fill="#F8FAFC" stroke="#D2D3D4"/><text x="535" y="525" text-anchor="middle">输送分拣</text>
+        <rect x="580" y="513" width="76" height="16" rx="3" fill="#F8FAFC" stroke="#D2D3D4"/><text x="618" y="525" text-anchor="middle">5G专网</text>
+        <rect x="663" y="513" width="76" height="16" rx="3" fill="#F8FAFC" stroke="#D2D3D4"/><text x="701" y="525" text-anchor="middle">采集网关</text>
+      </g>
+      <rect x="756" y="492" width="174" height="37" rx="5" fill="#F8FAFC" stroke="#D2D3D4"/>
+      <text x="772" y="507" font-size="9.5" font-weight="700" fill="#0B2F3A">目标：100%设备联网</text>
+      <text x="772" y="522" font-size="8.5" fill="#4B5563">消除哑设备，形成统一数据入口</text>
+    </g>
+
+    <g id="central-vertical-loop">
+      <line x1="946" y1="230" x2="946" y2="520" stroke="#4295B6" stroke-width="2" stroke-dasharray="7,5"/>
+      <polygon points="946,220 938,234 954,234" fill="#4295B6"/>
+      <polygon points="946,532 938,518 954,518" fill="#6EAF45"/>
+      <text x="936" y="377" text-anchor="end" font-size="9" font-weight="700" fill="#0B2F3A">纵向贯通</text>
+    </g>
+
+    <g id="central-output-legend" font-size="9" font-family="Microsoft YaHei, Arial, sans-serif">
+      <rect x="270" y="546" width="168" height="14" rx="3" fill="#F6FBFE" stroke="#AFC8D4"/>
+      <text x="280" y="557" fill="#0B2F3A">数据上行：采集 → 治理 → 指标 → 智能</text>
+      <rect x="452" y="546" width="172" height="14" rx="3" fill="#F9FCF4" stroke="#B0D776"/>
+      <text x="462" y="557" fill="#0B2F3A">指令下行：策略 → 计划 → 工单 → 控制</text>
+      <rect x="638" y="546" width="174" height="14" rx="3" fill="#FFFFFF" stroke="#D2D3D4"/>
+      <text x="648" y="557" fill="#0B2F3A">横向协同：研产供销服 + 质量设备能源</text>
     </g>
   </g>
 

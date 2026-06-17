@@ -29,6 +29,11 @@ edge-tts>=7.2.8
 # Option A / 方案 A: CairoSVG (recommended / 推荐, ~25MB, full gradient/filter support)
 #   pip install cairosvg
 #   macOS: brew install cairo
+# Not included in the base requirements because CairoSVG also needs the native
+# Cairo library; install it separately when high-fidelity PNG fallback rendering
+# is required.
+# 未放入基础 requirements，因为 CairoSVG 还依赖系统 Cairo 原生库；需要高保真
+# PNG 后备渲染时再单独安装。
 #
 # Option B / 方案 B: svglib (lightweight / 轻量, ~5MB, some gradients may be lost)
 svglib>=1.5.0
@@ -104,8 +109,24 @@ google-genai>=1.0.0
 # OpenAI 兼容后端复用上方网页工具所需的 requests。
 
 # ─────────────────────────────────────────────────────────────
+# Template metadata tools / 模板元数据工具
+# ─────────────────────────────────────────────────────────────
+# register_template.py reads YAML frontmatter from design_spec.md.
+# register_template.py 用于读取 design_spec.md 的 YAML frontmatter。
+PyYAML>=6.0.0
+
+# ─────────────────────────────────────────────────────────────
 # SVG Editor / SVG 编辑器 (skills/ppt-master-plus/scripts/svg_editor/server.py)
 # ─────────────────────────────────────────────────────────────
 # Localhost web editor for annotating SVG elements with edit instructions.
 # 本地 Web 编辑器，用于在 SVG 元素上添加编辑标注指令
 flask>=3.0.0
+
+# ─────────────────────────────────────────────────────────────
+# Visual review renderer / 视觉审查渲染器 (skills/ppt-master-plus/scripts/visual_review.py)
+# ─────────────────────────────────────────────────────────────
+# Renders SVG pages through Chromium so CJK fonts and browser SVG behavior match preview.
+# 用 Chromium 渲染 SVG 页面，保证中文字体和浏览器 SVG 行为与预览一致。
+# After pip install, run once / pip 安装后还需要执行一次：
+#   python -m playwright install chromium
+playwright>=1.40.0

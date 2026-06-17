@@ -18,9 +18,9 @@
     "primary_color": "#4295B6"
   },
   "huixin_training_enablement": {
-    "summary": "慧新企业培训、产品培训、销售赋能、实施交付培训、客户培训和内部学习材料模板.",
+    "summary": "慧新企业培训、产品培训、销售赋能、实施交付培训、客户培训和内部学习材料模板；包含课程主线、章节、日程、课前准备、场景导入、界面讲解、对比矩阵、角色演练、SOP、测评结果和FAQ排查页.",
     "canvas_format": "ppt169",
-    "page_count": 10,
+    "page_count": 20,
     "primary_color": "#4295B6"
   },
   "huixin_product_solution": {

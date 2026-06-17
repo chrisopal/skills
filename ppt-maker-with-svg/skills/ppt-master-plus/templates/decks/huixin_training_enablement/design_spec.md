@@ -1,9 +1,9 @@
 ---
 deck_id: huixin_training_enablement
 kind: deck
-summary: 慧新企业培训、产品培训、销售赋能、实施交付培训、客户培训和内部学习材料模板.
+summary: 慧新企业培训、产品培训、销售赋能、实施交付培训、客户培训和内部学习材料模板；包含课程主线、章节、日程、课前准备、场景导入、界面讲解、对比矩阵、角色演练、SOP、测评结果和FAQ排查页.
 canvas_format: ppt169
-page_count: 10
+page_count: 20
 primary_color: "#4295B6"
 keywords: [huixin, training, enablement, courseware, workshop]
 ---
@@ -121,6 +121,36 @@ Usage rules:
 ### 10. Action Plan (`10_action_plan.svg`)
 - Post-training action plan, commitment checklist, and next learning resources.
 
+### 11. Module Divider (`11_module_divider.svg`)
+- Chapter divider for multi-module courses, with module goal and rhythm preview.
+
+### 12. Training Agenda Timebox (`12_training_agenda_timebox.svg`)
+- Course agenda, time allocation, delivery format, and expected output table.
+
+### 13. Prerequisite Check (`13_prerequisite_check.svg`)
+- Learner persona, pre-class preparation checklist, and baseline readiness check.
+
+### 14. Scenario Context (`14_scenario_context.svg`)
+- Business scenario setup, role context, pain point, decision point, and practice goal.
+
+### 15. UI Operation Annotation (`15_ui_operation_annotation.svg`)
+- Product interface or system operation explanation with editable screenshot placeholder and numbered callouts.
+
+### 16. Comparison Matrix (`16_comparison_matrix.svg`)
+- Correct-versus-wrong, option A/B, or method comparison page with decision rule.
+
+### 17. Roleplay Script (`17_roleplay_script.svg`)
+- Sales enablement, customer communication, objection handling, and role-play practice script.
+
+### 18. SOP Checklist (`18_sop_checklist.svg`)
+- Implementation, delivery, operation, or service checklist with standards and completion markers.
+
+### 19. Assessment Results (`19_assessment_results.svg`)
+- Training assessment, score summary, pass level, capability breakdown, and improvement advice.
+
+### 20. FAQ Troubleshooting (`20_faq_troubleshooting.svg`)
+- Common questions, answers, troubleshooting path, and escalation rule.
+
 ## VIII. SVG Page Roster
 
 | File | Role | Description |
@@ -135,15 +165,26 @@ Usage rules:
 | `08_workshop_task.svg` | workshop | Group task and output card |
 | `09_quiz_review.svg` | quiz | Quiz, answer zone, and recap |
 | `10_action_plan.svg` | action | Personal or team action plan after training |
+| `11_module_divider.svg` | divider | Module divider and chapter learning rhythm |
+| `12_training_agenda_timebox.svg` | agenda | Course agenda, timebox, delivery mode, and output |
+| `13_prerequisite_check.svg` | prerequisite | Learner persona, preparation checklist, and readiness baseline |
+| `14_scenario_context.svg` | scenario | Business scenario setup and practice framing |
+| `15_ui_operation_annotation.svg` | ui_annotation | Product UI or operation screenshot annotation |
+| `16_comparison_matrix.svg` | comparison | Correct/wrong or option comparison with decision rule |
+| `17_roleplay_script.svg` | roleplay | Sales or customer communication role-play script |
+| `18_sop_checklist.svg` | sop | SOP checklist and completion standards |
+| `19_assessment_results.svg` | assessment | Assessment result, pass level, and capability breakdown |
+| `20_faq_troubleshooting.svg` | faq | FAQ and troubleshooting path |
 
 ## IX. Layout Modes
 
 | Mode | Recommendation |
 | --- | --- |
-| **Product Training** | Use framework, concept, process, case, quiz, action pages |
-| **Sales Enablement** | Use objectives, journey, concept, case, workshop, action pages |
-| **Internal Workshop** | Use objectives, workshop, quiz, action pages with stronger green checkpoint blocks |
-| **Customer Training** | Keep explanations concise and add process walkthrough pages for operation steps |
+| **Product Training** | Use framework, concept, process, UI annotation, comparison, quiz, FAQ, action pages |
+| **Sales Enablement** | Use objectives, journey, scenario, concept, roleplay, case, workshop, action pages |
+| **Implementation Training** | Use agenda, prerequisite, process, SOP checklist, assessment, FAQ, action pages |
+| **Internal Workshop** | Use objectives, workshop, comparison, quiz, assessment, action pages with stronger green checkpoint blocks |
+| **Customer Training** | Keep explanations concise and add UI annotation, process walkthrough, FAQ, and action pages |
 
 ## X. Spacing Specification
 
@@ -180,6 +221,33 @@ Usage rules:
 | `{{TASK_N}}` | Practice task |
 | `{{QUESTION_N}}` | Quiz or reflection question |
 | `{{ACTION_N}}` | Post-training action item |
+| `{{MODULE_TITLE}}` | Module divider title |
+| `{{MODULE_GOAL}}` | Module learning goal |
+| `{{TIME_N}}` | Agenda time slot |
+| `{{AGENDA_TOPIC_N}}` | Agenda topic |
+| `{{AGENDA_MODE_N}}` | Agenda delivery format |
+| `{{AGENDA_OUTPUT_N}}` | Agenda expected output |
+| `{{LEARNER_PERSONA_N}}` | Target learner persona |
+| `{{PREP_ITEM_N}}` | Pre-class preparation checklist item |
+| `{{BASELINE_N}}` | Learner baseline skill item |
+| `{{SCENARIO_BACKGROUND}}` | Scenario background |
+| `{{PAIN_POINT}}` | Scenario pain point |
+| `{{PRACTICE_GOAL}}` | Practice goal derived from the scenario |
+| `{{SCREEN_NAME}}` | Product UI or operation screen name |
+| `{{ANNOTATION_N}}` | UI callout explanation |
+| `{{OPTION_A_TITLE}}` | Comparison left-side option title |
+| `{{OPTION_B_TITLE}}` | Comparison right-side option title |
+| `{{DECISION_RULE}}` | Comparison decision rule |
+| `{{ROLE_A}}` | Role-play participant A |
+| `{{ROLE_B}}` | Role-play participant B |
+| `{{SCRIPT_LINE_N}}` | Role-play script line |
+| `{{SOP_STEP_N}}` | SOP step name |
+| `{{SOP_STANDARD_N}}` | SOP completion standard |
+| `{{SCORE}}` | Assessment score |
+| `{{PASS_LEVEL}}` | Assessment pass level |
+| `{{FAQ_N}}` | FAQ question |
+| `{{ANSWER_N}}` | FAQ answer |
+| `{{TROUBLE_STEP_N}}` | Troubleshooting step |
 | `{{PAGE_NUM}}` | Page number |
 
 ## XIII. Asset Specification
@@ -187,3 +255,5 @@ Usage rules:
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated enterprise training journey reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific courseware visuals. Learning objectives, journey maps, frameworks, practice tasks, quizzes, and action plans remain editable SVG elements. |
+| `images/huixin_logo_light.png` | Official Huixin light-background logo | Use on white and light gray pages. Preserve the official horizontal lockup. |
+| `images/huixin_logo_dark.png` | Official Huixin dark-background logo | Use only on deep blue-gray or black backgrounds. Preserve the official horizontal lockup. |

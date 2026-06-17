@@ -18,3 +18,26 @@
 - Remaining notes:
   - `svg_to_pptx.py --svg-snapshot` reported missing PNG compatibility rendering libraries and used pure SVG preview mode; native PPTX export succeeded.
   - Untracked `agent-skill-tools-intro-video/` is unrelated and intentionally left unstaged.
+
+## 2026-06-17 09:18:00 CST
+
+- Scope: Huixin training enablement template expansion and repository workflow guardrails.
+- Changed files:
+  - `AGENTS.md`
+  - `STATUS.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_training_enablement/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_training_enablement/01_cover.svg` through `20_faq_troubleshooting.svg`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_training_enablement/images/huixin_logo_light.png`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_training_enablement/images/huixin_logo_dark.png`
+- Validation:
+  - Parsed all 20 Huixin training SVG templates with Python `xml.etree.ElementTree`.
+  - Verified every SVG keeps `viewBox="0 0 1280 720"`.
+  - Verified `design_spec.md`, `decks_index.json`, and actual SVG roster all report 20 pages.
+  - Rendered representative new pages in Playwright/browser and confirmed the unified Huixin logo appears on dark and light pages.
+  - `git diff --check` passed.
+- Commit policy:
+  - Future completed repository modifications must be verified and committed.
+  - Generated previews, local project workspaces, browser outputs, and transient validation artifacts must stay unstaged unless explicitly requested.
+- Remaining notes:
+  - Existing untracked artifacts such as `.playwright-mcp/`, `projects/`, `huixin-ai-skill-training-preview.png`, `huixin-ai-skill-training-fixed-preview.png`, and `huixin-preview-snapshot.md` are intentionally not included in the commit.

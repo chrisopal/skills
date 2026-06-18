@@ -11,9 +11,10 @@ This skill orchestrates:
 
 1. `wechat-topic-planner`
 2. `wechat-article-writer`
-3. `wechat-article-layout`
-4. `wechat-article-reviewer`
-5. `wechat-account-operator`
+3. `wechat-article-human-tone-reviewer`
+4. `wechat-article-layout`
+5. `wechat-article-reviewer`
+6. `wechat-account-operator`
 
 Read:
 
@@ -65,17 +66,21 @@ Forbidden:
 5. Layout:
    - apply WeChat HTML style
    - avoid native `<ul>/<li>`
-6. Review:
+6. Human-tone review:
+   - run the dedicated human-tone reviewer on the full draft text
+   - fix AI-sounding, repetitive, weak-object, or over-smoothed passages before final review
+   - when possible, compare against recent drafts to avoid repeating the same opening/closing patterns
+7. Review:
    - run reviewer checklist
    - fix P1/P2 issues before saving
-7. Save draft:
+8. Save draft:
    - use local WeChat API helper if available
    - use `.env` for credentials
    - save only as draft
-8. Verify:
+9. Verify:
    - read back draft title, digest, content, and cover
    - confirm no publish action occurred
-9. Report audit package.
+10. Report audit package.
 
 ## Expected Local Workspace
 

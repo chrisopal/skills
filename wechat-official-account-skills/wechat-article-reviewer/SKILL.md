@@ -12,6 +12,8 @@ Read:
 - `../references/account-positioning.md`
 - `../references/review-checklist.md`
 
+Use together with `../wechat-article-human-tone-reviewer/SKILL.md` when the draft may still sound AI-written, overly repetitive, or weakly addressed to a concrete reader. The human-tone reviewer should run first when both are used.
+
 ## Review Stance
 
 Be a strict editor. Prioritize issues that would make the article:
@@ -32,6 +34,8 @@ Be a strict editor. Prioritize issues that would make the article:
 5. Tone: Does it sound human, specific, and object-aware?
 6. Layout readiness: Title, digest, cover prompt, section structure, list shape.
 7. Risk: unverifiable factual claims, exaggerated promises, sensitive company claims.
+
+This reviewer remains the broad final editor. It should not substitute for the dedicated human-tone pass.
 
 ## Output Format
 
@@ -59,4 +63,3 @@ Be a strict editor. Prioritize issues that would make the article:
 ```
 
 If the article is acceptable, still provide 2-3 useful polish suggestions.
-

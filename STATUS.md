@@ -1,3 +1,19 @@
+## 2026-06-18 09:50:00 CST
+
+- Scope: WeChat Official Account human-tone review agent for AI-sounding copy, weak reader object, and repetitive article voice.
+- Changed files:
+  - `wechat-official-account-skills/wechat-article-human-tone-reviewer/SKILL.md`
+  - `wechat-official-account-skills/wechat-daily-pipeline/SKILL.md`
+  - `wechat-official-account-skills/wechat-article-reviewer/SKILL.md`
+  - `wechat-official-account-skills/references/review-checklist.md`
+  - `STATUS.md`
+- Validation:
+  - `git diff --check` passed for the new reviewer skill, pipeline, checklist, and `STATUS.md`.
+  - `rg` confirmed the pipeline now orchestrates the dedicated human-tone pass and the checklist explicitly checks AI tone, reader object, and cross-draft repetition.
+- Commit/push state: pending.
+- Remaining notes:
+  - Existing unrelated modified WeChat writer/operator/topic-planner files and untracked preview/project artifacts remain unstaged.
+
 ## 2026-06-18 09:39:00 CST
 
 - Scope: WeChat Official Account skills imagegen asset persistence and unified visual-style rules.

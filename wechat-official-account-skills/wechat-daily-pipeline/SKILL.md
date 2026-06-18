@@ -56,9 +56,11 @@ Forbidden:
    - conversational Chinese body
    - technical clarity + enterprise landing value
 4. Prepare visuals:
+   - use the host agent's configured image generation capability via the `imagegen` tool first
    - generate cover image with `imagegen`
    - generate inline diagram with `imagegen` based on the writer's brief, only when it improves understanding
-   - use local overlay/resizing only for exact labels and final dimensions
+   - persist the selected final images into repo-local paths such as `assets/wechat/` before draft save; do not leave final assets only in host cache or chat preview state
+   - use local overlay/resizing only for exact labels, final dimensions, or export-format cleanup after `imagegen`
    - unified style from `style-system.md`
 5. Layout:
    - apply WeChat HTML style
@@ -111,6 +113,9 @@ If paths differ, adapt to the current workspace and report the paths used.
 
 - If credentials or IP whitelist fail, produce local Markdown/HTML/assets and report the blocker.
 - If cover generation fails, create a precise cover prompt and continue with article draft.
-- If imagegen is unavailable, use a clearly reported fallback asset and include the fallback reason in the audit package.
+- `imagegen` means the host agent image generation tool/capability, not a repo-local drawing script.
+- Do not default to local PIL/SVG/HTML drawing when `imagegen` is available.
+- If `imagegen` succeeds visually but the file is not yet inside the repo workspace, first recover/copy the chosen output into `assets/wechat/` from the host cache path such as `$CODEX_HOME/generated_images/...` or from the current session record. Do not switch to a local-drawing fallback just because the built-in output path was inconvenient.
+- If `imagegen` is unavailable, fails repeatedly, or cannot yield a usable asset, use a clearly reported fallback asset and include the fallback reason in the audit package.
 - If review fails, do not save to WeChat unless the user explicitly asks for a flawed draft.
 - If WeChat API saves the draft, always read it back when possible.

@@ -1,3 +1,19 @@
+## 2026-06-18 09:39:00 CST
+
+- Scope: WeChat Official Account skills imagegen asset persistence and unified visual-style rules.
+- Changed files:
+  - `wechat-official-account-skills/wechat-daily-pipeline/SKILL.md`
+  - `wechat-official-account-skills/wechat-article-layout/SKILL.md`
+  - `wechat-official-account-skills/references/style-system.md`
+  - `wechat-official-account-skills/references/review-checklist.md`
+  - `STATUS.md`
+- Validation:
+  - `git diff --check` passed for the updated WeChat skill files and `STATUS.md`.
+  - `rg` confirmed the skills now explicitly require repo-local image persistence, `$CODEX_HOME/generated_images` recovery/copy guidance, stable asset naming, and unified imagegen style grammar.
+- Commit/push state: pending.
+- Remaining notes:
+  - Existing unrelated modified WeChat skill files and untracked preview/project artifacts remain unstaged.
+
 ## 2026-06-14 15:28:40 CST
 
 - Scope: Huixin PPT template layout hardening for management report and consulting strategy decks.

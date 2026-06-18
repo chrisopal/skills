@@ -11,6 +11,20 @@
 - 有清晰层级、编号、注释块、细线分隔。
 - 统一使用墨绿、深灰、白底、少量橙色强调。
 
+## Shared Visual Grammar
+
+所有 `imagegen` 配图共用同一套视觉语法，不因单篇文章随意漂移：
+
+- 白底或近白底，保留纸面感，不做海报式重背景。
+- 深灰主文字、墨绿主结构、橙色只用于纠偏、风险、控制流或重点提醒。
+- 节点、卡片、箭头、细分隔线、工程注记优先；装饰性插画、人物和赛博特效禁用。
+- 图中文字以中文为主，短标签优先，尽量 4-6 个核心节点，不做密集表格。
+- 封面、痛点链路、方案架构、价值闭环、工作台原型都应让人一眼看出来自同一个栏目系统。
+
+统一 prompt 骨架：
+
+> 白底专业技术信息图 / 架构图风格，服务于微信公众号「智能体架构笔记」，纸面感、工程感、深灰、墨绿、少量橙色，中文文字清晰可读，模块卡片、细线箭头、分层结构、简洁现代，不要人物，不要赛博朋克，不要复杂背景。
+
 ## Color Tokens
 
 | Token | Hex | Usage |
@@ -84,7 +98,7 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 
 ## Cover Image
 
-封面图默认通过 `imagegen` skill 生成 raster bitmap，再按需用本地脚本叠加准确中文标题。不要默认用手写 PIL/SVG/HTML 画封面，除非 imagegen 不可用或用户明确要求确定性图形。
+封面图默认通过宿主智能体配置的 `imagegen` 工具生成 raster bitmap，并优先让 `imagegen` 直接生成完整中文标题。`imagegen` 是默认主路径，不是可选项。不要默认用手写 PIL/SVG/HTML 画封面或大面积叠字，除非 `imagegen` 不可用、反复失败、无法产出可用结果，或用户明确要求确定性图形。
 
 封面统一方向：
 
@@ -94,6 +108,7 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 - 中文标题区域留白
 - 深灰、墨绿、少量橙色
 - 不要人物、赛博朋克、复杂背景、强蓝紫渐变
+- 标题优先直接由 `imagegen` 生成，不默认走本地大面积叠字
 
 推荐尺寸：
 
@@ -102,7 +117,7 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 
 ## Inline Illustrations
 
-正文插图默认通过 `imagegen` skill 生成统一风格 raster bitmap。插图的内容 brief 由写作 skill 给出，排版 skill 负责把 brief 转成 imagegen prompt、保存图片、必要时叠加短标签。
+正文插图默认通过宿主智能体配置的 `imagegen` 工具生成统一风格 raster bitmap。插图的内容 brief 由写作 skill 给出，排版 skill 负责把 brief 转成 imagegen prompt、保存图片，并优先要求 `imagegen` 在图中直接生成短中文标签。
 
 适合图型：
 
@@ -115,10 +130,32 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 
 生成原则：
 
-- 优先让 imagegen 生成“无文字底图”，再用本地脚本叠加准确中文标签。
+- 优先让宿主 `imagegen` 直接生成完整信息图，包括短中文标题和节点标签。
+- 本地脚本只做裁切、压缩、格式整理或极少量修正，避免大面积叠字造成视觉割裂。
 - 如果需要保留在图中的中文，必须人工或脚本复核文字准确性。
-- 不使用纯代码绘制的占位图作为最终插图；代码绘图只适合流程验证或 imagegen 失败兜底。
+- 不使用纯代码绘制的占位图作为最终插图；代码绘图只适合流程验证，或在 `imagegen` 不可用/不可用结果时兜底。
 - 图片保存到项目工作区，例如 `assets/wechat/`，不能只留在 imagegen 默认目录。
+
+推荐文章内图组合：
+
+- 案例深度文：优先从 `痛点链路图 / 方案架构图 / 工作台或原型图 / 价值闭环图` 里选 2-4 张
+- 技术解释文：优先 `分层图 / 对比图 / 流程图`
+- 轻量短文：没有明确认知门槛时可只保留封面
+
+## Asset Persistence And Naming
+
+最终交付给草稿 API 的图片必须是仓库内真实文件，不是宿主缓存引用。
+
+- 最终路径优先放在 `assets/wechat/`
+- 如果宿主 `imagegen` 先写到 `$CODEX_HOME/generated_images/...`，必须复制到项目目录后再继续
+- 如果本次会话只暴露了内联结果或会话记录，必须把选中的图片解码/导出到项目目录
+- 命名保持文章 slug + 图型后缀，便于后续复用和审稿追踪
+- 推荐命名：
+  - `<slug>-cover-imagegen.png`
+  - `<slug>-pain-chain-imagegen.png`
+  - `<slug>-architecture-imagegen.png`
+  - `<slug>-value-loop-imagegen.png`
+  - `<slug>-workbench-imagegen.png`
 
 ## QA Rules
 
@@ -129,4 +166,5 @@ Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif
 - 封面与正文配色一致。
 - 没有 emoji 作为图标。
 - 没有大面积蓝紫科技风。
-- 封面和正文插图来自 imagegen 或明确记录了 fallback 原因。
+- 封面和正文插图应优先来自宿主 `imagegen`，否则必须明确记录 fallback 原因。
+- 最终封面和正文插图已落到仓库路径，例如 `assets/wechat/`，而不是只停留在宿主缓存。

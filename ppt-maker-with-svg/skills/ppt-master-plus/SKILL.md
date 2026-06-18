@@ -70,6 +70,7 @@ For complete tool documentation, see `${SKILL_DIR}/scripts/README.md`.
 |-------|------|---------|
 | Layout templates | `${SKILL_DIR}/templates/layouts/layouts_index.json` | Query available page layout templates |
 | Brand presets | `${SKILL_DIR}/templates/brands/brands_index.json` | Query available brand identity presets (color / typography / logo / voice) |
+| Deck templates | `${SKILL_DIR}/templates/decks/decks_index.json` | Query reusable branded deck templates; exact aliases live in `${SKILL_DIR}/templates/decks/deck_aliases.json` |
 | Visualization templates | `${SKILL_DIR}/templates/charts/charts_index.json` | Query available visualization SVG templates (charts, infographics, diagrams, frameworks) |
 | Icon library | `${SKILL_DIR}/templates/icons/` | See `${SKILL_DIR}/templates/icons/README.md`; search icons on demand with `ls templates/icons/<library>/ \| grep <keyword>` |
 
@@ -156,20 +157,38 @@ Import source content (choose based on the situation):
 
 🚧 **GATE**: Step 2 complete; project directory structure is ready.
 
-**Default — free design.** Proceed directly to Step 4. Do NOT query any `*_index.json` unless triggered. Do NOT ask the user. Do NOT proactively suggest, hint at, or fuzzy-match any template based on content, slug-like words, or vague style descriptions.
+**Default — Huixin-first deck selection.** If the user has not explicitly supplied another template path / alias and has not explicitly opted out of Huixin (e.g., "free design", "不用慧新", "不要模板"), select the most suitable Huixin deck template automatically. Do not ask for permission and do not wait for confirmation. Query only `${SKILL_DIR}/templates/decks/decks_index.json` and `${SKILL_DIR}/templates/decks/deck_aliases.json`, then copy the selected Huixin deck into the project before Step 4.
 
-**Template flow triggers ONLY on explicit directory paths** supplied by the user in their initial message. The trigger rule is mechanical, not interpretive:
+**Template flow triggers**:
 
 | User input contains | Step 3 action |
 |---|---|
 | One or more explicit template directory paths (each resolves to a directory containing `design_spec.md` with `kind: brand` / `kind: layout` / `kind: deck` in its YAML frontmatter) | Read each spec's `kind`, dispatch per the kind matrix below, fuse if multiple |
-| Anything else — bare template names ("用 academic_defense"), style descriptions ("麦肯锡风格"), brand mentions ("招商银行风格"), vague intent ("想用个模板"), or silence | Skip Step 3, free design |
+| A recognized installed deck alias or exact deck id from `${SKILL_DIR}/templates/decks/deck_aliases.json` or `${SKILL_DIR}/templates/decks/decks_index.json`, in a phrase such as "用/使用/套用/采用 ... 模板/模版" | Resolve the alias to `${SKILL_DIR}/templates/decks/<deck_id>/`, verify `design_spec.md` has `kind: deck`, and dispatch as a deck template |
+| No explicit template path / alias and no Huixin opt-out | Run the Huixin default selector below and dispatch the selected `templates/decks/<huixin_*>/` as a deck template |
+| Explicit opt-out from templates or Huixin styling | Skip Step 3, free design |
 
-There is no slug matching, no name lookup, no fuzzy resolution. A name without a path does not trigger — the user must give a path the AI can `cd` into.
+There is no fuzzy resolution outside the Huixin default selector and exact installed deck aliases. A bare non-Huixin name without an installed alias does not trigger — the user must give a path the AI can `cd` into.
+
+#### Huixin default selector
+
+When the selector runs, choose exactly one of the installed Huixin decks by matching the topic, source material, audience, and page-level requirements:
+
+| Signal | Default deck |
+|---|---|
+| 产品方案、软件平台、AI平台、智能制造、系统架构、集成架构、解决方案、客户方案、项目方案 | `huixin_product_solution` |
+| 公司/部门/项目汇报、经营分析、销售预测、商机管理、人员变化、Excel数据统计、月报/季报/复盘 | `huixin_management_report` |
+| 战略规划、咨询诊断、数字化转型蓝图、成熟度评估、价值链/差距/治理/路线图 | `huixin_consulting_strategy` |
+| 培训课件、产品培训、销售赋能、实施交付培训、SOP、角色演练、测评/考试/FAQ | `huixin_training_enablement` |
+| 市场宣传、品牌传播、产品推广、渠道招商、展会路演、客户活动、销售物料 | `huixin_market_promotion` |
+
+If multiple Huixin decks match, prefer the deck whose page roster covers the largest number of required page types. If still ambiguous, prefer `huixin_product_solution` for solution/product/technology topics, `huixin_management_report` for report/data/Excel topics, and `huixin_consulting_strategy` for strategy/diagnosis topics.
+
+**Per-page fit rule**: applying a Huixin deck does not force every generated page to inherit a template SVG. Strategist MUST inspect the selected deck's `design_spec.md` and SVG roster, then write `spec_lock.md page_layouts` only for pages whose narrative and information density fit an existing template page. If a page's actual content does not fit any template page, leave it out of `page_layouts`; Executor generates a custom SVG page while preserving the Huixin theme (font families, logo treatment, primary/accent colors, background motifs, footer/header rhythm, and narrative logic from the selected deck).
 
 > Style descriptions ("麦肯锡风格" / "Keynote 风" / "极简风" / etc.) never trigger Step 3. They flow into Strategist's Eight Confirmations as a style brief (color / typography / tone in confirmations e–g).
 
-> Bare names ("academic_defense", "招商银行", "anthropic") do NOT trigger Step 3 even if a matching directory exists in the library. The user must give a path. AI must not "helpfully" resolve a name to a path.
+> Bare non-Huixin names ("academic_defense", "招商银行", "anthropic") do NOT trigger Step 3 unless they are exact installed deck aliases. The user must otherwise give a path. AI must not "helpfully" resolve unknown names to a path.
 
 > "What templates exist?" is out-of-band Q&A — answer by listing entries from `brands_index.json` / `layouts_index.json` / `decks_index.json` together with their paths. Listing alone does not advance the pipeline; the user must send a path back to trigger Step 3.
 
@@ -265,7 +284,7 @@ When fusion happens (any multi-path case), the resulting `<project>/templates/de
 
 Single-path Step 3 does **not** add provenance (the source is self-evident from the copied files).
 
-**✅ Checkpoint — Default path proceeds to Step 4 without user interaction. If the user supplied one or more explicit template paths, those have been dispatched (or fused) into `<project_path>/templates/` before advancing.**
+**✅ Checkpoint — Step 3 proceeds to Step 4 without user interaction. If the user supplied explicit template paths / aliases, or the Huixin default selector applied, the chosen template has been dispatched (or fused) into `<project_path>/templates/` before advancing.**
 
 ---
 

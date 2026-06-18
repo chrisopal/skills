@@ -138,6 +138,8 @@ Before drawing each page, look up its entry in `page_layouts` to decide which ba
 
 Do **not** invent a layout entry, and do **not** assume a template just because `templates/` exists — if `page_layouts` is present but silent for this page, that silence is the instruction.
 
+**Huixin free-page rule**: When a Huixin deck template is present but the current page has no `page_layouts` entry, generate a custom SVG structure for the page content while preserving the locked Huixin theme: logo treatment, font families, primary/accent colors, light background system, footer/header rhythm, and the selected deck's narrative logic. Free page means "no geometry inheritance", not "leave the Huixin visual system".
+
 **Per-page chart reference — `page_charts` section**:
 
 Before drawing each page, look up its entry in `page_charts` to decide which chart structure applies (the SVG itself was loaded in §1.0):

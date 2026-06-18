@@ -77,13 +77,13 @@ The deck's **visual aesthetic** — shape language, decoration density, whitespa
 
 Write the locked value to `spec_lock.md` `- visual_style:` and the rationale to `design_spec.md`. Executor loads only that one visual-style file.
 
-> **Template vs preset**: a style mention may sound like a template name ("academic style" vs the `academic_defense/` template directory). Step 3 only triggers on an explicit template directory path supplied by the user — bare names and style words never copy templates; they map to a visual-style preset here. If a template was triggered upstream, its files are already in `<project_path>/templates/` and its fused design_spec governs.
+> **Template vs preset**: a style mention may sound like a template name ("academic style" vs the `academic_defense/` template directory). Step 3 may load a template through an explicit path, an exact installed deck alias, or the Huixin default selector. Bare unknown names and style words never copy templates; they map to a visual-style preset here. If a template was loaded upstream, its files are already in `<project_path>/templates/` and its fused design_spec governs.
 
 **Downstream effect**: e / f / g / h realize the locked mode + visual style. Example: `showcase` + `dark-tech` → e applies one luminous accent on a dark field; g pairs a clean sans with mono; f minimal glow icons; h the `digital-dashboard` rendering.
 
 ### e. Color Scheme Recommendation
 
-**Hard rule**: User / template colors are truth. If the user has specified colors (HEX, brand colors, or natural-language directives like "use blue as primary"), or a template was loaded at Step 3 via an explicit path (`<project_path>/templates/design_spec.md`), lock those directly and skip the recommendation table. Do not adjust them to fit any palette or industry default. Only when no color signal exists from user or template do you proactively propose a scheme below.
+**Hard rule**: User / template colors are truth. If the user has specified colors (HEX, brand colors, or natural-language directives like "use blue as primary"), or a template was loaded at Step 3 (`<project_path>/templates/design_spec.md`), lock those directly and skip the recommendation table. Do not adjust them to fit any palette or industry default. Only when no color signal exists from user or template do you proactively propose a scheme below.
 
 > Step 3 already collapses brand and layout inputs into one fused `design_spec.md`; this layer reads from that single source and does not need to re-resolve brand vs layout precedence.
 
@@ -170,7 +170,7 @@ See [`../templates/icons/README.md`](../templates/icons/README.md) for the curre
 
 **Mandatory**: propose **two** combinations to the user — one concord (safe), one contrast (with tension). Do not default to "title = body, same font" without explicit user request. Pick each family by subject fit and the locked `visual_style`'s **§2 character** (read at the GATE above) — there is **no default family**; type should follow the deck's content and aesthetic, not fall back to one safe face.
 
-> **Template precedence**: when a template was loaded at Step 3 via an explicit path and declares `title` / `body` font stacks in `<project_path>/templates/design_spec.md §III Typography` / §IV (or whichever heading the fused spec uses), lock those directly and skip the two-combination presentation. Same precedence as e. — user override > template values.
+> **Template precedence**: when a template was loaded at Step 3 and declares `title` / `body` font stacks in `<project_path>/templates/design_spec.md §III Typography` / §IV (or whichever heading the fused spec uses), lock those directly and skip the two-combination presentation. Same precedence as e. — user override > template values.
 
 **Cross-platform pre-installed reference**:
 
@@ -732,6 +732,7 @@ Content-outline and speaker-notes strategy follow the deck's locked **mode** —
    - **page_rhythm is mandatory**: Based on the page list in §IX Content Outline, assign each page one of `anchor` / `dense` / `breathing` (see `spec_lock_reference.md` for the full vocabulary). This is what breaks the uniform "every page is a card grid" feel — without it the Executor defaults all pages to `dense`.
    - **Rhythm follows narrative, not quota**: `breathing` pages mark natural pauses — chapter transitions, standalone emphasis (hero quote / big number), SCQA bridges. Dense decks may legitimately be all `dense`. **Do NOT invent filler pages** ("Thank you", empty dividers) to pad rhythm — every `breathing` page must say something independent.
    - **page_layouts (write only when a template is in use)**: For each page that inherits a template SVG, add `P<NN>: <svg_basename>` (e.g., `P04: 03a_content_image_text`). Pages designed freely get **no entry** — Executor reads the absence as "free design, no inheritance". If zero pages use a template, omit the section entirely.
+   - **Huixin page-fit rule**: When Step 3 loaded a Huixin deck automatically or by alias, inspect `<project_path>/templates/design_spec.md` and the copied SVG roster. Map each page to the closest Huixin template page only when the page's narrative, density, and content blocks genuinely fit. If no page fits, omit that page from `page_layouts`; the Executor must generate a custom SVG but still use the Huixin theme locked from the template (logo treatment, font families, primary/accent colors, background motifs, footer/header rhythm, and the selected deck's narrative logic).
    - **page_charts (write only for chart pages that match a catalog template)**: For each page in `design_spec.md §VII` whose `reference template path` points to `templates/charts/<name>.svg`, add `P<NN>: <chart_name>`. Pages with `no-template-match` in §VII MUST NOT appear here (Executor would look for a non-existent reference). If the deck has no data-visualization pages, omit the section.
    - **Hard rule**: Use both `page_layouts` and `page_charts` for the same page only when the layout template is a compatible shell for the chart. Do not pair chart pages with conflicting page layouts (e.g., `waterfall_chart` + timeline layout, KPI cards + circle-diagram layout). If no compatible layout exists, omit the page from `page_layouts`.
 

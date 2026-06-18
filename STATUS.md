@@ -120,6 +120,22 @@
   - Full `huixin_product_solution` deck quality check passed: 22 files checked, 0 errors; the updated complex architecture page passed without warnings.
   - Browser preview rendered at `/tmp/huixin_product_solution_template_preview/22_complex_multi_domain_architecture_dense_browser.png`.
   - `git diff --check` passed for the changed SVG.
-- Commit/push state: pending.
+- Commit/push state: committed and pushed in `c10a3a5` on `main`.
 - Remaining notes:
   - The update only densifies the reusable SVG template source; no generated PPTX, PNG preview, or local artifact is staged.
+
+## 2026-06-18 09:14:18 CST
+
+- Scope: PPT Master Plus default Huixin template selection rules.
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/SKILL.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/references/strategist.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/references/executor-base.md`
+  - `STATUS.md`
+- Validation:
+  - `rg` confirmed Step 3 now uses Huixin-first deck selection and no longer contains the old default free-design rule.
+  - Parsed `templates/decks/decks_index.json` and `templates/decks/deck_aliases.json` with `python3 -m json.tool`.
+  - `git diff --check` passed for the changed workflow and reference files.
+- Commit/push state: pending.
+- Remaining notes:
+  - This is a workflow-rule update only; no generated PPTX, preview image, zip, or project artifact is staged.

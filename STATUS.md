@@ -136,6 +136,21 @@
   - `rg` confirmed Step 3 now uses Huixin-first deck selection and no longer contains the old default free-design rule.
   - Parsed `templates/decks/decks_index.json` and `templates/decks/deck_aliases.json` with `python3 -m json.tool`.
   - `git diff --check` passed for the changed workflow and reference files.
-- Commit/push state: pending.
+- Commit/push state: committed and pushed in `81f2c2e` on `main`.
 - Remaining notes:
   - This is a workflow-rule update only; no generated PPTX, preview image, zip, or project artifact is staged.
+
+## 2026-06-18 09:21:09 CST
+
+- Scope: `ppt-master-plus-v02.zip` distribution package.
+- Changed files:
+  - `STATUS.md`
+- Validation:
+  - Created `/Users/guojiexie/Development/skills/ppt-master-plus-v02.zip` from `ppt-maker-with-svg/skills/ppt-master-plus`.
+  - `unzip -t /Users/guojiexie/Development/skills/ppt-master-plus-v02.zip` passed with no compressed-data errors.
+  - Python zip inspection confirmed one top-level folder `ppt-master-plus`, 12,329 entries, required files present, and 0 excluded-cache matches.
+  - `unzip -p` confirmed the packaged `SKILL.md` includes the latest Huixin-first deck selection and per-page fit rule.
+- Commit/push state: pending.
+- Remaining notes:
+  - The zip is a generated distribution artifact for local sharing and remains uncommitted by policy.
+  - Packaging excluded `.DS_Store`, `__pycache__`, `.pyc`, `.pytest_cache`, `node_modules`, `.venv`, and `.mypy_cache` content.

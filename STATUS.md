@@ -17,7 +17,7 @@
   - Generated `/tmp/requirements-to-delivery-check/sample-product-flow` with `init_delivery_workspace.py`.
   - `validate_delivery_artifacts.py /tmp/requirements-to-delivery-check/sample-product-flow --profile full` passed.
   - `rg -n '\{\{' /tmp/requirements-to-delivery-check/sample-product-flow` found no unrendered placeholders.
-- Commit/push state: pending.
+- Commit/push state: committed and pushed to `origin/main`.
 - Remaining notes:
   - Existing unrelated WeChat skill changes and local artifacts remain unstaged.
 

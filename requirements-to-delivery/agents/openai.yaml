@@ -1,0 +1,4 @@
+interface:
+  display_name: "Requirements to Delivery"
+  short_description: "End-to-end product delivery workflow"
+  default_prompt: "Use $requirements-to-delivery to turn this product idea into research, SRS, system design, prototype, development, and acceptance artifacts."

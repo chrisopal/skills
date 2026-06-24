@@ -1,3 +1,26 @@
+## 2026-06-25 07:20:00 CST
+
+- Scope: New `requirements-to-delivery` Codex skill for需求调研, 技术方案, SRS, 系统设计, 原型, 开发计划, and验收闭环.
+- Changed files:
+  - `requirements-to-delivery/SKILL.md`
+  - `requirements-to-delivery/agents/openai.yaml`
+  - `requirements-to-delivery/references/*.md`
+  - `requirements-to-delivery/assets/templates/*.md`
+  - `requirements-to-delivery/scripts/init_delivery_workspace.py`
+  - `requirements-to-delivery/scripts/validate_delivery_artifacts.py`
+  - `README.md`
+  - `STATUS.md`
+- Validation:
+  - `quick_validate.py requirements-to-delivery` passed.
+  - `python3 -m py_compile` passed for both helper scripts.
+  - `git diff --check -- requirements-to-delivery README.md STATUS.md` passed.
+  - Generated `/tmp/requirements-to-delivery-check/sample-product-flow` with `init_delivery_workspace.py`.
+  - `validate_delivery_artifacts.py /tmp/requirements-to-delivery-check/sample-product-flow --profile full` passed.
+  - `rg -n '\{\{' /tmp/requirements-to-delivery-check/sample-product-flow` found no unrendered placeholders.
+- Commit/push state: pending.
+- Remaining notes:
+  - Existing unrelated WeChat skill changes and local artifacts remain unstaged.
+
 ## 2026-06-18 09:50:00 CST
 
 - Scope: WeChat Official Account human-tone review agent for AI-sounding copy, weak reader object, and repetitive article voice.

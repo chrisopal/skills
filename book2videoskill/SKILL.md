@@ -5,7 +5,7 @@ description: Book-to-short-video production workflow for turning a book title, b
 
 # Book2VideoSkill
 
-Use this skill to turn a book or book-methodology breakdown into a short-video production package: `BookCore -> CoverPosterPlan -> Storyboard -> Assets -> RenderPlan -> Publish Draft`.
+Use this skill to turn a book or book-methodology breakdown into a portable short-video project: `BookCore -> CoverPosterPlan -> Storyboard -> Assets -> ExtractedSkill -> RemotionProject -> Video/Poster -> Bundle`.
 
 ## Operating Rules
 
@@ -18,7 +18,9 @@ Use this skill to turn a book or book-methodology breakdown into a short-video p
 - Default visual preset is `orange_primary_green_secondary`: orange primary, green secondary, warm white background, business infographic / knowledge-poster style.
 - Generate Chinese text with renderable components whenever possible. Do not rely on image models to render long Chinese text.
 - For 《金字塔原理》 / `Pyramid Principle`, include `结论先行`, `以上统下`, `归类分组`, `逻辑递进`, a pyramid structure model, and the AI Skill candidate `AI汇报结构生成器`.
-- Mark generated media placeholders honestly. Do not claim real TTS, BGM, PNG, or MP4 exists unless a provider/render command actually produced it.
+- For 《原则》 / `Principles`, include `极度求真`, `极度透明`, `创意择优`, `痛苦 + 反思 = 进步`, `可信度加权决策`, a feedback-loop visual model, and the AI Skill candidate `AI原则复盘教练`.
+- Use a durable per-book project directory. The default is `book2videoskill/projects/<book-slug>/`; do not write book projects under `/tmp`.
+- Mark generated media honestly. The local component renderer can produce poster/scene PNGs and an MP4 fallback; use the generated Remotion project when a Remotion runtime/plugin render is available.
 - Preserve intermediate artifacts and error reports when any provider or renderer fails.
 
 ## Quick Start
@@ -29,10 +31,16 @@ Create a complete scaffolded project:
 python3 book2videoskill/scripts/run_book2video.py --book "金字塔原理" --author "芭芭拉·明托" --output-root output
 ```
 
+By default, omit `--output-root` to create `book2videoskill/projects/<book-slug>/`:
+
+```bash
+python3 book2videoskill/scripts/run_book2video.py --book "原则" --author "瑞·达利欧"
+```
+
 Validate the project:
 
 ```bash
-python3 book2videoskill/scripts/validate_book2video_project.py output/pyramid-principle
+python3 book2videoskill/scripts/validate_book2video_project.py book2videoskill/projects/principles-ray-dalio --require-render
 ```
 
 Run tools independently when debugging:
@@ -40,6 +48,7 @@ Run tools independently when debugging:
 ```bash
 python3 book2videoskill/scripts/book2storyboard.py --book "金字塔原理" --output-dir output/pyramid-principle
 python3 book2videoskill/scripts/storyboard2assets.py --project-dir output/pyramid-principle
+python3 book2videoskill/scripts/create_extracted_skill.py --project-dir output/pyramid-principle
 python3 book2videoskill/scripts/assets2video.py --project-dir output/pyramid-principle
 ```
 
@@ -53,7 +62,8 @@ python3 book2videoskill/scripts/assets2video.py --project-dir output/pyramid-pri
    - `book_core.json`, `cover_poster_plan.json`, `style_bible.json`, `storyboard.json`, and `narration_script.md` exist.
    - Storyboard has `6-8` scenes and total duration <= duration limit.
    - Asset manifest paths exist, even if they are explicit placeholder handoff files.
-   - Render plan is consumable by a renderer.
+   - `poster.png`, `output/poster.png`, `output/final_video.mp4`, and `remotion/src/Root.tsx` exist.
+   - `extracted_skill/<skill-name>/SKILL.md` and `<skill-name>.zip` exist.
    - Publish draft exists and does not contain unsupported claims.
 
 ## Output Contract
@@ -77,7 +87,10 @@ tts_audio/
 subtitles/
 bgm/
 output/
+remotion/
+extracted_skill/
+<extracted-skill-name>.zip
 project_bundle.zip
 ```
 
-Real provider outputs may additionally include `cover.png`, `mascot.png`, `scene_images/*.png`, `tts_audio/*.mp3`, `bgm/main.mp3`, and `output/final_video.mp4`. The scaffold scripts use SVG/text placeholders unless a real provider is wired in.
+Local generation produces `poster.png`, `scene_images/*.png`, `output/final_video.mp4`, a Remotion project, a project bundle, and a portable extracted-skill zip. Real providers may additionally add mascot PNGs, TTS audio, BGM, or a Remotion-rendered replacement MP4.

@@ -7,6 +7,7 @@ import argparse
 from pathlib import Path
 
 from book2video_common import (
+    is_principles,
     is_pyramid_principle,
     load_input,
     normalize_input,
@@ -56,6 +57,49 @@ def pyramid_book_core(book_title: str, book_author: str | None) -> dict:
     }
 
 
+def principles_book_core(book_title: str, book_author: str | None) -> dict:
+    return {
+        "bookTitle": book_title,
+        "bookAuthor": book_author or "瑞·达利欧",
+        "coreProblem": "很多人会复盘问题，却没有把错误、分歧和经验沉淀成下一次可执行的原则。",
+        "videoCoreQuestion": "怎样把失败、分歧和复杂决策转成个人或组织可以复用的原则系统？",
+        "coreClaim": "《原则》的价值不是鸡汤，而是一套用极度求真、极度透明和可信度加权决策持续进化的操作系统。",
+        "coreConcepts": [
+            {"name": "极度求真", "explanation": "把现实看清楚，比维护面子更重要。", "usage": "适合复盘失败、识别根因、澄清事实。"},
+            {"name": "极度透明", "explanation": "让关键事实和分歧被看见，减少组织里的黑箱。", "usage": "适合团队协作、项目复盘、管理沟通。"},
+            {"name": "创意择优", "explanation": "不是谁声音大听谁，而是让最好想法胜出。", "usage": "适合重大决策、方案评审、战略讨论。"},
+            {"name": "痛苦 + 反思 = 进步", "explanation": "把挫败感变成反思材料，再变成下一次行动规则。", "usage": "适合个人成长、管理迭代、能力训练。"},
+            {"name": "可信度加权决策", "explanation": "更重视有经验、有记录、能解释判断的人。", "usage": "适合专家评审、招聘、投资和复杂项目决策。"},
+        ],
+        "visualModel": {
+            "name": "原则操作系统反馈环",
+            "type": "flywheel",
+            "description": "从现实到原则，再从原则回到行动的持续进化循环。",
+            "layers": [
+                {"name": "目标与现实", "explanation": "先确认想要什么，再诚实面对当前事实。"},
+                {"name": "问题与根因", "explanation": "不只修表面问题，要找到反复出现的底层原因。"},
+                {"name": "原则与决策", "explanation": "把反思转成规则，用可信度加权处理分歧。"},
+                {"name": "执行与复盘", "explanation": "把规则用于行动，再用结果继续修正原则。"},
+            ],
+        },
+        "sop": [
+            {"step": 1, "title": "写清目标", "action": "明确这次复盘或决策真正想达成的结果。", "output": "目标陈述"},
+            {"step": 2, "title": "面对现实", "action": "列出事实、数据、失败信号和不同人的观察。", "output": "事实清单"},
+            {"step": 3, "title": "诊断根因", "action": "区分表层事故和反复出现的能力、机制或判断问题。", "output": "根因判断"},
+            {"step": 4, "title": "引入可信分歧", "action": "让有相关经验的人挑战判断，并记录分歧点。", "output": "分歧与权重"},
+            {"step": 5, "title": "沉淀原则", "action": "把经验写成下次遇到同类情况时可执行的规则。", "output": "原则条目"},
+            {"step": 6, "title": "执行并复盘", "action": "用原则指导下一次行动，再根据结果修正原则。", "output": "迭代记录"},
+        ],
+        "aiSkillCandidate": {
+            "name": "AI原则复盘教练",
+            "goal": "把失败记录、项目复盘或决策分歧转成可执行的个人/团队原则。",
+            "input": ["失败记录", "项目复盘", "决策背景", "团队分歧", "会议纪要"],
+            "output": ["事实清单", "根因判断", "可信分歧表", "原则条目", "下一步行动清单"],
+            "useCases": ["项目复盘", "管理决策", "个人成长", "团队机制建设"],
+        },
+    }
+
+
 def generic_book_core(input_data: dict) -> dict:
     book_title = input_data["bookTitle"]
     return {
@@ -91,6 +135,7 @@ def generic_book_core(input_data: dict) -> dict:
 
 def cover_plan(input_data: dict, book_core: dict) -> dict:
     pyramid = is_pyramid_principle(input_data["bookTitle"])
+    principles = is_principles(input_data["bookTitle"])
     modules = [
         {
             "id": "problem",
@@ -106,7 +151,7 @@ def cover_plan(input_data: dict, book_core: dict) -> dict:
         },
         {
             "id": "expression_formula",
-            "title": "表达公式" if pyramid else "方法步骤",
+            "title": "表达公式" if pyramid else "原则反馈步骤" if principles else "方法步骤",
             "body": [item["title"] for item in book_core["sop"]],
             "icon": "flow",
         },
@@ -129,17 +174,17 @@ def cover_plan(input_data: dict, book_core: dict) -> dict:
         "projectName": project_name(input_data["bookTitle"]),
         "aspectRatio": input_data.get("coverAspectRatio", "4:5"),
         "title": f"《{input_data['bookTitle']}》拆书",
-        "headline": "为什么你总是讲不清？" if pyramid else "把一本书变成一个AI Skill",
-        "subtitle": "不是你没内容，而是你没结构" if pyramid else "读书不是记住观点，而是把观点变成能力",
+        "headline": "为什么你总是讲不清？" if pyramid else "别只复盘问题，要沉淀原则" if principles else "把一本书变成一个AI Skill",
+        "subtitle": "不是你没内容，而是你没结构" if pyramid else "把经验变成个人和组织的操作系统" if principles else "读书不是记住观点，而是把观点变成能力",
         "badgeText": "一本书，一个AI Skill",
         "footerText": "读书不是记住观点，而是把观点变成能力。",
         "theme": input_data["stylePreset"],
         "layout": {
             "header": "large_title_problem_hook",
             "leftModules": ["problem", "core_concepts"],
-            "mainDiagram": "pyramid_plus_grouping_tree" if pyramid else "methodology_flow",
+            "mainDiagram": "pyramid_plus_grouping_tree" if pyramid else "principles_flywheel" if principles else "methodology_flow",
             "bottomModules": ["expression_formula", "ai_skill"],
-            "tags": ["职场表达", "汇报", "PPT", "方案", "AI提效"] if pyramid else ["读书方法", "AI Skill", "知识视频"],
+            "tags": ["职场表达", "汇报", "PPT", "方案", "AI提效"] if pyramid else ["管理", "复盘", "决策", "组织透明", "AI提效"] if principles else ["读书方法", "AI Skill", "知识视频"],
         },
         "mascot": {
             "enabled": True,
@@ -160,11 +205,69 @@ def cover_plan(input_data: dict, book_core: dict) -> dict:
             "layers": diagram_layers,
             "annotations": [item["name"] for item in book_core["coreConcepts"]],
         },
-        "tags": ["职场表达", "汇报", "PPT", "方案", "AI提效"] if pyramid else ["读书方法", "AI Skill", "知识视频"],
+        "tags": ["职场表达", "汇报", "PPT", "方案", "AI提效"] if pyramid else ["管理", "复盘", "决策", "组织透明", "AI提效"] if principles else ["读书方法", "AI Skill", "知识视频"],
     }
 
 
+def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
+    durations = [28, 36, 42, 38, 40, 38, 36, 40]
+    target = input_data["targetDurationSec"]
+    if sum(durations) > target:
+        ratio = target / sum(durations)
+        durations = [max(18, int(item * ratio)) for item in durations]
+        durations[-1] += target - sum(durations)
+    names = [
+        ("S01", "现实痛点", "intro_card", "用复盘问题切入：为什么同类错误反复出现。"),
+        ("S02", "书籍核心内涵", "problem_diagram", "说明《原则》不是观点合集，而是操作系统。"),
+        ("S03", "原则反馈环", "flywheel_model", "展示目标、现实、根因、原则、执行的循环。"),
+        ("S04", "极度求真与透明", "concept_card", "把事实和分歧摆到台面，减少组织黑箱。"),
+        ("S05", "创意择优决策", "decision_matrix", "说明可信度加权如何让最好想法胜出。"),
+        ("S06", "AI Skill转化", "workflow", "把复盘材料转成可复用的原则条目。"),
+        ("S07", "真实场景", "workflow", "展示项目失败如何沉淀成下一次行动规则。"),
+        ("S08", "总结CTA", "summary_card", "用一句话收束，并引导收藏。"),
+    ]
+    narrations = [
+        "很多人复盘时只会问，这次哪里做错了。但如果没有沉淀成原则，同类错误下次还会回来。",
+        "《原则》真正有价值的地方，不是几句管理金句，而是一套把现实、分歧和经验转成行动规则的操作系统。",
+        "它的核心可以看成一个反馈环：写清目标，面对现实，诊断根因，沉淀原则，再用执行结果继续修正原则。",
+        "第一层能力是极度求真和极度透明。看清现实比维护面子重要，让关键事实和分歧被看见，团队才不会在黑箱里决策。",
+        "第二层能力是创意择优。不是谁职位高听谁，也不是谁声音大听谁，而是让更可信、更有经验、更能解释判断的人获得更高权重。",
+        f"所以它可以变成一个{book_core['aiSkillCandidate']['name']}。输入失败记录、会议纪要和分歧点，输出事实清单、根因判断、原则条目和下一步行动。",
+        "比如一次项目延期，不只写负责人是谁，而是追问目标是否清晰、信息是否透明、关键判断有没有可信反对意见，最后形成下次可执行的原则。",
+        "总结一句：读《原则》，不是为了背原则，而是为了拥有一套持续进化的决策系统。收藏这条，下次复盘直接套用。",
+    ]
+    scenes: list[dict] = []
+    for index, ((scene_id, title, visual_type, goal), duration, narration) in enumerate(zip(names, durations, narrations)):
+        scenes.append(
+            {
+                "sceneId": scene_id,
+                "title": title,
+                "durationSec": duration,
+                "goal": goal,
+                "visualType": visual_type,
+                "visualDescription": f"暖白背景，橙色标题，深绿色辅助线，商业信息图风格。画面表达：{goal}",
+                "imageSourceStrategy": {
+                    "priority": ["codex_image_plugin", "imagegen", "component_renderer"],
+                    "imageCount": 1,
+                    "imagePrompt": f"{title}，小红书知识海报风，商业复盘信息图，橙色主色，深绿色辅助，暖白背景，中文文字由渲染器叠加",
+                    "fallbackPrompt": f"Component card for Principles scene: {title}",
+                },
+                "onscreenText": title,
+                "subtitle": narration[:42],
+                "narration": narration,
+                "motion": "gentle structured reveal",
+                "transitionIn": "fade" if index == 0 else "slide-left",
+                "transitionOut": "soft-zoom" if index == len(names) - 1 else "fade",
+                "musicCue": ["soft_intro", "main_steady", "main_steady", "main_steady", "main_steady", "slightly_uplifting", "slightly_uplifting", "gentle_ending"][index],
+                "tts": {"voice": "default-zh-professional", "speed": 1.0, "emotion": "calm"},
+            }
+        )
+    return scenes
+
+
 def build_scenes(input_data: dict, book_core: dict) -> list[dict]:
+    if is_principles(input_data["bookTitle"]):
+        return principles_scenes(input_data, book_core)
     durations = [28, 36, 42, 42, 38, 38, 36]
     target = input_data["targetDurationSec"]
     if sum(durations) > target:
@@ -277,7 +380,12 @@ def main() -> int:
     output_dir = Path(args.output_dir or Path("output") / slugify_book(input_data["bookTitle"]))
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    book_core = pyramid_book_core(input_data["bookTitle"], input_data.get("bookAuthor")) if is_pyramid_principle(input_data["bookTitle"]) else generic_book_core(input_data)
+    if is_pyramid_principle(input_data["bookTitle"]):
+        book_core = pyramid_book_core(input_data["bookTitle"], input_data.get("bookAuthor"))
+    elif is_principles(input_data["bookTitle"]):
+        book_core = principles_book_core(input_data["bookTitle"], input_data.get("bookAuthor"))
+    else:
+        book_core = generic_book_core(input_data)
     bible = style_bible(input_data, output_dir)
     poster_plan = cover_plan(input_data, book_core)
     scenes = build_scenes(input_data, book_core)

@@ -24,7 +24,7 @@ Priority:
 
 1. `codex_image_plugin`
 2. `imagegen`
-3. Component/SVG fallback
+3. Component/SVG/PNG fallback
 
 Do not send long Chinese poster text into the image prompt. Render text in components.
 
@@ -97,6 +97,8 @@ Components:
 
 Keep all scene styling sourced from `styleBible`; do not let individual scenes invent their own palette.
 
+The pipeline should also write a runnable `remotion/` directory per book project. Use Remotion primitives such as `Composition`, `Sequence`/`Series`, `Img`, and `staticFile` so the generated project can be rendered by the Remotion plugin or CLI.
+
 ## Render Plan Defaults
 
 - Renderer: `remotion`
@@ -109,11 +111,9 @@ Keep all scene styling sourced from `styleBible`; do not let individual scenes i
 
 ## Honest Scaffold Outputs
 
-When real providers are not configured, create explicit handoff files:
+When real audio providers are not configured, create explicit handoff files:
 
-- SVG cover or scene cards instead of fake PNGs
 - `.tts.txt` narration handoff instead of fake MP3s
 - `.music.txt` BGM brief instead of fake audio
-- `final_video.mock.txt` instead of fake MP4
 
-The asset manifest should mark each placeholder with `status: "placeholder"` and `requiresProvider: true`.
+The local component renderer may produce real poster PNGs, scene PNGs, and `output/final_video.mp4` without TTS/BGM. The asset manifest should mark provider-generated placeholders with `status: "placeholder"` and `requiresProvider: true`, and mark local component media with `status: "generated"` and `requiresProvider: false`.

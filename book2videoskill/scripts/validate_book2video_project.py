@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from book2video_common import is_pyramid_principle, read_json
+from book2video_common import is_principles, is_pyramid_principle, read_json
 
 
 REQUIRED_FILES = [
@@ -20,8 +20,9 @@ REQUIRED_FILES = [
 ]
 
 ASSET_STAGE_FILES = ["asset_manifest.json", "assets_ready_report.md"]
-RENDER_STAGE_FILES = ["render_plan.json", "render_report.md", "project_bundle.zip"]
+RENDER_STAGE_FILES = ["render_plan.json", "render_report.md", "project_bundle.zip", "poster.png", "output/poster.png", "output/final_video.mp4"]
 PYRAMID_TERMS = ["结论先行", "以上统下", "归类分组", "逻辑递进", "AI汇报结构生成器"]
+PRINCIPLES_TERMS = ["极度求真", "极度透明", "创意择优", "痛苦 + 反思 = 进步", "可信度加权决策", "AI原则复盘教练"]
 
 
 def require_file(project_dir: Path, rel_path: str, errors: list[str]) -> Path:
@@ -33,7 +34,7 @@ def require_file(project_dir: Path, rel_path: str, errors: list[str]) -> Path:
 
 def validate_path_refs(project_dir: Path, manifest: dict, errors: list[str]) -> None:
     refs: list[str] = []
-    for key in ["coverImage", "mascotImage", "musicAsset"]:
+    for key in ["coverImage", "mascotImage", "musicAsset", "imagegenCoverElement"]:
         if key in manifest and manifest[key].get("path"):
             refs.append(manifest[key]["path"])
     for key in ["sceneImages", "ttsAssets", "subtitleAssets"]:
@@ -127,6 +128,12 @@ def main() -> int:
                 errors.append(f"pyramid principle output missing term: {term}")
         if book_core.get("visualModel", {}).get("type") != "pyramid":
             errors.append("pyramid principle visualModel.type must be pyramid")
+    if is_principles(book_core.get("bookTitle", "")):
+        for term in PRINCIPLES_TERMS:
+            if term not in all_text:
+                errors.append(f"principles output missing term: {term}")
+        if book_core.get("visualModel", {}).get("type") != "flywheel":
+            errors.append("principles visualModel.type must be flywheel")
 
     has_asset_stage = (project_dir / "asset_manifest.json").exists()
     if args.require_assets or has_asset_stage:
@@ -149,15 +156,17 @@ def main() -> int:
         render_plan = read_json(project_dir / "render_plan.json")
         if render_plan.get("durationSec") != total_duration:
             errors.append("render_plan durationSec must equal storyboard duration")
-        if not (project_dir / "output" / "final_video.mock.txt").exists():
-            warnings.append("mock render handoff missing; real render may still be pending")
+        extracted_skill_zips = list(project_dir.glob("*.zip"))
+        if not any(path.name != "project_bundle.zip" for path in extracted_skill_zips):
+            errors.append("missing extracted book-derived skill zip")
+        if not (project_dir / "remotion" / "src" / "Root.tsx").exists():
+            errors.append("missing generated Remotion project: remotion/src/Root.tsx")
 
     if args.require_render:
         real_outputs = [
             "output/final_video.mp4",
-            "cover.png",
-            "tts_audio/S01.mp3",
-            "bgm/main.mp3",
+            "poster.png",
+            "output/poster.png",
         ]
         for rel_path in real_outputs:
             require_file(project_dir, rel_path, errors)

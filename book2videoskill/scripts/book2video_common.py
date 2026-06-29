@@ -43,6 +43,8 @@ PALETTE = {
 def slugify_book(title: str) -> str:
     if is_pyramid_principle(title):
         return "pyramid-principle"
+    if is_principles(title):
+        return "principles-ray-dalio"
     ascii_slug = re.sub(r"[^a-zA-Z0-9._-]+", "-", title.strip()).strip("-").lower()
     ascii_slug = re.sub(r"-{2,}", "-", ascii_slug)
     if ascii_slug:
@@ -51,9 +53,17 @@ def slugify_book(title: str) -> str:
     return f"book-{digest}"
 
 
+def slugify_skill_name(value: str) -> str:
+    slug = re.sub(r"[^a-zA-Z0-9]+", "-", value.strip()).strip("-").lower()
+    slug = re.sub(r"-{2,}", "-", slug)
+    return (slug or "book-method-skill")[:64]
+
+
 def project_name(title: str) -> str:
     if is_pyramid_principle(title):
         return "Book2Video_ThePyramidPrinciple"
+    if is_principles(title):
+        return "Book2Video_Principles_RayDalio"
     slug = slugify_book(title).replace("-", "_")
     return f"Book2Video_{slug}"
 
@@ -61,6 +71,12 @@ def project_name(title: str) -> str:
 def is_pyramid_principle(title: str) -> bool:
     lowered = title.lower()
     return "金字塔原理" in title or "pyramid principle" in lowered
+
+
+def is_principles(title: str) -> bool:
+    lowered = title.lower()
+    normalized = title.replace("《", "").replace("》", "").strip()
+    return normalized == "原则" or "principles" in lowered or "ray dalio" in lowered
 
 
 def load_input(path: str | None) -> dict[str, Any]:
@@ -89,6 +105,10 @@ def read_json(path: Path) -> Any:
 
 def relpath(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
+
+
+def repo_default_projects_root() -> Path:
+    return Path(__file__).resolve().parents[1] / "projects"
 
 
 def style_bible(input_data: dict[str, Any], output_dir: Path) -> dict[str, Any]:

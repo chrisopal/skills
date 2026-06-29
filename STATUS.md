@@ -1,3 +1,25 @@
+## 2026-06-29 22:58:00 CST
+
+- Scope: Upgrade `book2videoskill` from storyboard scaffold to closed-loop per-book production, including durable `book2videoskill/projects/<book-slug>/` output, Xiaohongshu poster PNGs, generated scene PNGs, local MP4 assembly, generated Remotion project, extracted book-derived Codex skill, and portable skill zip packaging.
+- Changed files:
+  - `.gitignore`
+  - `book2videoskill/SKILL.md`
+  - `book2videoskill/references/*.md`
+  - `book2videoskill/scripts/*.py`
+  - `STATUS.md`
+- Validation:
+  - `python3 -m py_compile book2videoskill/scripts/*.py` passed.
+  - `quick_validate.py book2videoskill` passed.
+  - `python3 book2videoskill/scripts/run_book2video.py --book "原则" --author "瑞·达利欧"` generated `book2videoskill/projects/principles-ray-dalio`.
+  - `validate_book2video_project.py book2videoskill/projects/principles-ray-dalio --require-render` passed with 8 scenes and 240 seconds.
+  - `quick_validate.py book2videoskill/projects/principles-ray-dalio/extracted_skill/principles-ray-dalio-skill` passed.
+  - `ffprobe` confirmed `output/final_video.mp4` duration is exactly 240.000000 seconds.
+  - `unzip -t` passed for both `principles-ray-dalio-skill.zip` and `project_bundle.zip`.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - The generated Remotion project is included in the per-book local project bundle; the MP4 was produced by deterministic local frame assembly because no direct Remotion MCP render tool was exposed in this session.
+  - Generated per-book projects are ignored by git and remain local artifacts unless explicitly requested.
+
 ## 2026-06-29 12:44:19 CST
 
 - Scope: Commit existing WeChat Official Account skill changes, including stronger account voice rules, imagegen asset persistence, image-post visual review gates, `newspic` draft API notes/helper, and two industrial-AI image-post pipeline skills.

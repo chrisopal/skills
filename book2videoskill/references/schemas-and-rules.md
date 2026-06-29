@@ -95,6 +95,16 @@ Mainline:
 
 Narration must be short, oral, TTS-friendly, and free of long book quotes.
 
+## Project Output Directory
+
+Each book must have one durable project directory. Default root:
+
+```text
+book2videoskill/projects/<book-slug>/
+```
+
+Do not create book projects under `/tmp`. Generated project folders are local artifacts and are excluded from git by default.
+
 ## Pyramid Principle Rules
 
 When `bookTitle` contains `金字塔原理` or `Pyramid Principle`, include:
@@ -124,6 +134,31 @@ AI Skill candidate:
 
 - Name: `AI汇报结构生成器`
 - Goal: 把杂乱材料转成清晰的金字塔汇报结构。
+
+## Principles Rules
+
+When `bookTitle` is `原则` or contains `Principles`, include:
+
+- `极度求真`: 把现实看清楚，比维护面子更重要。
+- `极度透明`: 让关键事实和分歧被看见。
+- `创意择优`: 让最好想法胜出。
+- `痛苦 + 反思 = 进步`: 把挫败感变成下一次行动规则。
+- `可信度加权决策`: 更重视有经验、有记录、能解释判断的人。
+
+Visual model:
+
+- Name: `原则操作系统反馈环`
+- Type: `flywheel`
+- Layers:
+  - `目标与现实`
+  - `问题与根因`
+  - `原则与决策`
+  - `执行与复盘`
+
+AI Skill candidate:
+
+- Name: `AI原则复盘教练`
+- Goal: 把失败记录、项目复盘或决策分歧转成可执行的个人/团队原则。
 
 ## Mascot Rules
 

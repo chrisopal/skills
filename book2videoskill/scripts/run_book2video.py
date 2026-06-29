@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from book2video_common import load_input, normalize_input, slugify_book
+from book2video_common import load_input, normalize_input, repo_default_projects_root, slugify_book
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -23,7 +23,11 @@ def main() -> int:
     parser.add_argument("--input", help="Input JSON file")
     parser.add_argument("--book", help="Book title")
     parser.add_argument("--author", help="Book author")
-    parser.add_argument("--output-root", default="output", help="Output root directory")
+    parser.add_argument(
+        "--output-root",
+        default=str(repo_default_projects_root()),
+        help="Output root directory. Defaults to book2videoskill/projects so each book gets a durable local project directory.",
+    )
     parser.add_argument("--output-dir", help="Exact project output directory")
     parser.add_argument("--storyboard-only", action="store_true", help="Stop after Book2StoryboardTool")
     parser.add_argument("--cover-only", action="store_true", help="Generate storyboard and asset cover handoff, then stop")
@@ -56,6 +60,7 @@ def main() -> int:
         print(f"stopped: cover-only project={output_dir}")
         return 0
 
+    run_step([str(SCRIPT_DIR / "create_extracted_skill.py"), "--project-dir", str(output_dir)])
     run_step([str(SCRIPT_DIR / "assets2video.py"), "--project-dir", str(output_dir), "--renderer", args.renderer])
     print(f"complete: {output_dir}")
     return 0

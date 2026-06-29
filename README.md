@@ -9,6 +9,7 @@
 - [`ppt-maker-direct-pptx`](./ppt-maker-direct-pptx/README.md)：七道闸确认式 PPT 生成，输出可编辑 PowerPoint 原生对象。12 个 layout pattern + 5 内置预设 + 自然语言/参考图自定义风格 + 自动 lint + 状态机断点续做，兼容任意 OpenAI 协议 LLM（OpenAI / OpenRouter / Azure / Groq / Together / DeepSeek / vLLM / Ollama / LiteLLM）。
 - [`wechat-official-account-skills`](./wechat-official-account-skills/)：微信公众号「智能体架构笔记」运营技能包，覆盖选题、写作、排版配图、审稿、运营复盘和每日端到端草稿生成。
 - [`requirements-to-delivery`](./requirements-to-delivery/SKILL.md)：从需求调研、技术方案、SRS、系统设计、原型到开发验收的端到端交付流程 skill。
+- [`book2videoskill`](./book2videoskill/SKILL.md)：把书名、书籍摘要或 Book2Skill 输出转成 5 分钟以内知识短视频的 BookCore、封面海报、分镜、资产计划、渲染计划和小红书发布文案。
 
 ## 推荐安装方式
 
@@ -21,6 +22,7 @@ ln -sfn ~/.codex/skills/chrisopal-skills/ppt-maker-direct-pptx ~/.codex/skills/p
 ln -sfn ~/.codex/skills/chrisopal-skills/ppt-maker-with-image ~/.codex/skills/ppt-maker-with-image
 ln -sfn ~/.codex/skills/chrisopal-skills/industrial-ai-architect ~/.codex/skills/industrial-ai-architect
 ln -sfn ~/.codex/skills/chrisopal-skills/requirements-to-delivery ~/.codex/skills/requirements-to-delivery
+ln -sfn ~/.codex/skills/chrisopal-skills/book2videoskill ~/.codex/skills/book2videoskill
 ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-topic-planner ~/.codex/skills/wechat-topic-planner
 ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-article-writer ~/.codex/skills/wechat-article-writer
 ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-article-layout ~/.codex/skills/wechat-article-layout
@@ -35,6 +37,7 @@ ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-d
 mkdir -p ~/.agents/skills
 ln -sfn ~/.codex/skills/chrisopal-skills/industrial-ai-architect ~/.agents/skills/industrial-ai-architect
 ln -sfn ~/.codex/skills/chrisopal-skills/requirements-to-delivery ~/.agents/skills/requirements-to-delivery
+ln -sfn ~/.codex/skills/chrisopal-skills/book2videoskill ~/.agents/skills/book2videoskill
 ln -sfn ~/.codex/skills/chrisopal-skills/ppt-maker-direct-pptx ~/.agents/skills/ppt-maker-direct-pptx
 ln -sfn ~/.codex/skills/chrisopal-skills/wechat-official-account-skills/wechat-daily-pipeline ~/.agents/skills/wechat-daily-pipeline
 ```

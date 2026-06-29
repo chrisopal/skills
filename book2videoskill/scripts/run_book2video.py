@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""Run the Book2VideoSkill scaffold pipeline."""
+
+from __future__ import annotations
+
+import argparse
+import subprocess
+import sys
+from pathlib import Path
+
+from book2video_common import load_input, normalize_input, slugify_book
+
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+
+def run_step(args: list[str]) -> None:
+    subprocess.run([sys.executable, *args], check=True)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--input", help="Input JSON file")
+    parser.add_argument("--book", help="Book title")
+    parser.add_argument("--author", help="Book author")
+    parser.add_argument("--output-root", default="output", help="Output root directory")
+    parser.add_argument("--output-dir", help="Exact project output directory")
+    parser.add_argument("--storyboard-only", action="store_true", help="Stop after Book2StoryboardTool")
+    parser.add_argument("--cover-only", action="store_true", help="Generate storyboard and asset cover handoff, then stop")
+    parser.add_argument("--renderer", default="remotion", choices=["remotion", "hyperframe"])
+    args = parser.parse_args()
+
+    raw = load_input(args.input)
+    if args.book:
+        raw["bookTitle"] = args.book
+    if args.author:
+        raw["bookAuthor"] = args.author
+    input_data = normalize_input(raw)
+
+    output_dir = Path(args.output_dir or Path(args.output_root) / slugify_book(input_data["bookTitle"]))
+    storyboard_args = [str(SCRIPT_DIR / "book2storyboard.py"), "--output-dir", str(output_dir)]
+    if args.input:
+        storyboard_args.extend(["--input", args.input])
+    if args.book:
+        storyboard_args.extend(["--book", args.book])
+    if args.author:
+        storyboard_args.extend(["--author", args.author])
+
+    run_step(storyboard_args)
+    if args.storyboard_only:
+        print(f"stopped: storyboard-only project={output_dir}")
+        return 0
+
+    run_step([str(SCRIPT_DIR / "storyboard2assets.py"), "--project-dir", str(output_dir)])
+    if args.cover_only:
+        print(f"stopped: cover-only project={output_dir}")
+        return 0
+
+    run_step([str(SCRIPT_DIR / "assets2video.py"), "--project-dir", str(output_dir), "--renderer", args.renderer])
+    print(f"complete: {output_dir}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

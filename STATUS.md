@@ -1,3 +1,27 @@
+## 2026-06-29 11:45:10 CST
+
+- Scope: New `book2videoskill` Codex skill based on `Book2VideoSkill_spec_v1_1.md`, covering BookCore extraction, Xiaohongshu cover poster planning, storyboard generation, asset handoff scaffolding, render planning, project validation, and the `金字塔原理` example.
+- Changed files:
+  - `book2videoskill/SKILL.md`
+  - `book2videoskill/agents/openai.yaml`
+  - `book2videoskill/references/*.md`
+  - `book2videoskill/assets/examples/pyramid-principle.input.json`
+  - `book2videoskill/scripts/*.py`
+  - `README.md`
+  - `STATUS.md`
+- Validation:
+  - `quick_validate.py book2videoskill` passed.
+  - `python3 -m py_compile` passed for all `book2videoskill/scripts/*.py` files.
+  - `git diff --check -- book2videoskill` passed before status/README updates.
+  - Generated `/tmp/book2videoskill-check/pyramid-principle` with `run_book2video.py`.
+  - `validate_book2video_project.py /tmp/book2videoskill-check/pyramid-principle` passed with 7 scenes and 260 seconds, warning only that real image provider output has not been run.
+  - `unzip -t /tmp/book2videoskill-check/pyramid-principle/project_bundle.zip` passed.
+  - Forward-test subagent generated and validated `/tmp/book2videoskill-forward-test/pyramid-principle`.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - Current implementation is an honest scaffold: SVG/text/media handoff placeholders are generated unless real ImageGen, TTS, music, and Remotion providers are wired in.
+  - Existing unrelated WeChat skill changes and local artifacts remain unstaged.
+
 ## 2026-06-25 07:20:00 CST
 
 - Scope: New `requirements-to-delivery` Codex skill for需求调研, 技术方案, SRS, 系统设计, 原型, 开发计划, and验收闭环.

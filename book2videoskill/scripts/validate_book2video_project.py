@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
 from pathlib import Path
 
 from book2video_common import is_principles, is_pyramid_principle, read_json
@@ -21,7 +22,14 @@ REQUIRED_FILES = [
 ]
 
 ASSET_STAGE_FILES = ["asset_manifest.json", "imagegen_prompts.json", "assets_ready_report.md"]
-RENDER_STAGE_FILES = ["render_plan.json", "render_report.md", "poster.png", "output/poster.png", "output/final_video.mp4"]
+RENDER_STAGE_FILES = [
+    "render_plan.json",
+    "render_report.md",
+    "poster.png",
+    "output/poster.png",
+    "output/final_video.mp4",
+    "subtitles/all.ass",
+]
 PYRAMID_TERMS = ["结论先行", "以上统下", "归类分组", "逻辑递进", "AI汇报结构生成器"]
 PRINCIPLES_TERMS = ["极度求真", "极度透明", "创意择优", "痛苦 + 反思 = 进步", "可信度加权决策", "AI原则复盘教练"]
 
@@ -178,9 +186,33 @@ def main() -> int:
             "output/final_video.mp4",
             "poster.png",
             "output/poster.png",
+            "output/narration.m4a",
+            "tts_manifest.json",
+            "subtitles/all.ass",
         ]
         for rel_path in real_outputs:
             require_file(project_dir, rel_path, errors)
+        final_video = project_dir / "output/final_video.mp4"
+        if final_video.exists():
+            probe = subprocess.run(
+                [
+                    "ffprobe",
+                    "-v",
+                    "error",
+                    "-select_streams",
+                    "a:0",
+                    "-show_entries",
+                    "stream=codec_type",
+                    "-of",
+                    "csv=p=0",
+                    str(final_video),
+                ],
+                text=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            if probe.returncode != 0 or "audio" not in probe.stdout:
+                errors.append("final_video.mp4 must contain an audio stream")
 
     if errors:
         for error in errors:

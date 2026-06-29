@@ -167,7 +167,7 @@ registerRoot(RemotionRoot);
                 "npm run render",
                 "```",
                 "",
-                "The already generated `../poster.png` and `../output/final_video.mp4` are the closed-loop fallback outputs. Use this Remotion project when you want to re-render with the Remotion runtime.",
+                "The already generated `../poster.png` and `../output/final_video.mp4` are closed-loop outputs with audio/subtitles when TTS assets exist. Use this Remotion project when you want to re-render with the Remotion runtime.",
                 "",
             ]
         ),
@@ -175,7 +175,52 @@ registerRoot(RemotionRoot);
     )
 
 
-def render_video_with_ffmpeg(project_dir: Path, storyboard: dict) -> Path:
+def ass_time(seconds: float) -> str:
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    centis = int(round((seconds - int(seconds)) * 100))
+    return f"{hours}:{minutes:02d}:{secs:02d}.{centis:02d}"
+
+
+def wrap_subtitle(text: str, line_len: int = 17, max_lines: int = 2) -> str:
+    clean = text.strip()
+    lines = [clean[index : index + line_len] for index in range(0, len(clean), line_len)]
+    lines = lines[:max_lines]
+    if len(clean) > line_len * max_lines:
+        lines[-1] = lines[-1].rstrip("，。；、 ") + "..."
+    return r"\N".join(lines)
+
+
+def write_ass_subtitles(project_dir: Path, storyboard: dict, style_bible: dict) -> Path:
+    subtitle_dir = project_dir / "subtitles"
+    subtitle_dir.mkdir(parents=True, exist_ok=True)
+    ass_path = subtitle_dir / "all.ass"
+    lines = [
+        "[Script Info]",
+        "ScriptType: v4.00+",
+        "ScaledBorderAndShadow: yes",
+        f"PlayResX: {style_bible['width']}",
+        f"PlayResY: {style_bible['height']}",
+        "",
+        "[V4+ Styles]",
+        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
+        "Style: Caption,Hiragino Sans GB,56,&H00FFFFFF,&H000000FF,&H7A000000,&H9A000000,0,0,0,0,100,100,0,0,1,4,1,2,72,72,120,1",
+        "",
+        "[Events]",
+        "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
+    ]
+    elapsed = 0
+    for scene in storyboard["scenes"]:
+        start = elapsed + 0.6
+        end = elapsed + int(scene["durationSec"]) - 0.6
+        lines.append(f"Dialogue: 0,{ass_time(start)},{ass_time(end)},Caption,,0,0,0,,{wrap_subtitle(scene['narration'])}")
+        elapsed += int(scene["durationSec"])
+    ass_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return ass_path
+
+
+def render_silent_video(project_dir: Path, storyboard: dict) -> Path:
     output_dir = project_dir / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
     concat_path = output_dir / "ffmpeg-scenes.txt"
@@ -187,7 +232,7 @@ def render_video_with_ffmpeg(project_dir: Path, storyboard: dict) -> Path:
     last_png = (project_dir / "scene_images" / f"{storyboard['scenes'][-1]['sceneId']}.png").resolve()
     lines.append(f"file '{last_png.as_posix()}'")
     concat_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    final_video = output_dir / "final_video.mp4"
+    silent_video = output_dir / "video_silent.mp4"
     cmd = [
         "ffmpeg",
         "-y",
@@ -207,8 +252,79 @@ def render_video_with_ffmpeg(project_dir: Path, storyboard: dict) -> Path:
         "yuv420p",
         "-movflags",
         "+faststart",
-        str(final_video),
+        str(silent_video),
     ]
+    subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return silent_video
+
+
+def build_audio_track(project_dir: Path, storyboard: dict) -> Path | None:
+    output_dir = project_dir / "output"
+    padded_dir = output_dir / "tts_padded"
+    padded_dir.mkdir(parents=True, exist_ok=True)
+    list_path = output_dir / "tts-concat.txt"
+    lines: list[str] = []
+    for scene in storyboard["scenes"]:
+        scene_id = scene["sceneId"]
+        source = project_dir / "tts_audio" / f"{scene_id}.mp3"
+        if not source.exists():
+            return None
+        padded = padded_dir / f"{scene_id}.m4a"
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-i",
+                str(source),
+                "-af",
+                f"apad,atrim=0:{int(scene['durationSec'])}",
+                "-c:a",
+                "aac",
+                "-b:a",
+                "128k",
+                str(padded),
+            ],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        lines.append(f"file '{padded.resolve().as_posix()}'")
+    list_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    audio_track = output_dir / "narration.m4a"
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-f",
+            "concat",
+            "-safe",
+            "0",
+            "-i",
+            str(list_path),
+            "-c",
+            "copy",
+            str(audio_track),
+        ],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    return audio_track
+
+
+def escape_filter_path(path: Path) -> str:
+    return path.resolve().as_posix().replace("\\", "\\\\").replace(":", "\\:")
+
+
+def mux_audio(project_dir: Path, silent_video: Path, audio_track: Path | None) -> Path:
+    final_video = project_dir / "output" / "final_video.mp4"
+    cmd = ["ffmpeg", "-y", "-i", str(silent_video)]
+    if audio_track:
+        cmd.extend(["-i", str(audio_track)])
+    cmd.extend(["-c:v", "copy", "-movflags", "+faststart"])
+    if audio_track:
+        cmd.extend(["-map", "0:v:0", "-map", "1:a:0", "-c:a", "aac", "-b:a", "128k"])
+    cmd.append(str(final_video))
     subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return final_video
 
@@ -235,7 +351,10 @@ def main() -> int:
     if (project_dir / "poster.png").exists():
         shutil.copy2(project_dir / "poster.png", output_dir / "poster.png")
     write_remotion_project(project_dir, style_bible, storyboard)
-    final_video = render_video_with_ffmpeg(project_dir, storyboard)
+    silent_video = render_silent_video(project_dir, storyboard)
+    audio_track = build_audio_track(project_dir, storyboard)
+    ass_path = write_ass_subtitles(project_dir, storyboard, style_bible)
+    final_video = mux_audio(project_dir, silent_video, audio_track)
     stale_project_bundle = project_dir / "project_bundle.zip"
     if stale_project_bundle.exists():
         stale_project_bundle.unlink()
@@ -256,10 +375,12 @@ def main() -> int:
                 "- poster.png",
                 "- output/poster.png",
                 "- output/final_video.mp4",
+                "- output/narration.m4a" if audio_track else "- audio missing: no TTS MP3 assets found",
+                "- subtitles/all.ass sidecar; visible subtitles are composited into scene frames",
                 "- remotion/ render project",
                 "- extracted skill zip when available",
                 "",
-                "Remotion note: `remotion/` follows the Remotion plugin composition/staticFile structure. The MP4 in `output/final_video.mp4` is produced deterministically from the generated scene frames so the pipeline closes even before installing the Remotion runtime.",
+                "Remotion note: `remotion/` follows the Remotion plugin composition/staticFile structure. The MP4 in `output/final_video.mp4` is produced deterministically from generated storyboard frames with visible subtitles plus TTS audio, so the pipeline closes even before installing the Remotion runtime.",
                 "",
                 f"Scene assets generated: {sum(1 for item in asset_manifest['sceneImages'] if item.get('status') == 'generated')}",
             ]

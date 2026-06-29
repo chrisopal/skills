@@ -46,7 +46,7 @@ Produce:
 - Scene images or image handoff files
 - TTS audio or TTS handoff files
 - BGM or music handoff file
-- Subtitles
+- Visible subtitles composited into scene frames plus SRT/ASS sidecar subtitles
 - `assets_ready_report.md`
 
 Fallback policy:
@@ -55,7 +55,8 @@ Fallback policy:
 - Default image provider is built-in `imagegen`; copy selected imagegen outputs back into the book project paths.
 - Imagegen prompt targets must live under `imagegen_sources/`; rerun asset composition after copying selected generated images there.
 - If image generation fails or is unavailable, produce component/SVG/PNG card fallback and record the warning.
-- If TTS fails, preserve narration text and mark audio missing or placeholder.
+- TTS defaults to OpenRouter through `OPENROUTER_API_KEY` from the environment or Hermes system config. If OpenRouter is missing or logged out, record the provider note and use the configured local fallback only for development renders.
+- If TTS fails and no fallback is available, preserve narration text and mark audio missing or placeholder.
 - If BGM fails, render without BGM or use a local default; do not fail the whole project.
 
 ## Stage 3: Assets2VideoTool
@@ -72,10 +73,13 @@ Produce:
 - `render_plan.json`
 - `render_report.md`
 - `output/final_video.mp4`
+- `output/narration.m4a`
 - `output/poster.png`
+- `subtitles/all.ass`
 - `remotion/` project with `src/Root.tsx` and static assets
 
 Default render provider is Remotion. Hyperframe is an adapter target; do not claim implementation unless it exists.
+The fallback MP4 must mux narration audio when TTS assets exist. Because not all local ffmpeg builds include subtitle filters, scene PNGs must already contain readable subtitles; ASS/SRT files remain sidecars for Remotion or later editing.
 
 ## Stage 4: Extracted Skill
 
@@ -100,6 +104,7 @@ The extracted skill must be portable: the zip should contain the skill folder an
 - Render: create a Remotion project and local MP4. If the Remotion runtime/plugin is available, use it to render; otherwise the local component-video fallback is acceptable and must be disclosed.
 - Imagegen refresh: after adding or replacing files under `imagegen_sources/`, rerun `storyboard2assets.py` and `assets2video.py`.
 - Remotion assembly: Remotion should read `storyboard.json` for scene order/duration and render `scene_images/<sceneId>.png` frames generated from imagegen sources plus the deterministic text overlay.
+- TTS refresh: rerun `openrouter_tts.py --project-dir <book-project>` after configuring `OPENROUTER_API_KEY` or Hermes OpenRouter auth, then rerun `assets2video.py`.
 
 ## Validation
 
@@ -109,4 +114,4 @@ Use `--require-render` only when the task requires actual MP4/PNG/audio media ra
 
 For 《金字塔原理》, additionally check the four core principles, pyramid model, AI汇报结构生成器, orange/green palette, and the series label `一本书，一个AI Skill`.
 
-For 《原则》, additionally check book research, the five core concepts, feedback-loop model, AI原则复盘教练, orange/green palette, visual-first imagegen prompts, poster PNG, final MP4, Remotion project, extracted-skill zip, and absence of `project_bundle.zip`.
+For 《原则》, additionally check book research, the five core concepts, feedback-loop model, AI原则复盘教练, orange/green palette, visual-first imagegen prompts, poster PNG, final MP4 with audio stream, visible subtitles, Remotion project, extracted-skill zip, and absence of `project_bundle.zip`.

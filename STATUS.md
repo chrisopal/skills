@@ -1,3 +1,30 @@
+## 2026-06-29 23:41:45 CST
+
+- Scope: Fix `book2videoskill` generated videos so scene frames include readable subtitles, bottom debug/footer filler is removed, narration audio is muxed into the MP4, and TTS is OpenRouter-first through system/Hermes configuration.
+- Changed files:
+  - `book2videoskill/SKILL.md`
+  - `book2videoskill/references/providers-and-rendering.md`
+  - `book2videoskill/references/workflow.md`
+  - `book2videoskill/scripts/assets2video.py`
+  - `book2videoskill/scripts/openrouter_tts.py`
+  - `book2videoskill/scripts/run_book2video.py`
+  - `book2videoskill/scripts/storyboard2assets.py`
+  - `book2videoskill/scripts/validate_book2video_project.py`
+- Validation:
+  - `python3 -m py_compile book2videoskill/scripts/*.py` passed.
+  - `python3 book2videoskill/scripts/storyboard2assets.py --project-dir book2videoskill/projects/principles-ray-dalio` regenerated imagegen-composited scene frames.
+  - `python3 book2videoskill/scripts/openrouter_tts.py --project-dir book2videoskill/projects/principles-ray-dalio --provider openrouter` generated 8 TTS assets with local `say` fallback because Hermes reports `openrouter: logged out`.
+  - `python3 book2videoskill/scripts/assets2video.py --project-dir book2videoskill/projects/principles-ray-dalio` regenerated `output/final_video.mp4`.
+  - `python3 book2videoskill/scripts/validate_book2video_project.py book2videoskill/projects/principles-ray-dalio --require-render` passed with 8 scenes and 240 seconds.
+  - `ffprobe` confirmed `output/final_video.mp4` has an AAC audio stream with 240.059002 seconds duration.
+  - `/Users/guojiexie/.codex/skills/.system/skill-creator/scripts/quick_validate.py` passed for `book2videoskill` and the extracted `principles-ray-dalio-skill`.
+  - `unzip -t principles-ray-dalio-skill.zip` passed.
+  - Visual inspection of `scene_images/S04.png` confirmed readable visible subtitles and no bottom debug/footer filler.
+  - `git diff --check -- book2videoskill STATUS.md` passed.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - The code now resolves OpenRouter keys from `OPENROUTER_API_KEY`, `hermes config env-path`, and supported local config files. Current machine state has no OpenRouter auth configured, so the regenerated local video is audible via `say` fallback and `tts_manifest.json` records the provider note.
+
 ## 2026-06-29 23:18:00 CST
 
 - Scope: Adjust `book2videoskill` defaults so full project bundles are not generated, final scene visuals default to built-in `imagegen`, book research feeds visual shot design, and Remotion plays composited storyboard frames from `storyboard.json`.

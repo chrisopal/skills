@@ -32,6 +32,7 @@ def main() -> int:
     parser.add_argument("--storyboard-only", action="store_true", help="Stop after Book2StoryboardTool")
     parser.add_argument("--cover-only", action="store_true", help="Generate storyboard and asset cover handoff, then stop")
     parser.add_argument("--renderer", default="remotion", choices=["remotion", "hyperframe"])
+    parser.add_argument("--tts-provider", default="openrouter", choices=["openrouter", "say", "none"])
     args = parser.parse_args()
 
     raw = load_input(args.input)
@@ -61,6 +62,7 @@ def main() -> int:
         return 0
 
     run_step([str(SCRIPT_DIR / "create_extracted_skill.py"), "--project-dir", str(output_dir)])
+    run_step([str(SCRIPT_DIR / "openrouter_tts.py"), "--project-dir", str(output_dir), "--provider", args.tts_provider])
     run_step([str(SCRIPT_DIR / "assets2video.py"), "--project-dir", str(output_dir), "--renderer", args.renderer])
     print(f"complete: {output_dir}")
     return 0

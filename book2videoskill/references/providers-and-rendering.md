@@ -49,6 +49,13 @@ Output:
 
 Generate one TTS asset per scene. Warn if generated audio is materially longer than scene duration.
 
+Default provider:
+
+1. OpenRouter speech API via `OPENROUTER_API_KEY`.
+2. Resolve the key from the process environment first, then the Hermes env path from `hermes config env-path`, then common local config files.
+3. If OpenRouter is not authenticated or the key is missing, record the exact provider error in `tts_manifest.json`.
+4. Use macOS `say` only as a local development fallback so the video still has sound; do not label fallback audio as OpenRouter output.
+
 ### MusicProvider
 
 Input:
@@ -117,4 +124,4 @@ When real audio providers are not configured, create explicit handoff files:
 - `.tts.txt` narration handoff instead of fake MP3s
 - `.music.txt` BGM brief instead of fake audio
 
-The local component renderer may produce fallback poster PNGs, scene PNGs, and `output/final_video.mp4` without TTS/BGM. The asset manifest should mark the default image provider as `imagegen`, keep `imagegen_prompts.json` for project-bound generation, and mark local component media as fallback assets with `requiresProvider: false`. Videos should include image-rich scene visuals, not only text cards.
+The local component renderer may produce fallback poster PNGs, scene PNGs, per-scene TTS files, `output/narration.m4a`, `subtitles/all.ass`, and `output/final_video.mp4`. Visible subtitles should be composited into `scene_images/*.png`; ASS/SRT files are sidecar assets for editing and downstream renderer replacement. The asset manifest should mark the default image provider as `imagegen`, keep `imagegen_prompts.json` for project-bound generation, and mark local component media as fallback assets with `requiresProvider: false`. Videos should include image-rich scene visuals, readable subtitles, and no debug/footer filler.

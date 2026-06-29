@@ -26,7 +26,6 @@ def write_svg(path: Path, title: str, subtitle: str, width: int, height: int) ->
   <text x="96" y="150" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#F97316">{escaped_title}</text>
   <text x="96" y="230" font-family="Arial, sans-serif" font-size="30" fill="#0B5D3B">{escaped_subtitle}</text>
   <line x1="96" y1="282" x2="{width - 96}" y2="282" stroke="#F4A261" stroke-width="4"/>
-  <text x="96" y="{height - 110}" font-family="Arial, sans-serif" font-size="28" fill="#333333">Text is rendered by component, not image model.</text>
 </svg>
 """
     path.write_text(svg, encoding="utf-8")
@@ -117,16 +116,17 @@ def write_png_card(path: Path, title: str, subtitle: str, body: list[str], width
     card_w = width - 2 * margin
     card_h = height - 2 * margin
     small_font = load_font(24 if is_scene else 22)
-    title_font = load_font(66 if is_scene else 58, bold=True)
-    subtitle_font = load_font(36 if is_scene else 30)
+    title_font = load_font(60 if is_scene else 58, bold=True)
+    subtitle_font = load_font(34 if is_scene else 30)
     body_font = load_font(28 if is_scene else 24)
 
     draw.rounded_rectangle((card_x, card_y, card_x + card_w, card_y + card_h), radius=26, fill="#FFFFFF", outline="#F4A261", width=3)
     draw_pill(draw, (card_x + 30, card_y + 28), "一本书，一个 AI Skill", small_font)
 
     if is_scene:
-        hero_box = (card_x + 30, card_y + 104, card_x + card_w - 30, card_y + 104 + int(card_h * 0.56))
-        content_y = hero_box[3] + 48
+        caption_h = 340
+        hero_box = (card_x + 30, card_y + 104, card_x + card_w - 30, card_y + card_h - caption_h)
+        content_y = hero_box[3] + 34
     else:
         hero_box = (card_x + 30, card_y + 106, card_x + card_w - 30, card_y + 106 + int(card_h * 0.36))
         content_y = hero_box[3] + 42
@@ -143,18 +143,14 @@ def write_png_card(path: Path, title: str, subtitle: str, body: list[str], width
     y = draw_wrapped(draw, (x, y), title, title_font, "#F97316", max_width, line_gap=12, max_lines=2)
     y += 12
     y = draw_wrapped(draw, (x, y), subtitle, subtitle_font, "#0B5D3B", max_width, line_gap=10, max_lines=2 if is_scene else 1)
-    y += 26
-    draw.line((x, y, card_x + card_w - 44, y), fill="#F4A261", width=3)
-    y += 28
+    if not is_scene:
+        y += 26
+        draw.line((x, y, card_x + card_w - 44, y), fill="#F4A261", width=3)
+        y += 28
 
     if is_scene:
-        key_text = body[0] if body else subtitle
-        draw_pill(draw, (x, y), "关键画面", small_font, fill="#F97316")
-        y += 58
-        draw_wrapped(draw, (x, y), key_text, body_font, "#333333", max_width, line_gap=10, max_lines=2)
-        footer_y = card_y + card_h - 104
-        draw.rounded_rectangle((x, footer_y, card_x + card_w - 44, footer_y + 58), radius=18, fill="#FFF7EC")
-        draw.text((x + 24, footer_y + 15), "收藏这条：把复盘变成可执行原则", font=small_font, fill="#0B5D3B")
+        # Keep scene frames clean: image, title, visible subtitle, no footer filler.
+        pass
     else:
         compact_items = [item.split("：", 1)[0] for item in body[:4]]
         gap = 18
@@ -281,10 +277,11 @@ def main() -> int:
         tts_assets.append(
             {
                 "sceneId": scene_id,
-                "path": relpath(tts_file, project_dir),
-                "status": "placeholder",
-                "provider": "tts_handoff_text",
-                "requiresProvider": True,
+                "path": relpath(tts_dir / f"{scene_id}.mp3", project_dir),
+                "handoffPath": relpath(tts_file, project_dir),
+                "status": "pending",
+                "provider": "openrouter",
+                "requiresProvider": False,
                 "durationSec": scene["durationSec"],
             }
         )
@@ -359,7 +356,7 @@ def main() -> int:
                 "",
                 "- Use the built-in imagegen plugin for final poster/scene visuals, then copy selected images into `imagegen_sources/` and rerun this script.",
                 "- Deterministic component frames remain available as fallback so the video pipeline still closes.",
-                "- TTS files are text handoffs for a real TTS provider.",
+                "- TTS defaults to OpenRouter via `openrouter_tts.py`; text handoffs remain for debugging.",
                 "- BGM is a music brief handoff.",
                 "- Subtitles are generated SRT files.",
             ]

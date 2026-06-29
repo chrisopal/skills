@@ -52,10 +52,35 @@ Review for these failure modes first:
    - repeated sentence stems across sections
    - repeated close-out formulas
    - the same “真正……不是……而是……” pattern used too many times
+   - repeated crutch phrases such as `真正值钱的`、`最值得企业学的`、`下一步该补的`
+   - business-explainer structure is present, but the wording still sounds like detached commentary instead of a person speaking naturally
 5. **人味不够**
    - no friction, no hesitation, no tradeoff
    - too many perfect full-sentence claims
    - not enough “这事为什么难”“大家通常会误判什么”
+
+## Concrete Smell Tests
+
+Treat the following as strong AI-smell signals when they appear repeatedly in one draft:
+
+- `真正麻烦的地方是`
+- `真正值得企业学的 / 抄的`
+- `真正值钱的`
+- `下一步该补的`
+- `不是……而是……`
+- `说白了`
+- `这件事很容易被忽略`
+- `最后买单的，不是……而是……`
+
+One use may be acceptable. Repeated use usually means the article is moving by formula instead of by observation.
+
+Also check:
+
+- Are sentences too long for spoken Chinese?
+- Does one paragraph contain multiple stacked judgments that should be broken apart?
+- Does the article keep naming `企业` without naming a role, team, or workflow?
+- Could a highlighted judgment be pasted into three other AI articles without sounding out of place?
+- Does the wording sound like something the target reader would actually say in a meeting, or like a columnist standing outside the scene?
 
 ## Cross-Draft Anti-Repetition Rule
 
@@ -82,6 +107,7 @@ The article should feel like:
 - willing to make one sharp judgment
 - willing to say what does **not** work
 - varied in rhythm, not uniformly “complete”
+- closer to a strong business explainer column than to a consultant memo
 
 Good signs:
 
@@ -89,6 +115,8 @@ Good signs:
 - the opening names a real workflow tension fast
 - the middle explains mechanism through consequence
 - the close leaves the reader with one repeatable line, not a generic summary
+- each section feels like it answers one business question before moving to the next
+- recommendation lines sound natural in spoken Chinese, not like sloganized commentary
 
 ## Editing Standard
 
@@ -107,6 +135,10 @@ Otherwise, identify the smallest high-leverage fixes:
 - sharpen 1-2 soft judgment paragraphs
 - cut repeated transitions
 - replace generic close with one stronger final line
+- shorten long abstract sentences into spoken Chinese
+- replace template judgments with one concrete workflow consequence
+- make each section end with a line the reader can retell internally
+- replace “评论腔” recommendation lines with more natural spoken judgment such as `优先需要做的是` or `下一步比较合理的是`
 
 ## Output Format
 
@@ -152,3 +184,6 @@ Otherwise, identify the smallest high-leverage fixes:
 - Do not encourage “金句堆积”.
 - Do not remove strong judgment just because it is opinionated; only change it if it is weakly supported.
 - Preserve the account voice: practical, direct, business-first, and slightly opinionated.
+- If the user explicitly says the draft still has AI smell, assume the previous review bar was too loose and tighten the template-phrase check.
+- If the user explicitly says some phrases “不像人会说的话”, treat that as a hard review signal and push the draft toward more natural spoken Chinese, even if the structure is already correct.
+- If the user cites a living writer as reference, convert that request into high-level traits and review against those traits instead of pushing toward imitation.

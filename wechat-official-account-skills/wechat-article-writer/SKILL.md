@@ -20,6 +20,13 @@ The article should help readers:
 - judge whether it applies to their enterprise scenario
 - learn from success cases, failure reviews, or implementation patterns
 
+Current operating preference for this account:
+
+- prefer `真实公司 / 真实产品 / 真实流程 / 真实价值`
+- tell the story through one concrete workflow, not through platform abstraction first
+- explain the technical path only after the reader can already see the business scene
+- if the user references a known living business writer, translate that into high-level writing traits rather than direct imitation
+
 ## Business-First Rule
 
 Default to `企业问题优先，技术解释后置`.
@@ -55,14 +62,26 @@ Good title shapes:
 - `为什么很多 AI 项目……`
 - `AI 应用一上线，真正卡住它的不是……`
 - `如果你在做企业 AI，先别急着……`
+- `10 周上线，90% 自动通过：……怎么做`
+- `某家公司把……交给 AI，结果怎样`
+- `一个具体流程，怎么从手工变成自动通过`
 
 Avoid by default:
 
 - `X 技术为什么正在取代 Y 技术`
 - `A、B、C、D 到底是什么关系`
 - `为什么 X 突然成了热点`
+- 连续多篇都复用同一套“为什么……不是……”或“先别急着……”句式
+- 标题只有观点，没有公司、结果、流程对象这三个抓手里的任何一个
 
 These can still be used when the article is explicitly trend-oriented, but only if the title also gives the reader a clear enterprise payoff.
+
+When recent operational feedback suggests low first-screen clickthrough, prefer this title fallback order:
+
+1. 具体结果数字
+2. 具体公司或场景
+3. 具体流程对象
+4. 最后才是抽象判断
 
 ## Voice / 语气
 
@@ -74,6 +93,20 @@ Preferred tone:
 - direct, human, and opinionated
 - practical, with enough technical precision
 - more “我想跟你把这件事说清楚” than “本文将系统阐述”
+
+For this account, a strong business-column tone usually means:
+
+- open from one business question, not from a term definition
+- explain like you are talking across a meeting table, not reading a report
+- move layer by layer: `先抛问题 -> 拆原因 -> 讲机制 -> 落回动作`
+- each short section carries one takeaway
+- the close leaves one sentence the reader can retell
+- keep the structure sharp, but let the wording sound like something a real operator would actually say in conversation
+
+If the user mentions a living writer such as 刘润:
+
+- do not imitate that writer's exact wording, rhythm, or signature formulas
+- do extract the broad qualities the user likely wants: business-first framing, conversational clarity, layered explanation, and strong takeaways
 
 Useful sentence shapes:
 
@@ -91,6 +124,68 @@ Avoid:
 - excessive acronyms without explanation
 - long future topic lists
 - exaggerated claims such as “彻底颠覆” or “一文讲透”
+- 评论腔判断句，比如 `这条线很值得盯`、`更值得关注的是`、`这个信号是`、`下一步该补的是`
+
+When writing a business explainer piece, preserve the explanatory structure but make the wording more natural and more speakable.
+
+Prefer:
+
+- `优先需要做的是……`
+- `下一步比较合理的是……`
+- `先把……接起来`
+- `你真要往前走，先看……`
+- `更现实的问题是……`
+
+Avoid sentence frames that sound like detached commentary instead of a practitioner talking to a peer:
+
+- `这条线很值得盯`
+- `更值得关注的是`
+- `这个信号是`
+- `下一步该补的是`
+- `真正值得企业学的是`
+
+## Anti-Slop Writing Rules
+
+When the draft is structurally correct but still reads like AI, fix the language before adding more content.
+
+Hard requirements:
+
+- Prefer short, spoken Chinese sentences over layered judgment sentences.
+- Prefer one clear point per paragraph; do not stack `判断 + 转折 + 抽象总结` into one long sentence.
+- Start from a concrete role or workflow scene whenever possible.
+- Replace abstract summary words with visible work objects such as `报表`、`工单`、`审批`、`口径`、`日志`、`表结构`、`SQL`。
+- Keep some friction in the prose. It is acceptable to say a thing is awkward, risky, or easy to误判.
+- Let transitions feel like a business explainer guiding the reader through the issue, not a whitepaper enumerating sections.
+
+High-frequency phrases to avoid repeating across the same article or across recent articles:
+
+- `真正麻烦的地方是`
+- `真正值得企业学的 / 抄的`
+- `真正值钱的`
+- `下一步该补的`
+- `不是……而是……`
+- `说白了`
+- `这件事很容易被忽略`
+- `最后买单的，不是……而是……`
+
+These phrases are not banned forever. But once one of them appears, do not keep reusing the same formula as the article's main engine.
+
+Preferred rewrite direction:
+
+- from `抽象判断` to `具体场景`
+- from `长句总括` to `短句直说`
+- from `概念先行` to `先把谁在干什么讲清楚`
+- from `正确但平` to `带一点取舍和边界`
+- from `术语解释文` to `商业问题拆解文`
+
+Sentence-level checks before handing off:
+
+- If a sentence contains more than one of `真正 / 更值得 / 不是…而是 / 下一步 / 说白了`, rewrite it.
+- If a paragraph can be split into two shorter spoken paragraphs, split it.
+- If a judgment sentence could apply to almost any AI article, rewrite it until it belongs to this one.
+- If the draft keeps explaining what the company `意味着什么`, add one line about what the team actually has to do differently.
+- If a section has no crisp takeaway line, add one. The reader should be able to retell that section after one pass.
+- If a closing judgment sounds like a commentator speaking from outside the work, rewrite it until it sounds like an operator giving a practical recommendation.
 
 ## Article Structure
 
@@ -103,6 +198,15 @@ Default structure:
 5. Case or pattern: success, failure, or a reusable adoption pattern.
 6. Closing: one grounded judgment that readers can repeat or forward.
 
+When writing an industrial landing or real-company case, prefer this stronger structure:
+
+1. 故事开篇：谁在什么流程里卡住了，为什么它值得老板/负责人现在看
+2. 痛点展开：这条流程过去为什么慢、贵、乱、难复制
+3. 方案切入：真实公司或真实产品到底改了哪一段
+4. 技术路径：数据、模型、工作流、系统集成、人工确认分别怎么接
+5. 业务价值：效率、质量、交付、成本、人员复制、响应速度拿到了什么变化
+6. 洞见收尾：别的企业可以学什么，哪些条件不具备时别照抄
+
 Default paragraph ordering:
 
 - 先讲冲突
@@ -114,13 +218,26 @@ When a draft starts from a technology term, rewrite it until a business reader c
 
 Do not force a list of future articles unless the user asks.
 
+When revising for tone, rewrite the opening first. If the opening becomes more concrete, the rest of the article usually gets easier to de-slop.
+
 ## Content Illustration Brief / 内容配图
 
 The writer owns the illustration intent. The layout skill owns the final visual execution.
 
 When drafting an article, decide whether the reader needs an inline illustration to understand the argument. Add an illustration brief only when it clarifies structure, flow, comparison, or an enterprise case. Do not add decorative images.
 
-Use at most 1-3 inline illustrations for a normal WeChat article:
+Use at most 1-3 inline illustrations for a normal WeChat article.
+
+For real industrial case pieces, default to `2-4` visuals when the material supports it:
+
+- pain chain / conflict map
+- workflow or system architecture
+- high-fidelity product prototype or workbench
+- value loop / metrics outcome map
+
+Do not add all four mechanically. Use only the ones that reduce reading friction.
+
+Standard illustration types:
 
 - **Concept diagram**: explain a technical mechanism such as model -> context -> tool -> action.
 - **Workflow diagram**: show how AI enters an enterprise process.
@@ -187,9 +304,14 @@ Before handing off to layout or review, ensure:
 - the title can be understood by an enterprise reader who is not deep in AI tooling jargon
 - the core point appears in the first 3 paragraphs
 - the first 150 words mention a real workflow, role, or business consequence
+- when possible, the article is anchored in a real company, real product, or real workflow rather than a pure abstract concept
 - every technical term is tied to a real problem
 - enterprise landing is not treated as an afterthought
 - the article contains at least one concrete scenario
+- the article makes clear `怎么落地 / 用了什么技术 / 拿到了什么价值`
 - the article includes at least one repeatable judgment sentence suitable for forwarding
 - the article includes a content illustration brief or explicitly says no inline illustration is needed
 - the close does not become a hard sales CTA
+- the opening does not sound like a generic industry-summary preface
+- repeated template phrases have been reduced instead of redistributed
+- the digest is direct and readable, not a compressed AI summary paragraph

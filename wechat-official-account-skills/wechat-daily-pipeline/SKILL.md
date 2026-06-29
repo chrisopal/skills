@@ -1,6 +1,6 @@
 ---
 name: wechat-daily-pipeline
-description: Use to run the end-to-end daily workflow for the WeChat Official Account 智能体架构笔记: topic planning, writing, cover/illustration planning, HTML layout, review, WeChat draft saving, and an audit package for human approval. Never publishes automatically.
+description: "Use to run the end-to-end daily workflow for the WeChat Official Account 智能体架构笔记: topic planning, writing, cover/illustration planning, HTML layout, review, WeChat draft saving, and an audit package for human approval. Never publishes automatically."
 ---
 
 # WeChat Daily Pipeline
@@ -56,11 +56,14 @@ Forbidden:
    - content illustration brief or explicit no-illustration decision
    - conversational Chinese body
    - technical clarity + enterprise landing value
+   - when recent ops feedback indicates weak first-screen attraction, prefer titles with concrete company/result/workflow hooks over repeated abstract judgment formulas
 4. Prepare visuals:
    - use the host agent's configured image generation capability via the `imagegen` tool first
    - generate cover image with `imagegen`
+   - keep the homepage cover simpler than the inline diagrams: one core scene, 3-5 modules max, optional short result badges, no dense explanatory panels
    - generate inline diagram with `imagegen` based on the writer's brief, only when it improves understanding
-   - persist the selected final images into repo-local paths such as `assets/wechat/` before draft save; do not leave final assets only in host cache or chat preview state
+   - immediately after each `imagegen` call, persist the selected final image into a repo-local path such as `assets/wechat/` before draft save; do not leave final assets only in host cache or chat preview state
+   - when running inside `/Users/guojiexie/content-mgmt`, use `python3 scripts/persist_imagegen_output.py --target assets/wechat/<slug>-<role>-imagegen.png --record assets/wechat/imagegen-manifest.jsonl` as the default persistence step
    - use local overlay/resizing only for exact labels, final dimensions, or export-format cleanup after `imagegen`
    - unified style from `style-system.md`
 5. Layout:
@@ -70,6 +73,7 @@ Forbidden:
    - run the dedicated human-tone reviewer on the full draft text
    - fix AI-sounding, repetitive, weak-object, or over-smoothed passages before final review
    - when possible, compare against recent drafts to avoid repeating the same opening/closing patterns
+   - if the draft leans on repeated crutch phrases such as `真正值钱的`、`最值得企业学的`、`下一步该补的` or too many `不是……而是……`, rewrite those sections instead of merely swapping synonyms
 7. Review:
    - run reviewer checklist
    - fix P1/P2 issues before saving
@@ -82,12 +86,23 @@ Forbidden:
    - confirm no publish action occurred
 10. Report audit package.
 
+## Revision Policy
+
+If human feedback after draft save says the article still has obvious AI smell, awkward sentence rhythm, or template-heavy judgment lines:
+
+- revise the Markdown source first
+- re-run human-tone review mentally against the updated text
+- re-render HTML if needed
+- update the existing WeChat draft via `update-draft` when a same-day `media_id` already exists
+- do not create a second near-duplicate draft just for style edits
+
 ## Expected Local Workspace
 
 If running in `/Users/guojiexie/content-mgmt`, use the existing conventions:
 
 - drafts in `drafts/`
 - images in `assets/wechat/`
+- imagegen persistence helper `scripts/persist_imagegen_output.py`
 - operation notes in `operations/`
 - API helper `scripts/wechat_draft_api.py`
 - credentials in `.env`
@@ -120,7 +135,7 @@ If paths differ, adapt to the current workspace and report the paths used.
 - If cover generation fails, create a precise cover prompt and continue with article draft.
 - `imagegen` means the host agent image generation tool/capability, not a repo-local drawing script.
 - Do not default to local PIL/SVG/HTML drawing when `imagegen` is available.
-- If `imagegen` succeeds visually but the file is not yet inside the repo workspace, first recover/copy the chosen output into `assets/wechat/` from the host cache path such as `$CODEX_HOME/generated_images/...` or from the current session record. Do not switch to a local-drawing fallback just because the built-in output path was inconvenient.
+- If `imagegen` succeeds visually but the file is not yet inside the repo workspace, first recover/copy the chosen output into `assets/wechat/` from the host cache path such as `$CODEX_HOME/generated_images/...` or from the current session record. In this repo, default to `python3 scripts/persist_imagegen_output.py --target ... --record assets/wechat/imagegen-manifest.jsonl` immediately after the `imagegen` call. Do not switch to a local-drawing fallback just because the built-in output path was inconvenient.
 - If `imagegen` is unavailable, fails repeatedly, or cannot yield a usable asset, use a clearly reported fallback asset and include the fallback reason in the audit package.
 - If review fails, do not save to WeChat unless the user explicitly asks for a flawed draft.
 - If WeChat API saves the draft, always read it back when possible.

@@ -1,3 +1,25 @@
+## 2026-06-29 12:44:19 CST
+
+- Scope: Commit existing WeChat Official Account skill changes, including stronger account voice rules, imagegen asset persistence, image-post visual review gates, `newspic` draft API notes/helper, and two industrial-AI image-post pipeline skills.
+- Changed files:
+  - `wechat-official-account-skills/references/account-positioning.md`
+  - `wechat-official-account-skills/references/review-checklist.md`
+  - `wechat-official-account-skills/references/style-system.md`
+  - `wechat-official-account-skills/references/imagepost-draft-api.md`
+  - `wechat-official-account-skills/scripts/validate_bundle.py`
+  - `wechat-official-account-skills/scripts/wechat_imagepost_draft_api.py`
+  - `wechat-official-account-skills/wechat-*/SKILL.md`
+- Validation:
+  - `python3 wechat-official-account-skills/scripts/validate_bundle.py` passed for 8 skills.
+  - `python3 -m py_compile` passed for `validate_bundle.py` and `wechat_imagepost_draft_api.py`.
+  - `quick_validate.py` passed for all 8 WeChat skill folders.
+  - `wechat_imagepost_draft_api.py --dry-run` resolved a sample `newspic` payload and converted literal `\\n` to real line breaks.
+  - `git diff --check -- wechat-official-account-skills` passed.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - The WeChat helper saves or updates drafts only; it does not call publish/freepublish endpoints.
+  - Existing unrelated `.playwright-mcp/`, `agent-skill-tools-intro-video/`, and zip artifacts remain unstaged.
+
 ## 2026-06-29 12:03:09 CST
 
 - Scope: New standalone `book2video` Node project under the skills repository, separate from the Codex `book2videoskill`, implementing a dependency-light project scaffold for BookCore, storyboard, asset handoff, render plan, publish draft, provider contracts, Remotion template stubs, and the `金字塔原理` acceptance path.

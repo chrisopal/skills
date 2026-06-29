@@ -20,6 +20,13 @@ Default strategy:
 - content pillars: AI technology explanation, enterprise landing, failure reviews, mode innovation
 - visual consistency through the layout skill
 
+Current high-confidence adjustment:
+
+- industrial landing stories around `真实公司 / 真实方案 / 真实流程 / 真实价值`
+  should lead the mix because they are outperforming pure architecture explanation
+- technical explanation pieces should remain, but they should increasingly attach to a real workflow, role, or company case
+- deeper case pieces should usually carry more visuals than abstract commentary pieces
+
 ## Operating Loop
 
 1. Review recent articles and drafts.
@@ -38,11 +45,19 @@ Default strategy:
 
 Default mix unless data suggests otherwise:
 
-- 2 technology explanation pieces
-- 2 enterprise landing/case pieces
+- 1-2 technology explanation pieces
+- 2-3 enterprise landing/case pieces
 - 1 failure review
 - 1 mode innovation or trend judgment
 - 1 reserve/lightweight draft or operational review
+
+If recent data shows a clear case-story advantage, bias the schedule toward:
+
+- real enterprise case
+- real product/solution case
+- landing Q&A / failure review
+
+and reduce consecutive abstract architecture posts.
 
 ## Strategy Output
 
@@ -76,4 +91,3 @@ Default mix unless data suggests otherwise:
 - Do not chase irrelevant hot topics.
 - Do not recommend a strategy only from one weak metric.
 - Prefer small, testable adjustments over sweeping repositioning.
-

@@ -16,6 +16,8 @@ EXPECTED = [
     "wechat-article-reviewer",
     "wechat-account-operator",
     "wechat-daily-pipeline",
+    "wechat-industrial-ai-imagepost-pipeline",
+    "wechat-industrial-ai-innovation-product-pipeline",
 ]
 
 
@@ -31,9 +33,11 @@ def main() -> int:
             errors.append(f"invalid frontmatter: {skill.relative_to(ROOT)}")
         if f"name: {name}" not in text:
             errors.append(f"name mismatch: {skill.relative_to(ROOT)}")
-    for ref in ["account-positioning.md", "style-system.md", "review-checklist.md"]:
+    for ref in ["account-positioning.md", "style-system.md", "review-checklist.md", "imagepost-draft-api.md"]:
         if not (ROOT / "references" / ref).exists():
             errors.append(f"missing references/{ref}")
+    if not (ROOT / "scripts" / "wechat_imagepost_draft_api.py").exists():
+        errors.append("missing scripts/wechat_imagepost_draft_api.py")
     writer = (ROOT / "wechat-article-writer" / "SKILL.md").read_text(encoding="utf-8")
     if "正文插图" not in writer or "Content Illustration Brief" not in writer:
         errors.append("writer skill must define content illustration brief")

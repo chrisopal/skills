@@ -35,6 +35,17 @@ Be a strict editor. Prioritize issues that would make the article:
 6. Layout readiness: Title, digest, cover prompt, section structure, list shape.
 7. Risk: unverifiable factual claims, exaggerated promises, sensitive company claims.
 
+In tone review, explicitly check for:
+
+- overuse of `真正 / 最值得 / 下一步该补 / 不是……而是……`
+- digest or opening paragraph that reads like a generic AI summary
+- too many long, abstract judgment sentences in a row
+- repeated formula lines that could belong to almost any enterprise-AI article
+- whether the draft reads like a clear business explainer rather than a consultant memo
+- whether each major section has a concrete takeaway line the reader can repeat
+- whether recommendation lines sound natural in spoken Chinese rather than like outside-in commentary
+- whether phrases such as `这条线很值得盯`、`更值得关注的是`、`这个信号是`、`下一步该补的是` should be rewritten into more natural operator language
+
 This reviewer remains the broad final editor. It should not substitute for the dedicated human-tone pass.
 
 ## Output Format

@@ -61,13 +61,36 @@ If some fields are missing, infer reasonable defaults from account positioning a
    - 文章大纲
    - 可加入的案例或场景
    - 结尾转化方式
+   - 建议故事开篇
+   - 建议配图 2-4 张
 7. Judge whether the topics should become a series.
 8. Produce next-week publishing schedule.
+
+## Proven Signals
+
+When recent article signals exist, use them as hard steering input.
+
+Current validated signal for this account:
+
+- `真实公司 / 真实产品 / 真实流程 / 真实价值` 的工业落地案例
+  明显强于纯架构解释文
+- 抽象技术话题仍然可写，但应默认服务于真实场景，不应连续主导排期
+- 标题不应连续复用“为什么……不是……”“先别急着……”这类判断句式；要定期切到 `具体公司 / 具体结果 / 具体方法`
+- 首页封面应优先简洁、单画面、强主题；不要把封面做成缩小版方案白皮书
+
+Default content priority should therefore be:
+
+1. 真实工业企业案例
+2. 真实 AI 产品或方案进入企业流程的案例
+3. 服务于真实场景的技术解释
+
+Do not let multiple consecutive abstract architecture pieces crowd out real landing stories.
 
 ## Topic Filters
 
 Prefer topics that:
 
+- start from a real company, real workflow, real industrial conflict, or real project tension when possible
 - connect AI technology to real industrial or manufacturing workflows
 - expose a management, sales, delivery, ROI, data, or organizational conflict
 - help manufacturing bosses or industrial software leaders make a decision
@@ -76,9 +99,11 @@ Prefer topics that:
 - create natural conversion into consulting, cooperation, community, course, tool, or service product
 - are valuable even if a specific AI tool becomes outdated
 - have conflict, judgment, and forwarding value
+- 容易长出 `案例名 + 结果数字 + 流程对象` 的标题抓手
 
 Avoid topics that:
 
+- stay at architecture, tooling, or concept level without a real workflow owner
 - only summarize product releases
 - only compare tools without a business implication
 - promise AI replacement without discussing workflow and responsibility
@@ -151,6 +176,8 @@ Score each dimension out of 20.
 - 文章大纲：
 - 可加入的案例或场景：
 - 结尾转化方式：
+- 建议故事开篇：
+- 建议配图：
 
 ### 选题 2：
 
@@ -179,6 +206,7 @@ Final output must:
 
 - be specific to industrial AI, intelligent manufacturing, industrial software, enterprise digitalization, AI personal entrepreneurship, or humanoid robotics
 - avoid generic AI tool recommendations
+- prefer real companies, real AI products, real workflows, and real value evidence over abstract framing
 - include industrial scenarios, business insight, and conversion logic
 - show conflict, judgment, and forwarding value
 - make the top 3 briefs immediately usable by `wechat-article-writer`

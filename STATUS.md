@@ -1,3 +1,27 @@
+## 2026-06-29 12:03:09 CST
+
+- Scope: New standalone `book2video` Node project under the skills repository, separate from the Codex `book2videoskill`, implementing a dependency-light project scaffold for BookCore, storyboard, asset handoff, render plan, publish draft, provider contracts, Remotion template stubs, and the `金字塔原理` acceptance path.
+- Changed files:
+  - `book2video/package.json`
+  - `book2video/README.md`
+  - `book2video/spec.md`
+  - `book2video/src/**/*.js`
+  - `book2video/src/templates/**/*.md`
+  - `book2video/src/templates/remotion/**/*.tsx`
+  - `book2video/examples/pyramid-principle.input.json`
+  - `book2video/tests/book2video.test.js`
+  - `README.md`
+  - `STATUS.md`
+- Validation:
+  - `npm test` passed in `book2video`.
+  - `npm run check` passed in `book2video`.
+  - `node src/cli/book2video.js --input examples/pyramid-principle.input.json --output-root /tmp/book2video-project-check` generated `/tmp/book2video-project-check/pyramid-principle` with 7 scenes and 260 seconds.
+  - `rg` verified the generated sample contains `结论先行`, `以上统下`, `归类分组`, `逻辑递进`, `AI汇报结构生成器`, `#F97316`, `#0B5D3B`, and `一本书，一个AI Skill`.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - The project intentionally has no external dependencies yet; real ImageGen, TTS, music, and Remotion MP4 rendering remain adapter work.
+  - Existing unrelated WeChat skill changes and local artifacts remain unstaged.
+
 ## 2026-06-29 11:45:10 CST
 
 - Scope: New `book2videoskill` Codex skill based on `Book2VideoSkill_spec_v1_1.md`, covering BookCore extraction, Xiaohongshu cover poster planning, storyboard generation, asset handoff scaffolding, render planning, project validation, and the `金字塔原理` example.

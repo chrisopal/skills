@@ -10,6 +10,7 @@
 - [`wechat-official-account-skills`](./wechat-official-account-skills/)：微信公众号「智能体架构笔记」运营技能包，覆盖选题、写作、排版配图、审稿、运营复盘和每日端到端草稿生成。
 - [`requirements-to-delivery`](./requirements-to-delivery/SKILL.md)：从需求调研、技术方案、SRS、系统设计、原型到开发验收的端到端交付流程 skill。
 - [`book2videoskill`](./book2videoskill/SKILL.md)：把书名、书籍摘要或 Book2Skill 输出转成 5 分钟以内知识短视频的 BookCore、封面海报、分镜、资产计划、渲染计划和小红书发布文案。
+- [`book2video`](./book2video/README.md)：Book2Video 独立 Node 工程，提供 CLI、三段工具、Provider 占位、Remotion 模板占位和测试，用于把书籍方法论生成短视频生产包。
 
 ## 推荐安装方式
 

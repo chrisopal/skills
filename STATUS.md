@@ -1,3 +1,24 @@
+## 2026-06-29 23:18:00 CST
+
+- Scope: Adjust `book2videoskill` defaults so full project bundles are not generated, final scene visuals default to built-in `imagegen`, book research feeds visual shot design, and Remotion plays composited storyboard frames from `storyboard.json`.
+- Changed files:
+  - `book2videoskill/SKILL.md`
+  - `book2videoskill/references/*.md`
+  - `book2videoskill/scripts/*.py`
+  - `STATUS.md`
+- Validation:
+  - `python3 -m py_compile book2videoskill/scripts/*.py` passed.
+  - `quick_validate.py book2videoskill` passed.
+  - `python3 book2videoskill/scripts/run_book2video.py --book "原则" --author "瑞·达利欧"` regenerated `book2videoskill/projects/principles-ray-dalio` with `status: imagegen_composited`.
+  - `validate_book2video_project.py book2videoskill/projects/principles-ray-dalio --require-render` passed with 8 scenes and 240 seconds.
+  - `asset_manifest.json` reports `imagegen_with_component_overlay` for the cover and all 8 scene images; `imagegen_sources` exists for 8/8 scenes.
+  - `ffprobe` confirmed `output/final_video.mp4` duration is exactly 240.000000 seconds.
+  - `quick_validate.py` passed for `extracted_skill/principles-ray-dalio-skill`; `unzip -t principles-ray-dalio-skill.zip` passed.
+  - Confirmed `project_bundle.zip` is absent.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - Content, narration, and shot order are produced from research/text structure; imagegen produces the visual scene sources; Remotion renders the storyboard frames in order.
+
 ## 2026-06-29 22:58:00 CST
 
 - Scope: Upgrade `book2videoskill` from storyboard scaffold to closed-loop per-book production, including durable `book2videoskill/projects/<book-slug>/` output, Xiaohongshu poster PNGs, generated scene PNGs, local MP4 assembly, generated Remotion project, extracted book-derived Codex skill, and portable skill zip packaging.

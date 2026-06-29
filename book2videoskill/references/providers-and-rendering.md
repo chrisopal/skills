@@ -22,11 +22,12 @@ Output:
 
 Priority:
 
-1. `codex_image_plugin`
-2. `imagegen`
-3. Component/SVG/PNG fallback
+1. `imagegen`
+2. Component/SVG/PNG fallback
 
 Do not send long Chinese poster text into the image prompt. Render text in components.
+When using built-in imagegen, copy the selected output from `$CODEX_HOME/generated_images/...` back into the current book project path before referencing it.
+Use `imagegen_sources/<asset-id>.png` as the project-bound landing path for selected imagegen assets. The composition step overlays reliable Chinese text and UI labels on top of these images.
 
 ### TTSProvider
 
@@ -97,7 +98,7 @@ Components:
 
 Keep all scene styling sourced from `styleBible`; do not let individual scenes invent their own palette.
 
-The pipeline should also write a runnable `remotion/` directory per book project. Use Remotion primitives such as `Composition`, `Sequence`/`Series`, `Img`, and `staticFile` so the generated project can be rendered by the Remotion plugin or CLI.
+The pipeline should also write a runnable `remotion/` directory per book project. Use Remotion primitives such as `Composition`, `Sequence`/`Series`, `Img`, and `staticFile` so the generated project can be rendered by the Remotion plugin or CLI. The Remotion composition should take scene order and durations from `storyboard.json` and display the composited imagegen storyboard frames from `scene_images/`.
 
 ## Render Plan Defaults
 
@@ -116,4 +117,4 @@ When real audio providers are not configured, create explicit handoff files:
 - `.tts.txt` narration handoff instead of fake MP3s
 - `.music.txt` BGM brief instead of fake audio
 
-The local component renderer may produce real poster PNGs, scene PNGs, and `output/final_video.mp4` without TTS/BGM. The asset manifest should mark provider-generated placeholders with `status: "placeholder"` and `requiresProvider: true`, and mark local component media with `status: "generated"` and `requiresProvider: false`.
+The local component renderer may produce fallback poster PNGs, scene PNGs, and `output/final_video.mp4` without TTS/BGM. The asset manifest should mark the default image provider as `imagegen`, keep `imagegen_prompts.json` for project-bound generation, and mark local component media as fallback assets with `requiresProvider: false`. Videos should include image-rich scene visuals, not only text cards.

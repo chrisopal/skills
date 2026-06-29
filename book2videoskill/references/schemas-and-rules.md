@@ -33,6 +33,23 @@ Default palette:
 
 Use orange for titles, section numbers, key arrows, highlighted concepts, flow labels, primary tags, and primary buttons. Use green for secondary icons, small structural labels, secondary lines, mascot leaf accents, and minor charts.
 
+## BookResearch
+
+`Book2StoryboardTool` must generate `book_research.json` before final shot design.
+
+Recommended fields:
+
+- `bookTitle`
+- `bookSubtitle`
+- `bookAuthor`
+- `publishedYear`
+- `publisher`
+- `researchSummary[]`
+- `visualFacts[]`
+- `sourceNotes[]` with `label`, `url`, `note`
+
+Use this research to design imagegen prompts for book-object shots, author/context shots, real-world scenarios, and visual metaphors.
+
 ## BookCore
 
 `Book2StoryboardTool` must generate `book_core.json` before the storyboard.
@@ -64,6 +81,21 @@ Required fields:
 - `tags[]`
 
 Generate cover text with Remotion/SVG/HTML Canvas components. Use ImageGen only for mascot, texture, or illustration elements.
+
+## Imagegen Defaults
+
+The default image provider is the built-in `imagegen` plugin.
+
+Every full project should include:
+
+- `imagegen_prompts.json`
+- `imagegen_sources/`
+- `asset_manifest.json.imageProvider.default = "imagegen"`
+- project-bound image target paths for selected imagegen outputs
+
+Do not leave project-referenced imagegen assets only under `$CODEX_HOME/generated_images/...`. Copy selected outputs into the book project directory. Component-rendered PNGs may remain as deterministic fallback frames.
+
+Imagegen should generate the visual subject for every storyboard scene. It should not be asked to render reliable long Chinese copy; final Chinese titles, captions, and labels are applied by the composition layer.
 
 ## Storyboard
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create render_plan.json, render report, and a project bundle."""
+"""Create render_plan.json, render report, Remotion project, and video output."""
 
 from __future__ import annotations
 
@@ -7,10 +7,9 @@ import argparse
 import json
 import shutil
 import subprocess
-import zipfile
 from pathlib import Path
 
-from book2video_common import read_json, relpath, write_json
+from book2video_common import read_json, write_json
 
 
 def build_render_plan(project_dir: Path, style_bible: dict, storyboard: dict) -> dict:
@@ -38,23 +37,13 @@ def build_render_plan(project_dir: Path, style_bible: dict, storyboard: dict) ->
     }
 
 
-def zip_project(project_dir: Path, zip_path: Path) -> None:
-    include_suffixes = {".json", ".md", ".svg", ".srt", ".txt", ".png", ".mp4", ".zip", ".tsx", ".ts", ".js"}
-    with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(project_dir.rglob("*")):
-            if path == zip_path or path.is_dir():
-                continue
-            if path.suffix in include_suffixes:
-                archive.write(path, relpath(path, project_dir))
-
-
 def write_remotion_project(project_dir: Path, style_bible: dict, storyboard: dict) -> None:
     remotion_dir = project_dir / "remotion"
     src_dir = remotion_dir / "src"
     public_dir = remotion_dir / "public"
     src_dir.mkdir(parents=True, exist_ok=True)
     public_dir.mkdir(parents=True, exist_ok=True)
-    for file_name in ["style_bible.json", "storyboard.json", "asset_manifest.json", "render_plan.json", "poster.png"]:
+    for file_name in ["style_bible.json", "storyboard.json", "asset_manifest.json", "imagegen_prompts.json", "render_plan.json", "poster.png"]:
         source = project_dir / file_name
         if source.exists():
             shutil.copy2(source, public_dir / file_name)
@@ -62,6 +51,10 @@ def write_remotion_project(project_dir: Path, style_bible: dict, storyboard: dic
     scene_public.mkdir(exist_ok=True)
     for path in (project_dir / "scene_images").glob("*.png"):
         shutil.copy2(path, scene_public / path.name)
+    imagegen_public = public_dir / "imagegen_sources"
+    imagegen_public.mkdir(exist_ok=True)
+    for path in (project_dir / "imagegen_sources").glob("*.png"):
+        shutil.copy2(path, imagegen_public / path.name)
     (remotion_dir / "package.json").write_text(
         """{
   "name": "book2video-remotion-render",
@@ -107,13 +100,11 @@ const palette = styleBible.visualStyle.palette;
 
 const SceneCard = ({{scene}}: {{scene: Scene}}) => {{
   return (
-    <AbsoluteFill style={{{{backgroundColor: palette.background, padding: 72, fontFamily: styleBible.visualStyle.fontFamily}}}}>
-      <div style={{{{height: '100%', border: '4px solid ' + palette.line, borderRadius: 28, background: '#fff', padding: 56}}}}>
-        <div style={{{{color: palette.secondary, fontSize: 30, fontWeight: 700}}}}>一本书，一个AI Skill</div>
-        <h1 style={{{{color: palette.primary, fontSize: 76, lineHeight: 1.08, marginTop: 42}}}}>{{scene.title}}</h1>
-        <Img src={{staticFile(`scene_images/${{scene.sceneId}}.png`)}} style={{{{width: '100%', borderRadius: 20, marginTop: 36}}}} />
-        <p style={{{{fontSize: 44, lineHeight: 1.45, color: palette.secondaryText, marginTop: 40}}}}>{{scene.narration}}</p>
-      </div>
+    <AbsoluteFill style={{{{backgroundColor: palette.background}}}}>
+      <Img
+        src={{staticFile(`scene_images/${{scene.sceneId}}.png`)}}
+        style={{{{width: '100%', height: '100%', objectFit: 'cover'}}}}
+      />
     </AbsoluteFill>
   );
 }};
@@ -245,6 +236,9 @@ def main() -> int:
         shutil.copy2(project_dir / "poster.png", output_dir / "poster.png")
     write_remotion_project(project_dir, style_bible, storyboard)
     final_video = render_video_with_ffmpeg(project_dir, storyboard)
+    stale_project_bundle = project_dir / "project_bundle.zip"
+    if stale_project_bundle.exists():
+        stale_project_bundle.unlink()
 
     render_report = project_dir / "render_report.md"
     render_report.write_text(
@@ -274,12 +268,8 @@ def main() -> int:
         encoding="utf-8",
     )
 
-    bundle_path = project_dir / "project_bundle.zip"
-    zip_project(project_dir, bundle_path)
-
     print(f"render_project: {project_dir}")
     print(f"final_video: {final_video}")
-    print(f"bundle: {bundle_path}")
     return 0
 
 

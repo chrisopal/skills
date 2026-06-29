@@ -11,6 +11,7 @@ from book2video_common import is_principles, is_pyramid_principle, read_json
 
 REQUIRED_FILES = [
     "video_brief.md",
+    "book_research.json",
     "book_core.json",
     "style_bible.json",
     "cover_poster_plan.json",
@@ -19,8 +20,8 @@ REQUIRED_FILES = [
     "xiaohongshu_publish.md",
 ]
 
-ASSET_STAGE_FILES = ["asset_manifest.json", "assets_ready_report.md"]
-RENDER_STAGE_FILES = ["render_plan.json", "render_report.md", "project_bundle.zip", "poster.png", "output/poster.png", "output/final_video.mp4"]
+ASSET_STAGE_FILES = ["asset_manifest.json", "imagegen_prompts.json", "assets_ready_report.md"]
+RENDER_STAGE_FILES = ["render_plan.json", "render_report.md", "poster.png", "output/poster.png", "output/final_video.mp4"]
 PYRAMID_TERMS = ["结论先行", "以上统下", "归类分组", "逻辑递进", "AI汇报结构生成器"]
 PRINCIPLES_TERMS = ["极度求真", "极度透明", "创意择优", "痛苦 + 反思 = 进步", "可信度加权决策", "AI原则复盘教练"]
 
@@ -141,6 +142,14 @@ def main() -> int:
             require_file(project_dir, rel_path, errors)
         if (project_dir / "asset_manifest.json").exists():
             manifest = read_json(project_dir / "asset_manifest.json")
+            if manifest.get("imageProvider", {}).get("default") != "imagegen":
+                errors.append("asset_manifest imageProvider.default must be imagegen")
+            imagegen_prompts = read_json(project_dir / "imagegen_prompts.json") if (project_dir / "imagegen_prompts.json").exists() else []
+            if len(imagegen_prompts) < len(scenes) + 1:
+                errors.append("imagegen_prompts must include poster plus one prompt per scene")
+            for prompt in imagegen_prompts:
+                if not prompt.get("targetPath", "").startswith("imagegen_sources/"):
+                    errors.append(f"imagegen prompt targetPath must point to imagegen_sources/: {prompt.get('assetId', '<missing>')}")
             validate_path_refs(project_dir, manifest, errors)
             if len(manifest.get("sceneImages", [])) != len(scenes):
                 errors.append("asset_manifest sceneImages count must match storyboard scenes")
@@ -157,8 +166,10 @@ def main() -> int:
         if render_plan.get("durationSec") != total_duration:
             errors.append("render_plan durationSec must equal storyboard duration")
         extracted_skill_zips = list(project_dir.glob("*.zip"))
-        if not any(path.name != "project_bundle.zip" for path in extracted_skill_zips):
+        if not extracted_skill_zips:
             errors.append("missing extracted book-derived skill zip")
+        if (project_dir / "project_bundle.zip").exists():
+            errors.append("project_bundle.zip should not be generated")
         if not (project_dir / "remotion" / "src" / "Root.tsx").exists():
             errors.append("missing generated Remotion project: remotion/src/Root.tsx")
 

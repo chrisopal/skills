@@ -100,6 +100,58 @@ def principles_book_core(book_title: str, book_author: str | None) -> dict:
     }
 
 
+def principles_book_research(book_title: str, book_author: str | None) -> dict:
+    return {
+        "bookTitle": book_title,
+        "bookSubtitle": "Life & Work",
+        "bookAuthor": book_author or "瑞·达利欧",
+        "publishedYear": 2017,
+        "publisher": "Simon & Schuster / Avid Reader Press",
+        "researchSummary": [
+            "《Principles: Life & Work》围绕 Ray Dalio 在生活、管理和组织建设中的原则展开。",
+            "官方材料强调 idea meritocracy、radical transparency，以及把现实、目标和行动原则系统化。",
+            "出版社/书商资料强调这本书把 life、management、economics、investing 视作可被规则化理解的系统。",
+        ],
+        "visualFacts": [
+            "Ray Dalio 是 Bridgewater Associates 创始人，视觉上可用成熟投资人/创始人剪影表达，不要生成可识别肖像。",
+            "书本视觉可用深色精装书、白色书名标签、办公桌阅读场景表达，不要复刻真实封面设计。",
+            "组织场景可用透明会议室、白板、反馈便签、决策矩阵和循环飞轮表达。",
+        ],
+        "sourceNotes": [
+            {
+                "label": "Principles official site",
+                "url": "https://www.principles.com/",
+                "note": "Official positioning: life and management principles, idea meritocracy, radical transparency.",
+            },
+            {
+                "label": "Principles official Life & Work page",
+                "url": "https://www.principles.com/principles-for-success",
+                "note": "Official page presents Principles: Life & Work and related learning materials.",
+            },
+            {
+                "label": "Google Books listing",
+                "url": "https://books.google.com/books/about/Principles.html?id=okk1DwAAQBAJ",
+                "note": "Describes the book as systemizing life, management, economics, and investing into rules and machines.",
+            },
+            {
+                "label": "Wikipedia bibliographic cross-check",
+                "url": "https://en.wikipedia.org/wiki/Principles_%28book%29",
+                "note": "Cross-check for publication year, publisher, and book metadata.",
+            },
+        ],
+    }
+
+
+def generic_book_research(input_data: dict) -> dict:
+    return {
+        "bookTitle": input_data["bookTitle"],
+        "bookAuthor": input_data.get("bookAuthor"),
+        "researchSummary": ["未确认：请先补充书籍摘要、作者资料、出版社资料或联网调研结果。"],
+        "visualFacts": ["未确认：请补充作者、书封、场景、历史语境或关键物件。"],
+        "sourceNotes": [],
+    }
+
+
 def generic_book_core(input_data: dict) -> dict:
     book_title = input_data["bookTitle"]
     return {
@@ -217,14 +269,14 @@ def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
         durations = [max(18, int(item * ratio)) for item in durations]
         durations[-1] += target - sum(durations)
     names = [
-        ("S01", "现实痛点", "intro_card", "用复盘问题切入：为什么同类错误反复出现。"),
-        ("S02", "书籍核心内涵", "problem_diagram", "说明《原则》不是观点合集，而是操作系统。"),
-        ("S03", "原则反馈环", "flywheel_model", "展示目标、现实、根因、原则、执行的循环。"),
-        ("S04", "极度求真与透明", "concept_card", "把事实和分歧摆到台面，减少组织黑箱。"),
-        ("S05", "创意择优决策", "decision_matrix", "说明可信度加权如何让最好想法胜出。"),
-        ("S06", "AI Skill转化", "workflow", "把复盘材料转成可复用的原则条目。"),
-        ("S07", "真实场景", "workflow", "展示项目失败如何沉淀成下一次行动规则。"),
-        ("S08", "总结CTA", "summary_card", "用一句话收束，并引导收藏。"),
+        ("S01", "现实痛点", "intro_card", "用复盘问题切入：为什么同类错误反复出现。", "一张项目复盘桌面，便签、红色问题标记、打开的笔记本和一杯咖啡，成年人职场知识视频风格"),
+        ("S02", "书籍核心内涵", "book_author_context", "说明《原则》不是观点合集，而是操作系统。", "一本深色精装商业书放在办公桌上，旁边有作者研究资料、金融图表和铅笔，不复刻真实封面，不出现可识别人物肖像"),
+        ("S03", "原则反馈环", "flywheel_model", "展示目标、现实、根因、原则、执行的循环。", "抽象反馈飞轮，目标、现实、根因、原则、执行五个节点用图形表达，商业信息图插画"),
+        ("S04", "极度求真与透明", "transparent_meeting", "把事实和分歧摆到台面，减少组织黑箱。", "现代透明会议室，白板上有事实卡片和不同观点线索，团队讨论但人物不露脸"),
+        ("S05", "创意择优决策", "decision_matrix", "说明可信度加权如何让最好想法胜出。", "决策桌面俯视图，方案卡片、评分矩阵、可信度权重刻度，理性商业插画"),
+        ("S06", "AI Skill转化", "ai_workflow", "把复盘材料转成可复用的原则条目。", "AI 工作流界面概念图，输入会议纪要和失败记录，输出原则卡片和行动清单，现代产品插画"),
+        ("S07", "真实场景", "project_recovery", "展示项目失败如何沉淀成下一次行动规则。", "项目延期复盘场景，甘特图、风险看板、原则手册被打开，暖白办公室插画"),
+        ("S08", "总结CTA", "principles_system", "用一句话收束，并引导收藏。", "一本原创原则手册、循环箭头和成长阶梯，收藏感强的小红书知识封面风格"),
     ]
     narrations = [
         "很多人复盘时只会问，这次哪里做错了。但如果没有沉淀成原则，同类错误下次还会回来。",
@@ -237,7 +289,7 @@ def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
         "总结一句：读《原则》，不是为了背原则，而是为了拥有一套持续进化的决策系统。收藏这条，下次复盘直接套用。",
     ]
     scenes: list[dict] = []
-    for index, ((scene_id, title, visual_type, goal), duration, narration) in enumerate(zip(names, durations, narrations)):
+    for index, ((scene_id, title, visual_type, goal, visual_seed), duration, narration) in enumerate(zip(names, durations, narrations)):
         scenes.append(
             {
                 "sceneId": scene_id,
@@ -247,9 +299,17 @@ def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
                 "visualType": visual_type,
                 "visualDescription": f"暖白背景，橙色标题，深绿色辅助线，商业信息图风格。画面表达：{goal}",
                 "imageSourceStrategy": {
-                    "priority": ["codex_image_plugin", "imagegen", "component_renderer"],
+                    "priority": ["imagegen", "component_renderer"],
                     "imageCount": 1,
-                    "imagePrompt": f"{title}，小红书知识海报风，商业复盘信息图，橙色主色，深绿色辅助，暖白背景，中文文字由渲染器叠加",
+                    "imagePrompt": (
+                        "Use case: infographic-diagram\n"
+                        "Asset type: vertical short-video scene illustration\n"
+                        f"Primary request: {visual_seed}\n"
+                        "Style/medium: polished editorial business illustration, Xiaohongshu knowledge-video visual\n"
+                        "Composition/framing: 9:16 vertical, strong central visual area, clean negative space for Chinese overlay text\n"
+                        "Color palette: warm white background, orange primary accents, deep green secondary accents, black text-safe areas\n"
+                        "Constraints: original illustration, no copyrighted book-cover imitation, no recognizable Ray Dalio portrait, no logos, no watermark, no long text in image"
+                    ),
                     "fallbackPrompt": f"Component card for Principles scene: {title}",
                 },
                 "onscreenText": title,
@@ -303,7 +363,7 @@ def build_scenes(input_data: dict, book_core: dict) -> list[dict]:
                 "visualType": visual_type,
                 "visualDescription": f"暖白背景，橙色标题，绿色辅助线，商业信息图风格。画面表达：{goal}",
                 "imageSourceStrategy": {
-                    "priority": ["codex_image_plugin", "imagegen", "none"],
+                    "priority": ["imagegen", "component_renderer"],
                     "imageCount": 1,
                     "imagePrompt": f"{title}，商业知识信息图，橙色主色，绿色辅助，暖白背景，中文文字由渲染器叠加",
                     "fallbackPrompt": f"SVG component card for {title}",
@@ -343,23 +403,31 @@ def write_markdown_outputs(output_dir: Path, input_data: dict, book_core: dict, 
     for scene in storyboard["scenes"]:
         narration_lines.extend([f"## {scene['sceneId']} {scene['title']}", scene["narration"], ""])
     output_dir.joinpath("narration_script.md").write_text("\n".join(narration_lines), encoding="utf-8")
-    output_dir.joinpath("xiaohongshu_publish.md").write_text(
-        "\n".join(
-            [
-                f"# {storyboard['videoTitle']}",
-                "",
-                "为什么你明明准备了很多材料，汇报时还是讲不清？",
-                "",
-                f"这条视频把《{book_core['bookTitle']}》拆成一个可执行的 AI Skill：{book_core['aiSkillCandidate']['name']}。",
-                "",
-                "你可以直接用它处理会议纪要、项目材料、客户需求和原始PPT。",
-                "",
-                "#职场表达 #读书方法 #AI提效 #PPT #汇报",
-            ]
-        )
-        + "\n",
-        encoding="utf-8",
-    )
+    if is_principles(book_core["bookTitle"]):
+        publish_lines = [
+            f"# {storyboard['videoTitle']}",
+            "",
+            "复盘不是写检讨，而是把错误、分歧和经验沉淀成下一次可执行的原则。",
+            "",
+            f"这条视频把《{book_core['bookTitle']}》拆成一个可执行的 AI Skill：{book_core['aiSkillCandidate']['name']}。",
+            "",
+            "适合用来处理项目复盘、决策分歧、会议纪要和团队机制建设。",
+            "",
+            "#原则 #RayDalio #读书方法 #管理复盘 #AI提效",
+        ]
+    else:
+        publish_lines = [
+            f"# {storyboard['videoTitle']}",
+            "",
+            "为什么你明明准备了很多材料，汇报时还是讲不清？",
+            "",
+            f"这条视频把《{book_core['bookTitle']}》拆成一个可执行的 AI Skill：{book_core['aiSkillCandidate']['name']}。",
+            "",
+            "你可以直接用它处理会议纪要、项目材料、客户需求和原始PPT。",
+            "",
+            "#职场表达 #读书方法 #AI提效 #PPT #汇报",
+        ]
+    output_dir.joinpath("xiaohongshu_publish.md").write_text("\n".join(publish_lines) + "\n", encoding="utf-8")
 
 
 def main() -> int:
@@ -382,10 +450,13 @@ def main() -> int:
 
     if is_pyramid_principle(input_data["bookTitle"]):
         book_core = pyramid_book_core(input_data["bookTitle"], input_data.get("bookAuthor"))
+        book_research = generic_book_research(input_data)
     elif is_principles(input_data["bookTitle"]):
         book_core = principles_book_core(input_data["bookTitle"], input_data.get("bookAuthor"))
+        book_research = principles_book_research(input_data["bookTitle"], input_data.get("bookAuthor"))
     else:
         book_core = generic_book_core(input_data)
+        book_research = generic_book_research(input_data)
     bible = style_bible(input_data, output_dir)
     poster_plan = cover_plan(input_data, book_core)
     scenes = build_scenes(input_data, book_core)
@@ -402,6 +473,7 @@ def main() -> int:
     }
 
     write_json(output_dir / "input.normalized.json", input_data)
+    write_json(output_dir / "book_research.json", book_research)
     write_json(output_dir / "book_core.json", book_core)
     write_json(output_dir / "style_bible.json", bible)
     write_json(output_dir / "cover_poster_plan.json", poster_plan)

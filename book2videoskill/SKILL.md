@@ -5,11 +5,12 @@ description: Book-to-short-video production workflow for turning a book title, b
 
 # Book2VideoSkill
 
-Use this skill to turn a book or book-methodology breakdown into a portable short-video project: `BookCore -> CoverPosterPlan -> Storyboard -> Assets -> ExtractedSkill -> RemotionProject -> Video/Poster -> Bundle`.
+Use this skill to turn a book or book-methodology breakdown into a portable short-video project: `BookResearch -> BookCore -> CoverPosterPlan -> Storyboard -> ImagegenShots -> Assets -> ExtractedSkill -> RemotionProject -> Video/Poster`.
 
 ## Operating Rules
 
 - Build one video around one core methodological claim. Do not summarize the whole book.
+- Research the book, author, publisher/context, cover/reading scene references, and visual metaphors before writing scene prompts.
 - Treat the main skill as an orchestrator. Keep the three tools independent:
   - `Book2StoryboardTool`: content, BookCore, cover plan, storyboard, narration, publish draft.
   - `Storyboard2AssetsTool`: image/TTS/BGM/subtitle asset plan and provider handoff.
@@ -20,7 +21,10 @@ Use this skill to turn a book or book-methodology breakdown into a portable shor
 - For 《金字塔原理》 / `Pyramid Principle`, include `结论先行`, `以上统下`, `归类分组`, `逻辑递进`, a pyramid structure model, and the AI Skill candidate `AI汇报结构生成器`.
 - For 《原则》 / `Principles`, include `极度求真`, `极度透明`, `创意择优`, `痛苦 + 反思 = 进步`, `可信度加权决策`, a feedback-loop visual model, and the AI Skill candidate `AI原则复盘教练`.
 - Use a durable per-book project directory. The default is `book2videoskill/projects/<book-slug>/`; do not write book projects under `/tmp`.
-- Mark generated media honestly. The local component renderer can produce poster/scene PNGs and an MP4 fallback; use the generated Remotion project when a Remotion runtime/plugin render is available.
+- Use the built-in `imagegen` plugin as the default image provider for final poster and scene visuals. Keep component-rendered PNGs only as deterministic fallbacks.
+- Scene design must be visual-first: use book/author context, book-object shots, workplace scenes, diagrams, and metaphorical illustrations. Avoid videos made only of text cards.
+- Use text/research models for the content logic, narration, and shot list. Use imagegen for the visual frame of every poster/scene. Use Remotion to play the generated storyboard frames with controlled timing.
+- Mark generated media honestly. The local component renderer can produce fallback poster/scene PNGs and an MP4; use the generated Remotion project when a Remotion runtime/plugin render is available.
 - Preserve intermediate artifacts and error reports when any provider or renderer fails.
 
 ## Quick Start
@@ -59,11 +63,13 @@ python3 book2videoskill/scripts/assets2video.py --project-dir output/pyramid-pri
 3. Read `references/providers-and-rendering.md` before connecting real ImageGen, TTS, music, Remotion, or Hyperframe providers.
 4. Use scripts for repeatable scaffold and validation. Patch scripts only when the workflow contract changes.
 5. After generation, verify:
-   - `book_core.json`, `cover_poster_plan.json`, `style_bible.json`, `storyboard.json`, and `narration_script.md` exist.
+   - `book_research.json`, `book_core.json`, `cover_poster_plan.json`, `style_bible.json`, `storyboard.json`, and `narration_script.md` exist.
    - Storyboard has `6-8` scenes and total duration <= duration limit.
    - Asset manifest paths exist, even if they are explicit placeholder handoff files.
+   - `imagegen_prompts.json` exists and declares poster plus per-scene project-bound image prompts under `imagegen_sources/`.
    - `poster.png`, `output/poster.png`, `output/final_video.mp4`, and `remotion/src/Root.tsx` exist.
    - `extracted_skill/<skill-name>/SKILL.md` and `<skill-name>.zip` exist.
+   - `project_bundle.zip` does not exist.
    - Publish draft exists and does not contain unsupported claims.
 
 ## Output Contract
@@ -72,6 +78,7 @@ The default project directory should contain:
 
 ```text
 video_brief.md
+book_research.json
 book_core.json
 style_bible.json
 cover_poster_plan.json
@@ -82,6 +89,8 @@ asset_manifest.json
 render_plan.json
 assets_ready_report.md
 render_report.md
+imagegen_prompts.json
+imagegen_sources/
 scene_images/
 tts_audio/
 subtitles/
@@ -90,7 +99,6 @@ output/
 remotion/
 extracted_skill/
 <extracted-skill-name>.zip
-project_bundle.zip
 ```
 
-Local generation produces `poster.png`, `scene_images/*.png`, `output/final_video.mp4`, a Remotion project, a project bundle, and a portable extracted-skill zip. Real providers may additionally add mascot PNGs, TTS audio, BGM, or a Remotion-rendered replacement MP4.
+Local generation produces `book_research.json`, `imagegen_prompts.json`, `poster.png`, `scene_images/*.png`, `output/final_video.mp4`, a Remotion project, and a portable extracted-skill zip. Use imagegen-selected images as the final project-bound visuals by copying them into `imagegen_sources/` and rerunning assets/render. Remotion reads the storyboard and plays the composited scene frames in order. Real providers may additionally add TTS audio, BGM, or a Remotion-rendered replacement MP4.

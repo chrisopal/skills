@@ -104,6 +104,9 @@ def main() -> int:
     )
     write_openai_yaml(skill_dir, skill_name, book_title, skill_candidate["name"])
     write_json(skill_dir / "references" / "book_core.json", book_core)
+    research_path = project_dir / "book_research.json"
+    if research_path.exists():
+        shutil.copy2(research_path, skill_dir / "references" / "book_research.json")
     (skill_dir / "assets" / "example-input.md").write_text(
         "\n".join(
             [

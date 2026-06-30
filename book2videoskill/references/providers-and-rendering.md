@@ -56,6 +56,11 @@ Default provider:
 3. If OpenRouter is not authenticated or the key is missing, record the exact provider error in `tts_manifest.json`.
 4. Use macOS `say` only as a local development fallback so the video still has sound; do not label fallback audio as OpenRouter output.
 
+Default tested OpenRouter values:
+
+- model: `microsoft/mai-voice-2`
+- voice: `zh-CN-XiaoxiaoNeural`
+
 ### MusicProvider
 
 Input:
@@ -116,6 +121,8 @@ The pipeline should also write a runnable `remotion/` directory per book project
 - Transitions: `fade`, `slide-left`, `slide-up`, `soft-zoom`
 - Subtitles: enabled, key sentence mode, max 2 lines
 - BGM: enabled, ducking enabled, volume `0.18`
+- Render timing: derive `render_timing.json` from real TTS duration when audio exists.
+- Motion: local fallback render should generate per-scene motion segments with subtle zoom/pan before muxing audio.
 
 ## Honest Scaffold Outputs
 
@@ -124,4 +131,4 @@ When real audio providers are not configured, create explicit handoff files:
 - `.tts.txt` narration handoff instead of fake MP3s
 - `.music.txt` BGM brief instead of fake audio
 
-The local component renderer may produce fallback poster PNGs, scene PNGs, per-scene TTS files, `output/narration.m4a`, `subtitles/all.ass`, and `output/final_video.mp4`. Visible subtitles should be composited into `scene_images/*.png`; ASS/SRT files are sidecar assets for editing and downstream renderer replacement. The asset manifest should mark the default image provider as `imagegen`, keep `imagegen_prompts.json` for project-bound generation, and mark local component media as fallback assets with `requiresProvider: false`. Videos should include image-rich scene visuals, readable subtitles, and no debug/footer filler.
+The local component renderer may produce fallback poster PNGs, scene PNGs, per-scene TTS files, `render_timing.json`, `output/narration.m4a`, `subtitles/all.ass`, and `output/final_video.mp4`. Visible subtitles should be composited into `scene_images/*.png`; ASS/SRT files are sidecar assets for editing and downstream renderer replacement. The asset manifest should mark the default image provider as `imagegen`, keep `imagegen_prompts.json` for project-bound generation, and mark local component media as fallback assets with `requiresProvider: false`. Videos should include image-rich scene visuals, readable subtitles, subtle per-scene motion, and no debug/footer filler.

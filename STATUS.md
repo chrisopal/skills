@@ -1,3 +1,27 @@
+## 2026-06-30 08:47:36 CST
+
+- Scope: Update `book2videoskill` so the local Hermes `.env` OpenRouter key is used for real TTS, final videos use TTS-derived render timing instead of long static holds, fallback rendering adds per-scene motion segments, and 《原则》 visual prompts are grounded in online book/author/cover research without copying protected images.
+- Changed files:
+  - `book2videoskill/SKILL.md`
+  - `book2videoskill/references/providers-and-rendering.md`
+  - `book2videoskill/references/workflow.md`
+  - `book2videoskill/scripts/assets2video.py`
+  - `book2videoskill/scripts/book2storyboard.py`
+  - `book2videoskill/scripts/openrouter_tts.py`
+  - `book2videoskill/scripts/validate_book2video_project.py`
+- Validation:
+  - Wrote `OPENROUTER_API_KEY` to `/Users/guojiexie/.hermes/.env` without committing the secret.
+  - `python3 -m py_compile book2videoskill/scripts/*.py` passed.
+  - Regenerated `book2videoskill/projects/principles-ray-dalio` storyboard/assets/TTS/render.
+  - `openrouter_tts.py --provider openrouter --fallback-provider none` generated 8 assets with provider `openrouter`, model `microsoft/mai-voice-2`, voice `zh-CN-XiaoxiaoNeural`, and no provider error.
+  - `render_timing.json` derived scene durations from real TTS assets: final render duration is 101 seconds instead of the 240-second source storyboard hold.
+  - `validate_book2video_project.py book2videoskill/projects/principles-ray-dalio --require-render` passed.
+  - `ffprobe` confirmed `output/final_video.mp4` has an AAC audio stream and duration 101.075000 seconds.
+  - Extracted `output/preview_frames/frame35.png` for visual inspection; subtitles remain visible and the frame uses imagegen-composited visual material.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - Generated project artifacts remain ignored and local. The committed change updates the reusable skill and scripts, not the per-book render outputs.
+
 ## 2026-06-29 23:41:45 CST
 
 - Scope: Fix `book2videoskill` generated videos so scene frames include readable subtitles, bottom debug/footer filler is removed, narration audio is muxed into the MP4, and TTS is OpenRouter-first through system/Hermes configuration.

@@ -113,9 +113,9 @@ def principles_book_research(book_title: str, book_author: str | None) -> dict:
             "出版社/书商资料强调这本书把 life、management、economics、investing 视作可被规则化理解的系统。",
         ],
         "visualFacts": [
-            "Ray Dalio 是 Bridgewater Associates 创始人，视觉上可用成熟投资人/创始人剪影表达，不要生成可识别肖像。",
-            "书本视觉可用深色精装书、白色书名标签、办公桌阅读场景表达，不要复刻真实封面设计。",
-            "组织场景可用透明会议室、白板、反馈便签、决策矩阵和循环飞轮表达。",
+            "Ray Dalio 是 Bridgewater Associates 创始人，官方视觉常呈现成熟投资人、管理者和公开演讲语境；成片可用非可识别的成熟投资人剪影表达，不生成真实肖像。",
+            "《Principles: Life & Work》常见书封视觉是深色商业精装书、白色标题区和红色/橙色重点；成片可用深色原则手册和办公桌阅读场景表达，不复刻真实封面设计。",
+            "Principles 官方语境强调 idea meritocracy、radical transparency、goals/problems/diagnosis/design/doing 的系统循环；组织场景可用透明会议室、白板、反馈便签、决策矩阵和循环飞轮表达。",
         ],
         "sourceNotes": [
             {
@@ -270,7 +270,7 @@ def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
         durations[-1] += target - sum(durations)
     names = [
         ("S01", "现实痛点", "intro_card", "用复盘问题切入：为什么同类错误反复出现。", "一张项目复盘桌面，便签、红色问题标记、打开的笔记本和一杯咖啡，成年人职场知识视频风格"),
-        ("S02", "书籍核心内涵", "book_author_context", "说明《原则》不是观点合集，而是操作系统。", "一本深色精装商业书放在办公桌上，旁边有作者研究资料、金融图表和铅笔，不复刻真实封面，不出现可识别人物肖像"),
+        ("S02", "书籍核心内涵", "book_author_context", "说明《原则》不是观点合集，而是操作系统。", "一本深色精装商业书放在办公桌上，旁边有非可识别成熟投资人剪影照片、作者研究资料、金融图表和铅笔，参考《Principles》黑色商业书封气质，但不复刻真实封面，不出现可识别人物肖像"),
         ("S03", "原则反馈环", "flywheel_model", "展示目标、现实、根因、原则、执行的循环。", "抽象反馈飞轮，目标、现实、根因、原则、执行五个节点用图形表达，商业信息图插画"),
         ("S04", "极度求真与透明", "transparent_meeting", "把事实和分歧摆到台面，减少组织黑箱。", "现代透明会议室，白板上有事实卡片和不同观点线索，团队讨论但人物不露脸"),
         ("S05", "创意择优决策", "decision_matrix", "说明可信度加权如何让最好想法胜出。", "决策桌面俯视图，方案卡片、评分矩阵、可信度权重刻度，理性商业插画"),
@@ -302,11 +302,12 @@ def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
                     "priority": ["imagegen", "component_renderer"],
                     "imageCount": 1,
                     "imagePrompt": (
-                        "Use case: infographic-diagram\n"
+                        "Use case: cinematic-book-analysis-scene\n"
                         "Asset type: vertical short-video scene illustration\n"
                         f"Primary request: {visual_seed}\n"
-                        "Style/medium: polished editorial business illustration, Xiaohongshu knowledge-video visual\n"
-                        "Composition/framing: 9:16 vertical, strong central visual area, clean negative space for Chinese overlay text\n"
+                        "Research anchors: Ray Dalio / Principles official visual context, black business book cover mood, mature investor/management context, Bridgewater-style transparent decision room, idea meritocracy, radical transparency\n"
+                        "Style/medium: polished cinematic editorial business visual, realistic photo-illustration, Xiaohongshu knowledge-video frame\n"
+                        "Composition/framing: 9:16 vertical, strong central visual area, foreground/midground/background depth, clean lower area for Chinese overlay text\n"
                         "Color palette: warm white background, orange primary accents, deep green secondary accents, black text-safe areas\n"
                         "Constraints: original illustration, no copyrighted book-cover imitation, no recognizable Ray Dalio portrait, no logos, no watermark, no long text in image"
                     ),

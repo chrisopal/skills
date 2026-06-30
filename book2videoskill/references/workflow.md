@@ -19,6 +19,7 @@ Quality gate:
 
 - BookCore is present before storyboard.
 - BookResearch is present before imagegen shot design.
+- BookResearch includes author/book/cover visual anchors from online or provided sources before imagegen shot design.
 - One core question drives the video.
 - Storyboard has `6-8` scenes.
 - Total duration <= duration limit.
@@ -75,11 +76,12 @@ Produce:
 - `output/final_video.mp4`
 - `output/narration.m4a`
 - `output/poster.png`
+- `render_timing.json`
 - `subtitles/all.ass`
 - `remotion/` project with `src/Root.tsx` and static assets
 
 Default render provider is Remotion. Hyperframe is an adapter target; do not claim implementation unless it exists.
-The fallback MP4 must mux narration audio when TTS assets exist. Because not all local ffmpeg builds include subtitle filters, scene PNGs must already contain readable subtitles; ASS/SRT files remain sidecars for Remotion or later editing.
+The fallback MP4 must mux narration audio when TTS assets exist. It should derive scene durations from real TTS length through `render_timing.json`, so source storyboard durations do not create long silent holds. Because not all local ffmpeg builds include subtitle filters, scene PNGs must already contain readable subtitles; ASS/SRT files remain sidecars for Remotion or later editing. Static scene images should be rendered as subtle motion segments before final assembly.
 
 ## Stage 4: Extracted Skill
 
@@ -105,6 +107,7 @@ The extracted skill must be portable: the zip should contain the skill folder an
 - Imagegen refresh: after adding or replacing files under `imagegen_sources/`, rerun `storyboard2assets.py` and `assets2video.py`.
 - Remotion assembly: Remotion should read `storyboard.json` for scene order/duration and render `scene_images/<sceneId>.png` frames generated from imagegen sources plus the deterministic text overlay.
 - TTS refresh: rerun `openrouter_tts.py --project-dir <book-project>` after configuring `OPENROUTER_API_KEY` or Hermes OpenRouter auth, then rerun `assets2video.py`.
+- Timing refresh: rerun `assets2video.py` after any TTS update so `render_timing.json`, subtitles, Remotion props, and final MP4 duration stay aligned.
 
 ## Validation
 
@@ -114,4 +117,4 @@ Use `--require-render` only when the task requires actual MP4/PNG/audio media ra
 
 For 《金字塔原理》, additionally check the four core principles, pyramid model, AI汇报结构生成器, orange/green palette, and the series label `一本书，一个AI Skill`.
 
-For 《原则》, additionally check book research, the five core concepts, feedback-loop model, AI原则复盘教练, orange/green palette, visual-first imagegen prompts, poster PNG, final MP4 with audio stream, visible subtitles, Remotion project, extracted-skill zip, and absence of `project_bundle.zip`.
+For 《原则》, additionally check book research, the five core concepts, feedback-loop model, AI原则复盘教练, orange/green palette, visual-first imagegen prompts grounded in book/author/cover research, poster PNG, final MP4 with audio stream, visible subtitles, `render_timing.json`, Remotion project, extracted-skill zip, and absence of `project_bundle.zip`.

@@ -17,8 +17,8 @@ from book2video_common import read_json, relpath, write_json
 
 
 OPENROUTER_SPEECH_URL = "https://openrouter.ai/api/v1/audio/speech"
-DEFAULT_MODEL = "openai/gpt-4o-mini-tts"
-DEFAULT_VOICE = "nova"
+DEFAULT_MODEL = "microsoft/mai-voice-2"
+DEFAULT_VOICE = "zh-CN-XiaoxiaoNeural"
 KEY_ERROR = "OPENROUTER_API_KEY not found in env, Hermes env-path, or supported system config files."
 
 

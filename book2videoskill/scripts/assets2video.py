@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import shutil
 import subprocess
 from pathlib import Path
@@ -13,6 +14,8 @@ from book2video_common import read_json, write_json
 
 
 def build_render_plan(project_dir: Path, style_bible: dict, storyboard: dict) -> dict:
+    timing = load_render_timing(project_dir, storyboard)
+    duration = timing["durationSec"]
     return {
         "renderer": "remotion",
         "compositionName": "BookVideoComposition",
@@ -22,7 +25,7 @@ def build_render_plan(project_dir: Path, style_bible: dict, storyboard: dict) ->
         "height": style_bible["height"],
         "coverWidth": style_bible["coverWidth"],
         "coverHeight": style_bible["coverHeight"],
-        "durationSec": storyboard["targetDurationSec"],
+        "durationSec": duration,
         "durationLimitSec": storyboard["durationLimitSec"],
         "sceneOrder": [scene["sceneId"] for scene in storyboard["scenes"]],
         "globalStyleRef": "style_bible.json",
@@ -95,6 +98,7 @@ type Scene = {{
 const storyboard = {storyboard_json};
 const styleBible = {style_bible_json};
 const fps = styleBible.fps;
+const renderTiming = storyboard.renderTiming || Object.fromEntries(storyboard.scenes.map((scene: Scene) => [scene.sceneId, scene.durationSec]));
 
 const palette = styleBible.visualStyle.palette;
 
@@ -112,7 +116,7 @@ const SceneCard = ({{scene}}: {{scene: Scene}}) => {{
 export const BookVideoComposition = () => (
   <Series>
     {{storyboard.scenes.map((scene: Scene) => (
-      <Series.Sequence key={{scene.sceneId}} durationInFrames={{Math.round(scene.durationSec * fps)}}>
+      <Series.Sequence key={{scene.sceneId}} durationInFrames={{Math.round((renderTiming[scene.sceneId] ?? scene.durationSec) * fps)}}>
         <SceneCard scene={{scene}} />
       </Series.Sequence>
     ))}}
@@ -130,7 +134,7 @@ export const RemotionRoot = () => (
     <Composition
       id="BookVideoComposition"
       component={{BookVideoComposition}}
-      durationInFrames={{Math.round(storyboard.targetDurationSec * fps)}}
+      durationInFrames={{Math.round((storyboard.renderDurationSec ?? storyboard.targetDurationSec) * fps)}}
       fps={{fps}}
       width={{styleBible.width}}
       height={{styleBible.height}}
@@ -212,26 +216,129 @@ def write_ass_subtitles(project_dir: Path, storyboard: dict, style_bible: dict) 
     ]
     elapsed = 0
     for scene in storyboard["scenes"]:
+        duration = scene.get("renderDurationSec", scene["durationSec"])
         start = elapsed + 0.6
-        end = elapsed + int(scene["durationSec"]) - 0.6
+        end = max(start + 0.8, elapsed + float(duration) - 0.35)
         lines.append(f"Dialogue: 0,{ass_time(start)},{ass_time(end)},Caption,,0,0,0,,{wrap_subtitle(scene['narration'])}")
-        elapsed += int(scene["durationSec"])
+        elapsed += float(duration)
     ass_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return ass_path
+
+
+def probe_audio_duration(path: Path) -> float | None:
+    if not path.exists():
+        return None
+    probe = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-show_entries",
+            "format=duration",
+            "-of",
+            "default=nw=1:nk=1",
+            str(path),
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if probe.returncode != 0:
+        return None
+    try:
+        return float(probe.stdout.strip())
+    except ValueError:
+        return None
+
+
+def load_render_timing(project_dir: Path, storyboard: dict) -> dict:
+    timing_path = project_dir / "render_timing.json"
+    if timing_path.exists():
+        return read_json(timing_path)
+    return {
+        "durationSec": storyboard["targetDurationSec"],
+        "sceneDurations": {scene["sceneId"]: float(scene["durationSec"]) for scene in storyboard["scenes"]},
+        "source": "storyboard",
+    }
+
+
+def derive_render_timing(project_dir: Path, storyboard: dict) -> dict:
+    scene_durations: dict[str, float] = {}
+    audio_durations: dict[str, float | None] = {}
+    for scene in storyboard["scenes"]:
+        scene_id = scene["sceneId"]
+        audio_duration = probe_audio_duration(project_dir / "tts_audio" / f"{scene_id}.mp3")
+        audio_durations[scene_id] = audio_duration
+        if audio_duration is None:
+            scene_durations[scene_id] = float(scene["durationSec"])
+        else:
+            scene_durations[scene_id] = float(max(6, math.ceil(audio_duration + 0.8)))
+    total = round(sum(scene_durations.values()), 3)
+    timing = {
+        "durationSec": total,
+        "sceneDurations": scene_durations,
+        "audioDurations": audio_durations,
+        "source": "tts_audio" if any(value is not None for value in audio_durations.values()) else "storyboard",
+        "policy": "duration=max(6s, ceil(tts_duration+0.8s)); keeps scene transitions tight and avoids long silent holds",
+    }
+    write_json(project_dir / "render_timing.json", timing)
+    return timing
+
+
+def storyboard_with_render_timing(storyboard: dict, timing: dict) -> dict:
+    timed = json.loads(json.dumps(storyboard, ensure_ascii=False))
+    timed["renderDurationSec"] = timing["durationSec"]
+    timed["renderTiming"] = timing["sceneDurations"]
+    for scene in timed["scenes"]:
+        scene["renderDurationSec"] = timing["sceneDurations"][scene["sceneId"]]
+    return timed
 
 
 def render_silent_video(project_dir: Path, storyboard: dict) -> Path:
     output_dir = project_dir / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
-    concat_path = output_dir / "ffmpeg-scenes.txt"
-    lines: list[str] = []
-    for scene in storyboard["scenes"]:
+    segments_dir = output_dir / "motion_segments"
+    segments_dir.mkdir(parents=True, exist_ok=True)
+    fps = 30
+    segment_paths: list[Path] = []
+    for index, scene in enumerate(storyboard["scenes"], start=1):
         scene_png = (project_dir / "scene_images" / f"{scene['sceneId']}.png").resolve()
-        lines.append(f"file '{scene_png.as_posix()}'")
-        lines.append(f"duration {int(scene['durationSec'])}")
-    last_png = (project_dir / "scene_images" / f"{storyboard['scenes'][-1]['sceneId']}.png").resolve()
-    lines.append(f"file '{last_png.as_posix()}'")
-    concat_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        duration = float(scene.get("renderDurationSec", scene["durationSec"]))
+        frames = max(1, int(round(duration * fps)))
+        segment = segments_dir / f"{scene['sceneId']}.mp4"
+        zoom_end = 1.035 + (0.01 if index % 2 == 0 else 0)
+        vf = (
+            f"zoompan=z='min(1+({zoom_end}-1)*on/{frames},{zoom_end})':"
+            "x='(iw-iw/zoom)/2':y='(ih-ih/zoom)/2':"
+            f"d={frames}:s=1080x1920:fps={fps},format=yuv420p"
+        )
+        subprocess.run(
+            [
+                "ffmpeg",
+                "-y",
+                "-loop",
+                "1",
+                "-i",
+                str(scene_png),
+                "-frames:v",
+                str(frames),
+                "-vf",
+                vf,
+                "-c:v",
+                "libx264",
+                "-pix_fmt",
+                "yuv420p",
+                "-movflags",
+                "+faststart",
+                str(segment),
+            ],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        segment_paths.append(segment)
+    concat_path = output_dir / "ffmpeg-scenes.txt"
+    concat_path.write_text("\n".join(f"file '{path.resolve().as_posix()}'" for path in segment_paths) + "\n", encoding="utf-8")
     silent_video = output_dir / "video_silent.mp4"
     cmd = [
         "ffmpeg",
@@ -242,14 +349,8 @@ def render_silent_video(project_dir: Path, storyboard: dict) -> Path:
         "0",
         "-i",
         str(concat_path),
-        "-t",
-        str(int(storyboard["targetDurationSec"])),
-        "-vf",
-        "fps=30,format=yuv420p",
-        "-c:v",
-        "libx264",
-        "-pix_fmt",
-        "yuv420p",
+        "-c",
+        "copy",
         "-movflags",
         "+faststart",
         str(silent_video),
@@ -269,6 +370,7 @@ def build_audio_track(project_dir: Path, storyboard: dict) -> Path | None:
         source = project_dir / "tts_audio" / f"{scene_id}.mp3"
         if not source.exists():
             return None
+        duration = float(scene.get("renderDurationSec", scene["durationSec"]))
         padded = padded_dir / f"{scene_id}.m4a"
         subprocess.run(
             [
@@ -277,7 +379,7 @@ def build_audio_track(project_dir: Path, storyboard: dict) -> Path | None:
                 "-i",
                 str(source),
                 "-af",
-                f"apad,atrim=0:{int(scene['durationSec'])}",
+                f"apad,atrim=0:{duration}",
                 "-c:a",
                 "aac",
                 "-b:a",
@@ -339,10 +441,12 @@ def main() -> int:
     style_bible = read_json(project_dir / "style_bible.json")
     storyboard = read_json(project_dir / "storyboard.json")
     asset_manifest = read_json(project_dir / "asset_manifest.json")
+    timing = derive_render_timing(project_dir, storyboard)
+    render_storyboard = storyboard_with_render_timing(storyboard, timing)
 
     output_dir = project_dir / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
-    render_plan = build_render_plan(project_dir, style_bible, storyboard)
+    render_plan = build_render_plan(project_dir, style_bible, render_storyboard)
     render_plan["renderer"] = args.renderer
     if args.renderer == "hyperframe":
         render_plan["providerStatus"] = "adapter-designed-not-implemented"
@@ -350,10 +454,10 @@ def main() -> int:
 
     if (project_dir / "poster.png").exists():
         shutil.copy2(project_dir / "poster.png", output_dir / "poster.png")
-    write_remotion_project(project_dir, style_bible, storyboard)
-    silent_video = render_silent_video(project_dir, storyboard)
-    audio_track = build_audio_track(project_dir, storyboard)
-    ass_path = write_ass_subtitles(project_dir, storyboard, style_bible)
+    write_remotion_project(project_dir, style_bible, render_storyboard)
+    silent_video = render_silent_video(project_dir, render_storyboard)
+    audio_track = build_audio_track(project_dir, render_storyboard)
+    ass_path = write_ass_subtitles(project_dir, render_storyboard, style_bible)
     final_video = mux_audio(project_dir, silent_video, audio_track)
     stale_project_bundle = project_dir / "project_bundle.zip"
     if stale_project_bundle.exists():
@@ -366,7 +470,8 @@ def main() -> int:
                 "# Render Report",
                 "",
                 f"Renderer: {args.renderer}",
-                f"Duration: {storyboard['targetDurationSec']} sec",
+                f"Duration: {render_storyboard['renderDurationSec']} sec",
+                f"Storyboard source duration: {storyboard['targetDurationSec']} sec",
                 f"Scenes: {len(storyboard['scenes'])}",
                 "",
                 "Status: closed-loop render completed.",
@@ -376,11 +481,12 @@ def main() -> int:
                 "- output/poster.png",
                 "- output/final_video.mp4",
                 "- output/narration.m4a" if audio_track else "- audio missing: no TTS MP3 assets found",
+                "- render_timing.json",
                 "- subtitles/all.ass sidecar; visible subtitles are composited into scene frames",
                 "- remotion/ render project",
                 "- extracted skill zip when available",
                 "",
-                "Remotion note: `remotion/` follows the Remotion plugin composition/staticFile structure. The MP4 in `output/final_video.mp4` is produced deterministically from generated storyboard frames with visible subtitles plus TTS audio, so the pipeline closes even before installing the Remotion runtime.",
+                "Remotion note: `remotion/` follows the Remotion plugin composition/staticFile structure. The MP4 in `output/final_video.mp4` is produced deterministically from generated storyboard frames with visible subtitles, per-scene motion, and TTS audio, so the pipeline closes even before installing the Remotion runtime.",
                 "",
                 f"Scene assets generated: {sum(1 for item in asset_manifest['sceneImages'] if item.get('status') == 'generated')}",
             ]

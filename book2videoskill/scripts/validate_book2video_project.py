@@ -28,6 +28,7 @@ RENDER_STAGE_FILES = [
     "poster.png",
     "output/poster.png",
     "output/final_video.mp4",
+    "render_timing.json",
     "subtitles/all.ass",
 ]
 PYRAMID_TERMS = ["结论先行", "以上统下", "归类分组", "逻辑递进", "AI汇报结构生成器"]
@@ -65,6 +66,7 @@ def main() -> int:
     project_dir = Path(args.project_dir)
     errors: list[str] = []
     warnings: list[str] = []
+    render_duration: float | None = None
 
     if not project_dir.exists() or not project_dir.is_dir():
         errors.append(f"project directory not found: {project_dir}")
@@ -171,8 +173,14 @@ def main() -> int:
         for rel_path in RENDER_STAGE_FILES:
             require_file(project_dir, rel_path, errors)
         render_plan = read_json(project_dir / "render_plan.json")
-        if render_plan.get("durationSec") != total_duration:
-            errors.append("render_plan durationSec must equal storyboard duration")
+        if (project_dir / "render_timing.json").exists():
+            render_timing = read_json(project_dir / "render_timing.json")
+            expected_render_duration = round(sum(float(value) for value in render_timing.get("sceneDurations", {}).values()), 3)
+            render_duration = float(render_timing.get("durationSec", expected_render_duration))
+        else:
+            expected_render_duration = float(total_duration)
+        if round(float(render_plan.get("durationSec", 0)), 3) != round(expected_render_duration, 3):
+            errors.append("render_plan durationSec must equal render_timing duration")
         extracted_skill_zips = list(project_dir.glob("*.zip"))
         if not extracted_skill_zips:
             errors.append("missing extracted book-derived skill zip")
@@ -221,7 +229,8 @@ def main() -> int:
             print(f"WARNING: {warning}")
         return 1
 
-    print(f"OK: {project_dir} scenes={len(scenes)} duration={total_duration}s")
+    render_note = f" renderDuration={render_duration:g}s" if render_duration is not None else ""
+    print(f"OK: {project_dir} scenes={len(scenes)} storyboardDuration={total_duration}s{render_note}")
     for warning in warnings:
         print(f"WARNING: {warning}")
     return 0

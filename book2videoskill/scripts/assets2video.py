@@ -10,7 +10,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-from book2video_common import read_json, write_json
+from book2video_common import read_json, relpath, write_json
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -596,6 +596,108 @@ def build_audio_track(project_dir: Path, storyboard: dict) -> Path | None:
     return audio_track
 
 
+def write_dynamic_video_manifest(project_dir: Path, storyboard: dict, provider: str, openrouter_manifest: dict | None) -> Path:
+    clips = []
+    for scene in storyboard["scenes"]:
+        scene_id = scene["sceneId"]
+        openrouter_path = clip_path_for_scene(project_dir, openrouter_manifest, scene_id)
+        if openrouter_path:
+            clips.append(
+                {
+                    "sceneId": scene_id,
+                    "sourceStyleFramePath": f"style_frames/{scene_id}.png",
+                    "provider": "openrouter-video",
+                    "prompt": scene.get("imageToVideoPrompt") or scene.get("visualDescription", ""),
+                    "durationSec": scene.get("renderDurationSec", scene["durationSec"]),
+                    "assetPath": relpath(openrouter_path, project_dir),
+                    "hasBakedText": False,
+                    "qualityWarnings": [],
+                }
+            )
+        else:
+            clips.append(
+                {
+                    "sceneId": scene_id,
+                    "sourceStyleFramePath": f"style_frames/{scene_id}.png",
+                    "provider": "local-remotion-fallback",
+                    "prompt": "Static style frame plus local motion segment fallback.",
+                    "durationSec": scene.get("renderDurationSec", scene["durationSec"]),
+                    "assetPath": f"output/motion_segments/{scene_id}.mp4",
+                    "hasBakedText": False,
+                    "qualityWarnings": ["AI video clip unavailable; used local Remotion/ffmpeg fallback."],
+                }
+            )
+    manifest = {
+        "providerStatus": provider,
+        "dynamicClips": clips,
+        "skippedScenes": [
+            {"sceneId": clip["sceneId"], "reason": "local fallback used"}
+            for clip in clips
+            if clip["provider"] == "local-remotion-fallback"
+        ],
+    }
+    path = project_dir / "dynamic_video_manifest.json"
+    write_json(path, manifest)
+    reports = project_dir / "reports"
+    reports.mkdir(exist_ok=True)
+    (reports / "image2video_report.md").write_text(
+        "\n".join(
+            [
+                "# Image-to-Video Report",
+                "",
+                f"Provider status: {provider}",
+                f"Dynamic clips: {sum(1 for clip in clips if clip['provider'] != 'local-remotion-fallback')}",
+                f"Fallback clips: {sum(1 for clip in clips if clip['provider'] == 'local-remotion-fallback')}",
+                "",
+                *[f"- {clip['sceneId']}: {clip['provider']} -> {clip['assetPath']}" for clip in clips],
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return path
+
+
+def write_assembly_timeline(project_dir: Path, storyboard: dict, audio_track: Path | None, provider: str) -> Path:
+    elapsed = 0.0
+    tracks = {
+        "backgroundVideo": [],
+        "styleFrames": [],
+        "motionGraphics": [],
+        "textOverlays": [],
+        "subtitles": [],
+        "tts": [],
+        "bgm": [],
+    }
+    motion_manifest = read_json(project_dir / "motion_graphics_manifest.json") if (project_dir / "motion_graphics_manifest.json").exists() else {}
+    motion_by_scene = {item["sceneId"]: item for item in motion_manifest.get("motionGraphics", [])}
+    for scene in storyboard["scenes"]:
+        duration = float(scene.get("renderDurationSec", scene["durationSec"]))
+        scene_id = scene["sceneId"]
+        item_base = {"sceneId": scene_id, "startSec": round(elapsed, 3), "endSec": round(elapsed + duration, 3)}
+        tracks["backgroundVideo"].append({**item_base, "path": f"output/motion_segments/{scene_id}.mp4", "provider": provider})
+        tracks["styleFrames"].append({**item_base, "path": f"style_frames/{scene_id}.png"})
+        if scene_id in motion_by_scene:
+            tracks["motionGraphics"].append({**item_base, "path": motion_by_scene[scene_id]["assetPath"], "type": motion_by_scene[scene_id]["type"]})
+        tracks["textOverlays"].append({**item_base, "path": f"output/video_overlays/{scene_id}.png"})
+        tracks["subtitles"].append({**item_base, "path": f"subtitles/{scene_id}.srt"})
+        tracks["tts"].append({**item_base, "path": f"tts_audio/{scene_id}.mp3"})
+        elapsed += duration
+    if audio_track:
+        tracks["tts"].append({"sceneId": "narration", "startSec": 0, "endSec": round(elapsed, 3), "path": relpath(audio_track, project_dir)})
+    timeline = {
+        "projectName": storyboard["projectName"],
+        "fps": 30,
+        "width": 1080,
+        "height": 1920,
+        "durationSec": round(elapsed, 3),
+        "tracks": tracks,
+    }
+    path = project_dir / "assembly_timeline.json"
+    write_json(path, timeline)
+    return path
+
+
 def escape_filter_path(path: Path) -> str:
     return path.resolve().as_posix().replace("\\", "\\\\").replace(":", "\\:")
 
@@ -655,6 +757,8 @@ def main() -> int:
     audio_track = build_audio_track(project_dir, render_storyboard)
     ass_path = write_ass_subtitles(project_dir, render_storyboard, style_bible)
     final_video = mux_audio(project_dir, silent_video, audio_track)
+    dynamic_manifest_path = write_dynamic_video_manifest(project_dir, render_storyboard, actual_video_provider, openrouter_manifest)
+    assembly_timeline_path = write_assembly_timeline(project_dir, render_storyboard, audio_track, actual_video_provider)
     stale_project_bundle = project_dir / "project_bundle.zip"
     if stale_project_bundle.exists():
         stale_project_bundle.unlink()
@@ -681,6 +785,8 @@ def main() -> int:
                 "- output/narration.m4a" if audio_track else "- audio missing: no TTS MP3 assets found",
                 "- render_timing.json",
                 "- openrouter_video_manifest.json" if openrouter_manifest else "- OpenRouter video unavailable; local Remotion fallback used",
+                "- dynamic_video_manifest.json",
+                "- assembly_timeline.json",
                 "- subtitles/all.ass sidecar; visible subtitles are composited into scene frames",
                 "- remotion/ render project",
                 "- extracted skill zip when available",
@@ -688,6 +794,8 @@ def main() -> int:
                 "Render note: OpenRouter video clips are preferred when `openrouter_video_manifest.json` has one generated clip per scene. If the provider fails or times out, `remotion/` plus the local ffmpeg motion-segment renderer remains the deterministic fallback with visible subtitles and TTS audio.",
                 "",
                 f"Scene assets generated: {sum(1 for item in asset_manifest['sceneImages'] if item.get('status') == 'generated')}",
+                f"Dynamic manifest: {relpath(dynamic_manifest_path, project_dir)}",
+                f"Assembly timeline: {relpath(assembly_timeline_path, project_dir)}",
             ]
         )
         + "\n",

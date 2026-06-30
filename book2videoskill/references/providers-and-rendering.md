@@ -4,6 +4,13 @@
 
 Use provider adapters rather than embedding provider logic in the main skill.
 
+Provider priority by layer:
+
+- Image/style frames: `imagegen`, then component/SVG/PNG fallback.
+- Image-to-video: OpenRouter video as the current real provider, then local Remotion/ffmpeg fallback. The spec-compatible abstract priority is `runway`, `luma`, `kling`, `veo`, `mock`.
+- Motion Graphics: `svg_motion`, `lottie`, `remotion_motion`, `after_effects`.
+- Final assembly: `remotion`, `ffmpeg`, `after_effects`.
+
 ### ImageProvider
 
 Input:
@@ -102,6 +109,52 @@ Default provider for final scene motion:
 Generate one clip per scene and store it under `video_clips/openrouter/<sceneId>.mp4`. Write `openrouter_video_manifest.json` with the model, resolution, job ids, paths, and errors. Do not ask the video model to render Chinese subtitles or long text; final titles and subtitles remain renderer overlays from `output/video_overlays/*.png`.
 
 Fallback rule: if OpenRouter video fails, partially completes, or times out, keep the manifest/run log and use the local Remotion/ffmpeg motion-segment renderer for missing scenes. If only some clips exist, mix OpenRouter clips for those scenes with local fallback clips for the rest and disclose the partial provider status.
+
+### MotionGraphicsProvider
+
+Default provider: `svg_motion`.
+
+Input:
+
+- `motionGraphicsSpec`
+- `styleBible`
+- `outputPath`
+- `width`
+- `height`
+- `fps`
+- `transparentBackground`
+
+Output:
+
+- `ok`
+- `assetPath`
+- `providerName`
+- `metadata`
+
+Motion quality defaults:
+
+- use staggered element entry
+- use `draw_line` for connectors
+- use fade/slide/scale for cards and icons
+- keep transparent backgrounds so the layer can be composited
+- do not bake long Chinese copy into AI-generated raster/video outputs
+
+### FinalAssemblyProvider
+
+Input:
+
+- `assembly_timeline.json`
+- `styleBible`
+- `outputPath`
+
+Output:
+
+- `finalVideoPath`
+- `coverPath`
+- `renderReportMarkdown`
+- `metadata`
+
+Final assembly order: background video or style frame, motion graphics, renderer text overlays, subtitles, TTS, BGM. TTS and scene timings must align through `render_timing.json` and `assembly_timeline.json`.
 
 ## Remotion Requirements
 

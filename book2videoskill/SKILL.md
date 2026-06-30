@@ -5,16 +5,19 @@ description: Book-to-short-video production workflow for turning a book title, b
 
 # Book2VideoSkill
 
-Use this skill to turn a book or book-methodology breakdown into a portable short-video project: `BookResearch -> BookCore -> CoverPosterPlan -> Storyboard -> ImagegenShots -> Assets -> ExtractedSkill -> RemotionProject -> Video/Poster`.
+Use this skill to turn a book or book-methodology breakdown into a portable short-video project. Default v1.2 flow: `Book2StoryboardTool -> Storyboard2VisualPlanTool -> StyleFrameGeneratorTool -> Image2VideoTool -> MotionGraphicsTool -> FinalAssemblerTool`. Legacy v1.1 flow remains available for narrow scaffold/debug runs.
 
 ## Operating Rules
 
 - Build one video around one core methodological claim. Do not summarize the whole book.
 - Research the book, author, publisher/context, cover/reading scene references, and visual metaphors before writing scene prompts.
-- Treat the main skill as an orchestrator. Keep the three tools independent:
+- Treat the main skill as an orchestrator. Keep the v1.2 tools independent:
   - `Book2StoryboardTool`: content, BookCore, cover plan, storyboard, narration, publish draft.
-  - `Storyboard2AssetsTool`: image/TTS/BGM/subtitle asset plan and provider handoff.
-  - `Assets2VideoTool`: render plan, report, bundle, and final render handoff.
+  - `Storyboard2VisualPlanTool`: visual director plan, role strategy, overlay text, camera motion, motion graphics specs.
+  - `StyleFrameGeneratorTool`: ImageGen/static style frames, mascot/cover visuals, no baked long Chinese text.
+  - `Image2VideoTool`: OpenRouter/video-provider dynamic clips, one clip per eligible scene.
+  - `MotionGraphicsTool`: SVG/Lottie/Remotion motion graphics for structures, flows, cards, arrows, and highlights.
+  - `FinalAssemblerTool`: Remotion/FFmpeg final composition, text/subtitle overlays, TTS/BGM, reports, and fallback handling.
 - Default to Xiaohongshu vertical video: `9:16`, <= `300` seconds, `6-8` scenes, cover poster `4:5`.
 - Default visual preset is `orange_primary_green_secondary`: orange primary, green secondary, warm white background, business infographic / knowledge-poster style.
 - Generate Chinese text with renderable components whenever possible. Do not rely on image models to render long Chinese text.
@@ -56,6 +59,9 @@ Run tools independently when debugging:
 ```bash
 python3 book2videoskill/scripts/book2storyboard.py --book "金字塔原理" --output-dir output/pyramid-principle
 python3 book2videoskill/scripts/storyboard2assets.py --project-dir output/pyramid-principle
+python3 book2videoskill/scripts/storyboard2visual_plan.py --project-dir output/pyramid-principle
+python3 book2videoskill/scripts/visual_plan2style_frames.py --project-dir output/pyramid-principle
+python3 book2videoskill/scripts/visual_plan2motion_graphics.py --project-dir output/pyramid-principle
 python3 book2videoskill/scripts/create_extracted_skill.py --project-dir output/pyramid-principle
 python3 book2videoskill/scripts/assets2video.py --project-dir output/pyramid-principle
 ```
@@ -67,10 +73,13 @@ python3 book2videoskill/scripts/assets2video.py --project-dir output/pyramid-pri
 3. Read `references/providers-and-rendering.md` before connecting real ImageGen, TTS, music, Remotion, or Hyperframe providers.
 4. Use scripts for repeatable scaffold and validation. Patch scripts only when the workflow contract changes.
 5. After generation, verify:
-   - `book_research.json`, `book_core.json`, `cover_poster_plan.json`, `style_bible.json`, `storyboard.json`, and `narration_script.md` exist.
+   - `book_research.json`, `book_core.json`, `cover_poster_plan.json`, `style_bible.json`, `storyboard.json`, `visual_plan.json`, and `narration_script.md` exist.
    - Storyboard has `6-8` scenes and total duration <= duration limit.
+   - Every scene has `visualRole` and `recommendedVisualMode`.
+   - VisualPlan declares `hybrid_ai_video_motion_graphics`, renderer text overlay, style frame/image-to-video/motion-graphics decisions, and negative prompts.
    - Asset manifest paths exist, even if they are explicit placeholder handoff files.
    - `imagegen_prompts.json` exists and declares poster plus per-scene project-bound image prompts under `imagegen_sources/`.
+   - `style_frames_manifest.json`, `motion_graphics_manifest.json`, `dynamic_video_manifest.json`, and `assembly_timeline.json` exist.
    - `poster.png`, `output/poster.png`, `output/final_video.mp4`, `output/narration.m4a`, `render_timing.json`, `tts_manifest.json`, `subtitles/all.ass`, and `remotion/src/Root.tsx` exist.
    - If `render_plan.providerStatus == "openrouter-video"`, `openrouter_video_manifest.json` exists and references one generated clip per scene.
    - `output/final_video.mp4` has an audio stream and the visual frames include readable subtitles.
@@ -89,14 +98,23 @@ book_core.json
 style_bible.json
 cover_poster_plan.json
 storyboard.json
+visual_plan.json
+visual_plan.md
 narration_script.md
 xiaohongshu_publish.md
 asset_manifest.json
+style_frames_manifest.json
+dynamic_video_manifest.json
+motion_graphics_manifest.json
+assembly_timeline.json
 render_plan.json
 assets_ready_report.md
 render_report.md
 imagegen_prompts.json
 imagegen_sources/
+style_frames/
+dynamic_clips/
+motion_graphics/
 scene_images/
 tts_audio/
 subtitles/
@@ -110,4 +128,4 @@ extracted_skill/
 <extracted-skill-name>.zip
 ```
 
-Local generation produces `book_research.json`, `imagegen_prompts.json`, `poster.png`, `scene_images/*.png` with visible subtitles, `tts_manifest.json`, `render_timing.json`, `output/narration.m4a`, `subtitles/all.ass`, `output/final_video.mp4`, a Remotion project, and a portable extracted-skill zip. Use imagegen-selected images as project-bound static references by copying them into `imagegen_sources/` and rerunning assets/render. OpenRouter video clips are preferred for final scene motion and are recorded in `openrouter_video_manifest.json`; when they are unavailable, Remotion/local ffmpeg reads the storyboard and plays the composited scene frames in order. Real providers may additionally add BGM or a Remotion-rendered replacement MP4.
+Local generation produces `book_research.json`, `visual_plan.json`, `style_frames_manifest.json`, `motion_graphics_manifest.json`, `dynamic_video_manifest.json`, `assembly_timeline.json`, `imagegen_prompts.json`, `poster.png`, `scene_images/*.png` with visible subtitles, `tts_manifest.json`, `render_timing.json`, `output/narration.m4a`, `subtitles/all.ass`, `output/final_video.mp4`, a Remotion project, and a portable extracted-skill zip. Use imagegen-selected images as project-bound static references by copying them into `imagegen_sources/` and rerunning assets/render. OpenRouter video clips are preferred for final scene motion and are recorded in `openrouter_video_manifest.json`; when they are unavailable, Remotion/local ffmpeg reads the storyboard and plays the composited scene frames in order. Real providers may additionally add BGM or a Remotion-rendered replacement MP4.

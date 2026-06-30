@@ -14,6 +14,38 @@
 - Remaining risks:
   - This is a source-of-truth documentation update; existing PPT template JSON/SVG assets are not mechanically migrated in this change.
 
+## 2026-06-30 23:55:23 CST
+
+- Scope: Update `book2videoskill` to align with `Book2VideoSkill_spec_v1_2.md`, adding the hybrid six-tool workflow while preserving v1.1 legacy compatibility.
+- Changed files:
+  - `book2videoskill/SKILL.md`
+  - `book2videoskill/agents/openai.yaml`
+  - `book2videoskill/references/providers-and-rendering.md`
+  - `book2videoskill/references/schemas-and-rules.md`
+  - `book2videoskill/references/workflow.md`
+  - `book2videoskill/scripts/assets2video.py`
+  - `book2videoskill/scripts/book2storyboard.py`
+  - `book2videoskill/scripts/book2video_common.py`
+  - `book2videoskill/scripts/run_book2video.py`
+  - `book2videoskill/scripts/storyboard2visual_plan.py`
+  - `book2videoskill/scripts/visual_plan2style_frames.py`
+  - `book2videoskill/scripts/visual_plan2motion_graphics.py`
+  - `book2videoskill/scripts/validate_book2video_project.py`
+- Validation:
+  - `python3 -m py_compile book2videoskill/scripts/*.py` passed.
+  - `python3 book2videoskill/scripts/run_book2video.py --book "金字塔原理" --author "芭芭拉·明托" --renderer remotion --tts-provider say --reuse-openrouter-video` completed the hybrid workflow under `book2videoskill/projects/pyramid-principle`.
+  - `visual_plan.json` contains 7 scenes with v1.2 roles and strategy: S01 is `hook` with image-to-video and motion graphics; S03/S04/S05 are motion-graphics scenes; S06 is image-to-video capable.
+  - `style_frames_manifest.json`, `motion_graphics_manifest.json`, `dynamic_video_manifest.json`, and `assembly_timeline.json` were generated.
+  - `validate_book2video_project.py book2videoskill/projects/pyramid-principle --require-render` passed with storyboard duration 240s and render duration 68s.
+  - `ffprobe` confirmed `output/final_video.mp4` has an AAC audio stream and duration 68.077007 seconds.
+  - `/Users/guojiexie/.codex/skills/.system/skill-creator/scripts/quick_validate.py` passed for `book2videoskill` and the extracted `pyramid-principle-skill`.
+  - `unzip -t pyramid-principle-skill.zip` passed.
+  - `git diff --check -- book2videoskill STATUS.md` passed.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - Full project bundle generation remains disabled by prior project policy; the extracted book-derived skill zip is still generated.
+  - The validation render used local Remotion/ffmpeg fallback rather than OpenRouter video to avoid consuming more OpenRouter credits.
+
 ## 2026-06-30 12:36:39 CST
 
 - Scope: Change `book2videoskill` rendering so OpenRouter video is the default final motion provider, with local Remotion/ffmpeg fallback for missing, failed, timed-out, or credit-limited scene clips.

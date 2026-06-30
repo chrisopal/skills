@@ -21,7 +21,15 @@ REQUIRED_FILES = [
     "xiaohongshu_publish.md",
 ]
 
-ASSET_STAGE_FILES = ["asset_manifest.json", "imagegen_prompts.json", "assets_ready_report.md"]
+ASSET_STAGE_FILES = [
+    "asset_manifest.json",
+    "imagegen_prompts.json",
+    "assets_ready_report.md",
+    "visual_plan.json",
+    "visual_plan.md",
+    "style_frames_manifest.json",
+    "motion_graphics_manifest.json",
+]
 RENDER_STAGE_FILES = [
     "render_plan.json",
     "render_report.md",
@@ -29,6 +37,8 @@ RENDER_STAGE_FILES = [
     "output/poster.png",
     "output/final_video.mp4",
     "render_timing.json",
+    "dynamic_video_manifest.json",
+    "assembly_timeline.json",
     "subtitles/all.ass",
 ]
 PYRAMID_TERMS = ["结论先行", "以上统下", "归类分组", "逻辑递进", "AI汇报结构生成器"]
@@ -103,6 +113,8 @@ def main() -> int:
         "durationSec",
         "goal",
         "visualDescription",
+        "visualRole",
+        "recommendedVisualMode",
         "imageSourceStrategy",
         "onscreenText",
         "subtitle",
@@ -167,6 +179,25 @@ def main() -> int:
                 errors.append("asset_manifest ttsAssets count must match storyboard scenes")
             if any(item.get("status") == "placeholder" for item in manifest.get("sceneImages", [])):
                 warnings.append("scene visuals are placeholder handoffs; real image provider not yet run")
+        if (project_dir / "visual_plan.json").exists():
+            visual_plan = read_json(project_dir / "visual_plan.json")
+            if visual_plan.get("visualStrategy", {}).get("overallMode") != "hybrid_ai_video_motion_graphics":
+                errors.append("visual_plan visualStrategy.overallMode must be hybrid_ai_video_motion_graphics")
+            if visual_plan.get("globalRules", {}).get("textRendering") != "renderer_overlay":
+                errors.append("visual_plan globalRules.textRendering must be renderer_overlay")
+            if len(visual_plan.get("scenes", [])) != len(scenes):
+                errors.append("visual_plan scenes count must match storyboard scenes")
+            for scene_plan in visual_plan.get("scenes", []):
+                strategy = scene_plan.get("generationStrategy", {})
+                if not strategy.get("rendererTextOverlay"):
+                    errors.append(f"visual_plan scene must use rendererTextOverlay: {scene_plan.get('sceneId')}")
+        if (project_dir / "style_frames_manifest.json").exists():
+            style_frames = read_json(project_dir / "style_frames_manifest.json").get("styleFrames", [])
+            if len(style_frames) != len(scenes):
+                errors.append("style_frames_manifest count must match storyboard scenes")
+            for frame in style_frames:
+                if not (project_dir / frame.get("assetPath", "")).exists():
+                    errors.append(f"style frame asset missing: {frame.get('assetPath')}")
 
     has_render_stage = (project_dir / "render_plan.json").exists()
     if has_render_stage:
@@ -200,6 +231,14 @@ def main() -> int:
             errors.append("project_bundle.zip should not be generated")
         if not (project_dir / "remotion" / "src" / "Root.tsx").exists():
             errors.append("missing generated Remotion project: remotion/src/Root.tsx")
+        if (project_dir / "dynamic_video_manifest.json").exists():
+            dynamic_manifest = read_json(project_dir / "dynamic_video_manifest.json")
+            if len(dynamic_manifest.get("dynamicClips", [])) != len(scenes):
+                errors.append("dynamic_video_manifest dynamicClips count must match storyboard scenes")
+        if (project_dir / "assembly_timeline.json").exists():
+            timeline = read_json(project_dir / "assembly_timeline.json")
+            if round(float(timeline.get("durationSec", 0)), 3) != round(expected_render_duration, 3):
+                errors.append("assembly_timeline durationSec must equal render_timing duration")
 
     if args.require_render:
         real_outputs = [

@@ -269,14 +269,14 @@ def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
         durations = [max(18, int(item * ratio)) for item in durations]
         durations[-1] += target - sum(durations)
     names = [
-        ("S01", "现实痛点", "intro_card", "用复盘问题切入：为什么同类错误反复出现。", "一张项目复盘桌面，便签、红色问题标记、打开的笔记本和一杯咖啡，成年人职场知识视频风格"),
-        ("S02", "书籍核心内涵", "book_author_context", "说明《原则》不是观点合集，而是操作系统。", "一本深色精装商业书放在办公桌上，旁边有非可识别成熟投资人剪影照片、作者研究资料、金融图表和铅笔，参考《Principles》黑色商业书封气质，但不复刻真实封面，不出现可识别人物肖像"),
-        ("S03", "原则反馈环", "flywheel_model", "展示目标、现实、根因、原则、执行的循环。", "抽象反馈飞轮，目标、现实、根因、原则、执行五个节点用图形表达，商业信息图插画"),
-        ("S04", "极度求真与透明", "transparent_meeting", "把事实和分歧摆到台面，减少组织黑箱。", "现代透明会议室，白板上有事实卡片和不同观点线索，团队讨论但人物不露脸"),
-        ("S05", "创意择优决策", "decision_matrix", "说明可信度加权如何让最好想法胜出。", "决策桌面俯视图，方案卡片、评分矩阵、可信度权重刻度，理性商业插画"),
-        ("S06", "AI Skill转化", "ai_workflow", "把复盘材料转成可复用的原则条目。", "AI 工作流界面概念图，输入会议纪要和失败记录，输出原则卡片和行动清单，现代产品插画"),
-        ("S07", "真实场景", "project_recovery", "展示项目失败如何沉淀成下一次行动规则。", "项目延期复盘场景，甘特图、风险看板、原则手册被打开，暖白办公室插画"),
-        ("S08", "总结CTA", "principles_system", "用一句话收束，并引导收藏。", "一本原创原则手册、循环箭头和成长阶梯，收藏感强的小红书知识封面风格"),
+        ("S01", "现实痛点", "intro_card", "problem", "用复盘问题切入：为什么同类错误反复出现。", "一张项目复盘桌面，便签、红色问题标记、打开的笔记本和一杯咖啡，成年人职场知识视频风格"),
+        ("S02", "书籍核心内涵", "book_author_context", "book_core", "说明《原则》不是观点合集，而是操作系统。", "一本深色精装商业书放在办公桌上，旁边有非可识别成熟投资人剪影照片、作者研究资料、金融图表和铅笔，参考《Principles》黑色商业书封气质，但不复刻真实封面，不出现可识别人物肖像"),
+        ("S03", "原则反馈环", "flywheel_model", "core_model", "展示目标、现实、根因、原则、执行的循环。", "抽象反馈飞轮，目标、现实、根因、原则、执行五个节点用图形表达，商业信息图插画"),
+        ("S04", "极度求真与透明", "transparent_meeting", "sop", "把事实和分歧摆到台面，减少组织黑箱。", "现代透明会议室，白板上有事实卡片和不同观点线索，团队讨论但人物不露脸"),
+        ("S05", "创意择优决策", "decision_matrix", "sop", "说明可信度加权如何让最好想法胜出。", "决策桌面俯视图，方案卡片、评分矩阵、可信度权重刻度，理性商业插画"),
+        ("S06", "AI Skill转化", "ai_workflow", "ai_skill", "把复盘材料转成可复用的原则条目。", "AI 工作流界面概念图，输入会议纪要和失败记录，输出原则卡片和行动清单，现代产品插画"),
+        ("S07", "真实场景", "project_recovery", "use_cases", "展示项目失败如何沉淀成下一次行动规则。", "项目延期复盘场景，甘特图、风险看板、原则手册被打开，暖白办公室插画"),
+        ("S08", "总结CTA", "principles_system", "summary", "用一句话收束，并引导收藏。", "一本原创原则手册、循环箭头和成长阶梯，收藏感强的小红书知识封面风格"),
     ]
     narrations = [
         "很多人复盘时只会问，这次哪里做错了。但如果没有沉淀成原则，同类错误下次还会回来。",
@@ -289,7 +289,7 @@ def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
         "总结一句：读《原则》，不是为了背原则，而是为了拥有一套持续进化的决策系统。收藏这条，下次复盘直接套用。",
     ]
     scenes: list[dict] = []
-    for index, ((scene_id, title, visual_type, goal, visual_seed), duration, narration) in enumerate(zip(names, durations, narrations)):
+    for index, ((scene_id, title, visual_type, visual_role, goal, visual_seed), duration, narration) in enumerate(zip(names, durations, narrations)):
         scenes.append(
             {
                 "sceneId": scene_id,
@@ -297,6 +297,8 @@ def principles_scenes(input_data: dict, book_core: dict) -> list[dict]:
                 "durationSec": duration,
                 "goal": goal,
                 "visualType": visual_type,
+                "visualRole": visual_role,
+                "recommendedVisualMode": "motion_graphics" if visual_role in {"core_model", "sop"} else "style_frame_image_to_video",
                 "visualDescription": f"暖白背景，橙色标题，深绿色辅助线，商业信息图风格。画面表达：{goal}",
                 "imageSourceStrategy": {
                     "priority": ["imagegen", "component_renderer"],
@@ -336,13 +338,13 @@ def build_scenes(input_data: dict, book_core: dict) -> list[dict]:
         durations = [max(18, int(item * ratio)) for item in durations]
         durations[-1] += target - sum(durations)
     names = [
-        ("S01", "现实痛点", "intro_card", "抓住观众：为什么内容很多却讲不清。"),
-        ("S02", "书籍核心内涵", "problem_diagram", "提炼这本书真正解决的问题。"),
-        ("S03", "结构模型", "pyramid_model", "展示核心视觉模型。"),
-        ("S04", "SOP方法", "sop_card", "把方法拆成可执行步骤。"),
-        ("S05", "AI Skill转化", "workflow", "说明如何把方法封装成 AI Skill。"),
-        ("S06", "真实场景", "workflow", "展示职场材料如何被转成结构化汇报。"),
-        ("S07", "总结CTA", "summary_card", "用一句话收束，并引导收藏。"),
+        ("S01", "现实痛点", "intro_card", "hook", "抓住观众：为什么内容很多却讲不清。"),
+        ("S02", "书籍核心内涵", "problem_diagram", "book_core", "提炼这本书真正解决的问题。"),
+        ("S03", "结构模型", "pyramid_model", "core_model", "展示核心视觉模型。"),
+        ("S04", "SOP方法", "sop_card", "sop", "把方法拆成可执行步骤。"),
+        ("S05", "AI Skill转化", "workflow", "ai_skill", "说明如何把方法封装成 AI Skill。"),
+        ("S06", "真实场景", "workflow", "use_cases", "展示职场材料如何被转成结构化汇报。"),
+        ("S07", "总结CTA", "summary_card", "summary", "用一句话收束，并引导收藏。"),
     ]
     narrations = [
         "你有没有发现，材料越多，汇报反而越容易讲乱？问题常常不是信息不够，而是结构不清。",
@@ -354,7 +356,7 @@ def build_scenes(input_data: dict, book_core: dict) -> list[dict]:
         "所以，读书不是背观点，而是把观点变成能力。收藏这条，下次汇报前直接套用。",
     ]
     scenes: list[dict] = []
-    for index, ((scene_id, title, visual_type, goal), duration, narration) in enumerate(zip(names, durations, narrations)):
+    for index, ((scene_id, title, visual_type, visual_role, goal), duration, narration) in enumerate(zip(names, durations, narrations)):
         scenes.append(
             {
                 "sceneId": scene_id,
@@ -362,6 +364,8 @@ def build_scenes(input_data: dict, book_core: dict) -> list[dict]:
                 "durationSec": duration,
                 "goal": goal,
                 "visualType": visual_type,
+                "visualRole": visual_role,
+                "recommendedVisualMode": "motion_graphics" if visual_role in {"core_model", "sop"} else "style_frame_image_to_video",
                 "visualDescription": f"暖白背景，橙色标题，绿色辅助线，商业信息图风格。画面表达：{goal}",
                 "imageSourceStrategy": {
                     "priority": ["imagegen", "component_renderer"],

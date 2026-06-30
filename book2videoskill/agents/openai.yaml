@@ -1,4 +1,4 @@
 interface:
   display_name: "Book2VideoSkill"
-  short_description: "Turn books into short-video production kits"
-  default_prompt: "Use $book2videoskill to turn this book into a short-video storyboard, assets plan, render package, and Xiaohongshu publish draft."
+  short_description: "Turn books into hybrid AI-video production kits"
+  default_prompt: "Use $book2videoskill to turn this book into a v1.2 hybrid short-video package with BookCore, VisualPlan, style frames, dynamic clips, motion graphics, final assembly, poster, and Xiaohongshu publish draft."

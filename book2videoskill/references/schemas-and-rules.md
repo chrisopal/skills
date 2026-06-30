@@ -10,6 +10,7 @@
   "aspectRatio": "9:16",
   "coverAspectRatio": "4:5",
   "outputMode": "openrouter-video",
+  "workflowMode": "hybrid",
   "language": "zh-CN",
   "stylePreset": "orange_primary_green_secondary"
 }
@@ -109,6 +110,8 @@ Each scene must include:
 - `goal`
 - `visualType`
 - `visualDescription`
+- `visualRole`
+- `recommendedVisualMode`
 - `imageSourceStrategy`
 - `onscreenText`
 - `subtitle`
@@ -126,6 +129,91 @@ Mainline:
 ```
 
 Narration must be short, oral, TTS-friendly, and free of long book quotes.
+
+## VisualPlan
+
+`Storyboard2VisualPlanTool` must generate `visual_plan.json` before style frames, image-to-video, motion graphics, or final assembly.
+
+Required top-level fields:
+
+- `projectName`
+- `bookTitle`
+- `visualStrategy.overallMode = "hybrid_ai_video_motion_graphics"`
+- `visualStrategy.styleFrameMode = "imagegen"`
+- `visualStrategy.dynamicVideoMode = "image_to_video"`
+- `visualStrategy.textMode = "renderer_overlay"`
+- `visualStrategy.motionMode = "lottie_svg_remotion_or_ae"`
+- `visualStrategy.finalAssemblyMode = "remotion_ffmpeg_or_ae"`
+- `globalRules.textRendering = "renderer_overlay"`
+- `globalRules.avoidBakedChineseText = true`
+- `globalRules.videoClipMaxDurationSec`
+- `scenes[]`
+
+Each `scenes[]` item must include:
+
+- `sceneId`
+- `visualRole`: one of `hook`, `problem`, `book_core`, `core_model`, `sop`, `ai_skill`, `use_cases`, `summary`, or `custom`
+- `generationStrategy` with `styleFrame`, `imageToVideo`, `motionGraphics`, `rendererTextOverlay`
+- `styleFramePrompt`
+- optional `imageToVideoPrompt`
+- `cameraMotion`
+- optional `motionGraphicsSpec`
+- `overlayText[]`
+- `negativePrompt[]`
+
+## StyleFrame
+
+`style_frames_manifest.json` must list one style frame per storyboard scene:
+
+- `sceneId`
+- `prompt`
+- `negativePrompt[]`
+- `assetPath`
+- `width`
+- `height`
+- `aspectRatio`
+- `metadata.containsBakedChineseText = false`
+
+## DynamicVideoClip
+
+`dynamic_video_manifest.json` must list one dynamic video item per scene. Items may be real provider clips or local fallback clips:
+
+- `sceneId`
+- `sourceStyleFramePath`
+- `provider`
+- `prompt`
+- `durationSec`
+- `assetPath`
+- `hasBakedText = false`
+- `qualityWarnings[]`
+
+## MotionGraphicsAsset
+
+`motion_graphics_manifest.json` must list structure/motion assets for applicable scenes:
+
+- `sceneId`
+- `provider`
+- `type`
+- `assetPath`
+- `durationSec`
+- `transparentBackground`
+
+## AssemblyTimeline
+
+`assembly_timeline.json` must include:
+
+- `projectName`
+- `fps`
+- `width`
+- `height`
+- `durationSec`
+- `tracks.backgroundVideo`
+- `tracks.styleFrames`
+- `tracks.motionGraphics`
+- `tracks.textOverlays`
+- `tracks.subtitles`
+- `tracks.tts`
+- `tracks.bgm`
 
 ## Project Output Directory
 

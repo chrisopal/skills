@@ -22,17 +22,39 @@ Quality gate:
 - BookResearch includes author/book/cover visual anchors from online or provided sources before imagegen shot design.
 - One core question drives the video.
 - Storyboard has `6-8` scenes.
+- Every scene has `visualRole` and `recommendedVisualMode`.
 - Total duration <= duration limit.
 - Style preset is orange-primary / green-secondary unless the user explicitly overrides it.
 - No long book excerpts or unsupported author claims.
 
-## Stage 2: Storyboard2AssetsTool
+## Stage 2: Storyboard2VisualPlanTool
+
+Input:
+
+- `storyboard.json`
+- `style_bible.json`
+- `cover_poster_plan.json`
+
+Produce:
+
+- `visual_plan.json`
+- `visual_plan.md`
+- `reports/visual_plan_report.md`
+
+Quality gate:
+
+- `visualStrategy.overallMode` is `hybrid_ai_video_motion_graphics`.
+- All scenes use `rendererTextOverlay`.
+- Image-to-video is reserved for hook/problem/book/AI workflow/use-case/summary scenes.
+- Motion Graphics is used for core models, SOP, AI pipelines, and structure-heavy scenes.
+- Negative prompts forbid baked Chinese text, watermarks, logos, and over-dramatic camera motion.
+
+## Stage 3: StyleFrameGeneratorTool
 
 Input:
 
 - `style_bible.json`
-- `storyboard.json`
-- `narration_script.md`
+- `visual_plan.json`
 - `cover_poster_plan.json`
 
 Produce:
@@ -40,6 +62,8 @@ Produce:
 - `asset_manifest.json`
 - `imagegen_prompts.json`
 - `imagegen_sources/` directory for selected imagegen outputs
+- `style_frames_manifest.json`
+- `style_frames/*.png`
 - `poster.png`
 - `scene_images/*.png`
 - Cover asset or cover handoff
@@ -49,6 +73,7 @@ Produce:
 - BGM or music handoff file
 - Visible subtitles composited into scene frames plus SRT/ASS sidecar subtitles
 - `assets_ready_report.md`
+- `reports/style_frame_report.md`
 
 Fallback policy:
 
@@ -60,13 +85,51 @@ Fallback policy:
 - If TTS fails and no fallback is available, preserve narration text and mark audio missing or placeholder.
 - If BGM fails, render without BGM or use a local default; do not fail the whole project.
 
-## Stage 3: Assets2VideoTool
+## Stage 4: Image2VideoTool
+
+Input:
+
+- `style_bible.json`
+- `visual_plan.json`
+- `style_frames_manifest.json`
+- `render_timing.json`
+
+Produce:
+
+- `openrouter_video_manifest.json` when attempted
+- `video_clips/openrouter/*.mp4` when provider succeeds
+- `dynamic_video_manifest.json`
+- `reports/image2video_report.md`
+
+Default provider is OpenRouter video. If OpenRouter video fails, partially completes, times out, or runs out of credits, record the failure and let FinalAssembler use local fallback for missing scenes.
+
+## Stage 5: MotionGraphicsTool
 
 Input:
 
 - `style_bible.json`
 - `storyboard.json`
+- `visual_plan.json`
+- `style_frames_manifest.json`
+
+Produce:
+
+- `motion_graphics_manifest.json`
+- `motion_graphics/*.svg`
+- `reports/motion_report.md`
+
+SVG Motion is the default fallback provider. Use staggered element timing, draw-line style for connectors, card/icon scale/fade/slide entry, and avoid motion that competes with narration.
+
+## Stage 6: FinalAssemblerTool
+
+Input:
+
+- `style_bible.json`
+- `storyboard.json`
+- `visual_plan.json`
 - `asset_manifest.json`
+- `dynamic_video_manifest.json`
+- `motion_graphics_manifest.json`
 - `render_plan.json`
 
 Produce:
@@ -77,6 +140,8 @@ Produce:
 - `output/narration.m4a`
 - `output/poster.png`
 - `render_timing.json`
+- `dynamic_video_manifest.json`
+- `assembly_timeline.json`
 - `openrouter_video_manifest.json` when OpenRouter video succeeds or is attempted
 - `subtitles/all.ass`
 - `remotion/` project with `src/Root.tsx` and static assets
@@ -84,7 +149,7 @@ Produce:
 Default render provider is OpenRouter video. Hyperframe is an adapter target; do not claim implementation unless it exists.
 The fallback MP4 must mux narration audio when TTS assets exist. It should derive scene durations from real TTS length through `render_timing.json`, so source storyboard durations do not create long silent holds. OpenRouter video should generate one short clip per scene and record results in `openrouter_video_manifest.json`. If any OpenRouter clip is missing, failed, or timed out, fall back to local Remotion/ffmpeg motion-segment rendering for the missing scenes. Chinese titles and subtitles must be applied as local overlays on top of OpenRouter clips. Because not all local ffmpeg builds include subtitle filters, scene PNGs must already contain readable subtitles; ASS/SRT files remain sidecars for Remotion or later editing.
 
-## Stage 4: Extracted Skill
+## Stage 7: Extracted Skill
 
 Input:
 
@@ -102,7 +167,14 @@ The extracted skill must be portable: the zip should contain the skill folder an
 ## Modes
 
 - Full scaffold: run storyboard, assets, extracted-skill packaging, and render.
+- Hybrid: default v1.2 six-tool flow with VisualPlan, StyleFrames, Image-to-Video, Motion Graphics, and FinalAssembler outputs.
+- Legacy: v1.1-compatible three-tool flow for narrow debugging.
 - Storyboard-only: stop after Stage 1.
+- Visual-plan-only: stop after Stage 2.
+- Style-frames-only: stop after Stage 3.
+- Image2video-only: stop after Stage 4.
+- Motion-only: stop after Stage 5.
+- Assemble-only: rerun FinalAssemblerTool for an existing project.
 - Cover-only: generate BookCore, CoverPosterPlan, and cover handoff/component output.
 - Render: try OpenRouter video clips first, create a Remotion project, and produce a local MP4. If OpenRouter video fails, use the local Remotion/ffmpeg fallback and disclose the provider status.
 - Imagegen refresh: after adding or replacing files under `imagegen_sources/`, rerun `storyboard2assets.py` and `assets2video.py`.

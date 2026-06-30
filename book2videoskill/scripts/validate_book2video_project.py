@@ -181,6 +181,18 @@ def main() -> int:
             expected_render_duration = float(total_duration)
         if round(float(render_plan.get("durationSec", 0)), 3) != round(expected_render_duration, 3):
             errors.append("render_plan durationSec must equal render_timing duration")
+        if render_plan.get("providerStatus") == "openrouter-video":
+            manifest_path = project_dir / "openrouter_video_manifest.json"
+            require_file(project_dir, "openrouter_video_manifest.json", errors)
+            if manifest_path.exists():
+                video_manifest = read_json(manifest_path)
+                if video_manifest.get("status") != "generated":
+                    errors.append("openrouter_video_manifest status must be generated when providerStatus is openrouter-video")
+                clip_paths = {item.get("sceneId"): item.get("path") for item in video_manifest.get("assets", [])}
+                for scene in scenes:
+                    rel_path = clip_paths.get(scene["sceneId"])
+                    if not rel_path or not (project_dir / rel_path).exists():
+                        errors.append(f"missing OpenRouter video clip for scene: {scene['sceneId']}")
         extracted_skill_zips = list(project_dir.glob("*.zip"))
         if not extracted_skill_zips:
             errors.append("missing extracted book-derived skill zip")

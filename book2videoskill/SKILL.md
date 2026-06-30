@@ -25,7 +25,7 @@ Use this skill to turn a book or book-methodology breakdown into a portable shor
 - Use OpenRouter TTS by default through `OPENROUTER_API_KEY` from the shell or Hermes system config. If OpenRouter is not configured, create an explicit provider note and use macOS `say` only as a local fallback.
 - Scene design must be visual-first: use book/author context, book-object shots, workplace scenes, diagrams, and metaphorical illustrations. Avoid videos made only of text cards.
 - Use online book/author/cover research as visual anchors for prompts, but keep generated scenes original: do not copy copyrighted book covers, logos, or recognizable author portraits into the output.
-- Use text/research models for the content logic, narration, and shot list. Use imagegen for the visual frame of every poster/scene. Use Remotion to play the generated storyboard frames with controlled timing.
+- Use text/research models for the content logic, narration, and shot list. Use imagegen for poster/static visual anchors. Use OpenRouter video models for final per-scene video clips by default, then fall back to local Remotion/ffmpeg rendering when OpenRouter video fails or times out.
 - Scene frames must include readable visible subtitles and no debug/footer filler at the bottom of each page.
 - Render timing must follow real TTS duration when audio exists. Use `render_timing.json` to avoid long silent holds between scenes.
 - Mark generated media honestly. The local component renderer can produce fallback poster/scene PNGs and an MP4; use the generated Remotion project when a Remotion runtime/plugin render is available.
@@ -72,6 +72,7 @@ python3 book2videoskill/scripts/assets2video.py --project-dir output/pyramid-pri
    - Asset manifest paths exist, even if they are explicit placeholder handoff files.
    - `imagegen_prompts.json` exists and declares poster plus per-scene project-bound image prompts under `imagegen_sources/`.
    - `poster.png`, `output/poster.png`, `output/final_video.mp4`, `output/narration.m4a`, `render_timing.json`, `tts_manifest.json`, `subtitles/all.ass`, and `remotion/src/Root.tsx` exist.
+   - If `render_plan.providerStatus == "openrouter-video"`, `openrouter_video_manifest.json` exists and references one generated clip per scene.
    - `output/final_video.mp4` has an audio stream and the visual frames include readable subtitles.
    - `extracted_skill/<skill-name>/SKILL.md` and `<skill-name>.zip` exist.
    - `project_bundle.zip` does not exist.
@@ -102,10 +103,11 @@ subtitles/
 bgm/
 tts_manifest.json
 render_timing.json
+openrouter_video_manifest.json
 output/
 remotion/
 extracted_skill/
 <extracted-skill-name>.zip
 ```
 
-Local generation produces `book_research.json`, `imagegen_prompts.json`, `poster.png`, `scene_images/*.png` with visible subtitles, `tts_manifest.json`, `render_timing.json`, `output/narration.m4a`, `subtitles/all.ass`, `output/final_video.mp4`, a Remotion project, and a portable extracted-skill zip. Use imagegen-selected images as the final project-bound visuals by copying them into `imagegen_sources/` and rerunning assets/render. Remotion reads the storyboard and plays the composited scene frames in order. Real providers may additionally add BGM or a Remotion-rendered replacement MP4.
+Local generation produces `book_research.json`, `imagegen_prompts.json`, `poster.png`, `scene_images/*.png` with visible subtitles, `tts_manifest.json`, `render_timing.json`, `output/narration.m4a`, `subtitles/all.ass`, `output/final_video.mp4`, a Remotion project, and a portable extracted-skill zip. Use imagegen-selected images as project-bound static references by copying them into `imagegen_sources/` and rerunning assets/render. OpenRouter video clips are preferred for final scene motion and are recorded in `openrouter_video_manifest.json`; when they are unavailable, Remotion/local ffmpeg reads the storyboard and plays the composited scene frames in order. Real providers may additionally add BGM or a Remotion-rendered replacement MP4.

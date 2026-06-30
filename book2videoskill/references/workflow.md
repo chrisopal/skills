@@ -77,11 +77,12 @@ Produce:
 - `output/narration.m4a`
 - `output/poster.png`
 - `render_timing.json`
+- `openrouter_video_manifest.json` when OpenRouter video succeeds or is attempted
 - `subtitles/all.ass`
 - `remotion/` project with `src/Root.tsx` and static assets
 
-Default render provider is Remotion. Hyperframe is an adapter target; do not claim implementation unless it exists.
-The fallback MP4 must mux narration audio when TTS assets exist. It should derive scene durations from real TTS length through `render_timing.json`, so source storyboard durations do not create long silent holds. Because not all local ffmpeg builds include subtitle filters, scene PNGs must already contain readable subtitles; ASS/SRT files remain sidecars for Remotion or later editing. Static scene images should be rendered as subtle motion segments before final assembly.
+Default render provider is OpenRouter video. Hyperframe is an adapter target; do not claim implementation unless it exists.
+The fallback MP4 must mux narration audio when TTS assets exist. It should derive scene durations from real TTS length through `render_timing.json`, so source storyboard durations do not create long silent holds. OpenRouter video should generate one short clip per scene and record results in `openrouter_video_manifest.json`. If any OpenRouter clip is missing, failed, or timed out, fall back to local Remotion/ffmpeg motion-segment rendering for the missing scenes. Chinese titles and subtitles must be applied as local overlays on top of OpenRouter clips. Because not all local ffmpeg builds include subtitle filters, scene PNGs must already contain readable subtitles; ASS/SRT files remain sidecars for Remotion or later editing.
 
 ## Stage 4: Extracted Skill
 
@@ -103,9 +104,10 @@ The extracted skill must be portable: the zip should contain the skill folder an
 - Full scaffold: run storyboard, assets, extracted-skill packaging, and render.
 - Storyboard-only: stop after Stage 1.
 - Cover-only: generate BookCore, CoverPosterPlan, and cover handoff/component output.
-- Render: create a Remotion project and local MP4. If the Remotion runtime/plugin is available, use it to render; otherwise the local component-video fallback is acceptable and must be disclosed.
+- Render: try OpenRouter video clips first, create a Remotion project, and produce a local MP4. If OpenRouter video fails, use the local Remotion/ffmpeg fallback and disclose the provider status.
 - Imagegen refresh: after adding or replacing files under `imagegen_sources/`, rerun `storyboard2assets.py` and `assets2video.py`.
-- Remotion assembly: Remotion should read `storyboard.json` for scene order/duration and render `scene_images/<sceneId>.png` frames generated from imagegen sources plus the deterministic text overlay.
+- OpenRouter video assembly: `openrouter_video.py` should read `storyboard.json` plus `render_timing.json`, create one 9:16 clip per scene, and store clips in `video_clips/openrouter/`.
+- Remotion fallback assembly: Remotion should read `storyboard.json` for scene order/duration and render `scene_images/<sceneId>.png` frames generated from imagegen sources plus the deterministic text overlay.
 - TTS refresh: rerun `openrouter_tts.py --project-dir <book-project>` after configuring `OPENROUTER_API_KEY` or Hermes OpenRouter auth, then rerun `assets2video.py`.
 - Timing refresh: rerun `assets2video.py` after any TTS update so `render_timing.json`, subtitles, Remotion props, and final MP4 duration stay aligned.
 
@@ -117,4 +119,4 @@ Use `--require-render` only when the task requires actual MP4/PNG/audio media ra
 
 For 《金字塔原理》, additionally check the four core principles, pyramid model, AI汇报结构生成器, orange/green palette, and the series label `一本书，一个AI Skill`.
 
-For 《原则》, additionally check book research, the five core concepts, feedback-loop model, AI原则复盘教练, orange/green palette, visual-first imagegen prompts grounded in book/author/cover research, poster PNG, final MP4 with audio stream, visible subtitles, `render_timing.json`, Remotion project, extracted-skill zip, and absence of `project_bundle.zip`.
+For 《原则》, additionally check book research, the five core concepts, feedback-loop model, AI原则复盘教练, orange/green palette, visual-first imagegen/video prompts grounded in book/author/cover research, poster PNG, final MP4 with audio stream, visible subtitles, `render_timing.json`, OpenRouter video manifest when successful, Remotion fallback project, extracted-skill zip, and absence of `project_bundle.zip`.

@@ -1,3 +1,29 @@
+## 2026-06-30 12:36:39 CST
+
+- Scope: Change `book2videoskill` rendering so OpenRouter video is the default final motion provider, with local Remotion/ffmpeg fallback for missing, failed, timed-out, or credit-limited scene clips.
+- Changed files:
+  - `book2videoskill/SKILL.md`
+  - `book2videoskill/references/providers-and-rendering.md`
+  - `book2videoskill/references/schemas-and-rules.md`
+  - `book2videoskill/references/workflow.md`
+  - `book2videoskill/scripts/assets2video.py`
+  - `book2videoskill/scripts/openrouter_video.py`
+  - `book2videoskill/scripts/run_book2video.py`
+  - `book2videoskill/scripts/validate_book2video_project.py`
+- Validation:
+  - `python3 -m py_compile book2videoskill/scripts/*.py` passed.
+  - OpenRouter video API smoke test returned `202` and later completed.
+  - `openrouter_video.py` generated valid MP4 clips for S01-S03 under `video_clips/openrouter/`.
+  - OpenRouter returned `402 Insufficient credits` at S04; the manifest records this provider error.
+  - `assets2video.py --renderer openrouter-video --skip-openrouter-video-generation` generated a mixed final MP4 using OpenRouter clips for S01-S03 and local Remotion/ffmpeg fallback for S04-S08.
+  - `validate_book2video_project.py book2videoskill/projects/principles-ray-dalio --require-render` passed with storyboard duration 240s and render duration 101s.
+  - `ffprobe` confirmed `output/final_video.mp4` has an AAC audio stream and duration 101.075000 seconds.
+  - Visual inspection of `output/preview_frames/openrouter_overlay_frame05.png` confirmed the OpenRouter clip path has local Chinese title/subtitle overlays.
+  - `skill-creator/scripts/quick_validate.py book2videoskill` passed.
+- Commit/push state: this entry is included in the commit for push to `origin/main`.
+- Remaining notes:
+  - Full 8/8 OpenRouter video generation is blocked by OpenRouter credit balance, not by pipeline code. Add credits and rerun `openrouter_video.py --reuse-existing`, then rerun `assets2video.py --renderer openrouter-video`.
+
 ## 2026-06-30 08:47:36 CST
 
 - Scope: Update `book2videoskill` so the local Hermes `.env` OpenRouter key is used for real TTS, final videos use TTS-derived render timing instead of long static holds, fallback rendering adds per-scene motion segments, and 《原则》 visual prompts are grounded in online book/author/cover research without copying protected images.

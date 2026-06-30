@@ -9,7 +9,7 @@
   "targetDurationSec": 240,
   "aspectRatio": "9:16",
   "coverAspectRatio": "4:5",
-  "outputMode": "remotion",
+  "outputMode": "openrouter-video",
   "language": "zh-CN",
   "stylePreset": "orange_primary_green_secondary"
 }

@@ -31,8 +31,11 @@ def main() -> int:
     parser.add_argument("--output-dir", help="Exact project output directory")
     parser.add_argument("--storyboard-only", action="store_true", help="Stop after Book2StoryboardTool")
     parser.add_argument("--cover-only", action="store_true", help="Generate storyboard and asset cover handoff, then stop")
-    parser.add_argument("--renderer", default="remotion", choices=["remotion", "hyperframe"])
+    parser.add_argument("--renderer", default="openrouter-video", choices=["openrouter-video", "remotion", "hyperframe"])
     parser.add_argument("--tts-provider", default="openrouter", choices=["openrouter", "say", "none"])
+    parser.add_argument("--openrouter-video-timeout-sec", type=int, default=900)
+    parser.add_argument("--reuse-openrouter-video", action="store_true")
+    parser.add_argument("--skip-openrouter-video-generation", action="store_true")
     args = parser.parse_args()
 
     raw = load_input(args.input)
@@ -63,7 +66,20 @@ def main() -> int:
 
     run_step([str(SCRIPT_DIR / "create_extracted_skill.py"), "--project-dir", str(output_dir)])
     run_step([str(SCRIPT_DIR / "openrouter_tts.py"), "--project-dir", str(output_dir), "--provider", args.tts_provider])
-    run_step([str(SCRIPT_DIR / "assets2video.py"), "--project-dir", str(output_dir), "--renderer", args.renderer])
+    render_args = [
+        str(SCRIPT_DIR / "assets2video.py"),
+        "--project-dir",
+        str(output_dir),
+        "--renderer",
+        args.renderer,
+        "--openrouter-video-timeout-sec",
+        str(args.openrouter_video_timeout_sec),
+    ]
+    if args.reuse_openrouter_video:
+        render_args.append("--reuse-openrouter-video")
+    if args.skip_openrouter_video_generation:
+        render_args.append("--skip-openrouter-video-generation")
+    run_step(render_args)
     print(f"complete: {output_dir}")
     return 0
 

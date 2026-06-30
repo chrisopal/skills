@@ -89,6 +89,20 @@ Output:
 - `reportPath`
 - `metadata`
 
+### OpenRouterVideoProvider
+
+Default provider for final scene motion:
+
+- endpoint: `POST /api/v1/videos`, then poll the returned `polling_url`
+- default model: `bytedance/seedance-2.0-fast`
+- aspect ratio: `9:16`
+- resolution: `720p`
+- duration: integer seconds derived from `render_timing.json`, clamped to the model-supported short clip range
+
+Generate one clip per scene and store it under `video_clips/openrouter/<sceneId>.mp4`. Write `openrouter_video_manifest.json` with the model, resolution, job ids, paths, and errors. Do not ask the video model to render Chinese subtitles or long text; final titles and subtitles remain renderer overlays from `output/video_overlays/*.png`.
+
+Fallback rule: if OpenRouter video fails, partially completes, or times out, keep the manifest/run log and use the local Remotion/ffmpeg motion-segment renderer for missing scenes. If only some clips exist, mix OpenRouter clips for those scenes with local fallback clips for the rest and disclose the partial provider status.
+
 ## Remotion Requirements
 
 Create two compositions in a real implementation:
@@ -110,11 +124,12 @@ Components:
 
 Keep all scene styling sourced from `styleBible`; do not let individual scenes invent their own palette.
 
-The pipeline should also write a runnable `remotion/` directory per book project. Use Remotion primitives such as `Composition`, `Sequence`/`Series`, `Img`, and `staticFile` so the generated project can be rendered by the Remotion plugin or CLI. The Remotion composition should take scene order and durations from `storyboard.json` and display the composited imagegen storyboard frames from `scene_images/`.
+The pipeline should also write a runnable `remotion/` directory per book project. Use Remotion primitives such as `Composition`, `Sequence`/`Series`, `Img`, and `staticFile` so the generated project can be rendered by the Remotion plugin or CLI. The Remotion composition should take scene order and durations from `storyboard.json`/`render_timing.json` and display the composited storyboard frames from `scene_images/`. This Remotion path is the local fallback whenever OpenRouter video is unavailable.
 
 ## Render Plan Defaults
 
-- Renderer: `remotion`
+- Renderer: `openrouter-video`
+- Fallback renderer: local `remotion` project plus ffmpeg motion segments
 - FPS: `30`
 - Width/height for `9:16`: `1080x1920`
 - Cover `4:5`: `1080x1350`
@@ -122,7 +137,7 @@ The pipeline should also write a runnable `remotion/` directory per book project
 - Subtitles: enabled, key sentence mode, max 2 lines
 - BGM: enabled, ducking enabled, volume `0.18`
 - Render timing: derive `render_timing.json` from real TTS duration when audio exists.
-- Motion: local fallback render should generate per-scene motion segments with subtle zoom/pan before muxing audio.
+- Motion: OpenRouter video clips first; local fallback render should generate per-scene motion segments with subtle zoom/pan before muxing audio.
 
 ## Honest Scaffold Outputs
 
@@ -131,4 +146,4 @@ When real audio providers are not configured, create explicit handoff files:
 - `.tts.txt` narration handoff instead of fake MP3s
 - `.music.txt` BGM brief instead of fake audio
 
-The local component renderer may produce fallback poster PNGs, scene PNGs, per-scene TTS files, `render_timing.json`, `output/narration.m4a`, `subtitles/all.ass`, and `output/final_video.mp4`. Visible subtitles should be composited into `scene_images/*.png`; ASS/SRT files are sidecar assets for editing and downstream renderer replacement. The asset manifest should mark the default image provider as `imagegen`, keep `imagegen_prompts.json` for project-bound generation, and mark local component media as fallback assets with `requiresProvider: false`. Videos should include image-rich scene visuals, readable subtitles, subtle per-scene motion, and no debug/footer filler.
+The local component renderer may produce fallback poster PNGs, scene PNGs, per-scene TTS files, `render_timing.json`, `output/narration.m4a`, `subtitles/all.ass`, and `output/final_video.mp4`. OpenRouter video may additionally produce `openrouter_video_manifest.json` and `video_clips/openrouter/*.mp4`. Visible subtitles should be composited into `scene_images/*.png`; ASS/SRT files are sidecar assets for editing and downstream renderer replacement. The asset manifest should mark the default image provider as `imagegen`, keep `imagegen_prompts.json` for project-bound generation, and mark local component media as fallback assets with `requiresProvider: false`. Videos should include image-rich scene visuals, readable subtitles, subtle per-scene motion, and no debug/footer filler.

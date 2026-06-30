@@ -1,3 +1,19 @@
+## 2026-06-30 18:59:04 CST
+
+- Scope: Promote the current WeChat illustration style into the company/product visual system for 慧新, covering product UI, website, admin console, PPT/sales material, and WeChat image assets.
+- Changed files:
+  - `wechat-official-account-skills/references/style-system.md`
+- Simplifications made:
+  - Use the existing WeChat paper/engineering-note style as the single visual source of truth instead of introducing a separate product palette.
+  - Keep blue/teal and bright green as limited secondary product accents; 墨绿、深灰、白底、少量橙色 remain the default system.
+- Validation:
+  - `python3 wechat-official-account-skills/scripts/validate_bundle.py` passed for 8 skills.
+  - `quick_validate.py` passed for all 8 WeChat skill folders.
+  - `git diff --check -- wechat-official-account-skills/references/style-system.md STATUS.md` passed.
+- Commit/push state: pending commit and push.
+- Remaining risks:
+  - This is a source-of-truth documentation update; existing PPT template JSON/SVG assets are not mechanically migrated in this change.
+
 ## 2026-06-30 12:36:39 CST
 
 - Scope: Change `book2videoskill` rendering so OpenRouter video is the default final motion provider, with local Remotion/ffmpeg fallback for missing, failed, timed-out, or credit-limited scene clips.

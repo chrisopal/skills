@@ -40,6 +40,45 @@ PALETTE = {
     "highlight": "#FF6A00",
 }
 
+ROLE_BY_VISUAL_TYPE = {
+    "intro_card": "hook",
+    "problem_diagram": "problem",
+    "book_author_context": "book_core",
+    "pyramid_model": "core_model",
+    "flywheel_model": "core_model",
+    "sop_card": "sop",
+    "decision_matrix": "sop",
+    "transparent_meeting": "sop",
+    "ai_workflow": "ai_skill",
+    "workflow": "ai_skill",
+    "project_recovery": "use_cases",
+    "summary_card": "summary",
+    "principles_system": "summary",
+}
+
+
+def infer_visual_role(scene: dict[str, Any]) -> str:
+    return scene.get("visualRole") or ROLE_BY_VISUAL_TYPE.get(scene.get("visualType"), "custom")
+
+
+def infer_recommended_visual_mode(scene: dict[str, Any]) -> str:
+    role = infer_visual_role(scene)
+    if role in {"core_model", "sop"}:
+        return "motion_graphics"
+    return "style_frame_image_to_video"
+
+
+def ensure_storyboard_v12_fields(storyboard: dict[str, Any]) -> bool:
+    changed = False
+    for scene in storyboard.get("scenes", []):
+        if not scene.get("visualRole"):
+            scene["visualRole"] = infer_visual_role(scene)
+            changed = True
+        if not scene.get("recommendedVisualMode"):
+            scene["recommendedVisualMode"] = infer_recommended_visual_mode(scene)
+            changed = True
+    return changed
+
 
 def slugify_book(title: str) -> str:
     if is_pyramid_principle(title):

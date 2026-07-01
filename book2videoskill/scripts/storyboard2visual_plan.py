@@ -6,23 +6,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from book2video_common import read_json, write_json
+from book2video_common import ensure_storyboard_v12_fields, infer_visual_role, read_json, write_json
 
-
-ROLE_BY_TYPE = {
-    "intro_card": "hook",
-    "problem_diagram": "problem",
-    "book_author_context": "book_core",
-    "pyramid_model": "core_model",
-    "flywheel_model": "core_model",
-    "sop_card": "sop",
-    "decision_matrix": "sop",
-    "ai_workflow": "ai_skill",
-    "workflow": "ai_skill",
-    "project_recovery": "use_cases",
-    "summary_card": "summary",
-    "principles_system": "summary",
-}
 
 MOTION_TYPES = {
     "hook": "slow_push_in",
@@ -37,9 +22,7 @@ MOTION_TYPES = {
 
 
 def visual_role(scene: dict) -> str:
-    if scene.get("visualRole"):
-        return scene["visualRole"]
-    return ROLE_BY_TYPE.get(scene.get("visualType"), "custom")
+    return infer_visual_role(scene)
 
 
 def motion_type(role: str) -> str:
@@ -125,6 +108,8 @@ def motion_spec(role: str, scene: dict, duration: float) -> dict | None:
 def build_visual_plan(project_dir: Path) -> dict:
     style_bible = read_json(project_dir / "style_bible.json")
     storyboard = read_json(project_dir / "storyboard.json")
+    if ensure_storyboard_v12_fields(storyboard):
+        write_json(project_dir / "storyboard.json", storyboard)
     palette = style_bible["visualStyle"]["palette"]
     scene_plans = []
     for scene in storyboard["scenes"]:

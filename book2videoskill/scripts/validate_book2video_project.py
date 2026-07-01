@@ -5,9 +5,16 @@ from __future__ import annotations
 
 import argparse
 import subprocess
+import tempfile
 from pathlib import Path
 
-from book2video_common import is_principles, is_pyramid_principle, read_json
+from book2video_common import ensure_storyboard_v12_fields, is_principles, is_pyramid_principle, read_json
+
+try:
+    from PIL import Image, ImageStat
+except ImportError:  # pragma: no cover - validated at runtime.
+    Image = None
+    ImageStat = None
 
 
 REQUIRED_FILES = [
@@ -66,6 +73,102 @@ def validate_path_refs(project_dir: Path, manifest: dict, errors: list[str]) -> 
             errors.append(f"asset manifest path does not exist: {rel_path}")
 
 
+def visual_crop_score(image_path: Path) -> tuple[float, float] | None:
+    if Image is None or ImageStat is None or not image_path.exists():
+        return None
+    image = Image.open(image_path).convert("RGB")
+    width, height = image.size
+    crop = image.crop((int(width * 0.13), int(height * 0.12), int(width * 0.87), int(height * 0.76)))
+    stat = ImageStat.Stat(crop)
+    avg_stddev = sum(stat.stddev) / len(stat.stddev)
+    pixels = crop.load()
+    sample_step = max(1, min(crop.size) // 120)
+    varied = 0
+    total = 0
+    for y in range(0, crop.height, sample_step):
+        for x in range(0, crop.width, sample_step):
+            r, g, b = pixels[x, y]
+            distance = abs(r - 255) + abs(g - 247) + abs(b - 236)
+            if distance > 32:
+                varied += 1
+            total += 1
+    varied_ratio = varied / total if total else 0
+    return avg_stddev, varied_ratio
+
+
+def validate_scene_visual_density(project_dir: Path, scenes: list[dict], errors: list[str]) -> None:
+    for scene in scenes:
+        scene_id = scene.get("sceneId", "<missing>")
+        score = visual_crop_score(project_dir / "scene_images" / f"{scene_id}.png")
+        if score is None:
+            continue
+        avg_stddev, varied_ratio = score
+        if avg_stddev < 8.0 or varied_ratio < 0.025:
+            errors.append(
+                f"scene image visual area appears empty: {scene_id} "
+                f"(stddev={avg_stddev:.2f}, variedRatio={varied_ratio:.3f})"
+            )
+
+
+def probe_video_duration(video_path: Path) -> float | None:
+    probe = subprocess.run(
+        [
+            "ffprobe",
+            "-v",
+            "error",
+            "-show_entries",
+            "format=duration",
+            "-of",
+            "default=nw=1:nk=1",
+            str(video_path),
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    if probe.returncode != 0:
+        return None
+    try:
+        return float(probe.stdout.strip())
+    except ValueError:
+        return None
+
+
+def validate_video_visual_density(video_path: Path, errors: list[str]) -> None:
+    if Image is None or ImageStat is None or not video_path.exists():
+        return
+    duration = probe_video_duration(video_path) or 0
+    sample_times = [max(1.0, duration * 0.12), max(1.0, duration * 0.5), max(1.0, duration * 0.88)]
+    with tempfile.TemporaryDirectory(prefix="book2video-frames-") as tmp:
+        valid_scores = []
+        for index, sample_time in enumerate(sample_times, start=1):
+            frame_path = Path(tmp) / f"frame-{index}.png"
+            result = subprocess.run(
+                [
+                    "ffmpeg",
+                    "-y",
+                    "-ss",
+                    f"{sample_time:.3f}",
+                    "-i",
+                    str(video_path),
+                    "-frames:v",
+                    "1",
+                    str(frame_path),
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            if result.returncode != 0 or not frame_path.exists():
+                errors.append(f"could not extract validation frame from final_video.mp4 at {sample_time:.2f}s")
+                continue
+            score = visual_crop_score(frame_path)
+            if score is not None:
+                valid_scores.append(score)
+        if valid_scores and all(avg_stddev < 8.0 or varied_ratio < 0.025 for avg_stddev, varied_ratio in valid_scores):
+            score_text = ", ".join(f"stddev={s:.2f}/varied={v:.3f}" for s, v in valid_scores)
+            errors.append(f"final_video.mp4 visual area appears empty across sampled frames ({score_text})")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("project_dir", help="Book2Video project directory")
@@ -96,6 +199,7 @@ def main() -> int:
     style_bible = read_json(project_dir / "style_bible.json")
     cover_plan = read_json(project_dir / "cover_poster_plan.json")
     storyboard = read_json(project_dir / "storyboard.json")
+    ensure_storyboard_v12_fields(storyboard)
 
     scenes = storyboard.get("scenes", [])
     if not 6 <= len(scenes) <= 8:
@@ -179,6 +283,7 @@ def main() -> int:
                 errors.append("asset_manifest ttsAssets count must match storyboard scenes")
             if any(item.get("status") == "placeholder" for item in manifest.get("sceneImages", [])):
                 warnings.append("scene visuals are placeholder handoffs; real image provider not yet run")
+            validate_scene_visual_density(project_dir, scenes, errors)
         if (project_dir / "visual_plan.json").exists():
             visual_plan = read_json(project_dir / "visual_plan.json")
             if visual_plan.get("visualStrategy", {}).get("overallMode") != "hybrid_ai_video_motion_graphics":
@@ -272,6 +377,7 @@ def main() -> int:
             )
             if probe.returncode != 0 or "audio" not in probe.stdout:
                 errors.append("final_video.mp4 must contain an audio stream")
+            validate_video_visual_density(final_video, errors)
 
     if errors:
         for error in errors:

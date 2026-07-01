@@ -7,7 +7,7 @@ import argparse
 import html
 from pathlib import Path
 
-from book2video_common import hhmmss, read_json, relpath, write_json
+from book2video_common import ensure_storyboard_v12_fields, hhmmss, read_json, relpath, write_json
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -50,20 +50,23 @@ def load_font(size: int, *, bold: bool = False):
 
 def wrap_text(draw, text: str, font, max_width: int, max_lines: int | None = None) -> list[str]:
     lines: list[str] = []
-    current = ""
-    for char in text:
-        candidate = current + char
-        if draw.textlength(candidate, font=font) <= max_width:
-            current = candidate
-        else:
-            if current:
-                lines.append(current)
-                if max_lines and len(lines) >= max_lines:
-                    lines[-1] = lines[-1].rstrip("，。；、 ") + "..."
-                    return lines
-            current = char
-    if current:
-        lines.append(current)
+    for paragraph in text.splitlines() or [text]:
+        current = ""
+        for char in paragraph:
+            candidate = current + char
+            if draw.textlength(candidate, font=font) <= max_width:
+                current = candidate
+            else:
+                if current:
+                    lines.append(current)
+                    if max_lines and len(lines) >= max_lines:
+                        lines[-1] = lines[-1].rstrip("，。；、 ") + "..."
+                        return lines
+                current = char
+        if current:
+            lines.append(current)
+            if max_lines and len(lines) >= max_lines:
+                return lines
     if max_lines and len(lines) > max_lines:
         lines = lines[:max_lines]
         lines[-1] = lines[-1].rstrip("，。；、 ") + "..."
@@ -104,7 +107,139 @@ def draw_pill(draw, xy: tuple[int, int], text: str, font, fill: str = "#0B5D3B",
     return (x, y, x + w, y + h)
 
 
-def write_png_card(path: Path, title: str, subtitle: str, body: list[str], width: int, height: int, image_source: Path | None = None) -> None:
+def draw_arrow(draw, start: tuple[int, int], end: tuple[int, int], fill: str, width: int = 5) -> None:
+    draw.line((start[0], start[1], end[0], end[1]), fill=fill, width=width)
+    dx = end[0] - start[0]
+    dy = end[1] - start[1]
+    if abs(dx) > abs(dy):
+        direction = 1 if dx >= 0 else -1
+        points = [(end[0], end[1]), (end[0] - 18 * direction, end[1] - 12), (end[0] - 18 * direction, end[1] + 12)]
+    else:
+        direction = 1 if dy >= 0 else -1
+        points = [(end[0], end[1]), (end[0] - 12, end[1] - 18 * direction), (end[0] + 12, end[1] - 18 * direction)]
+    draw.polygon(points, fill=fill)
+
+
+def draw_fallback_visual(
+    draw,
+    box: tuple[int, int, int, int],
+    title: str,
+    body: list[str],
+    visual_type: str | None = None,
+    visual_role: str | None = None,
+) -> None:
+    x1, y1, x2, y2 = box
+    w = x2 - x1
+    h = y2 - y1
+    cx = x1 + w // 2
+    cy = y1 + h // 2
+    visual_key = " ".join([visual_type or "", visual_role or "", title, " ".join(body)]).lower()
+    label_font = load_font(26, bold=True)
+    small_font = load_font(22)
+
+    draw.rounded_rectangle(box, radius=22, fill="#FFF7EC", outline="#F4A261", width=3)
+    for offset, color in [(0, "#FDEAD6"), (46, "#E7F2EA"), (92, "#FFFDF7")]:
+        draw.rounded_rectangle(
+            (x1 + 34 + offset, y1 + 34 + offset, x2 - 34 - offset, y2 - 34 - offset),
+            radius=24,
+            outline=color,
+            width=4,
+        )
+
+    def node(x: int, y: int, text: str, fill: str = "#FFFFFF", outline: str = "#0B5D3B") -> tuple[int, int, int, int]:
+        bw, bh = 176, 78
+        rect = (x - bw // 2, y - bh // 2, x + bw // 2, y + bh // 2)
+        draw.rounded_rectangle(rect, radius=18, fill=fill, outline=outline, width=3)
+        draw_wrapped(draw, (rect[0] + 20, rect[1] + 20), text, small_font, outline, bw - 40, line_gap=4, max_lines=1)
+        return rect
+
+    if any(term in visual_key for term in ["flywheel", "flow", "feedback", "环", "循环", "principles_system"]):
+        positions = [
+            (cx, y1 + int(h * 0.20), "目标"),
+            (x1 + int(w * 0.76), y1 + int(h * 0.39), "现实"),
+            (x1 + int(w * 0.66), y1 + int(h * 0.68), "根因"),
+            (x1 + int(w * 0.34), y1 + int(h * 0.68), "原则"),
+            (x1 + int(w * 0.24), y1 + int(h * 0.39), "执行"),
+        ]
+        points = [(px, py) for px, py, _ in positions]
+        for start, end in zip(points, points[1:] + points[:1]):
+            draw_arrow(draw, start, end, "#F97316", 5)
+        for index, (px, py, text) in enumerate(positions):
+            node(px, py, text, fill="#FFFFFF" if index % 2 else "#E7F2EA")
+        draw.ellipse((cx - 92, cy - 92, cx + 92, cy + 92), fill="#0B5D3B", outline="#F97316", width=4)
+        draw_wrapped(draw, (cx - 62, cy - 28), "原则\n复盘", label_font, "#FFFFFF", 124, line_gap=6, max_lines=2)
+    elif any(term in visual_key for term in ["pyramid", "结构", "模型"]):
+        levels = [
+            (cx - 110, y1 + 135, cx + 110, y1 + 245, "#F97316", "结论"),
+            (cx - 255, y1 + 300, cx + 255, y1 + 430, "#0B5D3B", "理由"),
+            (cx - 390, y1 + 500, cx + 390, y1 + 660, "#FDEAD6", "事实 / 案例"),
+        ]
+        for rect in levels:
+            draw.rounded_rectangle(rect[:4], radius=22, fill=rect[4], outline="#2F2A24", width=3)
+            text_fill = "#FFFFFF" if rect[4] != "#FDEAD6" else "#0B5D3B"
+            draw_wrapped(draw, (rect[0] + 34, rect[1] + 36), rect[5], label_font, text_fill, rect[2] - rect[0] - 68, max_lines=1)
+        for x in [cx - 250, cx, cx + 250]:
+            draw.line((x, y1 + 500, cx, y1 + 245), fill="#F4A261", width=4)
+    elif any(term in visual_key for term in ["matrix", "decision", "决策", "择优", "可信度"]):
+        grid = (x1 + 128, y1 + 165, x2 - 128, y2 - 180)
+        draw.rounded_rectangle(grid, radius=22, fill="#FFFFFF", outline="#0B5D3B", width=4)
+        rows, cols = 4, 4
+        cell_w = (grid[2] - grid[0]) // cols
+        cell_h = (grid[3] - grid[1]) // rows
+        for col in range(1, cols):
+            draw.line((grid[0] + col * cell_w, grid[1], grid[0] + col * cell_w, grid[3]), fill="#E7F2EA", width=4)
+        for row in range(1, rows):
+            draw.line((grid[0], grid[1] + row * cell_h, grid[2], grid[1] + row * cell_h), fill="#E7F2EA", width=4)
+        for col, score in enumerate([0.35, 0.68, 0.54, 0.86]):
+            bar_h = int(cell_h * 2.4 * score)
+            bx = grid[0] + col * cell_w + 42
+            by = grid[3] - bar_h - 34
+            draw.rounded_rectangle((bx, by, bx + 62, grid[3] - 34), radius=14, fill="#F97316" if col == 3 else "#0B5D3B")
+        draw_wrapped(draw, (grid[0] + 34, grid[1] + 28), "可信度加权", label_font, "#0B5D3B", grid[2] - grid[0] - 68, max_lines=1)
+    elif any(term in visual_key for term in ["workflow", "ai", "skill", "工作流"]):
+        y = cy - 45
+        xs = [x1 + 180, cx, x2 - 180]
+        labels = ["输入", "AI整理", "原则卡"]
+        for i, (px, text) in enumerate(zip(xs, labels)):
+            node(px, y, text, fill="#FFFFFF" if i != 1 else "#E7F2EA", outline="#F97316" if i == 1 else "#0B5D3B")
+        draw_arrow(draw, (xs[0] + 92, y), (xs[1] - 96, y), "#F97316", 5)
+        draw_arrow(draw, (xs[1] + 96, y), (xs[2] - 92, y), "#F97316", 5)
+        for row, text in enumerate(["事实清单", "根因判断", "行动清单"]):
+            node(cx, y + 135 + row * 96, text, fill="#FFFDF7", outline="#0B5D3B")
+    elif any(term in visual_key for term in ["book", "author", "书籍", "内涵"]):
+        book = (cx - 165, cy - 260, cx + 165, cy + 260)
+        draw.rounded_rectangle(book, radius=26, fill="#202020", outline="#F97316", width=5)
+        draw.rectangle((book[0] + 28, book[1] + 30, book[0] + 50, book[3] - 30), fill="#F97316")
+        draw_wrapped(draw, (book[0] + 78, book[1] + 95), "BOOK\nTO\nSKILL", label_font, "#FFFDF7", 210, line_gap=12, max_lines=3)
+        draw.rounded_rectangle((x1 + 120, cy - 120, cx - 230, cy + 155), radius=18, fill="#FFFFFF", outline="#0B5D3B", width=3)
+        draw.line((x1 + 156, cy - 52, cx - 270, cy - 52), fill="#F4A261", width=6)
+        draw.line((x1 + 156, cy + 22, cx - 270, cy + 22), fill="#E7F2EA", width=6)
+        draw.rounded_rectangle((cx + 230, cy - 120, x2 - 120, cy + 155), radius=18, fill="#FFFFFF", outline="#0B5D3B", width=3)
+        draw.line((cx + 270, cy - 52, x2 - 156, cy - 52), fill="#F4A261", width=6)
+        draw.line((cx + 270, cy + 22, x2 - 156, cy + 22), fill="#E7F2EA", width=6)
+    else:
+        desk = (x1 + 105, y1 + 225, x2 - 105, y2 - 165)
+        draw.rounded_rectangle(desk, radius=28, fill="#FFFFFF", outline="#0B5D3B", width=4)
+        for i, color in enumerate(["#F97316", "#0B5D3B", "#F4A261"]):
+            px = desk[0] + 70 + i * 190
+            py = desk[1] + 90 + (i % 2) * 70
+            draw.rounded_rectangle((px, py, px + 145, py + 98), radius=18, fill=color)
+        draw.line((desk[0] + 70, desk[3] - 135, desk[2] - 70, desk[3] - 135), fill="#E7F2EA", width=9)
+        draw.line((desk[0] + 70, desk[3] - 80, desk[2] - 190, desk[3] - 80), fill="#FDEAD6", width=9)
+        draw_wrapped(draw, (desk[0] + 70, desk[1] + 270), "问题 -> 结构 -> 行动", label_font, "#0B5D3B", desk[2] - desk[0] - 140, max_lines=1)
+
+
+def write_png_card(
+    path: Path,
+    title: str,
+    subtitle: str,
+    body: list[str],
+    width: int,
+    height: int,
+    image_source: Path | None = None,
+    visual_type: str | None = None,
+    visual_role: str | None = None,
+) -> None:
     if Image is None or ImageDraw is None:
         raise RuntimeError("Pillow is required to render PNG poster/video frames.")
     image = Image.new("RGB", (width, height), "#FFFDF7")
@@ -135,7 +270,7 @@ def write_png_card(path: Path, title: str, subtitle: str, body: list[str], width
         paste_cover(image, image_source, hero_box)
         draw.rounded_rectangle(hero_box, radius=22, outline="#F4A261", width=3)
     else:
-        draw.rounded_rectangle(hero_box, radius=22, fill="#FFF7EC", outline="#F4A261", width=3)
+        draw_fallback_visual(draw, hero_box, title, body, visual_type=visual_type, visual_role=visual_role)
 
     x = card_x + 44
     max_width = card_w - 88
@@ -181,6 +316,8 @@ def main() -> int:
     project_dir = Path(args.project_dir)
     style_bible = read_json(project_dir / "style_bible.json")
     storyboard = read_json(project_dir / "storyboard.json")
+    if ensure_storyboard_v12_fields(storyboard):
+        write_json(project_dir / "storyboard.json", storyboard)
     cover_plan = read_json(project_dir / "cover_poster_plan.json")
 
     scene_dir = project_dir / "scene_images"
@@ -241,6 +378,8 @@ def main() -> int:
             style_bible["width"],
             style_bible["height"],
             imagegen_source_dir / f"{scene_id}.png",
+            visual_type=scene.get("visualType"),
+            visual_role=scene.get("visualRole"),
         )
         tts_file.write_text(scene["narration"] + "\n", encoding="utf-8")
         write_srt(subtitle_file, scene["subtitle"], scene["durationSec"])

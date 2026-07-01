@@ -447,3 +447,22 @@
 - Remaining notes:
   - The zip is a generated distribution artifact for local sharing and remains uncommitted by policy.
   - Packaging excluded `.DS_Store`, `__pycache__`, `.pyc`, `.pytest_cache`, `node_modules`, `.venv`, and `.mypy_cache` content.
+
+## 2026-07-01 10:08:00 CST
+
+- Scope: `book2videoskill` non-empty video visual fix.
+- Changed files:
+  - `book2videoskill/scripts/book2video_common.py`
+  - `book2videoskill/scripts/storyboard2assets.py`
+  - `book2videoskill/scripts/storyboard2visual_plan.py`
+  - `book2videoskill/scripts/validate_book2video_project.py`
+  - `STATUS.md`
+- Validation:
+  - `python3 -m py_compile` passed for the changed Book2Video scripts.
+  - Regenerated local outputs for `book2videoskill/projects/pyramid-principle` and `book2videoskill/projects/principles-ray-dalio`.
+  - `validate_book2video_project.py --require-render` passed for both regenerated projects.
+  - Extracted final-video frames and confirmed non-empty visual crop scores; `principles-ray-dalio` 5s/30s frames measured crop stddev 68.03 and 49.39.
+- Commit/push state: pending.
+- Remaining notes:
+  - Generated project outputs, debug frames, and video files stay local and are not staged by policy.
+  - Existing unrelated untracked artifacts remain untouched: `.playwright-mcp/`, `agent-skill-tools-intro-video/`, `ppt-master-plus-v02.zip`.

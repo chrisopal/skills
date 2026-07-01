@@ -462,7 +462,7 @@
   - Regenerated local outputs for `book2videoskill/projects/pyramid-principle` and `book2videoskill/projects/principles-ray-dalio`.
   - `validate_book2video_project.py --require-render` passed for both regenerated projects.
   - Extracted final-video frames and confirmed non-empty visual crop scores; `principles-ray-dalio` 5s/30s frames measured crop stddev 68.03 and 49.39.
-- Commit/push state: pending.
+- Commit/push state: committed and pushed in `90864a1` on `main`.
 - Remaining notes:
   - Generated project outputs, debug frames, and video files stay local and are not staged by policy.
   - Existing unrelated untracked artifacts remain untouched: `.playwright-mcp/`, `agent-skill-tools-intro-video/`, `ppt-master-plus-v02.zip`.

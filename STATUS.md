@@ -19,7 +19,7 @@
   - `python3.12 scripts/validate_skill.py` passed.
   - Regenerated the Huachen detail at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`; contacts are 王总 as 业务需求负责人, 李经理 as 项目推进负责人, and 张伟 as 采购/商务负责人.
   - Playwright HTTP preview verified desktop 1440px and mobile 390px: decision-chain section present, customer demand owner/project owner/procurement owner visible, missing final decision maker visible, 3 archived material images still render with 0 broken images, and no mobile page overflow.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed and pushed to `origin/main` as `11e19d0`.
 - Remaining notes:
   - The reference extractor remains heuristic; production deployments can replace extraction with a model call while preserving the `decision_chain` contract.
 

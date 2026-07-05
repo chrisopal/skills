@@ -1,0 +1,52 @@
+<div class="opportunity-card">
+  <div class="card-header">
+    <div>
+      <h2>{{opportunity.name}}</h2>
+      <p class="subtitle">{{account.company_name}}｜{{account.industry}}｜{{account.region}}</p>
+    </div>
+    <div class="score-badge level-{{opportunity.score_level}}">{{opportunity.score}}分</div>
+  </div>
+
+  <div class="status-row">
+    <span class="tag">{{opportunity.stage}}</span>
+    <span class="tag risk-{{opportunity.risk_level}}">风险：{{opportunity.risk_level}}</span>
+    <span class="tag">赢单概率：{{opportunity.win_probability_percent}}%</span>
+  </div>
+
+  <div class="section">
+    <h3>核心需求</h3>
+    <p>{{opportunity.core_need}}</p>
+  </div>
+
+  <div class="section">
+    <h3>主要痛点</h3>
+    <ul>
+      {{pain_points_list}}
+    </ul>
+  </div>
+
+  <div class="section two-col">
+    <div>
+      <h3>预算信号</h3>
+      <p>{{opportunity.budget_signal}}</p>
+    </div>
+    <div>
+      <h3>预计时间</h3>
+      <p>{{opportunity.expected_timeline}}</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>下一步行动</h3>
+    <ul>
+      {{next_actions_list}}
+    </ul>
+  </div>
+
+  <div class="section evidence">
+    <h3>待确认信息</h3>
+    <ul>
+      {{missing_information_list}}
+    </ul>
+  </div>
+</div>

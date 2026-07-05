@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Account",
+  "type": "object",
+  "required": [
+    "id",
+    "company_name"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "company_name": {
+      "type": "string"
+    },
+    "normalized_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "industry": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "region": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "company_size": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "business_summary": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "current_systems": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "key_pain_points": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

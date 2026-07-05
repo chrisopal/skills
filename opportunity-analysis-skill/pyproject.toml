@@ -1,0 +1,15 @@
+[project]
+name = "opportunity-analysis-skill"
+version = "0.3.0"
+description = "Self-contained opportunity analysis skill with SQLite storage and HTML rendering"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+opportunity-analysis = "opportunity_skill.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

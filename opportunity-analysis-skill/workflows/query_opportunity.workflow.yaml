@@ -1,0 +1,15 @@
+name: query_opportunity
+kind: reference-workflow
+description: Logical workflow implemented by src/opportunity_skill/pipeline.py::run_query.
+steps:
+  - id: understand_query
+    uses: prompts/06_query_understanding.md_or_host_query_parser
+    output: query_json
+  - id: safe_query
+    uses: opportunity_skill.storage.OpportunitySQLiteAdapter.query_opportunities
+    input: query_json
+    output: opportunity_list
+  - id: render
+    uses: opportunity_skill.renderer.SkillDisplayRenderer
+    input: opportunity_list
+    output: html_or_markdown

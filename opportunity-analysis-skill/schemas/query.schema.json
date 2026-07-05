@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpportunityQuery",
+  "type": "object",
+  "required": [
+    "query_type"
+  ],
+  "properties": {
+    "query_type": {
+      "enum": [
+        "opportunity_search",
+        "account_search",
+        "next_action_search"
+      ]
+    },
+    "filters": {
+      "type": "object",
+      "properties": {
+        "account_id": {
+          "type": "string"
+        },
+        "company_name": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "risk_level": {
+          "type": "string"
+        },
+        "min_score": {
+          "type": "integer"
+        },
+        "max_score": {
+          "type": "integer"
+        },
+        "status": {
+          "type": "string"
+        },
+        "updated_after": {
+          "type": "string"
+        },
+        "next_action_status": {
+          "type": "string"
+        }
+      }
+    },
+    "sort": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "order": {
+          "enum": [
+            "asc",
+            "desc"
+          ]
+        }
+      }
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 200
+    }
+  }
+}

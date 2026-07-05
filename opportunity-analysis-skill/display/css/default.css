@@ -1,0 +1,29 @@
+.opportunity-card, .opportunity-detail, .customer-profile-card, .kanban, .next-action-list, .risk-table {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+  border: 1px solid #d7e3f5;
+  border-radius: 14px;
+  padding: 20px;
+  background: #ffffff;
+  color: #1f2937;
+  max-width: 960px;
+  line-height: 1.55;
+}
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px; margin-bottom: 16px; }
+h2 { margin: 0; font-size: 22px; color: #0C2749; }
+.subtitle { margin: 6px 0 0; color: #6b7280; }
+.score-badge { border-radius: 999px; padding: 8px 14px; background: #e8f3ff; color: #005bbb; font-weight: 700; }
+.status-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.tag { background: #f3f6fb; color: #1f4f8b; border-radius: 999px; padding: 5px 10px; font-size: 13px; }
+.risk-high { color: #b91c1c; background: #fee2e2; }
+.risk-medium { color: #92400e; background: #fef3c7; }
+.risk-low { color: #166534; background: #dcfce7; }
+.section { margin-top: 16px; }
+.section h3 { font-size: 15px; margin-bottom: 8px; color: #0C2749; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.evidence { background: #f8fafc; border-radius: 10px; padding: 12px; }
+table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+th, td { border: 1px solid #e5e7eb; padding: 8px 10px; text-align: left; font-size: 14px; }
+th { background: #f3f4f6; color: #374151; }
+.kanban-columns { display: flex; gap: 12px; overflow-x: auto; }
+.kanban-col { min-width: 220px; background: #f8fafc; border-radius: 10px; padding: 10px; }
+.kanban-card { background: white; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px; margin: 8px 0; }

@@ -1,0 +1,23 @@
+{
+  "account_hint": "某材料检测中心",
+  "analysis_goal": "从Evidence生成商机分析",
+  "evidence_list": [
+    {
+      "evidence_id": "ev_demo_001",
+      "source_type": "audio_transcript",
+      "source_name": "客户电话转写",
+      "source_ref": null,
+      "content": "客户提到实验室CMA材料报告量大，报告审核效率低，希望建设检测报告AI助手。",
+      "extracted_fields": {},
+      "confidence": 0.86,
+      "source_refs": [
+        {
+          "location": "00:03:10-00:04:20",
+          "quote": "报告审核效率低，希望建设检测报告AI助手"
+        }
+      ],
+      "requires_human_confirmation": false,
+      "parse_warnings": []
+    }
+  ]
+}

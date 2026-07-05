@@ -1,0 +1,2 @@
+# No required third-party dependency for the demo runtime.
+# Optional: install jinja2 if you replace the built-in safe renderer with Jinja2.

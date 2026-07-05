@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpportunityAnalysisOutput",
+  "type": "object",
+  "required": [
+    "human_summary",
+    "structured_data",
+    "storage_result",
+    "display_result"
+  ],
+  "properties": {
+    "human_summary": {
+      "type": "string"
+    },
+    "structured_data": {
+      "type": "object",
+      "required": [
+        "account",
+        "contacts",
+        "opportunity",
+        "risks",
+        "next_actions",
+        "evidence",
+        "missing_information",
+        "evidence_map"
+      ],
+      "properties": {
+        "account": {
+          "type": "object"
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "opportunity": {
+          "type": "object"
+        },
+        "risks": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "next_actions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "missing_information": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_map": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "storage_result": {
+      "type": "object",
+      "required": [
+        "adapter",
+        "saved",
+        "account_id",
+        "opportunity_id",
+        "db_path"
+      ],
+      "properties": {
+        "adapter": {
+          "type": "string"
+        },
+        "saved": {
+          "type": "boolean"
+        },
+        "account_id": {
+          "type": "string"
+        },
+        "opportunity_id": {
+          "type": "string"
+        },
+        "db_path": {
+          "type": "string"
+        }
+      }
+    },
+    "display_result": {
+      "type": "object",
+      "required": [
+        "template_id"
+      ],
+      "properties": {
+        "template_id": {
+          "type": "string"
+        },
+        "html": {
+          "type": "string"
+        },
+        "markdown": {
+          "type": "string"
+        },
+        "html_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "markdown_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rendered_view_id": {
+          "type": "string"
+        }
+      }
+    },
+    "missing_information": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_map": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

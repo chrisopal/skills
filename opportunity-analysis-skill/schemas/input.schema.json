@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpportunityAnalysisInput",
+  "type": "object",
+  "properties": {
+    "account_hint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_list": {
+      "type": "array",
+      "items": {
+        "$ref": "evidence.schema.json"
+      }
+    },
+    "analysis_goal": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owner": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "anyOf": [
+    {
+      "required": [
+        "materials"
+      ]
+    },
+    {
+      "required": [
+        "evidence_list"
+      ]
+    }
+  ]
+}

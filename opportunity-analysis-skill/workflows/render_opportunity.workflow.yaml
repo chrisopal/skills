@@ -1,0 +1,10 @@
+name: render_opportunity
+kind: reference-workflow
+description: Logical workflow implemented by src/opportunity_skill/pipeline.py::run_detail.
+steps:
+  - id: load_detail
+    uses: opportunity_skill.storage.OpportunitySQLiteAdapter.get_opportunity_detail
+  - id: render_template
+    uses: opportunity_skill.renderer.SkillDisplayRenderer
+    params:
+      template_id: opportunity_detail

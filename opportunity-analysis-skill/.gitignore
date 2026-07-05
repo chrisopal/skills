@@ -1,0 +1,6 @@
+.skill_data/
+outputs/
+*.egg-info/
+__pycache__/
+*.pyc
+.venv/

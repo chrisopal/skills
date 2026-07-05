@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Opportunity",
+  "type": "object",
+  "required": [
+    "id",
+    "account_id",
+    "name",
+    "stage",
+    "core_need"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "account_id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "stage_status": {
+      "enum": [
+        "confirmed",
+        "inferred",
+        "missing"
+      ]
+    },
+    "core_need": {
+      "type": "string"
+    },
+    "budget_signal": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "budget_amount": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "expected_timeline": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "win_probability": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "score_level": {
+      "type": "string"
+    },
+    "risk_level": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "unknown"
+      ]
+    },
+    "competitors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pain_points": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "missing_information": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

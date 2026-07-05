@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DisplayModel",
+  "type": "object",
+  "required": [
+    "primary_view",
+    "cards"
+  ],
+  "properties": {
+    "primary_view": {
+      "type": "string"
+    },
+    "cards": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "tables": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "html": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "markdown": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

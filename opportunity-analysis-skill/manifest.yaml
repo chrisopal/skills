@@ -1,0 +1,111 @@
+name: opportunity-analysis-skill
+version: 0.3.0
+kind: portable-agent-capability
+description: Portable opportunity analysis capability with a Python reference runtime, default SQLite storage, controlled querying, and HTML/Markdown rendering.
+
+runtime:
+  language: python
+  min_python: "3.10"
+  package: opportunity_skill
+  cli_module: opportunity_skill.cli
+  console_script: opportunity-analysis
+  third_party_dependencies: []
+  default_db_path:
+    env_root: SKILL_DATA_DIR
+    relative_path: opportunity-analysis/opportunity.db
+    fallback: .skill_data/opportunity-analysis/opportunity.db
+
+host_compatibility:
+  assumptions:
+    - host_can_read_files
+    - host_can_run_python_or_follow_contract_manually
+  examples:
+    - claude-code
+    - workbuddy
+    - openclaw
+    - hermes-agent
+    - mateclaw
+    - shell
+
+inputs:
+  accepted_modes:
+    - evidence_list
+    - text_materials
+    - plain_text_wrapped_as_material
+  raw_material_policy:
+    audio: transcribe_before_analysis
+    image: ocr_before_analysis
+    document: parse_or_export_text_before_analysis
+    email: parse_or_paste_body_before_analysis
+    webpage: extract_or_paste_body_before_analysis
+
+outputs:
+  analyze:
+    schema: schemas/output.schema.json
+    includes:
+      - human_summary
+      - structured_data
+      - storage_result
+      - display_result
+  query:
+    schema: schemas/query.schema.json
+    renderer: opportunity_kanban
+  detail:
+    renderer: opportunity_detail
+
+storage:
+  default_adapter: sqlite
+  implemented_adapters:
+    sqlite:
+      implementation: src/opportunity_skill/storage.py
+      schema_file: storage/sqlite/schema.sql
+      auto_migrate: true
+  extension_adapters:
+    feishu:
+      file: storage/adapters/feishu_adapter.py
+      status: contract_stub
+      config_examples: [app_id, app_secret_ref, base_id, table_mapping, field_mapping]
+    crm:
+      file: storage/adapters/crm_adapter.py
+      status: contract_stub
+      config_examples: [endpoint, tenant_id, auth_ref, object_mapping]
+    postgres:
+      file: storage/adapters/postgres_adapter.py
+      status: contract_stub
+      config_examples: [dsn_ref, schema, ssl_mode]
+
+display:
+  default_format: html
+  fallback_format: markdown
+  renderer: src/opportunity_skill/renderer.py
+  template_engine: builtin_safe_renderer
+  templates:
+    - id: opportunity_card
+      file: display/templates/opportunity_card.html
+    - id: opportunity_detail
+      file: display/templates/opportunity_detail.html
+    - id: customer_profile
+      file: display/templates/customer_profile.html
+    - id: opportunity_kanban
+      file: display/templates/opportunity_kanban.html
+    - id: next_action_list
+      file: display/templates/next_action_list.html
+    - id: risk_table
+      file: display/templates/risk_table.html
+
+quality_policy:
+  hallucination_control: strict
+  require_evidence_for_key_fields: true
+  mark_inferred_fields: true
+  html_escape_user_input: true
+  arbitrary_sql_from_natural_language: forbidden
+
+validation:
+  command: python3.12 scripts/validate_skill.py
+  checks:
+    - json_files
+    - python_compile
+    - template_safety
+    - evaluation_cases
+    - analyze_query_detail_runtime
+    - distribution_noise

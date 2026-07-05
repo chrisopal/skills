@@ -1,3 +1,31 @@
+## 2026-07-05 23:20:00 CST
+
+- Scope: Convert `opportunity-analysis-skill` from a demo-oriented folder into a portable enterprise-agent capability package with a closed local SQLite loop and adapter extension points for future Feishu, CRM/MCP, and PostgreSQL integrations.
+- Changed files:
+  - `opportunity-analysis-skill/SKILL.md`
+  - `opportunity-analysis-skill/README.md`
+  - `opportunity-analysis-skill/manifest.yaml`
+  - `opportunity-analysis-skill/.gitignore`
+  - `opportunity-analysis-skill/src/opportunity_skill/*.py`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+  - `opportunity-analysis-skill/storage/*`
+  - `opportunity-analysis-skill/display/*`
+  - `opportunity-analysis-skill/schemas/output.schema.json`
+  - `opportunity-analysis-skill/workflows/*.yaml`
+  - `docs/superpowers/specs/2026-07-05-opportunity-analysis-portable-skill-design.md`
+- Simplifications made:
+  - Removed Codex-specific skill assumptions and kept the package host-agnostic for Claude Code, WorkBuddy, OpenClaw, Hermes Agent, MateClaw, and shell automation.
+  - Made SQLite the only implemented storage adapter while marking Feishu, CRM/MCP, and PostgreSQL as explicit extension stubs.
+  - Removed generated runtime artifacts from the distributable package surface.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - `SKILL_DATA_DIR=<tmp> PYTHONPATH=src python3.12 -m opportunity_skill.cli analyze --input examples/input_visit_note.json` wrote the default SQLite database and result files.
+  - Editable install smoke test passed: `/tmp/opportunity-skill-install-venv/bin/opportunity-analysis analyze --input examples/input_evidence_list.json`.
+  - `git diff --check -- opportunity-analysis-skill docs/superpowers/specs/2026-07-05-opportunity-analysis-portable-skill-design.md` passed.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - Live Feishu, CRM/MCP, and PostgreSQL integrations remain future adapter implementations; no external credentials or API calls are included in this package.
+
 ## 2026-06-30 18:59:04 CST
 
 - Scope: Promote the current WeChat illustration style into the company/product visual system for 慧新, covering product UI, website, admin console, PPT/sales material, and WeChat image assets.

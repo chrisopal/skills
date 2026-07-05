@@ -1,0 +1,37 @@
+templates:
+  - id: opportunity_card
+    name: 商机卡片
+    file: templates/opportunity_card.html
+    input_object: opportunity_detail
+    output_format: html
+    fallback_format: markdown
+  - id: customer_profile
+    name: 客户画像
+    file: templates/customer_profile.html
+    input_object: account_detail
+    output_format: html
+    fallback_format: markdown
+  - id: opportunity_detail
+    name: 商机详情页
+    file: templates/opportunity_detail.html
+    input_object: opportunity_detail
+    output_format: html
+    fallback_format: markdown
+  - id: opportunity_kanban
+    name: 商机看板
+    file: templates/opportunity_kanban.html
+    input_object: opportunity_list
+    output_format: html
+    fallback_format: markdown
+  - id: next_action_list
+    name: 下一步行动列表
+    file: templates/next_action_list.html
+    input_object: opportunity_detail
+    output_format: html
+    fallback_format: markdown
+  - id: risk_table
+    name: 风险表
+    file: templates/risk_table.html
+    input_object: opportunity_detail
+    output_format: html
+    fallback_format: markdown

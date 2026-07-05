@@ -1,0 +1,1 @@
+-- init migration is represented by storage/sqlite/schema.sql

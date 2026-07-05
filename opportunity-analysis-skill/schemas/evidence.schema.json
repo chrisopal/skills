@@ -27,6 +27,75 @@
         "null"
       ]
     },
+    "file_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "attachments": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "archived_files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "evidence_id",
+          "archived_path",
+          "relative_path",
+          "file_name",
+          "mime_type",
+          "sha256"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "evidence_id": {
+            "type": "string"
+          },
+          "original_path": {
+            "type": "string"
+          },
+          "archived_path": {
+            "type": "string"
+          },
+          "relative_path": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "size_bytes": {
+            "type": "integer"
+          },
+          "sha256": {
+            "type": "string"
+          },
+          "is_image": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
     "content": {
       "type": "string"
     },

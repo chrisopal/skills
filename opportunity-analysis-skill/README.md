@@ -7,10 +7,11 @@ This package is designed to run as a standalone closed loop inside many agent ho
 ## What It Does
 
 - Accepts normalized Evidence or text materials.
+- Archives readable source files from `file_path`, `path`, `source_path`, `source_ref`, or `attachments`.
 - Extracts account, contacts, opportunity, needs, budget signals, timeline, systems, competitors, risks, and next actions.
 - Stores the result in local SQLite by default.
 - Runs controlled opportunity queries.
-- Renders HTML and Markdown views.
+- Renders HTML and Markdown views, including thumbnails and links for archived source material.
 - Leaves clear extension points for Feishu, CRM/MCP, PostgreSQL, external model extraction, and custom display templates.
 
 The bundled extractor is a lightweight reference implementation. Production deployments can replace `src/opportunity_skill/extractor.py` with a model-backed extractor while keeping the same schemas, storage contract, and display contract.
@@ -78,6 +79,8 @@ Any host agent can use the package in one of two ways:
 
 Raw audio, image, document, email, and webpage inputs should be transcribed, OCRed, parsed, or extracted before this skill runs. The reference runtime accepts either `evidence_list` or text `materials`.
 
+For materials that came from real files, pass the readable local path as `file_path`, `path`, `source_path`, `source_ref`, or inside `attachments`. The default runtime copies those files into an `attachments/` archive next to the rendered output when `--output-dir` is provided, or next to the SQLite database when no output directory is provided. The SQLite adapter records `evidence_files` metadata so a later `detail` render can show thumbnails and clickable file links in the opportunity dossier.
+
 ## Adapter Strategy
 
 SQLite is the only implemented storage adapter in this package. Other adapters are intentionally contract stubs:
@@ -87,6 +90,8 @@ SQLite is the only implemented storage adapter in this package. Other adapters a
 - `storage/adapters/postgres_adapter.py`: team or enterprise PostgreSQL.
 
 Hosts should provide credentials through configuration references, environment variables, or secret managers. Do not commit API tokens or customer secrets into this package.
+
+External adapters should preserve the same file metadata contract as SQLite. For example, a Feishu adapter may upload archived files to Drive and store the resulting Drive token or URL in the adapter-specific fields while keeping `evidence_id`, `file_name`, `mime_type`, `sha256`, and display link fields available to the renderer.
 
 ## Validation
 

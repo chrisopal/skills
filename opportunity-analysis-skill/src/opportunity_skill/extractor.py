@@ -35,6 +35,8 @@ def normalize_input(raw: dict[str, Any]) -> list[dict[str, Any]]:
             "source_type": item.get("type", "text"),
             "source_name": item.get("name") or item.get("source_name") or f"material_{idx}",
             "source_ref": item.get("source_ref"),
+            "file_path": item.get("file_path") or item.get("path") or item.get("source_path"),
+            "attachments": item.get("attachments", []),
             "content": content,
             "extracted_fields": {},
             "confidence": float(item.get("confidence", 0.85)),

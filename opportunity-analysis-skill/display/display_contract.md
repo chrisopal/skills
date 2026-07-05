@@ -13,6 +13,8 @@ Display层只接收结构化数据，不直接消费自然语言摘要。
 - `next_action_list`: 下一步行动列表
 - `risk_table`: 风险表
 
+`opportunity_detail`应展示`archived_files`或Evidence上的`archived_files`，图片类文件使用缩略图，其他文件使用文件卡片和可点击链接。链接应优先使用相对于HTML输出目录的`relative_path`。
+
 ## 安全规则
 
 - 禁止`<script>`；

@@ -1,5 +1,6 @@
 from __future__ import annotations
 import html
+from urllib.parse import quote
 from pathlib import Path
 from typing import Any
 
@@ -114,12 +115,14 @@ class SkillDisplayRenderer:
             "contacts.count": esc(len(data.get("contacts", []))),
             "missing.count": esc(len(data.get("opportunity", {}).get("missing_information", []))),
             "evidence.count": esc(len(data.get("evidence", []))),
+            "materials.count": esc(len(self._collect_archived_files(data))),
             "pain_points_list": li(data.get("opportunity", {}).get("pain_points", [])),
             "next_actions_list": self._action_items(data.get("next_actions", [])),
             "missing_information_list": li(data.get("opportunity", {}).get("missing_information", [])),
             "contacts_rows": self._contacts_rows(data.get("contacts", [])),
             "risks_rows": self._risk_rows(data.get("risks", [])),
             "evidence_list": self._evidence_items(data.get("evidence", [])),
+            "material_gallery": self._material_gallery(data),
         }
         return replace_tokens(tpl, mapping)
 
@@ -210,13 +213,71 @@ class SkillDisplayRenderer:
             return "<li class='ql-empty'>暂无</li>"
         out = []
         for ev in evidence:
+            file_count = len(ev.get("archived_files", []) or [])
+            badge = f"<span class='ql-file-badge'>{file_count} 个原始文件</span>" if file_count else ""
             out.append(
                 "<li>"
                 f"<strong>{esc(ev.get('source_name'))}</strong>"
+                f"{badge}"
                 f"{esc(compact(ev.get('content'), 220))}"
                 "</li>"
             )
         return "".join(out)
+
+    def _collect_archived_files(self, data: dict[str, Any]) -> list[dict[str, Any]]:
+        files: list[dict[str, Any]] = []
+        seen = set()
+        for item in data.get("archived_files", []) or []:
+            key = item.get("id") or item.get("sha256") or item.get("archived_path")
+            if key and key not in seen:
+                seen.add(key)
+                files.append(item)
+        for ev in data.get("evidence", []) or []:
+            for item in ev.get("archived_files", []) or []:
+                key = item.get("id") or item.get("sha256") or item.get("archived_path")
+                if key and key not in seen:
+                    seen.add(key)
+                    files.append(item)
+        return files
+
+    def _material_gallery(self, data: dict[str, Any]) -> str:
+        files = self._collect_archived_files(data)
+        if not files:
+            return "<div class='ql-material-empty'>暂无归档材料</div>"
+        cards = []
+        for item in files:
+            href = item.get("relative_path") or item.get("archived_path") or item.get("original_path") or "#"
+            href = quote(str(href), safe="/:._-%#?=&")
+            name = item.get("display_name") or item.get("file_name") or "原始材料"
+            file_name = item.get("file_name") or name
+            mime = item.get("mime_type") or "文件"
+            size = self._format_size(item.get("size_bytes"))
+            if item.get("is_image") or str(mime).startswith("image/"):
+                thumb = f"<img src='{esc(href)}' alt='{esc(name)}'>"
+            else:
+                thumb = f"<div class='ql-file-icon'>{esc(Path(str(file_name)).suffix.upper() or 'FILE')}</div>"
+            cards.append(
+                f"<a class='ql-material-card' href='{esc(href)}' target='_blank' rel='noopener'>"
+                f"<div class='ql-material-thumb'>{thumb}</div>"
+                "<div class='ql-material-meta'>"
+                f"<strong>{esc(name)}</strong>"
+                f"<span>{esc(file_name)}</span>"
+                f"<small>{esc(mime)} · {esc(size)}</small>"
+                "</div>"
+                "</a>"
+            )
+        return "".join(cards)
+
+    def _format_size(self, size: Any) -> str:
+        try:
+            value = int(size)
+        except (TypeError, ValueError):
+            return "大小待确认"
+        if value >= 1024 * 1024:
+            return f"{value / (1024 * 1024):.1f} MB"
+        if value >= 1024:
+            return f"{value / 1024:.1f} KB"
+        return f"{value} B"
 
     def to_markdown(self, data: dict[str, Any]) -> str:
         account = data.get("account", {})
@@ -240,4 +301,10 @@ class SkillDisplayRenderer:
         lines.append("\n## 待确认信息")
         for item in opp.get("missing_information", []):
             lines.append(f"- {item}")
+        files = self._collect_archived_files(data)
+        if files:
+            lines.append("\n## 原始材料")
+            for item in files:
+                link = item.get("relative_path") or item.get("archived_path") or item.get("original_path") or ""
+                lines.append(f"- {item.get('display_name') or item.get('file_name') or '原始材料'}: {link}")
         return "\n".join(lines)

@@ -38,6 +38,10 @@ inputs:
     document: parse_or_export_text_before_analysis
     email: parse_or_paste_body_before_analysis
     webpage: extract_or_paste_body_before_analysis
+  source_file_archive:
+    accepted_fields: [file_path, path, source_path, source_ref, attachments]
+    default_archive_dir: attachments
+    metadata_table: evidence_files
 
 outputs:
   analyze:
@@ -47,6 +51,7 @@ outputs:
       - structured_data
       - storage_result
       - display_result
+      - structured_data.archived_files
   query:
     schema: schemas/query.schema.json
     renderer: opportunity_kanban

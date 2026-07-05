@@ -1,3 +1,28 @@
+## 2026-07-06 07:35:00 CST
+
+- Scope: Add original source-material archiving to `opportunity-analysis-skill` and show archived materials in the opportunity dossier visualization.
+- Changed files:
+  - `opportunity-analysis-skill/SKILL.md`
+  - `opportunity-analysis-skill/README.md`
+  - `opportunity-analysis-skill/manifest.yaml`
+  - `opportunity-analysis-skill/schemas/*.json`
+  - `opportunity-analysis-skill/src/opportunity_skill/*.py`
+  - `opportunity-analysis-skill/storage/*`
+  - `opportunity-analysis-skill/display/*`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Kept file archiving local and dependency-free: readable source files are copied into `attachments/`, while SQLite stores only metadata and paths.
+  - Reused the existing Evidence model instead of adding a separate document-ingestion subsystem.
+  - Kept the renderer template-safe and script-free while adding image thumbnails and file links.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - Regenerated the Huachen opportunity detail at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`; 3 original PNG materials were archived under `attachments/` and read back from SQLite detail.
+  - Playwright HTTP preview verified desktop 1440px and mobile 390px: 3 material cards, 3 rendered images, 0 broken images, no page-wide mobile overflow.
+  - `git diff --check -- opportunity-analysis-skill STATUS.md` passed.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - External Feishu, CRM, and object-storage adapters remain contract stubs; they should preserve the same file metadata and renderable link contract when implemented.
+
 ## 2026-07-06 00:09:28 CST
 
 - Scope: Redesign `opportunity-analysis-skill` display templates into a QILIN-style white enterprise opportunity workbench instead of plain text cards.

@@ -87,6 +87,15 @@ def assert_output_contract(result: dict, source: str) -> None:
             fail(f"{source} missing display_result.{key}")
 
 
+def write_tiny_png(path: Path) -> None:
+    path.write_bytes(
+        bytes.fromhex(
+            "89504e470d0a1a0a0000000d4948445200000001000000010802000000907753"
+            "de0000000c49444154789c63606060000000040001f61738550000000049454e44ae426082"
+        )
+    )
+
+
 def check_evaluation_cases(keep_artifacts: bool = False) -> None:
     cases = load_json(ROOT / "evaluation" / "test_cases.json")
     temp_root = Path(tempfile.mkdtemp(prefix="opportunity-skill-validate-"))
@@ -124,6 +133,36 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         detail_result = run_detail(first_db, first_result["storage_result"]["opportunity_id"], temp_root / "detail")
         if "detail" not in detail_result or "display_result" not in detail_result:
             fail("detail result is incomplete")
+
+        source_image = temp_root / "source-material.png"
+        write_tiny_png(source_image)
+        archive_result = run_analyze(
+            {
+                "account_hint": "归档测试有限公司",
+                "analysis_goal": "验证原始材料归档",
+                "materials": [
+                    {
+                        "type": "image_ocr",
+                        "name": "现场白板照片",
+                        "file_path": str(source_image),
+                        "content": "客户：归档测试有限公司\n项目：质量检测自动化升级\n需求：保留原始照片并展示缩略图。",
+                        "confidence": 0.9,
+                    }
+                ],
+            },
+            temp_root / "archive" / "opportunity.db",
+            temp_root / "archive" / "outputs",
+            template_id="opportunity_detail",
+        )
+        archived_files = archive_result["structured_data"].get("archived_files", [])
+        if not archived_files:
+            fail("archive case did not record archived_files")
+        archived_path = Path(archived_files[0]["archived_path"])
+        if not archived_path.exists():
+            fail("archive case did not copy source file")
+        html = archive_result["display_result"]["html"]
+        if "ql-material-card" not in html or "attachments/" not in html:
+            fail("archive case did not render material gallery")
         print("ok evaluation cases")
         if keep_artifacts:
             print(f"artifacts kept at {temp_root}")

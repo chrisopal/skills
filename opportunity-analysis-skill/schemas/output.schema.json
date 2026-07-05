@@ -66,6 +66,12 @@
           "items": {
             "type": "object"
           }
+        },
+        "archived_files": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
         }
       }
     },

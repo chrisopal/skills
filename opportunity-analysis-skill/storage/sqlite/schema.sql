@@ -83,6 +83,22 @@ CREATE TABLE IF NOT EXISTS evidence (
     created_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS evidence_files (
+    id TEXT PRIMARY KEY,
+    evidence_id TEXT NOT NULL,
+    original_path TEXT,
+    archived_path TEXT,
+    relative_path TEXT,
+    file_name TEXT,
+    display_name TEXT,
+    mime_type TEXT,
+    size_bytes INTEGER,
+    sha256 TEXT,
+    is_image INTEGER DEFAULT 0,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(evidence_id) REFERENCES evidence(id)
+);
+
 CREATE TABLE IF NOT EXISTS opportunity_evidence_map (
     id TEXT PRIMARY KEY,
     opportunity_id TEXT NOT NULL,
@@ -149,5 +165,6 @@ CREATE TABLE IF NOT EXISTS rendered_views (
 CREATE INDEX IF NOT EXISTS idx_opportunities_account ON opportunities(account_id);
 CREATE INDEX IF NOT EXISTS idx_opportunities_stage ON opportunities(stage);
 CREATE INDEX IF NOT EXISTS idx_opportunities_score ON opportunities(score);
+CREATE INDEX IF NOT EXISTS idx_evidence_files_evidence ON evidence_files(evidence_id);
 CREATE INDEX IF NOT EXISTS idx_next_actions_opp ON next_actions(opportunity_id);
 CREATE INDEX IF NOT EXISTS idx_risks_opp ON risks(opportunity_id);

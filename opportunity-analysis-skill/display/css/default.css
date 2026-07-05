@@ -205,6 +205,7 @@ body {
 
 .ql-main-column,
 .ql-side-column {
+  min-width: 0;
   display: grid;
   gap: 16px;
 }
@@ -216,6 +217,7 @@ body {
 }
 
 .ql-panel {
+  min-width: 0;
   border: 1px solid var(--ql-line);
   border-radius: 6px;
   background: var(--ql-surface);
@@ -301,7 +303,9 @@ body {
 }
 
 .ql-table-wrap {
+  max-width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -357,6 +361,98 @@ tr:last-child td {
   color: var(--ql-strong);
   font-size: 12px;
   margin-bottom: 2px;
+}
+
+.ql-file-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  margin: 0 0 6px;
+  padding: 0 7px;
+  border: 1px solid var(--ql-line);
+  border-radius: 999px;
+  background: var(--ql-surface);
+  color: var(--ql-muted);
+  font-size: 11px;
+  line-height: 18px;
+}
+
+.ql-material-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ql-material-card {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 10px;
+  min-height: 82px;
+  padding: 8px;
+  border: 1px solid var(--ql-line);
+  border-radius: 6px;
+  background: var(--ql-surface);
+  color: var(--ql-ink);
+  text-decoration: none;
+}
+
+.ql-material-card:hover {
+  border-color: var(--ql-line-strong);
+  background: var(--ql-gray-soft);
+}
+
+.ql-material-thumb {
+  width: 72px;
+  height: 66px;
+  border: 1px solid var(--ql-line);
+  border-radius: 4px;
+  background: var(--ql-gray-soft);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.ql-material-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ql-file-icon {
+  color: var(--ql-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ql-material-meta {
+  min-width: 0;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+}
+
+.ql-material-meta strong,
+.ql-material-meta span,
+.ql-material-meta small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ql-material-meta strong {
+  color: var(--ql-strong);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ql-material-meta span,
+.ql-material-meta small,
+.ql-material-empty {
+  color: var(--ql-muted);
+  font-size: 11px;
+  line-height: 17px;
 }
 
 .ql-critical {
@@ -449,6 +545,10 @@ tr:last-child td {
   }
 
   .ql-metric-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ql-material-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -65,8 +65,10 @@ Preferred input is `evidence_list`, where each item contains:
 - `confidence`
 - `source_refs`
 - `requires_human_confirmation`
+- optional `file_path` or `attachments` for source files that should be archived with the opportunity dossier
 
 The reference runtime also accepts `materials` with text content and wraps them into Evidence objects.
+When `file_path`, `path`, `source_path`, `source_ref`, or `attachments` points to a readable local file, the runtime copies it into an `attachments/` archive folder, records file metadata in SQLite, and exposes thumbnails or file links in the detail view.
 
 ## Output Contract
 
@@ -82,6 +84,7 @@ Every successful analyze run returns:
     "risks": [],
     "next_actions": [],
     "evidence": [],
+    "archived_files": [],
     "missing_information": [],
     "evidence_map": []
   },

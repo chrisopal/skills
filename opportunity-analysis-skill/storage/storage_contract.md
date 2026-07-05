@@ -21,11 +21,29 @@
 - `upsert_opportunity(opportunity) -> opportunity_id`
 - `append_interaction(interaction) -> interaction_id`
 - `append_evidence(evidence) -> evidence_id`
+- `append_evidence_file(file_metadata) -> file_id`
 - `link_evidence_to_field(map_item) -> map_id`
 - `create_risk(risk) -> risk_id`
 - `create_next_action(action) -> action_id`
 - `query_opportunities(query_json) -> list`
 - `get_opportunity_detail(opportunity_id) -> dict`
+
+## Source Material Archive
+
+默认SQLite实现会把可读原始文件复制到本地归档目录，并把文件元数据写入`evidence_files`：
+
+- `evidence_id`
+- `original_path`
+- `archived_path`
+- `relative_path`
+- `file_name`
+- `display_name`
+- `mime_type`
+- `size_bytes`
+- `sha256`
+- `is_image`
+
+外部Adapter可以把文件上传到飞书Drive、CRM对象附件或对象存储，但必须保留同等字段或可渲染链接，确保商机详情页能展示缩略图和可点击材料链接。
 
 ## Safe Query Rule
 

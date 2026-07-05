@@ -121,8 +121,36 @@ class OpportunitySQLiteAdapter:
             """,
             (eid, evidence.get("source_type"), evidence.get("source_name"), evidence.get("source_ref"), evidence.get("content"), to_json(evidence.get("extracted_fields", {})), evidence.get("confidence"), int(bool(evidence.get("requires_human_confirmation", False))), now_iso())
         )
+        for item in evidence.get("archived_files", []) or []:
+            item["evidence_id"] = eid
+            self.append_evidence_file(item)
         self.conn.commit()
         return eid
+
+    def append_evidence_file(self, item: dict[str, Any]) -> str:
+        fid = item.get("id") or new_id("file")
+        self.conn.execute(
+            """
+            INSERT OR REPLACE INTO evidence_files
+              (id, evidence_id, original_path, archived_path, relative_path, file_name, display_name, mime_type, size_bytes, sha256, is_image, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                fid,
+                item.get("evidence_id"),
+                item.get("original_path"),
+                item.get("archived_path"),
+                item.get("relative_path"),
+                item.get("file_name"),
+                item.get("display_name"),
+                item.get("mime_type"),
+                item.get("size_bytes"),
+                item.get("sha256"),
+                int(bool(item.get("is_image", False))),
+                now_iso(),
+            ),
+        )
+        return fid
 
     def link_evidence_to_field(self, item: dict[str, Any]) -> str:
         mid = item.get("id") or new_id("map")
@@ -198,9 +226,21 @@ class OpportunitySQLiteAdapter:
         opp = sd["opportunity"]
         opp["account_id"] = account_id
         opportunity_id = self.upsert_opportunity(opp)
+        mapped_evidence_ids = {item.get("evidence_id") for item in sd.get("evidence_map", [])}
         for item in sd.get("evidence_map", []):
             item["opportunity_id"] = opportunity_id
             self.link_evidence_to_field(item)
+        for ev in sd.get("evidence", []):
+            evidence_id = ev.get("evidence_id") or ev.get("id")
+            if evidence_id and evidence_id not in mapped_evidence_ids:
+                self.link_evidence_to_field({
+                    "opportunity_id": opportunity_id,
+                    "evidence_id": evidence_id,
+                    "field_name": "source_material",
+                    "field_value": ev.get("source_name"),
+                    "status": "confirmed",
+                    "confidence": ev.get("confidence"),
+                })
         for risk in sd.get("risks", []):
             risk["opportunity_id"] = opportunity_id
             self.create_risk(risk)
@@ -278,12 +318,22 @@ class OpportunitySQLiteAdapter:
             r["evidence_refs"] = from_json(r.get("evidence_refs"))
         actions = [dict(r) for r in self.conn.execute("SELECT * FROM next_actions WHERE opportunity_id = ?", (opportunity_id,)).fetchall()]
         maps = [dict(r) for r in self.conn.execute("SELECT * FROM opportunity_evidence_map WHERE opportunity_id = ?", (opportunity_id,)).fetchall()]
-        ev_ids = [m["evidence_id"] for m in maps]
+        ev_ids = list(dict.fromkeys(m["evidence_id"] for m in maps))
         evidence = []
         if ev_ids:
             placeholders = ",".join("?" for _ in ev_ids)
             evidence = [dict(r) for r in self.conn.execute(f"SELECT * FROM evidence WHERE id IN ({placeholders})", ev_ids).fetchall()]
-        return {"account": account, "opportunity": opportunity, "contacts": contacts, "risks": risks, "next_actions": actions, "evidence": evidence, "evidence_map": maps}
+            files = [dict(r) for r in self.conn.execute(f"SELECT * FROM evidence_files WHERE evidence_id IN ({placeholders})", ev_ids).fetchall()]
+        else:
+            files = []
+        files_by_evidence: dict[str, list[dict[str, Any]]] = {}
+        for item in files:
+            item["is_image"] = bool(item.get("is_image"))
+            files_by_evidence.setdefault(item.get("evidence_id"), []).append(item)
+        for ev in evidence:
+            ev["extracted_fields"] = from_json(ev.get("extracted_fields"))
+            ev["archived_files"] = files_by_evidence.get(ev.get("id"), [])
+        return {"account": account, "opportunity": opportunity, "contacts": contacts, "risks": risks, "next_actions": actions, "evidence": evidence, "evidence_map": maps, "archived_files": files}
 
     def _row_to_opportunity_summary(self, row: sqlite3.Row) -> dict[str, Any]:
         return {

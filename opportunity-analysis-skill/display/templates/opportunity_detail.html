@@ -25,15 +25,30 @@
 
         <section class="ql-panel">
           <div class="ql-panel-header">
-            <h2 class="ql-panel-title">联系人与角色</h2>
-            <span class="ql-panel-subtitle">{{contacts.count}} 个联系人</span>
+            <h2 class="ql-panel-title">客户需求相关联系人</h2>
+            <span class="ql-panel-subtitle">{{contacts.count}} 个负责人/影响人</span>
           </div>
           <div class="ql-table-wrap">
             <table>
               <thead>
-                <tr><th>姓名</th><th>职位</th><th>部门</th><th>商机角色</th><th>电话</th><th>邮箱</th></tr>
+                <tr><th>姓名</th><th>职位</th><th>部门</th><th>商机角色</th><th>职责范围</th><th>状态</th><th>电话</th><th>邮箱</th></tr>
               </thead>
               <tbody>{{contacts_rows}}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="ql-panel">
+          <div class="ql-panel-header">
+            <h2 class="ql-panel-title">决策链识别</h2>
+            <span class="ql-panel-subtitle">{{decision_chain.summary}}</span>
+          </div>
+          <div class="ql-table-wrap">
+            <table>
+              <thead>
+                <tr><th>链路角色</th><th>人员</th><th>影响级别</th><th>职责/关注点</th><th>状态与下一步</th></tr>
+              </thead>
+              <tbody>{{decision_chain_rows}}</tbody>
             </table>
           </div>
         </section>

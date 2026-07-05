@@ -23,6 +23,7 @@
 - `append_evidence(evidence) -> evidence_id`
 - `append_evidence_file(file_metadata) -> file_id`
 - `link_evidence_to_field(map_item) -> map_id`
+- `create_decision_chain_node(node) -> node_id`
 - `create_risk(risk) -> risk_id`
 - `create_next_action(action) -> action_id`
 - `query_opportunities(query_json) -> list`
@@ -44,6 +45,19 @@
 - `is_image`
 
 外部Adapter可以把文件上传到飞书Drive、CRM对象附件或对象存储，但必须保留同等字段或可渲染链接，确保商机详情页能展示缩略图和可点击材料链接。
+
+## Decision Chain
+
+`contacts`应优先保存客户侧与本需求相关的人，而不是所有被识别出的姓名。`decision_chain`保存商机推进所需的链路节点：
+
+- 业务需求负责人
+- 项目推进负责人
+- 最终决策人/关键拍板人
+- 技术评估负责人
+- IT/系统集成负责人
+- 采购/商务负责人
+
+缺失节点也应以`status: missing`保留，便于详情页和下一步行动直接显示需要补齐的关系。
 
 ## Safe Query Rule
 

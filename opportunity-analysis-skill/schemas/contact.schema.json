@@ -37,6 +37,27 @@
         "null"
       ]
     },
+    "responsibility_scope": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decision_role": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "is_requirement_owner": {
+      "type": "boolean"
+    },
+    "confirmation_status": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "phone": {
       "type": [
         "string",

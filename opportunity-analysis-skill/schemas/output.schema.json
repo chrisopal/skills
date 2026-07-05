@@ -20,6 +20,7 @@
         "opportunity",
         "risks",
         "next_actions",
+        "decision_chain",
         "evidence",
         "missing_information",
         "evidence_map"
@@ -44,6 +45,12 @@
           }
         },
         "next_actions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "decision_chain": {
           "type": "array",
           "items": {
             "type": "object"

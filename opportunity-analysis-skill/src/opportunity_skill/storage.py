@@ -23,7 +23,20 @@ class OpportunitySQLiteAdapter:
     def migrate(self):
         sql = SCHEMA_PATH.read_text(encoding="utf-8")
         self.conn.executescript(sql)
+        self._ensure_contact_columns()
         self.conn.commit()
+
+    def _ensure_contact_columns(self):
+        existing = {row["name"] for row in self.conn.execute("PRAGMA table_info(contacts)").fetchall()}
+        columns = {
+            "responsibility_scope": "TEXT",
+            "decision_role": "TEXT",
+            "is_requirement_owner": "INTEGER DEFAULT 0",
+            "confirmation_status": "TEXT",
+        }
+        for name, ddl in columns.items():
+            if name not in existing:
+                self.conn.execute(f"ALTER TABLE contacts ADD COLUMN {name} {ddl}")
 
     def upsert_account(self, account: dict[str, Any]) -> str:
         now = now_iso()
@@ -58,16 +71,20 @@ class OpportunitySQLiteAdapter:
         contact_id = contact.get("id") or new_id("ct")
         self.conn.execute(
             """
-            INSERT INTO contacts (id, account_id, name, title, department, role_in_opportunity, phone, email, attitude, source_refs, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO contacts (id, account_id, name, title, department, role_in_opportunity, responsibility_scope, decision_role, is_requirement_owner, confirmation_status, phone, email, attitude, source_refs, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
               account_id=excluded.account_id, name=excluded.name, title=excluded.title, department=excluded.department,
-              role_in_opportunity=excluded.role_in_opportunity, phone=excluded.phone, email=excluded.email,
+              role_in_opportunity=excluded.role_in_opportunity, responsibility_scope=excluded.responsibility_scope,
+              decision_role=excluded.decision_role, is_requirement_owner=excluded.is_requirement_owner,
+              confirmation_status=excluded.confirmation_status, phone=excluded.phone, email=excluded.email,
               attitude=excluded.attitude, source_refs=excluded.source_refs, updated_at=excluded.updated_at
             """,
             (
                 contact_id, contact.get("account_id"), contact.get("name"), contact.get("title"), contact.get("department"),
-                contact.get("role_in_opportunity"), contact.get("phone"), contact.get("email"), contact.get("attitude"),
+                contact.get("role_in_opportunity"), contact.get("responsibility_scope"), contact.get("decision_role"),
+                int(bool(contact.get("is_requirement_owner", False))), contact.get("confirmation_status"),
+                contact.get("phone"), contact.get("email"), contact.get("attitude"),
                 to_json(contact.get("source_refs", [])), now, now
             )
         )
@@ -164,6 +181,33 @@ class OpportunitySQLiteAdapter:
         self.conn.commit()
         return mid
 
+    def create_decision_chain_node(self, node: dict[str, Any]) -> str:
+        nid = node.get("id") or new_id("dc")
+        self.conn.execute(
+            """
+            INSERT OR REPLACE INTO decision_chain
+              (id, opportunity_id, contact_id, person_name, title, decision_role, chain_level, responsibility_scope, influence_level, status, evidence_refs, next_step, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                nid,
+                node.get("opportunity_id"),
+                node.get("contact_id"),
+                node.get("person_name"),
+                node.get("title"),
+                node.get("decision_role"),
+                node.get("chain_level"),
+                node.get("responsibility_scope"),
+                node.get("influence_level"),
+                node.get("status"),
+                to_json(node.get("evidence_refs", [])),
+                node.get("next_step"),
+                now_iso(),
+            ),
+        )
+        self.conn.commit()
+        return nid
+
     def create_risk(self, risk: dict[str, Any]) -> str:
         rid = risk.get("id") or new_id("risk")
         now = now_iso()
@@ -241,6 +285,9 @@ class OpportunitySQLiteAdapter:
                     "status": "confirmed",
                     "confidence": ev.get("confidence"),
                 })
+        for node in sd.get("decision_chain", []):
+            node["opportunity_id"] = opportunity_id
+            self.create_decision_chain_node(node)
         for risk in sd.get("risks", []):
             risk["opportunity_id"] = opportunity_id
             self.create_risk(risk)
@@ -317,6 +364,10 @@ class OpportunitySQLiteAdapter:
         for r in risks:
             r["evidence_refs"] = from_json(r.get("evidence_refs"))
         actions = [dict(r) for r in self.conn.execute("SELECT * FROM next_actions WHERE opportunity_id = ?", (opportunity_id,)).fetchall()]
+        decision_chain = [dict(r) for r in self.conn.execute("SELECT * FROM decision_chain WHERE opportunity_id = ? ORDER BY chain_level, decision_role", (opportunity_id,)).fetchall()]
+        for node in decision_chain:
+            node["evidence_refs"] = from_json(node.get("evidence_refs"))
+            node["is_confirmed"] = node.get("status") == "confirmed"
         maps = [dict(r) for r in self.conn.execute("SELECT * FROM opportunity_evidence_map WHERE opportunity_id = ?", (opportunity_id,)).fetchall()]
         ev_ids = list(dict.fromkeys(m["evidence_id"] for m in maps))
         evidence = []
@@ -333,7 +384,7 @@ class OpportunitySQLiteAdapter:
         for ev in evidence:
             ev["extracted_fields"] = from_json(ev.get("extracted_fields"))
             ev["archived_files"] = files_by_evidence.get(ev.get("id"), [])
-        return {"account": account, "opportunity": opportunity, "contacts": contacts, "risks": risks, "next_actions": actions, "evidence": evidence, "evidence_map": maps, "archived_files": files}
+        return {"account": account, "opportunity": opportunity, "contacts": contacts, "decision_chain": decision_chain, "risks": risks, "next_actions": actions, "evidence": evidence, "evidence_map": maps, "archived_files": files}
 
     def _row_to_opportunity_summary(self, row: sqlite3.Row) -> dict[str, Any]:
         return {

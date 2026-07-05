@@ -22,6 +22,10 @@ CREATE TABLE IF NOT EXISTS contacts (
     title TEXT,
     department TEXT,
     role_in_opportunity TEXT,
+    responsibility_scope TEXT,
+    decision_role TEXT,
+    is_requirement_owner INTEGER DEFAULT 0,
+    confirmation_status TEXT,
     phone TEXT,
     email TEXT,
     attitude TEXT,
@@ -112,6 +116,24 @@ CREATE TABLE IF NOT EXISTS opportunity_evidence_map (
     FOREIGN KEY(evidence_id) REFERENCES evidence(id)
 );
 
+CREATE TABLE IF NOT EXISTS decision_chain (
+    id TEXT PRIMARY KEY,
+    opportunity_id TEXT NOT NULL,
+    contact_id TEXT,
+    person_name TEXT,
+    title TEXT,
+    decision_role TEXT NOT NULL,
+    chain_level TEXT,
+    responsibility_scope TEXT,
+    influence_level TEXT,
+    status TEXT,
+    evidence_refs TEXT,
+    next_step TEXT,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(opportunity_id) REFERENCES opportunities(id),
+    FOREIGN KEY(contact_id) REFERENCES contacts(id)
+);
+
 CREATE TABLE IF NOT EXISTS risks (
     id TEXT PRIMARY KEY,
     opportunity_id TEXT NOT NULL,
@@ -166,5 +188,6 @@ CREATE INDEX IF NOT EXISTS idx_opportunities_account ON opportunities(account_id
 CREATE INDEX IF NOT EXISTS idx_opportunities_stage ON opportunities(stage);
 CREATE INDEX IF NOT EXISTS idx_opportunities_score ON opportunities(score);
 CREATE INDEX IF NOT EXISTS idx_evidence_files_evidence ON evidence_files(evidence_id);
+CREATE INDEX IF NOT EXISTS idx_decision_chain_opp ON decision_chain(opportunity_id);
 CREATE INDEX IF NOT EXISTS idx_next_actions_opp ON next_actions(opportunity_id);
 CREATE INDEX IF NOT EXISTS idx_risks_opp ON risks(opportunity_id);

@@ -11,7 +11,7 @@ version: 0.3.0
 Convert scattered customer material into a follow-up-ready opportunity asset:
 
 1. Normalize source material into Evidence.
-2. Extract account, contacts, needs, budget signals, timeline, systems, competitors, risks, and next actions.
+2. Extract account, customer-side requirement contacts, decision chain, needs, budget signals, timeline, systems, competitors, risks, and next actions.
 3. Mark critical assumptions as `confirmed`, `inferred`, or `missing`.
 4. Store results through a Storage Adapter.
 5. Query opportunities through a controlled query object.
@@ -80,6 +80,7 @@ Every successful analyze run returns:
   "structured_data": {
     "account": {},
     "contacts": [],
+    "decision_chain": [],
     "opportunity": {},
     "risks": [],
     "next_actions": [],

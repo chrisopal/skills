@@ -15,6 +15,8 @@ Display层只接收结构化数据，不直接消费自然语言摘要。
 
 `opportunity_detail`应展示`archived_files`或Evidence上的`archived_files`，图片类文件使用缩略图，其他文件使用文件卡片和可点击链接。链接应优先使用相对于HTML输出目录的`relative_path`。
 
+`opportunity_detail`还应展示`decision_chain`，把客户需求负责人、项目推进负责人、最终决策人、技术/IT负责人和采购/商务负责人区分开。缺失节点不能静默省略，应显示为待补充。
+
 ## 安全规则
 
 - 禁止`<script>`；

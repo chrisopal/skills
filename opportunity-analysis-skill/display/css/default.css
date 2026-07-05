@@ -257,6 +257,12 @@ body {
   line-height: 22px;
 }
 
+.ql-muted-text {
+  color: var(--ql-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
 .ql-list {
   margin: 0;
   padding: 0;

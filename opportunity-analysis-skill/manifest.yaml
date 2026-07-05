@@ -49,6 +49,7 @@ outputs:
     includes:
       - human_summary
       - structured_data
+      - structured_data.decision_chain
       - storage_result
       - display_result
       - structured_data.archived_files

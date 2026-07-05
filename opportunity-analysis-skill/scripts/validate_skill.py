@@ -74,7 +74,7 @@ def assert_output_contract(result: dict, source: str) -> None:
         if key not in result:
             fail(f"{source} missing top-level key {key}")
     structured = result["structured_data"]
-    for key in ["account", "contacts", "opportunity", "risks", "next_actions", "evidence", "missing_information", "evidence_map"]:
+    for key in ["account", "contacts", "opportunity", "risks", "next_actions", "decision_chain", "evidence", "missing_information", "evidence_map"]:
         if key not in structured:
             fail(f"{source} missing structured_data.{key}")
     storage = result["storage_result"]
@@ -117,6 +117,8 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
                 fail(f"{case['name']} did not write HTML output")
             if not Path(result["display_result"]["markdown_path"]).exists():
                 fail(f"{case['name']} did not write Markdown output")
+            if not result["structured_data"].get("decision_chain"):
+                fail(f"{case['name']} did not produce decision_chain")
             first_result = first_result or result
 
         if first_result is None:
@@ -145,7 +147,7 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
                         "type": "image_ocr",
                         "name": "现场白板照片",
                         "file_path": str(source_image),
-                        "content": "客户：归档测试有限公司\n项目：质量检测自动化升级\n需求：保留原始照片并展示缩略图。",
+                        "content": "客户：归档测试有限公司\n项目：质量检测自动化升级\n王总（客户-生产负责人）提出需求，李经理（客户-项目负责人）负责推进。\n需求：保留原始照片并展示缩略图。",
                         "confidence": 0.9,
                     }
                 ],
@@ -163,6 +165,13 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         html = archive_result["display_result"]["html"]
         if "ql-material-card" not in html or "attachments/" not in html:
             fail("archive case did not render material gallery")
+        if "决策链识别" not in html:
+            fail("archive case did not render decision chain")
+        roles = {node.get("decision_role"): node.get("person_name") for node in archive_result["structured_data"].get("decision_chain", [])}
+        if roles.get("业务需求负责人") != "王总":
+            fail("archive case did not identify customer requirement owner")
+        if roles.get("项目推进负责人") != "李经理":
+            fail("archive case did not identify customer project owner")
         print("ok evaluation cases")
         if keep_artifacts:
             print(f"artifacts kept at {temp_root}")

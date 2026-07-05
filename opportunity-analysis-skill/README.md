@@ -8,7 +8,7 @@ This package is designed to run as a standalone closed loop inside many agent ho
 
 - Accepts normalized Evidence or text materials.
 - Archives readable source files from `file_path`, `path`, `source_path`, `source_ref`, or `attachments`.
-- Extracts account, contacts, opportunity, needs, budget signals, timeline, systems, competitors, risks, and next actions.
+- Extracts account, customer-side requirement contacts, decision chain, opportunity, needs, budget signals, timeline, systems, competitors, risks, and next actions.
 - Stores the result in local SQLite by default.
 - Runs controlled opportunity queries.
 - Renders HTML and Markdown views, including thumbnails and links for archived source material.
@@ -80,6 +80,8 @@ Any host agent can use the package in one of two ways:
 Raw audio, image, document, email, and webpage inputs should be transcribed, OCRed, parsed, or extracted before this skill runs. The reference runtime accepts either `evidence_list` or text `materials`.
 
 For materials that came from real files, pass the readable local path as `file_path`, `path`, `source_path`, `source_ref`, or inside `attachments`. The default runtime copies those files into an `attachments/` archive next to the rendered output when `--output-dir` is provided, or next to the SQLite database when no output directory is provided. The SQLite adapter records `evidence_files` metadata so a later `detail` render can show thumbnails and clickable file links in the opportunity dossier.
+
+Contacts are intended to represent customer-side people tied to the demand, not every name found in the material. The reference extractor prioritizes requirement owners, project owners, technical/IT evaluators, procurement owners, and final decision makers. The detail view also renders a `decision_chain` table with confirmed and missing nodes.
 
 ## Adapter Strategy
 

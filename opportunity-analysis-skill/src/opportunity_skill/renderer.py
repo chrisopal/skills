@@ -113,6 +113,7 @@ class SkillDisplayRenderer:
             "account.company_name": esc(data.get("account", {}).get("company_name")),
             "account.business_summary": esc(data.get("account", {}).get("business_summary")),
             "contacts.count": esc(len(data.get("contacts", []))),
+            "decision_chain.summary": esc(self._decision_chain_summary(data.get("decision_chain", []))),
             "missing.count": esc(len(data.get("opportunity", {}).get("missing_information", []))),
             "evidence.count": esc(len(data.get("evidence", []))),
             "materials.count": esc(len(self._collect_archived_files(data))),
@@ -120,6 +121,7 @@ class SkillDisplayRenderer:
             "next_actions_list": self._action_items(data.get("next_actions", [])),
             "missing_information_list": li(data.get("opportunity", {}).get("missing_information", [])),
             "contacts_rows": self._contacts_rows(data.get("contacts", [])),
+            "decision_chain_rows": self._decision_chain_rows(data.get("decision_chain", [])),
             "risks_rows": self._risk_rows(data.get("risks", [])),
             "evidence_list": self._evidence_items(data.get("evidence", [])),
             "material_gallery": self._material_gallery(data),
@@ -177,20 +179,56 @@ class SkillDisplayRenderer:
 
     def _contacts_rows(self, contacts: list[dict[str, Any]]) -> str:
         if not contacts:
-            return "<tr><td colspan='6'>暂无</td></tr>"
+            return "<tr><td colspan='8'>暂无</td></tr>"
         rows = []
         for c in contacts:
+            status = "需求负责人" if c.get("is_requirement_owner") else esc(c.get("confirmation_status"))
             rows.append(
                 "<tr>"
                 f"<td>{esc(c.get('name'))}</td>"
                 f"<td>{esc(c.get('title'))}</td>"
                 f"<td>{esc(c.get('department'))}</td>"
                 f"<td>{esc(c.get('role_in_opportunity'))}</td>"
+                f"<td>{esc(c.get('responsibility_scope'))}</td>"
+                f"<td>{status}</td>"
                 f"<td>{esc(c.get('phone'))}</td>"
                 f"<td>{esc(c.get('email'))}</td>"
                 "</tr>"
             )
         return "".join(rows)
+
+    def _decision_chain_summary(self, nodes: list[dict[str, Any]]) -> str:
+        if not nodes:
+            return "待识别"
+        confirmed = sum(1 for n in nodes if n.get("status") == "confirmed")
+        return f"已确认 {confirmed}/{len(nodes)} 个节点"
+
+    def _decision_chain_rows(self, nodes: list[dict[str, Any]]) -> str:
+        if not nodes:
+            return "<tr><td colspan='5'>暂无</td></tr>"
+        rows = []
+        for node in nodes:
+            status = "已确认" if node.get("status") == "confirmed" else "待补充"
+            person = node.get("person_name") or "待确认"
+            title = node.get("title")
+            person_text = f"{esc(person)}<br/><span class='ql-muted-text'>{esc(title)}</span>" if title else esc(person)
+            rows.append(
+                "<tr>"
+                f"<td>{esc(node.get('decision_role'))}</td>"
+                f"<td>{person_text}</td>"
+                f"<td><span class='ql-tag {self._influence_class(node.get('influence_level'))}'>{esc(node.get('influence_level'))}</span></td>"
+                f"<td>{esc(node.get('responsibility_scope'))}</td>"
+                f"<td><strong>{status}</strong><br/><span class='ql-muted-text'>{esc(node.get('next_step'))}</span></td>"
+                "</tr>"
+            )
+        return "".join(rows)
+
+    def _influence_class(self, influence: Any) -> str:
+        if influence == "high":
+            return "orange"
+        if influence == "medium":
+            return "green"
+        return ""
 
     def _risk_rows(self, risks: list[dict[str, Any]]) -> str:
         if not risks:
@@ -298,6 +336,10 @@ class SkillDisplayRenderer:
         ]
         for a in data.get("next_actions", []):
             lines.append(f"- {a.get('action_title')}｜{a.get('priority')}｜{a.get('reason')}")
+        lines.append("\n## 决策链")
+        for node in data.get("decision_chain", []):
+            name = node.get("person_name") or "待确认"
+            lines.append(f"- {node.get('decision_role')}: {name}｜{node.get('status')}｜{node.get('next_step')}")
         lines.append("\n## 待确认信息")
         for item in opp.get("missing_information", []):
             lines.append(f"- {item}")

@@ -1,3 +1,28 @@
+## 2026-07-06 07:58:00 CST
+
+- Scope: Update `opportunity-analysis-skill` so opportunity contacts prioritize customer-side requirement owners and the detail dossier explicitly shows the decision chain.
+- Changed files:
+  - `opportunity-analysis-skill/SKILL.md`
+  - `opportunity-analysis-skill/README.md`
+  - `opportunity-analysis-skill/manifest.yaml`
+  - `opportunity-analysis-skill/prompts/02_extract_account_contact.md`
+  - `opportunity-analysis-skill/schemas/*.json`
+  - `opportunity-analysis-skill/src/opportunity_skill/*.py`
+  - `opportunity-analysis-skill/storage/*`
+  - `opportunity-analysis-skill/display/*`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Kept decision-chain recognition inside the existing lightweight extractor and SQLite adapter instead of adding a separate CRM model layer.
+  - Used explicit missing decision-chain nodes so the dossier shows relationship gaps instead of silently omitting them.
+  - Reused the existing QILIN table layout for the decision chain to avoid adding frontend dependencies.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - Regenerated the Huachen detail at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`; contacts are 王总 as 业务需求负责人, 李经理 as 项目推进负责人, and 张伟 as 采购/商务负责人.
+  - Playwright HTTP preview verified desktop 1440px and mobile 390px: decision-chain section present, customer demand owner/project owner/procurement owner visible, missing final decision maker visible, 3 archived material images still render with 0 broken images, and no mobile page overflow.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - The reference extractor remains heuristic; production deployments can replace extraction with a model call while preserving the `decision_chain` contract.
+
 ## 2026-07-06 07:35:00 CST
 
 - Scope: Add original source-material archiving to `opportunity-analysis-skill` and show archived materials in the opportunity dossier visualization.

@@ -16,7 +16,7 @@ def esc(value: Any) -> str:
 
 def li(items: list[Any]) -> str:
     if not items:
-        return "<li>暂无</li>"
+        return "<li class='ql-empty'>暂无</li>"
     return "".join(f"<li>{esc(x)}</li>" for x in items)
 
 
@@ -27,6 +27,14 @@ def table_rows(rows: list[dict[str, Any]], fields: list[str]) -> str:
     for row in rows:
         out.append("<tr>" + "".join(f"<td>{esc(row.get(f))}</td>" for f in fields) + "</tr>")
     return "".join(out)
+
+
+def compact(value: Any, limit: int = 160) -> str:
+    text = "" if value is None else str(value)
+    text = " ".join(text.split())
+    if len(text) <= limit:
+        return text
+    return text[:limit].rstrip() + "..."
 
 
 def replace_tokens(template: str, mapping: dict[str, Any]) -> str:
@@ -54,7 +62,17 @@ class SkillDisplayRenderer:
             html_body = self._render_next_actions(data)
         else:
             html_body = self._render_opportunity_card(data)
-        full_html = f"<style>{self.css}</style>\n{html_body}"
+        full_html = (
+            "<!doctype html>\n"
+            "<html lang='zh-CN'>\n"
+            "<head>\n"
+            "<meta charset='utf-8'>\n"
+            "<meta name='viewport' content='width=device-width, initial-scale=1'>\n"
+            f"<style>{self.css}</style>\n"
+            "</head>\n"
+            f"<body>{html_body}</body>\n"
+            "</html>"
+        )
         markdown = self.to_markdown(data)
         return {"html": full_html, "markdown": markdown, "template_id": template_id}
 
@@ -71,12 +89,16 @@ class SkillDisplayRenderer:
             "opportunity.score_level": esc(opp.get("score_level")),
             "opportunity.score": esc(opp.get("score")),
             "opportunity.stage": esc(opp.get("stage")),
+            "opportunity.stage_reason": esc(opp.get("stage_reason")),
             "opportunity.risk_level": esc(opp.get("risk_level")),
             "opportunity.win_probability_percent": esc(opp.get("win_probability_percent")),
             "opportunity.core_need": esc(opp.get("core_need")),
             "opportunity.budget_signal": esc(opp.get("budget_signal")),
+            "opportunity.budget_amount": esc(opp.get("budget_amount")),
             "opportunity.expected_timeline": esc(opp.get("expected_timeline")),
+            "evidence.count": esc(len(data.get("evidence", []))),
             "pain_points_list": li(opp.get("pain_points", [])),
+            "requirements_list": li(opp.get("requirements", [])),
             "next_actions_list": self._action_items(data.get("next_actions", [])),
             "missing_information_list": li(opp.get("missing_information", []) or data.get("missing_information", [])),
         }
@@ -87,9 +109,17 @@ class SkillDisplayRenderer:
         tpl = (self.template_dir / "opportunity_detail.html").read_text(encoding="utf-8")
         mapping = {
             "opportunity_card": card,
-            "contacts_rows": table_rows(data.get("contacts", []), ["name", "title", "department", "role_in_opportunity", "attitude"]),
-            "risks_rows": table_rows(data.get("risks", []), ["risk_level", "risk_type", "description", "mitigation"]),
-            "evidence_list": li([f"{ev.get('source_name')}: {ev.get('content')}" for ev in data.get("evidence", [])]),
+            "account.company_name": esc(data.get("account", {}).get("company_name")),
+            "account.business_summary": esc(data.get("account", {}).get("business_summary")),
+            "contacts.count": esc(len(data.get("contacts", []))),
+            "missing.count": esc(len(data.get("opportunity", {}).get("missing_information", []))),
+            "evidence.count": esc(len(data.get("evidence", []))),
+            "pain_points_list": li(data.get("opportunity", {}).get("pain_points", [])),
+            "next_actions_list": self._action_items(data.get("next_actions", [])),
+            "missing_information_list": li(data.get("opportunity", {}).get("missing_information", [])),
+            "contacts_rows": self._contacts_rows(data.get("contacts", [])),
+            "risks_rows": self._risk_rows(data.get("risks", [])),
+            "evidence_list": self._evidence_items(data.get("evidence", [])),
         }
         return replace_tokens(tpl, mapping)
 
@@ -109,7 +139,7 @@ class SkillDisplayRenderer:
 
     def _render_risk_table(self, data: dict[str, Any]) -> str:
         tpl = (self.template_dir / "risk_table.html").read_text(encoding="utf-8")
-        return replace_tokens(tpl, {"risks_rows": table_rows(data.get("risks", []), ["risk_level", "risk_type", "description", "mitigation"])})
+        return replace_tokens(tpl, {"risks_rows": self._risk_rows(data.get("risks", []))})
 
     def _render_next_actions(self, data: dict[str, Any]) -> str:
         tpl = (self.template_dir / "next_action_list.html").read_text(encoding="utf-8")
@@ -133,7 +163,59 @@ class SkillDisplayRenderer:
             return "<li>暂无</li>"
         out = []
         for a in actions:
-            out.append(f"<li><strong>{esc(a.get('action_title'))}</strong>｜{esc(a.get('priority'))}<br/><span>{esc(a.get('reason'))}</span></li>")
+            out.append(
+                "<li>"
+                f"<strong>{esc(a.get('action_title'))}</strong>"
+                f"<span class='ql-tag orange'>{esc(a.get('priority'))}</span><br/>"
+                f"<span>{esc(a.get('reason'))}</span>"
+                "</li>"
+            )
+        return "".join(out)
+
+    def _contacts_rows(self, contacts: list[dict[str, Any]]) -> str:
+        if not contacts:
+            return "<tr><td colspan='6'>暂无</td></tr>"
+        rows = []
+        for c in contacts:
+            rows.append(
+                "<tr>"
+                f"<td>{esc(c.get('name'))}</td>"
+                f"<td>{esc(c.get('title'))}</td>"
+                f"<td>{esc(c.get('department'))}</td>"
+                f"<td>{esc(c.get('role_in_opportunity'))}</td>"
+                f"<td>{esc(c.get('phone'))}</td>"
+                f"<td>{esc(c.get('email'))}</td>"
+                "</tr>"
+            )
+        return "".join(rows)
+
+    def _risk_rows(self, risks: list[dict[str, Any]]) -> str:
+        if not risks:
+            return "<tr><td colspan='4'>暂无</td></tr>"
+        rows = []
+        for r in risks:
+            level = esc(r.get("risk_level"))
+            rows.append(
+                "<tr>"
+                f"<td><span class='ql-tag risk-{level}'>{level}</span></td>"
+                f"<td>{esc(r.get('risk_type'))}</td>"
+                f"<td>{esc(r.get('description'))}</td>"
+                f"<td>{esc(r.get('mitigation'))}</td>"
+                "</tr>"
+            )
+        return "".join(rows)
+
+    def _evidence_items(self, evidence: list[dict[str, Any]]) -> str:
+        if not evidence:
+            return "<li class='ql-empty'>暂无</li>"
+        out = []
+        for ev in evidence:
+            out.append(
+                "<li>"
+                f"<strong>{esc(ev.get('source_name'))}</strong>"
+                f"{esc(compact(ev.get('content'), 220))}"
+                "</li>"
+            )
         return "".join(out)
 
     def to_markdown(self, data: dict[str, Any]) -> str:

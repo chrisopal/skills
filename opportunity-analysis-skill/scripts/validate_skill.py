@@ -40,6 +40,15 @@ def check_json_files() -> None:
     print("ok json files")
 
 
+def clean_local_runtime_artifacts() -> None:
+    for pattern in ["src/*.egg-info", "**/__pycache__", "**/*.pyc"]:
+        for path in ROOT.glob(pattern):
+            if path.is_dir():
+                shutil.rmtree(path, ignore_errors=True)
+            elif path.exists():
+                path.unlink()
+
+
 def check_python_compile() -> None:
     temp_root = Path(tempfile.mkdtemp(prefix="opportunity-skill-pyc-"))
     try:
@@ -139,6 +148,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Validate the Opportunity Analysis capability package")
     parser.add_argument("--keep-artifacts", action="store_true", help="Keep temporary validation outputs for inspection")
     args = parser.parse_args()
+    clean_local_runtime_artifacts()
     check_json_files()
     check_python_compile()
     check_template_safety()

@@ -1,7 +1,22 @@
-<div class="customer-profile-card">
-  <h2>{{account.company_name}}</h2>
-  <p class="subtitle">{{account.industry}}｜{{account.region}}｜{{account.company_size}}</p>
-  <div class="section"><h3>业务概况</h3><p>{{account.business_summary}}</p></div>
-  <div class="section"><h3>当前系统</h3><ul>{{current_systems_list}}</ul></div>
-  <div class="section"><h3>主要痛点</h3><ul>{{pain_points_list}}</ul></div>
-</div>
+<section class="ql-panel">
+  <div class="ql-panel-header">
+    <div>
+      <h2 class="ql-panel-title">{{account.company_name}}</h2>
+      <div class="ql-panel-subtitle">{{account.industry}}｜{{account.region}}｜{{account.company_size}}</div>
+    </div>
+    <span class="ql-tag green">客户画像</span>
+  </div>
+  <div class="ql-panel-body">
+    <p class="ql-text">{{account.business_summary}}</p>
+  </div>
+  <div class="ql-two-col ql-panel-body">
+    <div>
+      <h3 class="ql-panel-title">当前系统</h3>
+      <ul class="ql-list">{{current_systems_list}}</ul>
+    </div>
+    <div>
+      <h3 class="ql-panel-title">主要痛点</h3>
+      <ul class="ql-list">{{pain_points_list}}</ul>
+    </div>
+  </div>
+</section>

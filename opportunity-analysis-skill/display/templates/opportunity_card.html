@@ -1,52 +1,64 @@
-<div class="opportunity-card">
-  <div class="card-header">
+<section class="ql-opportunity-card">
+  <div class="ql-header">
     <div>
-      <h2>{{opportunity.name}}</h2>
-      <p class="subtitle">{{account.company_name}}｜{{account.industry}}｜{{account.region}}</p>
+      <div class="ql-kicker">商机档案 / Opportunity</div>
+      <h1 class="ql-title">{{opportunity.name}}</h1>
+      <p class="ql-subtitle">{{account.company_name}}｜{{account.industry}}｜{{account.region}}｜当前阶段依据：{{opportunity.stage_reason}}</p>
     </div>
-    <div class="score-badge level-{{opportunity.score_level}}">{{opportunity.score}}分</div>
-  </div>
-
-  <div class="status-row">
-    <span class="tag">{{opportunity.stage}}</span>
-    <span class="tag risk-{{opportunity.risk_level}}">风险：{{opportunity.risk_level}}</span>
-    <span class="tag">赢单概率：{{opportunity.win_probability_percent}}%</span>
-  </div>
-
-  <div class="section">
-    <h3>核心需求</h3>
-    <p>{{opportunity.core_need}}</p>
-  </div>
-
-  <div class="section">
-    <h3>主要痛点</h3>
-    <ul>
-      {{pain_points_list}}
-    </ul>
-  </div>
-
-  <div class="section two-col">
-    <div>
-      <h3>预算信号</h3>
-      <p>{{opportunity.budget_signal}}</p>
-    </div>
-    <div>
-      <h3>预计时间</h3>
-      <p>{{opportunity.expected_timeline}}</p>
+    <div class="ql-status-stack">
+      <span class="ql-tag green">{{opportunity.stage}}</span>
+      <span class="ql-tag risk-{{opportunity.risk_level}}">风险 {{opportunity.risk_level}}</span>
+      <span class="ql-tag">等级 {{opportunity.score_level}}</span>
     </div>
   </div>
 
-  <div class="section">
-    <h3>下一步行动</h3>
-    <ul>
-      {{next_actions_list}}
-    </ul>
+  <div class="ql-metric-grid">
+    <div class="ql-metric">
+      <div class="ql-metric-label">商机评分</div>
+      <div class="ql-metric-value">{{opportunity.score}}</div>
+      <div class="ql-metric-note">满分 100，综合需求、预算、联系人、时间</div>
+    </div>
+    <div class="ql-metric">
+      <div class="ql-metric-label">赢单概率</div>
+      <div class="ql-metric-value">{{opportunity.win_probability_percent}}%</div>
+      <div class="ql-metric-note">由评分折算，需结合竞争态势复核</div>
+    </div>
+    <div class="ql-metric">
+      <div class="ql-metric-label">目标时间</div>
+      <div class="ql-metric-value">{{opportunity.expected_timeline}}</div>
+      <div class="ql-metric-note">方案、评审或实施窗口</div>
+    </div>
+    <div class="ql-metric">
+      <div class="ql-metric-label">预算状态</div>
+      <div class="ql-metric-value">{{opportunity.budget_signal}}</div>
+      <div class="ql-metric-note">金额：{{opportunity.budget_amount}}</div>
+    </div>
+    <div class="ql-metric">
+      <div class="ql-metric-label">证据数量</div>
+      <div class="ql-metric-value">{{evidence.count}}</div>
+      <div class="ql-metric-note">图片、纪要、转写等来源</div>
+    </div>
   </div>
 
-  <div class="section evidence">
-    <h3>待确认信息</h3>
-    <ul>
-      {{missing_information_list}}
-    </ul>
+  <div class="ql-two-col">
+    <section class="ql-panel">
+      <div class="ql-panel-header">
+        <h2 class="ql-panel-title">核心需求</h2>
+        <span class="ql-panel-subtitle">客户要解决什么</span>
+      </div>
+      <div class="ql-panel-body">
+        <p class="ql-text">{{opportunity.core_need}}</p>
+      </div>
+    </section>
+
+    <section class="ql-panel">
+      <div class="ql-panel-header">
+        <h2 class="ql-panel-title">现有系统与建设要求</h2>
+        <span class="ql-panel-subtitle">集成边界</span>
+      </div>
+      <div class="ql-panel-body">
+        <ul class="ql-list">{{requirements_list}}</ul>
+      </div>
+    </section>
   </div>
-</div>
+</section>

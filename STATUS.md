@@ -1,3 +1,24 @@
+## 2026-07-06 00:09:28 CST
+
+- Scope: Redesign `opportunity-analysis-skill` display templates into a QILIN-style white enterprise opportunity workbench instead of plain text cards.
+- Changed files:
+  - `opportunity-analysis-skill/display/css/default.css`
+  - `opportunity-analysis-skill/display/templates/*.html`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/extractor.py`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Replaced rounded blue text-card styling with compact QILIN tokens, fine borders, operational panels, metric row, evidence rail, risk table, and action list.
+  - Kept renderer dependency-free and template-driven; no frontend framework or icon library was added.
+  - Narrowed contact extraction to reduce false positives and attach phone/email from business-card evidence.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - Regenerated the Huachen opportunity detail HTML at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
+  - Playwright verified the regenerated HTML through local HTTP preview at desktop 1440px and mobile 390px; favicon 404 was non-blocking.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - The renderer still uses the lightweight heuristic extractor; production visual quality now improves, but deeper CRM-grade role attribution remains future extraction work.
+
 ## 2026-07-05 23:20:00 CST
 
 - Scope: Convert `opportunity-analysis-skill` from a demo-oriented folder into a portable enterprise-agent capability package with a closed local SQLite loop and adapter extension points for future Feishu, CRM/MCP, and PostgreSQL integrations.

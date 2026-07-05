@@ -1,15 +1,100 @@
-<div class="opportunity-detail">
-  {{opportunity_card}}
-  <div class="section">
-    <h3>联系人</h3>
-    <table><thead><tr><th>姓名</th><th>职位</th><th>部门</th><th>商机角色</th><th>态度</th></tr></thead><tbody>{{contacts_rows}}</tbody></table>
-  </div>
-  <div class="section">
-    <h3>风险清单</h3>
-    <table><thead><tr><th>等级</th><th>类型</th><th>描述</th><th>应对措施</th></tr></thead><tbody>{{risks_rows}}</tbody></table>
-  </div>
-  <div class="section evidence">
-    <h3>证据来源</h3>
-    <ul>{{evidence_list}}</ul>
-  </div>
+<div class="ql-page">
+  <header class="ql-topbar">
+    <div class="ql-breadcrumb">企灵 / 业务工作区 / 商机分析 / {{account.company_name}}</div>
+    <div class="ql-top-actions">
+      <span class="ql-lang">中文 | EN</span>
+      <span class="ql-command">查看审计</span>
+      <span class="ql-command primary">创建跟进任务</span>
+    </div>
+  </header>
+
+  <main class="ql-main">
+    {{opportunity_card}}
+
+    <div class="ql-layout">
+      <div class="ql-main-column">
+        <section class="ql-panel">
+          <div class="ql-panel-header">
+            <h2 class="ql-panel-title">痛点与建设范围</h2>
+            <span class="ql-panel-subtitle">从客户交流材料抽取</span>
+          </div>
+          <div class="ql-panel-body">
+            <ul class="ql-list">{{pain_points_list}}</ul>
+          </div>
+        </section>
+
+        <section class="ql-panel">
+          <div class="ql-panel-header">
+            <h2 class="ql-panel-title">联系人与角色</h2>
+            <span class="ql-panel-subtitle">{{contacts.count}} 个联系人</span>
+          </div>
+          <div class="ql-table-wrap">
+            <table>
+              <thead>
+                <tr><th>姓名</th><th>职位</th><th>部门</th><th>商机角色</th><th>电话</th><th>邮箱</th></tr>
+              </thead>
+              <tbody>{{contacts_rows}}</tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="ql-panel">
+          <div class="ql-panel-header">
+            <h2 class="ql-panel-title">下一步行动</h2>
+            <span class="ql-panel-subtitle">推动方案交流进入评审</span>
+          </div>
+          <div class="ql-panel-body">
+            <ul class="ql-action-list">{{next_actions_list}}</ul>
+          </div>
+        </section>
+
+        <section class="ql-panel">
+          <div class="ql-panel-header">
+            <h2 class="ql-panel-title">风险清单</h2>
+            <span class="ql-panel-subtitle">橙色为需人工确认</span>
+          </div>
+          <div class="ql-table-wrap">
+            <table>
+              <thead>
+                <tr><th>等级</th><th>类型</th><th>描述</th><th>应对措施</th></tr>
+              </thead>
+              <tbody>{{risks_rows}}</tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <aside class="ql-side-column">
+        <section class="ql-panel ql-critical">
+          <div class="ql-panel-header">
+            <h2 class="ql-panel-title">待确认信息</h2>
+            <span class="ql-panel-subtitle">{{missing.count}} 项</span>
+          </div>
+          <div class="ql-panel-body">
+            <ul class="ql-list">{{missing_information_list}}</ul>
+          </div>
+        </section>
+
+        <section class="ql-panel">
+          <div class="ql-panel-header">
+            <h2 class="ql-panel-title">客户画像</h2>
+            <span class="ql-panel-subtitle">Account</span>
+          </div>
+          <div class="ql-panel-body">
+            <p class="ql-text">{{account.business_summary}}</p>
+          </div>
+        </section>
+
+        <section class="ql-panel">
+          <div class="ql-panel-header">
+            <h2 class="ql-panel-title">证据来源</h2>
+            <span class="ql-panel-subtitle">{{evidence.count}} 条</span>
+          </div>
+          <div class="ql-panel-body">
+            <ul class="ql-evidence-list">{{evidence_list}}</ul>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
 </div>

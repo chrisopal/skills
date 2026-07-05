@@ -87,8 +87,10 @@ def extract_contacts(text: str, account_id: str) -> list[dict[str, Any]]:
     # Matches: 张伟 采购总监 / 张总 / 李工 / 王经理
     patterns = [
         r"([\u4e00-\u9fa5]{2,4})[，,\s]*(采购总监|信息化负责人|数字化负责人|项目经理|总经理|厂长|经理|部长|主任|工程师)",
-        r"([\u4e00-\u9fa5]{1,2})(总|经理|工|主任|部长)",
+        r"(?<![\u4e00-\u9fa5])([\u4e00-\u9fa5]{1,2})(总|经理|工|主任|部长)(?![\u4e00-\u9fa5])",
     ]
+    phone = _pick_first([r"(1[3-9]\d[-\s]?\d{4}[-\s]?\d{4})"], text)
+    email = _pick_first([r"([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})"], text)
     seen = set()
     for pat in patterns:
         for m in re.finditer(pat, text):
@@ -105,8 +107,8 @@ def extract_contacts(text: str, account_id: str) -> list[dict[str, Any]]:
                 "title": title,
                 "department": "待确认",
                 "role_in_opportunity": infer_contact_role(title),
-                "phone": None,
-                "email": None,
+                "phone": phone if not contacts and phone else None,
+                "email": email if not contacts and email else None,
                 "attitude": "待确认",
                 "source_refs": []
             })

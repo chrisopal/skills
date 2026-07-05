@@ -22,7 +22,7 @@
   - `SKILL_DATA_DIR=<tmp> PYTHONPATH=src python3.12 -m opportunity_skill.cli analyze --input examples/input_visit_note.json` wrote the default SQLite database and result files.
   - Editable install smoke test passed: `/tmp/opportunity-skill-install-venv/bin/opportunity-analysis analyze --input examples/input_evidence_list.json`.
   - `git diff --check -- opportunity-analysis-skill docs/superpowers/specs/2026-07-05-opportunity-analysis-portable-skill-design.md` passed.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed and pushed to `origin/main` as `e3b4f99`.
 - Remaining notes:
   - Live Feishu, CRM/MCP, and PostgreSQL integrations remain future adapter implementations; no external credentials or API calls are included in this package.
 

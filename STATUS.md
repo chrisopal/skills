@@ -15,7 +15,7 @@
   - `python3.12 scripts/validate_skill.py` passed.
   - Regenerated the Huachen opportunity detail HTML at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
   - Playwright verified the regenerated HTML through local HTTP preview at desktop 1440px and mobile 390px; favicon 404 was non-blocking.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed and pushed to `origin/main` as `746148b`.
 - Remaining notes:
   - The renderer still uses the lightweight heuristic extractor; production visual quality now improves, but deeper CRM-grade role attribution remains future extraction work.
 

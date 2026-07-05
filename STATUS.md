@@ -19,7 +19,7 @@
   - Regenerated the Huachen opportunity detail at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`; 3 original PNG materials were archived under `attachments/` and read back from SQLite detail.
   - Playwright HTTP preview verified desktop 1440px and mobile 390px: 3 material cards, 3 rendered images, 0 broken images, no page-wide mobile overflow.
   - `git diff --check -- opportunity-analysis-skill STATUS.md` passed.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed and pushed to `origin/main` as `0531c46`.
 - Remaining notes:
   - External Feishu, CRM, and object-storage adapters remain contract stubs; they should preserve the same file metadata and renderable link contract when implemented.
 

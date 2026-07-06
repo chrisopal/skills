@@ -45,6 +45,29 @@ def escaped_text(value: object) -> str:
     return html.escape(str(value), quote=True)
 
 
+def assert_no_template_tokens(rendered_html: str, context: str) -> None:
+    if "{{" in rendered_html or "}}" in rendered_html:
+        fail(f"{context} still contains template tokens")
+
+
+def extract_kanban_summary_html(rendered_html: str, context: str) -> str:
+    match = re.search(r"<div class=\"ql-kanban-summary\">(.*?)</div>\s*</section>", rendered_html, re.DOTALL)
+    if not match:
+        fail(f"{context} did not render kanban summary")
+    return match.group(1)
+
+
+def assert_confirmed_summary_tile(rendered_html: str, expected_confirmed: int, context: str) -> None:
+    summary_html = extract_kanban_summary_html(rendered_html, context)
+    if "<span>已确认商机</span>" not in summary_html:
+        fail(f"{context} kanban summary did not render confirmed opportunity label")
+    if f"<strong>{expected_confirmed}</strong>" not in summary_html:
+        fail(
+            f"{context} kanban summary confirmed count mismatch: expected {expected_confirmed}, "
+            f"summary HTML was {summary_html!r}"
+        )
+
+
 def check_json_files() -> None:
     for path in sorted((ROOT / "schemas").glob("*.json")):
         load_json(path)
@@ -503,16 +526,19 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         query_html = query_result.get("display_result", {}).get("html", "")
         if not query_html:
             fail("query HTML render is empty")
+        assert_no_template_tokens(query_html, "query kanban HTML")
         expected_stages = stage_names()
         if len(expected_stages) != 10:
             fail(f"validator expected 10 stage columns, got {expected_stages}")
         for stage_name in expected_stages:
             if stage_name not in query_html:
                 fail(f"kanban missing stage column {stage_name}")
+        expected_confirmed = sum(
+            1 for item in query_result.get("opportunities", []) if item.get("opportunity_confirmed") is True
+        )
         if "已确认商机" not in query_html and "尚未确认商机" not in query_html:
             fail("kanban did not render confirmed opportunity status")
-        if "已确认商机" not in query_html:
-            fail("kanban summary did not render confirmed opportunity label")
+        assert_confirmed_summary_tile(query_html, expected_confirmed, "query kanban HTML")
         for opportunity in query_result.get("opportunities", []):
             name = opportunity.get("name")
             company = opportunity.get("company_name")
@@ -664,6 +690,66 @@ def check_distribution_noise() -> None:
     print("ok distribution noise")
 
 
+def check_targeted_kanban_fixture() -> None:
+    renderer = SkillDisplayRenderer()
+    kanban_display = renderer.render(
+        "opportunity_kanban",
+        {
+            "query": {"filters": {"stage": "全部"}},
+            "opportunities": [
+                {
+                    "id": 101,
+                    "name": "视觉检测升级项目",
+                    "company_name": "华东精密制造",
+                    "industry": "离散制造",
+                    "region": "苏州",
+                    "stage": "方案共创",
+                    "stage_id": "solution_cocreation",
+                    "score": 88,
+                    "score_level": "A",
+                    "win_probability": 0.72,
+                    "risk_level": "medium",
+                    "core_need": "升级视觉检测与 MES 协同",
+                    "expected_timeline": "Q3",
+                    "budget_signal": "预算已预留",
+                    "missing_information": ["待确认现场节拍"],
+                    "requirements": ["需要兼容现有 MES"],
+                    "opportunity_confirmed": True,
+                    "updated_at": "2026-07-07T10:00:00",
+                },
+                {
+                    "id": 102,
+                    "name": "产线追溯摸排",
+                    "company_name": "华南电子装配",
+                    "industry": "电子制造",
+                    "region": "深圳",
+                    "stage": "客户接触",
+                    "stage_id": "customer_contacted",
+                    "score": 52,
+                    "score_level": "B",
+                    "win_probability": 0.33,
+                    "risk_level": "low",
+                    "core_need": "梳理追溯现状与改造入口",
+                    "expected_timeline": "待确认",
+                    "budget_signal": "预算待确认",
+                    "missing_information": ["尚未拿到正式需求清单"],
+                    "requirements": ["需要先安排客户访谈"],
+                    "opportunity_confirmed": False,
+                    "updated_at": "2026-07-07T09:00:00",
+                },
+            ],
+        },
+    )
+    kanban_html = kanban_display.get("html", "")
+    if not kanban_html:
+        fail("targeted kanban fixture did not return HTML")
+    assert_no_template_tokens(kanban_html, "targeted kanban fixture")
+    if "已确认商机" not in kanban_html or "尚未确认商机" not in kanban_html:
+        fail("targeted kanban fixture did not render both opportunity confirmation labels")
+    assert_confirmed_summary_tile(kanban_html, 1, "targeted kanban fixture")
+    print("ok targeted kanban fixture")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Validate the Opportunity Analysis capability package")
     parser.add_argument("--keep-artifacts", action="store_true", help="Keep temporary validation outputs for inspection")
@@ -677,6 +763,7 @@ def main() -> None:
     check_confirmation_loop()
     check_unknown_stage_path_fallback()
     check_evaluation_cases(keep_artifacts=args.keep_artifacts)
+    check_targeted_kanban_fixture()
     check_distribution_noise()
     print("validation passed")
 

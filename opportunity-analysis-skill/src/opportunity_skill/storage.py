@@ -576,12 +576,15 @@ class OpportunitySQLiteAdapter:
         if not normalized:
             return [], None
 
-        stage_def = stage_from_name(normalized)
-        stage_names = list(dict.fromkeys([normalized]))
+        stage_def = stage_by_id(normalized) or stage_from_name(normalized)
+        stage_names: list[str] = []
         if not stage_def:
-            return stage_names, None
+            return [normalized], None
 
-        stage_names = list(dict.fromkeys([stage_def.name, normalized]))
+        if normalized != stage_def.stage_id:
+            stage_names.append(normalized)
+        if stage_def.name not in stage_names:
+            stage_names.insert(0, stage_def.name)
         for legacy_name, legacy_stage_id in LEGACY_STAGE_NAME_TO_ID.items():
             if legacy_stage_id == stage_def.stage_id and legacy_name not in stage_names:
                 stage_names.append(legacy_name)

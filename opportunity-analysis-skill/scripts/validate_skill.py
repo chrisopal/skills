@@ -522,6 +522,14 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         )
         if first_result["storage_result"]["opportunity_id"] not in {item.get("id") for item in legacy_stage_query.get("opportunities", [])}:
             fail(f"legacy stage filter did not match canonical stored opportunity: {legacy_stage_query}")
+        stage_id_query = run_query(
+            first_db,
+            {"query_type": "opportunity_search", "filters": {"stage": source_opportunity["stage_id"]}, "limit": 10},
+            temp_root / "query-stage-id",
+            render_html=False,
+        )
+        if first_result["storage_result"]["opportunity_id"] not in {item.get("id") for item in stage_id_query.get("opportunities", [])}:
+            fail(f"stage_id filter did not match canonical stored opportunity: {stage_id_query}")
         detail_result = run_detail(first_db, first_result["storage_result"]["opportunity_id"], temp_root / "detail")
         if "detail" not in detail_result or "display_result" not in detail_result:
             fail("detail result is incomplete")

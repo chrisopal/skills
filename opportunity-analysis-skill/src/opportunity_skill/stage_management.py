@@ -44,12 +44,36 @@ LEGACY_STAGE_NAME_TO_ID = {
     "投标/报价": "proposal_bidding",
 }
 
-GUARDED_SIGNALS = frozenset(
-    next(stage.signals for stage in STAGE_DEFINITIONS if stage.stage_id == "budget_project_confirmed")
+CONTEXT_WINDOW = 12
+CONFIRMED_CONTEXT_PREFIX_MARKERS = (
+    "可能",
+    "如果",
+    "若",
+    "后续",
+    "尚未",
+    "还未",
+    "暂未",
+    "正在",
+    "走流程",
 )
-GUARDED_PREFIX_MARKERS = ("如果", "若", "待", "未", "尚未", "还未", "暂未", "正在", "走流程")
-GUARDED_SUFFIX_MARKERS = ("后", "再", "将", "才能", "才", "前")
-CONTEXT_WINDOW = 6
+CONFIRMED_CONTEXT_SUFFIX_MARKERS = (
+    "仍待确认",
+    "待确认",
+    "将",
+    "再",
+    "才能",
+)
+CONFIRMED_CONTEXT_EDGE_MARKERS = ("待", "未")
+CONFIRMED_CONTEXT_SEQUENCE_MARKERS = (
+    "后再",
+    "后将",
+    "后才能",
+    "前暂",
+    "前不",
+    "前未",
+    "前尚未",
+    "前还未",
+)
 _PUNCTUATION = " \t\r\n,，.。;；:：!！?？、"
 
 
@@ -81,19 +105,30 @@ def _normalize_context_snippet(snippet: str, *, strip_left: bool) -> str:
     return snippet.lstrip(_PUNCTUATION) if strip_left else snippet.rstrip(_PUNCTUATION)
 
 
-def _signal_is_blocked(text: str, signal: str, start: int) -> bool:
-    if signal not in GUARDED_SIGNALS:
+def _contains_any_marker(snippet: str, markers: tuple[str, ...]) -> bool:
+    return any(marker in snippet for marker in markers)
+
+
+def _signal_is_blocked(text: str, signal: str, start: int, *, guard_confirmed_context: bool) -> bool:
+    if not guard_confirmed_context:
         return False
 
     prefix = _normalize_context_snippet(text[max(0, start - CONTEXT_WINDOW):start], strip_left=False)
     suffix = _normalize_context_snippet(text[start + len(signal):start + len(signal) + CONTEXT_WINDOW], strip_left=True)
 
-    if any(prefix.endswith(marker) or marker in prefix for marker in GUARDED_PREFIX_MARKERS):
+    if _contains_any_marker(prefix, CONFIRMED_CONTEXT_PREFIX_MARKERS) or _contains_any_marker(suffix, CONFIRMED_CONTEXT_PREFIX_MARKERS):
         return True
-    return any(suffix.startswith(marker) for marker in GUARDED_SUFFIX_MARKERS)
+
+    if any(prefix.endswith(marker) for marker in CONFIRMED_CONTEXT_EDGE_MARKERS):
+        return True
+
+    if any(suffix.startswith(marker) for marker in CONFIRMED_CONTEXT_EDGE_MARKERS + CONFIRMED_CONTEXT_SUFFIX_MARKERS):
+        return True
+
+    return _contains_any_marker(prefix + suffix, CONFIRMED_CONTEXT_SEQUENCE_MARKERS)
 
 
-def _text_has_any(text: str, signals: tuple[str, ...]) -> list[str]:
+def _text_has_any(text: str, signals: tuple[str, ...], *, guard_confirmed_context: bool = False) -> list[str]:
     text_lower = text.lower()
     matched: list[str] = []
     for signal in signals:
@@ -105,7 +140,7 @@ def _text_has_any(text: str, signals: tuple[str, ...]) -> list[str]:
             start = text_lower.find(signal_lower, search_from)
             if start == -1:
                 break
-            if not _signal_is_blocked(text, signal, start):
+            if not _signal_is_blocked(text, signal, start, guard_confirmed_context=guard_confirmed_context):
                 matched.append(signal)
                 break
             search_from = start + 1
@@ -129,7 +164,7 @@ def infer_opportunity_stage(context: dict[str, Any]) -> dict[str, Any]:
     text = str(context.get("text") or "")
     hits_by_stage: dict[str, list[str]] = {}
     for stage in STAGE_DEFINITIONS:
-        hits = _text_has_any(text, stage.signals)
+        hits = _text_has_any(text, stage.signals, guard_confirmed_context=stage.is_opportunity_confirmed)
         if hits:
             hits_by_stage[stage.stage_id] = hits
 
@@ -146,7 +181,13 @@ def infer_opportunity_stage(context: dict[str, Any]) -> dict[str, Any]:
         has_contact = bool(context.get("contacts"))
         has_confirmed_contact = _confirmed_contact(context)
         clear_need = _need_is_clear(context)
-        wants_more = bool(_text_has_any(text, ("安排", "资料清单", "继续", "方案", "技术交流", "确认时间")))
+        wants_more = bool(
+            _text_has_any(
+                text,
+                ("安排", "资料清单", "继续", "方案", "技术交流", "确认时间"),
+                guard_confirmed_context=True,
+            )
+        )
         if clear_need and has_confirmed_contact and wants_more:
             selected = stage_by_id("opportunity_confirmed")
             signal_hits = ["商机确认:明确需求", "商机确认:客户负责人", "商机确认:继续推进意愿"]

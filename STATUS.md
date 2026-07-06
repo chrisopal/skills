@@ -11,7 +11,7 @@
   - Spec placeholder scan found no `TBD`, `TODO`, `待定`, placeholder, or unresolved marker.
   - Spec self-review tightened terminal-stage confirmation semantics and storage compatibility language.
   - `git diff --check -- STATUS.md docs/superpowers/specs/2026-07-07-opportunity-stage-management-design.md` passed.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed as `10745e8`; push pending with status update commit.
 - Remaining notes:
   - This is design-only per brainstorming workflow; implementation should wait for user review and approval of the committed spec.
 

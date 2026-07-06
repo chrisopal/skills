@@ -216,9 +216,12 @@ def check_stage_management() -> None:
         fail(f"explicit positive approval should infer budget_project_confirmed, got {positive_budget}")
     for positive_text, expected_stage_id in [
         ("项目已立项，后续安排采购。", "budget_project_confirmed"),
+        ("项目已立项后安排采购。", "budget_project_confirmed"),
         ("合同已签，后续安排交付。", "won"),
+        ("合同已签后安排交付。", "won"),
         ("正在招标，客户已发RFP。", "proposal_bidding"),
         ("客户已下PO，后续安排交付。", "won"),
+        ("客户已下PO后安排交货。", "won"),
         ("客户PO已确认。", "won"),
         ("PO已下发，安排交货。", "won"),
     ]:

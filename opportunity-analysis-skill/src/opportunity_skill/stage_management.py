@@ -83,6 +83,22 @@ _CONFIRMED_SIGNALS = tuple(
     if stage.is_opportunity_confirmed
     for signal in stage.signals
 )
+_COMPLETED_FACT_SEQUENCE_SIGNALS = frozenset(
+    {
+        "已签约",
+        "合同已签",
+        "已立项",
+        "预算已批",
+        "预算获批",
+        "预算已立项",
+        "采购计划已确认",
+        "时间窗口已确认",
+        "技改预算已批",
+        "中标",
+        "成交",
+        "赢单",
+    }
+)
 
 
 def stage_names() -> list[str]:
@@ -140,10 +156,28 @@ def _clause_contains_condition_sequence(text: str, start: int) -> bool:
             if signal_index == -1:
                 break
             signal_end = signal_index + len(signal)
+            if not _matches_signal_boundary(clause, signal_index, signal):
+                search_from = signal_index + 1
+                continue
             if signal_end < len(clause) and clause[signal_end] == "后":
+                if _completed_fact_followup_allowed(clause, signal, signal_index, signal_end):
+                    search_from = signal_index + 1
+                    continue
                 return True
             search_from = signal_index + 1
     return False
+
+
+def _completed_fact_followup_allowed(clause: str, signal: str, signal_start: int, signal_end: int) -> bool:
+    if signal in _COMPLETED_FACT_SEQUENCE_SIGNALS:
+        return True
+
+    if signal != "PO":
+        return False
+
+    prefix = clause[max(0, signal_start - 4):signal_start]
+    suffix = clause[signal_end:signal_end + 4]
+    return prefix.endswith(("已下", "下发")) or suffix.startswith(("已下", "已下发", "已确认", "确认"))
 
 
 def _signal_is_blocked(text: str, signal: str, start: int, *, guard_confirmed_context: bool) -> bool:

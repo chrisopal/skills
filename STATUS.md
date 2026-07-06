@@ -1,3 +1,20 @@
+## 2026-07-07 00:24:54 CST
+
+- Scope: Write the design spec for `opportunity-analysis-skill` opportunity stage management.
+- Changed files:
+  - `docs/superpowers/specs/2026-07-07-opportunity-stage-management-design.md`
+- Simplifications made:
+  - Scoped stage management to standard stage definition, explainable current-stage judgment, confirmed-opportunity state, and static HTML visualization.
+  - Excluded stage history, manual stage movement, stage gate enforcement, drag-and-drop, and next-step rule engines.
+  - Kept existing `stage` compatibility while specifying nullable stage metadata fields for future implementation.
+- Validation:
+  - Spec placeholder scan found no `TBD`, `TODO`, `待定`, placeholder, or unresolved marker.
+  - Spec self-review tightened terminal-stage confirmation semantics and storage compatibility language.
+  - `git diff --check -- STATUS.md docs/superpowers/specs/2026-07-07-opportunity-stage-management-design.md` passed.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - This is design-only per brainstorming workflow; implementation should wait for user review and approval of the committed spec.
+
 ## 2026-07-06 23:53:09 CST
 
 - Scope: Remove the separate sales-confirmation card section from `opportunity-analysis-skill` detail views.

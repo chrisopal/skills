@@ -37,6 +37,16 @@
                 <strong>{{assessment.unanswered_critical_count}}</strong>
               </div>
             </div>
+            <div class="ql-assessment-visual">
+              <div class="ql-radar-card">
+                <div class="ql-radar-title">评分雷达图</div>
+                {{assessment_radar_chart}}
+              </div>
+              <div class="ql-dimension-bars">
+                <div class="ql-radar-title">维度评分</div>
+                {{assessment_dimension_bars}}
+              </div>
+            </div>
           </div>
           <div class="ql-table-wrap">
             <table>
@@ -55,6 +65,7 @@
           </div>
           <div class="ql-panel-body">
             <ol class="ql-question-list">{{sales_question_items}}</ol>
+            <div class="ql-confirmation-grid">{{sales_confirmation_cards}}</div>
           </div>
         </section>
 

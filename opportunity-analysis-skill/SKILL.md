@@ -76,6 +76,8 @@ When `file_path`, `path`, `source_path`, `source_ref`, or `attachments` points t
 
 Optional `sales_confirmation_answers` lets a host pass business staff answers back into the skill. Each answer should include `dimension_id`, `rating` (`strong`, `medium`, `weak`, or `unknown`), optional `answer_text`, and optional `answered_by`. These answers override inferred ratings and recalculate the commercial assessment and win probability.
 
+The detail renderer must make unconfirmed commercial dimensions operational: show a radar chart for the major score categories, show each dimension score, and surface every `needs_sales_confirmation` dimension as a sales confirmation card with the exact `dimension_id` and question that the business staff should answer.
+
 ## Output Contract
 
 Every successful analyze run returns:

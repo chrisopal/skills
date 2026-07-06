@@ -53,3 +53,9 @@ Question: can we deliver successfully with acceptable risk?
 3. Generate the highest-priority questions for business staff.
 4. Accept `sales_confirmation_answers` with `dimension_id`, `rating`, `answer_text`, and optional owner/timestamp fields.
 5. Recalculate opportunity score, win probability, confidence level, and unanswered critical count.
+
+The HTML detail renderer should visualize this structure:
+
+- radar chart for the three category scores;
+- score bars for every commercial dimension;
+- confirmation cards for every dimension whose `evidence_status` is `needs_sales_confirmation`, using the dimension's `question` and `dimension_id` as the exact sales follow-up contract.

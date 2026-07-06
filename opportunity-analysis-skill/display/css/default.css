@@ -254,6 +254,126 @@ body {
   line-height: 28px;
 }
 
+.ql-assessment-visual {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ql-radar-card,
+.ql-dimension-bars {
+  min-width: 0;
+  border: 1px solid var(--ql-line);
+  border-radius: 6px;
+  background: var(--ql-surface);
+  padding: 12px;
+}
+
+.ql-radar-title {
+  margin-bottom: 8px;
+  color: var(--ql-strong);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 700;
+}
+
+.ql-radar-chart {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.ql-radar-ring {
+  fill: none;
+  stroke: var(--ql-line);
+  stroke-width: 1;
+}
+
+.ql-radar-spoke {
+  stroke: var(--ql-line-strong);
+  stroke-width: 1;
+}
+
+.ql-radar-area {
+  fill: rgba(31, 91, 69, 0.18);
+  stroke: var(--ql-green);
+  stroke-width: 2;
+}
+
+.ql-radar-point {
+  fill: var(--ql-green-dark);
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.ql-radar-labels {
+  fill: var(--ql-muted);
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.ql-dimension-bars {
+  max-height: 288px;
+  overflow: auto;
+}
+
+.ql-dimension-bar {
+  display: grid;
+  gap: 5px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--ql-line);
+}
+
+.ql-dimension-bar:first-of-type {
+  padding-top: 0;
+}
+
+.ql-dimension-bar:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ql-dimension-bar-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ql-dimension-bar-head strong {
+  min-width: 0;
+  color: var(--ql-ink);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.ql-dimension-bar-head span {
+  flex: 0 0 auto;
+  color: var(--ql-muted);
+  font-size: 11px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.ql-bar-track {
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--ql-line);
+}
+
+.ql-bar-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ql-green);
+}
+
 .ql-panel {
   min-width: 0;
   border: 1px solid var(--ql-line);
@@ -362,6 +482,80 @@ body {
 
 .ql-question-list .ql-tag {
   margin: 6px 8px 0 0;
+}
+
+.ql-confirmation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.ql-confirmation-card {
+  min-width: 0;
+  border: 1px solid #f4c49f;
+  border-left: 4px solid var(--ql-orange);
+  border-radius: 6px;
+  background: #fffdf9;
+  padding: 10px;
+}
+
+.ql-confirmation-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.ql-confirmation-card-head strong {
+  min-width: 0;
+  color: var(--ql-strong);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.ql-confirmation-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--ql-muted);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.ql-confirmation-card p {
+  margin: 8px 0;
+  color: var(--ql-ink);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ql-confirmation-answer {
+  color: var(--ql-muted);
+  font-size: 11px;
+  line-height: 17px;
+}
+
+.ql-confirmation-answer code {
+  display: inline-block;
+  margin: 1px 2px;
+  padding: 1px 4px;
+  border: 1px solid var(--ql-line);
+  border-radius: 3px;
+  background: var(--ql-gray-soft);
+  color: var(--ql-strong);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 10px;
+}
+
+.ql-confirmation-empty {
+  grid-column: 1 / -1;
+  color: var(--ql-muted);
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .ql-table-wrap {
@@ -795,6 +989,14 @@ tr:last-child td {
 
   .ql-assessment-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ql-assessment-visual {
+    grid-template-columns: 1fr;
+  }
+
+  .ql-confirmation-grid {
+    grid-template-columns: 1fr;
   }
 
   .ql-kanban-summary {

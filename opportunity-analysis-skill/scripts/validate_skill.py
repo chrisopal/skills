@@ -233,6 +233,10 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
             fail("archive case did not apply sales confirmation answer")
         if "商务确认评估" not in html or "待商务确认问题" not in html:
             fail("archive case did not render commercial assessment")
+        if "ql-radar-chart" not in html or "评分雷达图" not in html:
+            fail("archive case did not render assessment radar chart")
+        if "ql-confirmation-card" not in html or "dimension_id" not in html:
+            fail("archive case did not render sales confirmation cards")
         print("ok evaluation cases")
         if keep_artifacts:
             print(f"artifacts kept at {temp_root}")

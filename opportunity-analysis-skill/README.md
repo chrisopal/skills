@@ -81,6 +81,12 @@ opportunity-analysis detail \
   --output-dir /tmp/opportunity-analysis-detail
 ```
 
+The detail view renders the commercial assessment as:
+
+- A radar chart for the three category scores: win likelihood, deal attractiveness, and delivery confidence.
+- A complete dimension-score list for every assessment dimension.
+- Sales confirmation cards for every dimension marked `needs_sales_confirmation`, including the `dimension_id`, the question to ask sales/business staff, and the expected answer fields.
+
 ## Agent Host Integration
 
 Any host agent can use the package in one of two ways:
@@ -115,6 +121,8 @@ Ratings are `strong`, `medium`, `weak`, or `unknown`. Confirmed answers override
 - `overall_opportunity_score`
 - `win_probability`
 - `assessment_confidence_score`
+
+When a dimension is not confirmed, it remains in `commercial_assessment.dimensions` with `evidence_status=needs_sales_confirmation`. The detail page surfaces those items as sales confirmation cards so the business owner can answer them through `sales_confirmation_answers` in the next analyze run.
 
 ## Adapter Strategy
 

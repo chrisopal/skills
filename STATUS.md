@@ -1,3 +1,27 @@
+## 2026-07-06 10:12:00 CST
+
+- Scope: Upgrade `opportunity-analysis-skill` detail view with commercial-assessment radar visualization and explicit sales confirmation cards for uncertain dimensions.
+- Changed files:
+  - `opportunity-analysis-skill/SKILL.md`
+  - `opportunity-analysis-skill/README.md`
+  - `opportunity-analysis-skill/references/commercial_assessment.md`
+  - `opportunity-analysis-skill/display/css/default.css`
+  - `opportunity-analysis-skill/display/templates/opportunity_detail.html`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Used dependency-free inline SVG for the radar chart instead of adding a charting library or JavaScript.
+  - Kept the radar chart at the three category-score level while showing all 18 individual dimensions as score bars to avoid an unreadable many-axis radar.
+  - Reused existing `commercial_assessment.dimensions` and `needs_sales_confirmation` fields to render sales confirmation cards without changing the database schema.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed, including new assertions for the radar chart and sales confirmation cards.
+  - `git diff --check -- opportunity-analysis-skill` passed.
+  - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
+  - Playwright HTTP preview verified desktop 1440px and mobile 390px: radar chart present, 18 dimension bars, 11 confirmation cards, sales confirmation text and `dimension_id` visible, no page-wide overflow, and no assessed panel text overflow.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - `sales_confirmation_questions` still carries the top-priority question list, while every unconfirmed dimension is now visible in the detail page as a confirmation card for follow-up.
+
 ## 2026-07-06 09:45:00 CST
 
 - Scope: Redesign `opportunity-analysis-skill` opportunity kanban/card board into a denser enterprise sales workbench.

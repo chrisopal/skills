@@ -123,9 +123,12 @@ class SkillDisplayRenderer:
             "assessment.deal_attractiveness_score": esc(data.get("commercial_assessment", {}).get("deal_attractiveness_score")),
             "assessment.delivery_confidence_score": esc(data.get("commercial_assessment", {}).get("delivery_confidence_score")),
             "assessment.unanswered_critical_count": esc(data.get("commercial_assessment", {}).get("unanswered_critical_count")),
+            "assessment_radar_chart": self._assessment_radar_chart(data.get("commercial_assessment", {})),
+            "assessment_dimension_bars": self._assessment_dimension_bars(data.get("commercial_assessment", {}).get("dimensions", [])),
             "assessment_dimension_rows": self._assessment_dimension_rows(data.get("commercial_assessment", {}).get("dimensions", [])),
             "sales_questions.count": esc(len(data.get("sales_confirmation_questions", []) or data.get("commercial_assessment", {}).get("questions", []))),
             "sales_question_items": self._sales_question_items(data.get("sales_confirmation_questions", []) or data.get("commercial_assessment", {}).get("questions", [])),
+            "sales_confirmation_cards": self._sales_confirmation_cards(data.get("commercial_assessment", {}).get("dimensions", [])),
             "missing.count": esc(len(data.get("opportunity", {}).get("missing_information", []))),
             "evidence.count": esc(len(data.get("evidence", []))),
             "materials.count": esc(len(self._collect_archived_files(data))),
@@ -363,6 +366,111 @@ class SkillDisplayRenderer:
     def _rating_label(self, rating: Any) -> str:
         mapping = {"strong": "强", "medium": "中", "weak": "弱", "unknown": "未知"}
         return mapping.get(str(rating), "未知")
+
+    def _assessment_radar_chart(self, assessment: dict[str, Any]) -> str:
+        if not assessment:
+            return "<div class='ql-empty'>暂无评估数据</div>"
+        axes = [
+            ("赢单可能性", int(assessment.get("win_likelihood_score") or 0), (130, 30)),
+            ("成交意向", int(assessment.get("deal_attractiveness_score") or 0), (218, 182)),
+            ("交付信心", int(assessment.get("delivery_confidence_score") or 0), (42, 182)),
+        ]
+        center = (130, 132)
+
+        def scaled_point(target: tuple[int, int], score: int) -> tuple[float, float]:
+            ratio = max(0, min(score, 100)) / 100
+            return (
+                center[0] + (target[0] - center[0]) * ratio,
+                center[1] + (target[1] - center[1]) * ratio,
+            )
+
+        data_points = [scaled_point(target, score) for _label, score, target in axes]
+        polygon = " ".join(f"{x:.1f},{y:.1f}" for x, y in data_points)
+        rings = []
+        for ratio in (1.0, 0.66, 0.33):
+            ring = " ".join(
+                f"{center[0] + (target[0] - center[0]) * ratio:.1f},{center[1] + (target[1] - center[1]) * ratio:.1f}"
+                for _label, _score, target in axes
+            )
+            rings.append(f"<polygon points='{ring}' class='ql-radar-ring'/>")
+        spokes = "".join(
+            f"<line x1='{center[0]}' y1='{center[1]}' x2='{target[0]}' y2='{target[1]}' class='ql-radar-spoke'/>"
+            for _label, _score, target in axes
+        )
+        labels = (
+            f"<text x='130' y='18' text-anchor='middle'>{esc(axes[0][0])} {esc(axes[0][1])}</text>"
+            f"<text x='238' y='198' text-anchor='end'>{esc(axes[1][0])} {esc(axes[1][1])}</text>"
+            f"<text x='22' y='198' text-anchor='start'>{esc(axes[2][0])} {esc(axes[2][1])}</text>"
+        )
+        points = "".join(f"<circle cx='{x:.1f}' cy='{y:.1f}' r='3.8' class='ql-radar-point'/>" for x, y in data_points)
+        return (
+            "<svg class='ql-radar-chart' viewBox='0 0 260 220' role='img' aria-label='商务评估三维雷达图'>"
+            + "".join(rings)
+            + spokes
+            + f"<polygon points='{polygon}' class='ql-radar-area'/>"
+            + points
+            + f"<g class='ql-radar-labels'>{labels}</g>"
+            + "</svg>"
+        )
+
+    def _assessment_dimension_bars(self, dimensions: list[dict[str, Any]]) -> str:
+        if not dimensions:
+            return "<div class='ql-empty'>暂无维度评分</div>"
+        priority = {"P0": 0, "P1": 1, "P2": 2}
+        rows = []
+        for item in sorted(dimensions, key=lambda x: (priority.get(x.get("priority"), 9), x.get("category") or "", x.get("dimension_id") or "")):
+            score = max(0, min(100, int(item.get("score") or 0)))
+            status = self._evidence_status_label(item.get("evidence_status"))
+            rows.append(
+                "<div class='ql-dimension-bar'>"
+                "<div class='ql-dimension-bar-head'>"
+                f"<strong>{esc(item.get('label'))}</strong>"
+                f"<span>{esc(score)}分 · {esc(status)}</span>"
+                "</div>"
+                "<div class='ql-bar-track' aria-hidden='true'>"
+                f"<span style='width:{score}%'></span>"
+                "</div>"
+                "</div>"
+            )
+        return "".join(rows)
+
+    def _sales_confirmation_cards(self, dimensions: list[dict[str, Any]]) -> str:
+        needs = [
+            d for d in dimensions
+            if d.get("evidence_status") == "needs_sales_confirmation"
+        ]
+        if not needs:
+            return "<div class='ql-confirmation-empty'>暂无未确认维度</div>"
+        priority = {"P0": 0, "P1": 1, "P2": 2}
+        cards = []
+        for item in sorted(needs, key=lambda x: (priority.get(x.get("priority"), 9), 0 if x.get("critical") else 1, x.get("category") or "", x.get("dimension_id") or "")):
+            rating = item.get("rating") or "unknown"
+            critical = "关键" if item.get("critical") else "补充"
+            cards.append(
+                "<article class='ql-confirmation-card'>"
+                "<div class='ql-confirmation-card-head'>"
+                f"<strong>{esc(item.get('label'))}</strong>"
+                f"<span class='ql-tag rating-{esc(rating)}'>{esc(self._rating_label(rating))}</span>"
+                "</div>"
+                "<div class='ql-confirmation-meta'>"
+                f"<span>{esc(item.get('priority'))} · {esc(critical)} · {esc(self._category_label(item.get('category')))}</span>"
+                f"<span>{esc(item.get('score'))}分</span>"
+                "</div>"
+                f"<p>{esc(item.get('question'))}</p>"
+                "<div class='ql-confirmation-answer'>回答格式：<code>dimension_id</code> "
+                f"<code>{esc(item.get('dimension_id'))}</code> + <code>rating</code> 强/中/弱/未知 + <code>answer_text</code></div>"
+                "</article>"
+            )
+        return "".join(cards)
+
+    def _evidence_status_label(self, status: Any) -> str:
+        mapping = {
+            "needs_sales_confirmation": "待商务确认",
+            "sales_confirmed": "商务已确认",
+            "inferred": "材料推断",
+            "confirmed": "材料确认",
+        }
+        return mapping.get(str(status), "待确认")
 
     def _assessment_dimension_rows(self, dimensions: list[dict[str, Any]]) -> str:
         if not dimensions:

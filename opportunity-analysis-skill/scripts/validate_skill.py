@@ -159,6 +159,16 @@ def check_stage_management() -> None:
     })
     if poc_result["stage_id"] != "solution_cocreation" or poc_result["stage_id"] in {"won", "lost"}:
         fail(f"POC should stay in pre-sales stage instead of terminal stage, got {poc_result}")
+    poc_scope_result = infer_opportunity_stage({
+        "text": "讨论POC范围和接口对接。",
+        "core_need": "质检自动化升级",
+        "contacts": [{"name": "王总", "is_requirement_owner": True}],
+        "decision_chain": [{"decision_role": "业务需求负责人", "status": "confirmed"}],
+        "budget_signal": "预算信息未明确",
+        "timeline": "时间节点未明确",
+    })
+    if poc_scope_result["stage_id"] != "solution_cocreation" or poc_scope_result["stage_id"] in {"won", "lost"}:
+        fail(f"POC scope discussion should stay in pre-sales stage instead of terminal stage, got {poc_scope_result}")
     early = infer_opportunity_stage({
         "text": "客户名片已获取，后续再沟通。",
         "core_need": "客户需求待进一步澄清",
@@ -208,6 +218,9 @@ def check_stage_management() -> None:
         ("项目已立项，后续安排采购。", "budget_project_confirmed"),
         ("合同已签，后续安排交付。", "won"),
         ("正在招标，客户已发RFP。", "proposal_bidding"),
+        ("客户已下PO，后续安排交付。", "won"),
+        ("客户PO已确认。", "won"),
+        ("PO已下发，安排交货。", "won"),
     ]:
         positive_result = infer_opportunity_stage({
             "text": positive_text,

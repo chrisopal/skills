@@ -31,7 +31,7 @@ STAGE_DEFINITIONS: list[StageDefinition] = [
     ),
     StageDefinition("proposal_bidding", "报价/投标", 7, "进入报价、招投标、比选、询价或 RFP 阶段。", ("报价", "投标", "招标", "比选", "询价", "RFP"), is_opportunity_confirmed=True),
     StageDefinition("commercial_negotiation", "商务谈判", 8, "正在围绕价格、合同、付款、交付边界或法务条款谈判。", ("合同条款", "价格谈判", "付款方式", "交付边界", "法务", "采购谈判", "商务谈判"), is_opportunity_confirmed=True),
-    StageDefinition("won", "赢单", 9, "商机已经中标、签约或成交。", ("中标", "已签约", "合同已签", "成交", "赢单"), is_terminal=True, is_opportunity_confirmed=True),
+    StageDefinition("won", "赢单", 9, "商机已经中标、签约、下 PO 或成交。", ("中标", "已签约", "合同已签", "成交", "赢单", "PO"), is_terminal=True, is_opportunity_confirmed=True),
     StageDefinition("lost", "丢单", 10, "商机已失败、暂停、取消或客户选择其他供应商。", ("未中标", "选择其他供应商", "项目暂停", "项目取消", "预算取消", "丢单"), is_terminal=True, is_opportunity_confirmed=True),
 ]
 
@@ -168,6 +168,24 @@ def _signal_is_blocked(text: str, signal: str, start: int, *, guard_confirmed_co
     return _contains_any_marker(prefix + suffix, CONFIRMED_CONTEXT_SEQUENCE_MARKERS)
 
 
+def _is_ascii_word_char(char: str) -> bool:
+    return char.isascii() and (char.isalnum() or char == "_")
+
+
+def _requires_ascii_boundary(signal: str) -> bool:
+    return bool(signal) and all(_is_ascii_word_char(char) for char in signal)
+
+
+def _matches_signal_boundary(text: str, start: int, signal: str) -> bool:
+    if not _requires_ascii_boundary(signal):
+        return True
+
+    end = start + len(signal)
+    prev_char = text[start - 1] if start > 0 else ""
+    next_char = text[end] if end < len(text) else ""
+    return not _is_ascii_word_char(prev_char) and not _is_ascii_word_char(next_char)
+
+
 def _text_has_any(text: str, signals: tuple[str, ...], *, guard_confirmed_context: bool = False) -> list[str]:
     text_lower = text.lower()
     matched: list[str] = []
@@ -180,6 +198,9 @@ def _text_has_any(text: str, signals: tuple[str, ...], *, guard_confirmed_contex
             start = text_lower.find(signal_lower, search_from)
             if start == -1:
                 break
+            if not _matches_signal_boundary(text, start, signal):
+                search_from = start + 1
+                continue
             if not _signal_is_blocked(text, signal, start, guard_confirmed_context=guard_confirmed_context):
                 matched.append(signal)
                 break

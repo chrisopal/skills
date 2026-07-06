@@ -2,6 +2,7 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 from typing import Any
+from .stage_management import LEGACY_STAGE_NAME_TO_ID, stage_by_id, stage_from_name
 from .utils import now_iso, to_json, from_json, ensure_parent, new_id
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -24,6 +25,7 @@ class OpportunitySQLiteAdapter:
         sql = SCHEMA_PATH.read_text(encoding="utf-8")
         self.conn.executescript(sql)
         self._ensure_contact_columns()
+        self._ensure_opportunity_stage_columns()
         self.conn.commit()
 
     def _ensure_contact_columns(self):
@@ -37,6 +39,19 @@ class OpportunitySQLiteAdapter:
         for name, ddl in columns.items():
             if name not in existing:
                 self.conn.execute(f"ALTER TABLE contacts ADD COLUMN {name} {ddl}")
+
+    def _ensure_opportunity_stage_columns(self):
+        existing = {row["name"] for row in self.conn.execute("PRAGMA table_info(opportunities)").fetchall()}
+        columns = {
+            "stage_id": "TEXT",
+            "stage_reason": "TEXT",
+            "stage_confidence": "TEXT",
+            "stage_signal_hits": "TEXT",
+            "opportunity_confirmed": "INTEGER",
+        }
+        for name, ddl in columns.items():
+            if name not in existing:
+                self.conn.execute(f"ALTER TABLE opportunities ADD COLUMN {name} {ddl}")
 
     def upsert_account(self, account: dict[str, Any]) -> str:
         now = now_iso()
@@ -94,12 +109,15 @@ class OpportunitySQLiteAdapter:
     def upsert_opportunity(self, opportunity: dict[str, Any]) -> str:
         now = now_iso()
         opp_id = opportunity.get("id") or new_id("opp")
+        opportunity_confirmed = opportunity.get("opportunity_confirmed")
         self.conn.execute(
             """
-            INSERT INTO opportunities (id, account_id, name, stage, stage_status, core_need, budget_signal, budget_amount, expected_timeline, win_probability, score, score_level, risk_level, competitors, pain_points, requirements, missing_information, status, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO opportunities (id, account_id, name, stage, stage_status, stage_id, stage_reason, stage_confidence, stage_signal_hits, opportunity_confirmed, core_need, budget_signal, budget_amount, expected_timeline, win_probability, score, score_level, risk_level, competitors, pain_points, requirements, missing_information, status, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET
               account_id=excluded.account_id, name=excluded.name, stage=excluded.stage, stage_status=excluded.stage_status,
+              stage_id=excluded.stage_id, stage_reason=excluded.stage_reason, stage_confidence=excluded.stage_confidence,
+              stage_signal_hits=excluded.stage_signal_hits, opportunity_confirmed=excluded.opportunity_confirmed,
               core_need=excluded.core_need, budget_signal=excluded.budget_signal, budget_amount=excluded.budget_amount,
               expected_timeline=excluded.expected_timeline, win_probability=excluded.win_probability, score=excluded.score,
               score_level=excluded.score_level, risk_level=excluded.risk_level, competitors=excluded.competitors,
@@ -108,6 +126,9 @@ class OpportunitySQLiteAdapter:
             """,
             (
                 opp_id, opportunity.get("account_id"), opportunity.get("name"), opportunity.get("stage"), opportunity.get("stage_status"),
+                opportunity.get("stage_id"), opportunity.get("stage_reason"), opportunity.get("stage_confidence"),
+                to_json(opportunity.get("stage_signal_hits", [])),
+                int(bool(opportunity_confirmed)) if opportunity_confirmed is not None else None,
                 opportunity.get("core_need"), opportunity.get("budget_signal"), opportunity.get("budget_amount"), opportunity.get("expected_timeline"),
                 opportunity.get("win_probability"), opportunity.get("score"), opportunity.get("score_level"), opportunity.get("risk_level"),
                 to_json(opportunity.get("competitors", [])), to_json(opportunity.get("pain_points", [])), to_json(opportunity.get("requirements", [])),
@@ -424,8 +445,17 @@ class OpportunitySQLiteAdapter:
             sql += " AND a.company_name LIKE ?"
             params.append(f"%{filters['company_name']}%")
         if filters.get("stage"):
-            sql += " AND o.stage = ?"
-            params.append(filters["stage"])
+            stage_names, stage_id = self._stage_filter_values(filters["stage"])
+            stage_clauses: list[str] = []
+            if stage_names:
+                placeholders = ",".join("?" for _ in stage_names)
+                stage_clauses.append(f"o.stage IN ({placeholders})")
+                params.extend(stage_names)
+            if stage_id:
+                stage_clauses.append("o.stage_id = ?")
+                params.append(stage_id)
+            if stage_clauses:
+                sql += f" AND ({' OR '.join(stage_clauses)})"
         if filters.get("risk_level"):
             sql += " AND o.risk_level = ?"
             params.append(filters["risk_level"])
@@ -541,10 +571,46 @@ class OpportunitySQLiteAdapter:
         assessment["answers"] = answers
         return assessment
 
+    def _stage_filter_values(self, stage_filter: Any) -> tuple[list[str], str | None]:
+        normalized = str(stage_filter or "").strip()
+        if not normalized:
+            return [], None
+
+        stage_def = stage_from_name(normalized)
+        stage_names = list(dict.fromkeys([normalized]))
+        if not stage_def:
+            return stage_names, None
+
+        stage_names = list(dict.fromkeys([stage_def.name, normalized]))
+        for legacy_name, legacy_stage_id in LEGACY_STAGE_NAME_TO_ID.items():
+            if legacy_stage_id == stage_def.stage_id and legacy_name not in stage_names:
+                stage_names.append(legacy_name)
+        return stage_names, stage_def.stage_id
+
     def _row_to_opportunity_summary(self, row: sqlite3.Row) -> dict[str, Any]:
+        row_keys = set(row.keys())
+        stage_value = row["stage"] if "stage" in row_keys else None
+        stage_id = row["stage_id"] if "stage_id" in row_keys else None
+        stage_def = stage_by_id(str(stage_id)) if stage_id else stage_from_name(stage_value)
+        if not stage_id and stage_def:
+            stage_id = stage_def.stage_id
+        stage_name = stage_def.name if stage_def else stage_value
+        stage_signal_hits = from_json(row["stage_signal_hits"], default=[]) if "stage_signal_hits" in row_keys else []
+        if not isinstance(stage_signal_hits, list):
+            stage_signal_hits = []
+        opportunity_confirmed = row["opportunity_confirmed"] if "opportunity_confirmed" in row_keys else None
+        if opportunity_confirmed is None and stage_def:
+            opportunity_confirmed = stage_def.is_opportunity_confirmed
+        elif opportunity_confirmed is not None:
+            opportunity_confirmed = bool(opportunity_confirmed)
         return {
-            "id": row["id"], "account_id": row["account_id"], "name": row["name"], "stage": row["stage"],
-            "stage_status": row["stage_status"], "core_need": row["core_need"], "budget_signal": row["budget_signal"],
+            "id": row["id"], "account_id": row["account_id"], "name": row["name"], "stage": stage_name,
+            "stage_status": row["stage_status"], "stage_id": stage_id,
+            "stage_reason": row["stage_reason"] if "stage_reason" in row_keys else None,
+            "stage_confidence": row["stage_confidence"] if "stage_confidence" in row_keys else None,
+            "stage_signal_hits": stage_signal_hits,
+            "opportunity_confirmed": opportunity_confirmed,
+            "core_need": row["core_need"], "budget_signal": row["budget_signal"],
             "budget_amount": row["budget_amount"], "expected_timeline": row["expected_timeline"],
             "win_probability": row["win_probability"], "win_probability_percent": int(round((row["win_probability"] or 0) * 100)),
             "score": row["score"], "score_level": row["score_level"], "risk_level": row["risk_level"],

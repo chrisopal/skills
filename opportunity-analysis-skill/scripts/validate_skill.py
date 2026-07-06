@@ -7,6 +7,7 @@ import json
 import py_compile
 import re
 import shutil
+import sqlite3
 import sys
 import tempfile
 from pathlib import Path
@@ -21,6 +22,7 @@ if str(SRC) not in sys.path:
 from opportunity_skill.pipeline import run_analyze, run_detail, run_query  # noqa: E402
 from opportunity_skill.assessment import normalize_rating  # noqa: E402
 from opportunity_skill.confirmation import collect_sales_confirmation_answers  # noqa: E402
+from opportunity_skill.storage import OpportunitySQLiteAdapter  # noqa: E402
 from opportunity_skill.stage_management import infer_opportunity_stage, stage_from_name, stage_names  # noqa: E402
 from opportunity_skill.stages.account_profile_extraction import extract_account_profile  # noqa: E402
 from opportunity_skill.stages.evidence_normalization import all_text, normalize_input  # noqa: E402
@@ -304,6 +306,145 @@ def write_tiny_png(path: Path) -> None:
     )
 
 
+def check_legacy_stage_storage_compatibility(temp_root: Path) -> None:
+    legacy_dir = temp_root / "legacy-stage"
+    legacy_dir.mkdir(parents=True, exist_ok=True)
+    db_path = legacy_dir / "legacy.db"
+
+    conn = sqlite3.connect(db_path)
+    try:
+        conn.executescript(
+            """
+            PRAGMA foreign_keys = ON;
+            CREATE TABLE accounts (
+                id TEXT PRIMARY KEY,
+                company_name TEXT NOT NULL,
+                normalized_name TEXT,
+                industry TEXT,
+                region TEXT,
+                company_size TEXT,
+                business_summary TEXT,
+                current_systems TEXT,
+                key_pain_points TEXT,
+                source_confidence REAL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
+
+            CREATE TABLE opportunities (
+                id TEXT PRIMARY KEY,
+                account_id TEXT NOT NULL,
+                name TEXT NOT NULL,
+                stage TEXT,
+                stage_status TEXT,
+                core_need TEXT,
+                budget_signal TEXT,
+                budget_amount TEXT,
+                expected_timeline TEXT,
+                win_probability REAL,
+                score INTEGER,
+                score_level TEXT,
+                risk_level TEXT,
+                competitors TEXT,
+                pain_points TEXT,
+                requirements TEXT,
+                missing_information TEXT,
+                status TEXT DEFAULT 'active',
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                FOREIGN KEY(account_id) REFERENCES accounts(id)
+            );
+            """
+        )
+        conn.execute(
+            """
+            INSERT INTO accounts (
+                id, company_name, normalized_name, industry, region, company_size, business_summary,
+                current_systems, key_pain_points, source_confidence, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                "acc_legacy",
+                "旧库兼容有限公司",
+                "旧库兼容",
+                "离散制造",
+                "苏州",
+                "中型",
+                "旧库阶段兼容验证",
+                "[]",
+                "[\"多系统协同\"]",
+                0.8,
+                "2026-07-07T00:00:00+00:00",
+                "2026-07-07T00:00:00+00:00",
+            ),
+        )
+        conn.execute(
+            """
+            INSERT INTO opportunities (
+                id, account_id, name, stage, stage_status, core_need, budget_signal, budget_amount,
+                expected_timeline, win_probability, score, score_level, risk_level, competitors,
+                pain_points, requirements, missing_information, status, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                "opp_legacy",
+                "acc_legacy",
+                "旧阶段商机",
+                "方案交流",
+                "active",
+                "验证旧阶段映射",
+                "预算待确认",
+                None,
+                "Q4",
+                0.45,
+                58,
+                "medium",
+                "medium",
+                "[]",
+                "[\"现场节拍波动\"]",
+                "[\"需要方案讨论\"]",
+                "[\"预算批复时间\"]",
+                "active",
+                "2026-07-07T00:00:00+00:00",
+                "2026-07-07T00:00:00+00:00",
+            ),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    adapter = OpportunitySQLiteAdapter(db_path)
+    try:
+        columns = {row["name"] for row in adapter.conn.execute("PRAGMA table_info(opportunities)").fetchall()}
+        for required in {"stage_id", "stage_reason", "stage_confidence", "stage_signal_hits", "opportunity_confirmed"}:
+            if required not in columns:
+                fail(f"legacy database migration did not add {required}")
+        detail = adapter.get_opportunity_detail("opp_legacy")
+        legacy_opportunity = detail.get("opportunity", {})
+        if legacy_opportunity.get("stage_id") != "solution_cocreation":
+            fail(f"legacy detail did not infer stage_id from old stage name: {legacy_opportunity}")
+        if legacy_opportunity.get("stage") != "方案共创":
+            fail(f"legacy detail did not normalize canonical stage name: {legacy_opportunity}")
+        if legacy_opportunity.get("stage_signal_hits") != []:
+            fail(f"legacy detail should default stage_signal_hits to [], got {legacy_opportunity}")
+        if legacy_opportunity.get("opportunity_confirmed") is not True:
+            fail(f"legacy detail should infer confirmed status from mapped stage, got {legacy_opportunity}")
+    finally:
+        adapter.close()
+
+    for stage_filter in ["方案交流", "方案共创"]:
+        query_result = run_query(
+            db_path,
+            {"query_type": "opportunity_search", "filters": {"stage": stage_filter}, "limit": 10},
+            legacy_dir / f"query-{stage_filter}",
+            render_html=False,
+        )
+        returned_ids = {item.get("id") for item in query_result.get("opportunities", [])}
+        if "opp_legacy" not in returned_ids:
+            fail(f"legacy database stage filter {stage_filter} did not match old-stage row: {query_result}")
+    print("ok legacy stage storage")
+
+
 def check_evaluation_cases(keep_artifacts: bool = False) -> None:
     cases = load_json(ROOT / "evaluation" / "test_cases.json")
     temp_root = Path(tempfile.mkdtemp(prefix="opportunity-skill-validate-"))
@@ -353,22 +494,46 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         query_html = query_result.get("display_result", {}).get("html", "")
         if not query_html:
             fail("query HTML render is empty")
-        rendered_match = False
         for opportunity in query_result.get("opportunities", []):
             name = opportunity.get("name")
             company = opportunity.get("company_name")
             stage = opportunity.get("stage")
             if name and escaped_text(name) in query_html:
-                rendered_match = True
-                break
+                continue
             if company and stage and escaped_text(company) in query_html and escaped_text(stage) in query_html:
-                rendered_match = True
-                break
-        if not rendered_match:
-            fail("query HTML did not include any returned opportunity identity or company/stage pair")
+                continue
+            fail(f"query HTML did not include returned opportunity {opportunity.get('id')}: {opportunity}")
+        legacy_stage_aliases = {
+            "lead_identified": "线索",
+            "customer_contacted": "初步沟通",
+            "needs_discovery": "需求确认",
+            "solution_cocreation": "方案交流",
+            "proposal_bidding": "投标/报价",
+        }
+        source_opportunity = first_result["structured_data"].get("opportunity", {})
+        legacy_stage_filter = legacy_stage_aliases.get(source_opportunity.get("stage_id"))
+        if not legacy_stage_filter:
+            fail(f"missing legacy stage alias for validator fixture: {source_opportunity}")
+        legacy_stage_query = run_query(
+            first_db,
+            {"query_type": "opportunity_search", "filters": {"stage": legacy_stage_filter}, "limit": 10},
+            temp_root / "query-legacy-stage",
+            render_html=False,
+        )
+        if first_result["storage_result"]["opportunity_id"] not in {item.get("id") for item in legacy_stage_query.get("opportunities", [])}:
+            fail(f"legacy stage filter did not match canonical stored opportunity: {legacy_stage_query}")
         detail_result = run_detail(first_db, first_result["storage_result"]["opportunity_id"], temp_root / "detail")
         if "detail" not in detail_result or "display_result" not in detail_result:
             fail("detail result is incomplete")
+        detail_opportunity = detail_result["detail"].get("opportunity", {})
+        if detail_opportunity.get("stage_id") != source_opportunity.get("stage_id"):
+            fail(f"detail result did not reload persisted stage_id: {detail_opportunity}")
+        if detail_opportunity.get("stage_reason") != source_opportunity.get("stage_reason"):
+            fail(f"detail result did not reload persisted stage_reason: {detail_opportunity}")
+        if detail_opportunity.get("opportunity_confirmed") != source_opportunity.get("opportunity_confirmed"):
+            fail(f"detail result did not reload persisted opportunity_confirmed: {detail_opportunity}")
+
+        check_legacy_stage_storage_compatibility(temp_root)
 
         source_image = temp_root / "source-material.png"
         write_tiny_png(source_image)

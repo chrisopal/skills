@@ -18,7 +18,7 @@
   - `git diff --check -- opportunity-analysis-skill` passed.
   - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
   - Playwright HTTP preview verified desktop 1440px and mobile 390px: radar chart present, 18 dimension bars, 11 confirmation cards, sales confirmation text and `dimension_id` visible, no page-wide overflow, and no assessed panel text overflow.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed and pushed to `origin/main` as `c6e648d`.
 - Remaining notes:
   - `sales_confirmation_questions` still carries the top-priority question list, while every unconfirmed dimension is now visible in the detail page as a confirmation card for follow-up.
 

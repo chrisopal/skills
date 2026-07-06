@@ -2,13 +2,20 @@ name: analyze_and_store
 kind: reference-workflow
 description: Logical workflow implemented by src/opportunity_skill/pipeline.py::run_analyze.
 steps:
-  - id: normalize_input
-    uses: host.preprocessor_or_opportunity_skill.extractor.normalize_input
+  - id: evidence_normalization
+    uses: host.preprocessor_or_opportunity_skill.stages.evidence_normalization.normalize_input
     output: evidence_list
-  - id: extract_opportunity
-    uses: opportunity_skill.extractor.analyze
+  - id: account_profile_extraction
+    uses: opportunity_skill.stages.account_profile_extraction.extract_account_profile
     input: evidence_list
+    output: account_profile
+  - id: opportunity_analysis
+    uses: opportunity_skill.stages.opportunity_analysis.analyze_opportunity
+    input: account_profile
     output: structured_data
+  - id: orchestrate_closed_loop
+    uses: opportunity_skill.extractor.analyze
+    note: Compatibility entrypoint that composes the three stage modules for normal CLI/host usage.
   - id: quality_check
     uses: schemas/output.schema.json_and_evaluation/quality_checklist.md
     input: structured_data

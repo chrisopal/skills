@@ -15,7 +15,17 @@ This package is designed to run as a standalone closed loop inside many agent ho
 - Renders HTML and Markdown views, including thumbnails and links for archived source material.
 - Leaves clear extension points for Feishu, CRM/MCP, PostgreSQL, external model extraction, and custom display templates.
 
-The bundled extractor is a lightweight reference implementation. Production deployments can replace `src/opportunity_skill/extractor.py` with a model-backed extractor while keeping the same schemas, storage contract, and display contract.
+The bundled extractor is a lightweight reference implementation. Production deployments can replace one internal stage or `src/opportunity_skill/extractor.py` with a model-backed extractor while keeping the same schemas, storage contract, and display contract.
+
+## Internal Pipeline Stages
+
+This is still one closed-loop skill with a single `analyze/query/detail` runtime. Internally, the analysis is split into three reusable stages:
+
+- `evidence_normalization`: implemented by `src/opportunity_skill/stages/evidence_normalization.py`; wraps normalized evidence or parsed text materials and preserves file/archive metadata.
+- `account_profile_extraction`: implemented by `src/opportunity_skill/stages/account_profile_extraction.py`; extracts customer profile, systems, pain points, requirement owners, contacts, and decision-chain nodes.
+- `opportunity_analysis`: implemented by `src/opportunity_skill/stages/opportunity_analysis.py`; extracts opportunity need, stage, budget/timeline/competitor signals, commercial assessment, score, risks, next actions, and missing information.
+
+`src/opportunity_skill/extractor.py` composes these stages for backward-compatible host integration. Hosts can call the full skill for the business closed loop, or reuse a stage directly when an adapter only needs normalization, customer profiling, or opportunity scoring.
 
 ## Quick Start
 

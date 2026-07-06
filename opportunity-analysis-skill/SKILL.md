@@ -10,17 +10,18 @@ version: 0.3.0
 
 Convert scattered customer material into a follow-up-ready opportunity asset:
 
-1. Normalize source material into Evidence.
-2. Extract account, customer-side requirement contacts, decision chain, needs, budget signals, timeline, systems, competitors, risks, and next actions.
-3. Generate commercial confirmation questions for sales/business staff.
-4. Recalculate opportunity score and win probability from evidence plus sales confirmation answers.
-5. Mark critical assumptions as `confirmed`, `inferred`, `needs_sales_confirmation`, or `missing`.
-6. Store results through a Storage Adapter.
-7. Query opportunities through a controlled query object.
-8. Render HTML and Markdown views through a Display Renderer.
-9. Validate the package with a host-independent script.
+1. Run `evidence_normalization`: normalize source material into Evidence.
+2. Run `account_profile_extraction`: extract account profile, customer-side requirement contacts, current systems, pain points, and decision chain.
+3. Run `opportunity_analysis`: extract need, stage, budget signal, timeline, competitors, risks, next actions, commercial confirmation questions, score, and win probability.
+4. Mark critical assumptions as `confirmed`, `inferred`, `needs_sales_confirmation`, or `missing`.
+5. Store results through a Storage Adapter.
+6. Query opportunities through a controlled query object.
+7. Render HTML and Markdown views through a Display Renderer.
+8. Validate the package with a host-independent script.
 
 This package is both a portable agent skill and a Python reference runtime. The default runtime is intentionally self-contained: no external service is required, and SQLite is the default storage.
+
+The package is intentionally one P0 closed-loop skill, not three separate skills. The internal stages live under `src/opportunity_skill/stages/` so future agents, adapters, or model-backed extractors can reuse one stage without breaking the end-to-end `analyze/query/detail` workflow.
 
 ## Quick Run
 
@@ -51,10 +52,11 @@ When using this skill inside any agent host:
 
 1. Inspect the input type.
 2. If the input is raw audio, image, PDF, DOCX, PPTX, XLSX, webpage, or email, first obtain text or normalized Evidence through the host's available parser/OCR/transcription tools.
-3. Call the Python runtime for deterministic storage/rendering when a shell is available.
-4. If shell execution is unavailable, follow the extraction rules and output contract manually, then persist through the host's equivalent storage adapter.
-5. Never write arbitrary SQL from natural language. Convert requests to `schemas/query.schema.json`, then let the adapter execute parameterized queries.
-6. Return JSON plus the rendered HTML/Markdown paths or content.
+3. Treat the logical pipeline as `evidence_normalization -> account_profile_extraction -> opportunity_analysis -> storage -> display`.
+4. Call the Python runtime for deterministic storage/rendering when a shell is available.
+5. If shell execution is unavailable, follow the extraction rules and output contract manually, then persist through the host's equivalent storage adapter.
+6. Never write arbitrary SQL from natural language. Convert requests to `schemas/query.schema.json`, then let the adapter execute parameterized queries.
+7. Return JSON plus the rendered HTML/Markdown paths or content.
 
 ## Input Contract
 
@@ -129,7 +131,8 @@ Every successful analyze run returns:
 
 - Storage: default SQLite is implemented. Feishu, CRM/MCP, and PostgreSQL adapters are extension points under `storage/adapters/`.
 - Display: default HTML/Markdown templates live under `display/templates/`. Hosts can replace templates while preserving the data contract.
-- Extraction: `src/opportunity_skill/extractor.py` is a lightweight heuristic reference. Production deployments may replace it with a model call as long as the output contract remains stable.
+- Extraction stages: `src/opportunity_skill/stages/evidence_normalization.py`, `account_profile_extraction.py`, and `opportunity_analysis.py` are lightweight heuristic references. Production deployments may replace one stage or the whole extractor with a model call as long as the output contract remains stable.
+- Orchestration: `src/opportunity_skill/extractor.py` remains a compatibility wrapper that composes the three stages into one skill workflow.
 - Query understanding: natural-language queries should become `schemas/query.schema.json` before storage execution.
 
 ## Validation

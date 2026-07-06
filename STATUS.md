@@ -1,3 +1,25 @@
+## 2026-07-06 09:20:00 CST
+
+- Scope: Split `opportunity-analysis-skill` internals into three reusable pipeline stages while keeping one P0 closed-loop skill and the existing `analyze/query/detail` host workflow.
+- Changed files:
+  - `opportunity-analysis-skill/SKILL.md`
+  - `opportunity-analysis-skill/README.md`
+  - `opportunity-analysis-skill/manifest.yaml`
+  - `opportunity-analysis-skill/workflows/analyze_and_store.workflow.yaml`
+  - `opportunity-analysis-skill/src/opportunity_skill/extractor.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/stages/*.py`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Kept one distributable skill package instead of creating duplicated LeadEvidenceNormalizer, AccountProfile, and OpportunityAnalysis skills.
+  - Moved deterministic logic into `evidence_normalization`, `account_profile_extraction`, and `opportunity_analysis` modules while leaving `extractor.py` as a backward-compatible orchestrator.
+  - Added validator coverage for the stage boundaries so future changes can reuse or replace individual stages without breaking the full closed loop.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed, including JSON/schema checks, Python compilation, template safety, direct stage-module checks, evaluation cases, analyze/query/detail runtime behavior, material archive rendering, and distribution-noise checks.
+  - `git diff --check -- opportunity-analysis-skill` passed.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - The stages are still heuristic reference implementations; production hosts can replace any stage with OCR/transcription/model-backed logic while preserving the same input/output contracts.
+
 ## 2026-07-06 08:30:00 CST
 
 - Scope: Add commercial assessment and sales confirmation questions to `opportunity-analysis-skill` so win probability is based on evidence plus structured business-staff confirmation.

@@ -10,6 +10,17 @@ runtime:
   cli_module: opportunity_skill.cli
   console_script: opportunity-analysis
   third_party_dependencies: []
+  pipeline_stages:
+    - id: evidence_normalization
+      implementation: src/opportunity_skill/stages/evidence_normalization.py
+      purpose: Normalize parsed materials or evidence_list into Evidence records while preserving source metadata.
+    - id: account_profile_extraction
+      implementation: src/opportunity_skill/stages/account_profile_extraction.py
+      purpose: Extract account profile, customer-side contacts, requirement owners, systems, pain points, and decision chain.
+    - id: opportunity_analysis
+      implementation: src/opportunity_skill/stages/opportunity_analysis.py
+      purpose: Extract opportunity signals, build commercial assessment, score the opportunity, and generate risks/actions.
+  orchestrator: src/opportunity_skill/extractor.py
   default_db_path:
     env_root: SKILL_DATA_DIR
     relative_path: opportunity-analysis/opportunity.db
@@ -118,6 +129,7 @@ validation:
     - json_files
     - python_compile
     - template_safety
+    - stage_modules
     - evaluation_cases
     - analyze_query_detail_runtime
     - distribution_noise

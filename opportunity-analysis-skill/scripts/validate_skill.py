@@ -18,6 +18,9 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from opportunity_skill.pipeline import run_analyze, run_detail, run_query  # noqa: E402
+from opportunity_skill.stages.account_profile_extraction import extract_account_profile  # noqa: E402
+from opportunity_skill.stages.evidence_normalization import all_text, normalize_input  # noqa: E402
+from opportunity_skill.stages.opportunity_analysis import analyze_opportunity  # noqa: E402
 
 
 def fail(message: str) -> None:
@@ -67,6 +70,38 @@ def check_template_safety() -> None:
         if unsafe.search(text):
             fail(f"unsafe HTML pattern in {path.relative_to(ROOT)}")
     print("ok template safety")
+
+
+def check_stage_modules() -> None:
+    raw = {
+        "account_hint": "阶段验证有限公司",
+        "materials": [
+            {
+                "type": "meeting_note",
+                "name": "阶段拆分验证",
+                "content": "客户：阶段验证有限公司。王总（客户-生产负责人）希望做质检自动化升级，现有MES已上线，Q3前完成方案确认，预算已立项。张伟 采购总监 138-1234-5678 zhang.wei@example.com。",
+                "confidence": 0.9,
+            }
+        ],
+    }
+    evidence = normalize_input(raw)
+    if not evidence or evidence[0]["source_type"] != "meeting_note":
+        fail("evidence_normalization stage did not wrap materials")
+    text = all_text(evidence)
+    profile = extract_account_profile(text, raw, evidence)
+    if profile["company_name"] != "阶段验证有限公司":
+        fail("account_profile_extraction stage did not use account hint")
+    if not profile["contacts"] or profile["decision_chain"][0]["status"] != "confirmed":
+        fail("account_profile_extraction stage did not produce contacts and decision chain")
+    result = analyze_opportunity(raw, evidence, text, profile)
+    if "structured_data" not in result or "human_summary" not in result:
+        fail("opportunity_analysis stage did not return analysis result")
+    for key in ["account", "contacts", "opportunity", "commercial_assessment", "decision_chain", "risks", "next_actions"]:
+        if key not in result["structured_data"]:
+            fail(f"opportunity_analysis stage missing structured_data.{key}")
+    if result["structured_data"]["opportunity"]["core_need"] != "质检自动化升级":
+        fail("opportunity_analysis stage did not extract core need")
+    print("ok stage modules")
 
 
 def assert_output_contract(result: dict, source: str) -> None:
@@ -226,6 +261,7 @@ def main() -> None:
     check_json_files()
     check_python_compile()
     check_template_safety()
+    check_stage_modules()
     check_evaluation_cases(keep_artifacts=args.keep_artifacts)
     check_distribution_noise()
     print("validation passed")

@@ -14,7 +14,7 @@
   - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
   - Playwright HTTP preview verified desktop 1440px: radar and dimension panels bottom-aligned with `bottomDelta=0`, label font `12px`, no clipped radar labels, and no page-wide overflow.
   - Playwright HTTP preview verified mobile 390px: no clipped radar labels and no page-wide overflow; mobile stacks the two panels vertically.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed as `5f2ad00`; push pending with status update commit.
 - Remaining notes:
   - The desktop alignment depends on natural grid stretching; avoid reintroducing a fixed `max-height` on `.ql-dimension-bars` unless there is a separate scroll design.
 

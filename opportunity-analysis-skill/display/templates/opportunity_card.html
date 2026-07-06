@@ -16,12 +16,12 @@
     <div class="ql-metric">
       <div class="ql-metric-label">商机评分</div>
       <div class="ql-metric-value">{{opportunity.score}}</div>
-      <div class="ql-metric-note">满分 100，综合需求、预算、联系人、时间</div>
+      <div class="ql-metric-note">综合赢单、成交意向和交付信心</div>
     </div>
     <div class="ql-metric">
       <div class="ql-metric-label">赢单概率</div>
       <div class="ql-metric-value">{{opportunity.win_probability_percent}}%</div>
-      <div class="ql-metric-note">由评分折算，需结合竞争态势复核</div>
+      <div class="ql-metric-note">{{assessment.win_probability_note}}</div>
     </div>
     <div class="ql-metric">
       <div class="ql-metric-label">目标时间</div>
@@ -34,9 +34,9 @@
       <div class="ql-metric-note">金额：{{opportunity.budget_amount}}</div>
     </div>
     <div class="ql-metric">
-      <div class="ql-metric-label">证据数量</div>
-      <div class="ql-metric-value">{{evidence.count}}</div>
-      <div class="ql-metric-note">图片、纪要、转写等来源</div>
+      <div class="ql-metric-label">评估可信度</div>
+      <div class="ql-metric-value">{{assessment.confidence_level}}</div>
+      <div class="ql-metric-note">{{assessment.confirmation_note}}</div>
     </div>
   </div>
 

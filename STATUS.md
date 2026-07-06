@@ -1,3 +1,32 @@
+## 2026-07-06 08:30:00 CST
+
+- Scope: Add commercial assessment and sales confirmation questions to `opportunity-analysis-skill` so win probability is based on evidence plus structured business-staff confirmation.
+- Changed files:
+  - `opportunity-analysis-skill/SKILL.md`
+  - `opportunity-analysis-skill/README.md`
+  - `opportunity-analysis-skill/manifest.yaml`
+  - `opportunity-analysis-skill/references/commercial_assessment.md`
+  - `opportunity-analysis-skill/prompts/04_score_and_stage.md`
+  - `opportunity-analysis-skill/schemas/*.json`
+  - `opportunity-analysis-skill/src/opportunity_skill/assessment.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/extractor.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/storage.py`
+  - `opportunity-analysis-skill/storage/*`
+  - `opportunity-analysis-skill/display/*`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Kept the assessment engine dependency-free and isolated in `assessment.py` rather than adding a survey framework.
+  - Blended baseline evidence scoring with commercial assessment so unanswered sales questions reduce confidence without over-penalizing initial qualification.
+  - Stored assessment summary, dimensions, questions, and answers as structured SQLite tables for later Feishu/CRM adapter mapping.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - Regenerated the Huachen detail at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`; current unconfirmed assessment shows score 64, win probability 54%, low confidence, and 8 key sales questions.
+  - Playwright HTTP preview verified desktop 1440px and mobile 390px: commercial assessment section present, three assessment scores visible, competitor question visible, 3 archived material images render with 0 broken images, and no mobile page overflow.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - The current implementation accepts `sales_confirmation_answers` in analyze input; an interactive answer-collection UI or Feishu/CRM writeback remains a future adapter/workbench task.
+
 ## 2026-07-06 07:58:00 CST
 
 - Scope: Update `opportunity-analysis-skill` so opportunity contacts prioritize customer-side requirement owners and the detail dossier explicitly shows the decision chain.

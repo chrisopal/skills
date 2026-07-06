@@ -24,6 +24,10 @@
 - `append_evidence_file(file_metadata) -> file_id`
 - `link_evidence_to_field(map_item) -> map_id`
 - `create_decision_chain_node(node) -> node_id`
+- `save_commercial_assessment(opportunity_id, assessment) -> assessment_id`
+- `save_assessment_dimension(opportunity_id, assessment_id, dimension) -> dimension_id`
+- `save_sales_confirmation_question(opportunity_id, assessment_id, question) -> question_id`
+- `save_sales_confirmation_answer(opportunity_id, assessment_id, answer) -> answer_id`
 - `create_risk(risk) -> risk_id`
 - `create_next_action(action) -> action_id`
 - `query_opportunities(query_json) -> list`
@@ -58,6 +62,16 @@
 - 采购/商务负责人
 
 缺失节点也应以`status: missing`保留，便于详情页和下一步行动直接显示需要补齐的关系。
+
+## Commercial Assessment
+
+`commercial_assessment`保存商务确认评估结果。默认维度来自`src/opportunity_skill/assessment.py`，分为三组：
+
+- `win_likelihood`: 赢单可能性；
+- `deal_attractiveness`: 成交意向；
+- `delivery_confidence`: 交付信心。
+
+每个维度必须保留`dimension_id`、`rating`、`score`、`evidence_status`、`rationale`和`question`。`sales_confirmation_questions`保存待商务确认的问题；`sales_confirmation_answers`保存商务人员回答。外部Adapter可以映射到CRM字段、飞书多维表格或任务系统，但必须能回读并重算赢单率。
 
 ## Safe Query Rule
 

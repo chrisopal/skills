@@ -1,6 +1,7 @@
 from __future__ import annotations
 import re
 from typing import Any
+from .assessment import build_commercial_assessment
 from .utils import new_id, normalize_name
 
 INDUSTRY_KEYWORDS = {
@@ -346,6 +347,12 @@ def score_opportunity(core_need: str, budget_signal: str, budget_amount: str | N
     return score, prob, level, risk
 
 
+def classify_score(score: int) -> tuple[str, str]:
+    level = "A" if score >= 80 else "B" if score >= 65 else "C" if score >= 45 else "D"
+    risk = "high" if score < 50 else "medium" if score < 75 else "low"
+    return level, risk
+
+
 def analyze(raw_input: dict[str, Any]) -> dict[str, Any]:
     evidence_list = normalize_input(raw_input)
     text = _all_text(evidence_list)
@@ -362,7 +369,27 @@ def analyze(raw_input: dict[str, Any]) -> dict[str, Any]:
     decision_chain = identify_decision_chain(contacts, evidence_list)
     competitors = extract_competitors(text)
     stage, stage_reason = infer_stage(text, core_need, budget_signal)
-    score, win_probability, score_level, risk_level = score_opportunity(core_need, budget_signal, budget_amount, timeline, contacts, competitors, pain_points)
+    baseline_score, baseline_win_probability, baseline_score_level, baseline_risk_level = score_opportunity(core_need, budget_signal, budget_amount, timeline, contacts, competitors, pain_points)
+    commercial_assessment = build_commercial_assessment({
+        "text": text,
+        "stage": stage,
+        "core_need": core_need,
+        "budget_signal": budget_signal,
+        "budget_amount": budget_amount,
+        "timeline": timeline,
+        "contacts": contacts,
+        "decision_chain": decision_chain,
+        "competitors": competitors,
+        "current_systems": current_systems,
+        "pain_points": pain_points,
+        "evidence_list": evidence_list,
+        "baseline_score": baseline_score,
+        "baseline_win_probability": baseline_win_probability,
+        "sales_confirmation_answers": raw_input.get("sales_confirmation_answers", []),
+    })
+    score = commercial_assessment["overall_opportunity_score"]
+    win_probability = commercial_assessment["win_probability"]
+    score_level, risk_level = classify_score(score)
     opportunity_id = new_id("opp")
 
     has_requirement_owner = any(c.get("is_requirement_owner") for c in contacts)
@@ -380,6 +407,8 @@ def analyze(raw_input: dict[str, Any]) -> dict[str, Any]:
         missing.append("核心需求和建设范围未明确")
     if not competitors:
         missing.append("竞争对手和客户已接触供应商情况未明确")
+    if commercial_assessment["unanswered_critical_count"]:
+        missing.append(f"商务确认评估仍有{commercial_assessment['unanswered_critical_count']}个关键问题待回答")
 
     requirements = []
     if core_need != "客户需求待进一步澄清":
@@ -406,6 +435,14 @@ def analyze(raw_input: dict[str, Any]) -> dict[str, Any]:
         })
 
     next_actions = [
+        {
+            "id": new_id("act"), "opportunity_id": opportunity_id,
+            "action_title": "完成商务确认评估",
+            "action_detail": "请商务负责人围绕客户购买意向、客户关系、竞对定位、预算匹配、交易吸引力和交付风险回答关键确认问题。",
+            "priority": "high", "owner": raw_input.get("owner") or "商务负责人",
+            "deadline_suggestion": "2个工作日内", "status": "open",
+            "reason": f"当前评估可信度为{commercial_assessment['confidence_level']}，仍有{commercial_assessment['unanswered_critical_count']}个关键问题待确认。"
+        },
         {
             "id": new_id("act"), "opportunity_id": opportunity_id,
             "action_title": "补充需求澄清清单",
@@ -482,7 +519,7 @@ def analyze(raw_input: dict[str, Any]) -> dict[str, Any]:
 
     human_summary = (
         f"商机摘要：{company_name}当前识别到核心需求为“{core_need}”，阶段判断为“{stage}”。"
-        f"商机评分{score}分，风险等级{risk_level}。"
+        f"商机评分{score}分，赢单概率约{int(round(win_probability * 100))}%，评估可信度{commercial_assessment['confidence_level']}。"
         f"主要待确认信息包括：{'；'.join(missing) if missing else '暂无关键缺失信息'}。"
     )
 
@@ -495,6 +532,9 @@ def analyze(raw_input: dict[str, Any]) -> dict[str, Any]:
             "risks": risks,
             "next_actions": next_actions,
             "decision_chain": decision_chain,
+            "commercial_assessment": commercial_assessment,
+            "sales_confirmation_questions": commercial_assessment.get("questions", []),
+            "sales_confirmation_answers": commercial_assessment.get("answers", []),
             "evidence": evidence_list,
             "missing_information": missing,
             "evidence_map": evidence_map

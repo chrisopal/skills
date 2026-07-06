@@ -21,6 +21,8 @@
         "risks",
         "next_actions",
         "decision_chain",
+        "commercial_assessment",
+        "sales_confirmation_questions",
         "evidence",
         "missing_information",
         "evidence_map"
@@ -51,6 +53,66 @@
           }
         },
         "decision_chain": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "commercial_assessment": {
+          "type": "object",
+          "required": [
+            "win_likelihood_score",
+            "deal_attractiveness_score",
+            "delivery_confidence_score",
+            "overall_opportunity_score",
+            "win_probability",
+            "confidence_level",
+            "dimensions",
+            "questions"
+          ],
+          "properties": {
+            "win_likelihood_score": {
+              "type": "integer"
+            },
+            "deal_attractiveness_score": {
+              "type": "integer"
+            },
+            "delivery_confidence_score": {
+              "type": "integer"
+            },
+            "overall_opportunity_score": {
+              "type": "integer"
+            },
+            "win_probability": {
+              "type": "number"
+            },
+            "confidence_level": {
+              "type": "string"
+            },
+            "unanswered_critical_count": {
+              "type": "integer"
+            },
+            "dimensions": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "questions": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "sales_confirmation_questions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "sales_confirmation_answers": {
           "type": "array",
           "items": {
             "type": "object"

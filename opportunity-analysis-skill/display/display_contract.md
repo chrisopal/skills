@@ -17,6 +17,8 @@ Display层只接收结构化数据，不直接消费自然语言摘要。
 
 `opportunity_detail`还应展示`decision_chain`，把客户需求负责人、项目推进负责人、最终决策人、技术/IT负责人和采购/商务负责人区分开。缺失节点不能静默省略，应显示为待补充。
 
+`opportunity_detail`必须展示`commercial_assessment`和`sales_confirmation_questions`：三组评分、评估可信度、关键待确认数量、维度判断依据，以及优先要问商务人员的问题。商务回答进入`commercial_assessment.dimensions[].answer`后，应展示为已确认依据。
+
 ## 安全规则
 
 - 禁止`<script>`；

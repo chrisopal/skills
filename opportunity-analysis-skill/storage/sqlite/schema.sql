@@ -134,6 +134,75 @@ CREATE TABLE IF NOT EXISTS decision_chain (
     FOREIGN KEY(contact_id) REFERENCES contacts(id)
 );
 
+CREATE TABLE IF NOT EXISTS commercial_assessments (
+    id TEXT PRIMARY KEY,
+    opportunity_id TEXT NOT NULL,
+    win_likelihood_score INTEGER,
+    deal_attractiveness_score INTEGER,
+    delivery_confidence_score INTEGER,
+    overall_opportunity_score INTEGER,
+    win_probability REAL,
+    confidence_level TEXT,
+    assessment_confidence_score INTEGER,
+    unanswered_critical_count INTEGER,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(opportunity_id) REFERENCES opportunities(id)
+);
+
+CREATE TABLE IF NOT EXISTS assessment_dimensions (
+    id TEXT PRIMARY KEY,
+    assessment_id TEXT NOT NULL,
+    opportunity_id TEXT NOT NULL,
+    dimension_id TEXT NOT NULL,
+    category TEXT,
+    label TEXT,
+    priority TEXT,
+    critical INTEGER DEFAULT 0,
+    rating TEXT,
+    score INTEGER,
+    weight REAL,
+    evidence_status TEXT,
+    rationale TEXT,
+    question TEXT,
+    answer TEXT,
+    evidence_refs TEXT,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(assessment_id) REFERENCES commercial_assessments(id),
+    FOREIGN KEY(opportunity_id) REFERENCES opportunities(id)
+);
+
+CREATE TABLE IF NOT EXISTS sales_confirmation_questions (
+    id TEXT PRIMARY KEY,
+    opportunity_id TEXT NOT NULL,
+    assessment_id TEXT NOT NULL,
+    dimension_id TEXT NOT NULL,
+    category TEXT,
+    label TEXT,
+    question TEXT NOT NULL,
+    priority TEXT,
+    status TEXT,
+    current_rating TEXT,
+    impact TEXT,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(opportunity_id) REFERENCES opportunities(id),
+    FOREIGN KEY(assessment_id) REFERENCES commercial_assessments(id)
+);
+
+CREATE TABLE IF NOT EXISTS sales_confirmation_answers (
+    id TEXT PRIMARY KEY,
+    opportunity_id TEXT NOT NULL,
+    assessment_id TEXT,
+    question_id TEXT,
+    dimension_id TEXT,
+    answer_text TEXT,
+    rating TEXT,
+    source TEXT,
+    answered_by TEXT,
+    answered_at TEXT,
+    created_at TEXT NOT NULL,
+    FOREIGN KEY(opportunity_id) REFERENCES opportunities(id)
+);
+
 CREATE TABLE IF NOT EXISTS risks (
     id TEXT PRIMARY KEY,
     opportunity_id TEXT NOT NULL,
@@ -189,5 +258,9 @@ CREATE INDEX IF NOT EXISTS idx_opportunities_stage ON opportunities(stage);
 CREATE INDEX IF NOT EXISTS idx_opportunities_score ON opportunities(score);
 CREATE INDEX IF NOT EXISTS idx_evidence_files_evidence ON evidence_files(evidence_id);
 CREATE INDEX IF NOT EXISTS idx_decision_chain_opp ON decision_chain(opportunity_id);
+CREATE INDEX IF NOT EXISTS idx_commercial_assessments_opp ON commercial_assessments(opportunity_id);
+CREATE INDEX IF NOT EXISTS idx_assessment_dimensions_opp ON assessment_dimensions(opportunity_id);
+CREATE INDEX IF NOT EXISTS idx_sales_questions_opp ON sales_confirmation_questions(opportunity_id);
+CREATE INDEX IF NOT EXISTS idx_sales_answers_opp ON sales_confirmation_answers(opportunity_id);
 CREATE INDEX IF NOT EXISTS idx_next_actions_opp ON next_actions(opportunity_id);
 CREATE INDEX IF NOT EXISTS idx_risks_opp ON risks(opportunity_id);

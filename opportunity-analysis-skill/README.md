@@ -9,6 +9,7 @@ This package is designed to run as a standalone closed loop inside many agent ho
 - Accepts normalized Evidence or text materials.
 - Archives readable source files from `file_path`, `path`, `source_path`, `source_ref`, or `attachments`.
 - Extracts account, customer-side requirement contacts, decision chain, opportunity, needs, budget signals, timeline, systems, competitors, risks, and next actions.
+- Generates sales/business confirmation questions and recalculates win probability from confirmed answers.
 - Stores the result in local SQLite by default.
 - Runs controlled opportunity queries.
 - Renders HTML and Markdown views, including thumbnails and links for archived source material.
@@ -82,6 +83,28 @@ Raw audio, image, document, email, and webpage inputs should be transcribed, OCR
 For materials that came from real files, pass the readable local path as `file_path`, `path`, `source_path`, `source_ref`, or inside `attachments`. The default runtime copies those files into an `attachments/` archive next to the rendered output when `--output-dir` is provided, or next to the SQLite database when no output directory is provided. The SQLite adapter records `evidence_files` metadata so a later `detail` render can show thumbnails and clickable file links in the opportunity dossier.
 
 Contacts are intended to represent customer-side people tied to the demand, not every name found in the material. The reference extractor prioritizes requirement owners, project owners, technical/IT evaluators, procurement owners, and final decision makers. The detail view also renders a `decision_chain` table with confirmed and missing nodes.
+
+## Commercial Assessment
+
+The skill separates raw material extraction from commercial judgment. Initial analysis infers a `commercial_assessment` from available evidence, then generates `sales_confirmation_questions` for the business owner. Hosts can pass answered questions back through `sales_confirmation_answers`:
+
+```json
+{
+  "dimension_id": "customer_purchase_intent",
+  "rating": "strong",
+  "answer_text": "客户已立项，计划本季度完成方案评审并进入采购。",
+  "answered_by": "商务负责人"
+}
+```
+
+Ratings are `strong`, `medium`, `weak`, or `unknown`. Confirmed answers override inferred ratings and recalculate:
+
+- `win_likelihood_score`
+- `deal_attractiveness_score`
+- `delivery_confidence_score`
+- `overall_opportunity_score`
+- `win_probability`
+- `assessment_confidence_score`
 
 ## Adapter Strategy
 

@@ -208,6 +208,116 @@ class OpportunitySQLiteAdapter:
         self.conn.commit()
         return nid
 
+    def save_commercial_assessment(self, opportunity_id: str, assessment: dict[str, Any]) -> str:
+        aid = assessment.get("id") or new_id("assess")
+        self.conn.execute(
+            """
+            INSERT OR REPLACE INTO commercial_assessments
+              (id, opportunity_id, win_likelihood_score, deal_attractiveness_score, delivery_confidence_score, overall_opportunity_score, win_probability, confidence_level, assessment_confidence_score, unanswered_critical_count, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                aid,
+                opportunity_id,
+                assessment.get("win_likelihood_score"),
+                assessment.get("deal_attractiveness_score"),
+                assessment.get("delivery_confidence_score"),
+                assessment.get("overall_opportunity_score"),
+                assessment.get("win_probability"),
+                assessment.get("confidence_level"),
+                assessment.get("assessment_confidence_score"),
+                assessment.get("unanswered_critical_count"),
+                now_iso(),
+            ),
+        )
+        for item in assessment.get("dimensions", []) or []:
+            self.save_assessment_dimension(opportunity_id, aid, item)
+        for item in assessment.get("questions", []) or []:
+            self.save_sales_confirmation_question(opportunity_id, aid, item)
+        for item in assessment.get("answers", []) or []:
+            self.save_sales_confirmation_answer(opportunity_id, aid, item)
+        self.conn.commit()
+        return aid
+
+    def save_assessment_dimension(self, opportunity_id: str, assessment_id: str, item: dict[str, Any]) -> str:
+        did = item.get("id") or new_id("dim")
+        self.conn.execute(
+            """
+            INSERT OR REPLACE INTO assessment_dimensions
+              (id, assessment_id, opportunity_id, dimension_id, category, label, priority, critical, rating, score, weight, evidence_status, rationale, question, answer, evidence_refs, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                did,
+                assessment_id,
+                opportunity_id,
+                item.get("dimension_id"),
+                item.get("category"),
+                item.get("label"),
+                item.get("priority"),
+                int(bool(item.get("critical", False))),
+                item.get("rating"),
+                item.get("score"),
+                item.get("weight"),
+                item.get("evidence_status"),
+                item.get("rationale"),
+                item.get("question"),
+                item.get("answer"),
+                to_json(item.get("evidence_refs", [])),
+                now_iso(),
+            ),
+        )
+        return did
+
+    def save_sales_confirmation_question(self, opportunity_id: str, assessment_id: str, item: dict[str, Any]) -> str:
+        qid = item.get("id") or new_id("q")
+        self.conn.execute(
+            """
+            INSERT OR REPLACE INTO sales_confirmation_questions
+              (id, opportunity_id, assessment_id, dimension_id, category, label, question, priority, status, current_rating, impact, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                qid,
+                opportunity_id,
+                assessment_id,
+                item.get("dimension_id"),
+                item.get("category"),
+                item.get("label"),
+                item.get("question"),
+                item.get("priority"),
+                item.get("status", "open"),
+                item.get("current_rating"),
+                item.get("impact"),
+                now_iso(),
+            ),
+        )
+        return qid
+
+    def save_sales_confirmation_answer(self, opportunity_id: str, assessment_id: str | None, item: dict[str, Any]) -> str:
+        answer_id = item.get("id") or new_id("ans")
+        self.conn.execute(
+            """
+            INSERT OR REPLACE INTO sales_confirmation_answers
+              (id, opportunity_id, assessment_id, question_id, dimension_id, answer_text, rating, source, answered_by, answered_at, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                answer_id,
+                opportunity_id,
+                assessment_id,
+                item.get("question_id"),
+                item.get("dimension_id"),
+                item.get("answer_text") or item.get("answer"),
+                item.get("rating"),
+                item.get("source", "sales_confirmation"),
+                item.get("answered_by"),
+                item.get("answered_at"),
+                now_iso(),
+            ),
+        )
+        return answer_id
+
     def create_risk(self, risk: dict[str, Any]) -> str:
         rid = risk.get("id") or new_id("risk")
         now = now_iso()
@@ -288,6 +398,8 @@ class OpportunitySQLiteAdapter:
         for node in sd.get("decision_chain", []):
             node["opportunity_id"] = opportunity_id
             self.create_decision_chain_node(node)
+        if sd.get("commercial_assessment"):
+            self.save_commercial_assessment(opportunity_id, sd["commercial_assessment"])
         for risk in sd.get("risks", []):
             risk["opportunity_id"] = opportunity_id
             self.create_risk(risk)
@@ -368,6 +480,7 @@ class OpportunitySQLiteAdapter:
         for node in decision_chain:
             node["evidence_refs"] = from_json(node.get("evidence_refs"))
             node["is_confirmed"] = node.get("status") == "confirmed"
+        commercial_assessment = self._get_commercial_assessment(opportunity_id)
         maps = [dict(r) for r in self.conn.execute("SELECT * FROM opportunity_evidence_map WHERE opportunity_id = ?", (opportunity_id,)).fetchall()]
         ev_ids = list(dict.fromkeys(m["evidence_id"] for m in maps))
         evidence = []
@@ -384,7 +497,49 @@ class OpportunitySQLiteAdapter:
         for ev in evidence:
             ev["extracted_fields"] = from_json(ev.get("extracted_fields"))
             ev["archived_files"] = files_by_evidence.get(ev.get("id"), [])
-        return {"account": account, "opportunity": opportunity, "contacts": contacts, "decision_chain": decision_chain, "risks": risks, "next_actions": actions, "evidence": evidence, "evidence_map": maps, "archived_files": files}
+        return {
+            "account": account,
+            "opportunity": opportunity,
+            "contacts": contacts,
+            "decision_chain": decision_chain,
+            "commercial_assessment": commercial_assessment,
+            "sales_confirmation_questions": commercial_assessment.get("questions", []) if commercial_assessment else [],
+            "sales_confirmation_answers": commercial_assessment.get("answers", []) if commercial_assessment else [],
+            "risks": risks,
+            "next_actions": actions,
+            "evidence": evidence,
+            "evidence_map": maps,
+            "archived_files": files,
+        }
+
+    def _get_commercial_assessment(self, opportunity_id: str) -> dict[str, Any]:
+        row = self.conn.execute(
+            "SELECT * FROM commercial_assessments WHERE opportunity_id = ? ORDER BY created_at DESC LIMIT 1",
+            (opportunity_id,),
+        ).fetchone()
+        if not row:
+            return {}
+        assessment = dict(row)
+        assessment_id = assessment["id"]
+        dimensions = [dict(r) for r in self.conn.execute(
+            "SELECT * FROM assessment_dimensions WHERE assessment_id = ? ORDER BY category, priority, dimension_id",
+            (assessment_id,),
+        ).fetchall()]
+        for item in dimensions:
+            item["critical"] = bool(item.get("critical"))
+            item["evidence_refs"] = from_json(item.get("evidence_refs"))
+        questions = [dict(r) for r in self.conn.execute(
+            "SELECT * FROM sales_confirmation_questions WHERE assessment_id = ? ORDER BY priority, category, dimension_id",
+            (assessment_id,),
+        ).fetchall()]
+        answers = [dict(r) for r in self.conn.execute(
+            "SELECT * FROM sales_confirmation_answers WHERE assessment_id = ? ORDER BY created_at",
+            (assessment_id,),
+        ).fetchall()]
+        assessment["dimensions"] = dimensions
+        assessment["questions"] = questions
+        assessment["answers"] = answers
+        return assessment
 
     def _row_to_opportunity_summary(self, row: sqlite3.Row) -> dict[str, Any]:
         return {

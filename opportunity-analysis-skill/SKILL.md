@@ -12,11 +12,13 @@ Convert scattered customer material into a follow-up-ready opportunity asset:
 
 1. Normalize source material into Evidence.
 2. Extract account, customer-side requirement contacts, decision chain, needs, budget signals, timeline, systems, competitors, risks, and next actions.
-3. Mark critical assumptions as `confirmed`, `inferred`, or `missing`.
-4. Store results through a Storage Adapter.
-5. Query opportunities through a controlled query object.
-6. Render HTML and Markdown views through a Display Renderer.
-7. Validate the package with a host-independent script.
+3. Generate commercial confirmation questions for sales/business staff.
+4. Recalculate opportunity score and win probability from evidence plus sales confirmation answers.
+5. Mark critical assumptions as `confirmed`, `inferred`, `needs_sales_confirmation`, or `missing`.
+6. Store results through a Storage Adapter.
+7. Query opportunities through a controlled query object.
+8. Render HTML and Markdown views through a Display Renderer.
+9. Validate the package with a host-independent script.
 
 This package is both a portable agent skill and a Python reference runtime. The default runtime is intentionally self-contained: no external service is required, and SQLite is the default storage.
 
@@ -70,6 +72,8 @@ Preferred input is `evidence_list`, where each item contains:
 The reference runtime also accepts `materials` with text content and wraps them into Evidence objects.
 When `file_path`, `path`, `source_path`, `source_ref`, or `attachments` points to a readable local file, the runtime copies it into an `attachments/` archive folder, records file metadata in SQLite, and exposes thumbnails or file links in the detail view.
 
+Optional `sales_confirmation_answers` lets a host pass business staff answers back into the skill. Each answer should include `dimension_id`, `rating` (`strong`, `medium`, `weak`, or `unknown`), optional `answer_text`, and optional `answered_by`. These answers override inferred ratings and recalculate the commercial assessment and win probability.
+
 ## Output Contract
 
 Every successful analyze run returns:
@@ -82,6 +86,9 @@ Every successful analyze run returns:
     "contacts": [],
     "decision_chain": [],
     "opportunity": {},
+    "commercial_assessment": {},
+    "sales_confirmation_questions": [],
+    "sales_confirmation_answers": [],
     "risks": [],
     "next_actions": [],
     "evidence": [],

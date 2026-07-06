@@ -42,6 +42,10 @@ inputs:
     accepted_fields: [file_path, path, source_path, source_ref, attachments]
     default_archive_dir: attachments
     metadata_table: evidence_files
+  commercial_assessment:
+    accepted_field: sales_confirmation_answers
+    rating_values: [strong, medium, weak, unknown]
+    default_question_limit: 8
 
 outputs:
   analyze:
@@ -50,6 +54,8 @@ outputs:
       - human_summary
       - structured_data
       - structured_data.decision_chain
+      - structured_data.commercial_assessment
+      - structured_data.sales_confirmation_questions
       - storage_result
       - display_result
       - structured_data.archived_files

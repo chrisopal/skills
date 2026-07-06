@@ -149,16 +149,25 @@ body {
 
 .ql-tag.orange,
 .risk-medium,
-.risk-high {
+.risk-high,
+.rating-strong {
   border-color: #f4c49f;
   background: var(--ql-orange-soft);
   color: var(--ql-orange);
 }
 
-.risk-low {
+.risk-low,
+.rating-medium {
   border-color: #b9d3c6;
   background: var(--ql-green-soft);
   color: var(--ql-green-dark);
+}
+
+.rating-weak,
+.rating-unknown {
+  border-color: var(--ql-line-strong);
+  background: var(--ql-gray-soft);
+  color: var(--ql-muted);
 }
 
 .ql-metric-grid {
@@ -214,6 +223,35 @@ body {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+.ql-assessment-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ql-assessment-metric {
+  min-height: 74px;
+  border: 1px solid var(--ql-line);
+  border-radius: 6px;
+  background: var(--ql-gray-soft);
+  padding: 10px;
+}
+
+.ql-assessment-metric span {
+  display: block;
+  color: var(--ql-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ql-assessment-metric strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ql-strong);
+  font-size: 22px;
+  line-height: 28px;
 }
 
 .ql-panel {
@@ -306,6 +344,24 @@ body {
 
 .ql-action-list span {
   color: var(--ql-muted);
+}
+
+.ql-question-list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.ql-question-list li {
+  padding-left: 4px;
+  color: var(--ql-ink);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.ql-question-list .ql-tag {
+  margin: 6px 8px 0 0;
 }
 
 .ql-table-wrap {
@@ -540,6 +596,10 @@ tr:last-child td {
   .ql-metric-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .ql-assessment-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 560px) {
@@ -555,6 +615,10 @@ tr:last-child td {
   }
 
   .ql-material-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ql-assessment-grid {
     grid-template-columns: 1fr;
   }
 }

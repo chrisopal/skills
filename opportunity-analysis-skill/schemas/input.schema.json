@@ -32,6 +32,42 @@
         "string",
         "null"
       ]
+    },
+    "sales_confirmation_answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimension_id": {
+            "type": "string"
+          },
+          "question_id": {
+            "type": "string"
+          },
+          "answer_text": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "string",
+            "enum": [
+              "strong",
+              "medium",
+              "weak",
+              "unknown",
+              "强",
+              "中",
+              "弱",
+              "未知"
+            ]
+          },
+          "answered_by": {
+            "type": "string"
+          },
+          "answered_at": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "anyOf": [

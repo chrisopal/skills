@@ -74,9 +74,13 @@ def assert_output_contract(result: dict, source: str) -> None:
         if key not in result:
             fail(f"{source} missing top-level key {key}")
     structured = result["structured_data"]
-    for key in ["account", "contacts", "opportunity", "risks", "next_actions", "decision_chain", "evidence", "missing_information", "evidence_map"]:
+    for key in ["account", "contacts", "opportunity", "risks", "next_actions", "decision_chain", "commercial_assessment", "sales_confirmation_questions", "evidence", "missing_information", "evidence_map"]:
         if key not in structured:
             fail(f"{source} missing structured_data.{key}")
+    assessment = structured["commercial_assessment"]
+    for key in ["win_likelihood_score", "deal_attractiveness_score", "delivery_confidence_score", "overall_opportunity_score", "win_probability", "confidence_level", "dimensions", "questions"]:
+        if key not in assessment:
+            fail(f"{source} missing commercial_assessment.{key}")
     storage = result["storage_result"]
     for key in ["adapter", "saved", "account_id", "opportunity_id", "db_path"]:
         if key not in storage:
@@ -151,6 +155,20 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
                         "confidence": 0.9,
                     }
                 ],
+                "sales_confirmation_answers": [
+                    {
+                        "dimension_id": "customer_purchase_intent",
+                        "rating": "strong",
+                        "answer_text": "客户已立项，计划在本季度完成方案评审并进入采购流程。",
+                        "answered_by": "商务负责人"
+                    },
+                    {
+                        "dimension_id": "competitors",
+                        "rating": "medium",
+                        "answer_text": "已知有两家竞争对手，但客户认为我方方案更贴近现场节拍要求。",
+                        "answered_by": "商务负责人"
+                    }
+                ],
             },
             temp_root / "archive" / "opportunity.db",
             temp_root / "archive" / "outputs",
@@ -172,6 +190,14 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
             fail("archive case did not identify customer requirement owner")
         if roles.get("项目推进负责人") != "李经理":
             fail("archive case did not identify customer project owner")
+        assessment = archive_result["structured_data"].get("commercial_assessment", {})
+        if not assessment.get("questions"):
+            fail("archive case did not generate sales confirmation questions")
+        dimensions = {item.get("dimension_id"): item for item in assessment.get("dimensions", [])}
+        if dimensions.get("customer_purchase_intent", {}).get("evidence_status") != "sales_confirmed":
+            fail("archive case did not apply sales confirmation answer")
+        if "商务确认评估" not in html or "待商务确认问题" not in html:
+            fail("archive case did not render commercial assessment")
         print("ok evaluation cases")
         if keep_artifacts:
             print(f"artifacts kept at {temp_root}")

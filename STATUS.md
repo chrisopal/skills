@@ -1,3 +1,20 @@
+## 2026-07-07 00:32:27 CST
+
+- Scope: Write the implementation plan for `opportunity-analysis-skill` stage management.
+- Changed files:
+  - `docs/superpowers/plans/2026-07-07-opportunity-stage-management-implementation.md`
+- Simplifications made:
+  - Split implementation into six independently verifiable tasks: stage model, analysis wiring, storage compatibility, detail UI, kanban UI, and docs/final verification.
+  - Kept the implementation plan aligned with the approved design scope: static and explainable stage management without stage history, drag-and-drop, or stage gates.
+  - Included exact validator additions, code snippets, commands, expected outcomes, commit points, and browser verification checks.
+- Validation:
+  - Plan red-flag scan found no `TBD`, `TODO`, `implement later`, unresolved placeholder markers, or vague testing steps.
+  - Type/interface scan confirmed consistent use of `stage_id`, `stage_confidence`, `stage_signal_hits`, `opportunity_confirmed`, `infer_opportunity_stage`, and stage UI class names.
+  - `git diff --check -- docs/superpowers/plans/2026-07-07-opportunity-stage-management-implementation.md` passed.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - This is plan-only; implementation should start only after choosing Subagent-Driven or Inline Execution.
+
 ## 2026-07-07 00:24:54 CST
 
 - Scope: Write the design spec for `opportunity-analysis-skill` opportunity stage management.

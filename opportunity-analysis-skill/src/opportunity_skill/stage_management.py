@@ -44,17 +44,11 @@ LEGACY_STAGE_NAME_TO_ID = {
     "投标/报价": "proposal_bidding",
 }
 
-GUARDED_SIGNAL_CONTEXTS: dict[str, tuple[str, ...]] = {
-    "审批通过": ("未审批通过", "尚未审批通过", "还未审批通过", "暂未审批通过", "审批通过前"),
-    "内部审批通过": (
-        "未内部审批通过",
-        "尚未内部审批通过",
-        "还未内部审批通过",
-        "暂未内部审批通过",
-        "内部审批通过前",
-    ),
-    "立项通过": ("未立项通过", "尚未立项通过", "还未立项通过", "暂未立项通过", "立项通过前"),
-}
+GUARDED_SIGNALS = {"审批通过", "内部审批通过", "立项通过"}
+GUARDED_PREFIX_MARKERS = ("如果", "若", "待", "未", "尚未", "还未", "暂未", "正在", "走流程")
+GUARDED_SUFFIX_MARKERS = ("后", "再", "将", "才能", "才", "前")
+CONTEXT_WINDOW = 6
+_PUNCTUATION = " \t\r\n,，.。;；:：!！?？、"
 
 
 def stage_names() -> list[str]:
@@ -81,25 +75,20 @@ def stage_from_name(stage_name: str | None) -> StageDefinition | None:
     return None
 
 
+def _normalize_context_snippet(snippet: str, *, strip_left: bool) -> str:
+    return snippet.lstrip(_PUNCTUATION) if strip_left else snippet.rstrip(_PUNCTUATION)
+
+
 def _signal_is_blocked(text: str, signal: str, start: int) -> bool:
-    blocked_phrases = GUARDED_SIGNAL_CONTEXTS.get(signal, ())
-    if not blocked_phrases:
+    if signal not in GUARDED_SIGNALS:
         return False
 
-    text_lower = text.lower()
-    signal_end = start + len(signal)
-    for blocked_phrase in blocked_phrases:
-        blocked_lower = blocked_phrase.lower()
-        search_from = 0
-        while True:
-            blocked_start = text_lower.find(blocked_lower, search_from)
-            if blocked_start == -1:
-                break
-            blocked_end = blocked_start + len(blocked_phrase)
-            if blocked_start <= start and signal_end <= blocked_end:
-                return True
-            search_from = blocked_start + 1
-    return False
+    prefix = _normalize_context_snippet(text[max(0, start - CONTEXT_WINDOW):start], strip_left=False)
+    suffix = _normalize_context_snippet(text[start + len(signal):start + len(signal) + CONTEXT_WINDOW], strip_left=True)
+
+    if any(prefix.endswith(marker) for marker in GUARDED_PREFIX_MARKERS):
+        return True
+    return any(suffix.startswith(marker) for marker in GUARDED_SUFFIX_MARKERS)
 
 
 def _text_has_any(text: str, signals: tuple[str, ...]) -> list[str]:

@@ -161,6 +161,9 @@ def check_stage_management() -> None:
         ("项目还未审批通过，客户名片已获取。", [{"name": "李经理"}]),
         ("内部审批通过前暂不启动，客户名片已获取。", [{"name": "李经理"}]),
         ("项目尚未审批通过，后续再沟通。", []),
+        ("如果审批通过，再启动项目。", []),
+        ("待审批通过后推进采购。", []),
+        ("若内部审批通过，将在Q3启动。", []),
     ]:
         negative_result = infer_opportunity_stage({
             "text": negative_text,

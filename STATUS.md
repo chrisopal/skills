@@ -20,7 +20,7 @@
   - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
   - Searched the regenerated HTML/Markdown and confirmed `待商务确认问题`, `回答格式`, `ql-confirmation-card`, `ql-confirmation-grid`, and `dimension_id` no longer appear.
   - Playwright file preview verified desktop 1440px and mobile 390px: no confirmation panel, no answer-format text, 0 confirmation cards, 3 radar panels, 18 dimension bars, and no page-wide overflow.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed as `baf304f`; push pending with status update commit.
 - Remaining notes:
   - Sales confirmation still happens through the CLI/host interactive analysis workflow; only the separate detail-page card section was removed.
 

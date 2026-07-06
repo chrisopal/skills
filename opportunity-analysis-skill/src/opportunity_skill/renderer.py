@@ -167,13 +167,100 @@ class SkillDisplayRenderer:
         opportunities = data.get("opportunities", []) if isinstance(data.get("opportunities"), list) else []
         stages = ["线索", "初步沟通", "需求确认", "方案交流", "投标/报价", "商务谈判", "赢单", "丢单"]
         columns = []
+        total_score = 0
+        scored_count = 0
+        high_risk_count = 0
+        missing_total = 0
+        for opp in opportunities:
+            if opp.get("score") is not None:
+                total_score += int(opp.get("score") or 0)
+                scored_count += 1
+            if opp.get("risk_level") == "high":
+                high_risk_count += 1
+            missing_total += len(opp.get("missing_information") or [])
         for stage in stages:
             cards = []
-            for opp in opportunities:
-                if opp.get("stage") == stage:
-                    cards.append(f"<div class='kanban-card'><strong>{esc(opp.get('name'))}</strong><br/>评分：{esc(opp.get('score'))}｜风险：{esc(opp.get('risk_level'))}</div>")
-            columns.append(f"<div class='kanban-col'><h3>{esc(stage)}</h3>{''.join(cards) or '<p>暂无</p>'}</div>")
-        return replace_tokens(tpl, {"kanban_columns": "".join(columns)})
+            stage_items = [opp for opp in opportunities if opp.get("stage") == stage]
+            stage_items = sorted(stage_items, key=lambda x: (x.get("score") or 0, x.get("updated_at") or ""), reverse=True)
+            stage_score = round(sum((opp.get("score") or 0) for opp in stage_items) / max(len(stage_items), 1)) if stage_items else "暂无"
+            for opp in stage_items:
+                score = int(opp.get("score") or 0)
+                win_percent = int(round((opp.get("win_probability") or 0) * 100))
+                risk = self._risk_class(opp.get("risk_level"))
+                missing = opp.get("missing_information") or []
+                requirements = opp.get("requirements") or []
+                focus = missing[0] if missing else (requirements[0] if requirements else "下一步待根据客户反馈确认")
+                budget = opp.get("budget_amount") or opp.get("budget_signal") or "预算待确认"
+                cards.append(
+                    "<article class='kanban-card'>"
+                    "<div class='kanban-card-topline'>"
+                    f"<span class='ql-tag green'>{esc(opp.get('score_level'))}级</span>"
+                    f"<span class='ql-tag risk-{risk}'>风险 {esc(self._risk_label(opp.get('risk_level')))}</span>"
+                    "</div>"
+                    f"<h3>{esc(opp.get('name'))}</h3>"
+                    f"<p class='kanban-account'>{esc(opp.get('company_name'))} · {esc(opp.get('industry'))} · {esc(opp.get('region'))}</p>"
+                    "<div class='kanban-score-row'>"
+                    "<div>"
+                    "<span>评分</span>"
+                    f"<strong>{esc(score)}</strong>"
+                    "</div>"
+                    "<div>"
+                    "<span>赢单</span>"
+                    f"<strong>{esc(win_percent)}%</strong>"
+                    "</div>"
+                    "</div>"
+                    "<div class='kanban-score-track' aria-hidden='true'>"
+                    f"<span style='width:{max(0, min(100, score))}%'></span>"
+                    "</div>"
+                    "<dl class='kanban-meta'>"
+                    f"<div><dt>需求</dt><dd>{esc(compact(opp.get('core_need'), 34))}</dd></div>"
+                    f"<div><dt>时间</dt><dd>{esc(opp.get('expected_timeline'))}</dd></div>"
+                    f"<div><dt>预算</dt><dd>{esc(compact(budget, 34))}</dd></div>"
+                    "</dl>"
+                    "<div class='kanban-focus'>"
+                    "<span>优先动作</span>"
+                    f"<strong>{esc(compact(focus, 58))}</strong>"
+                    "</div>"
+                    "</article>"
+                )
+            empty = "<div class='kanban-empty'>暂无商机</div>"
+            columns.append(
+                "<section class='kanban-col'>"
+                "<div class='kanban-col-head'>"
+                f"<div><h2>{esc(stage)}</h2><span>{esc(len(stage_items))} 个商机</span></div>"
+                f"<strong>{esc(stage_score)}</strong>"
+                "</div>"
+                f"<div class='kanban-card-list'>{''.join(cards) or empty}</div>"
+                "</section>"
+            )
+        avg_score = round(total_score / scored_count) if scored_count else "暂无"
+        query_summary = self._query_summary(data.get("query", {}))
+        return replace_tokens(tpl, {
+            "kanban_columns": "".join(columns),
+            "query.summary": esc(query_summary),
+            "summary.count": esc(len(opportunities)),
+            "summary.avg_score": esc(avg_score),
+            "summary.high_risk": esc(high_risk_count),
+            "summary.missing": esc(missing_total),
+        })
+
+    def _query_summary(self, query: dict[str, Any]) -> str:
+        filters = query.get("filters", {}) if isinstance(query, dict) else {}
+        parts = []
+        for key, label in [("stage", "阶段"), ("risk_level", "风险"), ("company_name", "客户"), ("min_score", "最低分")]:
+            if filters.get(key) is not None:
+                parts.append(f"{label}:{filters.get(key)}")
+        return " / ".join(parts) if parts else "全部"
+
+    def _risk_class(self, risk: Any) -> str:
+        value = str(risk or "").lower()
+        if value in {"high", "medium", "low"}:
+            return value
+        return "medium"
+
+    def _risk_label(self, risk: Any) -> str:
+        mapping = {"high": "高", "medium": "中", "low": "低"}
+        return mapping.get(str(risk), "待确认")
 
     def _action_items(self, actions: list[dict[str, Any]]) -> str:
         if not actions:

@@ -1,4 +1,41 @@
-<div class="kanban">
-  <h2>商机看板</h2>
-  <div class="kanban-columns">{{kanban_columns}}</div>
+<div class="ql-page ql-kanban-page">
+  <header class="ql-topbar">
+    <div class="ql-breadcrumb">企灵 / 业务工作区 / 商机看板</div>
+    <div class="ql-top-actions">
+      <span class="ql-command">筛选条件 {{query.summary}}</span>
+      <span class="ql-command primary">新增商机分析</span>
+    </div>
+  </header>
+
+  <main class="ql-main ql-kanban-main">
+    <section class="ql-kanban-hero">
+      <div>
+        <div class="ql-kicker">Opportunity Pipeline</div>
+        <h1 class="ql-title">商机卡片看板</h1>
+        <p class="ql-subtitle">按销售阶段组织商机，优先处理高分、高风险和缺失信息较多的机会。</p>
+      </div>
+      <div class="ql-kanban-summary">
+        <div class="ql-mini-stat">
+          <span>商机数</span>
+          <strong>{{summary.count}}</strong>
+        </div>
+        <div class="ql-mini-stat">
+          <span>平均评分</span>
+          <strong>{{summary.avg_score}}</strong>
+        </div>
+        <div class="ql-mini-stat ql-mini-stat-alert">
+          <span>高风险</span>
+          <strong>{{summary.high_risk}}</strong>
+        </div>
+        <div class="ql-mini-stat">
+          <span>待确认</span>
+          <strong>{{summary.missing}}</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="ql-pipeline-board" aria-label="商机阶段看板">
+      {{kanban_columns}}
+    </section>
+  </main>
 </div>

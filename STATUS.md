@@ -1,3 +1,23 @@
+## 2026-07-06 09:45:00 CST
+
+- Scope: Redesign `opportunity-analysis-skill` opportunity kanban/card board into a denser enterprise sales workbench.
+- Changed files:
+  - `opportunity-analysis-skill/display/css/default.css`
+  - `opportunity-analysis-skill/display/templates/opportunity_kanban.html`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+- Simplifications made:
+  - Kept the board dependency-free and script-free instead of adding a frontend framework.
+  - Reused the existing QILIN white enterprise visual tokens while adding board-specific summary stats, stage headers, score tracks, risk badges, and priority-action card sections.
+  - Rendered richer kanban cards from existing query summary fields, avoiding new storage joins or schema changes.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - `git diff --check -- opportunity-analysis-skill` passed.
+  - Regenerated the real kanban preview at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/kanban-ui-review/opportunity_kanban.html`.
+  - Playwright HTTP preview verified desktop 1440px and mobile 390px: 7 cards, 8 stage columns, no page-wide overflow, no card text overflow; desktop board scrolls horizontally only within the board, and mobile stacks columns vertically.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - Query output still uses summary fields only; future CRM/workbench integrations can enrich card footer actions with owner, due date, and direct detail links when those fields are exposed in the query contract.
+
 ## 2026-07-06 09:20:00 CST
 
 - Scope: Split `opportunity-analysis-skill` internals into three reusable pipeline stages while keeping one P0 closed-loop skill and the existing `analyze/query/detail` host workflow.

@@ -14,7 +14,7 @@
   - `git diff --check -- opportunity-analysis-skill` passed.
   - Regenerated the real kanban preview at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/kanban-ui-review/opportunity_kanban.html`.
   - Playwright HTTP preview verified desktop 1440px and mobile 390px: 7 cards, 8 stage columns, no page-wide overflow, no card text overflow; desktop board scrolls horizontally only within the board, and mobile stacks columns vertically.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed and pushed to `origin/main` as `4975554`.
 - Remaining notes:
   - Query output still uses summary fields only; future CRM/workbench integrations can enrich card footer actions with owner, due date, and direct detail links when those fields are exposed in the query contract.
 

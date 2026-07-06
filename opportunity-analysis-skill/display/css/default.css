@@ -147,6 +147,15 @@ body {
   color: var(--ql-green-dark);
 }
 
+.ql-tag.stage-confirmed {
+  max-width: 100%;
+  border-color: #c8ddd4;
+  background: #f2f8f5;
+  color: var(--ql-green-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .ql-tag.orange,
 .risk-medium,
 .risk-high,

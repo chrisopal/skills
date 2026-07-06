@@ -182,6 +182,7 @@ class SkillDisplayRenderer:
         total_score = 0
         scored_count = 0
         high_risk_count = 0
+        confirmed_count = 0
         missing_total = 0
         stage_buckets: dict[str, list[dict[str, Any]]] = {stage.stage_id: [] for stage in STAGE_DEFINITIONS}
         for opp in opportunities:
@@ -190,6 +191,8 @@ class SkillDisplayRenderer:
                 scored_count += 1
             if opp.get("risk_level") == "high":
                 high_risk_count += 1
+            if self._opportunity_confirmed_label(opp) == "已确认商机":
+                confirmed_count += 1
             missing_total += len(opp.get("missing_information") or [])
             stage_def = self._resolve_stage_definition(opp)
             if stage_def is not None:
@@ -207,11 +210,13 @@ class SkillDisplayRenderer:
                 requirements = opp.get("requirements") or []
                 focus = missing[0] if missing else (requirements[0] if requirements else "下一步待根据客户反馈确认")
                 budget = opp.get("budget_amount") or opp.get("budget_signal") or "预算待确认"
+                confirmed_label = self._opportunity_confirmed_label(opp)
                 cards.append(
                     "<article class='kanban-card'>"
                     "<div class='kanban-card-topline'>"
                     f"<span class='ql-tag green'>{esc(opp.get('score_level'))}级</span>"
                     f"<span class='ql-tag risk-{risk}'>风险 {esc(self._risk_label(opp.get('risk_level')))}</span>"
+                    f"<span class='ql-tag stage-confirmed'>{esc(confirmed_label)}</span>"
                     "</div>"
                     f"<h3>{esc(opp.get('name'))}</h3>"
                     f"<p class='kanban-account'>{esc(opp.get('company_name'))} · {esc(opp.get('industry'))} · {esc(opp.get('region'))}</p>"
@@ -257,6 +262,7 @@ class SkillDisplayRenderer:
             "summary.count": esc(len(opportunities)),
             "summary.avg_score": esc(avg_score),
             "summary.high_risk": esc(high_risk_count),
+            "summary.confirmed": esc(confirmed_count),
             "summary.missing": esc(missing_total),
         })
 

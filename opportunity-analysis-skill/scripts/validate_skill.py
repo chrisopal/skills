@@ -503,6 +503,16 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         query_html = query_result.get("display_result", {}).get("html", "")
         if not query_html:
             fail("query HTML render is empty")
+        expected_stages = stage_names()
+        if len(expected_stages) != 10:
+            fail(f"validator expected 10 stage columns, got {expected_stages}")
+        for stage_name in expected_stages:
+            if stage_name not in query_html:
+                fail(f"kanban missing stage column {stage_name}")
+        if "已确认商机" not in query_html and "尚未确认商机" not in query_html:
+            fail("kanban did not render confirmed opportunity status")
+        if "已确认商机" not in query_html:
+            fail("kanban summary did not render confirmed opportunity label")
         for opportunity in query_result.get("opportunities", []):
             name = opportunity.get("name")
             company = opportunity.get("company_name")

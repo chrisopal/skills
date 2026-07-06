@@ -20,6 +20,7 @@ if str(SRC) not in sys.path:
 from opportunity_skill.pipeline import run_analyze, run_detail, run_query  # noqa: E402
 from opportunity_skill.assessment import normalize_rating  # noqa: E402
 from opportunity_skill.confirmation import collect_sales_confirmation_answers  # noqa: E402
+from opportunity_skill.stage_management import infer_opportunity_stage, stage_names  # noqa: E402
 from opportunity_skill.stages.account_profile_extraction import extract_account_profile  # noqa: E402
 from opportunity_skill.stages.evidence_normalization import all_text, normalize_input  # noqa: E402
 from opportunity_skill.stages.opportunity_analysis import analyze_opportunity  # noqa: E402
@@ -104,6 +105,50 @@ def check_stage_modules() -> None:
     if result["structured_data"]["opportunity"]["core_need"] != "质检自动化升级":
         fail("opportunity_analysis stage did not extract core need")
     print("ok stage modules")
+
+
+def check_stage_management() -> None:
+    expected = [
+        "线索识别",
+        "客户接触",
+        "需求澄清",
+        "商机确认",
+        "方案共创",
+        "预算/立项确认",
+        "报价/投标",
+        "商务谈判",
+        "赢单",
+        "丢单",
+    ]
+    if stage_names() != expected:
+        fail(f"stage model order mismatch: {stage_names()}")
+    result = infer_opportunity_stage({
+        "text": "客户希望Q3前完成方案确认，安排技术交流，讨论检测点位和MES对接。",
+        "core_need": "质检自动化升级",
+        "contacts": [{"name": "王总", "is_requirement_owner": True}],
+        "decision_chain": [{"decision_role": "业务需求负责人", "status": "confirmed"}],
+        "budget_signal": "预算信息未明确",
+        "timeline": "Q3",
+    })
+    if result["stage_id"] != "solution_cocreation":
+        fail(f"solution signals should infer solution_cocreation, got {result}")
+    if result["stage"] != "方案共创":
+        fail("stage result should keep Chinese stage name")
+    if not result["opportunity_confirmed"]:
+        fail("solution_cocreation should be a confirmed opportunity")
+    if "技术交流" not in "".join(result["stage_signal_hits"]):
+        fail("stage signal hits should explain matched signals")
+    early = infer_opportunity_stage({
+        "text": "客户名片已获取，后续再沟通。",
+        "core_need": "客户需求待进一步澄清",
+        "contacts": [{"name": "张三"}],
+        "decision_chain": [],
+        "budget_signal": "预算信息未明确",
+        "timeline": "时间节点未明确",
+    })
+    if early["stage_id"] != "customer_contacted" or early["opportunity_confirmed"]:
+        fail(f"early contact should not be confirmed opportunity, got {early}")
+    print("ok stage management")
 
 
 def check_confirmation_loop() -> None:
@@ -296,6 +341,7 @@ def main() -> None:
     check_python_compile()
     check_template_safety()
     check_stage_modules()
+    check_stage_management()
     check_confirmation_loop()
     check_evaluation_cases(keep_artifacts=args.keep_artifacts)
     check_distribution_noise()

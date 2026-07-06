@@ -16,7 +16,7 @@
 - Validation:
   - `python3.12 scripts/validate_skill.py` passed, including JSON/schema checks, Python compilation, template safety, direct stage-module checks, evaluation cases, analyze/query/detail runtime behavior, material archive rendering, and distribution-noise checks.
   - `git diff --check -- opportunity-analysis-skill` passed.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed and pushed to `origin/main` as `dbd09ac`.
 - Remaining notes:
   - The stages are still heuristic reference implementations; production hosts can replace any stage with OCR/transcription/model-backed logic while preserving the same input/output contracts.
 

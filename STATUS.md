@@ -1,3 +1,35 @@
+## 2026-07-07 02:45:00 CST
+
+- Scope: Implement `opportunity-analysis-skill` opportunity stage management from model through live analysis, SQLite persistence, detail UI, kanban UI, and Huachen visual verification.
+- Changed files:
+  - `opportunity-analysis-skill/src/opportunity_skill/stage_management.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/stages/opportunity_analysis.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/assessment.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/storage.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/storage/sqlite/schema.sql`
+  - `opportunity-analysis-skill/schemas/opportunity.schema.json`
+  - `opportunity-analysis-skill/display/templates/opportunity_card.html`
+  - `opportunity-analysis-skill/display/templates/opportunity_detail.html`
+  - `opportunity-analysis-skill/display/templates/opportunity_kanban.html`
+  - `opportunity-analysis-skill/display/css/default.css`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+  - `.superpowers/sdd/progress.md` local execution ledger, not committed.
+- Simplifications made:
+  - Kept stage management deterministic, dependency-free, and static HTML based.
+  - Preserved legacy Chinese stage compatibility while adding canonical `stage_id`, stage reason, confidence, signal hits, and confirmed-opportunity state.
+  - Added SQLite nullable columns plus automatic migration rather than replacing existing rows or query behavior.
+  - Reused the existing renderer/templates instead of adding JavaScript or a frontend framework.
+- Validation:
+  - `python3.12 opportunity-analysis-skill/scripts/validate_skill.py` passed with stage model, live analysis, legacy storage migration, detail round-trip, kanban, and distribution-noise checks.
+  - `python3.12 -m py_compile` passed for touched runtime modules during task verification.
+  - Subagent code-review loop approved Task 1 through Task 5 after targeted fixes.
+  - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`; Huachen now renders as `方案共创 / solution_cocreation` and `已确认商机`.
+  - Playwright HTTP preview verified desktop 1440px and mobile 390px; screenshots saved under `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/huachen-detail-desktop-stage.png` and `huachen-detail-mobile-stage.png`.
+- Commit/push state: implementation commits through `575f8c3` are pushed to `origin/main`; this entry records the final status update for that rollout.
+- Remaining notes:
+  - Existing unrelated `wechat-official-account-skills/*` dirty files and untracked local artifacts were left untouched.
+
 ## 2026-07-07 00:32:27 CST
 
 - Scope: Write the implementation plan for `opportunity-analysis-skill` stage management.

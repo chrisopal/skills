@@ -49,11 +49,9 @@ CONFIRMED_CONTEXT_PREFIX_MARKERS = (
     "可能",
     "如果",
     "若",
-    "后续",
     "尚未",
     "还未",
     "暂未",
-    "正在",
     "走流程",
 )
 CONFIRMED_CONTEXT_SUFFIX_MARKERS = (
@@ -68,6 +66,9 @@ CONFIRMED_CONTEXT_SEQUENCE_MARKERS = (
     "后再",
     "后将",
     "后才能",
+    "后续再",
+    "后续将",
+    "后续才能",
     "前暂",
     "前不",
     "前未",

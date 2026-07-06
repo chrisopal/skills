@@ -190,6 +190,21 @@ def check_stage_management() -> None:
     })
     if positive_budget["stage_id"] != "budget_project_confirmed" or not positive_budget["opportunity_confirmed"]:
         fail(f"explicit positive approval should infer budget_project_confirmed, got {positive_budget}")
+    for positive_text, expected_stage_id in [
+        ("项目已立项，后续安排采购。", "budget_project_confirmed"),
+        ("合同已签，后续安排交付。", "won"),
+        ("正在招标，客户已发RFP。", "proposal_bidding"),
+    ]:
+        positive_result = infer_opportunity_stage({
+            "text": positive_text,
+            "core_need": "客户需求待进一步澄清",
+            "contacts": [],
+            "decision_chain": [],
+            "budget_signal": "预算信息未明确",
+            "timeline": "时间节点未明确",
+        })
+        if positive_result["stage_id"] != expected_stage_id or not positive_result["opportunity_confirmed"]:
+            fail(f"positive progress wording should stay confirmed, got {positive_result}")
     print("ok stage management")
 
 

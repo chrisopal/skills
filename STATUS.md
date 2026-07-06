@@ -23,7 +23,7 @@
   - `python3.12 scripts/validate_skill.py` passed.
   - Regenerated the Huachen detail at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`; current unconfirmed assessment shows score 64, win probability 54%, low confidence, and 8 key sales questions.
   - Playwright HTTP preview verified desktop 1440px and mobile 390px: commercial assessment section present, three assessment scores visible, competitor question visible, 3 archived material images render with 0 broken images, and no mobile page overflow.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed and pushed to `origin/main` as `3273ae4`.
 - Remaining notes:
   - The current implementation accepts `sales_confirmation_answers` in analyze input; an interactive answer-collection UI or Feishu/CRM writeback remains a future adapter/workbench task.
 

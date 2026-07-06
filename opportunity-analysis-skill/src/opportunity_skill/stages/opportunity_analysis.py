@@ -4,6 +4,7 @@ import re
 from typing import Any
 
 from ..assessment import build_commercial_assessment
+from ..stage_management import infer_opportunity_stage
 from ..utils import new_id
 from .account_profile_extraction import pick_first
 
@@ -106,7 +107,17 @@ def analyze_opportunity(
     budget_signal, budget_amount = extract_budget_signal(text)
     timeline = extract_timeline(text)
     competitors = extract_competitors(text)
-    stage, stage_reason = infer_stage(text, core_need, budget_signal)
+    stage_result = infer_opportunity_stage({
+        "text": text,
+        "core_need": core_need,
+        "budget_signal": budget_signal,
+        "budget_amount": budget_amount,
+        "timeline": timeline,
+        "contacts": contacts,
+        "decision_chain": decision_chain,
+    })
+    stage = stage_result["stage"]
+    stage_reason = stage_result["stage_reason"]
     baseline_score, baseline_win_probability, _baseline_score_level, _baseline_risk_level = score_opportunity(
         core_need, budget_signal, budget_amount, timeline, contacts, competitors, pain_points
     )
@@ -221,7 +232,11 @@ def analyze_opportunity(
         "name": f"{company_name}-{core_need}",
         "stage": stage,
         "stage_status": "inferred",
+        "stage_id": stage_result["stage_id"],
         "stage_reason": stage_reason,
+        "stage_confidence": stage_result["stage_confidence"],
+        "stage_signal_hits": stage_result["stage_signal_hits"],
+        "opportunity_confirmed": stage_result["opportunity_confirmed"],
         "core_need": core_need,
         "budget_signal": budget_signal,
         "budget_amount": budget_amount,

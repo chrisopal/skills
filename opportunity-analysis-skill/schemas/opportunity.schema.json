@@ -29,6 +29,38 @@
         "missing"
       ]
     },
+    "stage_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "stage_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "stage_confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        null
+      ]
+    },
+    "stage_signal_hits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "opportunity_confirmed": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
     "core_need": {
       "type": "string"
     },

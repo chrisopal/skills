@@ -276,6 +276,10 @@ def assert_output_contract(result: dict, source: str) -> None:
     for key in ["win_likelihood_score", "deal_attractiveness_score", "delivery_confidence_score", "overall_opportunity_score", "win_probability", "confidence_level", "dimensions", "questions"]:
         if key not in assessment:
             fail(f"{source} missing commercial_assessment.{key}")
+    opportunity = structured["opportunity"]
+    for key in ["stage_id", "stage_reason", "stage_confidence", "stage_signal_hits", "opportunity_confirmed"]:
+        if key not in opportunity:
+            fail(f"{source} missing opportunity.{key}")
     storage = result["storage_result"]
     for key in ["adapter", "saved", "account_id", "opportunity_id", "db_path"]:
         if key not in storage:
@@ -308,8 +312,18 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
             result = run_analyze(input_data, db_path, output_dir)
             assert_output_contract(result, case["name"])
             opportunity = result["structured_data"]["opportunity"]
-            if opportunity["stage"] != case["expected_stage"]:
-                fail(f"{case['name']} stage {opportunity['stage']} != {case['expected_stage']}")
+            expected_stage = stage_from_name(case["expected_stage"])
+            actual_stage = stage_from_name(opportunity.get("stage"))
+            if expected_stage is None:
+                fail(f"{case['name']} expected stage is unknown: {case['expected_stage']}")
+            if actual_stage is None:
+                fail(f"{case['name']} produced unknown stage name: {opportunity.get('stage')}")
+            if opportunity.get("stage_id") != expected_stage.stage_id:
+                fail(f"{case['name']} stage_id {opportunity.get('stage_id')} != {expected_stage.stage_id}")
+            if actual_stage.stage_id != expected_stage.stage_id:
+                fail(f"{case['name']} stage {opportunity['stage']} does not match expected flow {case['expected_stage']}")
+            if opportunity.get("stage") != actual_stage.name:
+                fail(f"{case['name']} should emit canonical stage name {actual_stage.name}, got {opportunity.get('stage')}")
             if opportunity["score"] < case["expected_min_score"]:
                 fail(f"{case['name']} score {opportunity['score']} < {case['expected_min_score']}")
             if not Path(result["display_result"]["html_path"]).exists():
@@ -385,6 +399,11 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
             fail("archive case did not identify customer requirement owner")
         if roles.get("项目推进负责人") != "李经理":
             fail("archive case did not identify customer project owner")
+        archive_opportunity = archive_result["structured_data"].get("opportunity", {})
+        if archive_opportunity.get("stage_id") not in {"opportunity_confirmed", "solution_cocreation", "budget_project_confirmed"}:
+            fail(f"archive case stage_id did not reflect confirmed opportunity flow: {archive_opportunity}")
+        if not archive_opportunity.get("opportunity_confirmed"):
+            fail("archive case should be marked as confirmed opportunity")
         assessment = archive_result["structured_data"].get("commercial_assessment", {})
         if not assessment.get("questions"):
             fail("archive case did not generate sales confirmation questions")

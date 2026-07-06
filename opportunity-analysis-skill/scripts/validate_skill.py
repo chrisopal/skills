@@ -22,6 +22,7 @@ if str(SRC) not in sys.path:
 from opportunity_skill.pipeline import run_analyze, run_detail, run_query  # noqa: E402
 from opportunity_skill.assessment import normalize_rating  # noqa: E402
 from opportunity_skill.confirmation import collect_sales_confirmation_answers  # noqa: E402
+from opportunity_skill.renderer import SkillDisplayRenderer  # noqa: E402
 from opportunity_skill.storage import OpportunitySQLiteAdapter  # noqa: E402
 from opportunity_skill.stage_management import infer_opportunity_stage, stage_from_name, stage_names  # noqa: E402
 from opportunity_skill.stages.account_profile_extraction import extract_account_profile  # noqa: E402
@@ -445,6 +446,14 @@ def check_legacy_stage_storage_compatibility(temp_root: Path) -> None:
     print("ok legacy stage storage")
 
 
+def check_unknown_stage_path_fallback() -> None:
+    html = SkillDisplayRenderer()._stage_path({"stage": "未知阶段X"})
+    for marker in ["ql-stage-step-current", "ql-stage-step-unmapped", "未知阶段X"]:
+        if marker not in html:
+            fail(f"unknown stage path did not render {marker}: {html}")
+    print("ok unknown stage path fallback")
+
+
 def check_evaluation_cases(keep_artifacts: bool = False) -> None:
     cases = load_json(ROOT / "evaluation" / "test_cases.json")
     temp_root = Path(tempfile.mkdtemp(prefix="opportunity-skill-validate-"))
@@ -656,6 +665,7 @@ def main() -> None:
     check_stage_modules()
     check_stage_management()
     check_confirmation_loop()
+    check_unknown_stage_path_fallback()
     check_evaluation_cases(keep_artifacts=args.keep_artifacts)
     check_distribution_noise()
     print("validation passed")

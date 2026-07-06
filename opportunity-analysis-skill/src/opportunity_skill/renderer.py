@@ -304,6 +304,7 @@ class SkillDisplayRenderer:
         stage_def = self._resolve_stage_definition(opportunity)
         current_id = stage_def.stage_id if stage_def else None
         current_order = stage_def.order if stage_def else 0
+        raw_stage = opportunity.get("stage")
         parts = []
         for stage in STAGE_DEFINITIONS:
             classes = ["ql-stage-step"]
@@ -320,6 +321,13 @@ class SkillDisplayRenderer:
                 "<div class='" + " ".join(classes) + "'>"
                 f"<span>{esc(marker)}</span>"
                 f"<strong>{esc(stage.name)}</strong>"
+                "</div>"
+            )
+        if stage_def is None and raw_stage:
+            parts.append(
+                "<div class='ql-stage-step ql-stage-step-current ql-stage-step-unmapped'>"
+                f"<span>{esc('未归类')}</span>"
+                f"<strong>{esc(raw_stage)}</strong>"
                 "</div>"
             )
         return "".join(parts)

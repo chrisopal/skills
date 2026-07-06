@@ -164,6 +164,9 @@ def check_stage_management() -> None:
         ("如果审批通过，再启动项目。", []),
         ("待审批通过后推进采购。", []),
         ("若内部审批通过，将在Q3启动。", []),
+        ("如果项目已立项，再启动。", []),
+        ("若预算已批，将推进采购。", []),
+        ("待采购计划已确认后再启动。", []),
     ]:
         negative_result = infer_opportunity_stage({
             "text": negative_text,

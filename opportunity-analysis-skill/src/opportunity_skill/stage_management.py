@@ -44,7 +44,9 @@ LEGACY_STAGE_NAME_TO_ID = {
     "投标/报价": "proposal_bidding",
 }
 
-GUARDED_SIGNALS = {"审批通过", "内部审批通过", "立项通过"}
+GUARDED_SIGNALS = frozenset(
+    next(stage.signals for stage in STAGE_DEFINITIONS if stage.stage_id == "budget_project_confirmed")
+)
 GUARDED_PREFIX_MARKERS = ("如果", "若", "待", "未", "尚未", "还未", "暂未", "正在", "走流程")
 GUARDED_SUFFIX_MARKERS = ("后", "再", "将", "才能", "才", "前")
 CONTEXT_WINDOW = 6
@@ -86,7 +88,7 @@ def _signal_is_blocked(text: str, signal: str, start: int) -> bool:
     prefix = _normalize_context_snippet(text[max(0, start - CONTEXT_WINDOW):start], strip_left=False)
     suffix = _normalize_context_snippet(text[start + len(signal):start + len(signal) + CONTEXT_WINDOW], strip_left=True)
 
-    if any(prefix.endswith(marker) for marker in GUARDED_PREFIX_MARKERS):
+    if any(prefix.endswith(marker) or marker in prefix for marker in GUARDED_PREFIX_MARKERS):
         return True
     return any(suffix.startswith(marker) for marker in GUARDED_SUFFIX_MARKERS)
 

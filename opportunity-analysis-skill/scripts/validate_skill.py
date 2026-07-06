@@ -157,26 +157,31 @@ def check_stage_management() -> None:
     })
     if early["stage_id"] != "customer_contacted" or early["opportunity_confirmed"]:
         fail(f"early contact should not be confirmed opportunity, got {early}")
-    weak_budget = infer_opportunity_stage({
-        "text": "预算信息未明确，后续再沟通。",
+    for negative_text, contacts in [
+        ("项目还未审批通过，客户名片已获取。", [{"name": "李经理"}]),
+        ("内部审批通过前暂不启动，客户名片已获取。", [{"name": "李经理"}]),
+        ("项目尚未审批通过，后续再沟通。", []),
+    ]:
+        negative_result = infer_opportunity_stage({
+            "text": negative_text,
+            "core_need": "客户需求待进一步澄清",
+            "contacts": contacts,
+            "decision_chain": [],
+            "budget_signal": "预算信息未明确",
+            "timeline": "时间节点未明确",
+        })
+        if negative_result["stage_id"] == "budget_project_confirmed" or negative_result["opportunity_confirmed"]:
+            fail(f"negative approval wording should stay unconfirmed, got {negative_result}")
+    positive_budget = infer_opportunity_stage({
+        "text": "项目已立项，审批通过，采购计划已明确。",
         "core_need": "客户需求待进一步澄清",
         "contacts": [],
         "decision_chain": [],
         "budget_signal": "预算信息未明确",
         "timeline": "时间节点未明确",
     })
-    if weak_budget["stage_id"] == "budget_project_confirmed" or weak_budget["opportunity_confirmed"]:
-        fail(f"weak budget wording should not infer budget_project_confirmed, got {weak_budget}")
-    weak_approval = infer_opportunity_stage({
-        "text": "目前还在走内部审批，客户名片已获取。",
-        "core_need": "客户需求待进一步澄清",
-        "contacts": [{"name": "李经理"}],
-        "decision_chain": [],
-        "budget_signal": "预算信息未明确",
-        "timeline": "时间节点未明确",
-    })
-    if weak_approval["stage_id"] != "customer_contacted" or weak_approval["opportunity_confirmed"]:
-        fail(f"approval-in-progress wording should stay early-stage, got {weak_approval}")
+    if positive_budget["stage_id"] != "budget_project_confirmed" or not positive_budget["opportunity_confirmed"]:
+        fail(f"explicit positive approval should infer budget_project_confirmed, got {positive_budget}")
     print("ok stage management")
 
 

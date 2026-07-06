@@ -44,6 +44,18 @@ LEGACY_STAGE_NAME_TO_ID = {
     "投标/报价": "proposal_bidding",
 }
 
+GUARDED_SIGNAL_CONTEXTS: dict[str, tuple[str, ...]] = {
+    "审批通过": ("未审批通过", "尚未审批通过", "还未审批通过", "暂未审批通过", "审批通过前"),
+    "内部审批通过": (
+        "未内部审批通过",
+        "尚未内部审批通过",
+        "还未内部审批通过",
+        "暂未内部审批通过",
+        "内部审批通过前",
+    ),
+    "立项通过": ("未立项通过", "尚未立项通过", "还未立项通过", "暂未立项通过", "立项通过前"),
+}
+
 
 def stage_names() -> list[str]:
     return [stage.name for stage in STAGE_DEFINITIONS]
@@ -69,8 +81,44 @@ def stage_from_name(stage_name: str | None) -> StageDefinition | None:
     return None
 
 
+def _signal_is_blocked(text: str, signal: str, start: int) -> bool:
+    blocked_phrases = GUARDED_SIGNAL_CONTEXTS.get(signal, ())
+    if not blocked_phrases:
+        return False
+
+    text_lower = text.lower()
+    signal_end = start + len(signal)
+    for blocked_phrase in blocked_phrases:
+        blocked_lower = blocked_phrase.lower()
+        search_from = 0
+        while True:
+            blocked_start = text_lower.find(blocked_lower, search_from)
+            if blocked_start == -1:
+                break
+            blocked_end = blocked_start + len(blocked_phrase)
+            if blocked_start <= start and signal_end <= blocked_end:
+                return True
+            search_from = blocked_start + 1
+    return False
+
+
 def _text_has_any(text: str, signals: tuple[str, ...]) -> list[str]:
-    return [signal for signal in signals if signal and signal.lower() in text.lower()]
+    text_lower = text.lower()
+    matched: list[str] = []
+    for signal in signals:
+        if not signal:
+            continue
+        signal_lower = signal.lower()
+        search_from = 0
+        while True:
+            start = text_lower.find(signal_lower, search_from)
+            if start == -1:
+                break
+            if not _signal_is_blocked(text, signal, start):
+                matched.append(signal)
+                break
+            search_from = start + 1
+    return matched
 
 
 def _confirmed_contact(context: dict[str, Any]) -> bool:

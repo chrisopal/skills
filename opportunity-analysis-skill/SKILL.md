@@ -32,6 +32,7 @@ python3.12 -m venv .venv
 . .venv/bin/activate
 python -m pip install -e .
 opportunity-analysis analyze --input examples/input_visit_note.json --output-dir /tmp/opportunity-analysis-demo
+opportunity-analysis analyze --input examples/input_visit_note.json --interactive-confirmation --template opportunity_detail --output-dir /tmp/opportunity-analysis-confirmed
 opportunity-analysis query --min-score 60 --render-html --output-dir /tmp/opportunity-analysis-query
 ```
 
@@ -53,10 +54,12 @@ When using this skill inside any agent host:
 1. Inspect the input type.
 2. If the input is raw audio, image, PDF, DOCX, PPTX, XLSX, webpage, or email, first obtain text or normalized Evidence through the host's available parser/OCR/transcription tools.
 3. Treat the logical pipeline as `evidence_normalization -> account_profile_extraction -> opportunity_analysis -> storage -> display`.
-4. Call the Python runtime for deterministic storage/rendering when a shell is available.
-5. If shell execution is unavailable, follow the extraction rules and output contract manually, then persist through the host's equivalent storage adapter.
-6. Never write arbitrary SQL from natural language. Convert requests to `schemas/query.schema.json`, then let the adapter execute parameterized queries.
-7. Return JSON plus the rendered HTML/Markdown paths or content.
+4. If `commercial_assessment.questions` contains uncertain items and the host can interact with a business/sales user, ask those questions before final scoring, collect `sales_confirmation_answers`, then rerun analysis with those answers.
+5. If the user answers `未知`, `不确定`, `待确定`, or `待确认`, record the answer as `rating=unknown`; the skill still assigns the unknown score and completes the evaluation.
+6. Call the Python runtime for deterministic storage/rendering when a shell is available.
+7. If shell execution is unavailable, follow the extraction rules and output contract manually, then persist through the host's equivalent storage adapter.
+8. Never write arbitrary SQL from natural language. Convert requests to `schemas/query.schema.json`, then let the adapter execute parameterized queries.
+9. Return JSON plus the rendered HTML/Markdown paths or content.
 
 ## Input Contract
 
@@ -74,9 +77,9 @@ Preferred input is `evidence_list`, where each item contains:
 The reference runtime also accepts `materials` with text content and wraps them into Evidence objects.
 When `file_path`, `path`, `source_path`, `source_ref`, or `attachments` points to a readable local file, the runtime copies it into an `attachments/` archive folder, records file metadata in SQLite, and exposes thumbnails or file links in the detail view.
 
-Optional `sales_confirmation_answers` lets a host pass business staff answers back into the skill. Each answer should include `dimension_id`, `rating` (`strong`, `medium`, `weak`, or `unknown`), optional `answer_text`, and optional `answered_by`. These answers override inferred ratings and recalculate the commercial assessment and win probability.
+Optional `sales_confirmation_answers` lets a host pass business staff answers back into the skill. Each answer should include `dimension_id`, `rating` (`strong`, `medium`, `weak`, or `unknown`; Chinese `强`, `中`, `弱`, `未知`, `不确定`, `待确定`, and `待确认` are accepted), optional `answer_text`, and optional `answered_by`. These answers override inferred ratings and recalculate the commercial assessment and win probability.
 
-The detail renderer must make unconfirmed commercial dimensions operational: show a radar chart for the major score categories, show each dimension score, and surface every `needs_sales_confirmation` dimension as a sales confirmation card with the exact `dimension_id` and question that the business staff should answer.
+The detail renderer must make commercial dimensions operational: show dimension-level radar charts grouped under the major score categories, show each dimension score, and surface every `needs_sales_confirmation` dimension as a sales confirmation card with the exact `dimension_id` and question that the business staff should answer. The major categories are summaries, not the radar axes.
 
 ## Output Contract
 

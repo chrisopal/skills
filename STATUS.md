@@ -1,3 +1,36 @@
+## 2026-07-06 10:38:00 CST
+
+- Scope: Tighten `opportunity-analysis-skill` commercial-confirmation loop and detail-page semantics based on review feedback.
+- Changed files:
+  - `opportunity-analysis-skill/SKILL.md`
+  - `opportunity-analysis-skill/README.md`
+  - `opportunity-analysis-skill/manifest.yaml`
+  - `opportunity-analysis-skill/references/commercial_assessment.md`
+  - `opportunity-analysis-skill/schemas/input.schema.json`
+  - `opportunity-analysis-skill/display/css/default.css`
+  - `opportunity-analysis-skill/display/templates/opportunity_card.html`
+  - `opportunity-analysis-skill/display/templates/opportunity_detail.html`
+  - `opportunity-analysis-skill/src/opportunity_skill/assessment.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/confirmation.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/cli.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/src/opportunity_skill/stages/opportunity_analysis.py`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Added a CLI `--interactive-confirmation` loop instead of creating a separate UI workflow; the skill now asks sales confirmation questions before final scoring when a shell host can interact with a business user.
+  - Normalized `未知`, `不确定`, `待确定`, and `待确认` to `rating=unknown`, so uncertain answers still score and close the evaluation loop.
+  - Changed the radar visualization from three category axes to dimension-level radar panels grouped under the three category summaries.
+  - Removed non-working detail-page header buttons and localized visible `high`/`medium`/`low` labels to Chinese.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed, including confirmation-loop checks and dimension-level radar assertions.
+  - `git diff --check -- opportunity-analysis-skill` passed.
+  - Simulated CLI interaction with `--interactive-confirmation --confirmation-limit 1`; answer `待确认` normalized to unknown, final stdout remained parseable JSON, and generated Markdown contained no visible `high`/`medium`/`low`.
+  - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
+  - Playwright HTTP preview verified desktop 1440px and mobile 390px: 3 dimension radar panels, axes include `竞争对手` / `客户洞察力` / `客户关系`, category summaries remain visible, header buttons removed, no visible English level labels, and no page-wide overflow.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - The radar panels are grouped by category to preserve readability; category scores remain summary metrics, while radar axes are concrete commercial dimensions.
+
 ## 2026-07-06 10:12:00 CST
 
 - Scope: Upgrade `opportunity-analysis-skill` detail view with commercial-assessment radar visualization and explicit sales confirmation cards for uncertain dimensions.

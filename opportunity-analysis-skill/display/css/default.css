@@ -256,7 +256,7 @@ body {
 
 .ql-assessment-visual {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-columns: minmax(360px, 0.9fr) minmax(0, 1.1fr);
   gap: 12px;
   margin-top: 12px;
 }
@@ -278,9 +278,40 @@ body {
   font-weight: 700;
 }
 
+.ql-radar-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.ql-radar-panel {
+  border: 1px solid var(--ql-line);
+  border-radius: 6px;
+  background: var(--ql-gray-soft);
+  padding: 10px;
+}
+
+.ql-radar-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.ql-radar-panel-head strong {
+  color: var(--ql-strong);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ql-radar-panel-head span {
+  color: var(--ql-muted);
+  font-size: 11px;
+  line-height: 16px;
+}
+
 .ql-radar-chart {
-  width: 100%;
-  max-width: 260px;
+  width: min(100%, 360px);
   height: auto;
   display: block;
   margin: 0 auto;
@@ -311,7 +342,7 @@ body {
 
 .ql-radar-labels {
   fill: var(--ql-muted);
-  font-size: 11px;
+  font-size: 10px;
   line-height: 14px;
 }
 

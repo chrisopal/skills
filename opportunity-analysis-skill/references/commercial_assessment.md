@@ -54,8 +54,15 @@ Question: can we deliver successfully with acceptable risk?
 4. Accept `sales_confirmation_answers` with `dimension_id`, `rating`, `answer_text`, and optional owner/timestamp fields.
 5. Recalculate opportunity score, win probability, confidence level, and unanswered critical count.
 
+When the host can interact with a business user, the recommended runtime loop is:
+
+1. Run a draft assessment from evidence.
+2. Ask the generated confirmation questions before final storage/rendering.
+3. Re-run analysis with collected `sales_confirmation_answers`.
+4. If the business user answers unknown, uncertain, pending, `未知`, `不确定`, `待确定`, or `待确认`, normalize that answer to `rating=unknown` and score it with the unknown rating rather than blocking the workflow.
+
 The HTML detail renderer should visualize this structure:
 
-- radar chart for the three category scores;
+- dimension-level radar charts grouped by category, where the category score is a summary and each radar axis is a concrete commercial dimension;
 - score bars for every commercial dimension;
 - confirmation cards for every dimension whose `evidence_status` is `needs_sales_confirmation`, using the dimension's `question` and `dimension_id` as the exact sales follow-up contract.

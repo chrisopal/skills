@@ -1,9 +1,17 @@
 from __future__ import annotations
 import argparse
 import json
+import sys
 from pathlib import Path
+from .confirmation import collect_sales_confirmation_answers
+from .extractor import analyze
 from .pipeline import run_analyze, run_query, run_detail
 from .utils import default_db_path
+
+
+def _stderr_input(prompt: str) -> str:
+    print(prompt, end="", file=sys.stderr, flush=True)
+    return sys.stdin.readline()
 
 
 def main():
@@ -15,6 +23,9 @@ def main():
     p_analyze.add_argument("--db", default=None, help="SQLite db path. Defaults to $SKILL_DATA_DIR/opportunity-analysis/opportunity.db or .skill_data/opportunity-analysis/opportunity.db")
     p_analyze.add_argument("--output-dir", default="outputs/demo", help="Output directory")
     p_analyze.add_argument("--template", default="opportunity_card", help="Template id")
+    p_analyze.add_argument("--interactive-confirmation", action="store_true", help="Ask business staff to answer uncertain sales confirmation questions before final scoring")
+    p_analyze.add_argument("--confirmation-limit", type=int, default=None, help="Maximum number of confirmation questions to ask interactively")
+    p_analyze.add_argument("--answered-by", default="商务负责人", help="Name recorded on interactive confirmation answers")
 
     p_query = sub.add_parser("query", help="Query opportunities")
     p_query.add_argument("--db", default=None, help="SQLite db path. Defaults to $SKILL_DATA_DIR/opportunity-analysis/opportunity.db or .skill_data/opportunity-analysis/opportunity.db")
@@ -37,6 +48,19 @@ def main():
 
     if args.command == "analyze":
         input_data = json.loads(Path(args.input).read_text(encoding="utf-8"))
+        if args.interactive_confirmation:
+            draft = analyze(input_data)
+            questions = draft.get("structured_data", {}).get("sales_confirmation_questions", [])
+            answers = collect_sales_confirmation_answers(
+                questions,
+                input_func=_stderr_input,
+                output_func=lambda message: print(message, file=sys.stderr),
+                answered_by=args.answered_by,
+                limit=args.confirmation_limit,
+            )
+            if answers:
+                input_data = dict(input_data)
+                input_data["sales_confirmation_answers"] = list(input_data.get("sales_confirmation_answers", [])) + answers
         result = run_analyze(input_data, db_path, args.output_dir, args.template)
         print(json.dumps({"human_summary": result["human_summary"], "storage_result": result["storage_result"], "display_result": {k: v for k, v in result["display_result"].items() if k != "html"}}, ensure_ascii=False, indent=2))
 

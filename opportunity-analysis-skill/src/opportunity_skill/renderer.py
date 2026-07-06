@@ -1,5 +1,6 @@
 from __future__ import annotations
 import html
+import math
 from urllib.parse import quote
 from pathlib import Path
 from typing import Any
@@ -93,6 +94,7 @@ class SkillDisplayRenderer:
             "opportunity.stage": esc(opp.get("stage")),
             "opportunity.stage_reason": esc(opp.get("stage_reason")),
             "opportunity.risk_level": esc(opp.get("risk_level")),
+            "opportunity.risk_label": esc(self._risk_label(opp.get("risk_level"))),
             "opportunity.win_probability_percent": esc(opp.get("win_probability_percent")),
             "opportunity.core_need": esc(opp.get("core_need")),
             "opportunity.budget_signal": esc(opp.get("budget_signal")),
@@ -273,11 +275,15 @@ class SkillDisplayRenderer:
             out.append(
                 "<li>"
                 f"<strong>{esc(a.get('action_title'))}</strong>"
-                f"<span class='ql-tag orange'>{esc(a.get('priority'))}</span><br/>"
-                f"<span>{esc(a.get('reason'))}</span>"
+                f"<span class='ql-tag orange'>{esc(self._priority_label(a.get('priority')))}</span><br/>"
+                f"<span>{esc(self._localized_level_text(a.get('reason')))}</span>"
                 "</li>"
             )
         return "".join(out)
+
+    def _priority_label(self, priority: Any) -> str:
+        mapping = {"high": "高", "medium": "中", "low": "低"}
+        return mapping.get(str(priority), esc(priority))
 
     def _contacts_rows(self, contacts: list[dict[str, Any]]) -> str:
         if not contacts:
@@ -318,7 +324,7 @@ class SkillDisplayRenderer:
                 "<tr>"
                 f"<td>{esc(node.get('decision_role'))}</td>"
                 f"<td>{person_text}</td>"
-                f"<td><span class='ql-tag {self._influence_class(node.get('influence_level'))}'>{esc(node.get('influence_level'))}</span></td>"
+                f"<td><span class='ql-tag {self._influence_class(node.get('influence_level'))}'>{esc(self._influence_label(node.get('influence_level')))}</span></td>"
                 f"<td>{esc(node.get('responsibility_scope'))}</td>"
                 f"<td><strong>{status}</strong><br/><span class='ql-muted-text'>{esc(node.get('next_step'))}</span></td>"
                 "</tr>"
@@ -331,6 +337,10 @@ class SkillDisplayRenderer:
         if influence == "medium":
             return "green"
         return ""
+
+    def _influence_label(self, influence: Any) -> str:
+        mapping = {"high": "高", "medium": "中", "low": "低"}
+        return mapping.get(str(influence), "待确认")
 
     def _assessment_summary(self, assessment: dict[str, Any]) -> str:
         if not assessment:
@@ -370,47 +380,79 @@ class SkillDisplayRenderer:
     def _assessment_radar_chart(self, assessment: dict[str, Any]) -> str:
         if not assessment:
             return "<div class='ql-empty'>暂无评估数据</div>"
-        axes = [
-            ("赢单可能性", int(assessment.get("win_likelihood_score") or 0), (130, 30)),
-            ("成交意向", int(assessment.get("deal_attractiveness_score") or 0), (218, 182)),
-            ("交付信心", int(assessment.get("delivery_confidence_score") or 0), (42, 182)),
-        ]
-        center = (130, 132)
+        dimensions = assessment.get("dimensions", []) or []
+        if not dimensions:
+            return "<div class='ql-empty'>暂无维度评分</div>"
+        score_by_category = {
+            "win_likelihood": assessment.get("win_likelihood_score"),
+            "deal_attractiveness": assessment.get("deal_attractiveness_score"),
+            "delivery_confidence": assessment.get("delivery_confidence_score"),
+        }
+        order = ["win_likelihood", "deal_attractiveness", "delivery_confidence"]
+        panels = []
+        for category in order:
+            items = [d for d in dimensions if d.get("category") == category]
+            if not items:
+                continue
+            panels.append(self._dimension_radar_panel(category, int(score_by_category.get(category) or 0), items))
+        return "<div class='ql-radar-stack'>" + "".join(panels) + "</div>"
 
-        def scaled_point(target: tuple[int, int], score: int) -> tuple[float, float]:
-            ratio = max(0, min(score, 100)) / 100
+    def _dimension_radar_panel(self, category: str, category_score: int, dimensions: list[dict[str, Any]]) -> str:
+        priority = {"P0": 0, "P1": 1, "P2": 2}
+        items = sorted(dimensions, key=lambda x: (priority.get(x.get("priority"), 9), x.get("label") or ""))
+        center = (180.0, 180.0)
+        radius = 105.0
+        label_radius = 150.0
+        count = len(items)
+
+        def point(index: int, value_radius: float) -> tuple[float, float]:
+            angle = -math.pi / 2 + (2 * math.pi * index / max(count, 1))
             return (
-                center[0] + (target[0] - center[0]) * ratio,
-                center[1] + (target[1] - center[1]) * ratio,
+                center[0] + math.cos(angle) * value_radius,
+                center[1] + math.sin(angle) * value_radius,
             )
 
-        data_points = [scaled_point(target, score) for _label, score, target in axes]
-        polygon = " ".join(f"{x:.1f},{y:.1f}" for x, y in data_points)
-        rings = []
-        for ratio in (1.0, 0.66, 0.33):
-            ring = " ".join(
-                f"{center[0] + (target[0] - center[0]) * ratio:.1f},{center[1] + (target[1] - center[1]) * ratio:.1f}"
-                for _label, _score, target in axes
-            )
-            rings.append(f"<polygon points='{ring}' class='ql-radar-ring'/>")
+        def polygon_for(scale: float) -> str:
+            return " ".join(f"{x:.1f},{y:.1f}" for x, y in (point(i, radius * scale) for i in range(count)))
+
+        rings = "".join(f"<polygon points='{polygon_for(scale)}' class='ql-radar-ring'/>" for scale in (1.0, 0.66, 0.33))
         spokes = "".join(
-            f"<line x1='{center[0]}' y1='{center[1]}' x2='{target[0]}' y2='{target[1]}' class='ql-radar-spoke'/>"
-            for _label, _score, target in axes
+            f"<line x1='{center[0]:.1f}' y1='{center[1]:.1f}' x2='{point(i, radius)[0]:.1f}' y2='{point(i, radius)[1]:.1f}' class='ql-radar-spoke'/>"
+            for i in range(count)
         )
-        labels = (
-            f"<text x='130' y='18' text-anchor='middle'>{esc(axes[0][0])} {esc(axes[0][1])}</text>"
-            f"<text x='238' y='198' text-anchor='end'>{esc(axes[1][0])} {esc(axes[1][1])}</text>"
-            f"<text x='22' y='198' text-anchor='start'>{esc(axes[2][0])} {esc(axes[2][1])}</text>"
-        )
-        points = "".join(f"<circle cx='{x:.1f}' cy='{y:.1f}' r='3.8' class='ql-radar-point'/>" for x, y in data_points)
+        data_points = [
+            point(i, radius * (max(0, min(int(item.get("score") or 0), 100)) / 100))
+            for i, item in enumerate(items)
+        ]
+        data_polygon = " ".join(f"{x:.1f},{y:.1f}" for x, y in data_points)
+        points = "".join(f"<circle cx='{x:.1f}' cy='{y:.1f}' r='3.6' class='ql-radar-point'/>" for x, y in data_points)
+        labels = []
+        for i, item in enumerate(items):
+            x, y = point(i, label_radius)
+            anchor = "middle"
+            if x < center[0] - 18:
+                anchor = "end"
+            elif x > center[0] + 18:
+                anchor = "start"
+            score = int(item.get("score") or 0)
+            label = compact(item.get("label"), 9)
+            labels.append(f"<text x='{x:.1f}' y='{y:.1f}' text-anchor='{anchor}'>{esc(label)} {esc(score)}</text>")
         return (
-            "<svg class='ql-radar-chart' viewBox='0 0 260 220' role='img' aria-label='商务评估三维雷达图'>"
-            + "".join(rings)
+            "<section class='ql-radar-panel'>"
+            "<div class='ql-radar-panel-head'>"
+            f"<strong>{esc(self._category_label(category))}</strong>"
+            f"<span>概况 {esc(category_score)}分</span>"
+            "</div>"
+            f"<svg class='ql-radar-chart' viewBox='0 0 360 360' role='img' aria-label='{esc(self._category_label(category))}维度评分雷达图'>"
+            + rings
             + spokes
-            + f"<polygon points='{polygon}' class='ql-radar-area'/>"
+            + f"<polygon points='{data_polygon}' class='ql-radar-area'/>"
             + points
-            + f"<g class='ql-radar-labels'>{labels}</g>"
+            + "<g class='ql-radar-labels'>"
+            + "".join(labels)
+            + "</g>"
             + "</svg>"
+            "</section>"
         )
 
     def _assessment_dimension_bars(self, dimensions: list[dict[str, Any]]) -> str:
@@ -510,16 +552,39 @@ class SkillDisplayRenderer:
             return "<tr><td colspan='4'>暂无</td></tr>"
         rows = []
         for r in risks:
-            level = esc(r.get("risk_level"))
+            level = esc(self._risk_class(r.get("risk_level")))
             rows.append(
                 "<tr>"
-                f"<td><span class='ql-tag risk-{level}'>{level}</span></td>"
-                f"<td>{esc(r.get('risk_type'))}</td>"
+                f"<td><span class='ql-tag risk-{level}'>{esc(self._risk_label(r.get('risk_level')))}</span></td>"
+                f"<td>{esc(self._risk_type_label(r.get('risk_type')))}</td>"
                 f"<td>{esc(r.get('description'))}</td>"
                 f"<td>{esc(r.get('mitigation'))}</td>"
                 "</tr>"
             )
         return "".join(rows)
+
+    def _risk_type_label(self, risk_type: Any) -> str:
+        mapping = {
+            "budget": "预算",
+            "decision_chain": "决策链",
+            "delivery": "交付",
+            "competition": "竞争",
+            "timeline": "时间",
+        }
+        return mapping.get(str(risk_type), esc(risk_type))
+
+    def _localized_level_text(self, value: Any) -> str:
+        text = "" if value is None else str(value)
+        replacements = {
+            "high": "高",
+            "medium": "中",
+            "low": "低",
+            "confirmed": "已确认",
+            "missing": "待补充",
+        }
+        for source, target in replacements.items():
+            text = text.replace(source, target)
+        return text
 
     def _evidence_items(self, evidence: list[dict[str, Any]]) -> str:
         if not evidence:
@@ -602,7 +667,7 @@ class SkillDisplayRenderer:
             f"**行业/地区：** {account.get('industry', '待确认')} / {account.get('region', '待确认')}",
             f"**阶段：** {opp.get('stage', '待确认')}",
             f"**评分：** {opp.get('score', '待确认')} / 100",
-            f"**风险等级：** {opp.get('risk_level', '待确认')}",
+            f"**风险等级：** {self._risk_label(opp.get('risk_level'))}",
             "",
             "## 核心需求",
             str(opp.get("core_need", "待确认")),
@@ -610,11 +675,11 @@ class SkillDisplayRenderer:
             "## 下一步行动",
         ]
         for a in data.get("next_actions", []):
-            lines.append(f"- {a.get('action_title')}｜{a.get('priority')}｜{a.get('reason')}")
+            lines.append(f"- {a.get('action_title')}｜{self._priority_label(a.get('priority'))}｜{self._localized_level_text(a.get('reason'))}")
         lines.append("\n## 决策链")
         for node in data.get("decision_chain", []):
             name = node.get("person_name") or "待确认"
-            lines.append(f"- {node.get('decision_role')}: {name}｜{node.get('status')}｜{node.get('next_step')}")
+            lines.append(f"- {node.get('decision_role')}: {name}｜{self._status_label(node.get('status'))}｜{self._localized_level_text(node.get('next_step'))}")
         assessment = data.get("commercial_assessment", {}) or {}
         if assessment:
             lines.append("\n## 商务确认评估")
@@ -635,3 +700,7 @@ class SkillDisplayRenderer:
                 link = item.get("relative_path") or item.get("archived_path") or item.get("original_path") or ""
                 lines.append(f"- {item.get('display_name') or item.get('file_name') or '原始材料'}: {link}")
         return "\n".join(lines)
+
+    def _status_label(self, status: Any) -> str:
+        mapping = {"confirmed": "已确认", "missing": "待补充", "open": "待处理", "active": "进行中"}
+        return mapping.get(str(status), esc(status))

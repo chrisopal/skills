@@ -242,6 +242,14 @@ def normalize_rating(value: Any) -> str | None:
         "未知": "unknown",
         "unknown": "unknown",
         "不知道": "unknown",
+        "不确定": "unknown",
+        "待确定": "unknown",
+        "待确认": "unknown",
+        "确认中": "unknown",
+        "不清楚": "unknown",
+        "uncertain": "unknown",
+        "pending": "unknown",
+        "tbd": "unknown",
     }
     return mapping.get(text)
 

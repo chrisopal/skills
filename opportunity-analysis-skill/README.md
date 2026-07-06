@@ -70,6 +70,18 @@ opportunity-analysis analyze \
   --output-dir /tmp/opportunity-analysis-demo
 ```
 
+When a shell host can interact with a sales or business user, run:
+
+```bash
+opportunity-analysis analyze \
+  --input examples/input_visit_note.json \
+  --interactive-confirmation \
+  --template opportunity_detail \
+  --output-dir /tmp/opportunity-analysis-confirmed
+```
+
+This first infers uncertain dimensions, asks the generated sales confirmation questions, records answers as `sales_confirmation_answers`, and then reruns the final scoring/storage/rendering pass. Answers such as `未知`, `不确定`, `待确定`, or `待确认` are normalized to `unknown` and still receive the unknown score.
+
 ## Detail View
 
 Use the `opportunity_id` returned by `analyze` or `query`:
@@ -83,7 +95,7 @@ opportunity-analysis detail \
 
 The detail view renders the commercial assessment as:
 
-- A radar chart for the three category scores: win likelihood, deal attractiveness, and delivery confidence.
+- Dimension radar charts grouped by category: win likelihood, deal attractiveness, and delivery confidence. The category score is shown as a summary, while each radar axis represents concrete dimensions such as competitors, customer insight, customer relationship, and solution fit.
 - A complete dimension-score list for every assessment dimension.
 - Sales confirmation cards for every dimension marked `needs_sales_confirmation`, including the `dimension_id`, the question to ask sales/business staff, and the expected answer fields.
 
@@ -113,7 +125,7 @@ The skill separates raw material extraction from commercial judgment. Initial an
 }
 ```
 
-Ratings are `strong`, `medium`, `weak`, or `unknown`. Confirmed answers override inferred ratings and recalculate:
+Ratings are `strong`, `medium`, `weak`, or `unknown`; Chinese `强`, `中`, `弱`, `未知`, `不确定`, `待确定`, and `待确认` are accepted. Confirmed answers override inferred ratings and recalculate:
 
 - `win_likelihood_score`
 - `deal_attractiveness_score`

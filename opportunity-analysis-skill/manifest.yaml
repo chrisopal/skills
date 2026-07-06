@@ -56,6 +56,8 @@ inputs:
   commercial_assessment:
     accepted_field: sales_confirmation_answers
     rating_values: [strong, medium, weak, unknown]
+    interactive_cli_flag: --interactive-confirmation
+    unknown_aliases: [未知, 不确定, 待确定, 待确认, unknown, uncertain, pending, tbd]
     default_question_limit: 8
 
 outputs:

@@ -18,6 +18,8 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 from opportunity_skill.pipeline import run_analyze, run_detail, run_query  # noqa: E402
+from opportunity_skill.assessment import normalize_rating  # noqa: E402
+from opportunity_skill.confirmation import collect_sales_confirmation_answers  # noqa: E402
 from opportunity_skill.stages.account_profile_extraction import extract_account_profile  # noqa: E402
 from opportunity_skill.stages.evidence_normalization import all_text, normalize_input  # noqa: E402
 from opportunity_skill.stages.opportunity_analysis import analyze_opportunity  # noqa: E402
@@ -102,6 +104,32 @@ def check_stage_modules() -> None:
     if result["structured_data"]["opportunity"]["core_need"] != "质检自动化升级":
         fail("opportunity_analysis stage did not extract core need")
     print("ok stage modules")
+
+
+def check_confirmation_loop() -> None:
+    for text in ["未知", "不确定", "待确定", "待确认", "pending", "tbd"]:
+        if normalize_rating(text) != "unknown":
+            fail(f"confirmation rating alias {text} did not normalize to unknown")
+    prompts = []
+    responses = iter(["待确认", "商务还没有拿到客户明确答复"])
+    answers = collect_sales_confirmation_answers(
+        [
+            {
+                "id": "q_demo",
+                "dimension_id": "customer_purchase_intent",
+                "label": "客户购买意向",
+                "question": "客户是否已经正式立项？",
+            }
+        ],
+        input_func=lambda prompt: (prompts.append(prompt) or next(responses)),
+        output_func=lambda _message: None,
+        answered_by="验证商务",
+    )
+    if answers[0]["rating"] != "unknown" or answers[0]["dimension_id"] != "customer_purchase_intent":
+        fail("interactive confirmation did not preserve unknown answer and dimension_id")
+    if answers[0]["answered_by"] != "验证商务":
+        fail("interactive confirmation did not record answered_by")
+    print("ok confirmation loop")
 
 
 def assert_output_contract(result: dict, source: str) -> None:
@@ -233,8 +261,10 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
             fail("archive case did not apply sales confirmation answer")
         if "商务确认评估" not in html or "待商务确认问题" not in html:
             fail("archive case did not render commercial assessment")
-        if "ql-radar-chart" not in html or "评分雷达图" not in html:
+        if "ql-radar-chart" not in html or "维度评分雷达" not in html:
             fail("archive case did not render assessment radar chart")
+        if "ql-radar-panel" not in html or "竞争对手" not in html:
+            fail("archive case did not render dimension-level radar panels")
         if "ql-confirmation-card" not in html or "dimension_id" not in html:
             fail("archive case did not render sales confirmation cards")
         print("ok evaluation cases")
@@ -266,6 +296,7 @@ def main() -> None:
     check_python_compile()
     check_template_safety()
     check_stage_modules()
+    check_confirmation_loop()
     check_evaluation_cases(keep_artifacts=args.keep_artifacts)
     check_distribution_noise()
     print("validation passed")

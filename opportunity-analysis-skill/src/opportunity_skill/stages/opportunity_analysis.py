@@ -84,6 +84,11 @@ def classify_score(score: int) -> tuple[str, str]:
     return level, risk
 
 
+def label_confidence(level: Any) -> str:
+    mapping = {"high": "高", "medium": "中", "low": "低"}
+    return mapping.get(str(level), "待确认")
+
+
 def analyze_opportunity(
     raw_input: dict[str, Any],
     evidence_list: list[dict[str, Any]],
@@ -124,6 +129,7 @@ def analyze_opportunity(
     })
     score = commercial_assessment["overall_opportunity_score"]
     win_probability = commercial_assessment["win_probability"]
+    confidence_label = label_confidence(commercial_assessment.get("confidence_level"))
     score_level, risk_level = classify_score(score)
     opportunity_id = new_id("opp")
 
@@ -176,7 +182,7 @@ def analyze_opportunity(
             "action_detail": "请商务负责人围绕客户购买意向、客户关系、竞对定位、预算匹配、交易吸引力和交付风险回答关键确认问题。",
             "priority": "high", "owner": raw_input.get("owner") or "商务负责人",
             "deadline_suggestion": "2个工作日内", "status": "open",
-            "reason": f"当前评估可信度为{commercial_assessment['confidence_level']}，仍有{commercial_assessment['unanswered_critical_count']}个关键问题待确认。",
+            "reason": f"当前评估可信度为{confidence_label}，仍有{commercial_assessment['unanswered_critical_count']}个关键问题待确认。",
         },
         {
             "id": new_id("act"), "opportunity_id": opportunity_id,
@@ -254,7 +260,7 @@ def analyze_opportunity(
 
     human_summary = (
         f"商机摘要：{company_name}当前识别到核心需求为“{core_need}”，阶段判断为“{stage}”。"
-        f"商机评分{score}分，赢单概率约{int(round(win_probability * 100))}%，评估可信度{commercial_assessment['confidence_level']}。"
+        f"商机评分{score}分，赢单概率约{int(round(win_probability * 100))}%，评估可信度{confidence_label}。"
         f"主要待确认信息包括：{'；'.join(missing) if missing else '暂无关键缺失信息'}。"
     )
 

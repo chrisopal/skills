@@ -21,12 +21,28 @@ STAGE_DEFINITIONS: list[StageDefinition] = [
     StageDefinition("needs_discovery", "需求澄清", 3, "已有需求方向和痛点，但推进意愿或负责人仍不完整。", ("需求", "痛点", "现状", "问题", "希望", "需要")),
     StageDefinition("opportunity_confirmed", "商机确认", 4, "客户、需求、负责人和继续推进意愿基本成立。", ("继续推进", "安排交流", "资料清单", "需求负责人", "项目负责人"), is_opportunity_confirmed=True),
     StageDefinition("solution_cocreation", "方案共创", 5, "正在进行方案、技术、范围、POC 或接口讨论。", ("方案", "技术交流", "演示", "接口", "POC", "设备选型", "检测点位", "MES对接", "范围讨论"), is_opportunity_confirmed=True),
-    StageDefinition("budget_project_confirmed", "预算/立项确认", 6, "预算、立项、采购计划、审批或时间窗口逐步明确。", ("预算已批", "预算", "立项", "采购计划", "审批", "时间窗口", "技改"), is_opportunity_confirmed=True),
+    StageDefinition(
+        "budget_project_confirmed",
+        "预算/立项确认",
+        6,
+        "预算、立项、采购计划、审批或时间窗口已有明确的正向确认。",
+        ("预算已批", "预算获批", "预算已立项", "立项通过", "已立项", "采购计划已确认", "审批通过", "内部审批通过", "时间窗口已确认", "技改预算已批"),
+        is_opportunity_confirmed=True,
+    ),
     StageDefinition("proposal_bidding", "报价/投标", 7, "进入报价、招投标、比选、询价或 RFP 阶段。", ("报价", "投标", "招标", "比选", "询价", "RFP"), is_opportunity_confirmed=True),
     StageDefinition("commercial_negotiation", "商务谈判", 8, "正在围绕价格、合同、付款、交付边界或法务条款谈判。", ("合同条款", "价格谈判", "付款方式", "交付边界", "法务", "采购谈判", "商务谈判"), is_opportunity_confirmed=True),
     StageDefinition("won", "赢单", 9, "商机已经中标、签约或成交。", ("中标", "已签约", "合同已签", "PO", "成交", "赢单"), is_terminal=True, is_opportunity_confirmed=True),
     StageDefinition("lost", "丢单", 10, "商机已失败、暂停、取消或客户选择其他供应商。", ("未中标", "选择其他供应商", "项目暂停", "项目取消", "预算取消", "丢单"), is_terminal=True, is_opportunity_confirmed=True),
 ]
+
+
+LEGACY_STAGE_NAME_TO_ID = {
+    "线索": "lead_identified",
+    "初步沟通": "customer_contacted",
+    "需求确认": "needs_discovery",
+    "方案交流": "solution_cocreation",
+    "投标/报价": "proposal_bidding",
+}
 
 
 def stage_names() -> list[str]:
@@ -43,9 +59,13 @@ def stage_by_id(stage_id: str) -> StageDefinition | None:
 def stage_from_name(stage_name: str | None) -> StageDefinition | None:
     if not stage_name:
         return None
+    normalized = stage_name.strip()
     for stage in STAGE_DEFINITIONS:
-        if stage.name == stage_name:
+        if stage.name == normalized:
             return stage
+    legacy_stage_id = LEGACY_STAGE_NAME_TO_ID.get(normalized)
+    if legacy_stage_id:
+        return stage_by_id(legacy_stage_id)
     return None
 
 

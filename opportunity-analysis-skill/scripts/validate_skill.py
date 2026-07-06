@@ -20,7 +20,7 @@ if str(SRC) not in sys.path:
 from opportunity_skill.pipeline import run_analyze, run_detail, run_query  # noqa: E402
 from opportunity_skill.assessment import normalize_rating  # noqa: E402
 from opportunity_skill.confirmation import collect_sales_confirmation_answers  # noqa: E402
-from opportunity_skill.stage_management import infer_opportunity_stage, stage_names  # noqa: E402
+from opportunity_skill.stage_management import infer_opportunity_stage, stage_from_name, stage_names  # noqa: E402
 from opportunity_skill.stages.account_profile_extraction import extract_account_profile  # noqa: E402
 from opportunity_skill.stages.evidence_normalization import all_text, normalize_input  # noqa: E402
 from opportunity_skill.stages.opportunity_analysis import analyze_opportunity  # noqa: E402
@@ -122,6 +122,15 @@ def check_stage_management() -> None:
     ]
     if stage_names() != expected:
         fail(f"stage model order mismatch: {stage_names()}")
+    compatibility_checks = {
+        "方案交流": "solution_cocreation",
+        "投标/报价": "proposal_bidding",
+        "线索": "lead_identified",
+    }
+    for legacy_name, expected_stage_id in compatibility_checks.items():
+        stage = stage_from_name(legacy_name)
+        if stage is None or stage.stage_id != expected_stage_id:
+            fail(f"legacy stage name {legacy_name} should map to {expected_stage_id}, got {stage}")
     result = infer_opportunity_stage({
         "text": "客户希望Q3前完成方案确认，安排技术交流，讨论检测点位和MES对接。",
         "core_need": "质检自动化升级",
@@ -148,6 +157,26 @@ def check_stage_management() -> None:
     })
     if early["stage_id"] != "customer_contacted" or early["opportunity_confirmed"]:
         fail(f"early contact should not be confirmed opportunity, got {early}")
+    weak_budget = infer_opportunity_stage({
+        "text": "预算信息未明确，后续再沟通。",
+        "core_need": "客户需求待进一步澄清",
+        "contacts": [],
+        "decision_chain": [],
+        "budget_signal": "预算信息未明确",
+        "timeline": "时间节点未明确",
+    })
+    if weak_budget["stage_id"] == "budget_project_confirmed" or weak_budget["opportunity_confirmed"]:
+        fail(f"weak budget wording should not infer budget_project_confirmed, got {weak_budget}")
+    weak_approval = infer_opportunity_stage({
+        "text": "目前还在走内部审批，客户名片已获取。",
+        "core_need": "客户需求待进一步澄清",
+        "contacts": [{"name": "李经理"}],
+        "decision_chain": [],
+        "budget_signal": "预算信息未明确",
+        "timeline": "时间节点未明确",
+    })
+    if weak_approval["stage_id"] != "customer_contacted" or weak_approval["opportunity_confirmed"]:
+        fail(f"approval-in-progress wording should stay early-stage, got {weak_approval}")
     print("ok stage management")
 
 

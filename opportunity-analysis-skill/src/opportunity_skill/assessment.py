@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from .stage_management import stage_by_id, stage_from_name
 from .utils import new_id
 
 RATING_SCORE = {
@@ -166,10 +167,11 @@ DIMENSIONS: list[dict[str, Any]] = [
 
 
 def build_commercial_assessment(context: dict[str, Any]) -> dict[str, Any]:
+    normalized_context = _with_normalized_stage(context)
     answer_map = _answer_map(context.get("sales_confirmation_answers", []))
     dimensions = []
     for spec in DIMENSIONS:
-        inferred = _infer_dimension(spec["id"], context)
+        inferred = _infer_dimension(spec["id"], normalized_context)
         answer = answer_map.get(spec["id"])
         if answer:
             rating = normalize_rating(answer.get("rating")) or inferred["rating"]
@@ -225,6 +227,21 @@ def build_commercial_assessment(context: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _with_normalized_stage(context: dict[str, Any]) -> dict[str, Any]:
+    normalized = dict(context)
+    stage_id = normalized.get("stage_id")
+    stage = normalized.get("stage")
+    stage_def = None
+    if stage_id:
+        stage_def = stage_by_id(str(stage_id))
+    if stage_def is None:
+        stage_def = stage_from_name(stage)
+    if stage_def is not None:
+        normalized["stage_id"] = stage_def.stage_id
+        normalized["stage"] = stage_def.name
+    return normalized
+
+
 def normalize_rating(value: Any) -> str | None:
     if value is None:
         return None
@@ -267,7 +284,7 @@ def _answer_map(answers: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
 
 def _infer_dimension(dimension_id: str, context: dict[str, Any]) -> dict[str, Any]:
     text = context.get("text", "")
-    stage = context.get("stage", "")
+    stage_id = context.get("stage_id")
     core_need = context.get("core_need", "")
     budget_signal = context.get("budget_signal", "")
     budget_amount = context.get("budget_amount")
@@ -286,7 +303,11 @@ def _infer_dimension(dimension_id: str, context: dict[str, Any]) -> dict[str, An
         return {"rating": rating, "evidence_status": status, "rationale": rationale, "evidence_refs": evidence_refs}
 
     if dimension_id == "customer_purchase_intent":
-        if budget_signal != "预算信息未明确" and timeline != "时间节点未明确" and stage in {"方案交流", "投标/报价", "商务谈判"}:
+        if (
+            budget_signal != "预算信息未明确"
+            and timeline != "时间节点未明确"
+            and stage_id in {"solution_cocreation", "proposal_bidding", "commercial_negotiation"}
+        ):
             return out("strong", "inferred", "材料显示有预算/立项信号、明确时间窗口，并已进入方案或更后阶段。")
         if budget_signal != "预算信息未明确" or timeline != "时间节点未明确":
             return out("medium", "inferred", "材料显示购买兴趣、预算或时间信号，但采购流程和决策截止点仍需商务确认。")

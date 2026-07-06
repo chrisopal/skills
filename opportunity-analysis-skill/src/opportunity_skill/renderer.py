@@ -5,6 +5,8 @@ from urllib.parse import quote
 from pathlib import Path
 from typing import Any
 
+from .stage_management import STAGE_DEFINITIONS, stage_by_id, stage_from_name
+
 ROOT = Path(__file__).resolve().parents[2]
 TEMPLATE_DIR = ROOT / "display" / "templates"
 CSS_PATH = ROOT / "display" / "css" / "default.css"
@@ -167,12 +169,12 @@ class SkillDisplayRenderer:
     def _render_kanban(self, data: dict[str, Any]) -> str:
         tpl = (self.template_dir / "opportunity_kanban.html").read_text(encoding="utf-8")
         opportunities = data.get("opportunities", []) if isinstance(data.get("opportunities"), list) else []
-        stages = ["线索", "初步沟通", "需求确认", "方案交流", "投标/报价", "商务谈判", "赢单", "丢单"]
         columns = []
         total_score = 0
         scored_count = 0
         high_risk_count = 0
         missing_total = 0
+        stage_buckets: dict[str, list[dict[str, Any]]] = {stage.stage_id: [] for stage in STAGE_DEFINITIONS}
         for opp in opportunities:
             if opp.get("score") is not None:
                 total_score += int(opp.get("score") or 0)
@@ -180,9 +182,12 @@ class SkillDisplayRenderer:
             if opp.get("risk_level") == "high":
                 high_risk_count += 1
             missing_total += len(opp.get("missing_information") or [])
-        for stage in stages:
+            stage_def = self._resolve_stage_definition(opp)
+            if stage_def is not None:
+                stage_buckets[stage_def.stage_id].append(opp)
+        for stage in STAGE_DEFINITIONS:
             cards = []
-            stage_items = [opp for opp in opportunities if opp.get("stage") == stage]
+            stage_items = stage_buckets.get(stage.stage_id, [])
             stage_items = sorted(stage_items, key=lambda x: (x.get("score") or 0, x.get("updated_at") or ""), reverse=True)
             stage_score = round(sum((opp.get("score") or 0) for opp in stage_items) / max(len(stage_items), 1)) if stage_items else "暂无"
             for opp in stage_items:
@@ -229,7 +234,7 @@ class SkillDisplayRenderer:
             columns.append(
                 "<section class='kanban-col'>"
                 "<div class='kanban-col-head'>"
-                f"<div><h2>{esc(stage)}</h2><span>{esc(len(stage_items))} 个商机</span></div>"
+                f"<div><h2>{esc(stage.name)}</h2><span>{esc(len(stage_items))} 个商机</span></div>"
                 f"<strong>{esc(stage_score)}</strong>"
                 "</div>"
                 f"<div class='kanban-card-list'>{''.join(cards) or empty}</div>"
@@ -245,6 +250,14 @@ class SkillDisplayRenderer:
             "summary.high_risk": esc(high_risk_count),
             "summary.missing": esc(missing_total),
         })
+
+    def _resolve_stage_definition(self, opportunity: dict[str, Any]) -> Any:
+        stage_id = opportunity.get("stage_id")
+        if stage_id:
+            stage_def = stage_by_id(str(stage_id))
+            if stage_def is not None:
+                return stage_def
+        return stage_from_name(opportunity.get("stage"))
 
     def _query_summary(self, query: dict[str, Any]) -> str:
         filters = query.get("filters", {}) if isinstance(query, dict) else {}

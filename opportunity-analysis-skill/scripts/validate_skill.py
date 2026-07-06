@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import py_compile
 import re
@@ -35,6 +36,10 @@ def load_json(path: Path):
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
         fail(f"{path.relative_to(ROOT)} is not valid JSON: {exc}")
+
+
+def escaped_text(value: object) -> str:
+    return html.escape(str(value), quote=True)
 
 
 def check_json_files() -> None:
@@ -345,6 +350,22 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         )
         if query_result["count"] < 1:
             fail("query returned no opportunities")
+        query_html = query_result.get("display_result", {}).get("html", "")
+        if not query_html:
+            fail("query HTML render is empty")
+        rendered_match = False
+        for opportunity in query_result.get("opportunities", []):
+            name = opportunity.get("name")
+            company = opportunity.get("company_name")
+            stage = opportunity.get("stage")
+            if name and escaped_text(name) in query_html:
+                rendered_match = True
+                break
+            if company and stage and escaped_text(company) in query_html and escaped_text(stage) in query_html:
+                rendered_match = True
+                break
+        if not rendered_match:
+            fail("query HTML did not include any returned opportunity identity or company/stage pair")
         detail_result = run_detail(first_db, first_result["storage_result"]["opportunity_id"], temp_root / "detail")
         if "detail" not in detail_result or "display_result" not in detail_result:
             fail("detail result is incomplete")

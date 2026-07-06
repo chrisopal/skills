@@ -124,6 +124,7 @@ def analyze_opportunity(
     commercial_assessment = build_commercial_assessment({
         "text": text,
         "stage": stage,
+        "stage_id": stage_result["stage_id"],
         "core_need": core_need,
         "budget_signal": budget_signal,
         "budget_amount": budget_amount,

@@ -7,6 +7,11 @@
     "account_id",
     "name",
     "stage",
+    "stage_id",
+    "stage_reason",
+    "stage_confidence",
+    "stage_signal_hits",
+    "opportunity_confirmed",
     "core_need"
   ],
   "properties": {

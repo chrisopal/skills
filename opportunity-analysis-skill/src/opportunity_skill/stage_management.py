@@ -31,7 +31,7 @@ STAGE_DEFINITIONS: list[StageDefinition] = [
     ),
     StageDefinition("proposal_bidding", "报价/投标", 7, "进入报价、招投标、比选、询价或 RFP 阶段。", ("报价", "投标", "招标", "比选", "询价", "RFP"), is_opportunity_confirmed=True),
     StageDefinition("commercial_negotiation", "商务谈判", 8, "正在围绕价格、合同、付款、交付边界或法务条款谈判。", ("合同条款", "价格谈判", "付款方式", "交付边界", "法务", "采购谈判", "商务谈判"), is_opportunity_confirmed=True),
-    StageDefinition("won", "赢单", 9, "商机已经中标、签约或成交。", ("中标", "已签约", "合同已签", "PO", "成交", "赢单"), is_terminal=True, is_opportunity_confirmed=True),
+    StageDefinition("won", "赢单", 9, "商机已经中标、签约或成交。", ("中标", "已签约", "合同已签", "成交", "赢单"), is_terminal=True, is_opportunity_confirmed=True),
     StageDefinition("lost", "丢单", 10, "商机已失败、暂停、取消或客户选择其他供应商。", ("未中标", "选择其他供应商", "项目暂停", "项目取消", "预算取消", "丢单"), is_terminal=True, is_opportunity_confirmed=True),
 ]
 
@@ -76,6 +76,13 @@ CONFIRMED_CONTEXT_SEQUENCE_MARKERS = (
     "前还未",
 )
 _PUNCTUATION = " \t\r\n,，.。;；:：!！?？、"
+_CLAUSE_PUNCTUATION = ",，.。;；:：!！?？、"
+_CONFIRMED_SIGNALS = tuple(
+    signal
+    for stage in STAGE_DEFINITIONS
+    if stage.is_opportunity_confirmed
+    for signal in stage.signals
+)
 
 
 def stage_names() -> list[str]:
@@ -110,9 +117,41 @@ def _contains_any_marker(snippet: str, markers: tuple[str, ...]) -> bool:
     return any(marker in snippet for marker in markers)
 
 
+def _clause_bounds(text: str, index: int) -> tuple[int, int]:
+    left = index
+    while left > 0 and text[left - 1] not in _CLAUSE_PUNCTUATION:
+        left -= 1
+
+    right = index
+    while right < len(text) and text[right] not in _CLAUSE_PUNCTUATION:
+        right += 1
+
+    return left, right
+
+
+def _clause_contains_condition_sequence(text: str, start: int) -> bool:
+    clause_start, clause_end = _clause_bounds(text, start)
+    clause = text[clause_start:clause_end]
+
+    for signal in _CONFIRMED_SIGNALS:
+        search_from = 0
+        while True:
+            signal_index = clause.find(signal, search_from)
+            if signal_index == -1:
+                break
+            signal_end = signal_index + len(signal)
+            if signal_end < len(clause) and clause[signal_end] == "后":
+                return True
+            search_from = signal_index + 1
+    return False
+
+
 def _signal_is_blocked(text: str, signal: str, start: int, *, guard_confirmed_context: bool) -> bool:
     if not guard_confirmed_context:
         return False
+
+    if _clause_contains_condition_sequence(text, start):
+        return True
 
     prefix = _normalize_context_snippet(text[max(0, start - CONTEXT_WINDOW):start], strip_left=False)
     suffix = _normalize_context_snippet(text[start + len(signal):start + len(signal) + CONTEXT_WINDOW], strip_left=True)

@@ -123,9 +123,11 @@ def check_stage_management() -> None:
     if stage_names() != expected:
         fail(f"stage model order mismatch: {stage_names()}")
     compatibility_checks = {
+        "线索": "lead_identified",
+        "初步沟通": "customer_contacted",
+        "需求确认": "needs_discovery",
         "方案交流": "solution_cocreation",
         "投标/报价": "proposal_bidding",
-        "线索": "lead_identified",
     }
     for legacy_name, expected_stage_id in compatibility_checks.items():
         stage = stage_from_name(legacy_name)
@@ -147,6 +149,16 @@ def check_stage_management() -> None:
         fail("solution_cocreation should be a confirmed opportunity")
     if "技术交流" not in "".join(result["stage_signal_hits"]):
         fail("stage signal hits should explain matched signals")
+    poc_result = infer_opportunity_stage({
+        "text": "客户计划先做POC验证，再评估方案。",
+        "core_need": "质检自动化升级",
+        "contacts": [{"name": "王总", "is_requirement_owner": True}],
+        "decision_chain": [{"decision_role": "业务需求负责人", "status": "confirmed"}],
+        "budget_signal": "预算信息未明确",
+        "timeline": "时间节点未明确",
+    })
+    if poc_result["stage_id"] != "solution_cocreation" or poc_result["stage_id"] in {"won", "lost"}:
+        fail(f"POC should stay in pre-sales stage instead of terminal stage, got {poc_result}")
     early = infer_opportunity_stage({
         "text": "客户名片已获取，后续再沟通。",
         "core_need": "客户需求待进一步澄清",
@@ -169,6 +181,8 @@ def check_stage_management() -> None:
         ("如果项目已立项，再启动。", []),
         ("若预算已批，将推进采购。", []),
         ("待采购计划已确认后再启动。", []),
+        ("审批通过后安排采购。", []),
+        ("项目审批通过后安排招标。", []),
     ]:
         negative_result = infer_opportunity_stage({
             "text": negative_text,
@@ -178,7 +192,7 @@ def check_stage_management() -> None:
             "budget_signal": "预算信息未明确",
             "timeline": "时间节点未明确",
         })
-        if negative_result["stage_id"] == "budget_project_confirmed" or negative_result["opportunity_confirmed"]:
+        if negative_result["stage_id"] in {"budget_project_confirmed", "proposal_bidding"} or negative_result["opportunity_confirmed"]:
             fail(f"negative approval wording should stay unconfirmed, got {negative_result}")
     positive_budget = infer_opportunity_stage({
         "text": "项目已立项，审批通过，采购计划已明确。",

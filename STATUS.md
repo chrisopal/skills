@@ -1,3 +1,29 @@
+## 2026-07-06 23:53:09 CST
+
+- Scope: Remove the separate sales-confirmation card section from `opportunity-analysis-skill` detail views.
+- Changed files:
+  - `opportunity-analysis-skill/SKILL.md`
+  - `opportunity-analysis-skill/README.md`
+  - `opportunity-analysis-skill/references/commercial_assessment.md`
+  - `opportunity-analysis-skill/display/css/default.css`
+  - `opportunity-analysis-skill/display/templates/opportunity_detail.html`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Removed the `待商务确认问题` panel from the business detail template.
+  - Deleted the unused sales-confirmation card renderer and related CSS.
+  - Removed the Markdown detail section that duplicated the same confirmation questions.
+  - Kept `sales_confirmation_questions` and `sales_confirmation_answers` as structured workflow data for interactive analysis, not as a business-page card UI.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - `git diff --check -- opportunity-analysis-skill` passed.
+  - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
+  - Searched the regenerated HTML/Markdown and confirmed `待商务确认问题`, `回答格式`, `ql-confirmation-card`, `ql-confirmation-grid`, and `dimension_id` no longer appear.
+  - Playwright file preview verified desktop 1440px and mobile 390px: no confirmation panel, no answer-format text, 0 confirmation cards, 3 radar panels, 18 dimension bars, and no page-wide overflow.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - Sales confirmation still happens through the CLI/host interactive analysis workflow; only the separate detail-page card section was removed.
+
 ## 2026-07-06 16:02:31 CST
 
 - Scope: Refine `opportunity-analysis-skill` detail assessment layout readability after visual review.

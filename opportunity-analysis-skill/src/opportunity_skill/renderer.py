@@ -128,9 +128,6 @@ class SkillDisplayRenderer:
             "assessment_radar_chart": self._assessment_radar_chart(data.get("commercial_assessment", {})),
             "assessment_dimension_bars": self._assessment_dimension_bars(data.get("commercial_assessment", {}).get("dimensions", [])),
             "assessment_dimension_rows": self._assessment_dimension_rows(data.get("commercial_assessment", {}).get("dimensions", [])),
-            "sales_questions.count": esc(len(data.get("sales_confirmation_questions", []) or data.get("commercial_assessment", {}).get("questions", []))),
-            "sales_question_items": self._sales_question_items(data.get("sales_confirmation_questions", []) or data.get("commercial_assessment", {}).get("questions", [])),
-            "sales_confirmation_cards": self._sales_confirmation_cards(data.get("commercial_assessment", {}).get("dimensions", [])),
             "missing.count": esc(len(data.get("opportunity", {}).get("missing_information", []))),
             "evidence.count": esc(len(data.get("evidence", []))),
             "materials.count": esc(len(self._collect_archived_files(data))),
@@ -492,35 +489,6 @@ class SkillDisplayRenderer:
             )
         return "".join(rows)
 
-    def _sales_confirmation_cards(self, dimensions: list[dict[str, Any]]) -> str:
-        needs = [
-            d for d in dimensions
-            if d.get("evidence_status") == "needs_sales_confirmation"
-        ]
-        if not needs:
-            return "<div class='ql-confirmation-empty'>暂无未确认维度</div>"
-        priority = {"P0": 0, "P1": 1, "P2": 2}
-        cards = []
-        for item in sorted(needs, key=lambda x: (priority.get(x.get("priority"), 9), 0 if x.get("critical") else 1, x.get("category") or "", x.get("dimension_id") or "")):
-            rating = item.get("rating") or "unknown"
-            critical = "关键" if item.get("critical") else "补充"
-            cards.append(
-                "<article class='ql-confirmation-card'>"
-                "<div class='ql-confirmation-card-head'>"
-                f"<strong>{esc(item.get('label'))}</strong>"
-                f"<span class='ql-tag rating-{esc(rating)}'>{esc(self._rating_label(rating))}</span>"
-                "</div>"
-                "<div class='ql-confirmation-meta'>"
-                f"<span>{esc(item.get('priority'))} · {esc(critical)} · {esc(self._category_label(item.get('category')))}</span>"
-                f"<span>{esc(item.get('score'))}分</span>"
-                "</div>"
-                f"<p>{esc(item.get('question'))}</p>"
-                "<div class='ql-confirmation-answer'>回答格式：<code>dimension_id</code> "
-                f"<code>{esc(item.get('dimension_id'))}</code> + <code>rating</code> 强/中/弱/未知 + <code>answer_text</code></div>"
-                "</article>"
-            )
-        return "".join(cards)
-
     def _evidence_status_label(self, status: Any) -> str:
         mapping = {
             "needs_sales_confirmation": "待商务确认",
@@ -548,20 +516,6 @@ class SkillDisplayRenderer:
                 "</tr>"
             )
         return "".join(rows)
-
-    def _sales_question_items(self, questions: list[dict[str, Any]]) -> str:
-        if not questions:
-            return "<li class='ql-empty'>暂无关键问题</li>"
-        out = []
-        for q in questions:
-            out.append(
-                "<li>"
-                f"<div><strong>{esc(q.get('question'))}</strong></div>"
-                f"<span class='ql-tag orange'>{esc(q.get('priority'))}</span>"
-                f"<span class='ql-muted-text'>{esc(q.get('label'))}｜{esc(q.get('impact'))}</span>"
-                "</li>"
-            )
-        return "".join(out)
 
     def _risk_rows(self, risks: list[dict[str, Any]]) -> str:
         if not risks:
@@ -703,9 +657,6 @@ class SkillDisplayRenderer:
             lines.append(f"- 成交意向：{assessment.get('deal_attractiveness_score')}")
             lines.append(f"- 交付信心：{assessment.get('delivery_confidence_score')}")
             lines.append(f"- 评估可信度：{self._confidence_label(assessment.get('confidence_level'))}")
-            lines.append("\n## 待商务确认问题")
-            for q in assessment.get("questions", []):
-                lines.append(f"- [{q.get('priority')}] {q.get('question')}")
         lines.append("\n## 待确认信息")
         for item in opp.get("missing_information", []):
             lines.append(f"- {item}")

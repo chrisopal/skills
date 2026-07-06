@@ -79,7 +79,7 @@ When `file_path`, `path`, `source_path`, `source_ref`, or `attachments` points t
 
 Optional `sales_confirmation_answers` lets a host pass business staff answers back into the skill. Each answer should include `dimension_id`, `rating` (`strong`, `medium`, `weak`, or `unknown`; Chinese `强`, `中`, `弱`, `未知`, `不确定`, `待确定`, and `待确认` are accepted), optional `answer_text`, and optional `answered_by`. These answers override inferred ratings and recalculate the commercial assessment and win probability.
 
-The detail renderer must make commercial dimensions operational: show dimension-level radar charts grouped under the major score categories, show each dimension score, and surface every `needs_sales_confirmation` dimension as a sales confirmation card with the exact `dimension_id` and question that the business staff should answer. The major categories are summaries, not the radar axes.
+The detail renderer must make commercial dimensions operational: show dimension-level radar charts grouped under the major score categories and show each dimension score/status in the dimension list and table. Do not render separate sales-confirmation cards in the business detail page; sales confirmation should happen during the analysis workflow through `sales_confirmation_questions` and `sales_confirmation_answers`. The major categories are summaries, not the radar axes.
 
 ## Output Contract
 

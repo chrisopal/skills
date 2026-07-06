@@ -259,14 +259,14 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         dimensions = {item.get("dimension_id"): item for item in assessment.get("dimensions", [])}
         if dimensions.get("customer_purchase_intent", {}).get("evidence_status") != "sales_confirmed":
             fail("archive case did not apply sales confirmation answer")
-        if "商务确认评估" not in html or "待商务确认问题" not in html:
-            fail("archive case did not render commercial assessment")
+        if "商务确认评估" not in html or "待商务确认问题" in html:
+            fail("archive case commercial assessment section is missing or still renders confirmation-question panel")
         if "ql-radar-chart" not in html or "维度评分雷达" not in html:
             fail("archive case did not render assessment radar chart")
         if "ql-radar-panel" not in html or "竞争对手" not in html:
             fail("archive case did not render dimension-level radar panels")
-        if "ql-confirmation-card" not in html or "dimension_id" not in html:
-            fail("archive case did not render sales confirmation cards")
+        if "ql-confirmation-card" in html or "回答格式" in html:
+            fail("archive case should not render sales confirmation cards")
         print("ok evaluation cases")
         if keep_artifacts:
             print(f"artifacts kept at {temp_root}")

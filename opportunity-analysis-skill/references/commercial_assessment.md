@@ -65,4 +65,4 @@ The HTML detail renderer should visualize this structure:
 
 - dimension-level radar charts grouped by category, where the category score is a summary and each radar axis is a concrete commercial dimension;
 - score bars for every commercial dimension;
-- confirmation cards for every dimension whose `evidence_status` is `needs_sales_confirmation`, using the dimension's `question` and `dimension_id` as the exact sales follow-up contract.
+- a dimension table that shows each dimension's status and confirmation question for review, without rendering separate sales-confirmation cards in the business detail page. Sales follow-up questions should be asked during the interactive analysis workflow and passed back as `sales_confirmation_answers`.

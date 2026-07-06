@@ -97,7 +97,7 @@ The detail view renders the commercial assessment as:
 
 - Dimension radar charts grouped by category: win likelihood, deal attractiveness, and delivery confidence. The category score is shown as a summary, while each radar axis represents concrete dimensions such as competitors, customer insight, customer relationship, and solution fit.
 - A complete dimension-score list for every assessment dimension.
-- Sales confirmation cards for every dimension marked `needs_sales_confirmation`, including the `dimension_id`, the question to ask sales/business staff, and the expected answer fields.
+- A dimension table with the current evidence status and confirmation question for each assessment dimension. The business detail page does not render separate sales-confirmation cards; unresolved questions should be handled during the interactive analysis workflow.
 
 ## Agent Host Integration
 
@@ -134,7 +134,7 @@ Ratings are `strong`, `medium`, `weak`, or `unknown`; Chinese `强`, `中`, `弱
 - `win_probability`
 - `assessment_confidence_score`
 
-When a dimension is not confirmed, it remains in `commercial_assessment.dimensions` with `evidence_status=needs_sales_confirmation`. The detail page surfaces those items as sales confirmation cards so the business owner can answer them through `sales_confirmation_answers` in the next analyze run.
+When a dimension is not confirmed, it remains in `commercial_assessment.dimensions` with `evidence_status=needs_sales_confirmation`, and generated questions remain available in `sales_confirmation_questions`. Hosts should ask those questions during the analysis workflow, collect `sales_confirmation_answers`, and rerun scoring instead of showing separate confirmation cards in the business detail page.
 
 ## Adapter Strategy
 

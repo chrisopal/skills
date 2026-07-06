@@ -499,98 +499,6 @@ body {
   color: var(--ql-muted);
 }
 
-.ql-question-list {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 10px;
-}
-
-.ql-question-list li {
-  padding-left: 4px;
-  color: var(--ql-ink);
-  font-size: 13px;
-  line-height: 20px;
-}
-
-.ql-question-list .ql-tag {
-  margin: 6px 8px 0 0;
-}
-
-.ql-confirmation-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.ql-confirmation-card {
-  min-width: 0;
-  border: 1px solid #f4c49f;
-  border-left: 4px solid var(--ql-orange);
-  border-radius: 6px;
-  background: #fffdf9;
-  padding: 10px;
-}
-
-.ql-confirmation-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 7px;
-}
-
-.ql-confirmation-card-head strong {
-  min-width: 0;
-  color: var(--ql-strong);
-  font-size: 13px;
-  line-height: 18px;
-  font-weight: 700;
-  word-break: break-word;
-}
-
-.ql-confirmation-meta {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  color: var(--ql-muted);
-  font-size: 11px;
-  line-height: 16px;
-}
-
-.ql-confirmation-card p {
-  margin: 8px 0;
-  color: var(--ql-ink);
-  font-size: 12px;
-  line-height: 18px;
-}
-
-.ql-confirmation-answer {
-  color: var(--ql-muted);
-  font-size: 11px;
-  line-height: 17px;
-}
-
-.ql-confirmation-answer code {
-  display: inline-block;
-  margin: 1px 2px;
-  padding: 1px 4px;
-  border: 1px solid var(--ql-line);
-  border-radius: 3px;
-  background: var(--ql-gray-soft);
-  color: var(--ql-strong);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 10px;
-}
-
-.ql-confirmation-empty {
-  grid-column: 1 / -1;
-  color: var(--ql-muted);
-  font-size: 12px;
-  line-height: 18px;
-}
-
 .ql-table-wrap {
   max-width: 100%;
   overflow-x: auto;
@@ -1025,10 +933,6 @@ tr:last-child td {
   }
 
   .ql-assessment-visual {
-    grid-template-columns: 1fr;
-  }
-
-  .ql-confirmation-grid {
     grid-template-columns: 1fr;
   }
 

@@ -27,7 +27,7 @@
   - Simulated CLI interaction with `--interactive-confirmation --confirmation-limit 1`; answer `待确认` normalized to unknown, final stdout remained parseable JSON, and generated Markdown contained no visible `high`/`medium`/`low`.
   - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
   - Playwright HTTP preview verified desktop 1440px and mobile 390px: 3 dimension radar panels, axes include `竞争对手` / `客户洞察力` / `客户关系`, category summaries remain visible, header buttons removed, no visible English level labels, and no page-wide overflow.
-- Commit/push state: pending commit and push.
+- Commit/push state: committed as `6d52958`; push pending with status update commit.
 - Remaining notes:
   - The radar panels are grouped by category to preserve readability; category scores remain summary metrics, while radar axes are concrete commercial dimensions.
 

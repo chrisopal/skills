@@ -1,3 +1,23 @@
+## 2026-07-06 16:02:31 CST
+
+- Scope: Refine `opportunity-analysis-skill` detail assessment layout readability after visual review.
+- Changed files:
+  - `opportunity-analysis-skill/display/css/default.css`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+- Simplifications made:
+  - Removed the fixed height cap from the dimension score panel so the right-side dimension list aligns with the left radar card on desktop.
+  - Increased radar label size from 10px to 12px and kept the chart dependency-free with inline SVG.
+  - Added two-line SVG labels and edge clamping for long dimension names so radar labels stay readable without being clipped.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - `git diff --check -- opportunity-analysis-skill/display/css/default.css opportunity-analysis-skill/src/opportunity_skill/renderer.py` passed.
+  - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
+  - Playwright HTTP preview verified desktop 1440px: radar and dimension panels bottom-aligned with `bottomDelta=0`, label font `12px`, no clipped radar labels, and no page-wide overflow.
+  - Playwright HTTP preview verified mobile 390px: no clipped radar labels and no page-wide overflow; mobile stacks the two panels vertically.
+- Commit/push state: pending commit and push.
+- Remaining notes:
+  - The desktop alignment depends on natural grid stretching; avoid reintroducing a fixed `max-height` on `.ql-dimension-bars` unless there is a separate scroll design.
+
 ## 2026-07-06 10:38:00 CST
 
 - Scope: Tighten `opportunity-analysis-skill` commercial-confirmation loop and detail-page semantics based on review feedback.

@@ -400,9 +400,9 @@ class SkillDisplayRenderer:
     def _dimension_radar_panel(self, category: str, category_score: int, dimensions: list[dict[str, Any]]) -> str:
         priority = {"P0": 0, "P1": 1, "P2": 2}
         items = sorted(dimensions, key=lambda x: (priority.get(x.get("priority"), 9), x.get("label") or ""))
-        center = (180.0, 180.0)
-        radius = 105.0
-        label_radius = 150.0
+        center = (220.0, 195.0)
+        radius = 104.0
+        label_radius = 154.0
         count = len(items)
 
         def point(index: int, value_radius: float) -> tuple[float, float]:
@@ -426,24 +426,40 @@ class SkillDisplayRenderer:
         ]
         data_polygon = " ".join(f"{x:.1f},{y:.1f}" for x, y in data_points)
         points = "".join(f"<circle cx='{x:.1f}' cy='{y:.1f}' r='3.6' class='ql-radar-point'/>" for x, y in data_points)
+
+        def label_tspans(label: Any, score: int, x: float, y: float, anchor: str) -> str:
+            text = compact(label, 10)
+            if len(text) <= 5:
+                lines = [f"{text} {score}"]
+            else:
+                lines = [text[:5], f"{text[5:]} {score}"]
+            start_y = y - 7 if len(lines) > 1 else y
+            spans = [
+                f"<tspan x='{x:.1f}' y='{start_y:.1f}'>{esc(lines[0])}</tspan>"
+            ]
+            for line in lines[1:]:
+                spans.append(f"<tspan x='{x:.1f}' dy='15'>{esc(line)}</tspan>")
+            return f"<text text-anchor='{anchor}'>" + "".join(spans) + "</text>"
+
         labels = []
         for i, item in enumerate(items):
             x, y = point(i, label_radius)
             anchor = "middle"
             if x < center[0] - 18:
                 anchor = "end"
+                x = max(x, 72.0)
             elif x > center[0] + 18:
                 anchor = "start"
+                x = min(x, 368.0)
             score = int(item.get("score") or 0)
-            label = compact(item.get("label"), 9)
-            labels.append(f"<text x='{x:.1f}' y='{y:.1f}' text-anchor='{anchor}'>{esc(label)} {esc(score)}</text>")
+            labels.append(label_tspans(item.get("label"), score, x, y, anchor))
         return (
             "<section class='ql-radar-panel'>"
             "<div class='ql-radar-panel-head'>"
             f"<strong>{esc(self._category_label(category))}</strong>"
             f"<span>概况 {esc(category_score)}分</span>"
             "</div>"
-            f"<svg class='ql-radar-chart' viewBox='0 0 360 360' role='img' aria-label='{esc(self._category_label(category))}维度评分雷达图'>"
+            f"<svg class='ql-radar-chart' viewBox='0 0 440 390' role='img' aria-label='{esc(self._category_label(category))}维度评分雷达图'>"
             + rings
             + spokes
             + f"<polygon points='{data_polygon}' class='ql-radar-area'/>"

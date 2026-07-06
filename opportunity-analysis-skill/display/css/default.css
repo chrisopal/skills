@@ -259,6 +259,7 @@ body {
   grid-template-columns: minmax(360px, 0.9fr) minmax(0, 1.1fr);
   gap: 12px;
   margin-top: 12px;
+  align-items: stretch;
 }
 
 .ql-radar-card,
@@ -268,6 +269,7 @@ body {
   border-radius: 6px;
   background: var(--ql-surface);
   padding: 12px;
+  align-self: stretch;
 }
 
 .ql-radar-title {
@@ -311,7 +313,7 @@ body {
 }
 
 .ql-radar-chart {
-  width: min(100%, 360px);
+  width: min(100%, 420px);
   height: auto;
   display: block;
   margin: 0 auto;
@@ -342,13 +344,13 @@ body {
 
 .ql-radar-labels {
   fill: var(--ql-muted);
-  font-size: 10px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
 }
 
 .ql-dimension-bars {
-  max-height: 288px;
-  overflow: auto;
+  overflow: visible;
 }
 
 .ql-dimension-bar {

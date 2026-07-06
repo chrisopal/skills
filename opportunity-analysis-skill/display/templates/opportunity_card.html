@@ -12,31 +12,21 @@
     </div>
   </div>
 
-  <div class="ql-metric-grid">
-    <div class="ql-metric">
-      <div class="ql-metric-label">商机评分</div>
-      <div class="ql-metric-value">{{opportunity.score}}</div>
-      <div class="ql-metric-note">综合赢单、成交意向和交付信心</div>
+  <div class="ql-hero-metrics">
+    <div class="ql-hero-metric">
+      <span>商机评分</span>
+      <strong>{{opportunity.score}}</strong>
+      <em>{{opportunity.score_level}}级商机</em>
     </div>
-    <div class="ql-metric">
-      <div class="ql-metric-label">赢单概率</div>
-      <div class="ql-metric-value">{{opportunity.win_probability_percent}}%</div>
-      <div class="ql-metric-note">{{assessment.win_probability_note}}</div>
+    <div class="ql-hero-metric">
+      <span>赢单概率</span>
+      <strong>{{opportunity.win_probability_percent}}%</strong>
+      <em>{{assessment.confidence_level}}可信度</em>
     </div>
-    <div class="ql-metric">
-      <div class="ql-metric-label">目标时间</div>
-      <div class="ql-metric-value">{{opportunity.expected_timeline}}</div>
-      <div class="ql-metric-note">方案、评审或实施窗口</div>
-    </div>
-    <div class="ql-metric">
-      <div class="ql-metric-label">预算状态</div>
-      <div class="ql-metric-value">{{opportunity.budget_signal}}</div>
-      <div class="ql-metric-note">金额：{{opportunity.budget_amount}}</div>
-    </div>
-    <div class="ql-metric">
-      <div class="ql-metric-label">评估可信度</div>
-      <div class="ql-metric-value">{{assessment.confidence_level}}</div>
-      <div class="ql-metric-note">{{assessment.confirmation_note}}</div>
+    <div class="ql-hero-metric risk-{{opportunity.risk_level}}">
+      <span>风险等级</span>
+      <strong>{{opportunity.risk_label}}</strong>
+      <em>{{opportunity.stage}}</em>
     </div>
   </div>
 

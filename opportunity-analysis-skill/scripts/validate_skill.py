@@ -610,6 +610,19 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
             fail("archive case did not render assessment radar chart")
         if "ql-radar-panel" not in html or "竞争对手" not in html:
             fail("archive case did not render dimension-level radar panels")
+        for marker in [
+            "ql-stage-panel",
+            "商机阶段",
+            "已确认商机",
+            "ql-hero-metrics",
+            "商机评分",
+            "赢单概率",
+            "风险等级",
+            "ql-stage-step-current",
+            "ql-stage-confirmed-marker",
+        ]:
+            if marker not in html:
+                fail(f"archive case did not render stage or top metric marker {marker}")
         if "ql-confirmation-card" in html or "回答格式" in html:
             fail("archive case should not render sales confirmation cards")
         print("ok evaluation cases")

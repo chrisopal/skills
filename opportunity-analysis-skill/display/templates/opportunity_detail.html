@@ -6,6 +6,22 @@
   <main class="ql-main">
     {{opportunity_card}}
 
+    <section class="ql-panel ql-stage-panel">
+      <div class="ql-panel-header">
+        <h2 class="ql-panel-title">商机阶段</h2>
+        <span class="ql-panel-subtitle">{{opportunity.stage_confirmed_label}}</span>
+      </div>
+      <div class="ql-panel-body">
+        <div class="ql-stage-path">{{opportunity.stage_path}}</div>
+        <div class="ql-stage-facts">
+          <div><span>当前阶段</span><strong>{{opportunity.stage}}</strong></div>
+          <div><span>判断依据</span><strong>{{opportunity.stage_reason}}</strong></div>
+          <div><span>阶段可信度</span><strong>{{opportunity.stage_confidence_label}}</strong></div>
+          <div><span>商机状态</span><strong>{{opportunity.stage_confirmed_label}}</strong></div>
+        </div>
+      </div>
+    </section>
+
     <div class="ql-layout">
       <div class="ql-main-column">
         <section class="ql-panel">

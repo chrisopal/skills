@@ -95,6 +95,9 @@ class SkillDisplayRenderer:
             "opportunity.score": esc(opp.get("score")),
             "opportunity.stage": esc(opp.get("stage")),
             "opportunity.stage_reason": esc(opp.get("stage_reason")),
+            "opportunity.stage_confidence_label": esc(self._confidence_label(opp.get("stage_confidence"))),
+            "opportunity.stage_confirmed_label": esc(self._opportunity_confirmed_label(opp)),
+            "opportunity.stage_path": self._stage_path(opp),
             "opportunity.risk_level": esc(opp.get("risk_level")),
             "opportunity.risk_label": esc(self._risk_label(opp.get("risk_level"))),
             "opportunity.win_probability_percent": esc(opp.get("win_probability_percent")),
@@ -116,10 +119,16 @@ class SkillDisplayRenderer:
     def _render_opportunity_detail(self, data: dict[str, Any]) -> str:
         card = self._render_opportunity_card(data)
         tpl = (self.template_dir / "opportunity_detail.html").read_text(encoding="utf-8")
+        opp = dict(data.get("opportunity", {}))
         mapping = {
             "opportunity_card": card,
             "account.company_name": esc(data.get("account", {}).get("company_name")),
             "account.business_summary": esc(data.get("account", {}).get("business_summary")),
+            "opportunity.stage": esc(opp.get("stage")),
+            "opportunity.stage_reason": esc(opp.get("stage_reason")),
+            "opportunity.stage_confidence_label": esc(self._confidence_label(opp.get("stage_confidence"))),
+            "opportunity.stage_confirmed_label": esc(self._opportunity_confirmed_label(opp)),
+            "opportunity.stage_path": self._stage_path(opp),
             "contacts.count": esc(len(data.get("contacts", []))),
             "decision_chain.summary": esc(self._decision_chain_summary(data.get("decision_chain", []))),
             "assessment.summary": esc(self._assessment_summary(data.get("commercial_assessment", {}))),
@@ -276,6 +285,44 @@ class SkillDisplayRenderer:
     def _risk_label(self, risk: Any) -> str:
         mapping = {"high": "高", "medium": "中", "low": "低"}
         return mapping.get(str(risk), "待确认")
+
+    def _opportunity_confirmed_label(self, opportunity: dict[str, Any]) -> str:
+        value = opportunity.get("opportunity_confirmed")
+        if value is None:
+            stage_id = opportunity.get("stage_id")
+            stage_def = stage_by_id(str(stage_id)) if stage_id else None
+            if stage_def is None:
+                stage_def = stage_from_name(opportunity.get("stage"))
+            value = bool(stage_def and stage_def.is_opportunity_confirmed)
+        elif isinstance(value, str):
+            value = value.strip().lower() in {"true", "1", "yes", "y"}
+        else:
+            value = bool(value)
+        return "已确认商机" if value else "尚未确认商机"
+
+    def _stage_path(self, opportunity: dict[str, Any]) -> str:
+        stage_def = self._resolve_stage_definition(opportunity)
+        current_id = stage_def.stage_id if stage_def else None
+        current_order = stage_def.order if stage_def else 0
+        parts = []
+        for stage in STAGE_DEFINITIONS:
+            classes = ["ql-stage-step"]
+            if current_order and stage.order < current_order:
+                classes.append("ql-stage-step-done")
+            elif stage.stage_id == current_id:
+                classes.append("ql-stage-step-current")
+            else:
+                classes.append("ql-stage-step-future")
+            if stage.stage_id == "opportunity_confirmed":
+                classes.append("ql-stage-confirmed-marker")
+            marker = "关键节点" if stage.stage_id == "opportunity_confirmed" else str(stage.order)
+            parts.append(
+                "<div class='" + " ".join(classes) + "'>"
+                f"<span>{esc(marker)}</span>"
+                f"<strong>{esc(stage.name)}</strong>"
+                "</div>"
+            )
+        return "".join(parts)
 
     def _action_items(self, actions: list[dict[str, Any]]) -> str:
         if not actions:

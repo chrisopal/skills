@@ -146,6 +146,7 @@ class SkillDisplayRenderer:
             "next_actions_list": self._action_items(data.get("next_actions", [])),
             "missing_information_list": li(data.get("opportunity", {}).get("missing_information", [])),
             "contacts_rows": self._contacts_rows(data.get("contacts", [])),
+            "decision_chain_map": self._decision_chain_map(data.get("decision_chain", []), opp),
             "decision_chain_rows": self._decision_chain_rows(data.get("decision_chain", [])),
             "risks_rows": self._risk_rows(data.get("risks", [])),
             "evidence_list": self._evidence_items(data.get("evidence", [])),
@@ -323,17 +324,26 @@ class SkillDisplayRenderer:
             if stage.stage_id == "opportunity_confirmed":
                 classes.append("ql-stage-confirmed-marker")
             marker = "关键节点" if stage.stage_id == "opportunity_confirmed" else str(stage.order)
+            icon = "★" if stage.stage_id == "opportunity_confirmed" else ("✓" if current_order and stage.order < current_order else "")
             parts.append(
                 "<div class='" + " ".join(classes) + "'>"
+                "<div class='ql-stage-dot' aria-hidden='true'>"
+                f"<span>{esc(icon)}</span>"
+                "</div>"
+                "<div class='ql-stage-label'>"
                 f"<span>{esc(marker)}</span>"
                 f"<strong>{esc(stage.name)}</strong>"
+                "</div>"
                 "</div>"
             )
         if stage_def is None and raw_stage:
             parts.append(
                 "<div class='ql-stage-step ql-stage-step-current ql-stage-step-unmapped'>"
+                "<div class='ql-stage-dot' aria-hidden='true'><span></span></div>"
+                "<div class='ql-stage-label'>"
                 f"<span>{esc('未归类')}</span>"
                 f"<strong>{esc(raw_stage)}</strong>"
+                "</div>"
                 "</div>"
             )
         return "".join(parts)
@@ -401,6 +411,48 @@ class SkillDisplayRenderer:
                 "</tr>"
             )
         return "".join(rows)
+
+    def _decision_chain_map(self, nodes: list[dict[str, Any]], opportunity: dict[str, Any]) -> str:
+        if not nodes:
+            return "<div class='ql-decision-map-empty'>暂无决策链节点</div>"
+        preferred = [
+            "业务需求负责人",
+            "项目推进负责人",
+            "采购/商务负责人",
+            "最终决策人/关键拍板人",
+            "技术评估负责人",
+            "IT/系统集成负责人",
+        ]
+        by_role = {str(node.get("decision_role")): node for node in nodes}
+        ordered = [by_role[role] for role in preferred if role in by_role]
+        ordered.extend(node for node in nodes if node not in ordered)
+        cards = []
+        for index, node in enumerate(ordered[:8]):
+            status = "confirmed" if node.get("status") == "confirmed" else "missing"
+            person = node.get("person_name") or "待确认"
+            influence = self._influence_label(node.get("influence_level"))
+            status_text = "已确认" if status == "confirmed" else "待补充"
+            cards.append(
+                "<article class='ql-decision-node ql-decision-node-"
+                + esc(status)
+                + f" ql-decision-pos-{index + 1}'>"
+                f"<span>{esc(node.get('decision_role'))}</span>"
+                f"<strong>{esc(person)}</strong>"
+                "<small>"
+                f"{esc(status_text)} · {esc(influence)}影响"
+                "</small>"
+                "</article>"
+            )
+        need = opportunity.get("core_need") or opportunity.get("name") or "商机主题"
+        return (
+            "<div class='ql-decision-map'>"
+            "<div class='ql-decision-center'>"
+            "<span>商机</span>"
+            f"<strong>{esc(compact(need, 28))}</strong>"
+            "</div>"
+            + "".join(cards)
+            + "</div>"
+        )
 
     def _influence_class(self, influence: Any) -> str:
         if influence == "high":

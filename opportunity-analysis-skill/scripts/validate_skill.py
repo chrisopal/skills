@@ -659,12 +659,16 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
             "ql-stage-panel",
             "商机阶段",
             "已确认商机",
+            "ql-stage-timeline",
             "ql-hero-metrics",
             "商机评分",
             "赢单概率",
             "风险等级",
             "ql-stage-step-current",
             "ql-stage-confirmed-marker",
+            "ql-decision-map",
+            "ql-decision-node-confirmed",
+            "ql-decision-node-missing",
         ]:
             if marker not in html:
                 fail(f"archive case did not render stage or top metric marker {marker}")

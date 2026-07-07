@@ -516,75 +516,169 @@ body {
   gap: 14px;
 }
 
-.ql-stage-path {
+.ql-stage-timeline {
   display: grid;
-  grid-template-columns: repeat(10, minmax(96px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(10, minmax(86px, 1fr));
+  align-items: start;
   overflow-x: auto;
-  padding-bottom: 6px;
+  padding: 6px 4px 10px;
   scrollbar-width: thin;
 }
 
 .ql-stage-step {
+  position: relative;
   min-width: 0;
-  min-height: 72px;
-  border: 1px solid var(--ql-line);
-  border-radius: 6px;
-  background: var(--ql-gray-soft);
-  padding: 9px;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  text-align: center;
 }
 
-.ql-stage-step span {
+.ql-stage-step::after {
+  content: "";
+  position: absolute;
+  top: 17px;
+  left: calc(50% + 22px);
+  width: calc(100% - 44px);
+  height: 3px;
+  border-radius: 999px;
+  background: var(--ql-line-strong);
+  z-index: 0;
+}
+
+.ql-stage-step:last-child::after {
+  display: none;
+}
+
+.ql-stage-step-done::after {
+  background: var(--ql-green);
+}
+
+.ql-stage-dot {
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--ql-line-strong);
+  border-radius: 50%;
+  background: var(--ql-surface);
+  color: var(--ql-muted);
+  font-size: 17px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.ql-stage-step-done .ql-stage-dot {
+  border-color: var(--ql-green);
+  background: var(--ql-green);
+  color: #fff;
+}
+
+.ql-stage-step-current .ql-stage-dot {
+  border-color: #c9ded5;
+  background: var(--ql-green);
+  color: #fff;
+  box-shadow: 0 0 0 5px #e9f3ee;
+}
+
+.ql-stage-confirmed-marker .ql-stage-dot {
+  width: 42px;
+  height: 42px;
+  margin-top: -4px;
+  border-color: var(--ql-green);
+  border-radius: 14px;
+  background: var(--ql-surface);
+  color: var(--ql-green);
+  box-shadow: 0 0 0 3px #e9f3ee;
+  transform: rotate(45deg);
+}
+
+.ql-stage-confirmed-marker .ql-stage-dot span {
+  display: inline-block;
+  transform: rotate(-45deg);
+}
+
+.ql-stage-confirmed-marker.ql-stage-step-done .ql-stage-dot,
+.ql-stage-confirmed-marker.ql-stage-step-current .ql-stage-dot {
+  background: var(--ql-surface);
+  color: var(--ql-green);
+}
+
+.ql-stage-label {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+}
+
+.ql-stage-label span {
+  min-height: 20px;
   display: inline-flex;
+  align-items: center;
   color: var(--ql-muted);
   font-size: 11px;
   line-height: 16px;
 }
 
-.ql-stage-step strong {
+.ql-stage-label strong {
   display: block;
-  margin-top: 7px;
   color: var(--ql-muted);
   font-size: 13px;
   line-height: 18px;
   word-break: break-word;
 }
 
-.ql-stage-step-done {
+.ql-stage-step-done .ql-stage-label strong,
+.ql-stage-step-current .ql-stage-label span,
+.ql-stage-step-current .ql-stage-label strong {
+  color: var(--ql-green-dark);
+  font-weight: 700;
+}
+
+.ql-stage-confirmed-marker .ql-stage-label span {
+  min-height: 24px;
+  border: 1px solid #c9ded5;
+  border-radius: 4px;
   background: #f2f8f5;
-  border-color: #c7ddd2;
-}
-
-.ql-stage-step-done strong {
   color: var(--ql-green-dark);
+  padding: 2px 8px;
 }
 
-.ql-stage-step-current {
-  background: var(--ql-surface);
-  border-color: var(--ql-green);
-  box-shadow: inset 0 0 0 1px rgba(31, 91, 69, 0.12);
-}
-
-.ql-stage-step-current span,
-.ql-stage-step-current strong {
+.ql-stage-confirmed-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
   color: var(--ql-green-dark);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 700;
 }
 
-.ql-stage-step-future {
-  background: var(--ql-gray-soft);
-}
-
-.ql-stage-confirmed-marker {
-  position: relative;
-}
-
-.ql-stage-confirmed-marker::before {
+.ql-stage-confirmed-line::before,
+.ql-stage-confirmed-line::after {
   content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  border-radius: 6px 6px 0 0;
-  background: var(--ql-orange);
+  height: 1px;
+  background: var(--ql-line);
+}
+
+.ql-stage-confirmed-line span {
+  width: 22px;
+  height: 22px;
+  display: inline-grid;
+  place-items: center;
+  border: 2px solid var(--ql-green);
+  border-radius: 50%;
+  color: var(--ql-green);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.ql-stage-confirmed-line strong {
+  white-space: nowrap;
 }
 
 .ql-stage-facts {
@@ -608,6 +702,144 @@ body {
   font-size: 14px;
   line-height: 20px;
   word-break: break-word;
+}
+
+.ql-decision-map {
+  position: relative;
+  min-height: 360px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(86px, auto));
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid var(--ql-line);
+  border-radius: 6px;
+  background:
+    linear-gradient(90deg, transparent calc(50% - 0.5px), var(--ql-line) calc(50% - 0.5px), var(--ql-line) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(0deg, transparent calc(50% - 0.5px), var(--ql-line) calc(50% - 0.5px), var(--ql-line) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    var(--ql-gray-soft);
+}
+
+.ql-decision-center,
+.ql-decision-node {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  border: 1px solid var(--ql-line);
+  border-radius: 6px;
+  background: var(--ql-surface);
+  padding: 12px;
+  box-shadow: 0 1px 0 rgba(9, 66, 45, 0.04);
+}
+
+.ql-decision-center {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: stretch;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  border-color: var(--ql-green);
+  background: #f2f8f5;
+}
+
+.ql-decision-center span,
+.ql-decision-node span {
+  display: block;
+  color: var(--ql-muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.ql-decision-center strong,
+.ql-decision-node strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ql-strong);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.ql-decision-node small {
+  display: inline-flex;
+  margin-top: 8px;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.ql-decision-node-confirmed {
+  border-color: #b9d3c6;
+  background: #f7fbf8;
+}
+
+.ql-decision-node-confirmed small {
+  background: var(--ql-green-soft);
+  color: var(--ql-green-dark);
+}
+
+.ql-decision-node-missing {
+  border-color: #f4c49f;
+  background: var(--ql-orange-soft);
+}
+
+.ql-decision-node-missing small {
+  background: #fff0e6;
+  color: var(--ql-orange);
+}
+
+.ql-decision-pos-1 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.ql-decision-pos-2 {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.ql-decision-pos-3 {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.ql-decision-pos-4 {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.ql-decision-pos-5 {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.ql-decision-pos-6 {
+  grid-column: 3;
+  grid-row: 3;
+}
+
+.ql-decision-pos-7 {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.ql-decision-pos-8 {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.ql-decision-map-empty {
+  border: 1px dashed var(--ql-line-strong);
+  border-radius: 6px;
+  background: var(--ql-gray-soft);
+  color: var(--ql-weak);
+  padding: 18px;
+  text-align: center;
 }
 
 .ql-text {
@@ -1116,6 +1348,24 @@ tr:last-child td {
   .ql-stage-facts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .ql-decision-map {
+    min-height: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto;
+    background: var(--ql-gray-soft);
+  }
+
+  .ql-decision-center,
+  .ql-decision-node {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .ql-decision-center {
+    grid-column: 1 / -1;
+    min-height: 92px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -1158,7 +1408,20 @@ tr:last-child td {
     grid-template-columns: 1fr;
   }
 
-  .ql-stage-path {
-    grid-template-columns: repeat(10, minmax(112px, 1fr));
+  .ql-stage-timeline {
+    grid-template-columns: repeat(10, minmax(108px, 1fr));
+  }
+
+  .ql-stage-confirmed-line {
+    grid-template-columns: minmax(0, 1fr) auto auto minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .ql-decision-map {
+    grid-template-columns: 1fr;
+  }
+
+  .ql-decision-center {
+    grid-column: auto;
   }
 }

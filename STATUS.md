@@ -1,3 +1,24 @@
+## 2026-07-07 08:32:33 CST
+
+- Scope: Redesign `opportunity-analysis-skill` detail view for opportunity stage and decision-chain sections based on the approved mockup.
+- Changed files:
+  - `opportunity-analysis-skill/display/templates/opportunity_detail.html`
+  - `opportunity-analysis-skill/display/css/default.css`
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Reused the static HTML renderer and existing CSS token palette instead of adding JavaScript or frontend dependencies.
+  - Kept the decision-chain table unchanged and added a compact graphical map above it.
+  - Preserved existing stage marker classes while changing the visual treatment to a timeline.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed.
+  - `python3.12 -m py_compile opportunity-analysis-skill/src/opportunity_skill/renderer.py` passed.
+  - `git diff --check` passed.
+  - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
+  - Playwright verified desktop 1440px and mobile 390px screenshots saved at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/detail-stage-decision-redesign-desktop.png` and `detail-stage-decision-redesign-mobile.png`.
+- Remaining notes:
+  - Existing unrelated `wechat-official-account-skills/*` dirty files and untracked local artifacts were left untouched.
+
 ## 2026-07-07 02:45:00 CST
 
 - Scope: Implement `opportunity-analysis-skill` opportunity stage management from model through live analysis, SQLite persistence, detail UI, kanban UI, and Huachen visual verification.

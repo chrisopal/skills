@@ -415,42 +415,63 @@ class SkillDisplayRenderer:
     def _decision_chain_map(self, nodes: list[dict[str, Any]], opportunity: dict[str, Any]) -> str:
         if not nodes:
             return "<div class='ql-decision-map-empty'>暂无决策链节点</div>"
-        preferred = [
-            "业务需求负责人",
-            "项目推进负责人",
-            "采购/商务负责人",
-            "最终决策人/关键拍板人",
-            "技术评估负责人",
-            "IT/系统集成负责人",
-        ]
         by_role = {str(node.get("decision_role")): node for node in nodes}
-        ordered = [by_role[role] for role in preferred if role in by_role]
-        ordered.extend(node for node in nodes if node not in ordered)
-        cards = []
-        for index, node in enumerate(ordered[:8]):
+
+        def node_for(role: str, fallback_influence: str, fallback_scope: str) -> dict[str, Any]:
+            node = dict(by_role.get(role, {}))
+            node.setdefault("decision_role", role)
+            node.setdefault("status", "missing")
+            node.setdefault("influence_level", fallback_influence)
+            node.setdefault("responsibility_scope", fallback_scope)
+            return node
+
+        root = node_for("最终决策人/关键拍板人", "high", "项目优先级、预算审批、最终决策")
+        business_owner = node_for("业务需求负责人", "high", "业务痛点、验收指标和现场使用要求")
+        project_owner = node_for("项目推进负责人", "high", "项目计划、跨部门协同、方案落地")
+        technical_owner = node_for("技术评估负责人", "medium", "技术可行性、检测点位、设备选型")
+        integration_owner = node_for("IT/系统集成负责人", "medium", "MES对接、系统集成、安全与上线")
+        procurement_owner = node_for("采购/商务负责人", "medium", "预算区间、商务流程、合同推进")
+
+        def card(node: dict[str, Any], role_class: str) -> str:
             status = "confirmed" if node.get("status") == "confirmed" else "missing"
+            status_text = "已确认" if status == "confirmed" else "待确认"
             person = node.get("person_name") or "待确认"
             influence = self._influence_label(node.get("influence_level"))
-            status_text = "已确认" if status == "confirmed" else "待补充"
-            cards.append(
-                "<article class='ql-decision-node ql-decision-node-"
-                + esc(status)
-                + f" ql-decision-pos-{index + 1}'>"
-                f"<span>{esc(node.get('decision_role'))}</span>"
-                f"<strong>{esc(person)}</strong>"
-                "<small>"
-                f"{esc(status_text)} · {esc(influence)}影响"
-                "</small>"
+            concern = compact(node.get("responsibility_scope"), 42)
+            return (
+                f"<article class='ql-decision-node ql-decision-node-{esc(status)} {role_class}'>"
+                "<div class='ql-decision-node-main'>"
+                "<span class='ql-decision-avatar' aria-hidden='true'>●</span>"
+                "<div>"
+                f"<strong>{esc(node.get('decision_role'))}</strong>"
+                f"<p>{esc(person)}</p>"
+                "<div class='ql-decision-badges'>"
+                f"<em>{esc(status_text)}</em>"
+                f"<em>{esc(influence)}影响</em>"
+                "</div>"
+                "</div>"
+                "</div>"
+                f"<small>关注：{esc(concern)}</small>"
                 "</article>"
             )
-        need = opportunity.get("core_need") or opportunity.get("name") or "商机主题"
+
         return (
-            "<div class='ql-decision-map'>"
-            "<div class='ql-decision-center'>"
-            "<span>商机</span>"
-            f"<strong>{esc(compact(need, 28))}</strong>"
-            "</div>"
-            + "".join(cards)
+            "<div class='ql-decision-map ql-decision-tree'>"
+            "<svg class='ql-decision-tree-lines' viewBox='0 0 1000 560' preserveAspectRatio='none' aria-hidden='true'>"
+            "<path d='M500 112 V162 H250 V200'/>"
+            "<path d='M500 162 H750 V200'/>"
+            "<path d='M250 310 V352'/>"
+            "<path d='M250 462 V498 H145'/>"
+            "<path d='M250 498 H355'/>"
+            "</svg>"
+            + card(root, "ql-decision-root")
+            + "<div class='ql-decision-lane ql-decision-lane-business'>业务线</div>"
+            + "<div class='ql-decision-lane ql-decision-lane-procurement'>交付/采购线</div>"
+            + card(business_owner, "ql-decision-business-owner")
+            + card(project_owner, "ql-decision-project-owner")
+            + card(technical_owner, "ql-decision-technical-owner")
+            + card(integration_owner, "ql-decision-integration-owner")
+            + card(procurement_owner, "ql-decision-procurement-owner")
             + "</div>"
         )
 

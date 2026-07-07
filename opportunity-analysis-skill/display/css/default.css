@@ -706,57 +706,70 @@ body {
 
 .ql-decision-map {
   position: relative;
-  min-height: 360px;
+  min-height: 500px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: repeat(3, minmax(86px, auto));
-  gap: 14px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: 132px 42px 128px 128px 132px;
+  gap: 10px 16px;
   align-items: center;
-  padding: 14px;
+  padding: 16px;
   border: 1px solid var(--ql-line);
   border-radius: 6px;
-  background:
-    linear-gradient(90deg, transparent calc(50% - 0.5px), var(--ql-line) calc(50% - 0.5px), var(--ql-line) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-    linear-gradient(0deg, transparent calc(50% - 0.5px), var(--ql-line) calc(50% - 0.5px), var(--ql-line) calc(50% + 0.5px), transparent calc(50% + 0.5px)),
-    var(--ql-gray-soft);
+  background: var(--ql-gray-soft);
+  overflow-x: auto;
 }
 
-.ql-decision-center,
+.ql-decision-tree-lines {
+  position: absolute;
+  inset: 16px;
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ql-decision-tree-lines path {
+  fill: none;
+  stroke: #9aa6a1;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .ql-decision-node {
   position: relative;
   z-index: 1;
   min-width: 0;
+  min-height: 100px;
   border: 1px solid var(--ql-line);
   border-radius: 6px;
   background: var(--ql-surface);
-  padding: 12px;
+  padding: 12px 14px;
   box-shadow: 0 1px 0 rgba(9, 66, 45, 0.04);
 }
 
-.ql-decision-center {
-  grid-column: 2;
-  grid-row: 2;
-  align-self: stretch;
+.ql-decision-node-main {
   display: grid;
-  align-content: center;
-  justify-items: center;
-  text-align: center;
-  border-color: var(--ql-green);
-  background: #f2f8f5;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
 }
 
-.ql-decision-center span,
-.ql-decision-node span {
-  display: block;
-  color: var(--ql-muted);
-  font-size: 12px;
-  line-height: 18px;
+.ql-decision-avatar {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: transparent;
+  background:
+    radial-gradient(circle at 50% 38%, #fff 0 4px, transparent 5px),
+    radial-gradient(ellipse at 50% 72%, #fff 0 8px, transparent 9px),
+    var(--ql-green);
 }
 
-.ql-decision-center strong,
 .ql-decision-node strong {
   display: block;
-  margin-top: 4px;
   color: var(--ql-strong);
   font-size: 14px;
   line-height: 20px;
@@ -764,72 +777,121 @@ body {
   word-break: break-word;
 }
 
-.ql-decision-node small {
+.ql-decision-node p {
+  margin: 4px 0 0;
+  color: var(--ql-ink);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.ql-decision-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 7px;
+}
+
+.ql-decision-badges em {
   display: inline-flex;
-  margin-top: 8px;
-  border-radius: 999px;
-  padding: 2px 8px;
+  min-height: 22px;
+  align-items: center;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.65);
+  padding: 1px 7px;
+  font-style: normal;
   font-size: 11px;
   line-height: 16px;
+  font-weight: 700;
+}
+
+.ql-decision-node small {
+  display: block;
+  margin-top: 10px;
+  color: var(--ql-muted);
+  font-size: 12px;
+  line-height: 18px;
+  word-break: break-word;
 }
 
 .ql-decision-node-confirmed {
-  border-color: #b9d3c6;
-  background: #f7fbf8;
+  border-color: var(--ql-green);
+  background: #f8fcf9;
 }
 
-.ql-decision-node-confirmed small {
-  background: var(--ql-green-soft);
+.ql-decision-node-confirmed .ql-decision-badges em {
   color: var(--ql-green-dark);
 }
 
 .ql-decision-node-missing {
-  border-color: #f4c49f;
+  border-color: var(--ql-orange);
   background: var(--ql-orange-soft);
 }
 
-.ql-decision-node-missing small {
-  background: #fff0e6;
+.ql-decision-node-missing .ql-decision-avatar {
+  background:
+    radial-gradient(circle at 50% 38%, #fff 0 4px, transparent 5px),
+    radial-gradient(ellipse at 50% 72%, #fff 0 8px, transparent 9px),
+    var(--ql-orange);
+}
+
+.ql-decision-node-missing .ql-decision-badges em {
   color: var(--ql-orange);
 }
 
-.ql-decision-pos-1 {
-  grid-column: 1;
+.ql-decision-root {
+  grid-column: 5 / 9;
   grid-row: 1;
 }
 
-.ql-decision-pos-2 {
-  grid-column: 1;
+.ql-decision-lane {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  min-width: 100px;
+  border: 1px solid #bfd6cd;
+  border-radius: 6px;
+  background: #f2f8f5;
+  color: var(--ql-green-dark);
+  padding: 7px 14px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 700;
+}
+
+.ql-decision-lane-business {
+  grid-column: 3 / 5;
   grid-row: 2;
 }
 
-.ql-decision-pos-3 {
-  grid-column: 1;
-  grid-row: 3;
-}
-
-.ql-decision-pos-4 {
-  grid-column: 3;
-  grid-row: 1;
-}
-
-.ql-decision-pos-5 {
-  grid-column: 3;
+.ql-decision-lane-procurement {
+  grid-column: 9 / 11;
   grid-row: 2;
 }
 
-.ql-decision-pos-6 {
-  grid-column: 3;
+.ql-decision-business-owner {
+  grid-column: 2 / 6;
   grid-row: 3;
 }
 
-.ql-decision-pos-7 {
-  grid-column: 2;
-  grid-row: 1;
+.ql-decision-project-owner {
+  grid-column: 2 / 6;
+  grid-row: 4;
 }
 
-.ql-decision-pos-8 {
-  grid-column: 2;
+.ql-decision-technical-owner {
+  grid-column: 1 / 4;
+  grid-row: 5;
+}
+
+.ql-decision-integration-owner {
+  grid-column: 4 / 7;
+  grid-row: 5;
+}
+
+.ql-decision-procurement-owner {
+  grid-column: 8 / 12;
   grid-row: 3;
 }
 
@@ -1353,18 +1415,22 @@ tr:last-child td {
     min-height: 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: auto;
+    gap: 10px;
     background: var(--ql-gray-soft);
   }
 
-  .ql-decision-center,
+  .ql-decision-tree-lines {
+    display: none;
+  }
+
+  .ql-decision-lane,
   .ql-decision-node {
     grid-column: auto;
     grid-row: auto;
   }
 
-  .ql-decision-center {
+  .ql-decision-root {
     grid-column: 1 / -1;
-    min-height: 92px;
   }
 }
 
@@ -1421,7 +1487,7 @@ tr:last-child td {
     grid-template-columns: 1fr;
   }
 
-  .ql-decision-center {
+  .ql-decision-root {
     grid-column: auto;
   }
 }

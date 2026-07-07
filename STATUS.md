@@ -1,3 +1,22 @@
+## 2026-07-07 23:30:02 CST
+
+- Scope: Replace the `opportunity-analysis-skill` decision-chain graphic with a tree-style template matching the approved hierarchy mockup.
+- Changed files:
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/display/css/default.css`
+- Simplifications made:
+  - Kept the existing decision-chain table and `ql-decision-map` container contract.
+  - Rendered the hierarchy with static HTML/CSS and inline SVG connector paths, with no JavaScript dependency.
+  - Added deterministic placeholder nodes for missing decision roles so gaps stay visible.
+- Validation:
+  - `python3.12 -m py_compile opportunity-analysis-skill/src/opportunity_skill/renderer.py` passed.
+  - `python3.12 scripts/validate_skill.py` passed.
+  - `git diff --check` passed for the touched files.
+  - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`.
+  - Playwright screenshots saved at `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/detail-decision-tree-desktop.png` and `detail-decision-tree-mobile.png`.
+- Remaining notes:
+  - Existing unrelated `wechat-official-account-skills/*` dirty files and untracked local artifacts were left untouched.
+
 ## 2026-07-07 08:32:33 CST
 
 - Scope: Redesign `opportunity-analysis-skill` detail view for opportunity stage and decision-chain sections based on the approved mockup.

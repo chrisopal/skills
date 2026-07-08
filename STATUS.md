@@ -1,3 +1,20 @@
+## 2026-07-08 08:55:05 CST
+
+- Scope: Fix `opportunity-analysis-skill` contact status localization in the opportunity detail page.
+- Changed files:
+  - `opportunity-analysis-skill/src/opportunity_skill/renderer.py`
+  - `opportunity-analysis-skill/scripts/validate_skill.py`
+- Simplifications made:
+  - Reused the renderer's existing `_status_label()` mapping instead of adding another contact-specific mapping.
+  - Kept requirement-owner identity in the role column and reserved the status column for confirmation state.
+- Validation:
+  - `python3.12 -m py_compile opportunity-analysis-skill/src/opportunity_skill/renderer.py` passed.
+  - `python3.12 scripts/validate_skill.py` passed.
+  - `git diff --check` passed for touched files.
+  - Regenerated `/Users/guojiexie/.codex/skill_runs/opportunity-analysis/huachen-2026-07-05/opportunity_detail.html`; contact status cells now render as `已确认` with no raw `confirmed`.
+- Remaining notes:
+  - Existing unrelated `wechat-official-account-skills/*` dirty files and untracked local artifacts were left untouched.
+
 ## 2026-07-07 23:30:02 CST
 
 - Scope: Replace the `opportunity-analysis-skill` decision-chain graphic with a tree-style template matching the approved hierarchy mockup.

@@ -655,6 +655,8 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
             fail("archive case did not render assessment radar chart")
         if "ql-radar-panel" not in html or "竞争对手" not in html:
             fail("archive case did not render dimension-level radar panels")
+        if "<td>confirmed</td>" in html or "<td>需求负责人</td>" in html:
+            fail("archive case rendered an unlocalized or role-like contact status")
         for marker in [
             "ql-stage-panel",
             "商机阶段",

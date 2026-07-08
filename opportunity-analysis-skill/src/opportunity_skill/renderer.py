@@ -371,7 +371,8 @@ class SkillDisplayRenderer:
             return "<tr><td colspan='8'>暂无</td></tr>"
         rows = []
         for c in contacts:
-            status = "需求负责人" if c.get("is_requirement_owner") else esc(c.get("confirmation_status"))
+            fallback_status = "confirmed" if c.get("is_requirement_owner") else "missing"
+            status = self._status_label(c.get("confirmation_status") or fallback_status)
             rows.append(
                 "<tr>"
                 f"<td>{esc(c.get('name'))}</td>"

@@ -1,0 +1,58 @@
+name: problem-definition-skill
+version: 0.2.0
+description: Portable closed-loop problem definition skill with SQLite storage, safe queries, and HTML/Markdown rendering.
+runtime:
+  language: python
+  requires_file_system: true
+  requires_sqlite: true
+  requires_template_renderer: true
+input_pipeline:
+  stages:
+    - evidence_normalization
+    - problem_framing
+    - decision_definition
+input:
+  preferred:
+    - opportunity_analysis_output
+    - evidence_list
+  accepted:
+    - customer_statements
+    - meeting_notes
+    - customer_requirements
+    - materials
+    - plain_text
+storage:
+  enabled: true
+  default_adapter: sqlite
+  db_path: "${SKILL_DATA_DIR}/problem-definition/problem_definition.db"
+  schema_file: storage/sqlite/schema.sql
+  auto_migrate: true
+display:
+  enabled: true
+  default_format: html
+  fallback_format: markdown
+  template_engine: jinja2
+  templates:
+    - id: problem_definition_card
+      file: display/templates/problem_definition_card.html
+    - id: problem_tree
+      file: display/templates/problem_tree.html
+    - id: clarification_questions
+      file: display/templates/clarification_questions.html
+    - id: decision_brief
+      file: display/templates/decision_brief.html
+query:
+  enabled: true
+  safe_query_mode: true
+  allowed_objects:
+    - problem_definitions
+    - problem_hypotheses
+    - clarification_questions
+    - success_criteria
+    - problem_evidence_map
+output_contract:
+  required:
+    - human_summary
+    - structured_data
+    - storage_result
+    - display_result

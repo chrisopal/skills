@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProblemDefinitionQuery",
+  "type": "object",
+  "properties": {
+    "keyword": {"type": ["string", "null"]},
+    "account_id": {"type": ["string", "null"]},
+    "opportunity_id": {"type": ["string", "null"]},
+    "status": {"type": ["string", "null"]},
+    "limit": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}
+  }
+}

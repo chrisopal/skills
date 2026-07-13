@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProblemDefinitionInput",
+  "type": "object",
+  "properties": {
+    "case_name": {"type": "string"},
+    "account_id": {"type": ["string", "null"]},
+    "opportunity_id": {"type": ["string", "null"]},
+    "materials": {"type": "array", "items": {"type": "object"}},
+    "evidence_list": {"type": "array", "items": {"type": "object"}},
+    "customer_statements": {"type": "array", "items": {"type": "string"}},
+    "meeting_notes": {"type": "string"},
+    "customer_requirements": {"type": "string"},
+    "text": {"type": "string"},
+    "structured_data": {"type": "object"},
+    "opportunity_analysis": {"type": "object"},
+    "context": {"type": "object"}
+  },
+  "anyOf": [
+    {"required": ["materials"]},
+    {"required": ["evidence_list"]},
+    {"required": ["customer_statements"]},
+    {"required": ["meeting_notes"]},
+    {"required": ["customer_requirements"]},
+    {"required": ["text"]},
+    {"required": ["structured_data"]},
+    {"required": ["opportunity_analysis"]}
+  ]
+}

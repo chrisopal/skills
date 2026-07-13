@@ -1,0 +1,28 @@
+{
+  "case_name": "华辰装备质检自动化升级问题定义",
+  "account_id": "acc_huachen",
+  "opportunity_id": "opp_quality_automation",
+  "materials": [
+    {
+      "source_id": "ev_001",
+      "source_type": "meeting_transcript",
+      "source_name": "客户交流会议",
+      "confidence": 0.95,
+      "content": "客户目前以人工目检和部分半自动设备为主，存在漏检率偏高、数据追溯困难和节拍不稳定等问题。希望第三季度完成方案评审，现有MES需要打通，目标节拍约45秒每件。"
+    },
+    {
+      "source_id": "ev_002",
+      "source_type": "email",
+      "source_name": "技术交流邮件",
+      "confidence": 0.92,
+      "content": "公司已有年度技改预算，希望先安排技术交流，重点关注系统集成能力、实施周期和售后响应。"
+    },
+    {
+      "source_id": "ev_003",
+      "source_type": "sales_note",
+      "source_name": "销售便签",
+      "confidence": 0.85,
+      "content": "需要确认预算区间、检测点位和节拍，竞争对手A和B已经参与。"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;background:#f6f8fb;color:#172033;margin:0;padding:24px}.card{max-width:960px;margin:auto;background:#fff;border:1px solid #dce4ef;border-radius:16px;padding:24px;box-shadow:0 8px 28px rgba(15,45,80,.08)}h1{margin:0 0 8px;color:#0C2749}.meta{color:#667085;margin-bottom:20px}.grid{display:grid;grid-template-columns:1fr;gap:14px}.section{border:1px solid #e5eaf1;border-radius:12px;padding:16px}.section h2{font-size:16px;color:#0C2749;margin:0 0 10px}.status{font-size:12px;border-radius:999px;padding:3px 8px;background:#eef4ff;color:#175cd3}.tag{display:inline-block;margin:4px 6px 0 0;padding:5px 9px;border-radius:999px;background:#f2f4f7}.warning{background:#fff8e7}.questions li{margin:8px 0}</style></head><body>
+<div class="card">
+<h1>{{ case_name }}</h1><div class="meta">问题定义分析结果</div>
+<div class="grid">
+<div class="section"><h2>表层问题 <span class="status">{{ pd.surface_problem.status }}</span></h2><p>{{ pd.surface_problem.value }}</p></div>
+<div class="section"><h2>深层问题 <span class="status">{{ pd.deep_problem.status }}</span></h2><p>{{ pd.deep_problem.value }}</p><small>{{ pd.deep_problem.reason }}</small></div>
+<div class="section"><h2>决策问题 <span class="status">{{ pd.decision_problem.status }}</span></h2><p>{{ pd.decision_problem.value }}</p></div>
+<div class="section"><h2>业务影响</h2>{% for x in pd.business_impacts %}<span class="tag">{{ x }}</span>{% endfor %}</div>
+<div class="section"><h2>成功标准</h2><ul>{% for x in pd.success_criteria %}<li>{{ x.dimension }}：{{ x.criterion }}{% if x.metric %}（{{ x.metric }}）{% endif %}</li>{% endfor %}</ul></div>
+<div class="section warning"><h2>缺失信息</h2><ul>{% for x in pd.missing_information %}<li>{{ x }}</li>{% endfor %}</ul></div>
+<div class="section questions"><h2>优先澄清问题</h2><ol>{% for q in questions %}<li><strong>{{ q.question }}</strong>｜{{ q.target_role }}｜{{ q.priority }}</li>{% endfor %}</ol></div>
+<div class="section"><h2>方案切入点</h2><ul>{% for x in pd.solution_entry_points %}<li>{{ x }}</li>{% endfor %}</ul></div>
+</div></div></body></html>

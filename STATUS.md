@@ -1,3 +1,20 @@
+## 2026-07-13 17:23:00 CST
+
+- Scope: Validate and harden `problem-definition-skill` as a portable installed CLI skill.
+- Changed files:
+  - `problem-definition-skill/` package, contracts, validator, documentation, templates, and SQLite runtime assets.
+  - `STATUS.md`
+- Simplifications made:
+  - Reused the declared JSON Schema contracts at the CLI boundary instead of adding a second validation model.
+  - Kept rendering dependency-free except for the existing Jinja2 renderer and used standard-library HTML escaping for query results.
+  - Made syntax validation in-memory so the validator no longer leaves `__pycache__` artifacts that prevent repeat runs.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed twice consecutively in an isolated Python 3.12 environment.
+  - Editable install from an isolated copy passed; the installed `problem-definition` command completed analyze/query, persisted SQLite data, rendered output, and rejected `--limit 101` against the query schema.
+- Commit/push state: pending; only this skill directory and this status entry will be staged.
+- Remaining notes:
+  - Existing unrelated `wechat-official-account-skills/*` changes and local artifacts remain untouched.
+
 ## 2026-07-08 08:55:05 CST
 
 - Scope: Fix `opportunity-analysis-skill` contact status localization in the opportunity detail page.

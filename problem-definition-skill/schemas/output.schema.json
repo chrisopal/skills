@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProblemDefinitionOutput",
+  "type": "object",
+  "required": ["human_summary", "structured_data"],
+  "properties": {
+    "human_summary": {"type": "string"},
+    "structured_data": {
+      "type": "object",
+      "required": ["case_name", "problem_definition", "clarification_questions", "evidence_map"],
+      "properties": {
+        "case_name": {"type": "string"},
+        "account_id": {"type": ["string", "null"]},
+        "opportunity_id": {"type": ["string", "null"]},
+        "problem_definition": {
+          "type": "object",
+          "required": ["surface_problem", "deep_problem", "decision_problem"],
+          "properties": {
+            "surface_problem": {"$ref": "#/$defs/statement"},
+            "deep_problem": {"$ref": "#/$defs/statement"},
+            "decision_problem": {"$ref": "#/$defs/statement"},
+            "business_impacts": {"type": "array", "items": {"type": "string"}},
+            "success_criteria": {"type": "array", "items": {"type": "object"}},
+            "constraints": {"type": "array", "items": {"type": "object"}},
+            "assumptions": {"type": "array", "items": {"type": "object"}},
+            "missing_information": {"type": "array", "items": {"type": "string"}},
+            "solution_entry_points": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "clarification_questions": {"type": "array", "items": {"type": "object"}},
+        "evidence": {"type": "array", "items": {"type": "object"}},
+        "evidence_map": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "storage_result": {"type": "object"},
+    "display_result": {"type": "object"}
+  },
+  "$defs": {
+    "statement": {
+      "type": "object",
+      "required": ["value", "status"],
+      "properties": {
+        "value": {"type": "string"},
+        "status": {"enum": ["confirmed", "inferred", "missing"]},
+        "reason": {"type": "string"},
+        "evidence_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

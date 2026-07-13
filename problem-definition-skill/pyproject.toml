@@ -1,0 +1,15 @@
+[project]
+name = "problem-definition-skill"
+version = "0.2.0"
+description = "Self-contained problem definition skill with SQLite storage and HTML rendering"
+requires-python = ">=3.10"
+dependencies = ["jinja2>=3.1", "jsonschema>=4.23"]
+
+[project.scripts]
+problem-definition = "problem_definition_skill.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,7 @@
+[
+  {
+    "name": "manufacturing_quality_automation",
+    "input": "examples/input_from_opportunity_skill.json",
+    "expected": ["surface_problem", "deep_problem", "decision_problem", "clarification_questions"]
+  }
+]

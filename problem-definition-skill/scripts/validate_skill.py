@@ -43,6 +43,11 @@ def validate_templates() -> None:
             if re.search(pattern, text):
                 fail(f"unsafe template content in {path.name}: {pattern}")
 
+    detail_template = (ROOT / "display/templates/problem_definition_card.html").read_text(encoding="utf-8")
+    for marker in ("ql-problem-card", "管理层待决事项", "问题链路", "来源证据", "成功标准", "优先澄清问题"):
+        if marker not in detail_template:
+            fail(f"problem_definition_card.html missing QILIN detail marker: {marker}")
+
 
 def validate_distribution() -> None:
     forbidden_names = {"outputs", ".skill_data", "__pycache__"}
@@ -120,6 +125,13 @@ def run_runtime() -> None:
                 fail(f"missing runtime output: {required.name}")
         if load_json(out / "result.json") != payload:
             fail("analyze stdout does not match result.json")
+        detail_html = (out / "problem_definition_card.html").read_text(encoding="utf-8")
+        for required in ("管理层待决事项", "问题链路", "来源证据", "成功标准", "优先澄清问题", "已确认", "推断结论"):
+            if required not in detail_html:
+                fail(f"problem_definition_card.html missing rendered detail content: {required}")
+        for raw_status in (">confirmed<", ">inferred<", ">missing<"):
+            if raw_status in detail_html:
+                fail(f"problem_definition_card.html exposed raw status value: {raw_status}")
 
         query = run_command([
             sys.executable, "-m", "problem_definition_skill.cli", "query", "--db", str(db),

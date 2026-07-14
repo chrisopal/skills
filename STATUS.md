@@ -1,3 +1,23 @@
+## 2026-07-14 14:53:43 CST
+
+- Scope: Redesign the `problem-definition-skill` detailed information card as a QILIN-style enterprise decision-review surface.
+- Changed files:
+  - `problem-definition-skill/display/templates/problem_definition_card.html`
+  - `problem-definition-skill/scripts/validate_skill.py`
+  - `STATUS.md`
+- Simplifications made:
+  - Kept the existing render data contract and Jinja autoescaping; the redesign is entirely template/CSS based with no frontend dependency or JavaScript.
+  - Replaced stacked generic cards with one decision-first detail layout: problem chain, source-evidence table, success-criteria table, missing-information confirmation panel, and clarification queue.
+  - Localized internal confirmation states to Chinese display tags while preserving the stored enum values.
+- Validation:
+  - `python3.12 scripts/validate_skill.py` passed after adding assertions for the QILIN detail structure and localized rendered status values.
+  - Rendered the real Huachen example and visually checked desktop 1440px and mobile 390px screenshots; no visible overflow and the responsive view stacks into one readable column.
+  - Visual verdict: `93/100`, pass; local runtime state is recorded under `.omx/state/problem-definition-card-ql/ralph-progress.json`.
+- Commit/push state: pending; only the problem-definition UI, validator, and this status entry will be staged.
+- Remaining notes:
+  - The requested image-generation reference was not created because this environment has no configured `OPENAI_API_KEY`; no image assets are required by or included in the template.
+  - Existing unrelated `wechat-official-account-skills/*` changes and local artifacts remain untouched.
+
 ## 2026-07-13 17:23:00 CST
 
 - Scope: Validate and harden `problem-definition-skill` as a portable installed CLI skill.

@@ -1,15 +1,620 @@
-<!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="UTF-8"><style>
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;background:#f6f8fb;color:#172033;margin:0;padding:24px}.card{max-width:960px;margin:auto;background:#fff;border:1px solid #dce4ef;border-radius:16px;padding:24px;box-shadow:0 8px 28px rgba(15,45,80,.08)}h1{margin:0 0 8px;color:#0C2749}.meta{color:#667085;margin-bottom:20px}.grid{display:grid;grid-template-columns:1fr;gap:14px}.section{border:1px solid #e5eaf1;border-radius:12px;padding:16px}.section h2{font-size:16px;color:#0C2749;margin:0 0 10px}.status{font-size:12px;border-radius:999px;padding:3px 8px;background:#eef4ff;color:#175cd3}.tag{display:inline-block;margin:4px 6px 0 0;padding:5px 9px;border-radius:999px;background:#f2f4f7}.warning{background:#fff8e7}.questions li{margin:8px 0}</style></head><body>
-<div class="card">
-<h1>{{ case_name }}</h1><div class="meta">问题定义分析结果</div>
-<div class="grid">
-<div class="section"><h2>表层问题 <span class="status">{{ pd.surface_problem.status }}</span></h2><p>{{ pd.surface_problem.value }}</p></div>
-<div class="section"><h2>深层问题 <span class="status">{{ pd.deep_problem.status }}</span></h2><p>{{ pd.deep_problem.value }}</p><small>{{ pd.deep_problem.reason }}</small></div>
-<div class="section"><h2>决策问题 <span class="status">{{ pd.decision_problem.status }}</span></h2><p>{{ pd.decision_problem.value }}</p></div>
-<div class="section"><h2>业务影响</h2>{% for x in pd.business_impacts %}<span class="tag">{{ x }}</span>{% endfor %}</div>
-<div class="section"><h2>成功标准</h2><ul>{% for x in pd.success_criteria %}<li>{{ x.dimension }}：{{ x.criterion }}{% if x.metric %}（{{ x.metric }}）{% endif %}</li>{% endfor %}</ul></div>
-<div class="section warning"><h2>缺失信息</h2><ul>{% for x in pd.missing_information %}<li>{{ x }}</li>{% endfor %}</ul></div>
-<div class="section questions"><h2>优先澄清问题</h2><ol>{% for q in questions %}<li><strong>{{ q.question }}</strong>｜{{ q.target_role }}｜{{ q.priority }}</li>{% endfor %}</ol></div>
-<div class="section"><h2>方案切入点</h2><ul>{% for x in pd.solution_entry_points %}<li>{{ x }}</li>{% endfor %}</ul></div>
-</div></div></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ case_name }}｜问题定义</title>
+  <style>
+    :root {
+      --ql-paper: #fbfcfa;
+      --ql-canvas: #f6f8f6;
+      --ql-surface: #ffffff;
+      --ql-ink: #1f2933;
+      --ql-strong: #0b2f20;
+      --ql-muted: #606d68;
+      --ql-weak: #8b9691;
+      --ql-line: #dfe8e3;
+      --ql-line-strong: #cddad4;
+      --ql-green: #1f5b45;
+      --ql-green-dark: #09422d;
+      --ql-green-soft: #e8f3ed;
+      --ql-orange: #b94c0d;
+      --ql-orange-soft: #fff8f1;
+      --ql-teal: #267b98;
+      --ql-teal-soft: #ebf7fa;
+      --ql-gray-soft: #f3f5f4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--ql-canvas);
+      color: var(--ql-ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Noto Sans SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .ql-problem-card {
+      width: min(1180px, calc(100% - 48px));
+      margin: 24px auto;
+      overflow: hidden;
+      background: var(--ql-surface);
+      border: 1px solid var(--ql-line-strong);
+      border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(11, 47, 32, 0.04);
+    }
+
+    .ql-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 24px 28px 22px;
+      border-bottom: 1px solid var(--ql-line);
+    }
+
+    .ql-breadcrumb,
+    .ql-section-kicker,
+    .ql-panel-label,
+    .ql-source-id {
+      color: var(--ql-muted);
+      font-size: 12px;
+      letter-spacing: 0;
+    }
+
+    .ql-breadcrumb { margin-bottom: 7px; }
+
+    h1,
+    h2,
+    h3,
+    p { margin-top: 0; }
+
+    h1 {
+      max-width: 760px;
+      margin-bottom: 7px;
+      color: var(--ql-strong);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.34;
+    }
+
+    .ql-subtitle {
+      margin-bottom: 0;
+      color: var(--ql-muted);
+      font-size: 13px;
+    }
+
+    .ql-head-meta {
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+      min-width: 178px;
+      padding-top: 2px;
+    }
+
+    .ql-asset-label {
+      color: var(--ql-weak);
+      font-size: 12px;
+    }
+
+    .ql-status-tag,
+    .ql-impact-tag,
+    .ql-priority-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 18px;
+      white-space: nowrap;
+    }
+
+    .ql-status-tag--confirmed {
+      border-color: #c8dfd1;
+      background: var(--ql-green-soft);
+      color: var(--ql-green-dark);
+    }
+
+    .ql-status-tag--inferred {
+      border-color: #c9e1e8;
+      background: var(--ql-teal-soft);
+      color: var(--ql-teal);
+    }
+
+    .ql-status-tag--missing,
+    .ql-priority-tag--p0 {
+      border-color: #f1d4ba;
+      background: var(--ql-orange-soft);
+      color: var(--ql-orange);
+    }
+
+    .ql-status-tag--neutral,
+    .ql-priority-tag--p1 {
+      border-color: var(--ql-line);
+      background: var(--ql-gray-soft);
+      color: var(--ql-muted);
+    }
+
+    .ql-main {
+      padding: 24px 28px 28px;
+    }
+
+    .ql-decision-panel {
+      position: relative;
+      margin-bottom: 20px;
+      padding: 20px 22px 18px;
+      overflow: hidden;
+      border: 1px solid #c9dfd1;
+      border-left: 4px solid var(--ql-green);
+      border-radius: 4px;
+      background: #fbfdfb;
+    }
+
+    .ql-decision-panel::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 170px;
+      height: 4px;
+      background: var(--ql-green);
+      content: "";
+    }
+
+    .ql-section-kicker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: var(--ql-green);
+      font-weight: 700;
+    }
+
+    .ql-section-index {
+      display: inline-grid;
+      width: 20px;
+      height: 20px;
+      place-items: center;
+      border: 1px solid #bad6c5;
+      border-radius: 3px;
+      background: var(--ql-surface);
+      color: var(--ql-green-dark);
+      font-size: 11px;
+    }
+
+    .ql-decision-copy {
+      max-width: 880px;
+      margin-bottom: 14px;
+      color: var(--ql-strong);
+      font-size: 18px;
+      font-weight: 650;
+      line-height: 1.56;
+    }
+
+    .ql-decision-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      color: var(--ql-muted);
+      font-size: 12px;
+    }
+
+    .ql-decision-meta span + span::before {
+      display: inline-block;
+      width: 1px;
+      height: 12px;
+      margin-right: 12px;
+      vertical-align: -2px;
+      background: var(--ql-line-strong);
+      content: "";
+    }
+
+    .ql-content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .ql-stack {
+      display: grid;
+      gap: 20px;
+    }
+
+    .ql-panel {
+      overflow: hidden;
+      border: 1px solid var(--ql-line);
+      border-radius: 4px;
+      background: var(--ql-surface);
+    }
+
+    .ql-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 52px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--ql-line);
+      background: #fcfdfc;
+    }
+
+    .ql-panel-title {
+      margin: 0;
+      color: var(--ql-strong);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .ql-panel-note {
+      margin: 2px 0 0;
+      color: var(--ql-muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .ql-problem-rail {
+      display: grid;
+    }
+
+    .ql-problem-node {
+      position: relative;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr);
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .ql-problem-node + .ql-problem-node { border-top: 1px solid var(--ql-line); }
+
+    .ql-node-number {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border: 1px solid var(--ql-line-strong);
+      border-radius: 3px;
+      background: var(--ql-gray-soft);
+      color: var(--ql-green-dark);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .ql-node-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 7px;
+    }
+
+    .ql-node-title {
+      color: var(--ql-strong);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .ql-node-copy {
+      margin-bottom: 0;
+      color: var(--ql-ink);
+      line-height: 1.7;
+    }
+
+    .ql-node-reason {
+      margin: 8px 0 0;
+      color: var(--ql-muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .ql-impact-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 15px 16px 16px;
+    }
+
+    .ql-impact-tag {
+      border-color: var(--ql-line);
+      background: var(--ql-gray-soft);
+      color: var(--ql-ink);
+      font-weight: 500;
+    }
+
+    .ql-table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--ql-ink);
+      font-size: 12px;
+      text-align: left;
+    }
+
+    th {
+      padding: 9px 12px;
+      color: var(--ql-muted);
+      background: var(--ql-gray-soft);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 11px 12px;
+      border-top: 1px solid var(--ql-line);
+      vertical-align: top;
+    }
+
+    .ql-criteria-name {
+      min-width: 120px;
+      color: var(--ql-strong);
+      font-weight: 600;
+    }
+
+    .ql-target-value { color: var(--ql-muted); white-space: nowrap; }
+
+    .ql-confirm-panel {
+      border-color: #ecd8bf;
+      background: #fffdf9;
+    }
+
+    .ql-confirm-panel .ql-panel-head { background: var(--ql-orange-soft); }
+
+    .ql-missing-list {
+      margin: 0;
+      padding: 7px 16px 12px 34px;
+    }
+
+    .ql-missing-list li {
+      margin: 7px 0;
+      padding-left: 2px;
+      color: var(--ql-ink);
+    }
+
+    .ql-question-list {
+      display: grid;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ql-question-item {
+      padding: 14px 16px;
+      border-top: 1px solid var(--ql-line);
+    }
+
+    .ql-question-item:first-child { border-top: 0; }
+
+    .ql-question-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .ql-question-copy {
+      color: var(--ql-strong);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .ql-question-meta {
+      margin: 6px 0 0;
+      color: var(--ql-muted);
+      font-size: 12px;
+    }
+
+    .ql-evidence-row td:first-child { min-width: 120px; }
+
+    .ql-evidence-name {
+      display: block;
+      color: var(--ql-strong);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .ql-evidence-copy {
+      display: -webkit-box;
+      overflow: hidden;
+      color: var(--ql-ink);
+      line-height: 1.6;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .ql-evidence-confidence { color: var(--ql-teal); white-space: nowrap; }
+
+    .ql-entry-list {
+      margin: 0;
+      padding: 7px 16px 14px 34px;
+    }
+
+    .ql-entry-list li { margin: 7px 0; }
+
+    .ql-empty {
+      padding: 20px 16px;
+      color: var(--ql-muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .ql-problem-card { width: min(100% - 24px, 680px); margin: 12px auto; }
+      .ql-card-head { display: block; padding: 20px; }
+      .ql-head-meta { display: flex; justify-items: start; align-items: center; gap: 10px; margin-top: 12px; }
+      .ql-main { padding: 16px; }
+      .ql-content-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 21px; }
+      .ql-decision-copy { font-size: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .ql-card-head { padding: 18px 16px; }
+      .ql-main { padding: 12px; }
+      .ql-decision-panel { padding: 16px; }
+      .ql-problem-node { grid-template-columns: 30px minmax(0, 1fr); padding: 14px; }
+      .ql-node-head,
+      .ql-question-head { align-items: flex-start; flex-direction: column; }
+      .ql-decision-meta span + span::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  {% set status_labels = {'confirmed': '已确认', 'inferred': '推断结论', 'missing': '待确认'} %}
+  {% set problem_chain = [
+    {'number': '01', 'label': '表层问题', 'item': pd.surface_problem},
+    {'number': '02', 'label': '深层问题', 'item': pd.deep_problem},
+    {'number': '03', 'label': '决策问题', 'item': pd.decision_problem}
+  ] %}
+  <article class="ql-problem-card">
+    <header class="ql-card-head">
+      <div>
+        <div class="ql-breadcrumb">问题定义 / 结构化分析</div>
+        <h1>{{ case_name }}</h1>
+        <p class="ql-subtitle">从客户表达、业务约束与证据来源中形成可审阅的管理决策输入。</p>
+      </div>
+      <div class="ql-head-meta">
+        <span class="ql-status-tag ql-status-tag--{{ pd.decision_problem.status }}">{{ status_labels.get(pd.decision_problem.status, '待确认') }}</span>
+        <span class="ql-asset-label">问题定义资产</span>
+      </div>
+    </header>
+
+    <main class="ql-main">
+      <section class="ql-decision-panel" aria-labelledby="decision-title">
+        <div class="ql-section-kicker"><span class="ql-section-index">01</span>管理层待决事项</div>
+        <h2 id="decision-title" class="ql-decision-copy">{{ pd.decision_problem.value }}</h2>
+        <div class="ql-decision-meta">
+          <span>状态：{{ status_labels.get(pd.decision_problem.status, '待确认') }}</span>
+          <span>已关联 {{ evidence|length }} 条来源证据</span>
+          <span>需先完成范围与价值确认</span>
+        </div>
+      </section>
+
+      <div class="ql-content-grid">
+        <div class="ql-stack">
+          <section class="ql-panel" aria-labelledby="problem-chain-title">
+            <div class="ql-panel-head">
+              <div>
+                <h2 id="problem-chain-title" class="ql-panel-title">问题链路</h2>
+                <p class="ql-panel-note">保留客户表达，并将事实、推断与管理决策分层呈现。</p>
+              </div>
+            </div>
+            <div class="ql-problem-rail">
+              {% for node in problem_chain %}
+              <div class="ql-problem-node">
+                <span class="ql-node-number">{{ node.number }}</span>
+                <div>
+                  <div class="ql-node-head">
+                    <span class="ql-node-title">{{ node.label }}</span>
+                    <span class="ql-status-tag ql-status-tag--{{ node.item.status }}">{{ status_labels.get(node.item.status, '待确认') }}</span>
+                  </div>
+                  <p class="ql-node-copy">{{ node.item.value }}</p>
+                  {% if node.item.reason %}<p class="ql-node-reason">判断依据：{{ node.item.reason }}</p>{% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+
+          <section class="ql-panel" aria-labelledby="evidence-title">
+            <div class="ql-panel-head">
+              <div>
+                <h2 id="evidence-title" class="ql-panel-title">来源证据</h2>
+                <p class="ql-panel-note">每一条结论应回到可追溯的原始材料。</p>
+              </div>
+              <span class="ql-status-tag ql-status-tag--inferred">{{ evidence|length }} 条</span>
+            </div>
+            <div class="ql-table-wrap">
+              <table>
+                <thead><tr><th scope="col">来源</th><th scope="col">证据摘要</th><th scope="col">置信度</th></tr></thead>
+                <tbody>
+                  {% for item in evidence %}
+                  <tr class="ql-evidence-row">
+                    <td><span class="ql-evidence-name">{{ item.source_name }}</span><span class="ql-source-id">{{ item.evidence_id }}</span></td>
+                    <td><span class="ql-evidence-copy">{{ item.content }}</span></td>
+                    <td class="ql-evidence-confidence">{{ '%.0f'|format(item.confidence * 100) }}%</td>
+                  </tr>
+                  {% else %}
+                  <tr><td colspan="3" class="ql-empty">尚未关联来源证据</td></tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="ql-panel" aria-labelledby="entry-title">
+            <div class="ql-panel-head">
+              <div>
+                <h2 id="entry-title" class="ql-panel-title">方案切入点</h2>
+                <p class="ql-panel-note">先验证问题与价值，再进入具体解决方案设计。</p>
+              </div>
+            </div>
+            <ul class="ql-entry-list">{% for item in pd.solution_entry_points %}<li>{{ item }}</li>{% endfor %}</ul>
+          </section>
+        </div>
+
+        <aside class="ql-stack" aria-label="问题定义补充信息">
+          <section class="ql-panel" aria-labelledby="impact-title">
+            <div class="ql-panel-head"><h2 id="impact-title" class="ql-panel-title">业务影响</h2></div>
+            <div class="ql-impact-list">{% for item in pd.business_impacts %}<span class="ql-impact-tag">{{ item }}</span>{% endfor %}</div>
+          </section>
+
+          <section class="ql-panel" aria-labelledby="criteria-title">
+            <div class="ql-panel-head">
+              <div>
+                <h2 id="criteria-title" class="ql-panel-title">成功标准</h2>
+                <p class="ql-panel-note">以可验收指标锁定试点边界与价值。</p>
+              </div>
+            </div>
+            <div class="ql-table-wrap">
+              <table>
+                <thead><tr><th scope="col">维度</th><th scope="col">验收口径</th><th scope="col">目标值</th></tr></thead>
+                <tbody>{% for item in pd.success_criteria %}<tr><td class="ql-criteria-name">{{ item.dimension }}</td><td>{{ item.metric or item.criterion }}</td><td class="ql-target-value">{{ item.target_value or '待确认' }}</td></tr>{% endfor %}</tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="ql-panel ql-confirm-panel" aria-labelledby="missing-title">
+            <div class="ql-panel-head">
+              <div>
+                <h2 id="missing-title" class="ql-panel-title">待确认信息</h2>
+                <p class="ql-panel-note">缺失信息会直接影响范围、投入与验收判断。</p>
+              </div>
+              <span class="ql-status-tag ql-status-tag--missing">{{ pd.missing_information|length }} 项</span>
+            </div>
+            <ul class="ql-missing-list">{% for item in pd.missing_information %}<li>{{ item }}</li>{% endfor %}</ul>
+          </section>
+
+          <section class="ql-panel" aria-labelledby="question-title">
+            <div class="ql-panel-head">
+              <div>
+                <h2 id="question-title" class="ql-panel-title">优先澄清问题</h2>
+                <p class="ql-panel-note">先由对应业务角色补齐决策所需信息。</p>
+              </div>
+            </div>
+            <ol class="ql-question-list">
+              {% for item in questions %}
+              <li class="ql-question-item">
+                <div class="ql-question-head"><span class="ql-question-copy">{{ item.question }}</span><span class="ql-priority-tag ql-priority-tag--{{ item.priority|lower }}">{{ item.priority }}</span></div>
+                <p class="ql-question-meta">对象：{{ item.target_role }}　·　目的：{{ item.purpose }}</p>
+              </li>
+              {% endfor %}
+            </ol>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </article>
+</body>
+</html>

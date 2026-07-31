@@ -19,6 +19,27 @@ Also use:
 - `得到大脑（Get笔记）` skill for verified note save / KB attachment
 - `imagegen` skill for every final visual
 
+## Current Recommendation Strategy
+
+This pipeline should not select innovation products only because they are new. It should select products that help the account own a narrow WeChat recommendation path:
+
+> `工业智能体落地方法号`：具体设备、具体流程、具体系统、具体责任边界。
+
+Priority product angles:
+
+- products that can become `设备智能体从 0 到 1` source material: 设备知识库、维修、点检、故障诊断、备件、巡检、售后
+- products that can become `工厂流程智能体从 0 到 1` source material: 工单、采购确认、订单处理、质量异常、报表分析、排产
+- products that show `老系统长出智能体`: MES、ERP、PLM、SCADA、APS、WMS integration with knowledge, tools, approvals, logs, and human confirmation
+
+For each chosen company/product, explicitly decide:
+
+- it maps to which industrial workflow
+- what minimum data package it would need
+- what permission or human-confirmation boundary makes it safe
+- what future main article it can support
+
+Avoid broad AI-agent platform announcements unless there is a visible industrial workflow, device, system integration, or deployment path.
+
 ## Mission
 
 Take the current innovation-product research and turn it into:
@@ -83,10 +104,14 @@ If richer links are required, keep them in the review bundle or create a compani
    - default one case = one image card
    - keep original source URLs
    - weak facts must be marked `未确认` / `未公开`
+   - each case must include `落地标签`: `设备智能体` / `工厂流程智能体` / `老系统智能体` / `暂不适合主文`
+   - each case must include `可延展主文`: a future concrete article angle, or explain why it cannot support one
 3. Write copy for each case.
    - `标题`: short, direct, no hype
    - `观点`: one sharp sentence
    - `说明`: what happened, why it matters, what industrial readers should notice
+   - `最小资料包`: documents, records, system data, logs, rules, or knowledge needed for the product to land
+   - `权限边界`: what can be suggested, generated, executed, or must require human confirmation
    - `来源`: keep raw URLs in the review bundle; in `newspic`, include them as named plain-text URL lines
 4. Generate visuals with `imagegen`.
    - one image per case
@@ -125,6 +150,10 @@ Each case should include:
 - `案例标题`
 - `一句观点`
 - `案例说明`
+- `落地标签`
+- `最小资料包`
+- `权限边界`
+- `可延展主文`
 - `来源链接`
 - `配图说明`
 
@@ -185,12 +214,18 @@ Recommended review markdown:
 - 草稿 media_id：
 - 案例数：
 - 图片比例：`9:16`
+- 推荐路径判断：
+- 可延展主文：
 
 ## 案例清单
 
 ### 01
 - 标题：
 - 观点：
+- 落地标签：
+- 最小资料包：
+- 权限边界：
+- 可延展主文：
 - 配图路径：
 - 来源链接：
 

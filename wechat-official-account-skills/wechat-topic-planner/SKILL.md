@@ -7,7 +7,7 @@ description: Use to build high-conversion WeChat topic systems for 智能体架�
 
 Use this skill when selecting or refining topics for the WeChat Official Account `智能体架构笔记`.
 
-Read `../references/account-positioning.md` before planning topics.
+Read `../references/account-positioning.md` and `../references/growth-playbook.md` before planning topics.
 
 ## Mission
 
@@ -72,6 +72,13 @@ When recent article signals exist, use them as hard steering input.
 
 Current validated signal for this account:
 
+- The strongest repeatable pattern is `真实公司 / 真实流程 / 真实结果 / 清晰业务代价`.
+- 《怎么从 0 到 1 配一个设备知识库智能体》 was a recommendation hit, but it is one article-level signal. Do not treat `从 0 到 1` as a reusable breakout formula.
+- The account should lean from `工业 AI 信息号` toward `AI 落地复盘与决策笔记`, not toward a stream of setup tutorials.
+- Topic planning should help WeChat recognize stable industrial tags such as `设备`、`质量`、`维修`、`工单`、`MES`、`运维`, while varying the editorial question and article structure.
+- Recommendation traffic matters more than old-subscriber opening for breakout pieces.
+  A topic should be easy for WeChat to match to a specific reader/job/scenario, not merely interesting to existing followers.
+- Search traffic is still weak, so durable series topics should include stable search phrases in titles and early paragraphs.
 - `真实公司 / 真实产品 / 真实流程 / 真实价值` 的工业落地案例
   明显强于纯架构解释文
 - 抽象技术话题仍然可写，但应默认服务于真实场景，不应连续主导排期
@@ -80,9 +87,10 @@ Current validated signal for this account:
 
 Default content priority should therefore be:
 
-1. 真实工业企业案例
-2. 真实 AI 产品或方案进入企业流程的案例
-3. 服务于真实场景的技术解释
+1. 真实工业企业案例复盘：投入、流程变化、结果、边界
+2. 阶段总结与横向比较：从一组案例中形成可争辩、可复述的判断
+3. 失败复盘与客户决策：预算、验收、使用率、供应商选择、ROI
+4. 服务于明确需求的方法与架构拆解
 
 Do not let multiple consecutive abstract architecture pieces crowd out real landing stories.
 
@@ -90,6 +98,10 @@ Do not let multiple consecutive abstract architecture pieces crowd out real land
 
 Prefer topics that:
 
+- name one concrete customer, role, industrial object, or workflow owner
+- expose a decision the reader is currently facing: whether to invest, how to verify, why adoption failed, or which solution to choose
+- contain at least one evidence anchor: a named company, a verifiable result, an actual workflow change, or an explicitly labeled unknown
+- have practical value: decision questions, failure signals, acceptance criteria, comparison dimensions, or a reusable operating pattern
 - start from a real company, real workflow, real industrial conflict, or real project tension when possible
 - connect AI technology to real industrial or manufacturing workflows
 - expose a management, sales, delivery, ROI, data, or organizational conflict
@@ -103,6 +115,10 @@ Prefer topics that:
 
 Avoid topics that:
 
+- stay at `工业 AI 趋势` or `Agent 趋势` without a specific factory role, system, device, or workflow
+- only chase broad AI news that WeChat will classify into a generic AI content pool
+- repeat `怎么从 0 到 1 配一个……` when any of the previous four main articles used that frame
+- start with a fictionalized case or fill evidence gaps with plausible but unverified details
 - stay at architecture, tooling, or concept level without a real workflow owner
 - only summarize product releases
 - only compare tools without a business implication
@@ -131,7 +147,7 @@ Score each dimension out of 20.
 
 传播潜力：
 
-- 16-20: Has conflict, counterintuitive judgment, or identity relevance that readers may share.
+- 16-20: Has conflict, counterintuitive judgment, identity relevance, or a clear WeChat recommendation tag around one concrete industrial scenario.
 - 11-15: Clear and useful but not strongly shareable.
 - 0-10: Flat or internal-facing.
 
@@ -143,9 +159,28 @@ Score each dimension out of 20.
 
 可持续性：
 
-- 16-20: Can extend into a series, cases, checklist, template, or follow-up debate.
+- 16-20: Can extend into a series, cases, checklist, template, search keyword cluster, or follow-up debate.
 - 11-15: Can produce 1-2 follow-ups.
 - 0-10: One-off topic.
+
+## Recommended Series Tracks
+
+When no stronger user direction is provided, rotate among these series tracks:
+
+- `项目复盘账本`: 一个真实项目为什么启动、改了哪段流程、拿到什么结果、哪些条件不能照抄。
+- `老板的 AI 决策题`: 预算、ROI、验收、第二阶段投资、供应商选择和责任归属。
+- `工业 AI 阶段结论`: 从近期一组案例中总结共性、分歧、失败边界和下一步变化。
+- `落地后的第二天`: 系统上线以后，谁在用、谁不用、为什么绕开、怎样进入日常经营。
+- `方法工具箱`: 少量架构、清单和实施方法，用来承接已经有明确需求的读者。
+
+For each priority topic, ensure the brief includes:
+
+- 客户对象：谁会因为这个问题停下来读
+- 业务代价：不解决时正在损失什么
+- 证据锚点：真实公司、结果数字、流程变化或明确的未知边界
+- 决策价值：读完后能改变哪一个判断或动作
+- 转化动作：与正文问题直接相关的案例征集、诊断清单、方案对照或咨询入口
+- 内容类型：案例复盘 / 阶段总结 / 失败复盘 / 决策文 / 方法文
 
 ## Output Format
 

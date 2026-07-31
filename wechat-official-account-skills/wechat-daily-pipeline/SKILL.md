@@ -19,8 +19,28 @@ This skill orchestrates:
 Read:
 
 - `../references/account-positioning.md`
+- `../references/growth-playbook.md`
 - `../references/style-system.md`
 - `../references/review-checklist.md`
+
+## Current Recommendation Strategy
+
+When no stronger user instruction overrides it, run the daily pipeline as an `AI 落地复盘与决策笔记` workflow, not a generic `工业 AI 信息号` workflow or a setup-tutorial stream.
+
+Use the validated recommendation signal from recent backend data:
+
+- strongest repeatable main-article pattern: `真实公司 / 真实流程 / 真实结果 / 清晰业务代价`
+- proven tag cluster: `设备 / 工业 / 智能体 / 知识库`
+- priority search/recommendation phrases: `设备智能体`、`工业智能体`、`设备知识库`、`设备维修智能体`、`故障诊断`、`点检`、`工单`、`MES`、`运维`
+- `从 0 到 1` is one historical article-level signal, not a reusable breakout formula
+
+Practical default:
+
+- Rotate the four-week mix around `真实案例复盘 50% + 阶段总结 30% + 方法拆解 20%`.
+- If recent main articles are dominated by setup methods, the next main article must be a case review, stage summary, failure review, or customer-decision piece.
+- If using daily reports or product research as source material, translate the source into a customer question: `谁正在为这个问题付代价，项目改了哪段工作，结果怎么验收，客户为什么会继续投入？`
+- Do not let a broad news summary become the final article unless the user explicitly asks for a news roundup.
+- For growth-oriented drafts, the title and first 300 Chinese characters should naturally expose one concrete industrial workflow tag. Do not keyword-stuff.
 
 ## Hard Boundary
 
@@ -47,16 +67,22 @@ Forbidden:
    - account positioning
    - recent operation plan
    - existing drafts and recent outputs
+   - compare at least the latest 10 main-article titles and latest 4 article structures before selecting a topic
 2. Plan topics:
    - generate candidates
    - select one recommended topic
    - produce writer brief
+   - prefer evidence-backed case reviews, stage summaries, failure reviews, or customer-decision topics over another setup article when scores are close
+   - require the selected topic brief to include minimum data package, workflow, permission boundary, and 0-1 validation path if it is a setup article
+   - reject the candidate if any of the previous four main articles used the same title frame or section sequence
 3. Write the article:
    - title, digest, cover prompt
    - content illustration brief or explicit no-illustration decision
    - conversational Chinese body
    - technical clarity + enterprise landing value
    - when recent ops feedback indicates weak first-screen attraction, prefer titles with concrete company/result/workflow hooks over repeated abstract judgment formulas
+   - case reviews must keep the real case as the article spine; stage summaries must include observation scope, counterexamples, and a customer decision
+   - use 现场问题 -> 边界定义 -> 最小资料包 -> 最小工作流 -> 权限责任 -> 0-1 验证 -> 可复用清单 only for the limited method-article slot
 4. Prepare visuals:
    - use the host agent's configured image generation capability via the `imagegen` tool first
    - generate cover image with `imagegen`
@@ -73,6 +99,7 @@ Forbidden:
    - run the dedicated human-tone reviewer on the full draft text
    - fix AI-sounding, repetitive, weak-object, or over-smoothed passages before final review
    - when possible, compare against recent drafts to avoid repeating the same opening/closing patterns
+   - fail the review when the opening is a generic invented factory scene and the article then repeats the same setup checklist used in recent drafts
    - if the draft leans on repeated crutch phrases such as `真正值钱的`、`最值得企业学的`、`下一步该补的` or too many `不是……而是……`, rewrite those sections instead of merely swapping synonyms
 7. Review:
    - run reviewer checklist

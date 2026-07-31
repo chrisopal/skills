@@ -58,6 +58,11 @@ Review for these failure modes first:
    - no friction, no hesitation, no tradeoff
    - too many perfect full-sentence claims
    - not enough “这事为什么难”“大家通常会误判什么”
+6. **客户吸引力不足**
+   - opening describes a generic role and a generic pain instead of a real case, result, or decision moment
+   - the article teaches how to build something before proving why a customer would care or pay
+   - the case disappears after the opening and the rest becomes a reusable seven-step tutorial
+   - the close says “欢迎交流” without naming the concrete problem the reader can bring
 
 ## Concrete Smell Tests
 
@@ -90,9 +95,12 @@ Specifically compare:
 
 - opening paragraph shape
 - title formula
+- article type and section sequence
 - repeated judgment templates
 - repeated endings
 - overused pet phrases
+
+If any of the previous four main drafts used `怎么从 0 到 1 配一个……`, reject another draft with the same frame unless the user explicitly requests a method series. If several recent drafts share the same seven-step setup structure, require a case review, stage summary, failure review, or customer-decision structure instead.
 
 Do not demand novelty for novelty's sake.
 
@@ -117,6 +125,7 @@ Good signs:
 - the close leaves the reader with one repeatable line, not a generic summary
 - each section feels like it answers one business question before moving to the next
 - recommendation lines sound natural in spoken Chinese, not like sloganized commentary
+- a potential customer can name the budget, adoption, acceptance, or supplier-choice problem this article helps them discuss
 
 ## Editing Standard
 

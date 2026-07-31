@@ -10,6 +10,7 @@ Use this skill when the goal is a closed loop from `工业AI日报` to a WeChat 
 Read:
 
 - `../references/account-positioning.md`
+- `../references/growth-playbook.md`
 - `../references/style-system.md`
 - `../references/review-checklist.md`
 - `../references/imagepost-draft-api.md`
@@ -18,6 +19,27 @@ Also use:
 
 - `得到大脑（Get笔记）` skill for verified note save / KB attachment
 - `imagegen` skill for every final visual
+
+## Current Recommendation Strategy
+
+This pipeline is still a daily image-post workflow, but it should now feed the account's stronger growth path:
+
+> `工业智能体落地方法号`：给制造业老板、数字化负责人、设备/运维/IT 负责人看的工业智能体落地笔记。
+
+When selecting or rewriting daily cases, prefer cases that can become future main articles in one of these tracks:
+
+- `设备智能体从 0 到 1`: 设备知识库、设备维修、设备点检、故障诊断、备件、产线巡检、售后处置
+- `工厂流程智能体从 0 到 1`: 工单处理、采购确认、订单处理、质量异常、报表分析、排产调整
+- `老系统长出智能体`: MES、ERP、PLM、SCADA、APS、WMS 等系统如何接入知识、流程、权限、日志和人工确认
+
+Case selection priority:
+
+1. A real company/product entering a concrete manufacturing workflow.
+2. A case that exposes equipment, maintenance, quality, production, supply chain, service, or industrial software integration.
+3. A case that yields a reusable checklist, data package, workflow pattern, permission boundary, or 0-1 rollout path.
+4. Broad industrial AI funding, model, or platform news only when it can be translated into a concrete factory workflow.
+
+Avoid turning the image post into a generic AI news digest. Every selected case should answer: `这件事能给哪个工业智能体落地场景提供素材？`
 
 ## Mission
 
@@ -85,11 +107,14 @@ Do not promise fully rich HTML links inside `newspic` body unless verified in th
    - one case = one visual card
    - keep the original source URLs
    - mark weak facts as `未确认`
+   - tag each case with one landing track: `设备智能体` / `工厂流程智能体` / `老系统智能体` / `暂不适合主文`
+   - if fewer than 2 cases can map to a concrete landing track, continue searching or rewrite the case set before image generation
 4. Write copy for each case.
    - `标题`: short, direct, no hype
    - `观点`: one sentence in the account voice
    - `说明`: what happened, why it matters, what industrial readers should notice
    - `整体方案`: 2 short lines explaining how the solution works end to end; do not reduce this to a slogan
+   - `可延展主文`: one future article angle such as `怎么从 0 到 1 配一个设备维修智能体`
    - `来源`: keep raw URLs in the review bundle; in `newspic`, include them as plain text lines unless the current account confirms richer support
 5. Generate visuals with `imagegen`.
    - one image per case
@@ -131,6 +156,8 @@ Each case should include:
 - `一句观点`
 - `案例说明`
 - `整体方案`
+- `落地标签`: one of `设备智能体` / `工厂流程智能体` / `老系统智能体` / `暂不适合主文`
+- `可延展主文`: a future `从 0 到 1` or concrete workflow article angle
 - `来源链接`
 - `配图说明`
 
@@ -219,12 +246,16 @@ Recommended review markdown:
 - 去重检查：
 - 是否发现与已发表/已保存内容重复：
 - 视觉审核：
+- 推荐路径判断：
+- 可延展主文：
 
 ## 案例清单
 
 ### 01
 - 标题：
 - 观点：
+- 落地标签：
+- 可延展主文：
 - 配图路径：
 - 视觉审核：
 - 来源链接：

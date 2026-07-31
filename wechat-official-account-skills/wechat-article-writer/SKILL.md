@@ -7,7 +7,7 @@ description: Use when drafting WeChat articles for 智能体架构笔记 that ne
 
 Use this skill to write or rewrite article drafts for `智能体架构笔记`.
 
-Read `../references/account-positioning.md` before writing.
+Read `../references/account-positioning.md` and `../references/growth-playbook.md` before writing.
 
 ## Writing Goal
 
@@ -26,6 +26,8 @@ Current operating preference for this account:
 - tell the story through one concrete workflow, not through platform abstraction first
 - explain the technical path only after the reader can already see the business scene
 - if the user references a known living business writer, translate that into high-level writing traits rather than direct imitation
+- when writing main industrial AI pieces, default to `AI 落地复盘与决策笔记`, not `工业 AI 信息号` or a setup-tutorial stream
+- prefer `真实公司 / 真实流程 / 真实结果 / 清晰业务代价`; use `从 0 到 1` only for occasional method pieces, never as the default title engine
 
 ## Business-First Rule
 
@@ -58,19 +60,24 @@ Priority order:
 
 Good title shapes:
 
-- `企业做 Agent，为什么……`
-- `为什么很多 AI 项目……`
-- `AI 应用一上线，真正卡住它的不是……`
-- `如果你在做企业 AI，先别急着……`
+- `最近这批工业 AI 项目，我只追问三件事：谁在用、怎么验收、为什么继续投`
+- `POC 已经跑通，为什么老板还是不愿意批第二笔预算`
+- `设备知识库上线半年，维修工为什么还在微信群里问老师傅`
+- `同样叫 AI 质检，客户为什么愿意为一种方案付钱，另一种只看演示`
+- `上市周期少了 10 天，Dos Pinos 先交给 AI 的为什么是包装校对`
 - `10 周上线，90% 自动通过：……怎么做`
 - `某家公司把……交给 AI，结果怎样`
 - `一个具体流程，怎么从手工变成自动通过`
 
 Avoid by default:
 
+- `工业 AI 未来趋势如何`
+- `智能体将重塑制造业`
+- `企业为什么要拥抱 Agent`
 - `X 技术为什么正在取代 Y 技术`
 - `A、B、C、D 到底是什么关系`
 - `为什么 X 突然成了热点`
+- 连续使用 `怎么从 0 到 1 配一个……智能体`
 - 连续多篇都复用同一套“为什么……不是……”或“先别急着……”句式
 - 标题只有观点，没有公司、结果、流程对象这三个抓手里的任何一个
 
@@ -82,6 +89,33 @@ When recent operational feedback suggests low first-screen clickthrough, prefer 
 2. 具体公司或场景
 3. 具体流程对象
 4. 最后才是抽象判断
+
+For WeChat recommendation and search, make the concrete workflow visible in the title whenever natural:
+
+- `设备智能体`
+- `设备知识库`
+- `设备维修智能体`
+- `设备点检智能体`
+- `故障诊断智能体`
+- `工单处理智能体`
+- `MES / 工单 / 点检 / 运维 / 售后`
+
+Do not stuff keywords. One clear, natural phrase is better than a title that reads like SEO.
+
+## Case-First and Customer-Impact Rule
+
+For case reviews and customer-attraction pieces, do not open with a definition, a generic factory role, or a made-up scene.
+
+Open from one of these evidence-backed moments:
+
+- a real cost, delay, quality escape, stoppage, or approval conflict
+- a named company's decision and the workflow it changed
+- a verified before/after result
+- a sharp contradiction visible across several researched cases
+
+Keep the case in the article after the opening. Explain who approved the change, what existing work was altered, how the result was measured, and what remains unknown. A case that appears only in the first two paragraphs is decoration, not the article's spine.
+
+Customer attraction comes from recognition, not sales language. Make the reader see their own budget risk, adoption problem, acceptance gap, or supplier-choice problem before offering any method.
 
 ## Voice / 语气
 
@@ -96,11 +130,11 @@ Preferred tone:
 
 For this account, a strong business-column tone usually means:
 
-- open from one business question, not from a term definition
+- open from one observed fact, case, result, or decision moment, not from a term definition
 - explain like you are talking across a meeting table, not reading a report
-- move layer by layer: `先抛问题 -> 拆原因 -> 讲机制 -> 落回动作`
-- each short section carries one takeaway
-- the close leaves one sentence the reader can retell
+- let the material determine the order; do not force every article through the same `问题 -> 原因 -> 机制 -> 动作` ladder
+- vary section length and paragraph rhythm according to the evidence
+- close where the argument naturally ends; do not manufacture a slogan for forwarding
 - keep the structure sharp, but let the wording sound like something a real operator would actually say in conversation
 
 If the user mentions a living writer such as 刘润:
@@ -108,14 +142,7 @@ If the user mentions a living writer such as 刘润:
 - do not imitate that writer's exact wording, rhythm, or signature formulas
 - do extract the broad qualities the user likely wants: business-first framing, conversational clarity, layered explanation, and strong takeaways
 
-Useful sentence shapes:
-
-- “真正麻烦的地方是……”
-- “看 demo 的时候，这件事很容易被忽略。”
-- “说白了，这不是一个模型问题，而是一个流程问题。”
-- “这事不丢人，很多项目都会卡在这里。”
-- “如果你是业务负责人/交付负责人/产品负责人，你真正会担心的是……”
-- “企业最后买单的，不是这个概念，而是它能不能进流程。”
+Do not prescribe reusable sentence shapes. Build sentences from the case's concrete nouns and actions: who approved, who reworked, what stopped, what changed, what was measured, and what remains unknown.
 
 Avoid:
 
@@ -128,16 +155,12 @@ Avoid:
 
 When writing a business explainer piece, preserve the explanatory structure but make the wording more natural and more speakable.
 
-Prefer:
-
-- `优先需要做的是……`
-- `下一步比较合理的是……`
-- `先把……接起来`
-- `你真要往前走，先看……`
-- `更现实的问题是……`
-
 Avoid sentence frames that sound like detached commentary instead of a practitioner talking to a peer:
 
+- `真正麻烦的地方是`
+- `说白了`
+- `你真要往前走，先看`
+- `企业最后买单的，不是……而是……`
 - `这条线很值得盯`
 - `更值得关注的是`
 - `这个信号是`
@@ -206,6 +229,29 @@ When writing an industrial landing or real-company case, prefer this stronger st
 4. 技术路径：数据、模型、工作流、系统集成、人工确认分别怎么接
 5. 业务价值：效率、质量、交付、成本、人员复制、响应速度拿到了什么变化
 6. 洞见收尾：别的企业可以学什么，哪些条件不具备时别照抄
+
+When writing a stage summary, use this structure:
+
+1. 观察范围：这次总结基于哪些时间、行业或案例，不夸大样本
+2. 共性发现：反复出现了什么，给出案例证据
+3. 分歧与反例：哪些项目走了不同路径，为什么
+4. 客户决策：老板、数字化负责人或供应商应该改变哪一个判断
+5. 下一阶段：哪些问题值得继续跟踪，哪些结论仍未确认
+
+When the editorial mix explicitly calls for a `从 0 到 1 配一个……智能体` method article, this structure is available:
+
+1. 现场问题：谁在设备、维修、点检、故障、工单或售后流程里卡住了
+2. 边界定义：它不是聊天机器人，而是能查资料、问清问题、给步骤、留记录的现场助手
+3. 最小资料包：设备台账、说明书、故障码、维修工单、保养计划、备件清单、历史经验等
+4. 最小工作流：报故障/提交任务 -> 识别对象 -> 检索资料 -> 追问现象 -> 给排查步骤 -> 生成记录
+5. 权限和责任：哪些只能建议，哪些可以自动生成，哪些必须人工确认
+6. 0-1 验证步骤：先选 1 类设备或 1 条流程，导入有限资料，整理高频问题，跑真实案例
+7. 可复用清单：先做什么、不要做什么、做到什么算可用
+
+For this article type, the first 300 Chinese characters should naturally include 1-3 stable search/recommendation terms such as `设备智能体`、`设备知识库`、`故障诊断`、`点检`、`工单`、`运维`.
+The terms must appear because the scene needs them, not as mechanical keyword stuffing.
+
+Do not schedule this article type if any of the previous four main articles used the same frame. Do not reuse the seven-step structure for case reviews or stage summaries.
 
 Default paragraph ordering:
 
@@ -302,8 +348,12 @@ At the top of the Markdown draft include:
 Before handing off to layout or review, ensure:
 
 - the title can be understood by an enterprise reader who is not deep in AI tooling jargon
+- the title gives WeChat a specific industrial recommendation tag when the article is intended as a main growth piece
 - the core point appears in the first 3 paragraphs
 - the first 150 words mention a real workflow, role, or business consequence
+- case-led pieces open from verifiable evidence and continue using the case throughout the article
+- stage summaries name their observation range, include counterexamples, and turn the synthesis into a customer decision
+- for `从 0 到 1` industrial agent pieces, the draft includes minimum data package, minimum workflow, permission boundary, and 0-1 validation steps
 - when possible, the article is anchored in a real company, real product, or real workflow rather than a pure abstract concept
 - every technical term is tied to a real problem
 - enterprise landing is not treated as an afterthought

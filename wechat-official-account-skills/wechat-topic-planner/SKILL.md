@@ -7,7 +7,7 @@ description: Use to build high-conversion WeChat topic systems for 智能体架�
 
 Use this skill when selecting or refining topics for the WeChat Official Account `智能体架构笔记`.
 
-Read `../references/account-positioning.md` and `../references/growth-playbook.md` before planning topics.
+Read `../references/account-positioning.md`, `../references/growth-playbook.md`, and `../references/topic-pool-workflow.md` before planning topics.
 
 ## Mission
 
@@ -44,17 +44,22 @@ If some fields are missing, infer reasonable defaults from account positioning a
 
 ## Workflow
 
-1. Inspect recent drafts, published articles, operation plan, and user-provided inputs if available.
-2. Generate 10 topic candidates.
-3. For each topic, include one-sentence explanation and score it across five dimensions（五维评分）:
+1. Run the topic-pool gate:
+   - read the local topic pool and, when Get笔记 is available, its `公众号选题库` master-index note
+   - reconcile by stable `topic_id`; never infer `PUBLISHED` from a local file or a draft-save response
+   - exclude semantic duplicates already in `DRAFTING`, `READY_LOCAL`, `DRAFT_SAVED`, or `PUBLISHED`
+   - prefer existing `SELECTED` and P0 `BACKLOG` topics before inventing new candidates
+2. Inspect recent drafts, published articles, operation plan, and user-provided inputs if available.
+3. Generate up to 10 topic candidates. Reuse the existing `topic_id` for candidates already in the pool. Assign a new series-scoped ID only after duplicate screening when the topic is genuinely new.
+4. For each topic, include one-sentence explanation and score it across five dimensions（五维评分）:
    - 目标读者价值，20 分
    - 专业壁垒，20 分
    - 传播潜力，20 分
    - 转化潜力，20 分
    - 可持续性，20 分
-4. Sort or identify the strongest topics by total score and strategic fit.
-5. Select the top 3 priority topics.
-6. For each priority topic, produce a full article brief:
+5. Sort or identify the strongest topics by total score and strategic fit.
+6. Select the top 3 priority topics. Mark the recommended next article `SELECTED` in the local pool and sync the same record to Get笔记. Do not mark the other two selected unless they enter an actual schedule.
+7. For each priority topic, produce a full article brief:
    - 推荐标题 3 个
    - 目标读者
    - 核心观点
@@ -63,8 +68,22 @@ If some fields are missing, infer reasonable defaults from account positioning a
    - 结尾转化方式
    - 建议故事开篇
    - 建议配图 2-4 张
-7. Judge whether the topics should become a series.
-8. Produce next-week publishing schedule.
+8. Judge whether the topics should become a series.
+9. Produce next-week publishing schedule.
+
+## Topic Pool Contract
+
+Every selected topic must carry:
+
+- `topic_id`
+- series
+- current status
+- target reader
+- business line (`培训咨询` / `产品` / `双线`)
+- conversion target
+- evidence requirement
+
+The near-term schedule should default to approximately `培训咨询 60% / 产品 40%`. Training and consulting topics primarily serve manufacturing digital departments; product topics primarily support the AI project-management platform, AI bid agent, and AI consulting platform.
 
 ## Proven Signals
 
@@ -195,13 +214,16 @@ For each priority topic, ensure the brief includes:
 
 ## 候选选题
 
-| # | 选题 | 一句话说明 | 读者价值 | 专业壁垒 | 传播潜力 | 转化潜力 | 可持续性 | 总分 |
-|---|---|---|---:|---:|---:|---:|---:|---:|
+| # | topic_id | 选题 | 当前状态 | 业务线 | 一句话说明 | 读者价值 | 专业壁垒 | 传播潜力 | 转化潜力 | 可持续性 | 总分 |
+|---|---|---|---|---|---|---:|---:|---:|---:|---:|---:|
 
 ## 优先写的 3 个选题
 
 ### 选题 1：
 
+- topic_id：
+- 当前状态：
+- 业务线：
 - 推荐标题：
   1.
   2.

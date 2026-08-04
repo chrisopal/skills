@@ -22,6 +22,7 @@ Read:
 - `../references/growth-playbook.md`
 - `../references/style-system.md`
 - `../references/review-checklist.md`
+- `../references/topic-pool-workflow.md`
 
 ## Current Recommendation Strategy
 
@@ -66,9 +67,12 @@ Forbidden:
 1. Read operation context:
    - account positioning
    - recent operation plan
+   - local topic pool and the Get笔记 `公众号选题库` master index
    - existing drafts and recent outputs
    - compare at least the latest 10 main-article titles and latest 4 article structures before selecting a topic
 2. Plan topics:
+   - resolve or create one stable `topic_id` after duplicate screening
+   - update the selected record to `SELECTED`, then `RESEARCHING` when evidence collection begins
    - generate candidates
    - select one recommended topic
    - produce writer brief
@@ -76,6 +80,7 @@ Forbidden:
    - require the selected topic brief to include minimum data package, workflow, permission boundary, and 0-1 validation path if it is a setup article
    - reject the candidate if any of the previous four main articles used the same title frame or section sequence
 3. Write the article:
+   - update the same `topic_id` to `DRAFTING` when the Markdown draft is created
    - title, digest, cover prompt
    - content illustration brief or explicit no-illustration decision
    - conversational Chinese body
@@ -104,14 +109,20 @@ Forbidden:
 7. Review:
    - run reviewer checklist
    - fix P1/P2 issues before saving
+   - after local Markdown/HTML is complete, update the topic to `READY_LOCAL`
 8. Save draft:
    - use local WeChat API helper if available
    - use `.env` for credentials
    - save only as draft
+   - do not update the topic to `DRAFT_SAVED` yet
 9. Verify:
    - read back draft title, digest, content, and cover
    - confirm no publish action occurred
+   - only after successful `draft/get`, update the same `topic_id` to `DRAFT_SAVED` and record `media_id`, readback time, and audit path
+   - sync the updated local master index to Get笔记 using `/note/update`, then verify the master note remains in knowledge base `0QWLW1Kn`
 10. Report audit package.
+
+The daily pipeline never sets `PUBLISHED`. Publication status is written only after the user confirms publication or the account operator has public/backend evidence.
 
 ## Revision Policy
 
@@ -148,6 +159,9 @@ If paths differ, adapt to the current workspace and report the paths used.
 - 封面路径：
 - 插图路径：
 - 草稿 media_id：
+- 选题 ID：
+- 选题池状态：
+- Get笔记同步：
 - 审稿结论：
 - 建议调整点：
 

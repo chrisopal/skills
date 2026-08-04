@@ -7,7 +7,17 @@ description: Use when drafting WeChat articles for 智能体架构笔记 that ne
 
 Use this skill to write or rewrite article drafts for `智能体架构笔记`.
 
-Read `../references/account-positioning.md` and `../references/growth-playbook.md` before writing.
+Read `../references/account-positioning.md`, `../references/growth-playbook.md`, and `../references/topic-pool-workflow.md` before writing.
+
+## Topic Identity Gate
+
+Before drafting:
+
+1. Resolve the article to an existing `topic_id` in the topic pool by ID, title, case name, and core question.
+2. If it is a genuinely new user-directed topic, add one record only after duplicate screening.
+3. Set the selected record to `DRAFTING` and record the Markdown path when the file is created.
+4. When the local article is complete, set it to `READY_LOCAL`. The writer must not set `DRAFT_SAVED` or `PUBLISHED`; those states require external evidence handled by the pipeline/operator.
+5. Sync the same record to the Get笔记 master index when available. Never create another master-index note.
 
 ## Writing Goal
 
@@ -329,6 +339,8 @@ At the top of the Markdown draft include:
 
 ```markdown
 # 标题
+
+选题 ID：
 
 发布标题：
 

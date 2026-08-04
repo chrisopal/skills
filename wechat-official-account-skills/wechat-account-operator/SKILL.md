@@ -7,7 +7,7 @@ description: Use to operate and optimize the WeChat Official Account 智能体�
 
 Use this skill for operating `智能体架构笔记` beyond a single article.
 
-Read `../references/account-positioning.md` before making strategy recommendations.
+Read `../references/account-positioning.md` and `../references/topic-pool-workflow.md` before making strategy recommendations.
 
 ## Mission
 
@@ -29,17 +29,19 @@ Current high-confidence adjustment:
 
 ## Operating Loop
 
-1. Review recent articles and drafts.
-2. Review available metrics:
+1. Reconcile the local topic pool with the Get笔记 `公众号选题库` master index by stable `topic_id`.
+2. Review recent articles and drafts. Keep `DRAFT_SAVED` separate from `PUBLISHED`.
+3. Review available metrics:
    - reads
    - completion signals if available
    - shares
    - follows
    - comments
    - topic/category
-3. Identify what worked and what did not.
-4. Adjust topic mix, title style, article length, cover style, or publication timing.
-5. Feed recommendations into the next topic planning cycle.
+4. For confirmed published articles, update the corresponding topic to `PUBLISHED` and record publish time, public link, 24/72-hour metrics, reader feedback, and leads. Do not infer publication from a local file or `media_id`.
+5. Identify what worked and what did not.
+6. Adjust topic mix, title style, article length, cover style, or publication timing. Keep the near-term business mix around `培训咨询 60% / 产品 40%` unless verified conversion data suggests a change.
+7. Feed recommendations into the next topic planning cycle and sync the updated master index to Get笔记 via `/note/update`.
 
 ## Weekly Mix
 

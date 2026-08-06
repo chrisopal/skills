@@ -1,0 +1,25 @@
+name: PR title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  check-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Conventional Commit style
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          import sys
+
+          title = os.environ["PR_TITLE"]
+          pattern = r"^(feat|fix|docs|chore|refactor|test|ci|build|perf|style)(\([^)]+\))?: .+"
+          if not re.match(pattern, title):
+              print(f"PR title must follow Conventional Commit style: {title!r}")
+              sys.exit(1)
+          PY

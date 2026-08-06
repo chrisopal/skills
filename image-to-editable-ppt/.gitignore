@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+skills/image-to-editable-ppt/.venv/
+venv/
+env/
+ENV/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# Logs and local secrets
+*.log
+.env
+
+# Generated images, decks, and reports
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.pptx
+*.pdf
+output/
+test_output/
+temp/
+
+# Keep curated repository assets trackable.
+!assets/
+!assets/**
+
+# Tool caches
+/.claude/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Data
+/data

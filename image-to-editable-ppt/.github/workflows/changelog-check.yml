@@ -1,0 +1,45 @@
+name: Changelog check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check changelog for user-visible changes
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          python - <<'PY'
+          import os
+          import subprocess
+          import sys
+
+          body = os.environ.get("PR_BODY") or ""
+          if "- [x] Not needed: internal-only change" in body:
+              print("Changelog explicitly marked as not needed.")
+              sys.exit(0)
+
+          base_ref = os.environ.get("BASE_REF") or "main"
+          subprocess.run(["git", "fetch", "origin", base_ref], check=False)
+          diff = subprocess.check_output(
+              ["git", "diff", "--name-only", f"origin/{base_ref}...HEAD"],
+              text=True,
+          ).splitlines()
+
+          if "CHANGELOG.md" not in diff:
+              print("User-visible changes should update CHANGELOG.md, or mark the PR as internal-only.")
+              print("Changed files:")
+              for path in diff:
+                  print(f"- {path}")
+              sys.exit(1)
+
+          print("CHANGELOG.md updated.")
+          PY

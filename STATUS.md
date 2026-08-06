@@ -1,3 +1,22 @@
+## 2026-08-06 13:47:00 CST
+
+- Scope: Fork and locally install the upstream `image-to-editable-ppt` skill.
+- Changed files:
+  - `image-to-editable-ppt/` imported from the fork `chrisopal/image-to-editable-ppt-skill`.
+  - `STATUS.md`
+- Simplifications made:
+  - Kept the upstream repository layout intact so its documentation, tests, assets, and installable `skills/image-to-editable-ppt/` package remain aligned.
+  - Installed the skill through a user-level symlink at `/Users/guojiexie/.codex/skills/image-to-editable-ppt` pointing to the checked-out monorepo copy.
+- Validation:
+  - Fork metadata confirmed on GitHub: `chrisopal/image-to-editable-ppt-skill` is a fork of the upstream repository.
+  - Local source checkout is clean on `main` at `fb86976`.
+  - Installed the editable `image-to-editable-ppt-cli` package and its declared dependencies in the user-level virtual environment `/Users/guojiexie/.codex/venvs/image-to-editable-ppt`.
+  - Upstream test suite passed: `82 tests`, `OK`.
+  - `editppt --help`, skill frontmatter, install structure, and `git diff --check` passed.
+- Commit/push state: pending; only this new skill directory and this status entry are in scope.
+- Remaining notes:
+  - Existing unrelated untracked artifacts in the repository remain untouched.
+
 ## 2026-08-06 10:09:36 CST
 
 - Scope: Integrate the Human Writing 1.1.0 method into the `智能体架构笔记` WeChat writing and review chain.

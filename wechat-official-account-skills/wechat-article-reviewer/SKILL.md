@@ -11,6 +11,7 @@ Read:
 
 - `../references/account-positioning.md`
 - `../references/review-checklist.md`
+- `../references/human-writing-playbook.md`
 
 Use together with `../wechat-article-human-tone-reviewer/SKILL.md` when the draft may still sound AI-written, overly repetitive, or weakly addressed to a concrete reader. The human-tone reviewer should run first when both are used.
 
@@ -45,6 +46,10 @@ In tone review, explicitly check for:
 - whether each major section has a concrete takeaway line the reader can repeat
 - whether recommendation lines sound natural in spoken Chinese rather than like outside-in commentary
 - whether phrases such as `这条线很值得盯`、`更值得关注的是`、`这个信号是`、`下一步该补的是` should be rewritten into more natural operator language
+- whether each paragraph contributes new material instead of paraphrasing the previous paragraph
+- whether a rhetorical reversal invents a reader misconception even when it avoids a known banned phrase
+- whether the long-form article has enough verified material to justify its length
+- whether sentence length, paragraph length, conjunctions, and repeated openers create a machine-like rhythm
 
 This reviewer remains the broad final editor. It should not substitute for the dedicated human-tone pass.
 

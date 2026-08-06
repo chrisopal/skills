@@ -11,6 +11,7 @@ Read:
 
 - `../references/account-positioning.md`
 - `../references/review-checklist.md`
+- `../references/human-writing-playbook.md`
 
 ## Mission
 
@@ -47,6 +48,8 @@ Review for these failure modes first:
    - mechanism is explained without enough business consequence
    - example appears but does not push the judgment forward
    - the article moves from concept to value too quickly
+   - a paragraph only renames or re-explains the previous paragraph
+   - long-form length is carried by inference rather than concrete materials
 4. **表达同质化**
    - repeated article openings
    - repeated sentence stems across sections
@@ -58,6 +61,9 @@ Review for these failure modes first:
    - no friction, no hesitation, no tradeoff
    - too many perfect full-sentence claims
    - not enough “这事为什么难”“大家通常会误判什么”
+   - sentence and paragraph lengths are mechanically even
+   - conjunctions and section openers appear at regular intervals
+   - actions are buried inside nominalized phrases such as `进行了优化 / 实现了提升`
 6. **客户吸引力不足**
    - opening describes a generic role and a generic pain instead of a real case, result, or decision moment
    - the article teaches how to build something before proving why a customer would care or pay
@@ -79,6 +85,10 @@ Treat the following as strong AI-smell signals when they appear repeatedly in on
 
 One use may be acceptable. Repeated use usually means the article is moving by formula instead of by observation.
 
+Also inspect the action behind the wording. Flag a passage when it first invents a simplistic reader belief and then overturns it to inflate the next claim, even if it avoids the literal `不是……而是……` phrase. Common variants include `你以为 A，其实 B`、`看似 A，实则 B`、`A 不重要，重要的是 B`, or the same move split across two sentences.
+
+A real change of mind is different. It may remain only when the draft shows the original basis and the specific evidence that changed the author's judgment.
+
 Also check:
 
 - Are sentences too long for spoken Chinese?
@@ -86,6 +96,10 @@ Also check:
 - Does the article keep naming `企业` without naming a role, team, or workflow?
 - Could a highlighted judgment be pasted into three other AI articles without sounding out of place?
 - Does the wording sound like something the target reader would actually say in a meeting, or like a columnist standing outside the scene?
+- Can every prose paragraph name the source material it relies on and the new information it adds?
+- If one third of the article were removed, would the facts, actions, and conclusion stay unchanged?
+- Are three or more clauses using the same grammatical frame to manufacture rhythm?
+- Are long and short sentences mixed according to the work being explained, or produced from one template?
 
 ## Cross-Draft Anti-Repetition Rule
 
@@ -148,6 +162,9 @@ Otherwise, identify the smallest high-leverage fixes:
 - replace template judgments with one concrete workflow consequence
 - make each section end with a line the reader can retell internally
 - replace “评论腔” recommendation lines with more natural spoken judgment such as `优先需要做的是` or `下一步比较合理的是`
+- merge or delete paragraphs that add no new material
+- rewrite fake reversals as direct judgments with nearby evidence
+- restore the person, action, object, and measured consequence hidden by nominalized language
 
 ## Output Format
 
@@ -196,3 +213,5 @@ Otherwise, identify the smallest high-leverage fixes:
 - If the user explicitly says the draft still has AI smell, assume the previous review bar was too loose and tighten the template-phrase check.
 - If the user explicitly says some phrases “不像人会说的话”, treat that as a hard review signal and push the draft toward more natural spoken Chinese, even if the structure is already correct.
 - If the user cites a living writer as reference, convert that request into high-level traits and review against those traits instead of pushing toward imitation.
+- Do not manufacture disorder, slang, anecdotes, or fake first-person experience to create human tone.
+- `scripts/check_human_tone.py` is advisory. Use its output to find shapes, then judge the passage in context; a clean script result does not prove the article has a human voice.

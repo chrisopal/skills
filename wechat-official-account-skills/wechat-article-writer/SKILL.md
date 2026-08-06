@@ -7,7 +7,7 @@ description: Use when drafting WeChat articles for 智能体架构笔记 that ne
 
 Use this skill to write or rewrite article drafts for `智能体架构笔记`.
 
-Read `../references/account-positioning.md`, `../references/growth-playbook.md`, and `../references/topic-pool-workflow.md` before writing.
+Read `../references/account-positioning.md`, `../references/growth-playbook.md`, `../references/topic-pool-workflow.md`, and `../references/human-writing-playbook.md` before writing.
 
 ## Topic Identity Gate
 
@@ -57,6 +57,33 @@ That means:
    - 为什么企业需要为它付成本
 
 Use jargon-first openings only when the term itself already carries strong mainstream meaning for this account and the title still contains a reader-facing conflict.
+
+## Material Gate / 材料门槛
+
+Before outlining a nonfiction long article, list at least five concrete pieces of material internally and record where each came from. A usable item is a verified company action, product capability, number, workflow step, role decision, failure, limitation, quote, or user-provided observation.
+
+Five neighboring abstract opinions do not become five materials merely because they are expanded into purpose, impact, risk, and future implications. Invented “typical factory scenes,” common-sense speculation, decorative detail, and metaphors cannot carry article length.
+
+If the material is insufficient:
+
+1. research available public sources, prioritizing primary sources
+2. ask up to three concentrated questions when the missing material is private experience
+3. narrow the question or shorten the article if the gap remains
+
+Never repeat an idea to hit a target word count. Article length must follow evidence density.
+
+## Paragraph Progression Gate / 段落推进
+
+Every prose paragraph must add at least one new fact, action, example, distinction, limitation, consequence, or supported judgment. A paraphrase of the previous paragraph is not progress.
+
+During revision, label each paragraph internally with:
+
+- the material that supports it
+- the new information it contributes
+
+Merge or delete paragraphs that can only be described as “further explanation.” Let the previous paragraph's object or consequence lead into the next paragraph instead of relying on insight signposts.
+
+Run a compression test on long drafts. If removing one third leaves the facts, actions, and judgment unchanged, keep the shorter version.
 
 ## Title Strategy
 
@@ -203,6 +230,10 @@ High-frequency phrases to avoid repeating across the same article or across rece
 
 These phrases are not banned forever. But once one of them appears, do not keep reusing the same formula as the article's main engine.
 
+Do not stop at literal phrase matching. Check the rhetorical action: did the sentence invent a simplistic reader belief only to overturn it and make the next claim sound deeper? This includes variants such as `你以为 A，其实 B`、`看似 A，实则 B`、`A 不重要，重要的是 B`, and the same move split across two sentences.
+
+Rewrite by stating the actual judgment directly and placing its evidence and limits nearby. Keep a change-of-mind passage only when the article has real material showing what the author first believed and what evidence changed that belief.
+
 Preferred rewrite direction:
 
 - from `抽象判断` to `具体场景`
@@ -219,6 +250,10 @@ Sentence-level checks before handing off:
 - If the draft keeps explaining what the company `意味着什么`, add one line about what the team actually has to do differently.
 - If a section has no crisp takeaway line, add one. The reader should be able to retell that section after one pass.
 - If a closing judgment sounds like a commentator speaking from outside the work, rewrite it until it sounds like an operator giving a practical recommendation.
+- If three or more neighboring clauses use the same grammatical frame, keep two and rewrite or delete the third.
+- If sentences and paragraphs are nearly uniform in length, restore natural long-short variation according to information density.
+- If conjunctions such as `因为 / 所以 / 但是 / 同时 / 此外` appear every few sentences, remove the ones that Chinese word order and causality can already carry.
+- If a sentence nominalizes the work as `进行了优化 / 实现了提升`, restore the role, action, object, and measurable consequence.
 
 ## Article Structure
 
@@ -377,3 +412,7 @@ Before handing off to layout or review, ensure:
 - the opening does not sound like a generic industry-summary preface
 - repeated template phrases have been reduced instead of redistributed
 - the digest is direct and readable, not a compressed AI summary paragraph
+- at least five concrete material items support a nonfiction long draft, or the topic and length were narrowed honestly
+- each body paragraph adds information instead of restating the previous judgment
+- action-level fake reversals were checked, including variants that avoid the literal `不是……而是……` wording
+- sentence length, paragraph length, conjunction use, and repeated openings have been reviewed for mechanical regularity

@@ -1,3 +1,34 @@
+## 2026-08-06 10:09:36 CST
+
+- Scope: Integrate the Human Writing 1.1.0 method into the `智能体架构笔记` WeChat writing and review chain.
+- Changed files:
+  - `wechat-official-account-skills/references/human-writing-playbook.md`
+  - `wechat-official-account-skills/wechat-article-writer/SKILL.md`
+  - `wechat-official-account-skills/wechat-article-human-tone-reviewer/SKILL.md`
+  - `wechat-official-account-skills/wechat-article-reviewer/SKILL.md`
+  - `wechat-official-account-skills/wechat-daily-pipeline/SKILL.md`
+  - `wechat-official-account-skills/references/review-checklist.md`
+  - `wechat-official-account-skills/scripts/check_human_tone.py`
+  - `wechat-official-account-skills/tests/test_check_human_tone.py`
+  - `wechat-official-account-skills/scripts/validate_bundle.py`
+  - `wechat-official-account-skills/THIRD_PARTY_NOTICES.md`
+  - `STATUS.md`
+- Simplifications made:
+  - Added one shared WeChat-specific playbook instead of copying a second independent writing skill into the bundle.
+  - Turned upstream guidance into three operational gates: sufficient source-traceable material, paragraph-by-paragraph information progress, and action-level fake-reversal review.
+  - Kept automated prose checks advisory so accurate product terms, quotations, and context-dependent wording are not rejected mechanically.
+- Validation:
+  - `python3 -m unittest discover -s wechat-official-account-skills/tests -v` passed: 3 tests.
+  - `python3 -m py_compile` passed for the checker, bundle validator, and tests.
+  - `python3 wechat-official-account-skills/scripts/validate_bundle.py` passed: 9 skills validated.
+  - Skill Creator `quick_validate.py` passed for the writer, human-tone reviewer, article reviewer, and daily pipeline skills.
+  - The checker ran successfully on the 2026-08-05 and 2026-08-06 local WeChat Markdown drafts; both produced 0 automated shape warnings and retained the explicit manual-review reminder.
+  - `git diff --check` passed.
+- Commit/push state: the listed WeChat skill files and this status entry are committed together on `main` and pushed to `origin`.
+- Remaining notes:
+  - The adapted guidance records the Human Writing 1.1.0 source commit and preserves its MIT notice.
+  - Existing unrelated untracked artifacts remain untouched.
+
 ## 2026-07-14 14:53:43 CST
 
 - Scope: Redesign the `problem-definition-skill` detailed information card as a QILIN-style enterprise decision-review surface.

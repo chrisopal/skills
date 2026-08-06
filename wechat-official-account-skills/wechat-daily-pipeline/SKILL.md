@@ -23,6 +23,7 @@ Read:
 - `../references/style-system.md`
 - `../references/review-checklist.md`
 - `../references/topic-pool-workflow.md`
+- `../references/human-writing-playbook.md`
 
 ## Current Recommendation Strategy
 
@@ -88,6 +89,8 @@ Forbidden:
    - when recent ops feedback indicates weak first-screen attraction, prefer titles with concrete company/result/workflow hooks over repeated abstract judgment formulas
    - case reviews must keep the real case as the article spine; stage summaries must include observation scope, counterexamples, and a customer decision
    - use 现场问题 -> 边界定义 -> 最小资料包 -> 最小工作流 -> 权限责任 -> 0-1 验证 -> 可复用清单 only for the limited method-article slot
+   - before outlining a nonfiction long article, confirm at least five concrete, source-traceable material items; research, narrow, or shorten when the material is insufficient
+   - after drafting, confirm every prose paragraph adds a fact, action, example, distinction, limitation, consequence, or supported judgment
 4. Prepare visuals:
    - use the host agent's configured image generation capability via the `imagegen` tool first
    - generate cover image with `imagegen`
@@ -106,6 +109,9 @@ Forbidden:
    - when possible, compare against recent drafts to avoid repeating the same opening/closing patterns
    - fail the review when the opening is a generic invented factory scene and the article then repeats the same setup checklist used in recent drafts
    - if the draft leans on repeated crutch phrases such as `真正值钱的`、`最值得企业学的`、`下一步该补的` or too many `不是……而是……`, rewrite those sections instead of merely swapping synonyms
+   - inspect action-level fake reversals even when the literal trigger phrases are absent
+   - run `python3 scripts/check_human_tone.py <markdown-path>` when working from this bundle; treat findings as review prompts, not automatic verdicts
+   - run the compression test and remove paragraphs that repeat an existing judgment without new material
 7. Review:
    - run reviewer checklist
    - fix P1/P2 issues before saving

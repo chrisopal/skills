@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EXPECTED = [
     "wechat-topic-planner",
     "wechat-article-writer",
+    "wechat-article-human-tone-reviewer",
     "wechat-article-layout",
     "wechat-article-reviewer",
     "wechat-account-operator",
@@ -33,11 +34,13 @@ def main() -> int:
             errors.append(f"invalid frontmatter: {skill.relative_to(ROOT)}")
         if f"name: {name}" not in text:
             errors.append(f"name mismatch: {skill.relative_to(ROOT)}")
-    for ref in ["account-positioning.md", "style-system.md", "review-checklist.md", "imagepost-draft-api.md", "topic-pool-workflow.md"]:
+    for ref in ["account-positioning.md", "style-system.md", "review-checklist.md", "imagepost-draft-api.md", "topic-pool-workflow.md", "human-writing-playbook.md"]:
         if not (ROOT / "references" / ref).exists():
             errors.append(f"missing references/{ref}")
     if not (ROOT / "scripts" / "wechat_imagepost_draft_api.py").exists():
         errors.append("missing scripts/wechat_imagepost_draft_api.py")
+    if not (ROOT / "scripts" / "check_human_tone.py").exists():
+        errors.append("missing scripts/check_human_tone.py")
     writer = (ROOT / "wechat-article-writer" / "SKILL.md").read_text(encoding="utf-8")
     if "正文插图" not in writer or "Content Illustration Brief" not in writer:
         errors.append("writer skill must define content illustration brief")
@@ -53,6 +56,14 @@ def main() -> int:
     layout = (ROOT / "wechat-article-layout" / "SKILL.md").read_text(encoding="utf-8")
     style = (ROOT / "references" / "style-system.md").read_text(encoding="utf-8")
     pipeline = (ROOT / "wechat-daily-pipeline" / "SKILL.md").read_text(encoding="utf-8")
+    human_tone = (ROOT / "wechat-article-human-tone-reviewer" / "SKILL.md").read_text(encoding="utf-8")
+    for label, text in {
+        "writer": writer,
+        "human-tone-reviewer": human_tone,
+        "daily-pipeline": pipeline,
+    }.items():
+        if "human-writing-playbook.md" not in text:
+            errors.append(f"{label} must load the human-writing playbook")
     for label, text in {
         "layout": layout,
         "style-system": style,

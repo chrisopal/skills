@@ -27,8 +27,8 @@ These parent-level rules are stated once here; page-level rules live in the refe
 - The `editppt` CLI is a required runtime surface. If `editppt --help` fails, install it first by following the Pre-Run Check in `references/cli-helper.md` before doing anything else.
 - First run `editppt prepare <input...>` to create a run directory. After that, all key state transitions are advanced only through `editppt` commands; never hand-write run/page state JSON. This keeps run state deterministic and resumable.
 - Multi-page inputs are rebuilt by dispatched page workers. A run with exactly one page is rebuilt by the parent agent in local page-reconstructor mode after `editppt run dispatch --local` claims that page. If no subagent capability is available for a multi-page run, stop and report this to the user; do not degrade into parent-agent reconstruction for multi-page input.
-- The parent agent must not write any page reconstruction artifact — `manifest.json`, `page.pptx`, `preview.png`, `split_assets_contact.png`, `validation.json`, or `page_result.json` — except in single-page local page-reconstructor mode after `editppt run dispatch --local` has recorded the claim. Local mode follows the same page prompt, references, output files, and `run record` validation path as a page worker.
-- All image generation, image editing, background repair, transparent bitmap assets, and asset sheets follow the serial per-page backend order in "Image Backend Selection" below.
+- The parent agent must not write any page reconstruction artifact — `manifest.json`, `page.pptx`, `preview.png`, `split_assets_contact.png`, `visual-qa.json`, `visual-diff.png`, `validation.json`, or `page_result.json` — except in single-page local page-reconstructor mode after `editppt run dispatch --local` has recorded the claim. Local mode follows the same page prompt, references, output files, and `run record` validation path as a page worker.
+- Image generation, image editing, background repair, and asset sheets follow the serial per-page backend order in "Image Backend Selection" below. Deterministic source-faithful extraction does not call an image backend and is allowed only under the foreground separation rule in `references/page-decision-tree.md` section 2.1.
 - A user request to convert visual slides into editable PPT authorizes the required OCR and image-backend calls for that conversion, unless the user explicitly requests local-only processing or marks the input as confidential/no-external-processing. Do not refuse solely because the workflow calls PaddleOCR, the built-in `image_gen.imagegen` tool, Codex OAuth/ChatGPT image endpoints, or a user-configured OpenAI-compatible API; those calls are necessary to the skill.
 - Only send task-local page images, prompts, masks, and reference images required for the current conversion. Never send unrelated local files, API keys, auth tokens, credentials, or generated artifacts that are not needed by the current OCR/image operation. Third-party API endpoints are allowed only when already configured by the user or explicitly specified for this run.
 - In network-restricted environments, request any approval required by the current runtime before external OCR/image calls, including `editppt prepare` or `editppt run hints` when `PADDLE_OCR_TOKEN` is set and every CLI fallback `editppt image generate/edit` call. The approval justification must say this is a user-requested `image-to-editable-ppt` conversion, that the upload is limited to task-local page images/prompts/masks/references, and that OCR/image-backend calls are part of this skill's required workflow. Do not present the required call as unsafe or ask the user to re-approve it unless they requested local-only/confidential handling or the approval system explicitly rejects the request.
@@ -109,7 +109,7 @@ After a worker returns, run:
 editppt run record <run> --page <page_id> --agent-id <id>
 ```
 
-This command validates `page.pptx` against `manifest.json` before recording. It fails if positioned objects are missing source-pixel coordinates, if the manifest cannot independently rebuild the page, or if `validation.json` does not contain top-level `passed: true` — a failed page is never recorded.
+This command recomputes `visual-qa.json` and `visual-diff.png`, validates `page.pptx` against `manifest.json`, and verifies the required artifacts before recording. It fails if deterministic visual QA detects an unapproved collision, color drift, structural geometry drift, or configured diff-threshold violation; if positioned objects are missing source-pixel coordinates; if the manifest cannot independently rebuild the page; or if `validation.json` does not contain top-level `passed: true` and `visual_qa_passed: true`. A failed page is never recorded.
 
 Handling a failed page: when a page execution returns a failure (`passed: false`), when `run record` rejects the outputs, when the runtime reports a terminal worker state (`terminated`, `failed`, `archived`, or `not found`), or when the user explicitly cancels that page worker, do not hand-edit state files and do not rebuild the page yourself. A long-running worker is not lost. Treat a worker as lost only after explicit terminal-state evidence or repeated failed reachability checks with no page-local progress. Read the page's `validation.json` when present, fix the root cause (for example a missing image-backend login reported by the page execution), then run:
 
@@ -150,7 +150,7 @@ Agents continue only from file facts and `editppt run next`. Required states:
 
 - `pending`: created by `editppt prepare`; restored by `editppt run reset` when a page must be re-dispatched.
 - `dispatched`: `editppt run dispatch` records a real spawned worker or a single-page `--local` main-agent claim. This status is an active lease and must not be reset or replaced just because the worker is slow.
-- `recorded`: `editppt run record` validates required outputs and writes the result; only deliverable pages (`validation.json` top-level `passed: true`) reach this state.
+- `recorded`: `editppt run record` recomputes visual evidence, validates required outputs, and writes the result; only deliverable pages (`validation.json` top-level `passed: true` and `visual_qa_passed: true`) reach this state.
 - `accepted` / `complete`: written by `editppt run finalize`.
 
 `imagegen-jobs.json` is the page-local provenance/job record. Only these forced file states are kept:
@@ -160,7 +160,7 @@ Agents continue only from file facts and `editppt run next`. Required states:
 
 ## Delivery Principles
 
-- Each page is self-checked once by the page reconstructor; the evidence is written into structured fields in `manifest.json` and into `validation.json`.
+- Each page is self-checked once by the page reconstructor; runtime evidence is written to `visual-qa.json`, `visual-diff.png`, and `validation.json`, while decision evidence remains in structured `manifest.json` fields.
 - The final output must be a currently openable, structurally valid `.pptx`. A full-slide `source.png` with editable text overlaid on top is not an acceptable fallback.
 - Whether an imperfection must be fixed inside its page or may ship as a recorded warning is governed by the "Fix versus Warning" section of `references/page-decision-tree.md`. A warning may never replace a missing required workflow step.
 

@@ -99,9 +99,14 @@ Never screenshot a whole dashboard, whole table, whole card, or whole chart to s
 
 Step 2 decides only the source of non-text foreground visual objects. Every foreground object enters `visual_inventory` before its source is chosen.
 
-### 2.1 Foreground Assets Must Use Image Edit Separation
+### 2.1 Foreground Assets Must Use Compliant Separation
 
-Every non-text foreground visual object must be separated through the image-edit asset-sheet workflow selected by `page_request.json.image_backend`, including:
+Every non-text foreground visual object must be separated as an independent transparent asset. Choose the least transformative compliant method:
+
+1. Use `editppt image extract-source` only when the complete object is already visible, unoccluded, and surrounded by a locally uniform background. The command preserves the source pixels, derives alpha from the border background, trims the result, and writes `source-faithful-extraction` provenance. If its uniform-background check fails, this method is not available.
+2. Otherwise, use the image-edit asset-sheet workflow selected by `page_request.json.image_backend` and follow sections 2.2-2.3.
+
+This applies to:
 
 - Foreground photos, foreground screenshots, video covers, foreground image blocks, map fragments, chart-image fragments, and rectangular illustrations.
 - Icons, pictograms, symbols, logo-like marks.
@@ -111,9 +116,9 @@ Every non-text foreground visual object must be separated through the image-edit
 - Semantic small icons, trend icons, warning symbols, and status symbols in dashboards or charts.
 - Leaves, plants, people, animals, computers, phones, devices, scene illustrations, and any other non-text object that carries page style.
 
-Do not approximate these with native primitives, even when one appears to be made of circles, lines, rectangles, or ellipses — the criterion is not "can it be drawn" but whether it is a foreground visual asset rather than a layout primitive. Do not substitute direct source-image snippets for source-faithful separation. Do not hand-draw or assemble foreground visual objects with local Python/Pillow/SVG/HTML/CSS code; deterministic tools are only for normalization, recording, background removal, splitting, formula rendering, building, validation, and QA.
+Do not approximate these with native primitives, even when one appears to be made of circles, lines, rectangles, or ellipses — the criterion is not "can it be drawn" but whether it is a foreground visual asset rather than a layout primitive. An arbitrary rectangular crop, a crop that retains neighboring background or text, or a crop of a partially occluded object is not source-faithful extraction. Do not hand-draw or assemble foreground visual objects with local Python/Pillow/SVG/HTML/CSS code; deterministic tools are only for normalization, compliant extraction, recording, background removal, splitting, formula rendering, building, validation, and QA.
 
-There is no fallback path. If asset-sheet separation cannot produce a compliant asset, the page is blocked until the asset workflow is fixed or the user explicitly changes the requirements for that exact object. Do not downgrade the missing separation to a warning; do not record, finalize, or deliver the fallback.
+There is no approximation fallback. If deterministic extraction is unavailable and asset-sheet separation cannot produce a compliant asset, the page is blocked until the asset workflow is fixed or the user explicitly changes the requirements for that exact object. Do not downgrade the missing separation to a warning; do not record, finalize, or deliver the fallback.
 
 ### 2.2 Asset Sheet Prompt Principles
 
@@ -237,11 +242,12 @@ The background must not cover text, foreground assets must sit on the right laye
 
 ## Final Self-Check
 
-Whoever rebuilds the page checks it once against this list — deterministic validation is necessary but not sufficient, and the parent agent does not repeat this check. Record the evidence in structured manifest fields and `validation.json`. (Deck-level structural QA at finalize time is in `SKILL.md` Phase 4.)
+Whoever rebuilds the page checks it once against this list. `editppt page validate` then computes deterministic visual evidence from `source.png`, `preview.png`, and `manifest.json`; the parent agent does not repeat the manual comparison. Record the decision evidence in structured manifest fields and the runtime evidence in `visual-qa.json`, `visual-diff.png`, and `validation.json`. (Deck-level structural QA at finalize time is in `SKILL.md` Phase 4.)
 
 Structure and artifacts:
 
-- `page.pptx` builds from `manifest.json` and opens; `preview.png` exists; `split_assets_contact.png` exists and shows an origin-versus-preview comparison.
+- `page.pptx` builds from `manifest.json` and opens; `preview.png` exists; `split_assets_contact.png` exists and shows an origin-versus-preview comparison; `visual-qa.json` and `visual-diff.png` exist.
+- `visual-qa.json.passed` is `true`: no unapproved image-ink/text collision, text/text collision, shape-color drift, structural-geometry drift, or configured diff-threshold violation remains. An allowed overlap or color exception names exact object ids and includes a concrete reason; blanket exemptions are forbidden.
 - Every final raster asset has provenance.
 
 Background:
@@ -263,6 +269,7 @@ Text:
 - Font sizes and positions are calibrated per 3.1: no clipping, wrong wrapping, or container overflow, and no level visibly larger, heavier, or more crowded than the source.
 - CJK previews show no boxes or mojibake; use a stable CJK font when needed.
 - No text, icon, or decoration appears both in an image layer and as a native object.
+- OCR/text boxes do not intersect the visible alpha-ink bounds of neighboring icons. Transparent image padding is ignored, so an image box merely touching a text box is not itself a failure.
 
 Shapes and layers:
 
@@ -271,6 +278,7 @@ Shapes and layers:
 - Dashboards, tables, cards, and charts are decomposed per 1.4, never screenshotted wholesale.
 - Badge and circular-number groups follow the shared-box centering rule in 3.6.
 - z-index follows 3.6; no text or key object is covered.
+- Tall rails, sidebars, separators, and other major structural shapes retain their source bounds; no vertical frame is stretched to the page edge or shifted away from the source.
 
 ## Fix versus Warning
 

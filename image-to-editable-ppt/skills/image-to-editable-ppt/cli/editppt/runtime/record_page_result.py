@@ -13,6 +13,7 @@ from deck_run_state import (
     page_dir_for,
     read_json,
     rel_to_run,
+    resolve_inside,
     run_dir_from_target,
     save_jobs,
     set_run_status,
@@ -27,6 +28,8 @@ REQUIRED_OUTPUTS = {
     "page_pptx": "page.pptx",
     "preview": "preview.png",
     "contact_sheet": "split_assets_contact.png",
+    "visual_qa_report": "visual-qa.json",
+    "visual_diff": "visual-diff.png",
     "validation": "validation.json",
     "page_result": "page_result.json",
 }
@@ -35,23 +38,43 @@ REQUIRED_OUTPUTS = {
 SCRIPT_DIR = Path(__file__).resolve().parent
 
 
-def output_path(page_dir, result, key, default):
+def output_path(page_dir, result, key, default, must_exist=True):
     value = result.get(key) or default
-    return inside_or_missing(page_dir, value)
+    return inside_or_missing(page_dir, value) if must_exist else resolve_inside(page_dir, value)
 
 
 def validate_page_contract(paths):
+    visual_command = [
+        sys.executable,
+        SCRIPT_DIR / "visual_qa.py",
+        paths["page_manifest"].parent,
+        "--manifest",
+        paths["page_manifest"],
+        "--preview",
+        paths["preview"],
+        "--report",
+        paths["visual_qa_report"],
+        "--diff",
+        paths["visual_diff"],
+    ]
+    visual_result = subprocess.run([str(part) for part in visual_command], text=True, capture_output=True)
     command = [
         sys.executable,
         SCRIPT_DIR / "validate_pptx.py",
         paths["page_pptx"],
         "--manifest",
         paths["page_manifest"],
+        "--visual-qa-report",
+        paths["visual_qa_report"],
+        "--report",
+        paths["validation"],
     ]
     result = subprocess.run([str(part) for part in command], text=True, capture_output=True)
-    if result.returncode != 0:
+    if visual_result.returncode != 0 or result.returncode != 0:
         raise SystemExit(
             "Page manifest contract validation failed before recording:\n"
+            + visual_result.stdout
+            + visual_result.stderr
             + result.stdout
             + result.stderr
         )
@@ -89,19 +112,32 @@ def main():
     page_dir = page_dir_for(run_dir, page)
     page_result_path = inside_or_missing(page_dir, args.page_result)
     result = read_json(page_result_path)
-    validation_path = output_path(page_dir, result, "validation", REQUIRED_OUTPUTS["validation"])
-    validation = read_json(validation_path)
-    validation_passed = validation.get("passed") is True
-    if not validation_passed:
+    submitted_validation_path = output_path(page_dir, result, "validation", REQUIRED_OUTPUTS["validation"])
+    submitted_validation = read_json(submitted_validation_path)
+    if submitted_validation.get("passed") is not True:
         raise SystemExit(
             f"{page['page_id']} validation.json does not contain top-level \"passed\": true; "
-            "the page is not deliverable and was not recorded. Inspect the worker's "
-            "validation.json for the failure reason, fix the root cause, then run "
+            "the page is not deliverable and was not recorded. Inspect validation.json and "
+            "visual-qa.json, fix the root cause, then run "
             f"`editppt run reset {run_dir} --page {page['page_id']} "
             f"--agent-id {args.agent_id} --confirm-lost` and dispatch a new worker."
         )
-    paths = {key: output_path(page_dir, result, key, default) for key, default in REQUIRED_OUTPUTS.items()}
+    generated_outputs = {"visual_qa_report", "visual_diff"}
+    paths = {
+        key: output_path(page_dir, result, key, default, must_exist=key not in generated_outputs)
+        for key, default in REQUIRED_OUTPUTS.items()
+    }
     validate_page_contract(paths)
+    validation = read_json(paths["validation"])
+    validation_passed = validation.get("passed") is True and validation.get("visual_qa_passed") is True
+    if not validation_passed:
+        raise SystemExit(
+            f"{page['page_id']} validation.json does not contain structural and visual QA passage; "
+            "the page is not deliverable and was not recorded. Inspect validation.json and "
+            "visual-qa.json, fix the root cause, then run "
+            f"`editppt run reset {run_dir} --page {page['page_id']} "
+            f"--agent-id {args.agent_id} --confirm-lost` and dispatch a new worker."
+        )
     hashes = {key: sha256_file(path) for key, path in paths.items()}
     page["result"] = {
         "agent_id": args.agent_id,

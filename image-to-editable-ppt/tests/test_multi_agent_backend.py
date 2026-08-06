@@ -135,6 +135,7 @@ def valid_page_manifest(text="Valid Page"):
 def write_page_outputs(page_dir, text="Valid Page", validation_passed=True, manifest=None):
     write_json(page_dir / "manifest.json", manifest or valid_page_manifest(text))
     write_json(page_dir / "imagegen-jobs.json", {"schema_version": 1, "jobs": []})
+    Image.new("RGB", (1600, 900), "white").save(page_dir / "source.png")
     build = subprocess.run(
         [
             sys.executable,
@@ -142,13 +143,14 @@ def write_page_outputs(page_dir, text="Valid Page", validation_passed=True, mani
             page_dir / "manifest.json",
             "--out",
             page_dir / "page.pptx",
+            "--preview",
+            page_dir / "preview.png",
         ],
         text=True,
         capture_output=True,
     )
     if build.returncode != 0:
         raise AssertionError(build.stderr or build.stdout)
-    (page_dir / "preview.png").write_text("x", encoding="utf-8")
     (page_dir / "split_assets_contact.png").write_text("x", encoding="utf-8")
     write_json(page_dir / "validation.json", {"passed": validation_passed})
     write_json(
@@ -159,6 +161,8 @@ def write_page_outputs(page_dir, text="Valid Page", validation_passed=True, mani
             "page_pptx": "page.pptx",
             "preview": "preview.png",
             "contact_sheet": "split_assets_contact.png",
+            "visual_qa_report": "visual-qa.json",
+            "visual_diff": "visual-diff.png",
             "validation": "validation.json",
             "page_result": "page_result.json",
         },
@@ -336,6 +340,48 @@ class MultiAgentBackendTest(unittest.TestCase):
             "--downscale-max-dim",
         ):
             self.assertNotIn(removed, result.stdout)
+
+    def test_image_extract_source_writes_transparent_asset_and_fragment(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            page_dir = Path(tmp) / "page_001"
+            page_dir.mkdir()
+            source = Image.new("RGB", (40, 40), "white")
+            for x in range(14, 26):
+                for y in range(12, 28):
+                    source.putpixel((x, y), (20, 80, 200))
+            source.save(page_dir / "source.png")
+
+            result = run_cli(
+                "image",
+                "extract-source",
+                page_dir,
+                "--box",
+                "5,5,30,30",
+                "--out",
+                "assets/object.png",
+                "--id",
+                "object",
+                "--fragment",
+                "assets/object.fragment.json",
+            )
+            self.assertEqual(0, result.returncode, result.stderr)
+            extracted = Image.open(page_dir / "assets/object.png").convert("RGBA")
+            self.assertEqual((20, 80, 200), extracted.getpixel((extracted.width // 2, extracted.height // 2))[:3])
+            self.assertGreater(extracted.getpixel((extracted.width // 2, extracted.height // 2))[3], 0)
+            fragment = read_json(page_dir / "assets/object.fragment.json")
+            self.assertEqual("source-faithful-extraction", fragment["asset_provenance"][0]["source_type"])
+
+            unsafe = run_cli(
+                "image",
+                "extract-source",
+                page_dir,
+                "--box",
+                "5,5,30,30",
+                "--out",
+                "../outside.png",
+            )
+            self.assertNotEqual(0, unsafe.returncode)
+            self.assertIn("path must stay inside page directory", unsafe.stderr)
 
     def test_process_sheet_resolves_asset_source_relative_to_page_dir(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -1311,6 +1357,7 @@ class MultiAgentBackendTest(unittest.TestCase):
             page_dir = Path(tmp) / "pages/page_001"
             page_dir.mkdir(parents=True)
             write_json(page_dir / "manifest.json", valid_page_manifest("Page Build"))
+            Image.new("RGB", (1600, 900), "white").save(page_dir / "source.png")
 
             build = subprocess.run(
                 [sys.executable, "-m", "editppt.cli", "page", "build", str(page_dir)],
@@ -1329,6 +1376,21 @@ class MultiAgentBackendTest(unittest.TestCase):
                 capture_output=True,
             )
             self.assertEqual(0, validate.returncode, validate.stdout + validate.stderr)
+
+            write_json(page_dir / "visual-qa.json", {"passed": False, "reason": "stale default report"})
+            custom_validate = run_cli(
+                "page",
+                "validate",
+                page_dir,
+                "--visual-report",
+                "custom-visual-qa.json",
+                "--visual-diff",
+                "custom-visual-diff.png",
+                "--report",
+                "custom-validation.json",
+            )
+            self.assertEqual(0, custom_validate.returncode, custom_validate.stdout + custom_validate.stderr)
+            self.assertIs(read_json(page_dir / "custom-validation.json")["visual_qa_passed"], True)
 
     def test_finalize_rebuilds_final_deck_from_page_manifests(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -1378,7 +1440,7 @@ class MultiAgentBackendTest(unittest.TestCase):
                 (page_dir / "page.pptx").write_text("not a pptx", encoding="utf-8")
                 (page_dir / "preview.png").write_text("x", encoding="utf-8")
                 (page_dir / "split_assets_contact.png").write_text("x", encoding="utf-8")
-                write_json(page_dir / "validation.json", {"passed": True})
+                write_json(page_dir / "validation.json", {"passed": True, "visual_qa_passed": True})
                 write_json(
                     page_dir / "page_result.json",
                     {

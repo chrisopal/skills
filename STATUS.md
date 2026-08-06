@@ -1,3 +1,35 @@
+## 2026-08-06 16:59:36 CST
+
+- Scope: Harden `image-to-editable-ppt` against icon/text overlap, text overlap, shape-color drift, and stretched structural rails, while permitting exact-pixel extraction for suitable foreground assets.
+- Changed files:
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/visual_qa.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/extract_source_asset.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/main.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/prepare_deck_run.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/record_page_result.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/validate_pptx.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/{SKILL.md,prompts/page-worker.md,references/*.md}`
+  - `image-to-editable-ppt/tests/test_visual_qa.py`
+  - `image-to-editable-ppt/tests/test_multi_agent_backend.py`
+  - `image-to-editable-ppt/tests/test_quality_contracts.py`
+  - `image-to-editable-ppt/CHANGELOG.md`
+  - `STATUS.md`
+- Simplifications made:
+  - Added one deterministic source-versus-preview QA report and diff artifact instead of relying on declarative page self-check booleans.
+  - Reused manifest object ids for narrow, reasoned overlap/color exceptions and structural geometry checks.
+  - Added exact source-pixel extraction only for complete, unoccluded objects on verified uniform local backgrounds; unsuitable regions still use image-edit asset separation.
+  - Recomputed visual evidence during both `page validate` and `run record`, so stale or worker-authored evidence cannot bypass delivery gates.
+- Validation:
+  - Full skill test suite passed: 92 tests, `OK`.
+  - Skill Creator `quick_validate.py` passed: `Skill is valid!`.
+  - Editable CLI reinstall passed; `editppt doctor --json`, `editppt page visual-qa --help`, and `editppt image extract-source --help` passed.
+  - The reported failing slide is now rejected with 6 image-ink/text overlaps, 12 shape-color mismatches, and 2 structural-geometry mismatches.
+  - Python compilation and `git diff --check` passed.
+- Commit/push state: changes committed and pushed on `codex/image-to-editable-ppt-visual-qa` to `origin`.
+- Remaining notes:
+  - The existing generated PPTX is not modified by this skill update; rerun conversion to produce a corrected deck under the new gates.
+  - Existing unrelated untracked artifacts remain untouched.
+
 ## 2026-08-06 15:18:28 CST
 
 - Scope: Write the executable implementation plan for the approved standalone `ppt-hybrid-studio` skill.

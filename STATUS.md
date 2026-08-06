@@ -13,7 +13,7 @@
   - Confirmed the specification contains the approved standalone architecture, three render modes, Imagegen-first capability discovery, PptxGenJS default adapter, browser approval gates, versioning, QA, test scope, and acceptance criteria.
   - Placeholder scan found no unresolved `TBD`, `TODO`, `FIXME`, `待定`, or `待补` markers in the specification.
   - `git diff --check` passed for the design specification and status update.
-- Commit/push state: pending; only the design specification and this status entry will be staged.
+- Commit/push state: design specification committed as `5d4c461` and pushed to `origin/main`; this commit-state correction is a follow-up status update.
 - Remaining notes:
   - No `ppt-hybrid-studio` implementation has started; the approved specification must be reviewed before `superpowers:writing-plans` begins.
   - Existing unrelated untracked artifacts remain untouched.

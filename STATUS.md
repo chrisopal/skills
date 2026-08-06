@@ -13,7 +13,7 @@
   - Installed the editable `image-to-editable-ppt-cli` package and its declared dependencies in the user-level virtual environment `/Users/guojiexie/.codex/venvs/image-to-editable-ppt`.
   - Upstream test suite passed: `82 tests`, `OK`.
   - `editppt --help`, skill frontmatter, install structure, and `git diff --check` passed.
-- Commit/push state: pending; only this new skill directory and this status entry are in scope.
+- Commit/push state: skill import committed as `06ac6e1` and pushed to `origin/main`; this status correction is a follow-up commit.
 - Remaining notes:
   - Existing unrelated untracked artifacts in the repository remain untouched.
 

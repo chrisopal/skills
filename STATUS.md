@@ -1,3 +1,23 @@
+## 2026-08-06 14:43:26 CST
+
+- Scope: Approve the standalone `ppt-hybrid-studio` design for mixed-source ingestion, staged human review, text-free generated backgrounds, editable PowerPoint content, and native-object routing for data-dense or technical slides.
+- Changed files:
+  - `docs/superpowers/specs/2026-08-06-ppt-hybrid-studio-design.md`
+  - `STATUS.md`
+- Simplifications made:
+  - Selected one shared slide contract with three render modes instead of separate image and native-PPT pipelines.
+  - Kept PptxGenJS as the default composer behind a replaceable engine adapter.
+  - Kept image generation environment-adaptive while requiring stable manifests and explicit provider changes after visual-anchor approval.
+  - Limited the browser workspace to structured review and editing rather than a full PowerPoint clone.
+- Validation:
+  - Confirmed the specification contains the approved standalone architecture, three render modes, Imagegen-first capability discovery, PptxGenJS default adapter, browser approval gates, versioning, QA, test scope, and acceptance criteria.
+  - Placeholder scan found no unresolved `TBD`, `TODO`, `FIXME`, `待定`, or `待补` markers in the specification.
+  - `git diff --check` passed for the design specification and status update.
+- Commit/push state: pending; only the design specification and this status entry will be staged.
+- Remaining notes:
+  - No `ppt-hybrid-studio` implementation has started; the approved specification must be reviewed before `superpowers:writing-plans` begins.
+  - Existing unrelated untracked artifacts remain untouched.
+
 ## 2026-08-06 13:47:00 CST
 
 - Scope: Fork and locally install the upstream `image-to-editable-ppt` skill.

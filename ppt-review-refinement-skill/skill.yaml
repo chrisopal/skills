@@ -1,0 +1,30 @@
+name: ppt-review-refinement
+version: 1.0.1
+display_name: PPT评审与精修
+entrypoint: SKILL.md
+language: zh-CN
+capabilities:
+  - pptx-structure-audit
+  - slide-rendering
+  - narrative-review
+  - visual-review
+  - change-approval
+  - design-token-generation
+  - safe-normalization
+  - content-protection-validation
+  - image-policy-review
+supported_inputs:
+  - .pptx
+unsupported_or_conservative:
+  - .ppt
+  - .pptm
+  - VBA
+  - ActiveX
+  - embedded-objects
+  - complex-SmartArt
+runtime:
+  python: ">=3.10"
+  optional_system_tools:
+    - libreoffice-or-soffice
+    - pdftocairo-or-pdftoppm
+license: MIT

@@ -1,0 +1,75 @@
+{
+  "version": "1.0.0",
+  "source_file": "manufacturing-solution.pptx",
+  "executive_summary": "内容专业但主线分散，视觉系统不统一。建议先执行L1规范化，再通过三页样板进入L2布局优化。",
+  "scores": {
+    "narrative": 3.0,
+    "theme": 2.5,
+    "color": 2.5,
+    "typography": 2.0,
+    "hierarchy": 2.5,
+    "layout": 2.5,
+    "spacing": 2.5,
+    "graphics": 2.0,
+    "imagery": 3.0
+  },
+  "narrative": {
+    "current_story": ["公司是谁", "平台能力", "项目案例", "实施路线"],
+    "proposed_story": ["客户问题", "转型目标", "总体方案", "实施机制", "量化价值", "为什么选择我们", "下一步"],
+    "global_issues": [
+      {
+        "id": "N-001",
+        "slide": "global",
+        "scope": "deck",
+        "category": "narrative",
+        "severity": "P1",
+        "finding": "前段以公司和能力介绍为主，客户问题出现较晚。",
+        "impact": "管理层难以快速建立方案必要性。",
+        "recommendation": "前置客户问题、业务影响和目标状态。",
+        "action_type": "restructure",
+        "approval_required": true,
+        "confidence": "high",
+        "evidence": ["前8页中6页为公司与产品能力"]
+      }
+    ],
+    "slides": [
+      {
+        "slide": 1,
+        "role": "cover",
+        "core_message": "智能工厂一体化平台方案",
+        "issues": [],
+        "recommended_action": "keep"
+      }
+    ]
+  },
+  "visual": {
+    "global_issues": [
+      {
+        "id": "V-001",
+        "slide": "global",
+        "scope": "deck",
+        "category": "typography",
+        "severity": "P1",
+        "finding": "全稿字体和字号层级较分散。",
+        "impact": "削弱整体一致性和品牌专业度。",
+        "recommendation": "建立中英文字体配对和角色字号体系。",
+        "action_type": "normalize",
+        "approval_required": false,
+        "confidence": "high",
+        "evidence": ["检测到5种字体、14种字号"]
+      }
+    ],
+    "slides": [
+      {
+        "slide": 1,
+        "role": "cover",
+        "core_message": "智能工厂一体化平台方案",
+        "issues": [],
+        "recommended_action": "restyle"
+      }
+    ]
+  },
+  "recommended_level": "L2",
+  "manual_review_required": ["复杂架构图需要确认重画范围"],
+  "unresolved_assumptions": ["现场演讲时长尚未确认"]
+}

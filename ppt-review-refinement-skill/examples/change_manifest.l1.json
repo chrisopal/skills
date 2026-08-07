@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0",
+  "optimization_level": "L1",
+  "approval_status": "approved",
+  "approved_by": "Example Approver",
+  "approved_at": "2026-08-07T00:00:00Z",
+  "content_policy": {
+    "body_text": "preserve",
+    "titles": "optimize",
+    "slide_order": "preserve",
+    "split_merge_delete": "forbidden",
+    "numbers_and_facts": "preserve"
+  },
+  "visual_policy": {
+    "theme": "normalize",
+    "color": "normalize",
+    "typography": "normalize",
+    "layout": "optimize",
+    "charts": "restyle",
+    "diagrams": "restyle"
+  },
+  "image_policy": {
+    "crop": true,
+    "tone_adjust": true,
+    "replace": "forbidden",
+    "generate": "forbidden"
+  },
+  "editability": {
+    "keep_text_editable": true,
+    "keep_charts_editable": true,
+    "keep_diagrams_editable": true,
+    "avoid_rasterization": true,
+    "preserve_links": true,
+    "preserve_animations": true,
+    "preserve_notes": true
+  },
+  "protected_terms": ["OTD", "OEE", "QMS"],
+  "protected_slides": [],
+  "accepted_risks": []
+}

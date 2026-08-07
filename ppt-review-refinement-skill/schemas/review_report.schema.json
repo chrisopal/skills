@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ppt-review-refinement/review_report.schema.json",
+  "title": "PPT Review Report",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "issue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "slide", "scope", "category", "severity", "finding", "impact", "recommendation", "action_type", "approval_required", "confidence"],
+      "properties": {
+        "id": {"type": "string"},
+        "slide": {"oneOf": [{"type": "integer", "minimum": 1}, {"const": "global"}]},
+        "scope": {"enum": ["deck", "section", "slide", "object"]},
+        "category": {"type": "string"},
+        "severity": {"enum": ["P0", "P1", "P2"]},
+        "finding": {"type": "string"},
+        "impact": {"type": "string"},
+        "recommendation": {"type": "string"},
+        "action_type": {"type": "string"},
+        "approval_required": {"type": "boolean"},
+        "confidence": {"enum": ["high", "medium", "low"]},
+        "evidence": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "slideReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slide", "role", "core_message", "issues", "recommended_action"],
+      "properties": {
+        "slide": {"type": "integer", "minimum": 1},
+        "role": {"type": "string"},
+        "core_message": {"type": "string"},
+        "issues": {"type": "array", "items": {"$ref": "#/$defs/issue"}},
+        "recommended_action": {"type": "string"}
+      }
+    }
+  },
+  "required": ["version", "executive_summary", "scores", "narrative", "visual", "recommended_level", "manual_review_required"],
+  "properties": {
+    "version": {"type": "string"},
+    "source_file": {"type": "string"},
+    "executive_summary": {"type": "string"},
+    "scores": {
+      "type": "object",
+      "additionalProperties": {"type": "number", "minimum": 0, "maximum": 5},
+      "required": ["narrative", "theme", "color", "typography", "hierarchy", "layout", "spacing", "graphics", "imagery"]
+    },
+    "narrative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["current_story", "proposed_story", "global_issues", "slides"],
+      "properties": {
+        "current_story": {"type": "array", "items": {"type": "string"}},
+        "proposed_story": {"type": "array", "items": {"type": "string"}},
+        "global_issues": {"type": "array", "items": {"$ref": "#/$defs/issue"}},
+        "slides": {"type": "array", "items": {"$ref": "#/$defs/slideReview"}}
+      }
+    },
+    "visual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["global_issues", "slides"],
+      "properties": {
+        "global_issues": {"type": "array", "items": {"$ref": "#/$defs/issue"}},
+        "slides": {"type": "array", "items": {"$ref": "#/$defs/slideReview"}}
+      }
+    },
+    "recommended_level": {"enum": ["L0", "L1", "L2", "L3"]},
+    "manual_review_required": {"type": "array", "items": {"type": "string"}},
+    "unresolved_assumptions": {"type": "array", "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,105 @@
+version: 1.0.0
+archetypes:
+  cover:
+    purpose: 建立主题、场景和第一印象
+    required: [title]
+    optional: [subtitle, presenter, date, hero_image, logo]
+    rules:
+      - 标题优先，不放正文
+      - 主图服务主题，不与标题争夺注意力
+  agenda:
+    purpose: 给出叙事地图
+    required: [sections]
+    rules:
+      - 章节名称并列且层级统一
+      - 可标出当前章节，但不堆解释文字
+  section:
+    purpose: 完成章节转场
+    required: [section_title]
+    optional: [one_sentence_summary, number, image]
+    rules:
+      - 与内容页属于同一主题系统
+      - 信息密度低
+  point:
+    purpose: 传递一个强观点
+    required: [conclusion]
+    optional: [evidence, key_number, image]
+    rules:
+      - 结论占主导
+      - 支撑信息不超过三组
+  text_image:
+    purpose: 用图片解释或证明观点
+    required: [title, text, image]
+    rules:
+      - 图文主次明确
+      - 图片必须与结论直接相关
+  two_column:
+    purpose: 并列展示两个逻辑组
+    required: [left, right]
+    rules:
+      - 两栏比例由内容决定，不默认50:50
+      - 对齐基线一致
+  three_cards:
+    purpose: 展示三个并列能力或阶段
+    required: [card1, card2, card3]
+    rules:
+      - 卡片内容结构一致
+      - 不适合承载长段落
+  comparison:
+    purpose: 突出差异和选择
+    required: [dimension, option_a, option_b]
+    rules:
+      - 比较维度一致
+      - 明确结论或推荐项
+  process:
+    purpose: 展示顺序、流转和闭环
+    required: [steps]
+    rules:
+      - 箭头和方向唯一明确
+      - 步骤数量过多时分层
+  timeline:
+    purpose: 展示历史、计划或阶段演进
+    required: [milestones]
+    rules:
+      - 时间尺度一致
+      - 避免里程碑组件重叠
+  architecture:
+    purpose: 展示层级、能力、接口和关系
+    required: [layers_or_domains]
+    rules:
+      - 主干优先，支撑能力弱化
+      - 连接线避免交叉
+      - 保持矢量可编辑
+  data_chart:
+    purpose: 用数据支持结论
+    required: [insight_title, chart]
+    rules:
+      - 标题表达洞察，不只写指标名
+      - 删除不必要网格线和图例
+      - 标出关键值和来源
+  case:
+    purpose: 用案例建立可信度
+    required: [background, action, result]
+    optional: [customer_logo, image, quote]
+    rules:
+      - 区分真实案例与概念示意
+      - 结果尽量量化
+  roadmap:
+    purpose: 展示实施阶段、依赖和产出
+    required: [phases, deliverables]
+    rules:
+      - 阶段与产出对应
+      - 明确近期下一步
+  summary:
+    purpose: 强化关键结论
+    required: [takeaways]
+    rules:
+      - 与开头呼应
+      - 不简单复制目录
+  closing:
+    purpose: 推动行动或讨论
+    required: [call_to_action]
+    optional: [contact, next_step]
+    rules:
+      - 行动明确
+      - 联系方式可读

@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0",
+  "source_file": "input.pptx",
+  "deck_type": "待判断",
+  "topic": "待判断",
+  "audience": {
+    "primary": ["待判断"],
+    "secondary": []
+  },
+  "usage_context": ["unknown"],
+  "communication_goal": "待判断",
+  "single_takeaway": "待判断",
+  "recommended_personality": ["专业", "清晰"],
+  "brand_constraints": {
+    "logos": [],
+    "colors": [],
+    "fonts": [],
+    "do_not_change": []
+  },
+  "evidence": [],
+  "assumptions": [
+    {
+      "statement": "当前定位由系统初步推断，需要确认",
+      "confidence": "low",
+      "needs_confirmation": true
+    }
+  ]
+}

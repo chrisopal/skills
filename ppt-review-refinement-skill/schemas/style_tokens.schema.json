@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ppt-review-refinement/style_tokens.schema.json",
+  "title": "PPT Style Tokens",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "name", "colors", "typography", "layout", "spacing", "components", "exact_mappings"],
+  "$defs": {
+    "hexColor": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}$"},
+    "textRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["size_pt", "bold"],
+      "properties": {
+        "size_pt": {"type": "number", "minimum": 6, "maximum": 72},
+        "bold": {"type": "boolean"},
+        "color": {"$ref": "#/$defs/hexColor"},
+        "line_spacing": {"type": "number", "minimum": 0.8, "maximum": 2.0},
+        "space_after_pt": {"type": "number", "minimum": 0, "maximum": 72}
+      }
+    }
+  },
+  "properties": {
+    "version": {"type": "string"},
+    "name": {"type": "string"},
+    "description": {"type": "string"},
+    "colors": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/hexColor"},
+      "required": ["primary", "secondary", "accent", "background", "surface", "text_primary", "text_secondary", "success", "warning", "risk"]
+    },
+    "typography": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fonts", "roles"],
+      "properties": {
+        "fonts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cjk", "latin"],
+          "properties": {
+            "cjk": {"type": "string"},
+            "latin": {"type": "string"},
+            "mono": {"type": "string"}
+          }
+        },
+        "roles": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/textRole"},
+          "required": ["cover_title", "section_title", "page_title", "subtitle", "body", "data", "caption", "footer"]
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["slide_width_in", "slide_height_in", "safe_margin_in", "title_box_in", "content_top_in", "footer_top_in"],
+      "properties": {
+        "slide_width_in": {"type": "number", "minimum": 1},
+        "slide_height_in": {"type": "number", "minimum": 1},
+        "safe_margin_in": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["left", "right", "top", "bottom"],
+          "properties": {
+            "left": {"type": "number", "minimum": 0},
+            "right": {"type": "number", "minimum": 0},
+            "top": {"type": "number", "minimum": 0},
+            "bottom": {"type": "number", "minimum": 0}
+          }
+        },
+        "title_box_in": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["x", "y", "w", "h"],
+          "properties": {
+            "x": {"type": "number"},
+            "y": {"type": "number"},
+            "w": {"type": "number", "minimum": 0.1},
+            "h": {"type": "number", "minimum": 0.1}
+          }
+        },
+        "content_top_in": {"type": "number", "minimum": 0},
+        "footer_top_in": {"type": "number", "minimum": 0},
+        "two_column_gap_in": {"type": "number", "minimum": 0},
+        "three_column_gap_in": {"type": "number", "minimum": 0}
+      }
+    },
+    "spacing": {
+      "type": "array",
+      "items": {"type": "number", "minimum": 0},
+      "minItems": 4,
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["card", "line", "arrow", "image", "footer"]
+    },
+    "exact_mappings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["font_colors", "fill_colors", "line_colors"],
+      "properties": {
+        "font_colors": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hexColor"}},
+        "fill_colors": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hexColor"}},
+        "line_colors": {"type": "object", "additionalProperties": {"$ref": "#/$defs/hexColor"}}
+      }
+    }
+  }
+}

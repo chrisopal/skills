@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "status": "pass_with_accepted_risks",
+  "checks": [
+    {
+      "id": "VAL-OPEN",
+      "name": "文件可打开",
+      "status": "pass",
+      "details": "候选文件可正常解析。"
+    }
+  ],
+  "differences": [],
+  "issues": [],
+  "manual_review_required": ["逐页查看渲染图"],
+  "metrics": {"slide_count": 20}
+}

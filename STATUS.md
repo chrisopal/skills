@@ -1,3 +1,21 @@
+## 2026-08-07 19:20:00 CST
+
+- Scope: Harden `ppt-review-refinement-skill` authorization, validation gates, and obvious text-overflow detection after a read-only audit.
+- Changed files:
+  - `ppt-review-refinement-skill/{SKILL.md,README.md,skill.yaml,CHANGELOG.md,TEST_REPORT.md,manifest.txt}`
+  - `ppt-review-refinement-skill/config/defaults.yaml`
+  - `ppt-review-refinement-skill/schemas/change_manifest.schema.json`
+  - `ppt-review-refinement-skill/scripts/{common.py,analyze_pptx.py,normalize_pptx.py,validate_pptx.py}`
+  - `ppt-review-refinement-skill/tests/{smoke_test.sh,test_quality_gates.py}`
+  - `ppt-review-refinement-skill/workflows/06_validate_deliver.md`
+- Simplifications made:
+  - Reused one shared JSON Schema loader at the executable boundaries instead of duplicating manifest/token validation.
+  - Converted unsupported-object and link checks into stable accepted-risk IDs so manual review cannot be mistaken for automatic approval.
+  - Added a conservative text-box overflow estimate while keeping rendered PNG review mandatory.
+- Validation: 6 targeted quality-gate tests, schema checks, compile checks, and the 4-slide render/normalize/validate smoke flow passed in isolated Python 3.11 dependencies.
+- Commit/push state: pending.
+- Remaining notes: L2/L3 slide editing, narrative/visual report orchestration, and final human visual approval remain external or manual capabilities.
+
 ## 2026-08-07 09:59:23 CST
 
 - Scope: Make `image-to-editable-ppt` portable across Codex, WorkBuddy, Claude Code, QoderWork, and other agent runtimes while preserving Codex `image_gen.imagegen` and CLI `gpt-image-2` as the preferred/default GPT paths.

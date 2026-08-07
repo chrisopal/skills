@@ -1,0 +1,42 @@
+version: 1.0.0
+review:
+  max_recommended_fonts: 3
+  max_recommended_font_sizes: 10
+  max_recommended_explicit_colors: 14
+  min_body_font_pt: 12
+  min_note_font_pt: 9
+  dense_slide_character_count: 420
+  very_dense_slide_character_count: 700
+  max_recommended_bullets: 7
+  max_recommended_visual_groups: 6
+  overlap_area_ratio_warning: 0.08
+  image_dpi_warning: 120
+  image_dpi_critical: 72
+  text_overflow_ratio_warning: 1.25
+  text_overflow_ratio_critical: 2.0
+  title_position_tolerance_in: 0.18
+  title_size_tolerance_pt: 2
+  edge_tolerance_in: 0.03
+render:
+  width_px: 1600
+  height_px: 900
+  montage_columns: 4
+  montage_thumb_width_px: 400
+normalization:
+  preserve_text_by_default: true
+  preserve_slide_order_by_default: true
+  preserve_numbers_by_default: true
+  preserve_editability_by_default: true
+  apply_font_family: true
+  apply_role_sizes: false
+  apply_exact_color_mapping: true
+  standardize_title_position: false
+  standardize_text_margins: false
+validation:
+  compare_body_text: true
+  compare_numeric_tokens: true
+  compare_protected_terms: true
+  fail_on_slide_count_change: true
+  fail_on_missing_protected_term: true
+  fail_on_numeric_token_change: true
+  fail_on_corrupt_output: true

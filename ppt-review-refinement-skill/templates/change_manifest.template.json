@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0",
+  "optimization_level": "L1",
+  "approval_status": "draft",
+  "approved_by": "",
+  "approved_at": "",
+  "content_policy": {
+    "body_text": "preserve",
+    "titles": "optimize",
+    "slide_order": "preserve",
+    "split_merge_delete": "forbidden",
+    "numbers_and_facts": "preserve"
+  },
+  "visual_policy": {
+    "theme": "normalize",
+    "color": "normalize",
+    "typography": "normalize",
+    "layout": "optimize",
+    "charts": "restyle",
+    "diagrams": "restyle"
+  },
+  "image_policy": {
+    "crop": true,
+    "tone_adjust": true,
+    "replace": "approval_required",
+    "generate": "approval_required"
+  },
+  "editability": {
+    "keep_text_editable": true,
+    "keep_charts_editable": true,
+    "keep_diagrams_editable": true,
+    "avoid_rasterization": true,
+    "preserve_links": true,
+    "preserve_animations": true,
+    "preserve_notes": true
+  },
+  "protected_terms": [],
+  "protected_slides": [],
+  "accepted_risks": []
+}

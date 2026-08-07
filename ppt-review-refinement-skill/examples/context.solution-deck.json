@@ -1,0 +1,32 @@
+{
+  "version": "1.0.0",
+  "source_file": "manufacturing-solution.pptx",
+  "deck_type": "售前解决方案",
+  "topic": "面向制造企业的智能工厂一体化平台方案",
+  "audience": {
+    "primary": ["制造企业总经理", "分管数字化领导"],
+    "secondary": ["生产、质量、设备和信息化负责人"]
+  },
+  "usage_context": ["live_presentation", "send_to_read"],
+  "communication_goal": "建立专业信任，说明业务价值与实施路径，推动进入蓝图或立项阶段",
+  "single_takeaway": "通过统一业务平台和数据闭环，把工厂数字化系统从分散工具升级为可持续运营能力",
+  "recommended_personality": ["工业科技", "管理咨询", "专业", "稳重", "克制"],
+  "brand_constraints": {
+    "logos": ["公司Logo", "客户Logo"],
+    "colors": ["#0C2749", "#0097BA", "#A4D968", "#D1D3D3"],
+    "fonts": ["Microsoft YaHei", "Aptos"],
+    "do_not_change": ["客户名称", "项目金额", "案例数据", "保密标识"]
+  },
+  "evidence": [
+    "封面和目录均以智能工厂解决方案为主题",
+    "中后段包含总体架构、实施路线和业务价值",
+    "结尾提出蓝图设计和试点下一步"
+  ],
+  "assumptions": [
+    {
+      "statement": "现场演讲约30分钟，同时会把文件发送给客户阅读",
+      "confidence": "medium",
+      "needs_confirmation": true
+    }
+  ]
+}

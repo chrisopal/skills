@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "source_file": "input.pptx",
+  "optimization_level": "L2",
+  "style_tokens_ref": "style_tokens.json",
+  "change_manifest_ref": "change_manifest.json",
+  "slides": [
+    {
+      "slide": 1,
+      "archetype_current": "cover",
+      "archetype_target": "cover",
+      "objective": "强化主题并建立统一第一印象",
+      "keep": ["主标题", "公司Logo"],
+      "change": [
+        {
+          "target": "background and title hierarchy",
+          "action": "apply confirmed theme and alignment",
+          "parameters": {},
+          "reason": "统一整稿主题并提高标题识别度",
+          "risk": "medium",
+          "authorization": "visual_policy.theme=normalize"
+        }
+      ],
+      "content_changes": [],
+      "image_actions": [],
+      "editability_requirements": ["标题保持可编辑", "Logo不栅格化"],
+      "manual_review_required": ["确认封面主图是否为真实场景或概念示意"],
+      "acceptance_checks": ["标题10秒内可读", "Logo比例正确", "与章节页风格一致"]
+    }
+  ]
+}

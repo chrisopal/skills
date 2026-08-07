@@ -1,0 +1,68 @@
+version: 1.0.0
+story_roles:
+  - background
+  - problem
+  - insight
+  - solution
+  - mechanism
+  - implementation
+  - value
+  - evidence
+  - action
+  - transition
+checks:
+  - id: N001
+    name: core_message_missing
+    severity: P1
+    condition: 无法用一句话概括整份PPT希望观众记住什么
+    recommendation: 建立single_takeaway并让目录和结尾共同支撑
+  - id: N002
+    name: audience_perspective_missing
+    severity: P1
+    condition: 前三分之一主要介绍自己，观众问题与价值出现过晚
+    recommendation: 前置观众关切、问题和业务影响
+  - id: N003
+    name: broken_problem_solution_value_chain
+    severity: P1
+    condition: 问题、方案和价值之间缺少明确因果关系
+    recommendation: 用问题→管理机制→行动支撑→指标→经营结果闭环
+  - id: N004
+    name: duplicate_content
+    severity: P1
+    condition: 相同观点在多个章节重复，未形成递进
+    recommendation: 合并或明确每次出现的新信息
+  - id: N005
+    name: technical_detail_too_early
+    severity: P1
+    condition: 在建立必要性和总体方案前进入大量技术细节
+    recommendation: 先讲为什么与做什么，再讲如何实现
+  - id: N006
+    name: conclusion_title_missing
+    severity: P1
+    condition: 页面标题只是名词或章节标签，不能表达观点
+    recommendation: 改为结论式标题；未授权时只给出候选标题
+  - id: N007
+    name: unsupported_claim
+    severity: P0
+    condition: 关键结论没有数据、案例、来源或逻辑支持
+    recommendation: 补证据或降低表述强度
+  - id: N008
+    name: no_call_to_action
+    severity: P1
+    condition: 结尾没有明确下一步、决策或行动
+    recommendation: 增加决策请求、实施下一步或讨论议题
+slide_checks:
+  one_page_one_message: true
+  title_should_state_conclusion: true
+  body_should_support_title: true
+  max_primary_messages: 1
+  recommended_supporting_points: 3
+  action_types:
+    - keep
+    - trim
+    - split
+    - merge
+    - move_forward
+    - move_backward
+    - restructure
+    - delete_recommendation

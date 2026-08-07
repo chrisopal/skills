@@ -1,0 +1,67 @@
+{
+  "version": "1.0.0",
+  "name": "工业科技·管理咨询",
+  "description": "适用于制造业数字化、智能工厂、企业管理与售前方案",
+  "colors": {
+    "primary": "#0C2749",
+    "secondary": "#0097BA",
+    "accent": "#A4D968",
+    "background": "#F5F7F9",
+    "surface": "#FFFFFF",
+    "text_primary": "#17202A",
+    "text_secondary": "#5B6770",
+    "success": "#2E7D32",
+    "warning": "#ED8B00",
+    "risk": "#C62828"
+  },
+  "typography": {
+    "fonts": {
+      "cjk": "Microsoft YaHei",
+      "latin": "Aptos",
+      "mono": "Consolas"
+    },
+    "roles": {
+      "cover_title": {"size_pt": 32, "bold": true, "color": "#FFFFFF", "line_spacing": 1.0, "space_after_pt": 0},
+      "section_title": {"size_pt": 28, "bold": true, "color": "#0C2749", "line_spacing": 1.0, "space_after_pt": 0},
+      "page_title": {"size_pt": 24, "bold": true, "color": "#0C2749", "line_spacing": 1.0, "space_after_pt": 0},
+      "subtitle": {"size_pt": 16, "bold": false, "color": "#5B6770", "line_spacing": 1.1, "space_after_pt": 0},
+      "body": {"size_pt": 14, "bold": false, "color": "#17202A", "line_spacing": 1.15, "space_after_pt": 4},
+      "data": {"size_pt": 24, "bold": true, "color": "#0097BA", "line_spacing": 1.0, "space_after_pt": 0},
+      "caption": {"size_pt": 10, "bold": false, "color": "#5B6770", "line_spacing": 1.0, "space_after_pt": 0},
+      "footer": {"size_pt": 9, "bold": false, "color": "#5B6770", "line_spacing": 1.0, "space_after_pt": 0}
+    }
+  },
+  "layout": {
+    "slide_width_in": 13.333,
+    "slide_height_in": 7.5,
+    "safe_margin_in": {"left": 0.7, "right": 0.7, "top": 0.45, "bottom": 0.35},
+    "title_box_in": {"x": 0.7, "y": 0.38, "w": 11.9, "h": 0.55},
+    "content_top_in": 1.22,
+    "footer_top_in": 7.10,
+    "two_column_gap_in": 0.35,
+    "three_column_gap_in": 0.25
+  },
+  "spacing": [0.06, 0.10, 0.16, 0.24, 0.36, 0.50, 0.72],
+  "components": {
+    "card": {"corner_radius": 0.08, "fill": "#FFFFFF", "line": "#D1D3D3", "line_width_pt": 0.8, "shadow": "subtle"},
+    "line": {"color": "#D1D3D3", "width_pt": 1.0},
+    "arrow": {"color": "#0097BA", "width_pt": 1.5, "head": "triangle"},
+    "image": {"corner_radius": 0.06, "overlay": "optional_brand_tint", "preserve_aspect": true},
+    "footer": {"show_page_number": true, "show_logo": true, "divider": false}
+  },
+  "exact_mappings": {
+    "font_colors": {
+      "#000000": "#17202A",
+      "#1F4E79": "#0C2749"
+    },
+    "fill_colors": {
+      "#1F4E79": "#0C2749",
+      "#5B9BD5": "#0097BA",
+      "#70AD47": "#A4D968"
+    },
+    "line_colors": {
+      "#A5A5A5": "#D1D3D3",
+      "#5B9BD5": "#0097BA"
+    }
+  }
+}

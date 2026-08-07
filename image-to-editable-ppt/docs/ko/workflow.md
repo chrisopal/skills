@@ -4,7 +4,7 @@
 
 ## 전체 흐름
 
-1. **작업 디렉터리 생성 및 입력 정규화**: 독립 작업 디렉터리를 만들고 입력(이미지/PDF/이미지 기반 PPT)을 `pages/page_NNN/source.png`로 정규화한 뒤 내장 `image_gen.imagegen`의 사용 가능 여부를 확인하고 이번 실행에서 선택한 이미지 backend를 기록합니다.
+1. **Backend 탐색 및 입력 정규화**: 먼저 Codex 내장 `image_gen.imagegen`을 확인합니다. 다른 agent에서는 Tool, Skill, Plugin, MCP/Connector 또는 이미지 모델을 탐색하고 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력 세 기능을 요구합니다. 적합한 후보가 없으면 기본 `gpt-image-2`의 `editppt image`를 선택합니다. 이후 독립 작업 디렉터리를 만들고 입력을 `pages/page_NNN/source.png`로 정규화한 뒤 backend 계약을 기록합니다.
 2. **OCR 텍스트 주석(Token이 구성된 경우)**: 전체 입력을 하나의 일괄 작업으로 OCR에 제출해 각 페이지의 텍스트 주석(상자 좌표, 측정된 글자 크기, 크기 그룹, 텍스트 내용)을 생성합니다. 재구성 시 이 측정값에 따라 텍스트를 복원합니다.
 3. **페이지 분배**: 페이지가 하나뿐이면 메인 agent가 `editppt run dispatch --local`로 페이지를 맡아 로컬에서 재구성합니다. 페이지가 여러 개면 `max_concurrent_pages`에 따라 묶어 page worker에게 병렬로 분배합니다.
 4. **페이지별 재구성 및 자체 점검**: 페이지 재구성 담당자는 자신의 페이지 디렉터리에서 페이지를 재구성하고, 원본과 비교해 자체 점검한 뒤 page-local 수정을 수행합니다. 여러 번 반복할 수 있습니다. 각 페이지에 manifest를 만들고 편집 가능한 텍스트, 단순 도형, 이미지 에셋을 재구성하며, 필요한 경우 image backend로 전경과 배경을 분리하고 소재를 추출합니다.

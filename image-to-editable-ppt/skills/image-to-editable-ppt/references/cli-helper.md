@@ -115,9 +115,23 @@ editppt config --paddle-ocr-token "<token>"
 editppt prepare input.png
 editppt prepare input.pdf
 editppt prepare input.png --image-backend builtin-imagegen
+editppt prepare input.png --image-backend agent-image-tool
 ```
 
 Purpose: normalize a single image, multiple images, a PDF, or an image-based PPTX into a run directory and generate `deck_manifest.json`, `page_jobs.json`, `notes_manifest.json`, plus per-page `pages/page_NNN/source.png`, `page_request.json`, and text hints. `--image-backend` records the requested run/page contract; selection policy lives in `SKILL.md` subsection "Image Backend Selection".
+
+After selecting a discovered agent-native tool, replace the unresolved discovery metadata before page execution:
+
+```bash
+editppt run backend <run> \
+  --mode agent-image-tool \
+  --runtime-id workbuddy \
+  --tool-name "AI image generation" \
+  --tool-call "native-image-tool" \
+  --model "provider/image-model"
+```
+
+Use the actual runtime/tool/model identifiers. Discovery and capability requirements live in `agent-image-backends.md`; JSON field semantics live in `manifest-schema.md`.
 
 When a PaddleOCR token is configured, `prepare` may submit the input pages to PaddleOCR for content-aware text hints. In a sandboxed or approval-gated environment, request network approval up front for this command instead of accepting a DNS/sandbox failure followed by lower-quality `builtin-ink` fallback; see `SKILL.md` Phase 1 for the approval-rejection policy.
 
@@ -260,6 +274,19 @@ editppt image import pages/page_001 \
   --dest assets/icon-sheet.png \
   --role asset_sheet \
   --backend builtin-imagegen
+```
+
+For a discovered agent-native producer, record its concrete identity:
+
+```bash
+editppt image import pages/page_001 \
+  --job-id icon-sheet \
+  --source-image /tmp/generated.png \
+  --dest assets/icon-sheet.png \
+  --role asset_sheet \
+  --backend agent-image-tool \
+  --producer-id workbuddy:native-image-tool \
+  --producer-model provider/image-model
 ```
 
 `--source-image` must be an existing, readable local image. `--backend` records the actual producer and is required; `--fallback-reason` is accepted only when it is consistent with the page's backend contract. Field values and provenance rules live in `manifest-schema.md`.

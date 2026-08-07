@@ -871,6 +871,7 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertEqual("builtin-imagegen", backend["backend_id"])
             self.assertEqual("image_gen.imagegen", backend["tool_name"])
             self.assertIsNone(backend["model"])
+            self.assertEqual("gpt-image-2", backend["fallback_model"])
             self.assertEqual(
                 {"generate": ["prompt"], "edit": ["prompt", "referenced_image_paths"]},
                 backend["required_parameters"],
@@ -885,6 +886,34 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertIn("never scan for the newest file", backend["save_path_policy"])
             request = read_json(deck_path.parent / "pages/page_001/page_request.json")
             self.assertEqual(backend, request["image_backend"])
+
+    def test_prepare_writes_agent_image_tool_discovery_contract_when_selected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / "slide.png"
+            Image.new("RGB", (320, 180), "white").save(source)
+            out_root = Path(tmp) / "runs"
+            result = run_cli(
+                "prepare",
+                source,
+                "--out-root",
+                out_root,
+                "--image-backend",
+                "agent-image-tool",
+                "--no-text-hints",
+            )
+            self.assertEqual(0, result.returncode, result.stderr)
+            deck_line = next(line for line in result.stdout.splitlines() if line.endswith("deck_manifest.json"))
+            backend = read_json(Path(deck_line))["image_backend"]
+            self.assertEqual("agent-image-tool", backend["backend_id"])
+            self.assertEqual("auto", backend["runtime_id"])
+            self.assertIsNone(backend["model"])
+            self.assertEqual("gpt-image-2", backend["fallback_model"])
+            self.assertEqual(
+                ["image-generation", "reference-image-editing", "explicit-local-output"],
+                backend["required_capabilities"],
+            )
+            self.assertIn("vision-input-only", backend["discovery_policy"]["reject_if"])
+            self.assertEqual(["codex-oauth", "openai-compatible-api"], backend["fallback_order"])
 
     def test_skill_prompt_script_output_is_accepted_by_dispatch(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -1135,6 +1164,31 @@ class MultiAgentBackendTest(unittest.TestCase):
             )
             self.assertNotEqual(0, result.returncode)
             self.assertIn("cannot override the fixed builtin-imagegen contract", result.stderr)
+
+    def test_agent_image_backend_records_runtime_and_discovered_tool(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            run_dir = make_minimal_run(tmp)
+            result = run_cli(
+                "run",
+                "backend",
+                run_dir,
+                "--mode",
+                "agent-image-tool",
+                "--runtime-id",
+                "workbuddy",
+                "--tool-name",
+                "AI image generation",
+                "--tool-call",
+                "native-image-tool",
+                "--model",
+                "provider/image-model",
+            )
+            self.assertEqual(0, result.returncode, result.stderr)
+            backend = read_json(run_dir / "deck_manifest.json")["image_backend"]
+            self.assertEqual("workbuddy", backend["runtime_id"])
+            self.assertEqual("AI image generation", backend["tool_name"])
+            self.assertEqual("provider/image-model", backend["model"])
+            self.assertIn("inspect available tools", backend["handoff_rule"])
 
     def test_all_pending_pages_are_dispatchable(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -1575,6 +1629,81 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertEqual("builtin-imagegen", jobs["jobs"][1]["backend"])
             self.assertIsNone(jobs["jobs"][1]["fallback_reason"])
 
+    def test_image_import_records_discovered_agent_tool_provenance(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            page_dir = Path(tmp) / "page_001"
+            page_dir.mkdir()
+            write_json(page_dir / "imagegen-jobs.json", {"schema_version": 1, "jobs": []})
+            write_json(
+                page_dir / "page_request.json",
+                {
+                    "image_backend": {
+                        "backend_id": "agent-image-tool",
+                        "fallback_policy": {"on": ["tool-error"]},
+                    }
+                },
+            )
+            source = Path(tmp) / "generated.png"
+            Image.new("RGB", (12, 12), "red").save(source)
+            result = run_cli(
+                "image",
+                "import",
+                page_dir,
+                "--job-id",
+                "agent-image",
+                "--source-image",
+                source,
+                "--dest",
+                "assets/generated.png",
+                "--backend",
+                "agent-image-tool",
+                "--producer-id",
+                "workbuddy:native-image-tool",
+                "--producer-model",
+                "provider/image-model",
+            )
+            self.assertEqual(0, result.returncode, result.stderr)
+            job = read_json(page_dir / "imagegen-jobs.json")["jobs"][0]
+            self.assertEqual("agent-image-tool", job["backend"])
+            self.assertEqual("workbuddy:native-image-tool", job["producer_id"])
+            self.assertEqual("provider/image-model", job["producer_model"])
+
+            missing_producer = run_cli(
+                "image",
+                "import",
+                page_dir,
+                "--job-id",
+                "missing-producer",
+                "--source-image",
+                source,
+                "--dest",
+                "assets/missing.png",
+                "--backend",
+                "agent-image-tool",
+            )
+            self.assertNotEqual(0, missing_producer.returncode)
+            self.assertIn("--producer-id", missing_producer.stderr)
+
+            fallback = run_cli(
+                "image",
+                "import",
+                page_dir,
+                "--job-id",
+                "agent-fallback",
+                "--source-image",
+                source,
+                "--dest",
+                "assets/fallback.png",
+                "--backend",
+                "codex-oauth",
+                "--fallback-reason",
+                "tool-error",
+            )
+            self.assertEqual(0, fallback.returncode, fallback.stderr)
+            fallback_job = read_json(page_dir / "imagegen-jobs.json")["jobs"][1]
+            self.assertEqual("codex-oauth", fallback_job["backend"])
+            self.assertEqual("tool-error", fallback_job["fallback_reason"])
+
     def test_image_import_rejects_unreadable_output_and_invalid_provenance(self):
         with tempfile.TemporaryDirectory() as tmp:
             page_dir = Path(tmp) / "page_001"
@@ -1630,7 +1759,9 @@ class MultiAgentBackendTest(unittest.TestCase):
 
             invalid_pairs = [
                 ("builtin-imagegen", "unknown"),
+                ("builtin-imagegen", "agent-image-tool"),
                 ("editppt-image-cli", "builtin-imagegen"),
+                ("editppt-image-cli", "agent-image-tool"),
                 ("editppt-image-cli", "unknown"),
                 ("openai-compatible-api", "builtin-imagegen"),
                 ("openai-compatible-api", "codex-oauth"),

@@ -34,13 +34,13 @@
 
 조건부로 지원합니다. agent가 skill 로딩, 파일 읽기·쓰기, CLI 실행을 지원해야 하며, 다중 페이지 작업에서는 page worker/subagent 분배도 지원해야 합니다. 현재 환경에서 page worker를 만들 수 없다면 다중 페이지 작업은 지원되는 환경에서 실행해야 합니다.
 
-Claude Code, OpenClaw, Hermes Agent 등 Codex가 아닌 환경에는 일반적으로 Codex OAuth가 없으므로 OpenAI-compatible 이미지 API 폴백을 구성해야 합니다. [설치 및 구성](/ko/installation.md)을 참고하세요.
+WorkBuddy, Claude Code, QoderWork 같은 Codex 외 환경은 먼저 자체 이미지 Tool/Skill/Plugin/MCP를 탐색·검증합니다. 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원하는 후보가 없으면 Codex OAuth 또는 OpenAI-compatible 이미지 API 폴백이 필요합니다. [설치 및 구성](/ko/installation.md)을 참고하세요.
 
 또한 모델의 기본 이해 능력과 skill 준수 능력에 따라 gpt-5.5 미만 모델의 사용 결과는 보장하지 않습니다.
 
 ## Q: 이미지 생성에는 무엇을 사용하나요? API key가 필요한가요?
 
-이미지 생성과 편집은 현재 agent의 내장 `image_gen.imagegen` 도구를 우선 사용합니다. 내장 도구를 사용할 수 없거나 호출에 실패한 경우, 편집 입력을 읽을 수 없는 경우, 또는 유효한 로컬 이미지가 반환되지 않은 경우처럼 정해진 조건에서만 `editppt image`로 폴백합니다. CLI는 구독 측 이미지 할당량을 사용하는 로컬 Codex OAuth를 먼저 시도한 뒤 `~/.editppt/config.yaml`의 OpenAI-compatible API 설정을 읽습니다. Codex 회원은 일반적으로 API key를 구성할 필요가 없습니다. 타사 폴백이 필요하면 서비스의 base URL, 모델명, API key를 AI에게 알려 주세요. AI가 사용자 수준 설정에 기록하고 출력에서는 민감한 값을 가립니다.
+이미지 생성과 편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. 다른 agent는 원생 Tool, Skill, Plugin, MCP/Connector 또는 이미지 모델을 먼저 찾고 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 요구합니다. 이미지를 보기만 하는 기능은 backend가 아닙니다. 적합한 후보가 없으면 기본 모델 `gpt-image-2`의 `editppt image`를 사용하며, CLI는 로컬 Codex OAuth를 먼저 시도한 뒤 `~/.editppt/config.yaml`의 OpenAI-compatible API 설정을 읽습니다. Codex 회원은 일반적으로 API key가 필요 없고, 타사 폴백에는 base URL, 모델명, API key가 필요합니다.
 
 ## Q: skill을 최신 버전으로 업데이트하려면 어떻게 하나요?
 

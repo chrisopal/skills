@@ -60,14 +60,16 @@ The skill also works without a Token by falling back to its built-in offline det
 
 ## Image Backend and Third-Party API Configuration
 
-Image generation and editing prefer the current agent's built-in `image_gen.imagegen` tool. Only when a defined fallback condition is met does the workflow invoke the `editppt image` CLI, which prefers local Codex OAuth (`~/.codex/auth.json`) and, if that is unavailable, reads OpenAI-compatible API configuration from `~/.editppt/config.yaml` or environment variables.
+Image generation and editing default to Codex's built-in `image_gen.imagegen`. In WorkBuddy, Claude Code, QoderWork, or another agent, the skill discovers tools, skills, plugins, MCP/connectors, and configured image models. A candidate must support prompt-to-image, reference-image editing, and explicit local output; otherwise the skill uses the `editppt image` CLI with default model `gpt-image-2`. The CLI prefers local Codex OAuth (`~/.codex/auth.json`) and then OpenAI-compatible API configuration.
+
+WorkBuddy ImageGen and QoderWork `/gen-image`/remix still require runtime verification of the reference-edit contract. Claude Code officially documents image understanding but no native generator/editor, so it normally needs an added image skill/plugin/MCP tool or the CLI fallback. A vision model that can only inspect images is not an image backend.
 
 You normally do not need to configure anything yourself. Ask the AI to configure an API fallback only when:
 
 - You explicitly want to use a third-party API or an OpenAI-compatible proxy.
-- You are using a non-Codex environment such as Claude Code, OpenClaw, or Hermes Agent without usable Codex OAuth authentication.
+- You are using WorkBuddy, Claude Code, QoderWork, or another runtime with neither a capability-validated native image tool nor usable Codex OAuth authentication.
 - `editppt image` reports that neither Codex OAuth nor `OPENAI_API_KEY` is available.
 
 When a third-party API fallback is needed, provide the AI with the service name, base URL, model name, and API key. The AI will check the environment and save the configuration to the user-level `~/.editppt/config.yaml`, masking sensitive values in its output. Do not place an API key in the project directory, run directory, or skill directory.
 
-The Codex OAuth path depends on local Codex authentication and your subscription's image allowance. API fallback depends on the image generation and editing capabilities of the chosen OpenAI-compatible service.
+The Codex OAuth path depends on local Codex authentication and your subscription's image allowance. API fallback depends on the image generation and editing capabilities of the chosen OpenAI-compatible service. Multi-page conversion also requires page workers to access the same native image tool; otherwise the entire run uses the CLI.

@@ -146,6 +146,7 @@ def cmd_prepare(args: argparse.Namespace) -> int:
             mode=args.image_backend,
             tool_name=None,
             tool_call=None,
+            runtime_id=None,
             model=None,
             fallback_command=None,
             runtime_home=None,
@@ -162,6 +163,8 @@ def cmd_backend(args: argparse.Namespace) -> int:
         argv.extend(["--tool-name", args.tool_name])
     if args.tool_call:
         argv.extend(["--tool-call", args.tool_call])
+    if args.runtime_id:
+        argv.extend(["--runtime-id", args.runtime_id])
     if args.model:
         argv.extend(["--model", args.model])
     if args.fallback_command:
@@ -536,6 +539,7 @@ contract. The standalone CLI default is editppt-image-cli.
         epilog="""Examples:
   editppt prepare slide.png
   editppt prepare slide.png --image-backend builtin-imagegen
+  editppt prepare slide.png --image-backend agent-image-tool
   editppt prepare deck.pdf --max-concurrent-pages 3
   editppt prepare a.png b.png --out-root output/image-to-editable-ppt
 """,
@@ -547,9 +551,9 @@ contract. The standalone CLI default is editppt-image-cli.
     prepare.add_argument("--max-concurrent-pages", type=int, metavar="N", help="Maximum concurrent page dispatch slots. Default: 6.")
     prepare.add_argument(
         "--image-backend",
-        choices=["builtin-imagegen", "editppt-image-cli"],
+        choices=["builtin-imagegen", "agent-image-tool", "editppt-image-cli"],
         default="editppt-image-cli",
-        help="Run-level image backend contract. Defaults to editppt-image-cli; parent agents can select builtin-imagegen.",
+        help="Run-level image backend contract. Defaults to editppt-image-cli; parent agents can select builtin-imagegen or a discovered agent-image-tool.",
     )
     prepare.add_argument("--no-text-hints", action="store_true", help="Skip per-page text hint generation after preparing pages.")
     prepare.set_defaults(func=cmd_prepare)
@@ -592,24 +596,27 @@ record dispatch/result events, and assemble the final deck.
         description="""Configure deck_manifest.json.image_backend and copy it into page requests.
 
 Normally editppt prepare records the unified editppt image CLI backend automatically.
-Use this when a parent Agent selects image_gen.imagegen or when forcing other backend metadata.
+Use this when a parent Agent selects image_gen.imagegen, discovers another capable
+agent-native image tool, or needs to force other backend metadata.
 """,
         formatter_class=HELP_FORMATTER,
         epilog="""Examples:
   editppt run backend <run>
   editppt run backend <run> --mode builtin-imagegen
+  editppt run backend <run> --mode agent-image-tool --runtime-id workbuddy --tool-name "AI image generation"
   editppt run backend <run> --mode openai-compatible-api --model openai/gpt-image-2
 """,
     )
     backend.add_argument("run", metavar="RUN", help="Run directory or deck_manifest.json path.")
     backend.add_argument(
         "--mode",
-        choices=["builtin-imagegen", "editppt-image-cli", "openai-compatible-api"],
+        choices=["builtin-imagegen", "agent-image-tool", "editppt-image-cli", "openai-compatible-api"],
         default="editppt-image-cli",
         help="Image backend mode. Defaults to the unified editppt image CLI contract.",
     )
     backend.add_argument("--tool-name", metavar="NAME", help="Override the tool name for non-builtin contracts.")
     backend.add_argument("--tool-call", metavar="CALL", help="Override the tool call for non-builtin contracts.")
+    backend.add_argument("--runtime-id", metavar="ID", help="Agent runtime that owns a discovered image tool, for example workbuddy, claude-code, or qoderwork.")
     backend.add_argument("--model", metavar="MODEL", help="Image model label for API/CLI fallback.")
     backend.add_argument("--fallback-command", metavar="CMD", help="Override the fallback command for non-builtin contracts.")
     backend.add_argument("--runtime-home", metavar="DIR", help="Shared config home. Defaults to ~/.editppt.")

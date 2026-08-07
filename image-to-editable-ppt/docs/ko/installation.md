@@ -60,14 +60,16 @@ Token 없이도 실행할 수 있습니다. 이 경우 skill은 내장 오프라
 
 ## 이미지 Backend 및 타사 API 구성
 
-이미지 생성과 편집은 현재 agent의 내장 `image_gen.imagegen` 도구를 우선 사용합니다. 정해진 폴백 조건을 충족할 때만 `editppt image` CLI로 전환하며, CLI는 로컬 Codex OAuth(`~/.codex/auth.json`)를 우선 사용하고 사용할 수 없으면 `~/.editppt/config.yaml` 또는 환경 변수의 OpenAI-compatible API 설정을 읽습니다.
+이미지 생성과 편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. WorkBuddy, Claude Code, QoderWork 또는 다른 agent에서는 Tool, Skill, Plugin, MCP/Connector와 구성된 이미지 모델을 탐색합니다. 후보는 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원해야 하며, 그렇지 않으면 기본 모델 `gpt-image-2`의 `editppt image` CLI를 사용합니다. CLI는 로컬 Codex OAuth(`~/.codex/auth.json`)를 우선 사용한 뒤 OpenAI-compatible API 설정을 읽습니다.
+
+WorkBuddy ImageGen과 QoderWork `/gen-image`/remix는 설치된 환경에서 참조 편집 계약을 다시 확인해야 합니다. Claude Code 공식 문서는 이미지 이해만 확인하므로 별도 이미지 Skill/Plugin/MCP 도구가 없으면 CLI 폴백을 사용합니다. 이미지를 보기만 하는 시각 모델은 이미지 backend가 아닙니다.
 
 일반적으로 직접 구성할 필요는 없습니다. 다음 경우에만 AI에게 API 폴백 구성을 요청하세요.
 
 - 타사 API 또는 OpenAI 호환 중계 서비스를 사용하도록 명시적으로 요청한 경우
-- Claude Code, OpenClaw, Hermes Agent 등 Codex가 아닌 환경에서 사용하며 Codex OAuth auth를 사용할 수 없는 경우
+- WorkBuddy, Claude Code, QoderWork 등의 환경에서 기능 검증을 통과한 원생 이미지 도구도 없고 Codex OAuth auth도 사용할 수 없는 경우
 - `editppt image`가 Codex OAuth와 `OPENAI_API_KEY`를 모두 사용할 수 없다고 보고한 경우
 
 타사 API 폴백이 필요하면 사용할 서비스, base URL, 모델명, API key를 AI에게 알려 주세요. AI가 실행 중 환경 확인과 설정 기록을 완료하고, 자격 증명을 사용자 수준 설정 `~/.editppt/config.yaml`에 저장하며 출력에서는 민감한 값을 가립니다. API key를 프로젝트 디렉터리, run 디렉터리 또는 skill 디렉터리에 기록하지 마세요.
 
-Codex OAuth 경로는 로컬 Codex auth와 구독 측 이미지 할당량에 의존하고, API 폴백은 선택한 OpenAI-compatible 서비스의 이미지 생성/편집 기능에 의존합니다.
+Codex OAuth 경로는 로컬 Codex auth와 구독 측 이미지 할당량에 의존하고, API 폴백은 선택한 OpenAI-compatible 서비스의 이미지 생성/편집 기능에 의존합니다. 다중 페이지 변환에서는 page worker도 같은 원생 이미지 도구에 접근할 수 있어야 하며, 그렇지 않으면 전체 실행에서 CLI를 사용합니다.

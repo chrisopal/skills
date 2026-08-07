@@ -39,6 +39,7 @@ Key fields:
   "max_concurrent_pages": 6,
   "image_backend": {
     "backend_id": "builtin-imagegen",
+    "runtime_id": "codex",
     "tool_name": "image_gen.imagegen",
     "required_parameters": {
       "generate": ["prompt"],
@@ -47,6 +48,7 @@ Key fields:
     "input_context_policy": "generate with prompt; before editing, view_image each input, then use prompt plus absolute local referenced_image_paths",
     "save_path_policy": "use only an explicit valid local result/output_hint path, then editppt image import; never scan for a newest file",
     "fallback_command": "editppt image generate/edit",
+    "fallback_model": "gpt-image-2",
     "fallback_order": ["codex-oauth", "openai-compatible-api"],
     "fallback_policy": {
       "on": [
@@ -73,11 +75,24 @@ For `backend_id: "builtin-imagegen"`, these fields are required and have fixed m
 - `input_context_policy`: requires `view_image` on every edit input before the built-in call; generation has no image input.
 - `save_path_policy`: permits only an explicit valid local result path, including `output_hint`, followed by `editppt image import`; newest-file directory scanning is forbidden.
 - `fallback_command`: the CLI surface used only after the fallback policy matches.
+- `fallback_model`: `gpt-image-2`, used by the CLI fallback; it is not passed to the built-in agent tool.
 - `fallback_order`: the CLI's internal order, Codex OAuth before a configured OpenAI-compatible API.
 - `fallback_policy.on`: the only events that permit leaving the built-in tool: it is unavailable/not callable, its call errors, an edit input is unreadable, or it returns no valid local image.
 - `fallback_policy.missing_optional_parameters`: always `false`; absent optional controls never authorize fallback.
 
 Other backend metadata may describe model labels, runtime homes, or handoff text, but it does not change this order. Parent-level tool selection and user-interaction policy live in `SKILL.md` subsection "Image Backend Selection"; page reconstructors execute the copied contract above.
+
+For `backend_id: "agent-image-tool"`, the contract records a tool discovered in a non-Codex or otherwise unknown runtime:
+
+- `runtime_id`: the owning runtime (`workbuddy`, `claude-code`, `qoderwork`, or a concrete identifier); `auto` means discovery has not yet been resolved.
+- `tool_name` / `tool_call`: the concrete native tool, installed skill/plugin, MCP tool, or agent-call syntax. `auto-discover` is allowed only before execution and must be resolved before importing output.
+- `required_capabilities`: always `image-generation`, `reference-image-editing`, and `explicit-local-output`.
+- `discovery_policy.reject_if`: disqualifies vision-input-only/text-only models, generation-only tools that cannot edit a supplied reference, and tools that do not return or save an unambiguous local file.
+- `model`: the discovered native producer model when it is known; it remains `null` while discovery is unresolved.
+- `fallback_model`: always `gpt-image-2` for the built-in and agent-tool contracts. The exact Codex built-in tool does not accept a model parameter, so this field governs only the deterministic CLI fallback.
+- `fallback_order` / `fallback_policy`: the same deterministic CLI fallback order and allowed failure events used by the built-in contract. A missing required capability is treated as tool unavailability before any native call.
+
+The parent agent must follow `references/agent-image-backends.md` to resolve this contract. A model that can inspect an input image but cannot generate and reference-edit images is not a valid backend.
 
 ## `page_jobs.json`
 
@@ -386,13 +401,15 @@ Each imported job records at least the selected output and the backend that actu
       "output": "assets/icon-sheet.png",
       "output_sha256": "...",
       "backend": "builtin-imagegen",
+      "producer_id": null,
+      "producer_model": null,
       "fallback_reason": null
     }
   ]
 }
 ```
 
-`backend` is the actual producer: `builtin-imagegen`, `codex-oauth`, or `openai-compatible-api`; `unknown` is reserved for legacy page directories that have no `image_backend` contract. `editppt image import` requires an explicit producer, rejects files that are not readable images, and checks `backend`/`fallback_reason` against the page contract. `fallback_reason` is `null` when the preferred backend succeeded or the run selected a CLI contract directly; when a built-in contract enters its CLI fallback, it records the matching event from `image_backend.fallback_policy.on`.
+`backend` is the actual producer: `builtin-imagegen`, `agent-image-tool`, `codex-oauth`, or `openai-compatible-api`; `unknown` is reserved for legacy page directories that have no `image_backend` contract. `editppt image import` requires an explicit producer, rejects files that are not readable images, and checks `backend`/`fallback_reason` against the page contract. `agent-image-tool` additionally requires `producer_id` and may record `producer_model`, so a generic runtime contract never erases the concrete producing tool. `fallback_reason` is `null` when the preferred backend succeeded or the run selected a CLI contract directly; when a built-in or agent-tool contract enters its CLI fallback, it records the matching event from `image_backend.fallback_policy.on`.
 
 State and provenance record rules are described in the State Principles section of `SKILL.md` and in the asset processing examples in `cli-helper.md`.
 

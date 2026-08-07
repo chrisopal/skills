@@ -19,6 +19,7 @@ Each rule in this skill has exactly one authoritative home; the other files poin
 - `references/cli-helper.md`: CLI install check (Pre-Run Check), command tree, and command syntax examples. Read it when deciding which `editppt` command to call.
 - `references/manifest-schema.md`: the single home for JSON field contracts of deck/page/image artifacts — required manifest fields, positioned-object coordinates, `validation.json`, and `page_result.json` shapes. Read it when writing or validating any run/page file.
 - `references/page-decision-tree.md`: the single source of truth for page object decisions — background handling, foreground asset separation, native shapes, formulas, text-hints usage, the final self-check, and the fix-versus-warning split. Read it before reconstructing any page.
+- `references/agent-image-backends.md`: runtime discovery guide for Codex, WorkBuddy, Claude Code, Qoder Worker, and unknown agents. Read it before selecting any non-Codex visual tool or model.
 
 ## Entry Contract
 
@@ -39,12 +40,15 @@ These parent-level rules are stated once here; page-level rules live in the refe
 
 ### Image Backend Selection
 
-This subsection is the authoritative execution policy for every page-local image job. Before prepare, check whether the current agent runtime can call `image_gen.imagegen`; if so, pass `--image-backend builtin-imagegen` to `editppt prepare`, otherwise keep the default CLI contract. Run image jobs serially within a page, in this order:
+This subsection is the authoritative execution policy for every page-local image job. The default GPT path is Codex `image_gen.imagegen`; the deterministic CLI fallback defaults to `gpt-image-2`. Before prepare, inspect the current runtime and choose exactly one contract:
 
-1. Use the built-in agent tool `image_gen.imagegen` whenever it is callable in the current agent runtime.
-2. Only when the run's recorded built-in fallback policy applies, call `editppt image generate/edit`. That CLI fallback selects Codex OAuth first and a configured OpenAI-compatible API second.
+1. If the exact callable tool `image_gen.imagegen` exists, pass `--image-backend builtin-imagegen`. Do not probe it through Python or shell and do not replace it with a similarly named tool.
+2. Otherwise inspect the runtime's available native tools, installed skills/plugins, MCP tools, and configured image models as `references/agent-image-backends.md` requires. Select a candidate only if it supports all three capabilities: prompt-to-image generation, reference-image editing, and an explicit valid local output path. Image understanding or image input alone is not enough. Pass `--image-backend agent-image-tool`, then record the discovered runtime, tool, and model with `editppt run backend`.
+3. If no candidate passes, keep the default `editppt-image-cli` contract. Its image model defaults to `gpt-image-2`; it selects Codex OAuth first and a configured OpenAI-compatible API second.
 
-The exact built-in arguments, input-inspection prerequisite, output acceptance rule, and allowed fallback events are owned by the `image_backend` field contract in `references/manifest-schema.md`; copy and execute that contract without weakening or extending it. If its CLI fallback cannot produce a compliant output, fail the page rather than substituting an approximate object source.
+For a multi-page run, a discovered agent-native tool is eligible only when page workers can call the same tool. Otherwise use the CLI contract so every page has the same executable backend. Run image jobs serially within each page.
+
+The exact built-in arguments, discovery capability gate, input-inspection prerequisite, output acceptance rule, provenance fields, and allowed fallback events are owned by the `image_backend` and `imagegen-jobs.json` contracts in `references/manifest-schema.md`; copy and execute them without weakening or extending them. If the selected contract and its declared CLI fallback cannot produce a compliant output, fail the page rather than substituting an approximate object source.
 
 ## Roles
 

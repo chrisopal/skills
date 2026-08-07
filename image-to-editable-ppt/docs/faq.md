@@ -34,13 +34,13 @@
 
 有条件支持。agent 需要支持 skill 加载、文件读写和 CLI 执行；多页任务还需要 page worker/subagent 分派机制。如果当前环境不能创建 page worker，多页任务应换到支持的环境执行。
 
-非 Codex 环境（如 Claude Code、OpenClaw、Hermes Agent）通常没有 Codex OAuth，需要配置 OpenAI-compatible 的图片 API fallback，参见[安装与配置](installation.md)。
+非 Codex 环境（如 WorkBuddy、Claude Code、QoderWork）会先发现并校验自身的图片 Tool/Skill/Plugin/MCP；没有同时支持文生图、参考图编辑和明确本地输出的候选时，需要可用的 Codex OAuth 或 OpenAI-compatible 图片 API fallback，参见[安装与配置](installation.md)。
 
 另外，受限于模型基础理解能力和对 skill 的遵循能力，不保证 gpt-5.5 以下模型的使用效果。
 
 ## Q：图片生成用的是什么？需要配 API key 吗？
 
-图片生成和编辑优先调用当前 agent 的内置 `image_gen.imagegen`。只有内置工具不可用、调用失败、无法读取编辑输入或没有返回有效本地图片等约定情况，才降级到 `editppt image`；CLI 会先尝试本机 Codex OAuth（走订阅侧图片额度），再读取 `~/.editppt/config.yaml` 里的 OpenAI-compatible API 配置。Codex 会员通常不需要配置 API key。需要第三方 fallback 时，把服务的 base URL、模型名和 API key 告诉 AI，它会帮你写入用户级配置并遮蔽敏感值。
+图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。其他智能体会先查找原生 Tool、Skill、Plugin、MCP/Connector 或图片模型，并校验文生图、参考图编辑和明确本地输出；只会看图的不算图片 backend。没有合格候选时使用默认模型为 `gpt-image-2` 的 `editppt image`，CLI 先尝试本机 Codex OAuth，再读取 `~/.editppt/config.yaml` 的 OpenAI-compatible API 配置。Codex 会员通常不需要 API key；第三方 fallback 需要 base URL、模型名和 API key。
 
 ## Q：如何更新 skill 到最新版本？
 

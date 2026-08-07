@@ -60,14 +60,16 @@ ln -s /path/to/image-to-editable-ppt-skill/skills/image-to-editable-ppt ~/.codex
 
 ## 图片 Backend 与第三方 API 配置
 
-图片生成和编辑优先调用当前 agent 的内置 `image_gen.imagegen`。只有满足约定的降级条件时才进入 `editppt image` CLI；CLI 会优先使用本机 Codex OAuth（`~/.codex/auth.json`），如果不可用，再读取 `~/.editppt/config.yaml` 或环境变量里的 OpenAI-compatible API 配置。
+图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。在 WorkBuddy、Claude Code、QoderWork 或其他智能体中，skill 会发现 Tool、Skill、Plugin、MCP/Connector 和已配置图片模型；候选必须同时支持文生图、参考图编辑和明确本地输出，否则使用默认模型为 `gpt-image-2` 的 `editppt image` CLI。CLI 优先使用本机 Codex OAuth（`~/.codex/auth.json`），不可用时再读取 OpenAI-compatible API 配置。
+
+WorkBuddy 的 ImageGen 和 QoderWork 的 `/gen-image`/remix 需要在安装环境中确认参考图编辑契约；Claude Code 官方只确认图片理解，因此通常需要额外图片 Skill/Plugin/MCP，或直接使用 CLI fallback。只会“看图”的视觉模型不能作为图片 backend。
 
 通常不需要你自己配置。只有这些情况才需要让 AI 帮你配置 API fallback：
 
 - 你明确要求使用第三方 API 或 OpenAI 兼容中转站。
-- 在 Claude Code、OpenClaw、Hermes Agent 等非 Codex 环境中使用，并且没有可用的 Codex OAuth auth。
+- 在 WorkBuddy、Claude Code、QoderWork 等环境中使用，没有通过能力校验的原生图片工具，也没有可用的 Codex OAuth auth。
 - `editppt image` 报告 Codex OAuth 和 `OPENAI_API_KEY` 都不可用。
 
 如果需要第三方 API fallback，告诉 AI 你要使用的服务、base URL、模型名和 API key 即可。AI 会在执行过程中完成环境检查和配置写入，把凭据保存在用户级配置 `~/.editppt/config.yaml`，并在输出里遮蔽敏感值。不要把 API key 写进项目目录、run 目录或 skill 目录。
 
-Codex OAuth 路径依赖本机 Codex auth 和订阅侧图片额度；API fallback 依赖所选 OpenAI-compatible 服务的图片生成/编辑能力。
+Codex OAuth 路径依赖本机 Codex auth 和订阅侧图片额度；API fallback 依赖所选 OpenAI-compatible 服务的图片生成/编辑能力。多页转换还要求 page worker 能访问同一原生图片工具，否则整次运行统一使用 CLI。

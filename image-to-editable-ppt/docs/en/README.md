@@ -39,7 +39,7 @@ If you are already using the skill and run into problems, see [FAQ](/en/faq.md).
 - Object-level reconstruction: text becomes native text boxes, simple geometry becomes PowerPoint shapes, and complex visual elements remain separate image assets, so all three object types can be adjusted independently.
 - Measurement-driven text restoration: OCR generates text annotations for every page, including bounding boxes, font sizes, font-size groups, and recognized text. The model reconstructs text from these measurements and automatically keeps same-level text at consistent sizes. See the OCR Token section in [Installation and Configuration](/en/installation.md).
 - Parallel multi-page reconstruction: the main agent dispatches multi-page inputs to page workers/subagents in parallel; single-page inputs use the same reconstruction flow locally in the main agent.
-- Image generation and editing prefer the current agent's built-in `image_gen.imagegen` tool. Only defined fallback conditions invoke `editppt image`, whose CLI selects between Codex OAuth and an OpenAI-compatible API.
+- Image generation and editing prefer Codex's built-in `image_gen.imagegen`. Other agents discover and validate native tools/skills/plugins/MCP/image models, requiring prompt-to-image, reference-image editing, and explicit local output; otherwise they use `editppt image` with default `gpt-image-2`.
 - Speaker notes from `.pptx` inputs are copied unchanged to the matching output pages without translation, summarization, or rewriting.
 - Stable page order: multiple images follow the order provided, while PDFs and `.pptx` files preserve their original page order.
 

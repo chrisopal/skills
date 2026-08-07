@@ -26,7 +26,7 @@ def main():
     parser.add_argument("--prompt-file", help="Optional prompt file path used to create the selected image.")
     parser.add_argument(
         "--backend",
-        choices=["builtin-imagegen", "codex-oauth", "openai-compatible-api", "unknown"],
+        choices=["builtin-imagegen", "agent-image-tool", "codex-oauth", "openai-compatible-api", "unknown"],
         required=True,
         help="Actual image backend that produced the selected image.",
     )
@@ -35,6 +35,11 @@ def main():
         choices=["tool-unavailable", "tool-error", "input-unreadable", "no-valid-local-output"],
         help="Optional fallback event explaining why the preferred image backend was not used.",
     )
+    parser.add_argument(
+        "--producer-id",
+        help="Concrete runtime tool/skill identifier; required when --backend agent-image-tool.",
+    )
+    parser.add_argument("--producer-model", help="Optional concrete model used by the discovered agent image tool.")
     parser.add_argument("--note", help="Short provenance or approval note recorded with the job.")
     args = parser.parse_args()
 
@@ -53,15 +58,29 @@ def main():
     cli_backends = {"codex-oauth", "openai-compatible-api"}
     if args.fallback_reason and args.backend not in cli_backends:
         raise SystemExit("--fallback-reason requires --backend codex-oauth or openai-compatible-api")
+    if args.backend == "agent-image-tool" and not args.producer_id:
+        raise SystemExit("--backend agent-image-tool requires --producer-id")
+    if args.backend != "agent-image-tool" and (args.producer_id or args.producer_model):
+        raise SystemExit("--producer-id/--producer-model require --backend agent-image-tool")
 
     request = read_json(page_dir / "page_request.json", default={})
     contract = request.get("image_backend") or {}
     preferred_backend = contract.get("backend_id")
     if preferred_backend == "builtin-imagegen":
-        if args.backend == "unknown":
+        if args.backend not in {"builtin-imagegen", *cli_backends}:
             raise SystemExit("A builtin-imagegen page contract requires a known producing backend")
         if args.backend in cli_backends and not args.fallback_reason:
             raise SystemExit("CLI output under a builtin-imagegen contract requires --fallback-reason")
+        allowed_reasons = (contract.get("fallback_policy") or {}).get("on") or []
+        if args.fallback_reason and args.fallback_reason not in allowed_reasons:
+            raise SystemExit(f"Fallback reason is not permitted by page_request.json: {args.fallback_reason}")
+    elif preferred_backend == "agent-image-tool":
+        if args.backend not in {"agent-image-tool", *cli_backends}:
+            raise SystemExit("An agent-image-tool page contract requires a discovered agent tool or declared CLI fallback")
+        if args.backend in cli_backends and not args.fallback_reason:
+            raise SystemExit("CLI output under an agent-image-tool contract requires --fallback-reason")
+        if args.backend == "agent-image-tool" and args.fallback_reason:
+            raise SystemExit("A successful agent-image-tool output cannot record --fallback-reason")
         allowed_reasons = (contract.get("fallback_policy") or {}).get("on") or []
         if args.fallback_reason and args.fallback_reason not in allowed_reasons:
             raise SystemExit(f"Fallback reason is not permitted by page_request.json: {args.fallback_reason}")
@@ -79,6 +98,8 @@ def main():
         raise SystemExit(f"Unsupported image backend in page_request.json: {preferred_backend}")
     elif args.fallback_reason:
         raise SystemExit("--fallback-reason requires a builtin-imagegen page contract")
+    elif args.backend == "agent-image-tool":
+        raise SystemExit("--backend agent-image-tool requires an agent-image-tool page contract")
 
     dest = resolve_inside(page_dir, args.dest)
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -104,6 +125,8 @@ def main():
             "output_sha256": sha256_file(dest),
             "prompt_file": args.prompt_file,
             "backend": args.backend,
+            "producer_id": args.producer_id,
+            "producer_model": args.producer_model,
             "fallback_reason": args.fallback_reason,
             "note": args.note,
             "recorded_at": now_iso(),

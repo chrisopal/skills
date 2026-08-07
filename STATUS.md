@@ -12,7 +12,7 @@
   - Kept narrative/visual judgment external while making report merging and Schema validation local and reproducible.
   - Bound pilot and final signoff to source/candidate SHA-256 and made missing final signoff a validation failure.
 - Validation: 9 regression tests, all JSON Schema checks, isolated compileall, `git diff --check`, and the 4-slide render/normalize/validate smoke flow passed; smoke validation read `VAL-VISUAL-SIGNOFF=pass`.
-- Commit/push state: pending.
+- Commit/push state: committed as `4deaac1` and pushed to `origin/codex/image-to-editable-ppt-visual-qa` (`https://github.com/chrisopal/skills.git`).
 - Remaining notes: the smoke signoff is an automated fixture only; real delivery still requires a human-created approved `visual_signoff.json`. Complex charts, SmartArt, animations, embedded objects, image replacement, and `.pptm` remain external/manual.
 
 ## 2026-08-07 19:20:00 CST

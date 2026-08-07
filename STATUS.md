@@ -1,3 +1,30 @@
+## 2026-08-07 09:59:23 CST
+
+- Scope: Make `image-to-editable-ppt` portable across Codex, WorkBuddy, Claude Code, QoderWork, and other agent runtimes while preserving Codex `image_gen.imagegen` and CLI `gpt-image-2` as the preferred/default GPT paths.
+- Changed files:
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/{SKILL.md,prompts/page-worker.md,references/*.md}`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/{configure_image_backend.py,main.py,record_imagegen_result.py}`
+  - `image-to-editable-ppt/tests/test_multi_agent_backend.py`
+  - `image-to-editable-ppt/{README.md,README_en.md,README_ko.md,CHANGELOG.md}`
+  - `image-to-editable-ppt/docs/` synchronized Chinese, English, and Korean backend guidance
+- Simplifications made:
+  - Added one generic `agent-image-tool` contract instead of hard-coding platform-specific command implementations.
+  - Required prompt-to-image, reference-image editing, and explicit local output before selecting a native tool; vision-only and generation-only models are rejected.
+  - Kept one deterministic fallback path with `gpt-image-2`, Codex OAuth first, and OpenAI-compatible API second.
+  - Added concrete producer tool/model provenance so a generic runtime contract does not hide the backend that generated an asset.
+- Validation:
+  - Full isolated suite passed: 95 tests, 16 subtests.
+  - Skill Creator `quick_validate.py` passed.
+  - Portable ZIP installed from an isolated extraction and `editppt doctor --json` returned `ok=true`, `image_gen.imagegen`, and default model `gpt-image-2`.
+  - ZIP contents exclude `__pycache__`, pytest caches, bytecode, and `.DS_Store`; SHA-256 is `3bcae6943712e0154536916a157c63be83d688f303f1e898a6b7d22b6412dfde`.
+  - CLI help checks and `git diff --check` passed.
+- Commit/push state: official capability reference committed as `122c18b`; implementation committed as `16c7e35`; this status follow-up and both implementation commits are pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - WorkBuddy and QoderWork document image-generation/image-remix behavior but not a complete public reference-edit tool schema; installed runtime capability validation remains mandatory.
+  - Claude Code officially documents image understanding but no native image generator/editor; it needs a compatible Skill/Plugin/MCP tool or the CLI fallback.
+  - Live native image calls in WorkBuddy, Claude Code, and QoderWork were not exercised locally.
+  - Existing unrelated untracked artifacts remain untouched; the generated portable ZIP remains local under `output/packages/` and is not committed.
+
 ## 2026-08-06 16:59:36 CST
 
 - Scope: Harden `image-to-editable-ppt` against icon/text overlap, text overlap, shape-color drift, and stretched structural rails, while permitting exact-pixel extraction for suitable foreground assets.

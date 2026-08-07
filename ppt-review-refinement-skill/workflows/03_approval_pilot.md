@@ -44,4 +44,20 @@
 
 ## 确认记录
 
-使用 `templates/pilot_review.template.md`。没有确认记录，状态不能进入 `PILOTED`。
+使用 `templates/pilot_review.template.md` 记录人工判断，并将确认结果结构化为 `pilot_confirmation.json`。没有 `status=approved` 且覆盖所有计划样板页的确认记录，状态不能进入 `PILOTED`，L2/L3 执行器也会拒绝运行。
+
+L2/L3 执行：
+
+```bash
+python scripts/execute_refinement_plan.py \
+  --input input.pptx \
+  --output work/candidate.pptx \
+  --plan work/refinement_plan.json \
+  --tokens work/style_tokens.json \
+  --manifest work/change_manifest.json \
+  --pilot-confirmation work/pilot_confirmation.json \
+  --log work/change_log.json \
+  --before-after-dir work/before_after
+```
+
+不支持的动作会明确失败并保留源文件，不会静默降级为“看起来完成”。

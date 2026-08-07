@@ -15,6 +15,7 @@ from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 from analyze_pptx import analyze_deck
+from confirm_visual_review import validate_visual_signoff
 from common import (
     ensure_dir,
     iter_nested_shapes,
@@ -86,6 +87,8 @@ def validate_deck(
     output_dir: str | Path,
     *,
     render: bool = True,
+    visual_signoff_path: str | Path | None = None,
+    allow_unconfirmed_visual: bool = False,
 ) -> dict[str, Any]:
     original_path = Path(original_path).resolve()
     candidate_path = Path(candidate_path).resolve()
@@ -117,6 +120,40 @@ def validate_deck(
 
     original_count = len(original.slides)
     candidate_count = len(candidate.slides)
+    if visual_signoff_path:
+        try:
+            signoff = validate_visual_signoff(visual_signoff_path, candidate_path, original_path)
+            checks.append(
+                make_check(
+                    "VAL-VISUAL-SIGNOFF",
+                    "最终人工视觉确认",
+                    "pass",
+                    f"已由 {signoff['reviewer']} 确认全部 {len(signoff['reviewed_slides'])} 页及六项视觉检查。",
+                )
+            )
+        except Exception as exc:  # noqa: BLE001
+            checks.append(make_check("VAL-VISUAL-SIGNOFF", "最终人工视觉确认", "fail", str(exc)))
+            manual_review.append("最终人工视觉确认文件无效或未覆盖候选文件全部页面。")
+    elif allow_unconfirmed_visual:
+        checks.append(
+            make_check(
+                "VAL-VISUAL-SIGNOFF",
+                "最终人工视觉确认",
+                "pass",
+                "按显式测试选项跳过最终人工视觉确认；此结果不可作为最终交付证明。",
+            )
+        )
+        manual_review.append("最终人工视觉确认尚未完成。")
+    else:
+        checks.append(
+            make_check(
+                "VAL-VISUAL-SIGNOFF",
+                "最终人工视觉确认",
+                "fail",
+                "未提供 approved visual_signoff.json；最终交付必须包含人工视觉确认。",
+            )
+        )
+        manual_review.append("必须由人工查看渲染结果并提交 approved visual_signoff.json。")
     slide_order_policy = manifest.get("content_policy", {}).get("slide_order", "preserve")
     split_policy = manifest.get("content_policy", {}).get("split_merge_delete", "forbidden")
     if original_count == candidate_count:
@@ -511,6 +548,12 @@ def main() -> int:
     parser.add_argument("--manifest", required=True)
     parser.add_argument("--out", required=True)
     parser.add_argument("--no-render", action="store_true")
+    parser.add_argument("--visual-signoff", help="approved visual_signoff.json")
+    parser.add_argument(
+        "--allow-unconfirmed-visual",
+        action="store_true",
+        help="测试或结构审计专用：显式允许没有最终人工视觉确认；不可用于最终交付。",
+    )
     args = parser.parse_args()
 
     try:
@@ -521,6 +564,8 @@ def main() -> int:
             args.manifest,
             out_dir,
             render=not args.no_render,
+            visual_signoff_path=args.visual_signoff,
+            allow_unconfirmed_visual=args.allow_unconfirmed_visual,
         )
         write_json(out_dir / "validation_report.json", report)
         (out_dir / "validation_report.md").write_text(markdown_report(report), encoding="utf-8")

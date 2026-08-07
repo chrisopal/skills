@@ -33,14 +33,31 @@ python scripts/normalize_pptx.py deck.pptx work/normalized.pptx \
   --log work/normalization_log.json
 ```
 
-## 5. 验证
+## 5. L2/L3 精修（需要样板批准）
+
+先按 `templates/pilot_confirmation.template.json` 形成 `work/pilot_confirmation.json`，再执行：
+
+```bash
+python scripts/execute_refinement_plan.py \
+  --input deck.pptx --output work/candidate.pptx \
+  --plan work/review/refinement_plan.json \
+  --tokens work/review/style_tokens.json \
+  --manifest work/review/change_manifest.json \
+  --pilot-confirmation work/pilot_confirmation.json \
+  --log work/change_log.json --before-after-dir work/before_after
+```
+
+叙事 Agent 和视觉 Agent 的独立结果可用 `scripts/compose_review_report.py` 合并；编排器只负责结构契约，不代替外部判断。
+
+## 6. 验证
 
 ```bash
 python scripts/validate_pptx.py \
   --original deck.pptx \
   --candidate work/normalized.pptx \
   --manifest work/review/change_manifest.json \
+  --visual-signoff work/visual_signoff.json \
   --out work/validation
 ```
 
-即使脚本返回通过，仍需逐页打开 `work/validation/rendered/slide-*.png` 进行视觉确认。
+先逐页打开 `work/validation/rendered/slide-*.png`，再由人工填写 `work/visual_signoff.json` 并重新运行验证。没有人工签字时，最终验证会失败。

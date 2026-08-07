@@ -1,7 +1,7 @@
 ---
 name: ppt-review-refinement
 description: Review and refine an existing PPTX through a controlled workflow: understand topic/audience/objective, audit narrative and visual quality, obtain change approval, build pilot slides, normalize theme/color/typography/layout, refine individual slides and imagery, then render and validate the result while protecting content and editability.
-version: 1.0.1
+version: 1.1.0
 language: zh-CN
 ---
 
@@ -158,7 +158,9 @@ python scripts/normalize_pptx.py input.pptx output.pptx \
   --log work/normalization_log.json
 ```
 
-此脚本只执行低风险、明确配置的规范化动作。L2/L3 由具备 PPTX 编辑能力的执行器按 `refinement_plan.json` 逐页实施。
+此脚本只执行低风险、明确配置的规范化动作。L2/L3 由 `scripts/execute_refinement_plan.py` 按 `refinement_plan.json` 逐页实施。执行器只接受已批准的 `change_manifest.json`、已确认的 `pilot_confirmation.json`，并只执行白名单动作：几何位置、标题框、字体角色、填充色、线条色和明确授权的标题文本。图表、SmartArt、动画、嵌入对象、图片替换和 `.pptm` 仍必须转交具备相应 PowerPoint/OOXML/Office API 能力的外部执行器。
+
+叙事和视觉输入可由外部 Agent 生成，再使用 `scripts/compose_review_report.py` 合并为并通过 Schema 校验的 `review_report.json`。该脚本不替代叙事判断或视觉判断，只负责结构化编排和契约校验。
 
 ### 8. 渲染与验证
 
@@ -170,6 +172,22 @@ python scripts/validate_pptx.py \
   --out work/validation
 ```
 
+最终验证必须提供人工创建并批准的 `visual_signoff.json`：
+
+```bash
+python scripts/confirm_visual_review.py \
+  --signoff work/visual_signoff.json \
+  --source input.pptx \
+  --candidate output.pptx
+
+python scripts/validate_pptx.py \
+  --original input.pptx \
+  --candidate output.pptx \
+  --manifest work/change_manifest.json \
+  --visual-signoff work/visual_signoff.json \
+  --out work/validation
+```
+
 校验包括：
 
 - 页数、顺序、正文、数字、日期、单位和受保护术语。
@@ -177,7 +195,7 @@ python scripts/validate_pptx.py \
 - 标题位置、页边距和设计 Token 一致性。
 - 文件可打开、对象可编辑、图表/链接/动画保留情况。
 
-最终文件必须再次渲染，逐页检查。发现问题则回到 `EXECUTED` 修正，直至通过。
+最终文件必须再次渲染，逐页检查，并由人工填写 `templates/visual_signoff.template.json`。发现问题则回到 `EXECUTED` 修正，直至 `VAL-VISUAL-SIGNOFF` 通过。
 
 ## 页面原型
 

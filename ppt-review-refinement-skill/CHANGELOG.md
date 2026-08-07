@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0
+
+- 增加受批准的 L2/L3 白名单精修执行器，并要求 `pilot_confirmation.json`。
+- 增加叙事/视觉评审报告编排器，输出前通过 `review_report.schema.json` 校验。
+- 增加人工视觉签字 Schema、校验脚本和最终 `VAL-VISUAL-SIGNOFF` 门禁。
+- 明确复杂图表、SmartArt、动画、嵌入对象、图片替换和 `.pptm` 仍由外部执行器处理。
+
 ## 1.0.1
 
 - 在规范化和验证入口强制校验变更授权与设计 Token Schema。

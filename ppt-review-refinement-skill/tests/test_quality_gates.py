@@ -86,7 +86,9 @@ class QualityGateTests(unittest.TestCase):
             build_deck(deck, hyperlink=True)
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
-            report = validate_deck(deck, deck, manifest_path, tmp_path / "validation", render=False)
+            report = validate_deck(
+                deck, deck, manifest_path, tmp_path / "validation", render=False, allow_unconfirmed_visual=True
+            )
 
             self.assertEqual(report["status"], "fail")
             self.assertTrue(any(item["id"] == "VAL-MANUAL-LINKS" for item in report["checks"]))
@@ -110,7 +112,9 @@ class QualityGateTests(unittest.TestCase):
             build_deck(deck, hyperlink=True)
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
-            report = validate_deck(deck, deck, manifest_path, tmp_path / "validation", render=False)
+            report = validate_deck(
+                deck, deck, manifest_path, tmp_path / "validation", render=False, allow_unconfirmed_visual=True
+            )
 
             self.assertEqual(report["status"], "pass_with_accepted_risks")
 
@@ -130,7 +134,9 @@ class QualityGateTests(unittest.TestCase):
             build_deck(deck)
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
 
-            report = validate_deck(deck, deck, manifest_path, tmp_path / "validation", render=False)
+            report = validate_deck(
+                deck, deck, manifest_path, tmp_path / "validation", render=False, allow_unconfirmed_visual=True
+            )
 
             image_check = next(check for check in report["checks"] if check["id"] == "VAL-IMAGES")
             self.assertEqual(image_check["status"], "pass")

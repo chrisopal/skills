@@ -48,6 +48,18 @@ def load_validated_json(
 ) -> dict[str, Any]:
     """Load a JSON object and enforce the skill's declared JSON Schema contract."""
     data = load_json(data_path)
+    return validate_json_data(data, schema_path, label=label)
+
+
+def validate_json_data(
+    data: dict[str, Any],
+    schema_path: str | Path,
+    *,
+    label: str,
+) -> dict[str, Any]:
+    """Enforce a JSON Schema contract for an already loaded object."""
+    if not isinstance(data, dict):
+        raise ValueError(f"Expected a JSON object for {label}")
     schema = load_json(schema_path)
     validator = Draft202012Validator(schema)
     errors = sorted(validator.iter_errors(data), key=lambda error: tuple(str(part) for part in error.path))

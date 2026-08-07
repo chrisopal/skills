@@ -14,7 +14,7 @@
 - `rules/`：叙事、视觉、页面原型、风险和配图规则。
 - `schemas/`：关键 JSON 输出的 Schema。
 - `templates/`：上下文、授权、设计 Token 和评审报告模板。
-- `scripts/`：可运行的结构审计、渲染、规范化和验证脚本。
+- `scripts/`：可运行的结构审计、渲染、规范化、L2/L3 执行、报告编排和验证脚本。
 - `examples/`：示例配置与运行方法。
 - `tests/`：本地冒烟测试。
 
@@ -56,6 +56,16 @@ python scripts/validate_pptx.py \
   --out work/validation
 ```
 
+最终交付必须带人工视觉签字：
+
+```bash
+python scripts/confirm_visual_review.py --signoff work/visual_signoff.json \
+  --source your_deck.pptx --candidate work/normalized.pptx
+python scripts/validate_pptx.py --original your_deck.pptx \
+  --candidate work/normalized.pptx --manifest work/change_manifest.json \
+  --visual-signoff work/visual_signoff.json --out work/validation
+```
+
 ## 设计边界
 
 脚本提供的是可执行 MVP：
@@ -64,10 +74,13 @@ python scripts/validate_pptx.py \
 - `analyze_pptx.py`：对有明确字号和尺寸的文本框增加保守的溢出风险估算；最终仍需结合渲染图确认。
 - `render_pptx.py`：生成逐页 PNG。
 - `normalize_pptx.py`：执行明确授权的字体、颜色映射和标题位置规范化。
-- `validate_pptx.py`：校验页数、正文、数字、受保护术语和候选文件结构风险。
+- `execute_refinement_plan.py`：在 L2/L3 样板确认后执行白名单精修动作，并重新打开候选文件。
+- `compose_review_report.py`：把外部生成的叙事/视觉评审输入编排成统一、可校验的 `review_report.json`。
+- `confirm_visual_review.py`：校验人工视觉签字是否批准、覆盖全部页面并完成六项确认。
+- `validate_pptx.py`：校验页数、正文、数字、受保护术语、候选文件结构风险和最终人工视觉签字。
 - `validate_pptx.py`：实际项目的 `change_manifest.json` 和 `style_tokens.json` 必须通过对应 Schema；未登记的链接、动画、SmartArt、嵌入对象或图片替换风险不能进入通过状态。
 
-复杂的 L2/L3 单页重构仍需要具备 PowerPoint/OOXML/PptxGenJS/Office API 编辑能力的执行器；该 Skill 提供完整的决策、授权、计划和验收框架。
+复杂的 L2/L3 单页重构仍需要具备 PowerPoint/OOXML/PptxGenJS/Office API 编辑能力的外部执行器；本 Skill 的执行器明确失败并转交，不会伪装成已完成。
 
 ## 安全建议
 

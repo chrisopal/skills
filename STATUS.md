@@ -1,3 +1,20 @@
+## 2026-08-07 21:55:00 CST
+
+- Scope: Continue the `ppt-review-refinement-skill` update by making L2/L3 execution, review-report orchestration, and final human visual confirmation executable and gated.
+- Changed files:
+  - `ppt-review-refinement-skill/scripts/{execute_refinement_plan.py,compose_review_report.py,confirm_visual_review.py,validate_pptx.py,common.py}`
+  - `ppt-review-refinement-skill/schemas/{pilot_confirmation.schema.json,visual_signoff.schema.json}`
+  - `ppt-review-refinement-skill/templates/{pilot_confirmation.template.json,visual_signoff.template.json}`
+  - `ppt-review-refinement-skill/tests/{test_advanced_capabilities.py,create_visual_signoff.py,test_quality_gates.py,smoke_test.sh}`
+  - `ppt-review-refinement-skill/{SKILL.md,README.md,skill.yaml,CHANGELOG.md,TEST_REPORT.md,manifest.txt,examples/runbook.md,workflows/03_approval_pilot.md,workflows/06_validate_deliver.md}`
+- Simplifications made:
+  - Kept L2/L3 execution deterministic and narrow: only approved geometry, typography-role, fill, line, and explicitly authorized title-text actions are executable; complex objects fail explicitly to external execution.
+  - Kept narrative/visual judgment external while making report merging and Schema validation local and reproducible.
+  - Bound pilot and final signoff to source/candidate SHA-256 and made missing final signoff a validation failure.
+- Validation: 9 regression tests, all JSON Schema checks, isolated compileall, `git diff --check`, and the 4-slide render/normalize/validate smoke flow passed; smoke validation read `VAL-VISUAL-SIGNOFF=pass`.
+- Commit/push state: pending.
+- Remaining notes: the smoke signoff is an automated fixture only; real delivery still requires a human-created approved `visual_signoff.json`. Complex charts, SmartArt, animations, embedded objects, image replacement, and `.pptm` remain external/manual.
+
 ## 2026-08-07 19:20:00 CST
 
 - Scope: Harden `ppt-review-refinement-skill` authorization, validation gates, and obvious text-overflow detection after a read-only audit.

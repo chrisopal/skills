@@ -30,6 +30,19 @@
 
 最终候选文件必须生成逐页 PNG，并检查全部页面。缩略图总览用于发现一致性问题，单页 100% 图用于发现溢出、错位和低清问题。
 
+## 最终人工视觉确认
+
+自动验证不能替代最终人工视觉判断。人工查看全部渲染页后，填写 `templates/visual_signoff.template.json`，并运行：
+
+```bash
+python scripts/confirm_visual_review.py \
+  --signoff work/visual_signoff.json \
+  --source input.pptx \
+  --candidate work/candidate.pptx
+```
+
+最终验证必须把该文件传给 `validate_pptx.py --visual-signoff`。未提供或未批准的签字会产生 `VAL-VISUAL-SIGNOFF=fail`；`--allow-unconfirmed-visual` 只允许结构测试使用，不能作为交付证据。
+
 ## 交付包
 
 ```text

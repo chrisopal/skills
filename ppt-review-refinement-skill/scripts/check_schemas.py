@@ -22,6 +22,10 @@ CASES = [
     ("examples/review_report.example.json", "schemas/review_report.schema.json"),
     ("examples/validation_report.example.json", "schemas/validation_report.schema.json"),
     ("templates/refinement_plan.template.json", "schemas/refinement_plan.schema.json"),
+    ("templates/pilot_confirmation.template.json", "schemas/pilot_confirmation.schema.json"),
+    ("templates/visual_signoff.template.json", "schemas/visual_signoff.schema.json"),
+    ("examples/pilot_confirmation.example.json", "schemas/pilot_confirmation.schema.json"),
+    ("examples/visual_signoff.example.json", "schemas/visual_signoff.schema.json"),
 ]
 
 

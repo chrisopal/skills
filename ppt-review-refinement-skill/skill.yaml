@@ -1,5 +1,5 @@
 name: ppt-review-refinement
-version: 1.0.1
+version: 1.1.0
 display_name: PPT评审与精修
 entrypoint: SKILL.md
 language: zh-CN
@@ -11,7 +11,10 @@ capabilities:
   - change-approval
   - design-token-generation
   - safe-normalization
+  - controlled-l2-l3-execution
+  - review-report-composition
   - content-protection-validation
+  - human-visual-signoff
   - image-policy-review
 supported_inputs:
   - .pptx

@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "status": "approved",
+  "reviewer": "Example Pilot Reviewer",
+  "reviewed_at": "2026-08-07T00:00:00Z",
+  "source_file": "source.pptx",
+  "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "reviewed_slides": [1],
+  "confirmed_tokens": ["typography.roles.page_title", "layout.title_box_in"],
+  "notes": "仅作为契约示例，不代表真实项目已确认。"
+}

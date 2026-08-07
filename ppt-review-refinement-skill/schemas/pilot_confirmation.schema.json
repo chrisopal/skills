@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ppt-review-refinement/pilot_confirmation.schema.json",
+  "title": "PPT L2/L3 Pilot Confirmation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "status", "reviewer", "reviewed_at", "source_file", "source_sha256", "reviewed_slides", "confirmed_tokens", "notes"],
+  "properties": {
+    "version": {"type": "string"},
+    "status": {"enum": ["approved", "changes_requested", "rejected"]},
+    "reviewer": {"type": "string", "minLength": 1},
+    "reviewed_at": {"type": "string", "minLength": 1},
+    "source_file": {"type": "string", "minLength": 1},
+    "source_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+    "reviewed_slides": {"type": "array", "items": {"type": "integer", "minimum": 1}, "minItems": 1, "uniqueItems": true},
+    "confirmed_tokens": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "notes": {"type": "string"}
+  }
+}

@@ -1,4 +1,4 @@
-"""Command-line interface: analyze / scaffold / check-plan / apply subcommands."""
+"""Command-line interface: analyze / scaffold / check-plan / apply / validate."""
 
 from __future__ import annotations
 
@@ -7,6 +7,19 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
+
+_SCRIPTS_DIR = Path(__file__).resolve().parents[1]
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from attribution_guard import require_skill_integrity  # noqa: E402
+from console_encoding import configure_utf8_stdio  # noqa: E402
+from pptx_transitions import (  # noqa: E402
+    LEGACY_TRANSITION_KEYS,
+    NATIVE_TRANSITION_KEYS,
+)
+
+configure_utf8_stdio()
 
 if __package__ in {None, ''}:
     import types
@@ -31,8 +44,8 @@ from .transitions import (
     DEFAULT_TRANSITION,
     DEFAULT_TRANSITION_DURATION,
     KEEP_TRANSITION,
-    TRANSITIONS,
 )
+from .validator import print_validate_report, validate_project
 
 
 def _parse_slide_list(value: str | None) -> list[int] | None:
@@ -60,6 +73,10 @@ def _timestamped_pptx_path(path: Path) -> Path:
     return path.with_name(f"{path.stem}_{timestamp}{path.suffix}")
 
 
+def _plan_confirmed(plan: dict) -> bool:
+    return plan.get("status") == "confirmed"
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Analyze and fill native PPTX templates without converting slides to SVG.",
@@ -69,10 +86,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     analyze = subparsers.add_parser("analyze", help="Extract slide library JSON from a PPTX")
     analyze.add_argument("pptx_file", help="Source PPTX file")
-    analyze.add_argument("-o", "--output", required=True, help="Output slide_library.json path")
+    analyze.add_argument("-o", "--output", required=True, help="Output <stem>.slide_library.json path")
 
     scaffold = subparsers.add_parser("scaffold", help="Create an editable fill plan skeleton")
-    scaffold.add_argument("library_json", help="slide_library.json from analyze")
+    scaffold.add_argument("library_json", help="<stem>.slide_library.json from analyze")
     scaffold.add_argument("-o", "--output", required=True, help="Output fill_plan.json path")
     scaffold.add_argument(
         "--slides",
@@ -85,7 +102,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
 
     check = subparsers.add_parser("check-plan", help="Check a fill plan against source slot capacity")
-    check.add_argument("library_json", help="slide_library.json from analyze")
+    check.add_argument("library_json", help="<stem>.slide_library.json from analyze")
     check.add_argument("plan_json", help="Fill plan JSON")
     check.add_argument("-o", "--output", help="Optional JSON report output path")
 
@@ -103,13 +120,19 @@ def build_parser() -> argparse.ArgumentParser:
     )
     apply.add_argument(
         "--transition",
-        choices=sorted(TRANSITIONS) + ["none", KEEP_TRANSITION],
+        choices=[
+            *NATIVE_TRANSITION_KEYS,
+            *LEGACY_TRANSITION_KEYS,
+            "none",
+            KEEP_TRANSITION,
+        ],
         default=DEFAULT_TRANSITION,
         help=(
-            "Page-to-page transition applied to every cloned slide "
+            "Page-to-page transition policy for every cloned slide "
             "(per-slide 'transition' in the plan overrides this). "
-            f"Default: {DEFAULT_TRANSITION}. Use 'none' for no motion, "
-            "or 'keep' to preserve each source slide's existing transition."
+            "Use a PowerPoint-native key; old names are compatibility inputs. "
+            f"Default: {DEFAULT_TRANSITION} (preserve the source). "
+            "Use 'none' to remove visual motion."
         ),
     )
     apply.add_argument(
@@ -118,11 +141,20 @@ def build_parser() -> argparse.ArgumentParser:
         default=DEFAULT_TRANSITION_DURATION,
         help="Transition duration in seconds (default: 0.5).",
     )
+    apply.add_argument(
+        "--force",
+        action="store_true",
+        help="apply without a confirmed fill plan (deliberate recovery/debug only)",
+    )
+
+    validate = subparsers.add_parser("validate", help="Read back and validate the latest project export")
+    validate.add_argument("project_path", help="Template-fill project directory")
 
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
+    require_skill_integrity()
     parser = build_parser()
     args = parser.parse_args(argv)
     try:
@@ -160,6 +192,14 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "apply":
             pptx_path = Path(args.pptx_file).expanduser().resolve()
             plan = _load_json(Path(args.plan_json).expanduser().resolve())
+            if not _plan_confirmed(plan) and not args.force:
+                print(
+                    "Error: fill plan is not confirmed: "
+                    f"{Path(args.plan_json).expanduser().resolve()} "
+                    '(set status to "confirmed" after user approval, or pass --force)',
+                    file=sys.stderr,
+                )
+                return 1
             output_path = _timestamped_pptx_path(Path(args.output).expanduser().resolve())
             apply_plan(
                 pptx_path,
@@ -170,6 +210,11 @@ def main(argv: list[str] | None = None) -> int:
             )
             print(f"Template-filled PPTX -> {output_path}", file=sys.stderr)
             return 0
+
+        if args.command == "validate":
+            report = validate_project(Path(args.project_path))
+            print_validate_report(report)
+            return 0 if report["summary"]["error"] == 0 else 1
     except RuntimeError as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1

@@ -3,8 +3,13 @@ deck_id: huixin_market_promotion
 kind: deck
 summary: 慧新品牌市场宣传、产品推广、渠道招商、客户活动、三坐标推广材料.
 canvas_format: ppt169
+canvas_width: 1280
+canvas_height: 720
+canvas_viewbox: "0 0 1280 720"
+native_structure_mode: legacy-flat
+replication_mode: standard
 page_count: 8
-primary_color: "#4295B6"
+primary_color: "#0097BA"
 ---
 
 # Huixin Market Promotion - Design Specification
@@ -45,11 +50,11 @@ The deck should translate these businesses into customer-facing value language: 
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| **Technology Blue** | `#4295B6` | Primary brand visual, headers, core diagrams, campaign emphasis |
-| **Vitality Green** | `#B0D776` | Value propositions, keywords, tags, growth metrics, CTA highlights |
-| **Brand Gray** | `#D2D3D4` | Background layers, auxiliary shapes, card strokes, dividers |
+| **Technology Blue** | `#0097BA` | Primary brand visual, headers, core diagrams, campaign emphasis |
+| **Vitality Green** | `#83C410` | Value propositions, keywords, tags, growth metrics, CTA highlights |
+| **Brand Gray** | `#D0CECE` | Background layers, auxiliary shapes, card strokes, dividers |
 | **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
-| **Deep Blue Gray** | `#0B2F3A` | Premium dark backgrounds, cover, key visual pages, high-emphasis text |
+| **Deep Blue Gray** | `#111111` | Premium dark backgrounds, cover, key visual pages, high-emphasis text |
 | **White** | `#FFFFFF` | Card surfaces, negative space, reverse text |
 
 ## IV. Typography System
@@ -63,9 +68,13 @@ The deck should translate these businesses into customer-facing value language: 
 | **Caption** | Footnote / metadata | 12px | Regular |
 | **Display Number** | Impact numbers | 58px | Bold |
 
-**Primary Font**: `"Microsoft YaHei"`
+**Primary Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"`
 
-**SVG Font**: `"Microsoft YaHei"` — all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
+**SVG Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"` — use MiSans first with Microsoft YaHei / Arial fallback.
+
+### Latest Light Template Baseline
+
+This deck follows the official `慧新全智PPT模板_浅色版本.pptx` baseline (source SHA-256: `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`). Use the latest Huixin Quanzhi lockup, `#0097BA` blue, `#83C410` green, `#D0CECE` gray, MiSans, and white / very-light-gray campaign surfaces. Covers and closings use the industrial mosaic, while standard proof and campaign pages use the lower-left logo and blue-green footer ribbon. Image-led compositions may keep a compact top-right logo when the bottom band is occupied by proof or CTA content.
 
 ## V. Logo and Brand Mark
 
@@ -94,8 +103,8 @@ Usage rules:
 ### Design DNA
 
 1. Use the logo's slanted-bar geometry as the core brand language: slanted blocks, focus bands, tags, and motion lines.
-2. Use `#4295B6` as the main visual identity and `#B0D776` as the growth / CTA signal.
-3. Use `#0B2F3A` for cover, key visual pages, and closing CTA to create stronger brand memory.
+2. Use `#0097BA` as the main visual identity and `#83C410` as the growth / CTA signal.
+3. Use `#111111` for cover, key visual pages, and closing CTA to create stronger brand memory.
 4. Keep sales-facing pages clean, short, and high-contrast; prioritize slogans, keywords, metrics, and conversion messages.
 5. Prefer explicit marketing logic: brand claim → pain → solution → value → proof → action.
 
@@ -308,5 +317,11 @@ This market promotion deck is image-led. Images are **required**, not optional, 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated MES marketing visual reference | Optional reference only. Do not paste it as fixed slide content; use it to guide custom project imagery when a real MES product screenshot or campaign visual is available. |
+| `images/huixin_logo_light.png` | Latest high-resolution Huixin Quanzhi lockup | Default logo on white and light pages. |
+| `images/huixin_logo_dark.png` | Reverse Huixin lockup | Use only on dark campaign fields. |
+| `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for covers, campaign hero pages, and closings. |
+| `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and sparse content pages. |
+| `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for campaign section dividers. |
+| `images/huixin_light_footer_ribbon.png` | Official blue-green footer ribbon | Use on standard proof and conversion pages with the lower-left logo. |
 
 The default template pages must remain editable SVG. Keep business messages, metrics, CTA, logo geometry, product/UI overlays, dashboards, and page structure as SVG text and shapes. Images should be embedded into planned image slots and should never replace the whole editable slide.

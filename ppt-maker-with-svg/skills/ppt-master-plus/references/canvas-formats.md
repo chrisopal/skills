@@ -1,20 +1,29 @@
 # Canvas Format Specification
 
-> See shared-standards.md for SVG basic rules.
+> See [`shared-standards-core.md`](./shared-standards-core.md) §4.1 for the normative root
+> `viewBox` grammar, compatibility spellings, and fail-closed validation rules.
 
 ## Format Quick Reference
 
-| Format | viewBox | Ratio | Use Case |
-|--------|---------|-------|----------|
-| PPT 16:9 | `0 0 1280 720` | 16:9 | Business presentations, meetings |
-| PPT 4:3 | `0 0 1024 768` | 4:3 | Traditional projectors, academic talks |
-| Xiaohongshu (RED) | `0 0 1242 1660` | 3:4 | Image-text sharing, knowledge posts |
-| WeChat Moments / IG | `0 0 1080 1080` | 1:1 | Square posters, brand showcases |
-| Story / TikTok | `0 0 1080 1920` | 9:16 | Vertical stories, short video covers |
-| WeChat Article Header | `0 0 900 383` | 2.35:1 | WeChat article cover images |
-| Landscape Banner | `0 0 1920 1080` | 16:9 | Web banners, digital screens |
-| Portrait Poster | `0 0 1080 1920` | 9:16 | Phone screens, elevator ads |
-| A4 Print | `0 0 1240 1754` | 1:sqrt(2) | Print posters, flyers |
+| ID | Format | Size | viewBox | Ratio | Use Case |
+|----|--------|------|---------|-------|----------|
+| `ppt169` | PPT 16:9 | `1280x720` | `0 0 1280 720` | 16:9 | Business presentations, meetings |
+| `ppt43` | PPT 4:3 | `1024x768` | `0 0 1024 768` | 4:3 | Traditional projectors, academic talks |
+| `xiaohongshu` | Xiaohongshu (RED) | `1242x1660` | `0 0 1242 1660` | 3:4 | Image-text sharing, knowledge posts |
+| `moments` | WeChat Moments / IG | `1080x1080` | `0 0 1080 1080` | 1:1 | Square posters, brand showcases |
+| `story` | Story / TikTok | `1080x1920` | `0 0 1080 1920` | 9:16 | Vertical stories, short video covers |
+| `wechat` | WeChat Article Header | `900x383` | `0 0 900 383` | 2.35:1 | WeChat article cover images |
+| `banner` | Landscape Banner | `1920x1080` | `0 0 1920 1080` | 16:9 | Web banners, digital screens |
+| `a4` | A4 Print | `1240x1754` | `0 0 1240 1754` | 1:sqrt(2) | Print posters, flyers |
+
+The table lists canonical root spellings. New custom canvases likewise use
+`0 0 W H` with positive integer pixels. A fractional positive canvas is accepted
+only as compatible input for an imported custom PowerPoint slide size; it is not
+the default authoring form. All pages and internal Layout prototypes in one
+export use the same numeric canvas and stay within PowerPoint's supported slide
+range (914,400–51,206,400 EMU per side, approximately 96–5,376 SVG px).
+
+`ppt169` is the canonical PPT wide-screen canvas in this repo: `1280x720`, not any arbitrary 16:9 size. Same-ratio canvases such as `banner` (`1920x1080`) must be treated as different coordinate systems.
 
 ## Format Selection Decision Tree
 
@@ -33,34 +42,60 @@ Content purpose?
     └── Print → 1240x1754
 ```
 
-## Layout Principles
+## Platform Keep-clear
 
-### Landscape (16:9, 4:3, 2.35:1)
-- Visual flow: Z-pattern, left to right
-- Margins: 40-80px
-- Layouts: multi-column, left-right split, grid
-- Card dimensions (16:9): single-row 530-600px, double-row 265-295px
+Canvas dimensions do not imply a title band, content topology, or recurring
+chrome. Reserve space only for a real output obstruction. For `story`, keep
+meaning-bearing text, identity, and calls to action within `y=120..1740` by
+default because common mobile story controls occupy the top and bottom; images,
+backgrounds, and nonessential texture may remain full bleed. An exact target-
+platform overlay guide or installed template overrides this advisory band.
 
-### Portrait (3:4, 9:16)
-- Visual flow: top to bottom
-- Margins: 60-120px
-- Layouts: single-column, top-bottom split, card stacking
-- Card dimensions (3:4): height 400-600px, gap 40-60px
+## Typography Scale Start
 
-### Square (1:1)
-- Visual flow: center-radiating
-- Margins: 60-100px
-- Core area: ~800x800px
+**Hard rule — normative owner**: This section owns the initial body-size anchor
+and sanity band for every registered or custom canvas. Strategist and Quick
+consume it directly. Confirm UI maintains an exact executable mirror and must
+not infer alternate canvas classes or values. All values are unitless SVG px.
 
-## Format-specific Design
+**PPT reading modes**:
 
-| Format | Title Area | Content Area | Special Notes |
-|--------|-----------|--------------|---------------|
-| PPT | 80-100px | Full width utilization | Page number bottom-right |
-| Xiaohongshu (RED) | 180-240px (bold) | Generous top/bottom whitespace | Brand area at bottom 120-160px |
-| WeChat Moments | 200-280px | Center 500-600px | QR code area at bottom 150-200px |
-| Story | — | Middle 1500px | Top safe zone 120px, bottom 180px |
-| WeChat Article Header | Center/left-aligned 48-72px | — | Image on right or as background |
+| Canvas | Reading mode | Advisory body band | Initial body |
+|---|---|---:|---:|
+| `ppt169` / `ppt43` | `text` | 18–21 | 20 |
+| `ppt169` / `ppt43` | `balanced` | 22–25 | 24 |
+| `ppt169` / `ppt43` | `presentation` | 28–32 | 32 |
+
+**Non-PPT registered and custom canvases**: derive one effective canvas span
+from the canonical or custom `W x H`, then calculate the advisory band and
+initial body anchor:
+
+```text
+short = min(W, H)
+long = max(W, H)
+span = min(long, 3 * short)
+low = round(span * 0.025)
+start = round(span * 0.029)
+high = round(span * 0.033)
+```
+
+| Canvas | Effective span | Advisory body band | Initial body |
+|---|---:|---:|---:|
+| `wechat` | 900 | 23–30 | 26 |
+| `moments` | 1080 | 27–36 | 31 |
+| `xiaohongshu` | 1660 | 42–55 | 48 |
+| `story` | 1920 | 48–63 | 56 |
+| `banner` | 1920 | 48–63 | 56 |
+| `a4` | 1754 | 44–58 | 51 |
+
+**Default — starting anchor, not a floor (may override when confirmed identity,
+source fidelity, or target viewing conditions require it)**: Start from the
+table or formula, then resolve the complete role ramp and page density from the
+active content and delivery context. The advisory band only surfaces unusual
+values; falling outside it is not a validation failure. Apply the
+viewing-distance baseline in
+[`shared-standards-core.md`](./shared-standards-core.md) instead of silently
+shrinking a recurring role to make content fit.
 
 ## ViewBox Examples
 

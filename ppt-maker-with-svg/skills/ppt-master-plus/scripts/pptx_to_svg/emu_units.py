@@ -1,6 +1,6 @@
 """EMU <-> pixel conversion and DrawingML unit constants.
 
-Mirrors svg_to_pptx/drawingml_utils.py and pptx_dimensions.py, in reverse.
+Mirrors svg_to_pptx/drawingml/utils.py and pptx_package/dimensions.py, in reverse.
 
 DrawingML unit conventions:
 - Coordinates / sizes: EMU (English Metric Unit). 914400 EMU = 1 inch = 96 px.
@@ -12,6 +12,7 @@ DrawingML unit conventions:
 
 from __future__ import annotations
 
+from decimal import Decimal, ROUND_HALF_UP, localcontext
 from xml.etree import ElementTree as ET
 
 EMU_PER_INCH = 914400
@@ -84,13 +85,25 @@ def angle_to_deg(val: float | int | str | None, default: float = 0.0) -> float:
 
 
 def percent_to_ratio(val: float | int | str | None, default: float = 0.0) -> float:
-    """DrawingML positive percent (100000 = 100%) -> ratio in [0, 1]."""
+    """Convert DrawingML percentage units (100000 = 100%) to a ratio."""
     if val is None:
         return default
     try:
         return float(val) / PERCENT_UNIT
     except (ValueError, TypeError):
         return default
+
+
+def ooxml_bool(value: str | None, default: bool = False) -> bool:
+    """Parse the boolean lexical forms accepted by OOXML."""
+    if value is None:
+        return default
+    normalized = value.strip().lower()
+    if normalized in {"1", "true", "on"}:
+        return True
+    if normalized in {"0", "false", "off"}:
+        return False
+    return default
 
 
 # ---------------------------------------------------------------------------
@@ -162,14 +175,16 @@ class Xfrm:
         cy = self.y + self.h / 2.0
         parts: list[str] = []
         if self.rot:
-            parts.append(f"rotate({_fmt(self.rot)} {_fmt(cx)} {_fmt(cy)})")
+            parts.append(
+                f"rotate({_fmt(self.rot, 8)} {_fmt(cx, 8)} {_fmt(cy, 8)})"
+            )
         if self.flip_h or self.flip_v:
             sx = -1 if self.flip_h else 1
             sy = -1 if self.flip_v else 1
             # scale around shape center
-            parts.append(f"translate({_fmt(cx)} {_fmt(cy)})")
+            parts.append(f"translate({_fmt(cx, 8)} {_fmt(cy, 8)})")
             parts.append(f"scale({sx} {sy})")
-            parts.append(f"translate({_fmt(-cx)} {_fmt(-cy)})")
+            parts.append(f"translate({_fmt(-cx, 8)} {_fmt(-cy, 8)})")
         return " ".join(parts) if parts else None
 
 
@@ -179,8 +194,8 @@ def parse_xfrm(xfrm_elem: ET.Element | None) -> Xfrm:
         return Xfrm()
 
     rot = angle_to_deg(xfrm_elem.get("rot"))
-    flip_h = xfrm_elem.get("flipH") == "1"
-    flip_v = xfrm_elem.get("flipV") == "1"
+    flip_h = ooxml_bool(xfrm_elem.get("flipH"))
+    flip_v = ooxml_bool(xfrm_elem.get("flipV"))
 
     off = xfrm_elem.find("a:off", NS)
     ext = xfrm_elem.find("a:ext", NS)
@@ -221,3 +236,23 @@ def _fmt(val: float, ndigits: int = 2) -> str:
 
 
 fmt_num = _fmt
+
+
+def format_ooxml_unit_ratio(value: float) -> str:
+    """Format a normalized ratio without losing 1/100000 OOXML precision."""
+    return _fmt(value, 5)
+
+
+def format_ooxml_alpha(alpha: float) -> str:
+    """Format one normalized OOXML alpha ratio."""
+    return format_ooxml_unit_ratio(alpha)
+
+
+def format_canvas_px_from_emu(emu: int) -> str:
+    """Format a slide-size coordinate with enough precision to recover EMU."""
+    with localcontext() as context:
+        context.prec = 32
+        value = Decimal(emu) / Decimal(EMU_PER_PX)
+        rounded = value.quantize(Decimal("0.00001"), rounding=ROUND_HALF_UP)
+    token = format(rounded, "f").rstrip("0").rstrip(".")
+    return token or "0"

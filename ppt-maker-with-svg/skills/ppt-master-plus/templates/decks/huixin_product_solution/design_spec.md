@@ -3,8 +3,13 @@ deck_id: huixin_product_solution
 kind: deck
 summary: 慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示；包含复杂多层分域架构、业务/功能/系统/数据/集成/技术/部署架构、多系统集成总览、流程、实施、截图和案例页.
 canvas_format: ppt169
+canvas_width: 1280
+canvas_height: 720
+canvas_viewbox: "0 0 1280 720"
+native_structure_mode: legacy-flat
+replication_mode: standard
 page_count: 22
-primary_color: "#4295B6"
+primary_color: "#0097BA"
 ---
 
 # Huixin Product Solution - Design Specification
@@ -33,11 +38,11 @@ primary_color: "#4295B6"
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| **Technology Blue** | `#4295B6` | Platform architecture, system modules, navigation, process lines |
-| **Vitality Green** | `#B0D776` | AI capabilities, value points, highlights, product advantages, metrics |
-| **Brand Gray** | `#D2D3D4` | Module borders, structural partitions, connection lines, auxiliary notes |
+| **Technology Blue** | `#0097BA` | Platform architecture, system modules, navigation, process lines |
+| **Vitality Green** | `#83C410` | AI capabilities, value points, highlights, product advantages, metrics |
+| **Brand Gray** | `#D0CECE` | Module borders, structural partitions, connection lines, auxiliary notes |
 | **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
-| **Deep Blue Gray** | `#0B2F3A` | Titles, body text, premium background blocks, technical base layer |
+| **Deep Blue Gray** | `#111111` | Titles, body text, premium background blocks, technical base layer |
 | **White** | `#FFFFFF` | Page background, card surfaces, reverse text |
 
 ## IV. Typography System
@@ -51,9 +56,13 @@ primary_color: "#4295B6"
 | **Caption** | Note / footer | 11-13px | Regular |
 | **Metric** | Business value number | 42-52px | Bold |
 
-**Primary Font**: `"Microsoft YaHei"`
+**Primary Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"`
 
-**SVG Font**: `"Microsoft YaHei"` — all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
+**SVG Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"` — use MiSans first with Microsoft YaHei / Arial fallback.
+
+### Latest Light Template Baseline
+
+This deck follows the official `慧新全智PPT模板_浅色版本.pptx` visual baseline (source SHA-256: `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`). Use the latest high-resolution Huixin Quanzhi lockup, `#0097BA` technology blue, `#83C410` vitality green, `#D0CECE` structural gray, white / very-light-gray working backgrounds, and MiSans typography. Covers use the industrial mosaic at the right; chapter pages may use the teal chapter background; standard content pages use the compact lower-left logo and blue-green footer ribbon. Existing dense architecture pages may retain a compact top-right logo when the lower footer would reduce diagram capacity.
 
 ## V. Logo, Icon and Brand Mark
 
@@ -303,5 +312,11 @@ When using this deck, Strategist should normally include image resources unless 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated smart mine / intelligent manufacturing platform architecture reference | Optional reference only. Do not paste it as fixed slide content; use it to guide custom industry visuals when real project screenshots or scenario images are supplied. |
+| `images/huixin_logo_light.png` | Latest high-resolution Huixin Quanzhi lockup | Default logo on white and light pages. |
+| `images/huixin_logo_dark.png` | Reverse Huixin lockup | Use only on dark technical fields. |
+| `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for covers and image-led closings without replacing editable titles. |
+| `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use at low visual weight on agenda or sparse content pages. |
+| `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for chapter dividers and major solution sections. |
+| `images/huixin_light_footer_ribbon.png` | Official blue-green footer ribbon | Use with the lower-left logo on standard content pages. |
 
 The bitmap reference should not replace architecture content. Keep product diagrams, deployment topologies, capability maps, and implementation paths as editable SVG geometry unless the project explicitly supplies real product screenshots.

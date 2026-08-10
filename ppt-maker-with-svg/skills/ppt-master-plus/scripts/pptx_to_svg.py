@@ -5,6 +5,7 @@ Usage:
     python3 pptx_to_svg.py <pptx_file> [-o <output_dir>] [--embed-images]
                                        [--media-subdir <name>] [--keep-hidden]
                                        [--inheritance-mode {both,layered,flat}]
+                                       [--strict]
 
 Output structure (default --inheritance-mode both):
     <output_dir>/
@@ -26,12 +27,38 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
+from xml.etree import ElementTree as ET
+from zipfile import BadZipFile
 
 # Allow running this script from anywhere
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from console_encoding import configure_utf8_stdio
 from pptx_to_svg import convert_pptx_to_svg
 from pptx_to_svg.converter import ConvertOptions
+
+configure_utf8_stdio()
+
+
+def _reconstruction_only_graphics(result: object) -> list[tuple[int, str]]:
+    """Return slide/object labels for generated placeholders."""
+    artifacts = getattr(result, "flat_slides", None) or getattr(result, "slides", [])
+    diagnostics: list[tuple[int, str]] = []
+    for artifact in artifacts:
+        try:
+            root = ET.fromstring(artifact.svg)
+        except ET.ParseError:
+            continue
+        for elem in root.iter():
+            fallback_kind = (
+                elem.get("data-pptx-fallback-kind")
+                or elem.get("data-pptx-visual-status")
+            )
+            if fallback_kind != "placeholder":
+                continue
+            marker_id = elem.get("id") or elem.get("data-name") or "<unnamed>"
+            diagnostics.append((artifact.index, marker_id))
+    return diagnostics
 
 
 def parse_args() -> argparse.Namespace:
@@ -70,6 +97,14 @@ def parse_args() -> argparse.Namespace:
             "self-contained slides under svg/ for backward compatibility."
         ),
     )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help=(
+            "Stop on the first unsupported/malformed source construct instead "
+            "of the default tolerant conversion with diagnostics"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -94,9 +129,14 @@ def main() -> int:
         embed_images=args.embed_images,
         keep_hidden=args.keep_hidden,
         inheritance_mode=args.inheritance_mode,
+        strict=args.strict,
     )
 
-    result = convert_pptx_to_svg(pptx_path, output_dir, options)
+    try:
+        result = convert_pptx_to_svg(pptx_path, output_dir, options)
+    except (BadZipFile, ET.ParseError, OSError, RuntimeError, ValueError) as exc:
+        print(f"Error: PPTX-to-SVG conversion failed: {exc}", file=sys.stderr)
+        return 1
 
     print(f"Source: {pptx_path.name}")
     print(f"Canvas: {result.canvas_px[0]:.0f} x {result.canvas_px[1]:.0f} px")
@@ -107,7 +147,48 @@ def main() -> int:
         fonts = ", ".join(f"{k}={v}" for k, v in result.theme_fonts.items())
         print(f"Theme fonts: {fonts}")
     print(f"Slides converted: {len(result.slides)}")
+    if result.diagnostics:
+        print(
+            f"Warning: {len(result.diagnostics)} source construct(s) were "
+            "normalized, omitted, or replaced; see conversion-report.json.",
+            file=sys.stderr,
+        )
+        for item in result.diagnostics[:20]:
+            location = (
+                f"slide {item.slide_index}"
+                if item.slide_index
+                else item.part_path
+            )
+            shape = item.shape_name or item.shape_id
+            if shape:
+                location = f"{location}, {shape}" if location else shape
+            print(
+                f"  {location or 'package'}: {item.code}: {item.message}",
+                file=sys.stderr,
+            )
+        if len(result.diagnostics) > 20:
+            print(
+                f"  ... and {len(result.diagnostics) - 20} more",
+                file=sys.stderr,
+            )
+    reconstruction_only = _reconstruction_only_graphics(result)
+    if reconstruction_only:
+        print(
+            "Warning: chart placeholder(s) without a baked preview are "
+            "reconstruction-only. Default export keeps the placeholder; "
+            "--native-charts-and-tables may reconstruct entries with a valid "
+            "replacement marker:",
+            file=sys.stderr,
+        )
+        for slide_index, marker_id in reconstruction_only[:20]:
+            print(f"  slide {slide_index}: {marker_id}", file=sys.stderr)
+        if len(reconstruction_only) > 20:
+            print(
+                f"  ... and {len(reconstruction_only) - 20} more",
+                file=sys.stderr,
+            )
     print(f"Output: {output_dir}")
+    print(f"Conversion report: {output_dir / 'conversion-report.json'}")
     return 0
 
 

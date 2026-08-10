@@ -4,8 +4,12 @@ kind: deck
 category: brand
 summary: 慧新咨询汇报、战略规划、智能制造诊断、数字化转型蓝图、治理决策与管理层汇报模板.
 keywords: [huixin, consulting, strategy, transformation, board-report, diagnosis, governance]
-primary_color: "#4295B6"
+primary_color: "#0097BA"
 canvas_format: ppt169
+canvas_width: 1280
+canvas_height: 720
+canvas_viewbox: "0 0 1280 720"
+native_structure_mode: legacy-flat
 replication_mode: standard
 page_count: 26
 placeholders:
@@ -50,21 +54,25 @@ placeholders:
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| Technology Blue | `#4295B6` | Titles, key conclusions, section numbers, chart primary color, process spine |
-| Vitality Green | `#B0D776` | Insight tags, growth metrics, opportunity points, recommendations |
-| Light Gray | `#D2D3D4` | Dividers, table strokes, weak information, structure lines |
+| Technology Blue | `#0097BA` | Titles, key conclusions, section numbers, chart primary color, process spine |
+| Vitality Green | `#83C410` | Insight tags, growth metrics, opportunity points, recommendations |
+| Light Gray | `#D0CECE` | Dividers, table strokes, weak information, structure lines |
 | Wordmark Black | `#000000` | Official Huixin wordmark on light backgrounds |
 | Deep Gray | `#4B5563` | Body text, footnotes, secondary labels |
-| Light Blue Gray | `#F3F7FA` | Background panels, table fills, neutral analysis areas |
-| Dark Blue Gray | `#0B2F3A` | Cover accent, executive titles, high-emphasis text |
+| Light Blue Gray | `#F5F6F7` | Background panels, table fills, neutral analysis areas |
+| Dark Blue Gray | `#111111` | Cover accent, executive titles, high-emphasis text |
 | White | `#FFFFFF` | Page background and card surfaces |
 
 ## III. Typography
 
-- Primary font: `"Microsoft YaHei"`.
-- SVG font: `"Microsoft YaHei"`; all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
+- Primary font: `"MiSans, Microsoft YaHei, Arial, sans-serif"`.
+- SVG font: `"MiSans, Microsoft YaHei, Arial, sans-serif"`; use MiSans first with Microsoft YaHei / Arial fallback.
 - Titles are bold and concise. Body text should stay short, structured, and conclusion-oriented.
 - Cover titles should fit the left safe region; prefer a short title under 14 Chinese characters and move qualifiers into `{{SUBTITLE}}`.
+
+### Latest Light Template Baseline
+
+This deck follows the official `慧新全智PPT模板_浅色版本.pptx` baseline (source SHA-256: `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`). Use the latest Huixin Quanzhi lockup, `#0097BA` blue, `#83C410` green, `#D0CECE` gray, MiSans, and white / very-light-gray consulting surfaces. Covers use the industrial mosaic; chapter pages may use the teal chapter background; standard evidence pages use the lower-left logo and blue-green footer ribbon. A compact top-right logo is allowed on dense consulting frameworks when it preserves evidence space.
 
 ## IV. Signature Design Elements
 
@@ -133,3 +141,7 @@ For the expanded consulting pages, prioritize one-page-answer discipline: every 
 | `images/reference_visual.png` | Imagegen-generated digital transformation consulting blueprint reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific visuals. Framework pages use editable SVG issue trees, matrices, pyramids, roadmaps, and value tables. |
 | `images/huixin_logo_light.png` | Official Huixin logo for light pages | Use in white / light consulting pages. Preserve the official horizontal lockup. |
 | `images/huixin_logo_dark.png` | Official Huixin logo for dark pages | Use in dark section divider or cover pages. Preserve the official horizontal lockup. |
+| `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for consulting covers and final decision pages. |
+| `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and sparse executive pages. |
+| `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for section dividers. |
+| `images/huixin_light_footer_ribbon.png` | Official blue-green footer ribbon | Use on standard evidence pages with the lower-left logo. |

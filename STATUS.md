@@ -1,3 +1,24 @@
+## 2026-08-10 23:20:00 CST
+
+- Scope: Sync `ppt-master-plus` code from upstream `hugohe3/ppt-master` at `182c6b8229a44990cdc5b394545f90992be377d6`, preserve the Plus Huixin-first routing overlay, and refresh all five Huixin Decks from `/Users/guojiexie/Downloads/慧新全智PPT模板_浅色版本.pptx` (SHA-256 `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`).
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/` upstream v4.5 workflow, references, scripts, schemas, charts, and attribution files.
+  - `ppt-maker-with-svg/skills/ppt-master-plus/{SKILL.md,workflows/generate-pptx.md,workflows/profiles/quick-generate.md,references/strategist-template.md,workflows/stages/apply-template-workspace.md}` Huixin-first Plus overlay.
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_{product_solution,management_report,consulting_strategy,training_enablement,market_promotion}/` refreshed palette, MiSans font stack, high-resolution Huixin Quanzhi logo, official light-template backgrounds/footer assets, cover masters, and design specifications.
+  - `ppt-maker-with-svg/skills/ppt-master-plus/scripts/{svg_quality/checker.py,register_template.py}` scoped `huixin_*` `legacy-flat` compatibility; `requirements.txt` now declares required `PyYAML`.
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json` refreshed Huixin primary colors.
+- Simplifications made:
+  - Kept upstream v4.5 structured-template enforcement unchanged for non-Huixin templates and isolated legacy compatibility to registered `huixin_*` Deck IDs that explicitly declare `native_structure_mode: legacy-flat`.
+  - Preserved 101 mature editable Huixin SVG page types instead of flattening or rebuilding them from the eight-page source starter; refreshed shared brand DNA and five covers while retaining dense architecture, chart, table, consulting, training, and marketing layouts.
+  - Reused the official PPTX assets directly for the latest logo, cover mosaic, content background, chapter background, and footer ribbon; generated previews and the source PPTX remain local artifacts and are not committed.
+- Validation:
+  - Upstream `attribution_guard.py`, Python `compileall`, Skill Creator `quick_validate.py`, `xmllint` for all 101 Huixin SVGs, and `git diff --check` passed.
+  - All five Huixin Deck quality checks passed with zero blocking errors; all five `register_template.py --dry-run` checks passed in an isolated Python 3.12 dependency directory.
+  - Index/page-count/asset assertions passed for 22 product, 25 management, 26 consulting, 20 training, and 8 marketing pages.
+  - Visual comparison of five refreshed covers plus five representative dense pages scored 94/100 against the official light-template montage; local evidence is under `/tmp/huixin-v2-visual.z3LiFJ/` and `.omx/state/huixin-light-template-update/` and is not committed.
+- Commit/push state: committed and pushed on `codex/image-to-editable-ppt-visual-qa` to `origin` after the final scoped diff review.
+- Remaining notes: Huixin Decks intentionally remain editable `legacy-flat` packages during gradual structured-master migration. MiSans is the official first-choice font and the checker reports an advisory PPT portability warning; Microsoft YaHei and Arial remain declared fallbacks.
+
 ## 2026-08-07 21:55:00 CST
 
 - Scope: Continue the `ppt-review-refinement-skill` update by making L2/L3 execution, review-report orchestration, and final human visual confirmation executable and gated.

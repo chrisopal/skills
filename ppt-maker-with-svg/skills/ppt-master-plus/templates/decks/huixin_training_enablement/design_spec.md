@@ -3,8 +3,13 @@ deck_id: huixin_training_enablement
 kind: deck
 summary: 慧新企业培训、产品培训、销售赋能、实施交付培训、客户培训和内部学习材料模板；包含课程主线、章节、日程、课前准备、场景导入、界面讲解、对比矩阵、角色演练、SOP、测评结果和FAQ排查页.
 canvas_format: ppt169
+canvas_width: 1280
+canvas_height: 720
+canvas_viewbox: "0 0 1280 720"
+native_structure_mode: legacy-flat
+replication_mode: standard
 page_count: 20
-primary_color: "#4295B6"
+primary_color: "#0097BA"
 keywords: [huixin, training, enablement, courseware, workshop]
 ---
 
@@ -34,12 +39,12 @@ keywords: [huixin, training, enablement, courseware, workshop]
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| **Logo Blue** | `#4295B6` | Course identity, module headers, learning path, key concept blocks |
-| **Logo Green** | `#B0D776` | Practice tasks, checkpoints, completion markers, tips and calls to action |
-| **Logo Gray** | `#D2D3D4` | Dividers, neutral cards, answer zones, timeline rails |
-| **Deep Blue Gray** | `#0B2F3A` | Cover, titles, key summaries, contrast panels |
+| **Logo Blue** | `#0097BA` | Course identity, module headers, learning path, key concept blocks |
+| **Logo Green** | `#83C410` | Practice tasks, checkpoints, completion markers, tips and calls to action |
+| **Logo Gray** | `#D0CECE` | Dividers, neutral cards, answer zones, timeline rails |
+| **Deep Blue Gray** | `#111111` | Cover, titles, key summaries, contrast panels |
 | **Text Gray** | `#4B5563` | Body text, captions, facilitator notes |
-| **Light Blue Gray** | `#F3F7FA` | Page background, learning panels, content modules |
+| **Light Blue Gray** | `#F5F6F7` | Page background, learning panels, content modules |
 | **White** | `#FFFFFF` | Main canvas and card surfaces |
 | **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
 
@@ -54,9 +59,13 @@ keywords: [huixin, training, enablement, courseware, workshop]
 | **Caption** | Duration / role / hint | 11-13px | Regular |
 | **Step Number** | Learning steps and tasks | 34-46px | Bold |
 
-**Primary Font**: `"Microsoft YaHei"`
+**Primary Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"`
 
-**SVG Font**: `"Microsoft YaHei"` — all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
+**SVG Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"` — use MiSans first with Microsoft YaHei / Arial fallback.
+
+### Latest Light Template Baseline
+
+This deck follows the official `慧新全智PPT模板_浅色版本.pptx` baseline (source SHA-256: `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`). Use the latest Huixin Quanzhi lockup, `#0097BA` blue, `#83C410` green, `#D0CECE` gray, MiSans, and white / very-light-gray learning surfaces. Covers use the industrial mosaic, module dividers may use the teal chapter background, and standard instructional pages use the lower-left logo with the blue-green footer ribbon. Dense operation-annotation pages may retain a compact top-right logo.
 
 ## V. Logo and Brand Mark
 
@@ -264,3 +273,7 @@ Usage rules:
 | `images/reference_visual.png` | Imagegen-generated enterprise training journey reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific courseware visuals. Learning objectives, journey maps, frameworks, practice tasks, quizzes, and action plans remain editable SVG elements. |
 | `images/huixin_logo_light.png` | Official Huixin light-background logo | Use on white and light gray pages. Preserve the official horizontal lockup. |
 | `images/huixin_logo_dark.png` | Official Huixin dark-background logo | Use only on deep blue-gray or black backgrounds. Preserve the official horizontal lockup. |
+| `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for course covers and closing pages. |
+| `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and knowledge overview pages. |
+| `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for module dividers. |
+| `images/huixin_light_footer_ribbon.png` | Official blue-green footer ribbon | Use on standard instructional pages with the lower-left logo. |

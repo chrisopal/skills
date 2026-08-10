@@ -19,6 +19,7 @@ EXPECTED = [
     "wechat-daily-pipeline",
     "wechat-industrial-ai-imagepost-pipeline",
     "wechat-industrial-ai-innovation-product-pipeline",
+    "wechat-validated-article-pipeline",
 ]
 
 

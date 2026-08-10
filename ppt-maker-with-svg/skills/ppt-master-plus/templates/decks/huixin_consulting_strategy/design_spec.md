@@ -139,8 +139,7 @@ For the expanded consulting pages, prioritize one-page-answer discipline: every 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated digital transformation consulting blueprint reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific visuals. Framework pages use editable SVG issue trees, matrices, pyramids, roadmaps, and value tables. |
-| `images/huixin_logo_light.png` | Official Huixin logo for light pages | Use in white / light consulting pages. Preserve the official horizontal lockup. |
-| `images/huixin_logo_dark.png` | Official Huixin logo for dark pages | Use in dark section divider or cover pages. Preserve the official horizontal lockup. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup | Use on every page. On dark fields, place the unchanged logo on a compact white backing panel. Do not recreate, recolor, or substitute legacy logo variants. |
 | `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for consulting covers and final decision pages. |
 | `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and sparse executive pages. |
 | `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for section dividers. |

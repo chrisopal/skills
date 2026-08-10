@@ -2,6 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
+  <image id="huixin-logo" x="1036" y="30" width="170" height="26" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png" data-logo-variant="light"/>
   <text x="72" y="72" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
   <text x="72" y="124" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{CASE_TITLE}}</text>
   <text x="72" y="162" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18">{{CASE_SUBTITLE}}</text>

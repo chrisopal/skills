@@ -317,8 +317,7 @@ This market promotion deck is image-led. Images are **required**, not optional, 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated MES marketing visual reference | Optional reference only. Do not paste it as fixed slide content; use it to guide custom project imagery when a real MES product screenshot or campaign visual is available. |
-| `images/huixin_logo_light.png` | Latest high-resolution Huixin Quanzhi lockup | Default logo on white and light pages. |
-| `images/huixin_logo_dark.png` | Reverse Huixin lockup | Use only on dark campaign fields. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup | Use on every page. On dark fields, place the unchanged logo on a compact white backing panel. Do not recreate, recolor, or substitute legacy logo variants. |
 | `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for covers, campaign hero pages, and closings. |
 | `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and sparse content pages. |
 | `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for campaign section dividers. |

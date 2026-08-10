@@ -6,7 +6,8 @@
   <rect x="64" y="80" width="12" height="510" fill="#0097BA"/>
   <polygon points="992,80 1216,80 1216,590 1112,590" fill="#111111"/>
   <polygon points="1050,80 1082,80 1202,590 1170,590" fill="#83C410"/>
-  <image x="1004" y="112" width="188" height="76" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_dark.png"/>
+  <rect x="990" y="108" width="214" height="52" rx="4" fill="#FFFFFF" fill-opacity="0.96"/>
+  <image id="huixin-logo" x="1004" y="120" width="188" height="29" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png" data-logo-variant="light"/>
   <text x="136" y="192" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="48" font-weight="bold" fill="#111111">{{TITLE}}</text>
   <text x="136" y="252" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" fill="#4B5563">{{SUBTITLE}}</text>
   <line x1="136" y1="306" x2="762" y2="306" stroke="#D0CECE" stroke-width="1"/>

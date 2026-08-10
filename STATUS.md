@@ -1,3 +1,23 @@
+## 2026-08-11 07:18:02 CST
+
+- Scope: Correct the Huixin Quanzhi logo refresh in both the repository templates and the actively installed `/Users/guojiexie/.codex/skills/ppt-master-plus` Skill after identifying that the installed Skill was an independent stale June copy.
+- Changed files:
+  - Five Huixin `design_spec.md` files now require the latest official `huixin_logo_light.png` on every page and a compact white backing panel on dark fields.
+  - Dark consulting, marketing, and training SVG pages now reference the current official logo instead of old reverse or embedded PNG data; two product pages that lacked a logo now include it.
+  - `huixin_product_solution/22_complex_multi_domain_architecture.svg` no longer contains the legacy bottom-left `智能制造方案` lockup.
+  - Removed all five obsolete `images/huixin_logo_dark.png` copies so future pages cannot accidentally select the retired mark.
+- Simplifications made:
+  - One immutable official logo asset now covers light and dark page types; dark-page contrast is handled by SVG backing geometry rather than a second bitmap variant.
+  - Installed Skill synchronization uses repository source as the authority while excluding `projects`, `__pycache__`, and bytecode; the two existing installed project directories were preserved.
+- Validation:
+  - All 101 Huixin SVG pages reference `huixin_logo_light.png`; all five logo copies share SHA-256 `df79adceb528471de1e334a1073860f114da1931b6e6f0ea374cead61ad36174`; no old dark-logo, embedded PNG, or legacy footer reference remains.
+  - `attribution_guard.py`, Python `compileall`, Skill Creator `quick_validate.py`, `xmllint` for all 101 SVGs, and `git diff --check` passed.
+  - All five Huixin Deck quality checks completed with zero blocking errors, and all five `register_template.py --dry-run` checks passed.
+  - Eight affected pages were rendered and visually compared with the official light-template source montage; visual verdict passed at 96/100. Local evidence is under `/tmp/huixin-logo-fix.aEyvxy/` and `.omx/state/huixin-logo-refresh/` and is not committed.
+  - The installed Skill passed attribution and quick validation, has zero rsync drift from the repository source outside excluded local paths, and retained two `projects` directories. The pre-sync installed copy is backed up locally at `/tmp/ppt-master-plus-installed-backup.Yypp3i/`.
+- Commit/push state: committed and pushed on `codex/image-to-editable-ppt-visual-qa` after the final scoped diff review.
+- Remaining notes: The supplied official PPTX contains only the light horizontal lockup; dark pages intentionally use a white backing panel rather than synthesizing or retaining an unofficial reverse logo.
+
 ## 2026-08-10 23:20:00 CST
 
 - Scope: Sync `ppt-master-plus` code from upstream `hugohe3/ppt-master` at `182c6b8229a44990cdc5b394545f90992be377d6`, preserve the Plus Huixin-first routing overlay, and refresh all five Huixin Decks from `/Users/guojiexie/Downloads/慧新全智PPT模板_浅色版本.pptx` (SHA-256 `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`).

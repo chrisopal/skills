@@ -271,8 +271,7 @@ Usage rules:
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated enterprise training journey reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific courseware visuals. Learning objectives, journey maps, frameworks, practice tasks, quizzes, and action plans remain editable SVG elements. |
-| `images/huixin_logo_light.png` | Official Huixin light-background logo | Use on white and light gray pages. Preserve the official horizontal lockup. |
-| `images/huixin_logo_dark.png` | Official Huixin dark-background logo | Use only on deep blue-gray or black backgrounds. Preserve the official horizontal lockup. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup | Use on every page. On dark fields, place the unchanged logo on a compact white backing panel. Do not recreate, recolor, or substitute legacy logo variants. |
 | `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for course covers and closing pages. |
 | `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and knowledge overview pages. |
 | `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for module dividers. |

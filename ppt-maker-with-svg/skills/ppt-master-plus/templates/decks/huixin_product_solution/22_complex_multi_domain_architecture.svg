@@ -237,11 +237,6 @@
   </g>
 
   <g id="footer" font-family="MiSans, Microsoft YaHei, Arial, sans-serif">
-    <path d="M64,674 L82,648 L100,674 Z" fill="#D0CECE"/>
-    <path d="M92,674 L110,648 L128,674 Z" fill="#83C410"/>
-    <path d="M120,674 L138,648 L156,674 Z" fill="#0097BA"/>
-    <text x="176" y="666" font-size="16" font-weight="700" fill="#111111">智能制造方案</text>
-    <text x="176" y="686" font-size="11" fill="#6B7280">数字驱动 · 智造未来</text>
     <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-size="13">22</text>
   </g>
 </svg>

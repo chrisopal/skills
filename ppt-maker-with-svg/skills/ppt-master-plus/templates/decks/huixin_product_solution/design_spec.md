@@ -312,8 +312,7 @@ When using this deck, Strategist should normally include image resources unless 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated smart mine / intelligent manufacturing platform architecture reference | Optional reference only. Do not paste it as fixed slide content; use it to guide custom industry visuals when real project screenshots or scenario images are supplied. |
-| `images/huixin_logo_light.png` | Latest high-resolution Huixin Quanzhi lockup | Default logo on white and light pages. |
-| `images/huixin_logo_dark.png` | Reverse Huixin lockup | Use only on dark technical fields. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup | Use on every page. On dark fields, place the unchanged logo on a compact white backing panel. Do not recreate, recolor, or substitute legacy logo variants. |
 | `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for covers and image-led closings without replacing editable titles. |
 | `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use at low visual weight on agenda or sparse content pages. |
 | `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for chapter dividers and major solution sections. |

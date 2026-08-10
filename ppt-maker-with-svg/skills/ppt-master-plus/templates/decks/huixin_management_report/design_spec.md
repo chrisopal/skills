@@ -212,8 +212,7 @@ Usage rules:
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated quarterly operations report dashboard reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific dashboard visuals. KPI cards, project lists, risk matrices, timelines, and action tables remain editable SVG structures. |
-| `images/huixin_logo_light.png` | Official Huixin light-background logo | Use on white and light gray pages. |
-| `images/huixin_logo_dark.png` | Official Huixin dark-background logo | Use only on deep blue-gray or black backgrounds. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup | Use on every page. On dark fields, place the unchanged logo on a compact white backing panel. Do not recreate, recolor, or substitute legacy logo variants. |
 | `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for report covers and executive closings. |
 | `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and executive overview pages. |
 | `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for management chapter dividers. |

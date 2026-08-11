@@ -1125,3 +1125,21 @@
 - Remaining notes:
   - Generated project outputs, debug frames, and video files stay local and are not staged by policy.
   - Existing unrelated untracked artifacts remain untouched: `.playwright-mcp/`, `agent-skill-tools-intro-video/`, `ppt-master-plus-v02.zip`.
+
+## 2026-08-11 08:20:00 CST
+
+- Scope: latest `ppt-master-plus-v03.zip` installation package and release verification.
+- Changed files:
+  - `STATUS.md`
+- Validation:
+  - Confirmed the repository and installed `ppt-master-plus` trees match when runtime `projects/` and cache files are excluded.
+  - `attribution_guard.py` and the Skill quick validator passed; in-memory compilation covered 222 Python files and JSON parsing covered 15 files.
+  - The five Huixin Decks passed template quality checks across 101 SVG pages with 0 blocking errors; existing font and legacy group-bound findings remain advisory warnings.
+  - Created `/Users/guojiexie/Development/skills/ppt-master-plus-v03.zip` with UTF-8 filenames from `ppt-maker-with-svg/skills/ppt-master-plus`.
+  - `unzip -t` passed; archive inspection confirmed one top-level `ppt-master-plus` folder, 12,430 source files, exact source/archive manifest parity, required files present, and 0 excluded artifact/cache matches.
+  - Extracted-package `quick_validate.py` and `attribution_guard.py` both passed.
+  - SHA-256: `c6f3e567d66405af3377aababade62943f7ac9abb8a53510c99520f09022cc74`.
+- Commit/push state: this status record is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - The ZIP is a generated distribution artifact for local sharing and remains uncommitted by repository policy.
+  - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.

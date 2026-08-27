@@ -2,50 +2,55 @@
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#F5F6F7"/>
   <rect x="0" y="0" width="1280" height="6" fill="#0097BA"/>
-  <rect x="0" y="6" width="440" height="4" fill="#83C410"/>
-  <text x="64" y="48" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">07 / WORKSHOP TASK</text>
+  <rect x="0" y="6" width="440" height="4" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">07 / WORKSHOP TASK</text>
   <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
-  <text x="64" y="106" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="140" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <text x="64" y="106" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
 
   <rect x="64" y="188" width="1152" height="82" rx="8" fill="#111111"/>
-  <text x="100" y="238" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="26" font-weight="700">任务说明：{{WORKSHOP_TASK}}</text>
-  <rect x="1038" y="212" width="128" height="34" rx="3" fill="#83C410"/>
-  <text x="1102" y="235" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">{{TIMEBOX}}</text>
+  <text x="100" y="238" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="26" font-weight="700">任务说明：{{WORKSHOP_TASK}}</text>
+  <rect x="1038" y="212" width="128" height="34" rx="3" fill="#A4D968"/>
+  <text x="1102" y="235" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">{{TIMEBOX}}</text>
 
-  <rect x="64" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
-  <text x="94" y="352" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">输入材料</text>
+  <rect x="64" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="94" y="352" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">输入材料</text>
   <circle cx="106" cy="398" r="5" fill="#0097BA"/>
-  <text x="126" y="404" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{INPUT_1}}</text>
+  <text x="126" y="404" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{INPUT_1}}</text>
   <circle cx="106" cy="440" r="5" fill="#0097BA"/>
-  <text x="126" y="446" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{INPUT_2}}</text>
+  <text x="126" y="446" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{INPUT_2}}</text>
   <circle cx="106" cy="482" r="5" fill="#0097BA"/>
-  <text x="126" y="488" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{INPUT_3}}</text>
+  <text x="126" y="488" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{INPUT_3}}</text>
 
-  <rect x="354" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
-  <text x="384" y="352" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">分工角色</text>
-  <text x="384" y="402" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">主持：{{ROLE_1}}</text>
-  <text x="384" y="444" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">记录：{{ROLE_2}}</text>
-  <text x="384" y="486" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">汇报：{{ROLE_3}}</text>
+  <rect x="354" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="384" y="352" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">分工角色</text>
+  <text x="384" y="402" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">主持：{{ROLE_1}}</text>
+  <text x="384" y="444" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">记录：{{ROLE_2}}</text>
+  <text x="384" y="486" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">汇报：{{ROLE_3}}</text>
   <rect x="384" y="506" width="138" height="28" rx="3" fill="#F5F6F7"/>
-  <text x="453" y="525" text-anchor="middle" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700">GROUP WORK</text>
+  <text x="453" y="525" text-anchor="middle" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700">GROUP WORK</text>
 
-  <rect x="644" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
-  <text x="674" y="352" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">输出要求</text>
-  <text x="674" y="402" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{OUTPUT_1}}</text>
-  <text x="674" y="444" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{OUTPUT_2}}</text>
-  <text x="674" y="486" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{OUTPUT_3}}</text>
-  <line x1="674" y1="520" x2="860" y2="520" stroke="#83C410" stroke-width="4"/>
+  <rect x="644" y="308" width="260" height="238" rx="8" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="674" y="352" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">输出要求</text>
+  <text x="674" y="402" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{OUTPUT_1}}</text>
+  <text x="674" y="444" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{OUTPUT_2}}</text>
+  <text x="674" y="486" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{OUTPUT_3}}</text>
+  <line x1="674" y1="520" x2="860" y2="520" stroke="#A4D968" stroke-width="4"/>
 
-  <rect x="934" y="308" width="282" height="238" rx="8" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
-  <text x="964" y="352" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">汇报模板</text>
+  <rect x="934" y="308" width="282" height="238" rx="8" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="964" y="352" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">汇报模板</text>
   <rect x="964" y="384" width="206" height="34" rx="3" fill="#F5F6F7"/>
   <rect x="964" y="432" width="206" height="34" rx="3" fill="#F5F6F7"/>
   <rect x="964" y="480" width="206" height="34" rx="3" fill="#F5F6F7"/>
-  <text x="984" y="406" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">1. {{REPORT_LINE_1}}</text>
-  <text x="984" y="454" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">2. {{REPORT_LINE_2}}</text>
-  <text x="984" y="502" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">3. {{REPORT_LINE_3}}</text>
+  <text x="984" y="406" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">1. {{REPORT_LINE_1}}</text>
+  <text x="984" y="454" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">2. {{REPORT_LINE_2}}</text>
+  <text x="984" y="502" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">3. {{REPORT_LINE_3}}</text>
 
-  <text x="64" y="660" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
-  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

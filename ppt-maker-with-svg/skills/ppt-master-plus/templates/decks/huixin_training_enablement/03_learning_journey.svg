@@ -2,52 +2,57 @@
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#F5F6F7"/>
   <rect x="0" y="0" width="1280" height="6" fill="#0097BA"/>
-  <rect x="0" y="6" width="420" height="4" fill="#83C410"/>
-  <text x="64" y="48" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">02 / LEARNING JOURNEY</text>
-  <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
-  <text x="64" y="106" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="140" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="6" width="420" height="4" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
 
-  <line x1="145" y1="358" x2="1115" y2="358" stroke="#D0CECE" stroke-width="6" stroke-linecap="round"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">02 / LEARNING JOURNEY</text>
+  <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="106" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <line x1="145" y1="358" x2="1115" y2="358" stroke="#D9D9D9" stroke-width="6" stroke-linecap="round"/>
   <line x1="145" y1="358" x2="650" y2="358" stroke="#0097BA" stroke-width="6" stroke-linecap="round"/>
   <g id="journey-module-1" transform="translate(92 220)">
     <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
     <circle cx="88" cy="138" r="26" fill="#0097BA"/>
-    <text x="88" y="148" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">1</text>
-    <text x="24" y="42" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_1}}</text>
-    <text x="24" y="74" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_1_TIME}}</text>
+    <text x="88" y="148" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">1</text>
+    <text x="24" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_1}}</text>
+    <text x="24" y="74" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_1_TIME}}</text>
   </g>
   <g id="journey-module-2" transform="translate(316 392)">
-    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
+    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
     <circle cx="88" cy="-34" r="26" fill="#0097BA"/>
-    <text x="88" y="-24" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">2</text>
-    <text x="24" y="42" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_2}}</text>
-    <text x="24" y="74" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_2_TIME}}</text>
+    <text x="88" y="-24" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">2</text>
+    <text x="24" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_2}}</text>
+    <text x="24" y="74" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_2_TIME}}</text>
   </g>
   <g id="journey-module-3" transform="translate(540 220)">
-    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#83C410" stroke-width="2"/>
-    <circle cx="88" cy="138" r="26" fill="#83C410"/>
-    <text x="88" y="148" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">3</text>
-    <text x="24" y="42" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_3}}</text>
-    <text x="24" y="74" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_3_TIME}}</text>
+    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
+    <circle cx="88" cy="138" r="26" fill="#A4D968"/>
+    <text x="88" y="148" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">3</text>
+    <text x="24" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_3}}</text>
+    <text x="24" y="74" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_3_TIME}}</text>
   </g>
   <g id="journey-module-4" transform="translate(764 392)">
-    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
-    <circle cx="88" cy="-34" r="26" fill="#D0CECE"/>
-    <text x="88" y="-24" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">4</text>
-    <text x="24" y="42" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_4}}</text>
-    <text x="24" y="74" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_4_TIME}}</text>
+    <rect x="0" y="0" width="176" height="104" rx="6" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+    <circle cx="88" cy="-34" r="26" fill="#D9D9D9"/>
+    <text x="88" y="-24" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">4</text>
+    <text x="24" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_4}}</text>
+    <text x="24" y="74" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_4_TIME}}</text>
   </g>
   <g id="journey-module-5" transform="translate(988 220)">
     <rect x="0" y="0" width="176" height="104" rx="6" fill="#111111"/>
-    <circle cx="88" cy="138" r="26" fill="#83C410"/>
-    <text x="88" y="148" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">5</text>
-    <text x="24" y="42" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_5}}</text>
-    <text x="24" y="74" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_5_TIME}}</text>
+    <circle cx="88" cy="138" r="26" fill="#A4D968"/>
+    <text x="88" y="148" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="700">5</text>
+    <text x="24" y="42" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">{{MODULE_5}}</text>
+    <text x="24" y="74" fill="#D9D9D9" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{MODULE_5_TIME}}</text>
   </g>
-  <rect x="64" y="584" width="1152" height="44" rx="4" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
-  <text x="88" y="612" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">学习节奏：</text>
-  <text x="178" y="612" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{JOURNEY_NOTE}}</text>
-  <text x="64" y="660" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
-  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <rect x="64" y="584" width="1152" height="44" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="88" y="612" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">学习节奏：</text>
+  <text x="178" y="612" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{JOURNEY_NOTE}}</text>
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

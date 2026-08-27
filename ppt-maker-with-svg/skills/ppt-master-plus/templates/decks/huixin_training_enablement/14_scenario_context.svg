@@ -2,42 +2,47 @@
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#F5F6F7"/>
   <rect x="0" y="0" width="1280" height="6" fill="#0097BA"/>
-  <rect x="0" y="6" width="440" height="4" fill="#83C410"/>
-  <text x="64" y="48" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">14 / SCENARIO CONTEXT</text>
+  <rect x="0" y="6" width="440" height="4" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">14 / SCENARIO CONTEXT</text>
   <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
-  <text x="64" y="106" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="140" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <text x="64" y="106" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
 
-  <rect x="64" y="188" width="530" height="388" rx="10" fill="#FFFFFF" stroke="#D0CECE"/>
-  <text x="96" y="232" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">业务场景</text>
+  <rect x="64" y="188" width="530" height="388" rx="10" fill="#FFFFFF" stroke="#D9D9D9"/>
+  <text x="96" y="232" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">业务场景</text>
   <rect x="96" y="268" width="430" height="96" rx="6" fill="#F5F6F7"/>
-  <text x="122" y="306" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="17">{{SCENARIO_BACKGROUND}}</text>
-  <text x="122" y="338" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="17">{{SCENARIO_TRIGGER}}</text>
-  <text x="96" y="416" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">关键角色</text>
-  <circle cx="122" cy="466" r="16" fill="#0097BA"/><text x="154" y="472" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{ROLE_1}}</text>
-  <circle cx="122" cy="516" r="16" fill="#83C410"/><text x="154" y="522" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{ROLE_2}}</text>
+  <text x="122" y="306" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17">{{SCENARIO_BACKGROUND}}</text>
+  <text x="122" y="338" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17">{{SCENARIO_TRIGGER}}</text>
+  <text x="96" y="416" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">关键角色</text>
+  <circle cx="122" cy="466" r="16" fill="#0097BA"/><text x="154" y="472" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{ROLE_1}}</text>
+  <circle cx="122" cy="516" r="16" fill="#A4D968"/><text x="154" y="522" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{ROLE_2}}</text>
 
-  <rect x="626" y="188" width="590" height="388" rx="10" fill="#FFFFFF" stroke="#D0CECE"/>
+  <rect x="626" y="188" width="590" height="388" rx="10" fill="#FFFFFF" stroke="#D9D9D9"/>
   <rect x="626" y="188" width="590" height="54" rx="10" fill="#111111"/>
-  <text x="656" y="222" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">从问题到学习任务</text>
+  <text x="656" y="222" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">从问题到学习任务</text>
   <g transform="translate(666 288)">
-    <rect x="0" y="0" width="144" height="128" rx="8" fill="#F5F6F7" stroke="#D0CECE"/>
-    <text x="72" y="48" text-anchor="middle" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="700">01</text>
-    <text x="72" y="84" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">痛点</text>
-    <text x="72" y="110" text-anchor="middle" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{PAIN_POINT}}</text>
+    <rect x="0" y="0" width="144" height="128" rx="8" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="72" y="48" text-anchor="middle" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="700">01</text>
+    <text x="72" y="84" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">痛点</text>
+    <text x="72" y="110" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{PAIN_POINT}}</text>
     <polygon points="170,54 210,74 170,94" fill="#0097BA"/>
-    <rect x="236" y="0" width="144" height="128" rx="8" fill="#F5F6F7" stroke="#D0CECE"/>
-    <text x="308" y="48" text-anchor="middle" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="700">02</text>
-    <text x="308" y="84" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">决策</text>
-    <text x="308" y="110" text-anchor="middle" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{DECISION_POINT}}</text>
-    <polygon points="406,54 446,74 406,94" fill="#83C410"/>
-    <rect x="472" y="0" width="144" height="128" rx="8" fill="#83C410"/>
-    <text x="544" y="48" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="700">03</text>
-    <text x="544" y="84" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">练习</text>
-    <text x="544" y="110" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{PRACTICE_GOAL}}</text>
+    <rect x="236" y="0" width="144" height="128" rx="8" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="308" y="48" text-anchor="middle" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="700">02</text>
+    <text x="308" y="84" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">决策</text>
+    <text x="308" y="110" text-anchor="middle" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{DECISION_POINT}}</text>
+    <polygon points="406,54 446,74 406,94" fill="#A4D968"/>
+    <rect x="472" y="0" width="144" height="128" rx="8" fill="#A4D968"/>
+    <text x="544" y="48" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="700">03</text>
+    <text x="544" y="84" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">练习</text>
+    <text x="544" y="110" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{PRACTICE_GOAL}}</text>
   </g>
   <rect x="656" y="486" width="500" height="50" rx="5" fill="#F5F6F7"/>
-  <text x="682" y="518" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{DISCUSSION_PROMPT}}</text>
-  <text x="64" y="660" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
-  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <text x="682" y="518" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{DISCUSSION_PROMPT}}</text>
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

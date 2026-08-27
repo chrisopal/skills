@@ -2,25 +2,30 @@
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#F5F6F7"/>
   <rect x="0" y="0" width="1280" height="6" fill="#0097BA"/>
-  <rect x="0" y="6" width="420" height="4" fill="#83C410"/>
-  <text x="64" y="48" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">18 / SOP CHECKLIST</text>
-  <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
-  <text x="64" y="106" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="140" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="6" width="420" height="4" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
 
-  <rect x="64" y="188" width="1152" height="402" rx="8" fill="#FFFFFF" stroke="#D0CECE"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">18 / SOP CHECKLIST</text>
+  <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="106" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="64" y="188" width="1152" height="402" rx="8" fill="#FFFFFF" stroke="#D9D9D9"/>
   <rect x="64" y="188" width="1152" height="54" rx="8" fill="#111111"/>
-  <text x="94" y="222" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">标准作业步骤</text>
-  <text x="1088" y="222" text-anchor="end" fill="#83C410" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{SOP_VERSION}}</text>
-  <g font-family="MiSans, Microsoft YaHei, Arial, sans-serif">
-    <circle cx="118" cy="298" r="18" fill="#0097BA"/><text x="118" y="305" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">1</text><text x="154" y="304" fill="#111111" font-size="18" font-weight="700">{{SOP_STEP_1}}</text><text x="436" y="304" fill="#4B5563" font-size="15">{{SOP_STANDARD_1}}</text><rect x="1044" y="282" width="24" height="24" rx="4" fill="#83C410"/>
-    <circle cx="118" cy="360" r="18" fill="#0097BA"/><text x="118" y="367" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">2</text><text x="154" y="366" fill="#111111" font-size="18" font-weight="700">{{SOP_STEP_2}}</text><text x="436" y="366" fill="#4B5563" font-size="15">{{SOP_STANDARD_2}}</text><rect x="1044" y="344" width="24" height="24" rx="4" fill="#83C410"/>
-    <circle cx="118" cy="422" r="18" fill="#83C410"/><text x="118" y="429" text-anchor="middle" fill="#111111" font-size="15" font-weight="700">3</text><text x="154" y="428" fill="#111111" font-size="18" font-weight="700">{{SOP_STEP_3}}</text><text x="436" y="428" fill="#4B5563" font-size="15">{{SOP_STANDARD_3}}</text><rect x="1044" y="406" width="24" height="24" rx="4" fill="#83C410"/>
-    <circle cx="118" cy="484" r="18" fill="#0097BA"/><text x="118" y="491" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">4</text><text x="154" y="490" fill="#111111" font-size="18" font-weight="700">{{SOP_STEP_4}}</text><text x="436" y="490" fill="#4B5563" font-size="15">{{SOP_STANDARD_4}}</text><rect x="1044" y="468" width="24" height="24" rx="4" fill="#D0CECE"/>
+  <text x="94" y="222" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">标准作业步骤</text>
+  <text x="1088" y="222" text-anchor="end" fill="#A4D968" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{SOP_VERSION}}</text>
+  <g font-family="Microsoft YaHei, Arial, sans-serif">
+    <circle cx="118" cy="298" r="18" fill="#0097BA"/><text x="118" y="305" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">1</text><text x="154" y="304" fill="#111111" font-size="18" font-weight="700">{{SOP_STEP_1}}</text><text x="436" y="304" fill="#4B5563" font-size="15">{{SOP_STANDARD_1}}</text><rect x="1044" y="282" width="24" height="24" rx="4" fill="#A4D968"/>
+    <circle cx="118" cy="360" r="18" fill="#0097BA"/><text x="118" y="367" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">2</text><text x="154" y="366" fill="#111111" font-size="18" font-weight="700">{{SOP_STEP_2}}</text><text x="436" y="366" fill="#4B5563" font-size="15">{{SOP_STANDARD_2}}</text><rect x="1044" y="344" width="24" height="24" rx="4" fill="#A4D968"/>
+    <circle cx="118" cy="422" r="18" fill="#A4D968"/><text x="118" y="429" text-anchor="middle" fill="#111111" font-size="15" font-weight="700">3</text><text x="154" y="428" fill="#111111" font-size="18" font-weight="700">{{SOP_STEP_3}}</text><text x="436" y="428" fill="#4B5563" font-size="15">{{SOP_STANDARD_3}}</text><rect x="1044" y="406" width="24" height="24" rx="4" fill="#A4D968"/>
+    <circle cx="118" cy="484" r="18" fill="#0097BA"/><text x="118" y="491" text-anchor="middle" fill="#FFFFFF" font-size="15" font-weight="700">4</text><text x="154" y="490" fill="#111111" font-size="18" font-weight="700">{{SOP_STEP_4}}</text><text x="436" y="490" fill="#4B5563" font-size="15">{{SOP_STANDARD_4}}</text><rect x="1044" y="468" width="24" height="24" rx="4" fill="#D9D9D9"/>
     <text x="154" y="552" fill="#4B5563" font-size="15">交付物：{{SOP_OUTPUT}}</text>
   </g>
-  <line x1="404" y1="242" x2="404" y2="590" stroke="#D0CECE"/>
-  <line x1="1000" y1="242" x2="1000" y2="590" stroke="#D0CECE"/>
-  <text x="64" y="660" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
-  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <line x1="404" y1="242" x2="404" y2="590" stroke="#D9D9D9"/>
+  <line x1="1000" y1="242" x2="1000" y2="590" stroke="#D9D9D9"/>
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

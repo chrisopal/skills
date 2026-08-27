@@ -51,10 +51,15 @@ The deck should translate these businesses into customer-facing value language: 
 | Role | Color Value | Usage |
 | --- | --- | --- |
 | **Technology Blue** | `#0097BA` | Primary brand visual, headers, core diagrams, campaign emphasis |
-| **Vitality Green** | `#83C410` | Value propositions, keywords, tags, growth metrics, CTA highlights |
-| **Brand Gray** | `#D0CECE` | Background layers, auxiliary shapes, card strokes, dividers |
+| **Vitality Green** | `#A4D968` | Value propositions, keywords, tags, growth metrics, CTA highlights |
+| **Brand Chrome Green** | `#83C410` | Official lockup geometry, fixed double-bar cue, footer ribbon only |
+| **Brand Gray** | `#D9D9D9` | Background layers, auxiliary shapes, card strokes, dividers |
 | **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
 | **Deep Blue Gray** | `#111111` | Premium dark backgrounds, cover, key visual pages, high-emphasis text |
+| **Industrial Blue** | `#0B1039` | Dark-page background and industry foundation |
+| **Intelligent Blue** | `#044AAA` | Core modules and primary dark-page structure |
+| **Bright Blue** | `#1AB6ED` | Dark-page section and content emphasis |
+| **Pale Blue** | `#C0DCEF` | Dark-page strategy title, support copy, divider |
 | **White** | `#FFFFFF` | Card surfaces, negative space, reverse text |
 
 ## IV. Typography System
@@ -68,13 +73,29 @@ The deck should translate these businesses into customer-facing value language: 
 | **Caption** | Footnote / metadata | 12px | Regular |
 | **Display Number** | Impact numbers | 58px | Bold |
 
-**Primary Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"`
+**Primary Font**: `"Microsoft YaHei, Arial, sans-serif"`
 
-**SVG Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"` — use MiSans first with Microsoft YaHei / Arial fallback.
+**SVG Font**: `"Microsoft YaHei, Arial, sans-serif"` — use Microsoft YaHei with Arial fallback.
 
-### Latest Light Template Baseline
+### Huixin Visual Baseline 0826
 
-This deck follows the official `慧新全智PPT模板_浅色版本.pptx` baseline (source SHA-256: `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`). Use the latest Huixin Quanzhi lockup, `#0097BA` blue, `#83C410` green, `#D0CECE` gray, MiSans, and white / very-light-gray campaign surfaces. Covers and closings use the industrial mosaic, while standard proof and campaign pages use the lower-left logo and blue-green footer ribbon. Image-led compositions may keep a compact top-right logo when the bottom band is occupied by proof or CTA content.
+This Deck follows the official `慧新全智PPT视觉设计规范0826.pptx`
+(source SHA-256:
+`44539c09286ac6b3fd87898afd0124851439c0817a07f40f3da7041f32a7ff06`).
+Use `#0097BA` for the technology/system spine, `#A4D968` for semantic
+value/improvement, `#4B5563` for body hierarchy, and `#D9D9D9` for fine
+structure. Keep official logo-derived chrome green `#83C410` limited to the
+lockup, double-bar header cue, and fixed ribbon geometry.
+
+Primary typography is `Microsoft YaHei, Arial, sans-serif`; do not lead with
+MiSans or PingFang. Light pages preserve at least 70% white/light-gray surface,
+use the compact top-left double vertical rule, and keep page titles in the
+20-28pt band with 12-18pt body copy and chart/table labels at or above 9pt when
+content density permits. Covers and endings use the 0826 industrial mosaic.
+Dark pages use `#0B1039`, `#044AAA`, `#1AB6ED`, and `#C0DCEF` with the white
+Huixin lockup. The complete shared authority is
+[`../huixin_visual_system_0826.md`](../huixin_visual_system_0826.md).
+
 
 ## V. Logo and Brand Mark
 
@@ -95,7 +116,7 @@ Usage rules:
 
 | Area | Description |
 | --- | --- |
-| **Brand Header** | Top-left section label, top-right Huixin mark, page number |
+| **Brand Header** | Compact green/blue double vertical rule, section label, top-right Huixin mark, page number |
 | **Title Zone** | Large left-aligned page title with concise key message |
 | **Content Body** | Intentional business layouts: promotion axis, value cards, scenario proof, action plan |
 | **Footer** | Thin divider with source / template attribution |
@@ -103,7 +124,7 @@ Usage rules:
 ### Design DNA
 
 1. Use the logo's slanted-bar geometry as the core brand language: slanted blocks, focus bands, tags, and motion lines.
-2. Use `#0097BA` as the main visual identity and `#83C410` as the growth / CTA signal.
+2. Use `#0097BA` as the main visual identity and `#A4D968` as the growth / CTA signal.
 3. Use `#111111` for cover, key visual pages, and closing CTA to create stronger brand memory.
 4. Keep sales-facing pages clean, short, and high-contrast; prioritize slogans, keywords, metrics, and conversion messages.
 5. Prefer explicit marketing logic: brand claim → pain → solution → value → proof → action.
@@ -317,10 +338,12 @@ This market promotion deck is image-led. Images are **required**, not optional, 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated MES marketing visual reference | Optional reference only. Do not paste it as fixed slide content; use it to guide custom project imagery when a real MES product screenshot or campaign visual is available. |
-| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup | Use on every page. On dark fields, place the unchanged logo on a compact white backing panel. Do not recreate, recolor, or substitute legacy logo variants. |
-| `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for covers, campaign hero pages, and closings. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup for light surfaces | Use on white and light-gray pages; preserve the complete lockup and do not recreate it. |
+| `images/huixin_logo_dark.png` | Official white Huixin Quanzhi lockup for dark surfaces | Use directly on the 0826 industrial-blue background without a white backing card. |
+| `images/huixin_light_cover_mosaic.png` | Official 0826 industrial mosaic | Use for covers and image-led endings while keeping titles editable in the quiet left region. |
 | `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and sparse content pages. |
-| `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for campaign section dividers. |
+| `images/huixin_light_chapter_bg.png` | Legacy teal chapter background | Retained for compatibility only; new 0826 chapter pages use the industrial-blue background. |
+| `images/huixin_dark_bg.png` | Official 0826 industrial-blue dark surface | Use for section dividers, dark strategy pages, and restrained executive emphasis. |
 | `images/huixin_light_footer_ribbon.png` | Official blue-green footer ribbon | Use on standard proof and conversion pages with the lower-left logo. |
 
 The default template pages must remain editable SVG. Keep business messages, metrics, CTA, logo geometry, product/UI overlays, dashboards, and page structure as SVG text and shapes. Images should be embedded into planned image slots and should never replace the whole editable slide.

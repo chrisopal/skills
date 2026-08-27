@@ -2,50 +2,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
-  <text x="72" y="72" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
-  <text x="72" y="124" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="72" y="162" fill="#111111" fill-opacity="0.68" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="72" y="72" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#111111" fill-opacity="0.68" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
   <g id="huixin-logo" transform="translate(1016 22) scale(0.58)" data-logo-variant="light">
     <image x="0" y="0" width="268" height="63" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
   </g>
 
   <rect x="72" y="224" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
   <circle cx="120" cy="272" r="24" fill="#0097BA"/>
-  <text x="120" y="281" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">1</text>
-  <text x="164" y="278" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_1}}</text>
-  <text x="104" y="326" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_1_DESC}}</text>
+  <text x="120" y="281" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">1</text>
+  <text x="164" y="278" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_1}}</text>
+  <text x="104" y="326" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_1_DESC}}</text>
 
-  <rect x="466" y="224" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#83C410" stroke-width="2"/>
-  <circle cx="514" cy="272" r="24" fill="#83C410"/>
-  <text x="514" y="281" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">2</text>
-  <text x="558" y="278" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_2}}</text>
-  <text x="498" y="326" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_2_DESC}}</text>
+  <rect x="466" y="224" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
+  <circle cx="514" cy="272" r="24" fill="#A4D968"/>
+  <text x="514" y="281" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">2</text>
+  <text x="558" y="278" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_2}}</text>
+  <text x="498" y="326" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_2_DESC}}</text>
 
-  <rect x="860" y="224" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#D0CECE" stroke-width="2"/>
+  <rect x="860" y="224" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="2"/>
   <circle cx="908" cy="272" r="24" fill="#111111"/>
-  <text x="908" y="281" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">3</text>
-  <text x="952" y="278" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_3}}</text>
-  <text x="892" y="326" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_3_DESC}}</text>
+  <text x="908" y="281" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">3</text>
+  <text x="952" y="278" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_3}}</text>
+  <text x="892" y="326" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_3_DESC}}</text>
 
-  <rect x="72" y="414" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#D0CECE" stroke-width="2"/>
+  <rect x="72" y="414" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="2"/>
   <circle cx="120" cy="462" r="24" fill="#111111"/>
-  <text x="120" y="471" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">4</text>
-  <text x="164" y="468" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_4}}</text>
-  <text x="104" y="516" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_4_DESC}}</text>
+  <text x="120" y="471" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">4</text>
+  <text x="164" y="468" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_4}}</text>
+  <text x="104" y="516" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_4_DESC}}</text>
 
   <rect x="466" y="414" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
   <circle cx="514" cy="462" r="24" fill="#0097BA"/>
-  <text x="514" y="471" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">5</text>
-  <text x="558" y="468" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_5}}</text>
-  <text x="498" y="516" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_5_DESC}}</text>
+  <text x="514" y="471" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">5</text>
+  <text x="558" y="468" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_5}}</text>
+  <text x="498" y="516" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_5_DESC}}</text>
 
-  <rect x="860" y="414" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#83C410" stroke-width="2"/>
-  <circle cx="908" cy="462" r="24" fill="#83C410"/>
-  <text x="908" y="471" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">6</text>
-  <text x="952" y="468" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_6}}</text>
-  <text x="892" y="516" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_6_DESC}}</text>
+  <rect x="860" y="414" width="348" height="146" rx="18" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
+  <circle cx="908" cy="462" r="24" fill="#A4D968"/>
+  <text x="908" y="471" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700">6</text>
+  <text x="952" y="468" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{CAPABILITY_6}}</text>
+  <text x="892" y="516" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{CAPABILITY_6_DESC}}</text>
 
-  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D0CECE" stroke-width="1.5"/>
-  <text x="72" y="686" fill="#111111" fill-opacity="0.6" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
-  <text x="1208" y="686" text-anchor="end" fill="#111111" fill-opacity="0.6" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D9D9D9" stroke-width="1.5"/>
+  <text x="72" y="686" fill="#111111" fill-opacity="0.6" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#111111" fill-opacity="0.6" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
 </svg>

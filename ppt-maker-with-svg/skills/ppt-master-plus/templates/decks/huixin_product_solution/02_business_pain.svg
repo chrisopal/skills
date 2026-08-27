@@ -2,41 +2,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
-  <rect x="0" y="10" width="340" height="5" fill="#83C410"/>
-  <text x="72" y="72" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
-  <text x="72" y="124" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="72" y="162" fill="#111111" fill-opacity="0.68" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="10" width="340" height="5" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="72" y="72" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{SECTION_NAME}}</text>
+  <text x="72" y="124" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="72" y="162" fill="#111111" fill-opacity="0.68" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18">{{KEY_MESSAGE}}</text>
   <g id="huixin-logo" transform="translate(1016 22) scale(0.58)" data-logo-variant="light">
     <image x="0" y="0" width="268" height="63" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
   </g>
 
-  <rect x="72" y="222" width="332" height="312" rx="20" fill="#FFFFFF" stroke="#D0CECE" stroke-width="2"/>
+  <rect x="72" y="222" width="332" height="312" rx="20" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="2"/>
   <rect x="104" y="254" width="80" height="32" rx="16" fill="#111111"/>
-  <text x="144" y="276" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">现状</text>
-  <text x="104" y="332" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">{{PAIN_1_TITLE}}</text>
-  <text x="104" y="376" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{PAIN_1_DESC}}</text>
-  <text x="104" y="424" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="700">{{KPI_1}}</text>
-  <text x="104" y="464" fill="#111111" fill-opacity="0.62" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">{{PAIN_1_NOTE}}</text>
+  <text x="144" y="276" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">现状</text>
+  <text x="104" y="332" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">{{PAIN_1_TITLE}}</text>
+  <text x="104" y="376" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{PAIN_1_DESC}}</text>
+  <text x="104" y="424" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="700">{{KPI_1}}</text>
+  <text x="104" y="464" fill="#111111" fill-opacity="0.62" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{PAIN_1_NOTE}}</text>
 
   <rect x="474" y="222" width="332" height="312" rx="20" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
   <rect x="506" y="254" width="80" height="32" rx="16" fill="#0097BA"/>
-  <text x="546" y="276" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">断点</text>
-  <text x="506" y="332" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">{{PAIN_2_TITLE}}</text>
-  <text x="506" y="376" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{PAIN_2_DESC}}</text>
-  <text x="506" y="424" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="700">{{KPI_2}}</text>
-  <text x="506" y="464" fill="#111111" fill-opacity="0.62" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">{{PAIN_2_NOTE}}</text>
+  <text x="546" y="276" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">断点</text>
+  <text x="506" y="332" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">{{PAIN_2_TITLE}}</text>
+  <text x="506" y="376" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{PAIN_2_DESC}}</text>
+  <text x="506" y="424" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="700">{{KPI_2}}</text>
+  <text x="506" y="464" fill="#111111" fill-opacity="0.62" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{PAIN_2_NOTE}}</text>
 
-  <rect x="876" y="222" width="332" height="312" rx="20" fill="#FFFFFF" stroke="#83C410" stroke-width="2"/>
-  <rect x="908" y="254" width="80" height="32" rx="16" fill="#83C410"/>
-  <text x="948" y="276" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">机会</text>
-  <text x="908" y="332" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">{{PAIN_3_TITLE}}</text>
-  <text x="908" y="376" fill="#111111" fill-opacity="0.72" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{PAIN_3_DESC}}</text>
-  <text x="908" y="424" fill="#83C410" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="700">{{KPI_3}}</text>
-  <text x="908" y="464" fill="#111111" fill-opacity="0.62" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">{{PAIN_3_NOTE}}</text>
+  <rect x="876" y="222" width="332" height="312" rx="20" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
+  <rect x="908" y="254" width="80" height="32" rx="16" fill="#A4D968"/>
+  <text x="948" y="276" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">机会</text>
+  <text x="908" y="332" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">{{PAIN_3_TITLE}}</text>
+  <text x="908" y="376" fill="#111111" fill-opacity="0.72" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{PAIN_3_DESC}}</text>
+  <text x="908" y="424" fill="#A4D968" font-family="Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="700">{{KPI_3}}</text>
+  <text x="908" y="464" fill="#111111" fill-opacity="0.62" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{PAIN_3_NOTE}}</text>
 
   <rect x="72" y="582" width="1136" height="44" rx="12" fill="#111111"/>
-  <text x="104" y="611" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="17">{{TRANSFORMATION_DRIVER}}</text>
-  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D0CECE" stroke-width="1.5"/>
-  <text x="72" y="686" fill="#111111" fill-opacity="0.6" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
-  <text x="1208" y="686" text-anchor="end" fill="#111111" fill-opacity="0.6" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+  <text x="104" y="611" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17">{{TRANSFORMATION_DRIVER}}</text>
+  <line x1="72" y1="652" x2="1208" y2="652" stroke="#D9D9D9" stroke-width="1.5"/>
+  <text x="72" y="686" fill="#111111" fill-opacity="0.6" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Source: {{SOURCE}}</text>
+  <text x="1208" y="686" text-anchor="end" fill="#111111" fill-opacity="0.6" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
 </svg>

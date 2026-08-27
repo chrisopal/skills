@@ -2,30 +2,35 @@
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="6" fill="#0097BA"/>
-  <rect x="0" y="6" width="440" height="4" fill="#83C410"/>
-  <text x="64" y="48" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">19 / ASSESSMENT RESULTS</text>
+  <rect x="0" y="6" width="440" height="4" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">19 / ASSESSMENT RESULTS</text>
   <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
-  <text x="64" y="106" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="140" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <text x="64" y="106" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
 
   <rect x="64" y="188" width="360" height="390" rx="10" fill="#111111"/>
-  <text x="244" y="254" text-anchor="middle" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18">综合得分</text>
+  <text x="244" y="254" text-anchor="middle" fill="#D9D9D9" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18">综合得分</text>
   <circle cx="244" cy="370" r="88" fill="none" stroke="#4B5563" stroke-width="18"/>
-  <path d="M244 282 A88 88 0 1 1 168 414" fill="none" stroke="#83C410" stroke-width="18" stroke-linecap="round"/>
-  <text x="244" y="388" text-anchor="middle" fill="#83C410" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="58" font-weight="700">{{SCORE}}</text>
-  <text x="244" y="462" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">{{PASS_LEVEL}}</text>
+  <path d="M244 282 A88 88 0 1 1 168 414" fill="none" stroke="#A4D968" stroke-width="18" stroke-linecap="round"/>
+  <text x="244" y="388" text-anchor="middle" fill="#A4D968" font-family="Microsoft YaHei, Arial, sans-serif" font-size="58" font-weight="700">{{SCORE}}</text>
+  <text x="244" y="462" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">{{PASS_LEVEL}}</text>
   <rect x="134" y="506" width="220" height="42" rx="4" fill="#0097BA"/>
-  <text x="244" y="533" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{CERT_STATUS}}</text>
+  <text x="244" y="533" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{CERT_STATUS}}</text>
 
-  <rect x="456" y="188" width="760" height="390" rx="10" fill="#F5F6F7" stroke="#D0CECE"/>
-  <text x="490" y="232" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">能力项结果</text>
-  <g font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">
-    <text x="490" y="292" fill="#111111" font-weight="700">{{ASSESS_ITEM_1}}</text><rect x="690" y="276" width="360" height="14" rx="7" fill="#D0CECE"/><rect x="690" y="276" width="288" height="14" rx="7" fill="#0097BA"/><text x="1070" y="292" fill="#4B5563">{{ASSESS_SCORE_1}}</text>
-    <text x="490" y="362" fill="#111111" font-weight="700">{{ASSESS_ITEM_2}}</text><rect x="690" y="346" width="360" height="14" rx="7" fill="#D0CECE"/><rect x="690" y="346" width="236" height="14" rx="7" fill="#83C410"/><text x="1070" y="362" fill="#4B5563">{{ASSESS_SCORE_2}}</text>
-    <text x="490" y="432" fill="#111111" font-weight="700">{{ASSESS_ITEM_3}}</text><rect x="690" y="416" width="360" height="14" rx="7" fill="#D0CECE"/><rect x="690" y="416" width="300" height="14" rx="7" fill="#0097BA"/><text x="1070" y="432" fill="#4B5563">{{ASSESS_SCORE_3}}</text>
+  <rect x="456" y="188" width="760" height="390" rx="10" fill="#F5F6F7" stroke="#D9D9D9"/>
+  <text x="490" y="232" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">能力项结果</text>
+  <g font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">
+    <text x="490" y="292" fill="#111111" font-weight="700">{{ASSESS_ITEM_1}}</text><rect x="690" y="276" width="360" height="14" rx="7" fill="#D9D9D9"/><rect x="690" y="276" width="288" height="14" rx="7" fill="#0097BA"/><text x="1070" y="292" fill="#4B5563">{{ASSESS_SCORE_1}}</text>
+    <text x="490" y="362" fill="#111111" font-weight="700">{{ASSESS_ITEM_2}}</text><rect x="690" y="346" width="360" height="14" rx="7" fill="#D9D9D9"/><rect x="690" y="346" width="236" height="14" rx="7" fill="#A4D968"/><text x="1070" y="362" fill="#4B5563">{{ASSESS_SCORE_2}}</text>
+    <text x="490" y="432" fill="#111111" font-weight="700">{{ASSESS_ITEM_3}}</text><rect x="690" y="416" width="360" height="14" rx="7" fill="#D9D9D9"/><rect x="690" y="416" width="300" height="14" rx="7" fill="#0097BA"/><text x="1070" y="432" fill="#4B5563">{{ASSESS_SCORE_3}}</text>
   </g>
   <rect x="490" y="490" width="620" height="48" rx="5" fill="#FFFFFF"/>
-  <text x="516" y="521" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">后续强化建议：{{IMPROVEMENT_ADVICE}}</text>
-  <text x="64" y="660" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
-  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <text x="516" y="521" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">后续强化建议：{{IMPROVEMENT_ADVICE}}</text>
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

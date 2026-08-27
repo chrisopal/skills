@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
-  <rect x="0" y="0" width="1280" height="720" fill="#111111"/>
-  <polygon points="0,0 430,0 300,720 0,720" fill="#092633"/>
-  <polygon points="920,0 1280,0 1280,226 1012,226" fill="#0097BA"/>
-  <polygon points="1000,0 1280,0 1280,140 1088,140" fill="#83C410" fill-opacity="0.82"/>
-  <rect x="992" y="28" width="214" height="54" rx="4" fill="#FFFFFF" fill-opacity="0.96"/>
-  <image id="huixin-logo" x="1004" y="40" width="188" height="29" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png" data-logo-variant="light"/>
-  <text x="88" y="108" fill="#83C410" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">{{COURSE_TAG}}</text>
-  <text x="88" y="282" fill="#83C410" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{MODULE_N}}</text>
-  <text x="88" y="352" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="54" font-weight="700">{{MODULE_TITLE}}</text>
-  <text x="88" y="404" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22">{{MODULE_SUBTITLE}}</text>
+  <image id="huixin-0826-dark-background" href="images/huixin_dark_bg.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="none" data-pptx-role="background"/>
+  <polygon points="0,0 430,0 300,720 0,720" fill="#044AAA"/>
+  <polygon points="920,0 1280,0 1280,226 1012,226" fill="#044AAA"/>
+  <polygon points="1000,0 1280,0 1280,140 1088,140" fill="#1AB6ED" fill-opacity="0.82"/>
+  <image id="huixin-logo" x="1004" y="40" width="188" height="29" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_dark.png" data-logo-variant="dark"/>
+  <text x="88" y="108" fill="#1AB6ED" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">{{COURSE_TAG}}</text>
+  <text x="88" y="282" fill="#1AB6ED" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{MODULE_N}}</text>
+  <text x="88" y="352" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="54" font-weight="700">{{MODULE_TITLE}}</text>
+  <text x="88" y="404" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22">{{MODULE_SUBTITLE}}</text>
   <rect x="88" y="462" width="530" height="88" rx="6" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.16"/>
-  <text x="116" y="500" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">本模块学习任务</text>
-  <text x="116" y="534" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{MODULE_GOAL}}</text>
+  <text x="116" y="500" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">本模块学习任务</text>
+  <text x="116" y="534" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{MODULE_GOAL}}</text>
   <g transform="translate(750 258)">
     <rect x="0" y="0" width="360" height="250" rx="12" fill="#FFFFFF" fill-opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.18"/>
-    <text x="34" y="52" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">学习节奏</text>
-    <circle cx="52" cy="104" r="16" fill="#0097BA"/>
-    <circle cx="52" cy="154" r="16" fill="#0097BA"/>
-    <circle cx="52" cy="204" r="16" fill="#83C410"/>
+    <text x="34" y="52" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">学习节奏</text>
+    <circle cx="52" cy="104" r="16" fill="#044AAA"/>
+    <circle cx="52" cy="154" r="16" fill="#044AAA"/>
+    <circle cx="52" cy="204" r="16" fill="#1AB6ED"/>
     <line x1="52" y1="120" x2="52" y2="138" stroke="#FFFFFF" stroke-opacity="0.36" stroke-width="2"/>
     <line x1="52" y1="170" x2="52" y2="188" stroke="#FFFFFF" stroke-opacity="0.36" stroke-width="2"/>
-    <text x="86" y="110" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{RHYTHM_1}}</text>
-    <text x="86" y="160" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">{{RHYTHM_2}}</text>
-    <text x="86" y="210" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">{{RHYTHM_3}}</text>
+    <text x="86" y="110" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{RHYTHM_1}}</text>
+    <text x="86" y="160" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{RHYTHM_2}}</text>
+    <text x="86" y="210" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">{{RHYTHM_3}}</text>
   </g>
-  <text x="88" y="660" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
-  <text x="1216" y="660" text-anchor="end" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <text x="88" y="660" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

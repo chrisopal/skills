@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
-  <rect x="0" y="0" width="1280" height="720" fill="#111111"/>
-  <rect x="0" y="0" width="1280" height="12" fill="#0097BA"/>
-  <rect x="0" y="12" width="1280" height="4" fill="#83C410"/>
-  <path d="M0 518 C150 456 272 616 456 548 C628 484 742 370 936 424 C1080 464 1166 560 1280 512 L1280 720 L0 720 Z" fill="#0097BA" fill-opacity="0.18"/>
+  <image id="huixin-0826-dark-background" href="images/huixin_dark_bg.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="none" data-pptx-role="background"/>
+  <rect x="0" y="0" width="1280" height="12" fill="#044AAA"/>
+  <rect x="0" y="12" width="1280" height="4" fill="#1AB6ED"/>
+  <path d="M0 518 C150 456 272 616 456 548 C628 484 742 370 936 424 C1080 464 1166 560 1280 512 L1280 720 L0 720 Z" fill="#044AAA" fill-opacity="0.18"/>
   <path d="M746 120 C900 50 1116 94 1210 232 C1300 364 1218 526 1044 558 C872 590 712 504 700 354 C692 248 664 156 746 120 Z" fill="#FFFFFF" fill-opacity="0.08"/>
+  <image id="huixin-logo" x="516" y="90" width="248" height="38" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_dark.png" data-logo-variant="dark"/>
 
-  <rect x="492" y="70" width="296" height="74" rx="6" fill="#FFFFFF" fill-opacity="0.96"/>
-  <image id="huixin-logo" x="516" y="90" width="248" height="38" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png" data-logo-variant="light"/>
-
-  <text x="640" y="296" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="48" font-weight="700">{{CTA}}</text>
-  <text x="640" y="350" text-anchor="middle" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22">{{SUBTITLE}}</text>
-  <rect x="490" y="392" width="300" height="6" rx="3" fill="#83C410"/>
+  <text x="640" y="296" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="48" font-weight="700">{{CTA}}</text>
+  <text x="640" y="350" text-anchor="middle" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22">{{SUBTITLE}}</text>
+  <rect x="490" y="392" width="300" height="6" rx="3" fill="#1AB6ED"/>
 
   <rect x="420" y="458" width="440" height="86" rx="22" fill="#FFFFFF" fill-opacity="0.1" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5"/>
-  <text x="640" y="494" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18">{{CONTACT}}</text>
-  <text x="640" y="526" text-anchor="middle" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{DATE}}</text>
+  <text x="640" y="494" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18">{{CONTACT}}</text>
+  <text x="640" y="526" text-anchor="middle" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{DATE}}</text>
 
   <line x1="72" y1="626" x2="1208" y2="626" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5"/>
-  <text x="72" y="662" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">HUIXIN MARKET PROMOTION TEMPLATE</text>
-  <text x="1208" y="662" text-anchor="end" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
+  <text x="72" y="662" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">HUIXIN MARKET PROMOTION TEMPLATE</text>
+  <text x="1208" y="662" text-anchor="end" fill="#C0DCEF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{PAGE_NUM}}</text>
 </svg>

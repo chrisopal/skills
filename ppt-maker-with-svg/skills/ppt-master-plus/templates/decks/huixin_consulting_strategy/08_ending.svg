@@ -2,22 +2,22 @@
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="720" fill="#F5F6F7"/>
   <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
-  <rect x="64" y="80" width="1152" height="510" rx="4" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
+  <rect x="64" y="80" width="1152" height="510" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
   <rect x="64" y="80" width="12" height="510" fill="#0097BA"/>
   <polygon points="992,80 1216,80 1216,590 1112,590" fill="#111111"/>
-  <polygon points="1050,80 1082,80 1202,590 1170,590" fill="#83C410"/>
+  <polygon points="1050,80 1082,80 1202,590 1170,590" fill="#A4D968"/>
   <rect x="990" y="108" width="214" height="52" rx="4" fill="#FFFFFF" fill-opacity="0.96"/>
   <image id="huixin-logo" x="1004" y="120" width="188" height="29" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png" data-logo-variant="light"/>
-  <text x="136" y="192" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="48" font-weight="bold" fill="#111111">{{TITLE}}</text>
-  <text x="136" y="252" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" fill="#4B5563">{{SUBTITLE}}</text>
-  <line x1="136" y1="306" x2="762" y2="306" stroke="#D0CECE" stroke-width="1"/>
-  <text x="136" y="366" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">建议下一步</text>
-  <rect x="136" y="398" width="166" height="48" rx="2" fill="#F5F6F7" stroke="#D0CECE" stroke-width="1"/>
-  <text x="166" y="428" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#111111">确认试点范围</text>
-  <rect x="324" y="398" width="166" height="48" rx="2" fill="#F5F6F7" stroke="#D0CECE" stroke-width="1"/>
-  <text x="354" y="428" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#111111">建立项目机制</text>
-  <rect x="512" y="398" width="166" height="48" rx="2" fill="#83C410"/>
-  <text x="542" y="428" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#111111">启动蓝图设计</text>
-  <text x="136" y="512" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#4B5563">Strategic clarity, measurable value, disciplined execution.</text>
-  <text x="64" y="674" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+  <text x="136" y="192" font-family="Microsoft YaHei, Arial, sans-serif" font-size="48" font-weight="bold" fill="#111111">{{TITLE}}</text>
+  <text x="136" y="252" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" fill="#4B5563">{{SUBTITLE}}</text>
+  <line x1="136" y1="306" x2="762" y2="306" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="136" y="366" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">建议下一步</text>
+  <rect x="136" y="398" width="166" height="48" rx="2" fill="#F5F6F7" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="166" y="428" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#111111">确认试点范围</text>
+  <rect x="324" y="398" width="166" height="48" rx="2" fill="#F5F6F7" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="354" y="428" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#111111">建立项目机制</text>
+  <rect x="512" y="398" width="166" height="48" rx="2" fill="#A4D968"/>
+  <text x="542" y="428" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="bold" fill="#111111">启动蓝图设计</text>
+  <text x="136" y="512" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#4B5563">Strategic clarity, measurable value, disciplined execution.</text>
+  <text x="64" y="674" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
 </svg>

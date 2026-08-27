@@ -40,9 +40,14 @@ keywords: [huixin, training, enablement, courseware, workshop]
 | Role | Color Value | Usage |
 | --- | --- | --- |
 | **Logo Blue** | `#0097BA` | Course identity, module headers, learning path, key concept blocks |
-| **Logo Green** | `#83C410` | Practice tasks, checkpoints, completion markers, tips and calls to action |
-| **Logo Gray** | `#D0CECE` | Dividers, neutral cards, answer zones, timeline rails |
+| **Logo Green** | `#A4D968` | Practice tasks, checkpoints, completion markers, tips and calls to action |
+| **Brand Chrome Green** | `#83C410` | Official lockup geometry, fixed double-bar cue, footer ribbon only |
+| **Logo Gray** | `#D9D9D9` | Dividers, neutral cards, answer zones, timeline rails |
 | **Deep Blue Gray** | `#111111` | Cover, titles, key summaries, contrast panels |
+| **Industrial Blue** | `#0B1039` | Dark-page background and industry foundation |
+| **Intelligent Blue** | `#044AAA` | Core modules and primary dark-page structure |
+| **Bright Blue** | `#1AB6ED` | Dark-page section and content emphasis |
+| **Pale Blue** | `#C0DCEF` | Dark-page strategy title, support copy, divider |
 | **Text Gray** | `#4B5563` | Body text, captions, facilitator notes |
 | **Light Blue Gray** | `#F5F6F7` | Page background, learning panels, content modules |
 | **White** | `#FFFFFF` | Main canvas and card surfaces |
@@ -59,13 +64,29 @@ keywords: [huixin, training, enablement, courseware, workshop]
 | **Caption** | Duration / role / hint | 11-13px | Regular |
 | **Step Number** | Learning steps and tasks | 34-46px | Bold |
 
-**Primary Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"`
+**Primary Font**: `"Microsoft YaHei, Arial, sans-serif"`
 
-**SVG Font**: `"MiSans, Microsoft YaHei, Arial, sans-serif"` — use MiSans first with Microsoft YaHei / Arial fallback.
+**SVG Font**: `"Microsoft YaHei, Arial, sans-serif"` — use Microsoft YaHei with Arial fallback.
 
-### Latest Light Template Baseline
+### Huixin Visual Baseline 0826
 
-This deck follows the official `慧新全智PPT模板_浅色版本.pptx` baseline (source SHA-256: `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`). Use the latest Huixin Quanzhi lockup, `#0097BA` blue, `#83C410` green, `#D0CECE` gray, MiSans, and white / very-light-gray learning surfaces. Covers use the industrial mosaic, module dividers may use the teal chapter background, and standard instructional pages use the lower-left logo with the blue-green footer ribbon. Dense operation-annotation pages may retain a compact top-right logo.
+This Deck follows the official `慧新全智PPT视觉设计规范0826.pptx`
+(source SHA-256:
+`44539c09286ac6b3fd87898afd0124851439c0817a07f40f3da7041f32a7ff06`).
+Use `#0097BA` for the technology/system spine, `#A4D968` for semantic
+value/improvement, `#4B5563` for body hierarchy, and `#D9D9D9` for fine
+structure. Keep official logo-derived chrome green `#83C410` limited to the
+lockup, double-bar header cue, and fixed ribbon geometry.
+
+Primary typography is `Microsoft YaHei, Arial, sans-serif`; do not lead with
+MiSans or PingFang. Light pages preserve at least 70% white/light-gray surface,
+use the compact top-left double vertical rule, and keep page titles in the
+20-28pt band with 12-18pt body copy and chart/table labels at or above 9pt when
+content density permits. Covers and endings use the 0826 industrial mosaic.
+Dark pages use `#0B1039`, `#044AAA`, `#1AB6ED`, and `#C0DCEF` with the white
+Huixin lockup. The complete shared authority is
+[`../huixin_visual_system_0826.md`](../huixin_visual_system_0826.md).
+
 
 ## V. Logo and Brand Mark
 
@@ -85,7 +106,7 @@ Usage rules:
 
 | Area | Description |
 | --- | --- |
-| **Course Header** | Thin blue top rule, module number, top-right Huixin lockup |
+| **Course Header** | Compact green/blue double vertical rule, module number, left-aligned title, top-right Huixin lockup |
 | **Title Zone** | Page title plus one training objective or key message |
 | **Learning Body** | Objectives, pathways, frameworks, explanations, exercises, quizzes, reflection and action plans |
 | **Footer** | Course name, duration / facilitator placeholder, page number |
@@ -271,8 +292,10 @@ Usage rules:
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated enterprise training journey reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific courseware visuals. Learning objectives, journey maps, frameworks, practice tasks, quizzes, and action plans remain editable SVG elements. |
-| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup | Use on every page. On dark fields, place the unchanged logo on a compact white backing panel. Do not recreate, recolor, or substitute legacy logo variants. |
-| `images/huixin_light_cover_mosaic.png` | Official light-template industrial mosaic | Use for course covers and closing pages. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup for light surfaces | Use on white and light-gray pages; preserve the complete lockup and do not recreate it. |
+| `images/huixin_logo_dark.png` | Official white Huixin Quanzhi lockup for dark surfaces | Use directly on the 0826 industrial-blue background without a white backing card. |
+| `images/huixin_light_cover_mosaic.png` | Official 0826 industrial mosaic | Use for covers and image-led endings while keeping titles editable in the quiet left region. |
 | `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and knowledge overview pages. |
-| `images/huixin_light_chapter_bg.png` | Official teal chapter background | Use for module dividers. |
+| `images/huixin_light_chapter_bg.png` | Legacy teal chapter background | Retained for compatibility only; new 0826 chapter pages use the industrial-blue background. |
+| `images/huixin_dark_bg.png` | Official 0826 industrial-blue dark surface | Use for section dividers, dark strategy pages, and restrained executive emphasis. |
 | `images/huixin_light_footer_ribbon.png` | Official blue-green footer ribbon | Use on standard instructional pages with the lower-left logo. |

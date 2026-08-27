@@ -2,68 +2,73 @@
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="5" fill="#0097BA"/>
-  <rect x="0" y="5" width="330" height="4" fill="#83C410"/>
-  <text x="64" y="45" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">16 / SALES FUNNEL</text>
+  <rect x="0" y="5" width="330" height="4" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">16 / SALES FUNNEL</text>
   <image href="images/huixin_logo_light.png" x="1030" y="18" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
-  <text x="64" y="112" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="152" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <text x="64" y="112" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
 
   <g id="funnel-summary">
-    <rect x="64" y="188" width="226" height="386" rx="4" fill="#F5F6F7" stroke="#D0CECE"/>
-    <text x="90" y="228" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">漏斗总览</text>
-    <text x="90" y="266" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">有效商机</text>
-    <text x="90" y="314" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="44" font-weight="700">{{OPP_COUNT}}</text>
-    <text x="184" y="314" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16">个</text>
-    <line x1="90" y1="340" x2="264" y2="340" stroke="#D0CECE"/>
-    <text x="90" y="374" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">漏斗金额</text>
-    <text x="90" y="420" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{FUNNEL_AMOUNT}}</text>
-    <text x="90" y="464" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">本月新增：{{NEW_OPP}}</text>
-    <text x="90" y="496" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14">预计签约：{{COMMIT_AMOUNT}}</text>
-    <rect x="90" y="522" width="154" height="32" rx="2" fill="#83C410"/>
-    <text x="116" y="544" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">{{FUNNEL_HEALTH}}</text>
+    <rect x="64" y="188" width="226" height="386" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="90" y="228" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">漏斗总览</text>
+    <text x="90" y="266" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">有效商机</text>
+    <text x="90" y="314" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="44" font-weight="700">{{OPP_COUNT}}</text>
+    <text x="184" y="314" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">个</text>
+    <line x1="90" y1="340" x2="264" y2="340" stroke="#D9D9D9"/>
+    <text x="90" y="374" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">漏斗金额</text>
+    <text x="90" y="420" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{FUNNEL_AMOUNT}}</text>
+    <text x="90" y="464" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">本月新增：{{NEW_OPP}}</text>
+    <text x="90" y="496" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">预计签约：{{COMMIT_AMOUNT}}</text>
+    <rect x="90" y="522" width="154" height="32" rx="2" fill="#A4D968"/>
+    <text x="116" y="544" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">{{FUNNEL_HEALTH}}</text>
   </g>
 
   <g id="funnel-chart">
-    <rect x="330" y="188" width="500" height="386" rx="4" fill="#FFFFFF" stroke="#D0CECE"/>
-    <text x="358" y="228" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">销售阶段转化</text>
+    <rect x="330" y="188" width="500" height="386" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="358" y="228" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">销售阶段转化</text>
     <polygon points="438,268 722,268 684,320 476,320" fill="#0097BA"/>
     <polygon points="476,334 684,334 650,386 510,386" fill="#5EA4C0"/>
-    <polygon points="510,400 650,400 622,452 538,452" fill="#83C410"/>
+    <polygon points="510,400 650,400 622,452 538,452" fill="#A4D968"/>
     <polygon points="538,466 622,466 598,518 562,518" fill="#111111"/>
-    <text x="580" y="302" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">潜在信息 {{LEAD_COUNT}}</text>
-    <text x="580" y="368" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">方案验证 {{QUALIFIED_COUNT}}</text>
-    <text x="580" y="434" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">客户报价 {{QUOTE_COUNT}}</text>
-    <text x="580" y="500" text-anchor="middle" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">收到合同 {{CONTRACT_COUNT}}</text>
-    <text x="372" y="544" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">关键卡点：{{BOTTLENECK}}</text>
+    <text x="580" y="302" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">潜在信息 {{LEAD_COUNT}}</text>
+    <text x="580" y="368" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">方案验证 {{QUALIFIED_COUNT}}</text>
+    <text x="580" y="434" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">客户报价 {{QUOTE_COUNT}}</text>
+    <text x="580" y="500" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">收到合同 {{CONTRACT_COUNT}}</text>
+    <text x="372" y="544" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">关键卡点：{{BOTTLENECK}}</text>
   </g>
 
   <g id="stage-table">
-    <rect x="862" y="188" width="354" height="386" fill="#FFFFFF" stroke="#D0CECE"/>
-    <text x="888" y="228" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">阶段经营动作</text>
+    <rect x="862" y="188" width="354" height="386" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="888" y="228" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">阶段经营动作</text>
     <rect x="888" y="252" width="304" height="34" fill="#111111"/>
-    <text x="906" y="275" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">阶段</text>
-    <text x="990" y="275" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">目标</text>
-    <text x="1082" y="275" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">责任动作</text>
+    <text x="906" y="275" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">阶段</text>
+    <text x="990" y="275" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">目标</text>
+    <text x="1082" y="275" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">责任动作</text>
     <rect x="888" y="286" width="304" height="52" fill="#F5F6F7"/>
     <rect x="888" y="390" width="304" height="52" fill="#F5F6F7"/>
     <rect x="888" y="494" width="304" height="52" fill="#F5F6F7"/>
-    <text x="906" y="316" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_1}}</text>
-    <text x="990" y="316" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_1_TARGET}}</text>
-    <text x="1082" y="316" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_1_ACTION}}</text>
-    <text x="906" y="368" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_2}}</text>
-    <text x="990" y="368" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_2_TARGET}}</text>
-    <text x="1082" y="368" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_2_ACTION}}</text>
-    <text x="906" y="420" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_3}}</text>
-    <text x="990" y="420" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_3_TARGET}}</text>
-    <text x="1082" y="420" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_3_ACTION}}</text>
-    <text x="906" y="472" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_4}}</text>
-    <text x="990" y="472" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_4_TARGET}}</text>
-    <text x="1082" y="472" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_4_ACTION}}</text>
-    <text x="906" y="524" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_5}}</text>
-    <text x="990" y="524" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_5_TARGET}}</text>
-    <text x="1082" y="524" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_5_ACTION}}</text>
+    <text x="906" y="316" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_1}}</text>
+    <text x="990" y="316" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_1_TARGET}}</text>
+    <text x="1082" y="316" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_1_ACTION}}</text>
+    <text x="906" y="368" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_2}}</text>
+    <text x="990" y="368" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_2_TARGET}}</text>
+    <text x="1082" y="368" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_2_ACTION}}</text>
+    <text x="906" y="420" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_3}}</text>
+    <text x="990" y="420" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_3_TARGET}}</text>
+    <text x="1082" y="420" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_3_ACTION}}</text>
+    <text x="906" y="472" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_4}}</text>
+    <text x="990" y="472" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_4_TARGET}}</text>
+    <text x="1082" y="472" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_4_ACTION}}</text>
+    <text x="906" y="524" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700">{{STAGE_5}}</text>
+    <text x="990" y="524" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_5_TARGET}}</text>
+    <text x="1082" y="524" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{STAGE_5_ACTION}}</text>
   </g>
 
-  <text x="64" y="674" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="11">Huixin Management Report Template</text>
-  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

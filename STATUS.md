@@ -1143,3 +1143,31 @@
 - Remaining notes:
   - The ZIP is a generated distribution artifact for local sharing and remains uncommitted by repository policy.
   - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.
+
+## 2026-08-27 14:40:00 CST
+
+- Scope: Huixin 0826 visual-system refresh for all registered `ppt-master-plus` Huixin Decks.
+- Source authority:
+  - `/Users/guojiexie/Downloads/慧新全智PPT视觉设计规范0826.pptx`
+  - SHA-256: `44539c09286ac6b3fd87898afd0124851439c0817a07f40f3da7041f32a7ff06`
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_visual_system_0826.md`
+  - Five `huixin_*/design_spec.md` files.
+  - 101 reusable SVG templates across `huixin_product_solution`, `huixin_market_promotion`, `huixin_management_report`, `huixin_training_enablement`, and `huixin_consulting_strategy`.
+  - Latest 0826 cover mosaic, industrial-blue background, and white dark-surface lockup assets under each Huixin Deck `images/` directory.
+- Implementation:
+  - Standardized editable SVG typography on `Microsoft YaHei, Arial, sans-serif`.
+  - Applied the 0826 light semantic palette: `#0097BA`, `#A4D968`, `#4B5563`, and `#D9D9D9`, while retaining `#83C410` for fixed logo-derived chrome.
+  - Applied the dark hierarchy `#0B1039`, `#044AAA`, `#1AB6ED`, and `#C0DCEF` to four dark section/campaign templates with the official white lockup.
+  - Added the visible 0826 green/blue double vertical header cue to 91 light content templates without changing their narrative roles or information capacity.
+- Validation:
+  - Parsed all 101 SVG files with `xmllint`; parsed all five design-spec frontmatters and `decks_index.json`.
+  - Full template quality checks passed with 0 blocking errors: product solution 22 pages, market promotion 8, management report 25, training enablement 20, consulting strategy 26.
+  - Browser-rendered all 101 pages at 1280x720; detected 0 blank pages, 0 dimension mismatches, and 0 missing/covered double-bar cues by pixel inspection.
+  - Representative cover, light content, dense architecture/report, dark section, and ending montage passed visual verdict at 94/100.
+  - Repository and installed Skill trees match after excluding local `projects/` and caches; extracted Skill quick validation and `attribution_guard.py` passed.
+  - `git diff --check` passed and stale MiSans/PingFang, old structural gray, and previous light-template source references were absent.
+- Commit/push state: this refresh is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - Existing SVG checker findings are advisory legacy group-bound warnings; no new blocking errors remain.
+  - Rendered previews, imported source analysis, and visual-verdict state remain local artifacts and are not committed.

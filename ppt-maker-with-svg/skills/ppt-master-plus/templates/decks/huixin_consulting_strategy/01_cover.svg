@@ -2,12 +2,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <image x="0" y="0" width="1280" height="720" preserveAspectRatio="xMidYMid slice" href="images/huixin_light_cover_mosaic.png"/>
-  <image x="28" y="28" width="164" height="26" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
-  <text x="30" y="278" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">战略与数字化咨询</text>
-  <text x="30" y="330" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="700">{{TITLE}}</text>
-  <text x="30" y="370" fill="#555555" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18">{{SUBTITLE}}</text>
-  <rect x="30" y="400" width="116" height="5" fill="#0097BA"/>
-  <rect x="146" y="400" width="44" height="5" fill="#83C410"/>
-  <text x="30" y="446" fill="#333333" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{KEY_MESSAGE}}</text>
-  <text x="30" y="684" fill="#666666" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="11">{{AUTHOR}}  |  {{DATE}}</text>
+  <image x="42" y="36" width="164" height="26" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <text x="48" y="278" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700">战略与数字化咨询</text>
+  <text x="48" y="330" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="700">{{TITLE}}</text>
+  <text x="48" y="370" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18">{{SUBTITLE}}</text>
+  <rect x="48" y="400" width="116" height="5" fill="#0097BA"/>
+  <rect x="164" y="400" width="44" height="5" fill="#A4D968"/>
+  <text x="48" y="446" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{KEY_MESSAGE}}</text>
+  <text x="48" y="684" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11">{{AUTHOR}}  |  {{DATE}}</text>
 </svg>

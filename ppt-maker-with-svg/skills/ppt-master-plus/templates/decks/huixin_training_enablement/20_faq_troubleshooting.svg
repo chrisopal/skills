@@ -2,31 +2,36 @@
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#F5F6F7"/>
   <rect x="0" y="0" width="1280" height="6" fill="#0097BA"/>
-  <rect x="0" y="6" width="420" height="4" fill="#83C410"/>
-  <text x="64" y="48" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">20 / FAQ TROUBLESHOOTING</text>
-  <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
-  <text x="64" y="106" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="140" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="6" width="420" height="4" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
 
-  <rect x="64" y="188" width="552" height="410" rx="8" fill="#FFFFFF" stroke="#D0CECE"/>
-  <text x="94" y="232" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">常见问题</text>
-  <g font-family="MiSans, Microsoft YaHei, Arial, sans-serif">
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">20 / FAQ TROUBLESHOOTING</text>
+  <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="106" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="64" y="188" width="552" height="410" rx="8" fill="#FFFFFF" stroke="#D9D9D9"/>
+  <text x="94" y="232" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">常见问题</text>
+  <g font-family="Microsoft YaHei, Arial, sans-serif">
     <circle cx="112" cy="292" r="18" fill="#0097BA"/><text x="112" y="299" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">Q</text><text x="150" y="298" fill="#111111" font-size="17" font-weight="700">{{FAQ_1}}</text><text x="150" y="328" fill="#4B5563" font-size="15">{{ANSWER_1}}</text>
     <circle cx="112" cy="392" r="18" fill="#0097BA"/><text x="112" y="399" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">Q</text><text x="150" y="398" fill="#111111" font-size="17" font-weight="700">{{FAQ_2}}</text><text x="150" y="428" fill="#4B5563" font-size="15">{{ANSWER_2}}</text>
     <circle cx="112" cy="492" r="18" fill="#0097BA"/><text x="112" y="499" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">Q</text><text x="150" y="498" fill="#111111" font-size="17" font-weight="700">{{FAQ_3}}</text><text x="150" y="528" fill="#4B5563" font-size="15">{{ANSWER_3}}</text>
   </g>
 
   <rect x="664" y="188" width="552" height="410" rx="8" fill="#111111"/>
-  <text x="696" y="232" fill="#FFFFFF" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">排查路径</text>
-  <g transform="translate(696 286)" font-family="MiSans, Microsoft YaHei, Arial, sans-serif">
-    <rect x="0" y="0" width="420" height="56" rx="5" fill="#FFFFFF" fill-opacity="0.10"/><text x="24" y="36" fill="#D0CECE" font-size="16">1. {{TROUBLE_STEP_1}}</text>
-    <rect x="0" y="84" width="420" height="56" rx="5" fill="#FFFFFF" fill-opacity="0.10"/><text x="24" y="120" fill="#D0CECE" font-size="16">2. {{TROUBLE_STEP_2}}</text>
-    <rect x="0" y="168" width="420" height="56" rx="5" fill="#FFFFFF" fill-opacity="0.10"/><text x="24" y="204" fill="#D0CECE" font-size="16">3. {{TROUBLE_STEP_3}}</text>
-    <polygon points="436,24 468,40 436,56" fill="#83C410"/>
-    <polygon points="436,108 468,124 436,140" fill="#83C410"/>
+  <text x="696" y="232" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700">排查路径</text>
+  <g transform="translate(696 286)" font-family="Microsoft YaHei, Arial, sans-serif">
+    <rect x="0" y="0" width="420" height="56" rx="5" fill="#FFFFFF" fill-opacity="0.10"/><text x="24" y="36" fill="#D9D9D9" font-size="16">1. {{TROUBLE_STEP_1}}</text>
+    <rect x="0" y="84" width="420" height="56" rx="5" fill="#FFFFFF" fill-opacity="0.10"/><text x="24" y="120" fill="#D9D9D9" font-size="16">2. {{TROUBLE_STEP_2}}</text>
+    <rect x="0" y="168" width="420" height="56" rx="5" fill="#FFFFFF" fill-opacity="0.10"/><text x="24" y="204" fill="#D9D9D9" font-size="16">3. {{TROUBLE_STEP_3}}</text>
+    <polygon points="436,24 468,40 436,56" fill="#A4D968"/>
+    <polygon points="436,108 468,124 436,140" fill="#A4D968"/>
   </g>
-  <rect x="696" y="536" width="286" height="42" rx="4" fill="#83C410"/>
-  <text x="839" y="563" text-anchor="middle" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{ESCALATION_RULE}}</text>
-  <text x="64" y="660" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
-  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <rect x="696" y="536" width="286" height="42" rx="4" fill="#A4D968"/>
+  <text x="839" y="563" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700">{{ESCALATION_RULE}}</text>
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

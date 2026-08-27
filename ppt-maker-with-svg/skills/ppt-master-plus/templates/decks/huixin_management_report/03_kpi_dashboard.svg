@@ -2,50 +2,55 @@
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
   <rect x="0" y="0" width="1280" height="5" fill="#0097BA"/>
-  <text x="64" y="45" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">02 / KPI DASHBOARD</text>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="64" y="45" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">02 / KPI DASHBOARD</text>
   <g id="huixin-logo" transform="translate(1032 18) scale(0.52)" data-logo-variant="light">
     <image x="0" y="0" width="268" height="63" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
   </g>
-  <text x="64" y="112" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="152" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <text x="64" y="112" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="152" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
   <rect x="64" y="202" width="260" height="170" rx="4" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
-  <text x="88" y="242" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{KPI_1_LABEL}}</text>
-  <text x="88" y="304" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="52" font-weight="700">{{KPI_1}}</text>
-  <rect x="88" y="334" width="196" height="10" rx="5" fill="#D0CECE"/>
+  <text x="88" y="242" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{KPI_1_LABEL}}</text>
+  <text x="88" y="304" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="52" font-weight="700">{{KPI_1}}</text>
+  <rect x="88" y="334" width="196" height="10" rx="5" fill="#D9D9D9"/>
   <rect x="88" y="334" width="156" height="10" rx="5" fill="#0097BA"/>
-  <text x="88" y="360" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{KPI_1_NOTE}}</text>
-  <rect x="356" y="202" width="260" height="170" rx="4" fill="#FFFFFF" stroke="#83C410" stroke-width="2"/>
-  <text x="380" y="242" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{KPI_2_LABEL}}</text>
-  <text x="380" y="304" fill="#83C410" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="52" font-weight="700">{{KPI_2}}</text>
-  <rect x="380" y="334" width="196" height="10" rx="5" fill="#D0CECE"/>
-  <rect x="380" y="334" width="172" height="10" rx="5" fill="#83C410"/>
-  <text x="380" y="360" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{KPI_2_NOTE}}</text>
+  <text x="88" y="360" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{KPI_1_NOTE}}</text>
+  <rect x="356" y="202" width="260" height="170" rx="4" fill="#FFFFFF" stroke="#A4D968" stroke-width="2"/>
+  <text x="380" y="242" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{KPI_2_LABEL}}</text>
+  <text x="380" y="304" fill="#A4D968" font-family="Microsoft YaHei, Arial, sans-serif" font-size="52" font-weight="700">{{KPI_2}}</text>
+  <rect x="380" y="334" width="196" height="10" rx="5" fill="#D9D9D9"/>
+  <rect x="380" y="334" width="172" height="10" rx="5" fill="#A4D968"/>
+  <text x="380" y="360" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{KPI_2_NOTE}}</text>
   <rect x="648" y="202" width="260" height="170" rx="4" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
-  <text x="672" y="242" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{KPI_3_LABEL}}</text>
-  <text x="672" y="304" fill="#0097BA" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="52" font-weight="700">{{KPI_3}}</text>
-  <rect x="672" y="334" width="196" height="10" rx="5" fill="#D0CECE"/>
+  <text x="672" y="242" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{KPI_3_LABEL}}</text>
+  <text x="672" y="304" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="52" font-weight="700">{{KPI_3}}</text>
+  <rect x="672" y="334" width="196" height="10" rx="5" fill="#D9D9D9"/>
   <rect x="672" y="334" width="136" height="10" rx="5" fill="#0097BA"/>
-  <text x="672" y="360" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{KPI_3_NOTE}}</text>
+  <text x="672" y="360" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{KPI_3_NOTE}}</text>
   <rect x="940" y="202" width="276" height="170" rx="4" fill="#111111"/>
-  <text x="964" y="242" fill="#D0CECE" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">{{KPI_4_LABEL}}</text>
-  <text x="964" y="304" fill="#83C410" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="52" font-weight="700">{{KPI_4}}</text>
+  <text x="964" y="242" fill="#D9D9D9" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">{{KPI_4_LABEL}}</text>
+  <text x="964" y="304" fill="#A4D968" font-family="Microsoft YaHei, Arial, sans-serif" font-size="52" font-weight="700">{{KPI_4}}</text>
   <rect x="964" y="334" width="208" height="10" rx="5" fill="#4B5563"/>
-  <rect x="964" y="334" width="164" height="10" rx="5" fill="#83C410"/>
-  <text x="964" y="360" fill="#FFFFFF" fill-opacity="0.82" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="13">{{KPI_4_NOTE}}</text>
-  <rect x="64" y="420" width="720" height="150" rx="4" fill="#F5F6F7" stroke="#D0CECE" stroke-width="1"/>
-  <text x="88" y="456" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">目标完成趋势</text>
-  <line x1="108" y1="530" x2="736" y2="530" stroke="#D0CECE" stroke-width="1"/>
-  <line x1="108" y1="482" x2="108" y2="542" stroke="#D0CECE" stroke-width="1"/>
+  <rect x="964" y="334" width="164" height="10" rx="5" fill="#A4D968"/>
+  <text x="964" y="360" fill="#FFFFFF" fill-opacity="0.82" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">{{KPI_4_NOTE}}</text>
+  <rect x="64" y="420" width="720" height="150" rx="4" fill="#F5F6F7" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="88" y="456" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">目标完成趋势</text>
+  <line x1="108" y1="530" x2="736" y2="530" stroke="#D9D9D9" stroke-width="1"/>
+  <line x1="108" y1="482" x2="108" y2="542" stroke="#D9D9D9" stroke-width="1"/>
   <polyline points="112,518 224,502 336,508 448,484 560,476 720,462" fill="none" stroke="#0097BA" stroke-width="4"/>
-  <polyline points="112,534 224,520 336,510 448,504 560,486 720,478" fill="none" stroke="#83C410" stroke-width="4"/>
-  <text x="108" y="558" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Q1</text>
-  <text x="720" y="558" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">Q4</text>
-  <rect x="820" y="420" width="396" height="150" rx="4" fill="#FFFFFF" stroke="#D0CECE" stroke-width="1"/>
-  <text x="844" y="456" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">管理关注</text>
-  <text x="844" y="500" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">1. {{FOCUS_1}}</text>
-  <text x="844" y="532" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="15">2. {{FOCUS_2}}</text>
-  <rect x="1060" y="530" width="116" height="34" rx="2" fill="#83C410"/>
-  <text x="1084" y="553" fill="#111111" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">纳入跟踪</text>
-  <text x="64" y="674" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="11">Huixin Management Report Template</text>
-  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="MiSans, Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
+  <polyline points="112,534 224,520 336,510 448,504 560,486 720,478" fill="none" stroke="#A4D968" stroke-width="4"/>
+  <text x="108" y="558" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Q1</text>
+  <text x="720" y="558" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Q4</text>
+  <rect x="820" y="420" width="396" height="150" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="844" y="456" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700">管理关注</text>
+  <text x="844" y="500" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">1. {{FOCUS_1}}</text>
+  <text x="844" y="532" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15">2. {{FOCUS_2}}</text>
+  <rect x="1060" y="530" width="116" height="34" rx="2" fill="#A4D968"/>
+  <text x="1084" y="553" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700">纳入跟踪</text>
+  <text x="64" y="674" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11">Huixin Management Report Template</text>
+  <text x="1216" y="674" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

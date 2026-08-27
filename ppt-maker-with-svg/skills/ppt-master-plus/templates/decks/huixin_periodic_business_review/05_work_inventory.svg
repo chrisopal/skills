@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-5" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">01 / WORK REVIEW</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">工作清单与执行状态</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">把已完成、执行中和待处理事项放在同一管理视图中</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="work-inventory-table" data-pptx-bounds="64 206 1152 386">
+  <rect x="64" y="206" width="182" height="42" fill="#0097BA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="155.0" y="233" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">工作条线</text>
+  <rect x="246" y="206" width="284" height="42" fill="#0097BA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="388.0" y="233" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">已完成</text>
+  <rect x="530" y="206" width="278" height="42" fill="#0097BA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="669.0" y="233" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">执行中</text>
+  <rect x="808" y="206" width="202" height="42" fill="#0097BA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="909.0" y="233" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">证据 / 交付物</text>
+  <rect x="1010" y="206" width="206" height="42" fill="#0097BA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="1113.0" y="233" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">负责人 / 状态</text>
+  <rect x="64" y="248" width="182" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="246" y="248" width="284" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="530" y="248" width="278" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="808" y="248" width="202" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="1010" y="248" width="206" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="82" y="280" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#0097BA" text-anchor="start">{{WORKSTREAM_1}}</text>
+  <text x="264" y="280" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{COMPLETED_1}}</text>
+  <text x="548" y="280" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{ONGOING_1}}</text>
+  <text x="826" y="280" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">{{EVIDENCE_1}}</text>
+  <text x="1113" y="280" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="middle">{{OWNER_1}}</text>
+  <text x="1113" y="306" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#A4D968" text-anchor="middle">{{STATUS_1}}</text>
+  <rect x="64" y="334" width="182" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="246" y="334" width="284" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="530" y="334" width="278" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="808" y="334" width="202" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="1010" y="334" width="206" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="82" y="366" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#0097BA" text-anchor="start">{{WORKSTREAM_2}}</text>
+  <text x="264" y="366" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{COMPLETED_2}}</text>
+  <text x="548" y="366" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{ONGOING_2}}</text>
+  <text x="826" y="366" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">{{EVIDENCE_2}}</text>
+  <text x="1113" y="366" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="middle">{{OWNER_2}}</text>
+  <text x="1113" y="392" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#A4D968" text-anchor="middle">{{STATUS_2}}</text>
+  <rect x="64" y="420" width="182" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="246" y="420" width="284" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="530" y="420" width="278" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="808" y="420" width="202" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="1010" y="420" width="206" height="86" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="82" y="452" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#0097BA" text-anchor="start">{{WORKSTREAM_3}}</text>
+  <text x="264" y="452" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{COMPLETED_3}}</text>
+  <text x="548" y="452" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{ONGOING_3}}</text>
+  <text x="826" y="452" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">{{EVIDENCE_3}}</text>
+  <text x="1113" y="452" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="middle">{{OWNER_3}}</text>
+  <text x="1113" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#A4D968" text-anchor="middle">{{STATUS_3}}</text>
+  <rect x="64" y="506" width="182" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="246" y="506" width="284" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="530" y="506" width="278" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="808" y="506" width="202" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="1010" y="506" width="206" height="86" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="82" y="538" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#0097BA" text-anchor="start">{{WORKSTREAM_4}}</text>
+  <text x="264" y="538" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{COMPLETED_4}}</text>
+  <text x="548" y="538" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{ONGOING_4}}</text>
+  <text x="826" y="538" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">{{EVIDENCE_4}}</text>
+  <text x="1113" y="538" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="middle">{{OWNER_4}}</text>
+  <text x="1113" y="564" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#D8665B" text-anchor="middle">{{STATUS_4}}</text>
+</g>
+<g id="work-inventory-note" data-pptx-bounds="64 610 1152 36">
+  <rect x="64" y="610" width="1152" height="36" fill="#4B5563" rx="4"/>
+  <text x="84" y="634" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="start">统计说明：{{INVENTORY_BASIS}}</text>
+</g>
+<g id="page-footer-5" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">05</text>
+</g>
+</svg>

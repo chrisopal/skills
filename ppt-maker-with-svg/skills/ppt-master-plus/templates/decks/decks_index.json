@@ -17,6 +17,12 @@
     "page_count": 8,
     "primary_color": "#0097BA"
   },
+  "huixin_periodic_business_review": {
+    "summary": "慧新事业部月度与季度经营汇报模板，以工作梳理、工作成果、工作亮点、工作规划形成管理闭环并支持决策。",
+    "canvas_format": "ppt169",
+    "page_count": 19,
+    "primary_color": "#0097BA"
+  },
   "huixin_product_solution": {
     "summary": "慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示；包含复杂多层分域架构、业务/功能/系统/数据/集成/技术/部署架构、多系统集成总览、流程、实施、截图和案例页.",
     "canvas_format": "ppt169",

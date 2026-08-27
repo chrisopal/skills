@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="section">
+<g id="section-background-7" data-pptx-bounds="0 0 1280 720">
+  <image id="section-background-image-7" href="images/huixin_dark_bg.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="none" data-pptx-role="background"/>
+</g>
+<g id="section-logo-7" data-pptx-bounds="1004 38 188 30">
+  <image href="images/huixin_logo_dark.png" x="1004" y="38" width="188" height="29" preserveAspectRatio="xMinYMin meet"/>
+</g>
+<g id="section-title-7" data-pptx-bounds="80 150 980 220">
+  <text x="80" y="188" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700" fill="#1AB6ED" text-anchor="start">02 / RESULTS</text>
+  <text x="80" y="274" font-family="Microsoft YaHei, Arial, sans-serif" font-size="56" font-weight="700" fill="#FFFFFF" text-anchor="start">工作成果</text>
+  <line x1="80" y1="316" x2="860" y2="316" stroke="#044AAA" stroke-width="3"/>
+  <text x="80" y="358" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700" fill="#C0DCEF" text-anchor="start">目标与实际之间形成了什么结果和偏差？</text>
+</g>
+<g id="section-prompts-7" data-pptx-bounds="80 414 820 68">
+  <rect x="80" y="414" width="390" height="58" fill="#FFFFFF" stroke="#C0DCEF" stroke-width="1" rx="6" fill-opacity="0.08"/>
+  <text x="104" y="450" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="start">关键产出：成果对标与分类</text>
+  <rect x="490" y="414" width="410" height="58" fill="#FFFFFF" stroke="#C0DCEF" stroke-width="1" rx="6" fill-opacity="0.08"/>
+  <text x="514" y="450" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="start">管理视角：结果判断</text>
+</g>
+<g id="section-rail-7" data-pptx-bounds="80 570 1080 90">
+  <line x1="80" y1="602" x2="1160" y2="602" stroke="#044AAA" stroke-width="3"/>
+  <rect x="104" y="580" width="44" height="44" fill="#C0DCEF" rx="22"/>
+  <text x="126" y="608" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#044AAA" text-anchor="middle">01</text>
+  <text x="126" y="650" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#C0DCEF" text-anchor="middle">工作梳理</text>
+  <rect x="414" y="580" width="44" height="44" fill="#1AB6ED" rx="22"/>
+  <text x="436" y="608" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0B1039" text-anchor="middle">02</text>
+  <text x="436" y="650" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">工作成果</text>
+  <rect x="724" y="580" width="44" height="44" fill="#C0DCEF" rx="22"/>
+  <text x="746" y="608" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#044AAA" text-anchor="middle">03</text>
+  <text x="746" y="650" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#C0DCEF" text-anchor="middle">工作亮点</text>
+  <rect x="1034" y="580" width="44" height="44" fill="#C0DCEF" rx="22"/>
+  <text x="1056" y="608" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#044AAA" text-anchor="middle">04</text>
+  <text x="1056" y="650" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#C0DCEF" text-anchor="middle">工作规划</text>
+</g>
+</svg>

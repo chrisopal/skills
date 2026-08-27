@@ -1171,3 +1171,36 @@
 - Remaining notes:
   - Existing SVG checker findings are advisory legacy group-bound warnings; no new blocking errors remain.
   - Rendered previews, imported source analysis, and visual-verdict state remain local artifacts and are not committed.
+
+## 2026-08-28 00:35:00 CST
+
+- Scope: reusable Huixin monthly/quarterly business-review Deck and intelligent-manufacturing example delivery.
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_periodic_business_review/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_periodic_business_review/01_cover.svg` through `19_ending.svg`
+  - Five official 0826 Huixin assets under `huixin_periodic_business_review/images/`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json`
+  - `STATUS.md`
+- Template behavior:
+  - Registered `huixin_periodic_business_review` as a 19-page Deck supporting monthly and quarterly reporting.
+  - Locked the narrative to `工作梳理 → 工作成果 → 工作亮点 → 工作规划`, with monthly compact use and quarterly expanded target/value/roadmap/risk use.
+  - Added reusable pages for work inventory, workstream progress, target-vs-actual, result classification, key results, highlight story, company value, next-period goals, priority tasks, implementation roadmap, and risks/support/decisions.
+  - Preserved the Huixin 0826 palette, Microsoft YaHei typography, industrial mosaic, light double-bar header, industrial-blue section pages, complete light/dark lockups, and editable SVG geometry.
+- Example delivery:
+  - Generated `智能制造事业部8月复盘与9月规划-慧新月度汇报示例.pptx` with 14 editable slides and 14 speaker-note pages.
+  - Generated `慧新月度季度汇报模板-19页预览.pptx` for direct review of the complete template roster.
+  - Used only Q2, July, and through-August-11 source materials. Missing August actuals remain explicitly marked `待月末补录` or `待验证`; no unprovided business result is presented as complete.
+- Validation:
+  - New Deck registration dry-run and write succeeded; `decks_index.json` reports 19 pages.
+  - All 19 template SVGs passed XML parsing and `svg_quality_checker.py --template-mode` with 19/19 fully passed, 0 warnings, and 0 errors.
+  - Browser-rendered the complete template and example; template visual verdict passed at 95 and example final visual verdict passed at 97.
+  - Example final SVG gate passed with 0 blocking errors; remaining advisories document the intentional zero-slot structured Layout.
+  - Final example PPTX passed package checks with 14 slides, 14 notes, one Master, one Layout, no external media, no relationship problems, and no advisories.
+  - Template preview PPTX passed package checks with 19 slides, one Master, one Layout, no external media, and no errors; unresolved `{{...}}` markers are intentional template fields.
+  - LibreOffice/PDF render confirmed all example pages and both ending pages remain visually intact, including single-line `THANKS` fallback rendering.
+  - PPTX Markdown readback confirmed 14 slides, 14 note sections, all required facts and data-limit notices, and 0 unresolved placeholders in the example.
+  - Repository and installed Skill trees match for the registered Deck and index; project workspaces and generated PPTX/PNG/PDF artifacts remain uncommitted.
+- Commit/push state: this Deck addition is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - Replace the example's `待月末补录` target/actual fields after authoritative August results are available.
+  - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.

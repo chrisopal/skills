@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-16" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">04 / PLAN</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">重点任务与交付物</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">把任务拆到可验收交付物、负责人、里程碑和依赖</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="priority-task-grid" data-pptx-bounds="64 208 1120 356">
+  <rect x="64" y="208" width="352" height="166" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="64" y="208" width="12" height="166" fill="#0097BA"/>
+  <text x="92" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">01</text>
+  <text x="134" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#111111" text-anchor="start">{{TASK_1_TITLE}}</text>
+  <text x="92" y="280" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">交付物：{{DELIVERABLE_1}}</text>
+  <text x="92" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="start">负责人：{{OWNER_1}}</text>
+  <text x="388" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{MILESTONE_1}}</text>
+  <rect x="92" y="334" width="296" height="24" fill="#F7F8FA" rx="4"/>
+  <text x="240" y="351" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#4B5563" text-anchor="middle">依赖：{{DEPENDENCY_1}}</text>
+  <rect x="448" y="208" width="352" height="166" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="448" y="208" width="12" height="166" fill="#A4D968"/>
+  <text x="476" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#A4D968" text-anchor="start">02</text>
+  <text x="518" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#111111" text-anchor="start">{{TASK_2_TITLE}}</text>
+  <text x="476" y="280" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">交付物：{{DELIVERABLE_2}}</text>
+  <text x="476" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="start">负责人：{{OWNER_2}}</text>
+  <text x="772" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#A4D968" text-anchor="end">{{MILESTONE_2}}</text>
+  <rect x="476" y="334" width="296" height="24" fill="#F7F8FA" rx="4"/>
+  <text x="624" y="351" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#4B5563" text-anchor="middle">依赖：{{DEPENDENCY_2}}</text>
+  <rect x="832" y="208" width="352" height="166" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="832" y="208" width="12" height="166" fill="#0097BA"/>
+  <text x="860" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">03</text>
+  <text x="902" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#111111" text-anchor="start">{{TASK_3_TITLE}}</text>
+  <text x="860" y="280" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">交付物：{{DELIVERABLE_3}}</text>
+  <text x="860" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="start">负责人：{{OWNER_3}}</text>
+  <text x="1156" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{MILESTONE_3}}</text>
+  <rect x="860" y="334" width="296" height="24" fill="#F7F8FA" rx="4"/>
+  <text x="1008" y="351" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#4B5563" text-anchor="middle">依赖：{{DEPENDENCY_3}}</text>
+  <rect x="64" y="398" width="352" height="166" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="64" y="398" width="12" height="166" fill="#0097BA"/>
+  <text x="92" y="432" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">04</text>
+  <text x="134" y="432" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#111111" text-anchor="start">{{TASK_4_TITLE}}</text>
+  <text x="92" y="470" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">交付物：{{DELIVERABLE_4}}</text>
+  <text x="92" y="504" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="start">负责人：{{OWNER_4}}</text>
+  <text x="388" y="504" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{MILESTONE_4}}</text>
+  <rect x="92" y="524" width="296" height="24" fill="#F7F8FA" rx="4"/>
+  <text x="240" y="541" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#4B5563" text-anchor="middle">依赖：{{DEPENDENCY_4}}</text>
+  <rect x="448" y="398" width="352" height="166" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="448" y="398" width="12" height="166" fill="#A4D968"/>
+  <text x="476" y="432" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#A4D968" text-anchor="start">05</text>
+  <text x="518" y="432" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#111111" text-anchor="start">{{TASK_5_TITLE}}</text>
+  <text x="476" y="470" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">交付物：{{DELIVERABLE_5}}</text>
+  <text x="476" y="504" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="start">负责人：{{OWNER_5}}</text>
+  <text x="772" y="504" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#A4D968" text-anchor="end">{{MILESTONE_5}}</text>
+  <rect x="476" y="524" width="296" height="24" fill="#F7F8FA" rx="4"/>
+  <text x="624" y="541" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#4B5563" text-anchor="middle">依赖：{{DEPENDENCY_5}}</text>
+  <rect x="832" y="398" width="352" height="166" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="832" y="398" width="12" height="166" fill="#0097BA"/>
+  <text x="860" y="432" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">06</text>
+  <text x="902" y="432" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#111111" text-anchor="start">{{TASK_6_TITLE}}</text>
+  <text x="860" y="470" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#4B5563" text-anchor="start">交付物：{{DELIVERABLE_6}}</text>
+  <text x="860" y="504" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="start">负责人：{{OWNER_6}}</text>
+  <text x="1156" y="504" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{MILESTONE_6}}</text>
+  <rect x="860" y="524" width="296" height="24" fill="#F7F8FA" rx="4"/>
+  <text x="1008" y="541" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#4B5563" text-anchor="middle">依赖：{{DEPENDENCY_6}}</text>
+</g>
+<g id="priority-task-rule" data-pptx-bounds="64 606 1120 40">
+  <rect x="64" y="606" width="1120" height="40" fill="#111111" rx="4"/>
+  <text x="84" y="632" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="start">执行要求：{{EXECUTION_RULE}}</text>
+</g>
+<g id="page-footer-16" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">16</text>
+</g>
+</svg>

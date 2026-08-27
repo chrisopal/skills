@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-12" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">03 / HIGHLIGHTS</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">关键工作亮点</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">把一个关键产出讲清楚：做了什么、为什么有效、形成了什么可复用价值</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="highlight-hero" data-pptx-bounds="64 208 470 380">
+  <rect x="64" y="208" width="470" height="380" fill="#0B1039" rx="8"/>
+  <text x="92" y="250" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#1AB6ED" text-anchor="start">本期亮点</text>
+  <text x="92" y="304" font-family="Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="700" fill="#FFFFFF" text-anchor="start">{{HIGHLIGHT_TITLE}}</text>
+  <text x="92" y="354" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" fill="#C0DCEF" text-anchor="start"><tspan x="92" dy="0">{{HIGHLIGHT_DESC_1}}</tspan><tspan x="92" dy="30">{{HIGHLIGHT_DESC_2}}</tspan><tspan x="92" dy="30">{{HIGHLIGHT_DESC_3}}</tspan></text>
+  <rect x="92" y="492" width="414" height="66" fill="#FFFFFF" stroke="#C0DCEF" stroke-width="1" rx="5" fill-opacity="0.08"/>
+  <text x="112" y="520" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#1AB6ED" text-anchor="start">可复用能力</text>
+  <text x="112" y="546" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="start">{{REUSABLE_CAPABILITY}}</text>
+</g>
+<g id="highlight-mechanism" data-pptx-bounds="570 208 350 294">
+  <rect x="570" y="208" width="350" height="82" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <rect x="570" y="208" width="8" height="82" fill="#0097BA"/>
+  <text x="600" y="238" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#111111" text-anchor="start">01  {{MECHANISM_1_TITLE}}</text>
+  <text x="600" y="266" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="400" fill="#4B5563" text-anchor="start">{{MECHANISM_1_DESC}}</text>
+  <line x1="744" y1="290" x2="744" y2="314" stroke="#0097BA" stroke-width="2"/>
+  <rect x="570" y="314" width="350" height="82" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <rect x="570" y="314" width="8" height="82" fill="#A4D968"/>
+  <text x="600" y="344" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#111111" text-anchor="start">02  {{MECHANISM_2_TITLE}}</text>
+  <text x="600" y="372" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="400" fill="#4B5563" text-anchor="start">{{MECHANISM_2_DESC}}</text>
+  <line x1="744" y1="396" x2="744" y2="420" stroke="#0097BA" stroke-width="2"/>
+  <rect x="570" y="420" width="350" height="82" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <rect x="570" y="420" width="8" height="82" fill="#4B5563"/>
+  <text x="600" y="450" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#111111" text-anchor="start">03  {{MECHANISM_3_TITLE}}</text>
+  <text x="600" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="400" fill="#4B5563" text-anchor="start">{{MECHANISM_3_DESC}}</text>
+</g>
+<g id="highlight-evidence" data-pptx-bounds="954 208 262 294">
+  <rect x="954" y="208" width="262" height="82" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <text x="978" y="236" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="start">{{METRIC_1_LABEL}}</text>
+  <text x="978" y="270" font-family="Microsoft YaHei, Arial, sans-serif" font-size="26" font-weight="700" fill="#0097BA" text-anchor="start">{{METRIC_1}}</text>
+  <rect x="954" y="314" width="262" height="82" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <text x="978" y="342" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="start">{{METRIC_2_LABEL}}</text>
+  <text x="978" y="376" font-family="Microsoft YaHei, Arial, sans-serif" font-size="26" font-weight="700" fill="#A4D968" text-anchor="start">{{METRIC_2}}</text>
+  <rect x="954" y="420" width="262" height="82" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <text x="978" y="448" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="start">{{METRIC_3_LABEL}}</text>
+  <text x="978" y="482" font-family="Microsoft YaHei, Arial, sans-serif" font-size="26" font-weight="700" fill="#111111" text-anchor="start">{{METRIC_3}}</text>
+</g>
+<g id="highlight-value" data-pptx-bounds="570 526 646 62">
+  <rect x="570" y="526" width="646" height="62" fill="#A4D968" rx="6"/>
+  <text x="594" y="550" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="start">对公司整体运作的贡献</text>
+  <text x="594" y="578" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#111111" text-anchor="start">{{COMPANY_CONTRIBUTION}}</text>
+</g>
+<g id="page-footer-12" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">12</text>
+</g>
+</svg>

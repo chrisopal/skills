@@ -1206,3 +1206,26 @@
 - Remaining notes:
   - Replace the example's `待月末补录` target/actual fields after authoritative August results are available.
   - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.
+
+## 2026-08-28 19:25:00 CST
+
+- Scope: latest `ppt-master-plus-v04.zip` offline installation package.
+- Changed files:
+  - `STATUS.md`
+- Source state:
+  - Packaged commit `9845fe4` from `codex/image-to-editable-ppt-visual-qa`; local HEAD and configured remote branch were identical before packaging.
+  - Repository and installed `ppt-master-plus` trees matched after excluding runtime `projects/` and caches.
+  - Skill metadata version remains `4.5.0`; the latest 25-page `huixin_periodic_business_review` Deck and Huixin 0826 visual system are included.
+- Validation:
+  - `attribution_guard.py` and the Skill quick validator passed.
+  - In-memory validation compiled 222 Python files and parsed 15 JSON files without creating bytecode artifacts.
+  - Six Huixin Decks passed template quality checks with 0 blocking errors across 126 SVG pages.
+  - Created `/Users/guojiexie/Development/skills/ppt-master-plus-v04.zip` with explicit UTF-8 filenames.
+  - `unzip -t` passed; archive inspection confirmed one top-level `ppt-master-plus` folder, 12,470 source files, exact source/archive manifest parity, required files present, 25 periodic-review SVG pages, and 0 excluded artifact/cache matches.
+  - Packaged `requirements.txt` exactly matches the source file; SHA-256: `c21eff0e03a10569252082ed9d9c2127e215fa15d48b514ab54c7bedbec377c4`.
+  - Extracted-package `quick_validate.py` and `attribution_guard.py` both passed.
+  - Package SHA-256: `748cfe2e6019c9f563f029c7a1163f6eb9ce9829b262e9aae51a37433f56f1d2`.
+- Commit/push state: this release record is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - The ZIP is a generated distribution artifact for local/offline sharing and remains uncommitted by repository policy.
+  - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.

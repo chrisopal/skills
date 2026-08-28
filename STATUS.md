@@ -1177,28 +1177,30 @@
 - Scope: reusable Huixin monthly/quarterly business-review Deck and intelligent-manufacturing example delivery.
 - Changed files:
   - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_periodic_business_review/design_spec.md`
-  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_periodic_business_review/01_cover.svg` through `19_ending.svg`
-  - Five official 0826 Huixin assets under `huixin_periodic_business_review/images/`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_periodic_business_review/01_cover.svg` through `25_delivery_stage_distribution.svg`
+  - Three official light-theme 0826 Huixin assets under `huixin_periodic_business_review/images/`
   - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json`
   - `STATUS.md`
 - Template behavior:
-  - Registered `huixin_periodic_business_review` as a 19-page Deck supporting monthly and quarterly reporting.
+  - Registered `huixin_periodic_business_review` as a 25-page light-only Deck supporting monthly and quarterly reporting.
   - Locked the narrative to `工作梳理 → 工作成果 → 工作亮点 → 工作规划`, with monthly compact use and quarterly expanded target/value/roadmap/risk use.
   - Added reusable pages for work inventory, workstream progress, target-vs-actual, result classification, key results, highlight story, company value, next-period goals, priority tasks, implementation roadmap, and risks/support/decisions.
-  - Preserved the Huixin 0826 palette, Microsoft YaHei typography, industrial mosaic, light double-bar header, industrial-blue section pages, complete light/dark lockups, and editable SVG geometry.
+  - Added six editable chart pages: operating trend combo, target variance waterfall, workstream completion bars, value contribution donut, quarterly KPI small multiples, and delivery stage distribution.
+  - Standardized cover, section, working, chart, planning, and ending pages on one Huixin 0826 light palette with Microsoft YaHei typography, industrial mosaic, light double-bar header, complete light lockup, and editable SVG geometry; dark backgrounds and the dark lockup are no longer bundled in this Deck.
 - Example delivery:
-  - Generated `智能制造事业部8月复盘与9月规划-慧新月度汇报示例.pptx` with 14 editable slides and 14 speaker-note pages.
-  - Generated `慧新月度季度汇报模板-19页预览.pptx` for direct review of the complete template roster.
+  - Generated `智能制造事业部8月复盘与9月规划-慧新月度汇报示例.pptx` with 16 editable slides and 16 speaker-note pages.
+  - Added operating pipeline trend and delivery-stage distribution charts using traceable Q2/July/project-stage data.
+  - Generated `慧新月度季度汇报模板-25页浅色版预览.pptx` for direct review of the complete template roster.
   - Used only Q2, July, and through-August-11 source materials. Missing August actuals remain explicitly marked `待月末补录` or `待验证`; no unprovided business result is presented as complete.
 - Validation:
-  - New Deck registration dry-run and write succeeded; `decks_index.json` reports 19 pages.
-  - All 19 template SVGs passed XML parsing and `svg_quality_checker.py --template-mode` with 19/19 fully passed, 0 warnings, and 0 errors.
-  - Browser-rendered the complete template and example; template visual verdict passed at 95 and example final visual verdict passed at 97.
+  - New Deck registration dry-run and write succeeded; `decks_index.json` reports 25 pages.
+  - All 25 template SVGs passed XML parsing and `svg_quality_checker.py --template-mode` with 25/25 fully passed, 0 warnings, and 0 errors.
+  - Browser-rendered the complete template and example; template visual verdict passed at 97 and example final visual verdict passed at 98.
   - Example final SVG gate passed with 0 blocking errors; remaining advisories document the intentional zero-slot structured Layout.
-  - Final example PPTX passed package checks with 14 slides, 14 notes, one Master, one Layout, no external media, no relationship problems, and no advisories.
-  - Template preview PPTX passed package checks with 19 slides, one Master, one Layout, no external media, and no errors; unresolved `{{...}}` markers are intentional template fields.
+  - Final example PPTX passed package checks with 16 slides, 16 notes, one Master, one Layout, no external media, no relationship problems, and no advisories.
+  - Template preview PPTX passed package checks with 25 slides, one Master, one Layout, no external media, and no errors; unresolved `{{...}}` markers are intentional template fields.
   - LibreOffice/PDF render confirmed all example pages and both ending pages remain visually intact, including single-line `THANKS` fallback rendering.
-  - PPTX Markdown readback confirmed 14 slides, 14 note sections, all required facts and data-limit notices, and 0 unresolved placeholders in the example.
+  - PPTX Markdown readback confirmed 16 slides, 16 note sections, all required facts, chart values and data-limit notices, and 0 unresolved placeholders in the example.
   - Repository and installed Skill trees match for the registered Deck and index; project workspaces and generated PPTX/PNG/PDF artifacts remain uncommitted.
 - Commit/push state: this Deck addition is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
 - Remaining notes:

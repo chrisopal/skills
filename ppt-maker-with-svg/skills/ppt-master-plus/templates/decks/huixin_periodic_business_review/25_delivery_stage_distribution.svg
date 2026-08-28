@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-25" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">CHART / DELIVERY</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">项目交付阶段分布</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">用阶段柱图展示项目组合结构，识别验收、上线和资源集中区</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="delivery-stage-chart" data-pptx-bounds="64 208 820 382">
+  <rect x="64" y="208" width="820" height="382" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <line x1="112" y1="540" x2="840" y2="540" stroke="#4B5563" stroke-width="1"/>
+  <rect x="150" y="470" width="76" height="70" fill="#BFD7E2" rx="5"/>
+  <text x="188" y="456" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#BFD7E2" text-anchor="middle">{{STAGE_1_VALUE}}</text>
+  <text x="188" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{STAGE_1_LABEL}}</text>
+  <rect x="282" y="430" width="76" height="110" fill="#8EBED2" rx="5"/>
+  <text x="320" y="416" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#8EBED2" text-anchor="middle">{{STAGE_2_VALUE}}</text>
+  <text x="320" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{STAGE_2_LABEL}}</text>
+  <rect x="414" y="350" width="76" height="190" fill="#0097BA" rx="5"/>
+  <text x="452" y="336" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#0097BA" text-anchor="middle">{{STAGE_3_VALUE}}</text>
+  <text x="452" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{STAGE_3_LABEL}}</text>
+  <rect x="546" y="310" width="76" height="230" fill="#A4D968" rx="5"/>
+  <text x="584" y="296" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#A4D968" text-anchor="middle">{{STAGE_4_VALUE}}</text>
+  <text x="584" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{STAGE_4_LABEL}}</text>
+  <rect x="678" y="395" width="76" height="145" fill="#4B5563" rx="5"/>
+  <text x="716" y="381" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#4B5563" text-anchor="middle">{{STAGE_5_VALUE}}</text>
+  <text x="716" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{STAGE_5_LABEL}}</text>
+</g>
+<g id="delivery-stage-insights" data-pptx-bounds="914 208 302 382">
+  <rect x="914" y="208" width="302" height="108" fill="#E8F6F9" stroke="#0097BA" stroke-width="1" rx="7"/>
+  <text x="938" y="244" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="start">项目总量</text>
+  <text x="938" y="286" font-family="Microsoft YaHei, Arial, sans-serif" font-size="32" font-weight="700" fill="#0097BA" text-anchor="start">{{PROJECTS}}</text>
+  <rect x="914" y="336" width="302" height="108" fill="#F1F8E8" stroke="#A4D968" stroke-width="1" rx="7"/>
+  <text x="938" y="372" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="start">合同规模</text>
+  <text x="938" y="414" font-family="Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="700" fill="#A4D968" text-anchor="start">{{AMOUNT}}</text>
+  <rect x="914" y="464" width="302" height="126" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <text x="938" y="500" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="start">组合判断</text>
+  <text x="938" y="534" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#111111" text-anchor="start"><tspan x="938" dy="0">{{DELIVERY_INSIGHT_1}}</tspan><tspan x="938" dy="26">{{DELIVERY_INSIGHT_2}}</tspan></text>
+</g>
+<g id="page-footer-25" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">25</text>
+</g>
+</svg>

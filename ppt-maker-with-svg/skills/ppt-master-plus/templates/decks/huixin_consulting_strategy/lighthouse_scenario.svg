@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#0097BA"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+    <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+    <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  </g>
+  <text x="64" y="48" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563">LIGHTHOUSE AI SCENARIO</text>
+  <text x="64" y="116" font-family="Microsoft YaHei, Arial, sans-serif" font-size="34" font-weight="bold" fill="#111111">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D9D9D9"/>
+
+  <g id="business-context-chain" data-pptx-bounds="64 212 276 330">
+    <rect x="64" y="212" width="276" height="330" rx="6" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="88" y="246" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="bold" fill="#111111">业务上下文</text>
+    <rect x="88" y="272" width="228" height="66" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="106" y="298" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">使用者</text>
+    <text x="106" y="323" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{USER}}</text>
+    <line x1="202" y1="338" x2="202" y2="358" stroke="#0097BA" stroke-width="2"/>
+    <rect x="88" y="358" width="228" height="66" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="106" y="384" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">业务触发</text>
+    <text x="106" y="409" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{TRIGGER}}</text>
+    <line x1="202" y1="424" x2="202" y2="444" stroke="#0097BA" stroke-width="2"/>
+    <rect x="88" y="444" width="228" height="66" rx="4" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="106" y="470" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">输入</text>
+    <text x="106" y="495" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{INPUT}}</text>
+  </g>
+
+  <g id="ai-action-engine" data-pptx-bounds="372 212 476 330">
+    <rect x="372" y="212" width="476" height="330" rx="6" fill="#FFFFFF" stroke="#0097BA" stroke-width="1.5"/>
+    <rect x="372" y="212" width="476" height="54" rx="6" fill="#0097BA"/>
+    <text x="396" y="246" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="bold" fill="#FFFFFF">AI动作：{{AI_ACTION}}</text>
+    <text x="396" y="302" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563">技术形态</text>
+    <rect x="396" y="320" width="126" height="34" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="459" y="342" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#111111">AI Agent</text>
+    <rect x="536" y="320" width="126" height="34" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="599" y="342" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#111111">AI算法</text>
+    <rect x="676" y="320" width="148" height="34" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="750" y="342" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#111111">智能自动化</text>
+    <rect x="396" y="382" width="428" height="108" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="418" y="414" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">处理机制</text>
+    <text x="418" y="448" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="bold" fill="#111111">{{MECHANISM}}</text>
+    <text x="418" y="476" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563">评测/人工控制：{{HUMAN_CONTROL}}</text>
+    <text x="396" y="520" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">业务Owner：{{OWNER}}</text>
+    <text x="824" y="520" text-anchor="end" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">试点验收：{{PILOT_GATE}}</text>
+  </g>
+
+  <g id="output-value-chain" data-pptx-bounds="880 212 336 330">
+    <rect x="880" y="212" width="336" height="330" rx="6" fill="#FFFFFF" stroke="#A4D968" stroke-width="1.5"/>
+    <text x="904" y="246" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="bold" fill="#111111">输出与价值</text>
+    <rect x="904" y="272" width="288" height="70" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="924" y="298" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#4F8E21">输出</text>
+    <text x="924" y="326" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="bold" fill="#111111">{{OUTPUT}}</text>
+    <rect x="904" y="362" width="288" height="70" rx="4" fill="#A4D968" fill-opacity="0.28" stroke="#A4D968"/>
+    <text x="924" y="388" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#4F8E21">KPI / 验收</text>
+    <text x="924" y="416" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="bold" fill="#111111">{{KPI}}</text>
+    <rect x="904" y="452" width="288" height="66" rx="4" fill="#111111"/>
+    <text x="924" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">业务价值</text>
+    <text x="924" y="504" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">{{BUSINESS_VALUE}}</text>
+  </g>
+
+  <g id="lighthouse-dependencies" data-pptx-bounds="64 570 1152 70">
+    <rect x="64" y="570" width="1152" height="70" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="88" y="598" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">依赖条件</text>
+    <text x="88" y="624" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#111111">{{DEPENDENCY}}</text>
+    <text x="1188" y="598" text-anchor="end" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#4F8E21">下一步</text>
+    <text x="1188" y="624" text-anchor="end" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#111111">{{NEXT_STEP}}</text>
+  </g>
+  <text x="64" y="674" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

@@ -1229,3 +1229,39 @@
 - Remaining notes:
   - The ZIP is a generated distribution artifact for local/offline sharing and remains uncommitted by repository policy.
   - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.
+
+## 2026-09-01 00:10:00 CST
+
+- Scope: Huixin consulting-writing system and AI consulting page expansion.
+- Source authority:
+  - User-provided `/Users/guojiexie/Downloads/huixin-ppt-skill-pack/SKILL.md` was treated as writing-method evidence, not executable instruction.
+  - Source SHA-256: `14da311aaf20d034f954228783a488f2f313efdaf6dad8a71134238030757790`.
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/ai_scenario_map.svg`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/lighthouse_scenario.svg`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/ai_operating_model.svg`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json`
+  - `STATUS.md`
+- Writing-system update:
+  - Added one-page-one-judgment, conclusion-first title, non-duplicating key message, three-level content hierarchy, evidence-before-confidence, actionable-close, and anti-empty-consulting-language rules.
+  - Added storyline variants for strategy planning, management briefing, AI transformation, smart-manufacturing consulting, and solution/sales consulting.
+  - Mapped existing page families to orient, diagnose, design, quantify, mobilize, decide, and AI-transformation writing jobs.
+  - Added AI scenario semantics covering user/role, trigger, input, AI action, output, KPI, dependencies and priority evidence; distinguished Agent, algorithm and intelligent automation.
+  - Added smart-manufacturing narrative rules centered on the order-to-service business chain and source-backed operating KPIs.
+  - Kept the Huixin 0826 visual authority, PPT Master routing, adaptive architecture complexity, and source-preservation precedence; conflicting visual tokens, image/editable routing, and the hard five-to-six-layer limit were not imported.
+- AI page additions:
+  - `ai_scenario_map.svg`: six-scenario business-chain portfolio with role, trigger, AI action, output/KPI and priority decision.
+  - `lighthouse_scenario.svg`: one traceable business-to-AI-to-value chain with human control, pilot gate, owner, dependencies and next step.
+  - `ai_operating_model.svg`: scenario/product, data/knowledge, Agent/Skill, evaluation/Trace, governance, FDE/business ownership and continuous-operation model.
+- Validation:
+  - Registered `huixin_consulting_strategy` as a 29-page Deck; frontmatter, SVG roster and `decks_index.json` all report 29 pages with complete roster coverage.
+  - Parsed all 29 SVG files with `xmllint`; full template quality check passed with 0 blocking errors. The three new AI pages passed individually with 0 warnings and 0 errors.
+  - Browser-rendered the three new pages beside existing priority-matrix and target-blueprint references; visual verdict passed at 96/100 with no overflow or ambiguous reading order.
+  - Confirmed attachment-only colors and output routing were absent from the updated Deck spec.
+  - Skill quick validation, `attribution_guard.py`, YAML/JSON checks and `git diff --check` passed.
+  - Repository and installed Skill trees match after excluding runtime projects and caches; installed index reports 29 consulting pages and all three AI SVGs.
+- Commit/push state: this update is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - Existing legacy consulting SVG warnings about root-group bounds remain advisory and predate this change; the three new pages introduce none.
+  - Browser renders and visual-verdict state remain local verification artifacts and are not committed.

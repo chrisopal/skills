@@ -4,7 +4,7 @@ Golden-hour cinematic warmth — illustrated scenes with intentional warm lighti
 
 ## 1. Style paragraph (paste-ready, 100 words)
 
-> Atmospheric scene illustration with golden-hour cinematic lighting. Forms are softly rendered — recognizable but not photo-realistic, with soft edges and intentional light direction. The scene has a clear primary light source (warm low sun, lamplight, window light) casting long soft shadows. Color palette leans warm and slightly desaturated — ambers, terracottas, cream highlights against deeper warm shadows. A subtle bloom or halo effect around the light source adds cinematic warmth. Composition follows narrative principles — foreground subject, middle ground context, atmospheric background. Overall feel is cinematic, contemplative, emotionally warm — well suited to brand story and personal narrative content.
+> Atmospheric scene illustration with golden-hour cinematic lighting. Forms are softly rendered — recognizable but not photorealistic, with soft edges and intentional light direction. The scene has a clear primary light source (low sun, lamplight, window light) casting long soft shadows. Core colors are anchored by the deck roles; emotional warmth may derive through light placement, bloom, contrast, atmospheric haze, and coherent warm transitions without replacing the deck identity. Composition follows narrative principles — foreground subject, middle-ground context, atmospheric background. Overall feel is cinematic, contemplative, and emotionally warm, well suited to brand story and personal narrative content.
 
 ---
 
@@ -20,13 +20,13 @@ Golden-hour cinematic warmth — illustrated scenes with intentional warm lighti
 
 ## 3. Using the deck's HEX values
 
-warm-scene reads HEX values through a **warm-graded filter**:
+warm-scene uses the deck's HEX roles as identity anchors and creates warmth through light and contextual tonal transitions:
 
-- Primary HEX: dominant warm tone in shadows and midground (warm-graded version of the deck's primary)
-- Secondary HEX: highlight tone in the lit areas (warm cream, soft amber)
-- Accent HEX: a small bright concentrated zone — sun bloom, lamp glow, key warm reflection
+- Primary HEX: anchors shadows and middle-ground color family
+- Secondary HEX: anchors the lit field or atmospheric separation
+- Accent HEX: anchors a small concentrated zone — sun bloom, lamp glow, or key reflection
 
-If the deck's primary is cool (navy, teal), warm-scene will subtly warm-grade it; if the deck's palette is already warm, the rendering reinforces it directly.
+Derive warm light and haze without replacing those core families. Do not apply a generic orange grade that erases a deliberately cool brand identity; choose another rendering when that replacement would be necessary.
 
 ---
 
@@ -34,4 +34,4 @@ If the deck's primary is cool (navy, teal), warm-scene will subtly warm-grade it
 
 **Snippet A — half-page personal story, text_policy: none**
 
-> Atmospheric scene illustration with golden-hour cinematic lighting. A softly rendered figure (simplified silhouette, no detailed face) walks along a path in a warm landscape — the figure in the foreground left, the path leading to a small distant cabin in the middleground, soft warm hills in the atmospheric background. Strong golden warm light comes from the upper right (the sun near the horizon), casting long soft shadows toward the left. Sky transitions from amber `#D97706` at the horizon to soft cream `#FEF3C7` at the top. Foreground shadows in deeper warm primary `#7C2D12`. Subtle bloom around the sun. No hard outlines — forms emerge from light and shadow. Subtle film grain at 8% opacity. Composed as a 600×800 half-page block with 10% inner padding. Simplified silhouette figures only — no realistic faces. NO text or labels. Color values are rendering guidance only.
+> Atmospheric scene illustration with golden-hour cinematic lighting. A softly rendered figure (simplified silhouette, no detailed face) walks along a path — foreground left, a small distant cabin in the middle ground, soft hills in the atmospheric background. Strong low-angle light comes from the upper right and casts long soft shadows. The sky derives from the deck's secondary-background family, main forms from primary, and a small sun bloom from accent; coherent light/shadow transitions support the atmosphere without replacing those anchors. No hard outlines — forms emerge from light and shadow. Add subtle bloom and film grain at 8% opacity. Composed as a 600×800 half-page block with 10% inner padding. Simplified silhouette figures only; no realistic faces, text, or labels.

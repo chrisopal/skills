@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ppt-review-refinement/refinement_plan.schema.json",
+  "title": "PPT Refinement Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "source_file", "optimization_level", "slides"],
+  "$defs": {
+    "change": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "action", "reason", "risk", "authorization"],
+      "properties": {
+        "target": {"type": "string"},
+        "action": {"type": "string"},
+        "parameters": {"type": "object"},
+        "reason": {"type": "string"},
+        "risk": {"enum": ["low", "medium", "high"]},
+        "authorization": {"type": "string"}
+      }
+    }
+  },
+  "properties": {
+    "version": {"type": "string"},
+    "source_file": {"type": "string"},
+    "optimization_level": {"enum": ["L1", "L2", "L3"]},
+    "style_tokens_ref": {"type": "string"},
+    "change_manifest_ref": {"type": "string"},
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "slide",
+          "archetype_current",
+          "archetype_target",
+          "objective",
+          "keep",
+          "change",
+          "content_changes",
+          "image_actions",
+          "editability_requirements",
+          "manual_review_required",
+          "acceptance_checks"
+        ],
+        "properties": {
+          "slide": {"type": "integer", "minimum": 1},
+          "archetype_current": {"type": "string"},
+          "archetype_target": {"type": "string"},
+          "objective": {"type": "string"},
+          "keep": {"type": "array", "items": {"type": "string"}},
+          "change": {"type": "array", "items": {"$ref": "#/$defs/change"}},
+          "content_changes": {"type": "array", "items": {"$ref": "#/$defs/change"}},
+          "image_actions": {"type": "array", "items": {"$ref": "#/$defs/change"}},
+          "editability_requirements": {"type": "array", "items": {"type": "string"}},
+          "manual_review_required": {"type": "array", "items": {"type": "string"}},
+          "acceptance_checks": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

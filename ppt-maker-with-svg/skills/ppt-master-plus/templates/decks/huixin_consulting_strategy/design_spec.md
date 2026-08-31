@@ -2,12 +2,16 @@
 deck_id: huixin_consulting_strategy
 kind: deck
 category: brand
-summary: 慧新咨询汇报、战略规划、智能制造诊断、数字化转型蓝图、治理决策与管理层汇报模板.
-keywords: [huixin, consulting, strategy, transformation, board-report, diagnosis, governance]
-primary_color: "#4295B6"
+summary: 慧新咨询汇报、战略规划、智能制造诊断、AI转型、数字化蓝图、治理决策与管理层汇报模板，强调结论式写作、证据链和行动闭环.
+keywords: [huixin, consulting, strategy, transformation, ai-transformation, smart-manufacturing, board-report, diagnosis, governance]
+primary_color: "#0097BA"
 canvas_format: ppt169
+canvas_width: 1280
+canvas_height: 720
+canvas_viewbox: "0 0 1280 720"
+native_structure_mode: legacy-flat
 replication_mode: standard
-page_count: 26
+page_count: 29
 placeholders:
   01_cover: ["{{TITLE}}", "{{SUBTITLE}}", "{{DATE}}", "{{AUTHOR}}"]
   02_agenda: ["{{PAGE_TITLE}}", "{{KEY_MESSAGE}}"]
@@ -35,6 +39,9 @@ placeholders:
   risk_mitigation_matrix: ["{{PAGE_TITLE}}", "{{KEY_MESSAGE}}", "{{RISK_1}}", "{{MITIGATION_1}}", "{{OWNER_1}}"]
   change_management: ["{{PAGE_TITLE}}", "{{KEY_MESSAGE}}", "{{TRAINING_AUDIENCE}}", "{{COMM_MESSAGE}}", "{{CHANGE_SUCCESS_CRITERIA}}"]
   decision_ask: ["{{PAGE_TITLE}}", "{{KEY_MESSAGE}}", "{{DECISION_1}}", "{{RECOMMENDATION}}", "{{BUDGET}}", "{{NEXT_STEP}}"]
+  ai_scenario_map: ["{{PAGE_TITLE}}", "{{KEY_MESSAGE}}", "{{SCENE_1}}", "{{ROLE_1}}", "{{AI_ACTION_1}}", "{{KPI_1}}", "{{PRIORITY_DECISION}}"]
+  lighthouse_scenario: ["{{PAGE_TITLE}}", "{{KEY_MESSAGE}}", "{{USER}}", "{{TRIGGER}}", "{{INPUT}}", "{{AI_ACTION}}", "{{OUTPUT}}", "{{KPI}}", "{{DEPENDENCY}}", "{{OWNER}}", "{{NEXT_STEP}}"]
+  ai_operating_model: ["{{PAGE_TITLE}}", "{{KEY_MESSAGE}}", "{{SCENE_PRODUCT}}", "{{DATA_KNOWLEDGE}}", "{{AGENT_SKILL}}", "{{EVALUATION_TRACE}}", "{{GOVERNANCE}}", "{{FDE_OWNER}}", "{{OPERATIONS}}", "{{OPERATING_DECISION}}"]
 ---
 
 # Huixin Consulting Strategy - Design Specification
@@ -45,30 +52,167 @@ placeholders:
 - Design tone: Structured, restrained, analytical, executive-level, management-consulting style.
 - Theme mode: Light consulting report with white and blue-gray backgrounds.
 - Visual identity: Thin blue rules, crisp section numbering, large conclusion line, MECE frameworks, high whitespace, and restrained green insight accents.
+- Writing method source: user-provided `HuiXin Consulting PPT Skill v2.0`
+  (SHA-256: `14da311aaf20d034f954228783a488f2f313efdaf6dad8a71134238030757790`).
+  This Deck adopts its consulting-writing method only. Its alternative visual
+  tokens, image/editable routing, and hard architecture layer limit are not
+  adopted because the Huixin 0826 visual system and PPT Master pipeline remain
+  authoritative.
+
+### Consulting Writing Contract
+
+1. **One page, one judgment**: before planning a page, complete the sentence
+   `本页希望管理层记住：______`. If it cannot be stated in one sentence, split
+   or restructure the page.
+2. **Page group, one decision logic**: adjacent pages should advance from fact
+   to judgment, target, action, value, or decision. Do not preserve source
+   order when it creates repetition or a logic jump unless literal fidelity is
+   required.
+3. **Conclusion-first title**: `{{PAGE_TITLE}}` normally states the answer,
+   implication, choice, or priority. Noun-only titles such as `数据架构`,
+   `AI应用场景`, or `实施计划` are fallback labels, not preferred consulting
+   headlines. Cover, agenda, section divider, and ending pages are valid
+   exceptions.
+4. **Support, do not repeat**: `{{KEY_MESSAGE}}` explains why the title is true,
+   states the decisive evidence, or clarifies the management implication. It
+   must not paraphrase the title or be repeated again in a bottom summary.
+5. **Three-level ceiling**: use `module title → one-sentence explanation →
+   2–4 keywords/evidence labels`. A card is a container, not the default
+   answer; use the semantic relationship to choose process, architecture,
+   comparison, matrix, roadmap, heatmap, table, or KPI expression.
+6. **Evidence before confidence**: material claims carry a fact, metric,
+   source, observed example, or explicit assumption. Keep `fact`, `judgment`,
+   `recommendation`, and `scenario/demo` semantically distinct.
+7. **Actionable close**: when a page asks management to act, state the action,
+   owner/decision maker, timing or gate, and the expected business result where
+   the evidence supports it.
+8. **No empty consulting language**: terms such as `全面赋能`, `深度融合`,
+   `智能升级`, `数智化转型`, and `新质生产力` require an immediate concrete
+   business action, object, output, and metric; otherwise remove them.
+
+Text density follows the confirmed reading mode rather than one universal word
+limit. In balanced consulting delivery, prefer card titles of 4–10 Chinese
+characters, one- to two-line explanations, and roughly 150–250 visible Chinese
+characters on an ordinary content page. Close-read pages may carry more
+structured evidence; presentation-led pages should carry less and move
+explanation into enabled notes. Never solve density by shrinking text below the
+active project lock.
+
+### Storyline Variants
+
+| Consulting situation | Preferred storyline |
+| --- | --- |
+| Strategy / digital planning | Background and objective → method → current state → gap → target Operating Model / blueprint → initiatives → roadmap → value / KPI → decision |
+| Management briefing | Executive conclusion → progress / issue → key judgment → decision item → next action |
+| AI transformation | Business value chain → AI scenario map → priority → lighthouse scenario → capability foundation → AI Operating Model → scale roadmap → value / decision |
+| Smart manufacturing consulting | Order-to-service value chain → current process/system → breakpoint and root cause → target business/system/data blueprint → initiative portfolio → roadmap → operating KPI |
+| Solution / sales consulting | Customer challenge → business objective → value proposition → capability / architecture → proof → success path → commercial next step |
+
+Use this Deck for diagnosis, planning, transformation, governance, and
+management decision work. A pure product manual or campaign remains better
+served by the product-solution or market-promotion Deck.
+
+### Writing Jobs by Page Family
+
+| Page family | Existing prototypes | Writing job |
+| --- | --- | --- |
+| Orient | cover, agenda, section divider, business context, key questions | Establish why the topic matters, what question is being answered, and what decision/output follows |
+| Diagnose | issue tree, diagnosis summary, maturity, heatmap, value chain | Move from observed fact to root cause, impact, and management implication |
+| Design | AS-IS/TO-BE, target blueprint, capability framework, strategy/priority matrix, initiative portfolio | Show the target choice, design principle, gap, initiative, and prioritization logic |
+| Quantify | value case, value waterfall | State baseline, driver, calculation basis, uncertainty, target value, and implication |
+| Mobilize | roadmap, governance, RACI, risk, change management | Connect objective to stage, deliverable, KPI/gate, owner, dependency, and mitigation |
+| Decide | executive summary, decision ask | Give the overall judgment, recommendation, value/risk, required decision, and next step without restating detail pages |
+| AI transformation | AI scenario map, lighthouse scenario, AI Operating Model | Bind AI to business action, prove one scenario, then define the operating system for scale |
+
+### AI and Smart Manufacturing Overlays
+
+- An AI scenario states `user/role → business trigger → input → AI action →
+  output → KPI → data/system/process dependency`. Distinguish AI Agent
+  (knowledge, judgment, coordination, generation), AI algorithm (prediction,
+  optimization, recognition, scheduling), and intelligent automation (OCR,
+  RPA, robotics, machine vision). Do not label every automation as LLM/Agent.
+- AI priority uses business value, data readiness, technical maturity, process
+  change complexity, and reusability. The first lighthouse should be valuable,
+  verifiable, and reusable rather than merely visually impressive.
+- AI Operating Model covers scenario/product ownership, data/knowledge,
+  Agent/Skill, evaluation/Trace, permission/governance, FDE/business owner, and
+  operation/continuous iteration. A model/platform inventory alone is not an
+  operating model.
+- Smart manufacturing consulting starts from the business chain `order → plan
+  → production → quality → warehouse → equipment → delivery → service`, then
+  explains process, data flow, system support, AI/automation/lean intervention,
+  reuse/improve/new-build choices, and operating KPI impact. Do not organize a
+  consulting argument only as MES/WMS/QMS/EAM product boxes.
+- Common manufacturing KPIs include OTD, TAT, OEE, first-pass yield, inventory
+  turnover, WIP, equipment downtime, changeover time, and unit manufacturing
+  cost. Use only metrics supported by the current source and state the basis.
+
+### Consulting QA
+
+- The outline alone reveals the argument; titles alone reveal the key story.
+- Every ordinary content page has one clear judgment and one dominant reading
+  path that can be understood quickly without explaining the layout.
+- Facts, judgments, assumptions, recommendations, and demo data remain
+  distinguishable and source obligations are preserved.
+- Technology capability maps to a business problem, process change, output,
+  KPI, or management decision.
+- No page repeats the same conclusion in title, subtitle, cards, and footer.
+- Level-one modules normally stay within 5–7; large evidence tables and complex
+  architectures may exceed this only through clear grouping.
+- No Word-like paragraph dump, card-grid reflex, meaningless decoration,
+  ambiguous matrix axis, spiderweb connector pattern, or tiny-font rescue.
+- The closing resolves the communication objective through a decision,
+  takeaway, or next step; do not add an empty thank-you page unless explicitly
+  required.
 
 ## II. Color Scheme
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| Technology Blue | `#4295B6` | Titles, key conclusions, section numbers, chart primary color, process spine |
-| Vitality Green | `#B0D776` | Insight tags, growth metrics, opportunity points, recommendations |
-| Light Gray | `#D2D3D4` | Dividers, table strokes, weak information, structure lines |
+| Technology Blue | `#0097BA` | Titles, key conclusions, section numbers, chart primary color, process spine |
+| Vitality Green | `#A4D968` | Insight tags, growth metrics, opportunity points, recommendations |
+| **Brand Chrome Green** | `#83C410` | Official lockup geometry, fixed double-bar cue, footer ribbon only |
+| Light Gray | `#D9D9D9` | Dividers, table strokes, weak information, structure lines |
 | Wordmark Black | `#000000` | Official Huixin wordmark on light backgrounds |
 | Deep Gray | `#4B5563` | Body text, footnotes, secondary labels |
-| Light Blue Gray | `#F3F7FA` | Background panels, table fills, neutral analysis areas |
-| Dark Blue Gray | `#0B2F3A` | Cover accent, executive titles, high-emphasis text |
+| Light Blue Gray | `#F5F6F7` | Background panels, table fills, neutral analysis areas |
+| Dark Blue Gray | `#111111` | Cover accent, executive titles, high-emphasis text |
+| **Industrial Blue** | `#0B1039` | Dark-page background and industry foundation |
+| **Intelligent Blue** | `#044AAA` | Core modules and primary dark-page structure |
+| **Bright Blue** | `#1AB6ED` | Dark-page section and content emphasis |
+| **Pale Blue** | `#C0DCEF` | Dark-page strategy title, support copy, divider |
 | White | `#FFFFFF` | Page background and card surfaces |
 
 ## III. Typography
 
-- Primary font: `"Microsoft YaHei"`.
-- SVG font: `"Microsoft YaHei"`; all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
+- Primary font: `"Microsoft YaHei, Arial, sans-serif"`.
+- SVG font: `"Microsoft YaHei, Arial, sans-serif"`; use Microsoft YaHei with Arial fallback.
 - Titles are bold and concise. Body text should stay short, structured, and conclusion-oriented.
 - Cover titles should fit the left safe region; prefer a short title under 14 Chinese characters and move qualifiers into `{{SUBTITLE}}`.
 
+### Huixin Visual Baseline 0826
+
+This Deck follows the official `慧新全智PPT视觉设计规范0826.pptx`
+(source SHA-256:
+`44539c09286ac6b3fd87898afd0124851439c0817a07f40f3da7041f32a7ff06`).
+Use `#0097BA` for the technology/system spine, `#A4D968` for semantic
+value/improvement, `#4B5563` for body hierarchy, and `#D9D9D9` for fine
+structure. Keep official logo-derived chrome green `#83C410` limited to the
+lockup, double-bar header cue, and fixed ribbon geometry.
+
+Primary typography is `Microsoft YaHei, Arial, sans-serif`; do not lead with
+MiSans or PingFang. Light pages preserve at least 70% white/light-gray surface,
+use the compact top-left double vertical rule, and keep page titles in the
+20-28pt band with 12-18pt body copy and chart/table labels at or above 9pt when
+content density permits. Covers and endings use the 0826 industrial mosaic.
+Dark pages use `#0B1039`, `#044AAA`, `#1AB6ED`, and `#C0DCEF` with the white
+Huixin lockup. The complete shared authority is
+[`../huixin_visual_system_0826.md`](../huixin_visual_system_0826.md).
+
+
 ## IV. Signature Design Elements
 
-- Executive header: small section label, page number, thin blue top rule, and compact official Huixin lockup.
+- Executive header: small section label, page number, compact green/blue double vertical rule, and official Huixin lockup.
 - Consulting conclusion bar: every analysis page starts with a one-line key message beneath the title.
 - Framework language: agenda, section divider, issue tree, diagnosis summary, maturity assessment, heatmap, value chain, AS-IS / TO-BE gap, target blueprint, initiative portfolio, priority matrix, value waterfall, governance model, RACI, risk mitigation matrix, change management, decision ask, pyramid capability model, phased roadmap, and value case table.
 - Geometry: flat rectangles, fine rules, slanted-bar brand tabs derived from the official Huixin logo, no heavy shadow, no complex texture.
@@ -117,19 +261,49 @@ placeholders:
 | `risk_mitigation_matrix.svg` | Risk mitigation matrix | Risk item, impact, probability, level, mitigation, and owner tracker. |
 | `change_management.svg` | Change management | Training, communication, policy, performance, and organizational capability plan. |
 | `decision_ask.svg` | Management ask | Management decision page covering decisions, recommendation, resource ask, and next step. |
+| `ai_scenario_map.svg` | AI scenario map | Business-chain scenario portfolio showing role, trigger, AI action, output/KPI and one evidence-based priority decision. |
+| `lighthouse_scenario.svg` | Lighthouse AI scenario | One end-to-end AI use case from user/trigger/input through AI action, output, KPI, dependencies, owner, pilot gate and next step. |
+| `ai_operating_model.svg` | AI Operating Model | Scale operating system connecting scenario/product, data/knowledge, Agent/Skill, evaluation/Trace, governance, FDE/business ownership and continuous operations. |
 
 ## VIII. Placeholder Overrides
 
-The consulting template leads with `{{KEY_MESSAGE}}` on analysis pages because management-consulting pages usually communicate the answer first, then support it with structured evidence.
+The consulting template leads with `{{PAGE_TITLE}}` and `{{KEY_MESSAGE}}` on
+analysis pages because management-consulting pages communicate the answer
+first, then support it with structured evidence. `{{PAGE_TITLE}}` owns the
+judgment; `{{KEY_MESSAGE}}` owns its evidence-backed explanation or implication.
+Do not use both fields for the same sentence.
 
 On framework and roadmap pages, `{{CONTENT_AREA}}` is a compact callout label, not a paragraph. Keep it under roughly 18 Chinese characters, for example `价值场景牵引` or `第一阶段主线`.
 
 For the expanded consulting pages, prioritize one-page-answer discipline: every page should express the management conclusion in `{{KEY_MESSAGE}}`, then support it with a structured framework. Use `business_context`, `key_questions`, and `section_divider` near the start of formal reports; use `decision_ask`, `governance_model`, `raci_matrix`, and `risk_mitigation_matrix` near the end for leadership decision packs and project kickoff materials.
+
+For diagnosis pages, use the semantic chain `{{EVIDENCE_N}} → {{FINDING_N}} →
+{{IMPACT_N}} → {{IMPLICATION_N}}`; never present an unsupported finding as an
+observed fact. For planning pages, connect target, initiative, stage output,
+KPI/gate, owner and dependency. For decision pages, state the decision,
+recommended option, rationale, value/risk, resource ask and immediate next step.
+
+For AI pages:
+
+- `ai_scenario_map` uses concise scene labels plus role, trigger, AI action,
+  output/KPI, dependency/readiness and `{{PRIORITY_DECISION}}`.
+- `lighthouse_scenario` uses `{{USER}}`, `{{TRIGGER}}`, `{{INPUT}}`,
+  `{{AI_ACTION}}`, `{{OUTPUT}}`, `{{KPI}}`, `{{DEPENDENCY}}`, `{{OWNER}}`,
+  pilot acceptance and `{{NEXT_STEP}}` as one traceable chain.
+- `ai_operating_model` uses `{{SCENE_PRODUCT}}`, `{{DATA_KNOWLEDGE}}`,
+  `{{AGENT_SKILL}}`, `{{EVALUATION_TRACE}}`, `{{GOVERNANCE}}`,
+  `{{FDE_OWNER}}`, `{{OPERATIONS}}` and `{{OPERATING_DECISION}}`; it must not
+  degrade into a technology stack without ownership and operating cadence.
 
 ## IX. Asset Specification
 
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated digital transformation consulting blueprint reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific visuals. Framework pages use editable SVG issue trees, matrices, pyramids, roadmaps, and value tables. |
-| `images/huixin_logo_light.png` | Official Huixin logo for light pages | Use in white / light consulting pages. Preserve the official horizontal lockup. |
-| `images/huixin_logo_dark.png` | Official Huixin logo for dark pages | Use in dark section divider or cover pages. Preserve the official horizontal lockup. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup for light surfaces | Use on white and light-gray pages; preserve the complete lockup and do not recreate it. |
+| `images/huixin_logo_dark.png` | Official white Huixin Quanzhi lockup for dark surfaces | Use directly on the 0826 industrial-blue background without a white backing card. |
+| `images/huixin_light_cover_mosaic.png` | Official 0826 industrial mosaic | Use for covers and image-led endings while keeping titles editable in the quiet left region. |
+| `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and sparse executive pages. |
+| `images/huixin_light_chapter_bg.png` | Legacy teal chapter background | Retained for compatibility only; new 0826 chapter pages use the industrial-blue background. |
+| `images/huixin_dark_bg.png` | Official 0826 industrial-blue dark surface | Use for section dividers, dark strategy pages, and restrained executive emphasis. |
+| `images/huixin_light_footer_ribbon.png` | Official blue-green footer ribbon | Use on standard evidence pages with the lower-left logo. |

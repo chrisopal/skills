@@ -1,0 +1,101 @@
+version: 1.0.0
+dimensions:
+  theme_consistency:
+    weight: 0.14
+    checks:
+      - backgrounds_belong_to_one_system
+      - component_language_consistent
+      - chapter_and_content_pages_related
+  color:
+    weight: 0.13
+    checks:
+      - primary_secondary_accent_defined
+      - semantic_colors_preserved
+      - contrast_sufficient
+      - explicit_color_count_reasonable
+  typography:
+    weight: 0.14
+    checks:
+      - cjk_latin_pair_consistent
+      - role_sizes_consistent
+      - title_body_caption_hierarchy_clear
+      - line_spacing_and_paragraph_spacing_stable
+  hierarchy:
+    weight: 0.14
+    checks:
+      - one_visual_focus
+      - conclusion_more_prominent_than_support
+      - key_numbers_emphasized
+      - reading_order_clear
+  layout:
+    weight: 0.14
+    checks:
+      - safe_margins_consistent
+      - title_position_consistent
+      - grid_alignment_consistent
+      - columns_and_cards_balanced
+  spacing:
+    weight: 0.10
+    checks:
+      - discrete_spacing_scale
+      - card_padding_consistent
+      - adequate_whitespace
+      - density_matches_usage_context
+  graphics:
+    weight: 0.11
+    checks:
+      - shapes_lines_arrows_consistent
+      - charts_have_insight_not_only_data
+      - tables_are_scannable
+      - architecture_flow_editable_and_clear
+  imagery:
+    weight: 0.10
+    checks:
+      - semantic_relevance
+      - resolution
+      - crop_and_aspect
+      - authentic_case_vs_concept_separated
+      - tone_consistency
+thresholds:
+  fonts_warning: 3
+  font_sizes_warning: 10
+  explicit_colors_warning: 14
+  body_font_warning_pt: 12
+  note_font_warning_pt: 9
+  image_dpi_warning: 120
+  image_dpi_critical: 72
+  title_position_tolerance_in: 0.18
+  overlap_ratio_warning: 0.08
+common_findings:
+  V001:
+    severity: P1
+    name: too_many_fonts
+    recommendation: 建立中英文字体配对和角色字号体系
+  V002:
+    severity: P1
+    name: color_fragmentation
+    recommendation: 建立颜色角色并进行精确映射，保留语义色
+  V003:
+    severity: P1
+    name: title_drift
+    recommendation: 统一标题左边界、顶部位置、宽度和字号
+  V004:
+    severity: P0
+    name: overlap_or_clipping
+    recommendation: 调整对象几何或拆分内容，不仅缩小字体
+  V005:
+    severity: P1
+    name: weak_hierarchy
+    recommendation: 减少同权重元素，突出结论和核心数据
+  V006:
+    severity: P1
+    name: inconsistent_diagram_language
+    recommendation: 统一圆角、描边、箭头、层级和颜色语义
+  V007:
+    severity: P1
+    name: low_resolution_image
+    recommendation: 替换为高分辨率源图或降低展示尺寸
+  V008:
+    severity: P2
+    name: excessive_decoration
+    recommendation: 删除无信息价值的渐变、阴影、线条和图标

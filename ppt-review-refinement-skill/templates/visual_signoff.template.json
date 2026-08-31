@@ -1,0 +1,20 @@
+{
+  "version": "1.0.0",
+  "status": "approved",
+  "reviewer": "姓名或角色",
+  "reviewed_at": "2026-08-07T00:00:00Z",
+  "source_file": "source.pptx",
+  "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "candidate_file": "candidate.pptx",
+  "candidate_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "reviewed_slides": [1],
+  "confirmed_checks": [
+    "rendered_all_slides",
+    "checked_slide_overflow",
+    "checked_alignment",
+    "checked_fonts",
+    "checked_images",
+    "checked_editability"
+  ],
+  "notes": "已打开渲染结果并在 PowerPoint 中完成最终人工视觉确认。"
+}

@@ -1,3 +1,138 @@
+## 2026-08-11 07:18:02 CST
+
+- Scope: Correct the Huixin Quanzhi logo refresh in both the repository templates and the actively installed `/Users/guojiexie/.codex/skills/ppt-master-plus` Skill after identifying that the installed Skill was an independent stale June copy.
+- Changed files:
+  - Five Huixin `design_spec.md` files now require the latest official `huixin_logo_light.png` on every page and a compact white backing panel on dark fields.
+  - Dark consulting, marketing, and training SVG pages now reference the current official logo instead of old reverse or embedded PNG data; two product pages that lacked a logo now include it.
+  - `huixin_product_solution/22_complex_multi_domain_architecture.svg` no longer contains the legacy bottom-left `智能制造方案` lockup.
+  - Removed all five obsolete `images/huixin_logo_dark.png` copies so future pages cannot accidentally select the retired mark.
+- Simplifications made:
+  - One immutable official logo asset now covers light and dark page types; dark-page contrast is handled by SVG backing geometry rather than a second bitmap variant.
+  - Installed Skill synchronization uses repository source as the authority while excluding `projects`, `__pycache__`, and bytecode; the two existing installed project directories were preserved.
+- Validation:
+  - All 101 Huixin SVG pages reference `huixin_logo_light.png`; all five logo copies share SHA-256 `df79adceb528471de1e334a1073860f114da1931b6e6f0ea374cead61ad36174`; no old dark-logo, embedded PNG, or legacy footer reference remains.
+  - `attribution_guard.py`, Python `compileall`, Skill Creator `quick_validate.py`, `xmllint` for all 101 SVGs, and `git diff --check` passed.
+  - All five Huixin Deck quality checks completed with zero blocking errors, and all five `register_template.py --dry-run` checks passed.
+  - Eight affected pages were rendered and visually compared with the official light-template source montage; visual verdict passed at 96/100. Local evidence is under `/tmp/huixin-logo-fix.aEyvxy/` and `.omx/state/huixin-logo-refresh/` and is not committed.
+  - The installed Skill passed attribution and quick validation, has zero rsync drift from the repository source outside excluded local paths, and retained two `projects` directories. The pre-sync installed copy is backed up locally at `/tmp/ppt-master-plus-installed-backup.Yypp3i/`.
+- Commit/push state: committed and pushed on `codex/image-to-editable-ppt-visual-qa` after the final scoped diff review.
+- Remaining notes: The supplied official PPTX contains only the light horizontal lockup; dark pages intentionally use a white backing panel rather than synthesizing or retaining an unofficial reverse logo.
+
+## 2026-08-10 23:20:00 CST
+
+- Scope: Sync `ppt-master-plus` code from upstream `hugohe3/ppt-master` at `182c6b8229a44990cdc5b394545f90992be377d6`, preserve the Plus Huixin-first routing overlay, and refresh all five Huixin Decks from `/Users/guojiexie/Downloads/慧新全智PPT模板_浅色版本.pptx` (SHA-256 `0b700b898693c99b6ef50a4a00db5ad3c81ba9bb02fe46bec712d545841a1906`).
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/` upstream v4.5 workflow, references, scripts, schemas, charts, and attribution files.
+  - `ppt-maker-with-svg/skills/ppt-master-plus/{SKILL.md,workflows/generate-pptx.md,workflows/profiles/quick-generate.md,references/strategist-template.md,workflows/stages/apply-template-workspace.md}` Huixin-first Plus overlay.
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_{product_solution,management_report,consulting_strategy,training_enablement,market_promotion}/` refreshed palette, MiSans font stack, high-resolution Huixin Quanzhi logo, official light-template backgrounds/footer assets, cover masters, and design specifications.
+  - `ppt-maker-with-svg/skills/ppt-master-plus/scripts/{svg_quality/checker.py,register_template.py}` scoped `huixin_*` `legacy-flat` compatibility; `requirements.txt` now declares required `PyYAML`.
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json` refreshed Huixin primary colors.
+- Simplifications made:
+  - Kept upstream v4.5 structured-template enforcement unchanged for non-Huixin templates and isolated legacy compatibility to registered `huixin_*` Deck IDs that explicitly declare `native_structure_mode: legacy-flat`.
+  - Preserved 101 mature editable Huixin SVG page types instead of flattening or rebuilding them from the eight-page source starter; refreshed shared brand DNA and five covers while retaining dense architecture, chart, table, consulting, training, and marketing layouts.
+  - Reused the official PPTX assets directly for the latest logo, cover mosaic, content background, chapter background, and footer ribbon; generated previews and the source PPTX remain local artifacts and are not committed.
+- Validation:
+  - Upstream `attribution_guard.py`, Python `compileall`, Skill Creator `quick_validate.py`, `xmllint` for all 101 Huixin SVGs, and `git diff --check` passed.
+  - All five Huixin Deck quality checks passed with zero blocking errors; all five `register_template.py --dry-run` checks passed in an isolated Python 3.12 dependency directory.
+  - Index/page-count/asset assertions passed for 22 product, 25 management, 26 consulting, 20 training, and 8 marketing pages.
+  - Visual comparison of five refreshed covers plus five representative dense pages scored 94/100 against the official light-template montage; local evidence is under `/tmp/huixin-v2-visual.z3LiFJ/` and `.omx/state/huixin-light-template-update/` and is not committed.
+- Commit/push state: committed and pushed on `codex/image-to-editable-ppt-visual-qa` to `origin` after the final scoped diff review.
+- Remaining notes: Huixin Decks intentionally remain editable `legacy-flat` packages during gradual structured-master migration. MiSans is the official first-choice font and the checker reports an advisory PPT portability warning; Microsoft YaHei and Arial remain declared fallbacks.
+
+## 2026-08-07 21:55:00 CST
+
+- Scope: Continue the `ppt-review-refinement-skill` update by making L2/L3 execution, review-report orchestration, and final human visual confirmation executable and gated.
+- Changed files:
+  - `ppt-review-refinement-skill/scripts/{execute_refinement_plan.py,compose_review_report.py,confirm_visual_review.py,validate_pptx.py,common.py}`
+  - `ppt-review-refinement-skill/schemas/{pilot_confirmation.schema.json,visual_signoff.schema.json}`
+  - `ppt-review-refinement-skill/templates/{pilot_confirmation.template.json,visual_signoff.template.json}`
+  - `ppt-review-refinement-skill/tests/{test_advanced_capabilities.py,create_visual_signoff.py,test_quality_gates.py,smoke_test.sh}`
+  - `ppt-review-refinement-skill/{SKILL.md,README.md,skill.yaml,CHANGELOG.md,TEST_REPORT.md,manifest.txt,examples/runbook.md,workflows/03_approval_pilot.md,workflows/06_validate_deliver.md}`
+- Simplifications made:
+  - Kept L2/L3 execution deterministic and narrow: only approved geometry, typography-role, fill, line, and explicitly authorized title-text actions are executable; complex objects fail explicitly to external execution.
+  - Kept narrative/visual judgment external while making report merging and Schema validation local and reproducible.
+  - Bound pilot and final signoff to source/candidate SHA-256 and made missing final signoff a validation failure.
+- Validation: 9 regression tests, all JSON Schema checks, isolated compileall, `git diff --check`, and the 4-slide render/normalize/validate smoke flow passed; smoke validation read `VAL-VISUAL-SIGNOFF=pass`.
+- Commit/push state: committed as `4deaac1` and pushed to `origin/codex/image-to-editable-ppt-visual-qa` (`https://github.com/chrisopal/skills.git`).
+- Remaining notes: the smoke signoff is an automated fixture only; real delivery still requires a human-created approved `visual_signoff.json`. Complex charts, SmartArt, animations, embedded objects, image replacement, and `.pptm` remain external/manual.
+
+## 2026-08-07 19:20:00 CST
+
+- Scope: Harden `ppt-review-refinement-skill` authorization, validation gates, and obvious text-overflow detection after a read-only audit.
+- Changed files:
+  - `ppt-review-refinement-skill/{SKILL.md,README.md,skill.yaml,CHANGELOG.md,TEST_REPORT.md,manifest.txt}`
+  - `ppt-review-refinement-skill/config/defaults.yaml`
+  - `ppt-review-refinement-skill/schemas/change_manifest.schema.json`
+  - `ppt-review-refinement-skill/scripts/{common.py,analyze_pptx.py,normalize_pptx.py,validate_pptx.py}`
+  - `ppt-review-refinement-skill/tests/{smoke_test.sh,test_quality_gates.py}`
+  - `ppt-review-refinement-skill/workflows/06_validate_deliver.md`
+- Simplifications made:
+  - Reused one shared JSON Schema loader at the executable boundaries instead of duplicating manifest/token validation.
+  - Converted unsupported-object and link checks into stable accepted-risk IDs so manual review cannot be mistaken for automatic approval.
+  - Added a conservative text-box overflow estimate while keeping rendered PNG review mandatory.
+- Validation: 6 targeted quality-gate tests, schema checks, compile checks, and the 4-slide render/normalize/validate smoke flow passed in isolated Python 3.11 dependencies.
+- Commit/push state: pending.
+- Remaining notes: L2/L3 slide editing, narrative/visual report orchestration, and final human visual approval remain external or manual capabilities.
+
+## 2026-08-07 09:59:23 CST
+
+- Scope: Make `image-to-editable-ppt` portable across Codex, WorkBuddy, Claude Code, QoderWork, and other agent runtimes while preserving Codex `image_gen.imagegen` and CLI `gpt-image-2` as the preferred/default GPT paths.
+- Changed files:
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/{SKILL.md,prompts/page-worker.md,references/*.md}`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/{configure_image_backend.py,main.py,record_imagegen_result.py}`
+  - `image-to-editable-ppt/tests/test_multi_agent_backend.py`
+  - `image-to-editable-ppt/{README.md,README_en.md,README_ko.md,CHANGELOG.md}`
+  - `image-to-editable-ppt/docs/` synchronized Chinese, English, and Korean backend guidance
+- Simplifications made:
+  - Added one generic `agent-image-tool` contract instead of hard-coding platform-specific command implementations.
+  - Required prompt-to-image, reference-image editing, and explicit local output before selecting a native tool; vision-only and generation-only models are rejected.
+  - Kept one deterministic fallback path with `gpt-image-2`, Codex OAuth first, and OpenAI-compatible API second.
+  - Added concrete producer tool/model provenance so a generic runtime contract does not hide the backend that generated an asset.
+- Validation:
+  - Full isolated suite passed: 95 tests, 16 subtests.
+  - Skill Creator `quick_validate.py` passed.
+  - Portable ZIP installed from an isolated extraction and `editppt doctor --json` returned `ok=true`, `image_gen.imagegen`, and default model `gpt-image-2`.
+  - ZIP contents exclude `__pycache__`, pytest caches, bytecode, and `.DS_Store`; SHA-256 is `3bcae6943712e0154536916a157c63be83d688f303f1e898a6b7d22b6412dfde`.
+  - CLI help checks and `git diff --check` passed.
+- Commit/push state: official capability reference committed as `122c18b`; implementation committed as `16c7e35`; this status follow-up and both implementation commits are pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - WorkBuddy and QoderWork document image-generation/image-remix behavior but not a complete public reference-edit tool schema; installed runtime capability validation remains mandatory.
+  - Claude Code officially documents image understanding but no native image generator/editor; it needs a compatible Skill/Plugin/MCP tool or the CLI fallback.
+  - Live native image calls in WorkBuddy, Claude Code, and QoderWork were not exercised locally.
+  - Existing unrelated untracked artifacts remain untouched; the generated portable ZIP remains local under `output/packages/` and is not committed.
+
+## 2026-08-06 16:59:36 CST
+
+- Scope: Harden `image-to-editable-ppt` against icon/text overlap, text overlap, shape-color drift, and stretched structural rails, while permitting exact-pixel extraction for suitable foreground assets.
+- Changed files:
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/visual_qa.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/extract_source_asset.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/main.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/prepare_deck_run.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/record_page_result.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/cli/editppt/runtime/validate_pptx.py`
+  - `image-to-editable-ppt/skills/image-to-editable-ppt/{SKILL.md,prompts/page-worker.md,references/*.md}`
+  - `image-to-editable-ppt/tests/test_visual_qa.py`
+  - `image-to-editable-ppt/tests/test_multi_agent_backend.py`
+  - `image-to-editable-ppt/tests/test_quality_contracts.py`
+  - `image-to-editable-ppt/CHANGELOG.md`
+  - `STATUS.md`
+- Simplifications made:
+  - Added one deterministic source-versus-preview QA report and diff artifact instead of relying on declarative page self-check booleans.
+  - Reused manifest object ids for narrow, reasoned overlap/color exceptions and structural geometry checks.
+  - Added exact source-pixel extraction only for complete, unoccluded objects on verified uniform local backgrounds; unsuitable regions still use image-edit asset separation.
+  - Recomputed visual evidence during both `page validate` and `run record`, so stale or worker-authored evidence cannot bypass delivery gates.
+- Validation:
+  - Full skill test suite passed: 92 tests, `OK`.
+  - Skill Creator `quick_validate.py` passed: `Skill is valid!`.
+  - Editable CLI reinstall passed; `editppt doctor --json`, `editppt page visual-qa --help`, and `editppt image extract-source --help` passed.
+  - The reported failing slide is now rejected with 6 image-ink/text overlaps, 12 shape-color mismatches, and 2 structural-geometry mismatches.
+  - Python compilation and `git diff --check` passed.
+- Commit/push state: changes committed and pushed on `codex/image-to-editable-ppt-visual-qa` to `origin`.
+- Remaining notes:
+  - The existing generated PPTX is not modified by this skill update; rerun conversion to produce a corrected deck under the new gates.
+  - Existing unrelated untracked artifacts remain untouched.
+
 ## 2026-08-06 15:18:28 CST
 
 - Scope: Write the executable implementation plan for the approved standalone `ppt-hybrid-studio` skill.
@@ -990,3 +1125,143 @@
 - Remaining notes:
   - Generated project outputs, debug frames, and video files stay local and are not staged by policy.
   - Existing unrelated untracked artifacts remain untouched: `.playwright-mcp/`, `agent-skill-tools-intro-video/`, `ppt-master-plus-v02.zip`.
+
+## 2026-08-11 08:20:00 CST
+
+- Scope: latest `ppt-master-plus-v03.zip` installation package and release verification.
+- Changed files:
+  - `STATUS.md`
+- Validation:
+  - Confirmed the repository and installed `ppt-master-plus` trees match when runtime `projects/` and cache files are excluded.
+  - `attribution_guard.py` and the Skill quick validator passed; in-memory compilation covered 222 Python files and JSON parsing covered 15 files.
+  - The five Huixin Decks passed template quality checks across 101 SVG pages with 0 blocking errors; existing font and legacy group-bound findings remain advisory warnings.
+  - Created `/Users/guojiexie/Development/skills/ppt-master-plus-v03.zip` with UTF-8 filenames from `ppt-maker-with-svg/skills/ppt-master-plus`.
+  - `unzip -t` passed; archive inspection confirmed one top-level `ppt-master-plus` folder, 12,430 source files, exact source/archive manifest parity, required files present, and 0 excluded artifact/cache matches.
+  - Extracted-package `quick_validate.py` and `attribution_guard.py` both passed.
+  - SHA-256: `c6f3e567d66405af3377aababade62943f7ac9abb8a53510c99520f09022cc74`.
+- Commit/push state: this status record is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - The ZIP is a generated distribution artifact for local sharing and remains uncommitted by repository policy.
+  - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.
+
+## 2026-08-27 14:40:00 CST
+
+- Scope: Huixin 0826 visual-system refresh for all registered `ppt-master-plus` Huixin Decks.
+- Source authority:
+  - `/Users/guojiexie/Downloads/慧新全智PPT视觉设计规范0826.pptx`
+  - SHA-256: `44539c09286ac6b3fd87898afd0124851439c0817a07f40f3da7041f32a7ff06`
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_visual_system_0826.md`
+  - Five `huixin_*/design_spec.md` files.
+  - 101 reusable SVG templates across `huixin_product_solution`, `huixin_market_promotion`, `huixin_management_report`, `huixin_training_enablement`, and `huixin_consulting_strategy`.
+  - Latest 0826 cover mosaic, industrial-blue background, and white dark-surface lockup assets under each Huixin Deck `images/` directory.
+- Implementation:
+  - Standardized editable SVG typography on `Microsoft YaHei, Arial, sans-serif`.
+  - Applied the 0826 light semantic palette: `#0097BA`, `#A4D968`, `#4B5563`, and `#D9D9D9`, while retaining `#83C410` for fixed logo-derived chrome.
+  - Applied the dark hierarchy `#0B1039`, `#044AAA`, `#1AB6ED`, and `#C0DCEF` to four dark section/campaign templates with the official white lockup.
+  - Added the visible 0826 green/blue double vertical header cue to 91 light content templates without changing their narrative roles or information capacity.
+- Validation:
+  - Parsed all 101 SVG files with `xmllint`; parsed all five design-spec frontmatters and `decks_index.json`.
+  - Full template quality checks passed with 0 blocking errors: product solution 22 pages, market promotion 8, management report 25, training enablement 20, consulting strategy 26.
+  - Browser-rendered all 101 pages at 1280x720; detected 0 blank pages, 0 dimension mismatches, and 0 missing/covered double-bar cues by pixel inspection.
+  - Representative cover, light content, dense architecture/report, dark section, and ending montage passed visual verdict at 94/100.
+  - Repository and installed Skill trees match after excluding local `projects/` and caches; extracted Skill quick validation and `attribution_guard.py` passed.
+  - `git diff --check` passed and stale MiSans/PingFang, old structural gray, and previous light-template source references were absent.
+- Commit/push state: this refresh is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - Existing SVG checker findings are advisory legacy group-bound warnings; no new blocking errors remain.
+  - Rendered previews, imported source analysis, and visual-verdict state remain local artifacts and are not committed.
+
+## 2026-08-28 00:35:00 CST
+
+- Scope: reusable Huixin monthly/quarterly business-review Deck and intelligent-manufacturing example delivery.
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_periodic_business_review/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_periodic_business_review/01_cover.svg` through `25_delivery_stage_distribution.svg`
+  - Three official light-theme 0826 Huixin assets under `huixin_periodic_business_review/images/`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json`
+  - `STATUS.md`
+- Template behavior:
+  - Registered `huixin_periodic_business_review` as a 25-page light-only Deck supporting monthly and quarterly reporting.
+  - Locked the narrative to `工作梳理 → 工作成果 → 工作亮点 → 工作规划`, with monthly compact use and quarterly expanded target/value/roadmap/risk use.
+  - Added reusable pages for work inventory, workstream progress, target-vs-actual, result classification, key results, highlight story, company value, next-period goals, priority tasks, implementation roadmap, and risks/support/decisions.
+  - Added six editable chart pages: operating trend combo, target variance waterfall, workstream completion bars, value contribution donut, quarterly KPI small multiples, and delivery stage distribution.
+  - Standardized cover, section, working, chart, planning, and ending pages on one Huixin 0826 light palette with Microsoft YaHei typography, industrial mosaic, light double-bar header, complete light lockup, and editable SVG geometry; dark backgrounds and the dark lockup are no longer bundled in this Deck.
+- Example delivery:
+  - Generated `智能制造事业部8月复盘与9月规划-慧新月度汇报示例.pptx` with 16 editable slides and 16 speaker-note pages.
+  - Added operating pipeline trend and delivery-stage distribution charts using traceable Q2/July/project-stage data.
+  - Generated `慧新月度季度汇报模板-25页浅色版预览.pptx` for direct review of the complete template roster.
+  - Used only Q2, July, and through-August-11 source materials. Missing August actuals remain explicitly marked `待月末补录` or `待验证`; no unprovided business result is presented as complete.
+- Validation:
+  - New Deck registration dry-run and write succeeded; `decks_index.json` reports 25 pages.
+  - All 25 template SVGs passed XML parsing and `svg_quality_checker.py --template-mode` with 25/25 fully passed, 0 warnings, and 0 errors.
+  - Browser-rendered the complete template and example; template visual verdict passed at 97 and example final visual verdict passed at 98.
+  - Example final SVG gate passed with 0 blocking errors; remaining advisories document the intentional zero-slot structured Layout.
+  - Final example PPTX passed package checks with 16 slides, 16 notes, one Master, one Layout, no external media, no relationship problems, and no advisories.
+  - Template preview PPTX passed package checks with 25 slides, one Master, one Layout, no external media, and no errors; unresolved `{{...}}` markers are intentional template fields.
+  - LibreOffice/PDF render confirmed all example pages and both ending pages remain visually intact, including single-line `THANKS` fallback rendering.
+  - PPTX Markdown readback confirmed 16 slides, 16 note sections, all required facts, chart values and data-limit notices, and 0 unresolved placeholders in the example.
+  - Repository and installed Skill trees match for the registered Deck and index; project workspaces and generated PPTX/PNG/PDF artifacts remain uncommitted.
+- Commit/push state: this Deck addition is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - Replace the example's `待月末补录` target/actual fields after authoritative August results are available.
+  - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.
+
+## 2026-08-28 19:25:00 CST
+
+- Scope: latest `ppt-master-plus-v04.zip` offline installation package.
+- Changed files:
+  - `STATUS.md`
+- Source state:
+  - Packaged commit `9845fe4` from `codex/image-to-editable-ppt-visual-qa`; local HEAD and configured remote branch were identical before packaging.
+  - Repository and installed `ppt-master-plus` trees matched after excluding runtime `projects/` and caches.
+  - Skill metadata version remains `4.5.0`; the latest 25-page `huixin_periodic_business_review` Deck and Huixin 0826 visual system are included.
+- Validation:
+  - `attribution_guard.py` and the Skill quick validator passed.
+  - In-memory validation compiled 222 Python files and parsed 15 JSON files without creating bytecode artifacts.
+  - Six Huixin Decks passed template quality checks with 0 blocking errors across 126 SVG pages.
+  - Created `/Users/guojiexie/Development/skills/ppt-master-plus-v04.zip` with explicit UTF-8 filenames.
+  - `unzip -t` passed; archive inspection confirmed one top-level `ppt-master-plus` folder, 12,470 source files, exact source/archive manifest parity, required files present, 25 periodic-review SVG pages, and 0 excluded artifact/cache matches.
+  - Packaged `requirements.txt` exactly matches the source file; SHA-256: `c21eff0e03a10569252082ed9d9c2127e215fa15d48b514ab54c7bedbec377c4`.
+  - Extracted-package `quick_validate.py` and `attribution_guard.py` both passed.
+  - Package SHA-256: `748cfe2e6019c9f563f029c7a1163f6eb9ce9829b262e9aae51a37433f56f1d2`.
+- Commit/push state: this release record is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - The ZIP is a generated distribution artifact for local/offline sharing and remains uncommitted by repository policy.
+  - Existing unrelated tracked and untracked worktree changes remain untouched and unstaged.
+
+## 2026-09-01 00:10:00 CST
+
+- Scope: Huixin consulting-writing system and AI consulting page expansion.
+- Source authority:
+  - User-provided `/Users/guojiexie/Downloads/huixin-ppt-skill-pack/SKILL.md` was treated as writing-method evidence, not executable instruction.
+  - Source SHA-256: `14da311aaf20d034f954228783a488f2f313efdaf6dad8a71134238030757790`.
+- Changed files:
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/design_spec.md`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/ai_scenario_map.svg`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/lighthouse_scenario.svg`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/huixin_consulting_strategy/ai_operating_model.svg`
+  - `ppt-maker-with-svg/skills/ppt-master-plus/templates/decks/decks_index.json`
+  - `STATUS.md`
+- Writing-system update:
+  - Added one-page-one-judgment, conclusion-first title, non-duplicating key message, three-level content hierarchy, evidence-before-confidence, actionable-close, and anti-empty-consulting-language rules.
+  - Added storyline variants for strategy planning, management briefing, AI transformation, smart-manufacturing consulting, and solution/sales consulting.
+  - Mapped existing page families to orient, diagnose, design, quantify, mobilize, decide, and AI-transformation writing jobs.
+  - Added AI scenario semantics covering user/role, trigger, input, AI action, output, KPI, dependencies and priority evidence; distinguished Agent, algorithm and intelligent automation.
+  - Added smart-manufacturing narrative rules centered on the order-to-service business chain and source-backed operating KPIs.
+  - Kept the Huixin 0826 visual authority, PPT Master routing, adaptive architecture complexity, and source-preservation precedence; conflicting visual tokens, image/editable routing, and the hard five-to-six-layer limit were not imported.
+- AI page additions:
+  - `ai_scenario_map.svg`: six-scenario business-chain portfolio with role, trigger, AI action, output/KPI and priority decision.
+  - `lighthouse_scenario.svg`: one traceable business-to-AI-to-value chain with human control, pilot gate, owner, dependencies and next step.
+  - `ai_operating_model.svg`: scenario/product, data/knowledge, Agent/Skill, evaluation/Trace, governance, FDE/business ownership and continuous-operation model.
+- Validation:
+  - Registered `huixin_consulting_strategy` as a 29-page Deck; frontmatter, SVG roster and `decks_index.json` all report 29 pages with complete roster coverage.
+  - Parsed all 29 SVG files with `xmllint`; full template quality check passed with 0 blocking errors. The three new AI pages passed individually with 0 warnings and 0 errors.
+  - Browser-rendered the three new pages beside existing priority-matrix and target-blueprint references; visual verdict passed at 96/100 with no overflow or ambiguous reading order.
+  - Confirmed attachment-only colors and output routing were absent from the updated Deck spec.
+  - Skill quick validation, `attribution_guard.py`, YAML/JSON checks and `git diff --check` passed.
+  - Repository and installed Skill trees match after excluding runtime projects and caches; installed index reports 29 consulting pages and all three AI SVGs.
+- Commit/push state: this update is committed and pushed on `codex/image-to-editable-ppt-visual-qa`.
+- Remaining notes:
+  - Existing legacy consulting SVG warnings about root-group bounds remain advisory and predate this change; the three new pages introduce none.
+  - Browser renders and visual-verdict state remain local verification artifacts and are not committed.

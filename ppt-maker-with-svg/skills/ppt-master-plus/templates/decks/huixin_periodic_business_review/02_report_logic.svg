@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-2" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">REPORT LOGIC</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">月度 / 季度汇报逻辑</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">用同一套管理闭环连接事实、结果、价值与下一周期执行</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="four-phase-logic" data-pptx-bounds="64 230 1152 174">
+  <rect x="64" y="230" width="250" height="174" fill="#FFFFFF" stroke="#0097BA" stroke-width="2" rx="8"/>
+  <rect x="64" y="230" width="250" height="44" fill="#0097BA" rx="8"/>
+  <text x="86" y="260" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#FFFFFF" text-anchor="start">01</text>
+  <text x="86" y="320" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="700" fill="#111111" text-anchor="start">工作梳理</text>
+  <text x="86" y="356" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" fill="#4B5563" text-anchor="start">已完成与执行中工作</text>
+  <line x1="316" y1="317" x2="348" y2="317" stroke="#0097BA" stroke-width="3"/>
+  <text x="332" y="312" font-family="Microsoft YaHei, Arial, sans-serif" font-size="26" font-weight="700" fill="#0097BA" text-anchor="middle">›</text>
+  <rect x="352" y="230" width="250" height="174" fill="#FFFFFF" stroke="#A4D968" stroke-width="2" rx="8"/>
+  <rect x="352" y="230" width="250" height="44" fill="#A4D968" rx="8"/>
+  <text x="374" y="260" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#111111" text-anchor="start">02</text>
+  <text x="374" y="320" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="700" fill="#111111" text-anchor="start">工作成果</text>
+  <text x="374" y="356" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" fill="#4B5563" text-anchor="start">目标对标与结果分类</text>
+  <line x1="604" y1="317" x2="636" y2="317" stroke="#0097BA" stroke-width="3"/>
+  <text x="620" y="312" font-family="Microsoft YaHei, Arial, sans-serif" font-size="26" font-weight="700" fill="#0097BA" text-anchor="middle">›</text>
+  <rect x="640" y="230" width="250" height="174" fill="#FFFFFF" stroke="#4B5563" stroke-width="2" rx="8"/>
+  <rect x="640" y="230" width="250" height="44" fill="#4B5563" rx="8"/>
+  <text x="662" y="260" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#FFFFFF" text-anchor="start">03</text>
+  <text x="662" y="320" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="700" fill="#111111" text-anchor="start">工作亮点</text>
+  <text x="662" y="356" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" fill="#4B5563" text-anchor="start">关键产出与公司价值</text>
+  <line x1="892" y1="317" x2="924" y2="317" stroke="#0097BA" stroke-width="3"/>
+  <text x="908" y="312" font-family="Microsoft YaHei, Arial, sans-serif" font-size="26" font-weight="700" fill="#0097BA" text-anchor="middle">›</text>
+  <rect x="928" y="230" width="250" height="174" fill="#FFFFFF" stroke="#0097BA" stroke-width="2" rx="8"/>
+  <rect x="928" y="230" width="250" height="44" fill="#0097BA" rx="8"/>
+  <text x="950" y="260" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#FFFFFF" text-anchor="start">04</text>
+  <text x="950" y="320" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="700" fill="#111111" text-anchor="start">工作规划</text>
+  <text x="950" y="356" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" fill="#4B5563" text-anchor="start">目标、任务、路径与支持</text>
+</g>
+<g id="mode-guidance" data-pptx-bounds="64 442 1152 204">
+  <rect x="64" y="442" width="552" height="134" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <text x="88" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700" fill="#0097BA" text-anchor="start">月度模式</text>
+  <text x="88" y="514" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="400" fill="#4B5563" text-anchor="start"><tspan x="88" dy="0">聚焦本月清单、实际状态、关键结果</tspan><tspan x="88" dy="27">以及下月任务、责任人和截止时间</tspan></text>
+  <rect x="640" y="442" width="576" height="134" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <text x="664" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="700" fill="#A4D968" text-anchor="start">季度模式</text>
+  <text x="664" y="514" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="400" fill="#4B5563" text-anchor="start"><tspan x="664" dy="0">展开目标差异、成果分类、公司价值</tspan><tspan x="664" dy="27">实施路线、风险支持与管理层决策</tspan></text>
+  <rect x="64" y="592" width="1152" height="42" fill="#4B5563" rx="5"/>
+  <text x="640" y="619" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" text-anchor="middle">管理目标：形成可回顾、可判断、可执行、可追踪的周期经营闭环</text>
+</g>
+<g id="page-footer-2" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">02</text>
+</g>
+</svg>

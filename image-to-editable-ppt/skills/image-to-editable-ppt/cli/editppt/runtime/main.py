@@ -146,6 +146,7 @@ def cmd_prepare(args: argparse.Namespace) -> int:
             mode=args.image_backend,
             tool_name=None,
             tool_call=None,
+            runtime_id=None,
             model=None,
             fallback_command=None,
             runtime_home=None,
@@ -162,6 +163,8 @@ def cmd_backend(args: argparse.Namespace) -> int:
         argv.extend(["--tool-name", args.tool_name])
     if args.tool_call:
         argv.extend(["--tool-call", args.tool_call])
+    if args.runtime_id:
+        argv.extend(["--runtime-id", args.runtime_id])
     if args.model:
         argv.extend(["--model", args.model])
     if args.fallback_command:
@@ -183,6 +186,10 @@ def cmd_process_asset_sheet(args: argparse.Namespace) -> int:
 
 def cmd_record_image(args: argparse.Namespace) -> int:
     return run_script("record_imagegen_result.py", args.record_image_args)
+
+
+def cmd_extract_source(args: argparse.Namespace) -> int:
+    return run_script("extract_source_asset.py", args.extract_args)
 
 
 def cmd_status(args: argparse.Namespace) -> int:
@@ -326,10 +333,53 @@ def cmd_page_build(args: argparse.Namespace) -> int:
 
 def cmd_page_validate(args: argparse.Namespace) -> int:
     page_dir = Path(args.page_dir).expanduser().resolve()
-    argv = [str(page_dir / args.pptx), "--manifest", str(page_dir / args.manifest)]
+    visual_code = run_script(
+        "visual_qa.py",
+        [
+            str(page_dir),
+            "--manifest",
+            args.manifest,
+            "--source",
+            args.source,
+            "--preview",
+            args.preview,
+            "--report",
+            args.visual_report,
+            "--diff",
+            args.visual_diff,
+        ],
+    )
+    argv = [
+        str(page_dir / args.pptx),
+        "--manifest",
+        str(page_dir / args.manifest),
+        "--visual-qa-report",
+        str(page_dir / args.visual_report),
+    ]
     if args.report:
         argv.extend(["--report", str(page_dir / args.report)])
-    return run_script("validate_pptx.py", argv)
+    structural_code = run_script("validate_pptx.py", argv)
+    return structural_code or visual_code
+
+
+def cmd_page_visual_qa(args: argparse.Namespace) -> int:
+    page_dir = Path(args.page_dir).expanduser().resolve()
+    return run_script(
+        "visual_qa.py",
+        [
+            str(page_dir),
+            "--manifest",
+            args.manifest,
+            "--source",
+            args.source,
+            "--preview",
+            args.preview,
+            "--report",
+            args.report,
+            "--diff",
+            args.diff,
+        ],
+    )
 
 
 def cmd_finalize(args: argparse.Namespace) -> int:
@@ -489,6 +539,7 @@ contract. The standalone CLI default is editppt-image-cli.
         epilog="""Examples:
   editppt prepare slide.png
   editppt prepare slide.png --image-backend builtin-imagegen
+  editppt prepare slide.png --image-backend agent-image-tool
   editppt prepare deck.pdf --max-concurrent-pages 3
   editppt prepare a.png b.png --out-root output/image-to-editable-ppt
 """,
@@ -500,9 +551,9 @@ contract. The standalone CLI default is editppt-image-cli.
     prepare.add_argument("--max-concurrent-pages", type=int, metavar="N", help="Maximum concurrent page dispatch slots. Default: 6.")
     prepare.add_argument(
         "--image-backend",
-        choices=["builtin-imagegen", "editppt-image-cli"],
+        choices=["builtin-imagegen", "agent-image-tool", "editppt-image-cli"],
         default="editppt-image-cli",
-        help="Run-level image backend contract. Defaults to editppt-image-cli; parent agents can select builtin-imagegen.",
+        help="Run-level image backend contract. Defaults to editppt-image-cli; parent agents can select builtin-imagegen or a discovered agent-image-tool.",
     )
     prepare.add_argument("--no-text-hints", action="store_true", help="Skip per-page text hint generation after preparing pages.")
     prepare.set_defaults(func=cmd_prepare)
@@ -545,24 +596,27 @@ record dispatch/result events, and assemble the final deck.
         description="""Configure deck_manifest.json.image_backend and copy it into page requests.
 
 Normally editppt prepare records the unified editppt image CLI backend automatically.
-Use this when a parent Agent selects image_gen.imagegen or when forcing other backend metadata.
+Use this when a parent Agent selects image_gen.imagegen, discovers another capable
+agent-native image tool, or needs to force other backend metadata.
 """,
         formatter_class=HELP_FORMATTER,
         epilog="""Examples:
   editppt run backend <run>
   editppt run backend <run> --mode builtin-imagegen
+  editppt run backend <run> --mode agent-image-tool --runtime-id workbuddy --tool-name "AI image generation"
   editppt run backend <run> --mode openai-compatible-api --model openai/gpt-image-2
 """,
     )
     backend.add_argument("run", metavar="RUN", help="Run directory or deck_manifest.json path.")
     backend.add_argument(
         "--mode",
-        choices=["builtin-imagegen", "editppt-image-cli", "openai-compatible-api"],
+        choices=["builtin-imagegen", "agent-image-tool", "editppt-image-cli", "openai-compatible-api"],
         default="editppt-image-cli",
         help="Image backend mode. Defaults to the unified editppt image CLI contract.",
     )
     backend.add_argument("--tool-name", metavar="NAME", help="Override the tool name for non-builtin contracts.")
     backend.add_argument("--tool-call", metavar="CALL", help="Override the tool call for non-builtin contracts.")
+    backend.add_argument("--runtime-id", metavar="ID", help="Agent runtime that owns a discovered image tool, for example workbuddy, claude-code, or qoderwork.")
     backend.add_argument("--model", metavar="MODEL", help="Image model label for API/CLI fallback.")
     backend.add_argument("--fallback-command", metavar="CMD", help="Override the fallback command for non-builtin contracts.")
     backend.add_argument("--runtime-home", metavar="DIR", help="Shared config home. Defaults to ~/.editppt.")
@@ -727,15 +781,32 @@ comparison image.
     page_contact.add_argument("page_args", nargs=argparse.REMAINDER)
     page_contact.set_defaults(func=lambda args: run_script("make_page_contact_sheet.py", args.page_args))
 
+    page_visual_qa = page_sub.add_parser(
+        "visual-qa",
+        help="Compare source.png and preview.png for collisions, color drift, and structural geometry drift.",
+        formatter_class=HELP_FORMATTER,
+    )
+    page_visual_qa.add_argument("page_dir", metavar="PAGE_DIR", help="Page directory containing source.png, preview.png, and manifest.json.")
+    page_visual_qa.add_argument("--manifest", default="manifest.json", metavar="FILE", help="Manifest file relative to the page directory.")
+    page_visual_qa.add_argument("--source", default="source.png", metavar="FILE", help="Source image relative to the page directory.")
+    page_visual_qa.add_argument("--preview", default="preview.png", metavar="FILE", help="Rendered preview relative to the page directory.")
+    page_visual_qa.add_argument("--report", default="visual-qa.json", metavar="FILE", help="Visual QA JSON report relative to the page directory.")
+    page_visual_qa.add_argument("--diff", default="visual-diff.png", metavar="FILE", help="Visual difference heatmap relative to the page directory.")
+    page_visual_qa.set_defaults(func=cmd_page_visual_qa)
+
     page_validate = page_sub.add_parser(
         "validate",
-        help="Validate page.pptx against manifest.json exactly as `run record` will.",
+        help="Run visual QA, then validate page.pptx against manifest.json exactly as `run record` will.",
         formatter_class=HELP_FORMATTER,
     )
     page_validate.add_argument("page_dir", metavar="PAGE_DIR", help="Page directory containing page.pptx and manifest.json.")
     page_validate.add_argument("--pptx", default="page.pptx", metavar="FILE", help="PPTX file relative to the page directory.")
     page_validate.add_argument("--manifest", default="manifest.json", metavar="FILE", help="Manifest file relative to the page directory.")
-    page_validate.add_argument("--report", metavar="FILE", help="Optional JSON validation report relative to the page directory.")
+    page_validate.add_argument("--source", default="source.png", metavar="FILE", help="Source image relative to the page directory.")
+    page_validate.add_argument("--preview", default="preview.png", metavar="FILE", help="Rendered preview relative to the page directory.")
+    page_validate.add_argument("--visual-report", default="visual-qa.json", metavar="FILE", help="Visual QA report relative to the page directory.")
+    page_validate.add_argument("--visual-diff", default="visual-diff.png", metavar="FILE", help="Visual difference heatmap relative to the page directory.")
+    page_validate.add_argument("--report", default="validation.json", metavar="FILE", help="JSON validation report relative to the page directory.")
     page_validate.set_defaults(func=cmd_page_validate)
 
     image = sub.add_parser(
@@ -786,6 +857,14 @@ Patterns:
     image_import.add_argument("record_image_args", nargs=argparse.REMAINDER)
     image_import.set_defaults(func=cmd_record_image)
 
+    source_extract = image_sub.add_parser(
+        "extract-source",
+        help="Deterministically separate exact source pixels from a verified uniform background.",
+        add_help=False,
+    )
+    source_extract.add_argument("extract_args", nargs=argparse.REMAINDER)
+    source_extract.set_defaults(func=cmd_extract_source)
+
     process_sheet = image_sub.add_parser(
         "process-sheet",
         help="Remove chroma key and split a generated asset sheet.",
@@ -804,7 +883,7 @@ def main() -> int:
 
     parser = build_parser()
     args, extra = parser.parse_known_args()
-    for attr in ("image_args", "process_args", "record_image_args", "page_args"):
+    for attr in ("image_args", "process_args", "record_image_args", "extract_args", "page_args"):
         if hasattr(args, attr):
             getattr(args, attr).extend(extra)
             extra = []

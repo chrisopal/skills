@@ -6,21 +6,22 @@ Strict Swiss-grid discipline. Modular grid, sharp geometry, aggressive whitespac
 
 ## 1. Shape & decoration
 
-- Shape language: sharp rectangles, true circles, single-weight rules. Corner radius `rx="0"` by default; if rounding at all, ≤4.
+- Shape language: sharp rectangles, true circles, single-weight rules. Use square corners by default; any rounding stays barely perceptible.
+- Composition geometry: one oversized geometric plane — a full-height color column, a giant disc, a heavy bar — zoning the page; an asymmetric split with content flush to one axis; a hero numeral at architectural scale; a single diagonal rule or type line as the deliberate grid break. Few, large, exact — geometry at poster scale is Swiss, clutter is not.
 - Decoration: none. No gradient fills, no decorative blocks, no badges — structure carries the page.
 - Whitespace: vast and deliberate; negative space carries as much weight as content. Wide margins, generous gutters.
 - Layout snaps to a visible or implied modular grid; rigorous column / row alignment.
 
 ## 2. Typography character
 
-- Sans-serif, single family; weight contrast (e.g. 900 / 300) over family contrast. Tight, rigorous spacing.
+- Sans-serif, single family; regular/bold contrast. Exact Light/Black requires a user-confirmed installed face. Tight, rigorous spacing.
 - Strong size hierarchy — large headlines, small precise body. Left-aligned, flush.
 
 > Family is chosen at confirmation `g` by subject fit — this style asks for a grotesque / neo-grotesque *character*, not a specific font.
 
 ## 3. Using the deck's colors
 
-- One color dominates a deliberate grid zone; the field stays near-white; the accent appears at a single point — never more than a few percent of canvas.
+- A dominant color may define a deliberate grid zone while the field stays near-white; keep accent color localized enough that it reads as punctuation rather than decoration.
 - Color as conceptual zone, not decoration. No gradients.
 
 > HEX values come from confirmation `e`; this style only governs how sparingly they are applied — it names no colors.
@@ -32,3 +33,7 @@ Strict Swiss-grid discipline. Modular grid, sharp geometry, aggressive whitespac
 ## 5. Paired image-rendering
 
 `minimalist-swiss` — lock it for AI images so illustrations share the grid-austere aesthetic.
+
+## 6. Illustration propensity
+
+**sparse** — the whitespace and grid *are* the design; decorative spots compete with that restraint, so with no user steer, default to none. If the user explicitly asks, use them — but stay austere: very few, very light, never crowding the negative space. `image_usage: none` writes no illustration rows.

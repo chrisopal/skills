@@ -29,10 +29,12 @@ editppt                         - top-level CLI for setup, run orchestration, im
 |   |-- hints                   - detect and measure text lines for one page directory
 |   |-- build                   - build page.pptx and preview.png from manifest.json
 |   |-- contact-sheet           - create the origin-versus-preview comparison image
-|   `-- validate                - validate page.pptx against manifest.json as run record will
+|   |-- visual-qa               - compare source, preview, and manifest; write visual evidence
+|   `-- validate                - run visual QA plus page.pptx/manifest contract validation
 |-- image                       - generate, edit, import, and process bitmap assets
 |   |-- generate                - create a new image from a text prompt
 |   |-- edit                    - edit a source image for clean bases or source-faithful asset sheets
+|   |-- extract-source          - preserve a complete object from a locally uniform source region
 |   |-- import                  - copy a selected image into the page dir and record provenance
 |   `-- process-sheet           - split a chroma-key asset sheet into transparent assets
 `-- formula                     - render formula assets from agent-transcribed LaTeX
@@ -45,7 +47,9 @@ editppt                         - top-level CLI for setup, run orchestration, im
 editppt --help
 editppt run --help
 editppt page hints --help
+editppt page visual-qa --help
 editppt image --help
+editppt image extract-source --help
 editppt image edit --help
 editppt formula render-latex --help
 ```
@@ -111,9 +115,23 @@ editppt config --paddle-ocr-token "<token>"
 editppt prepare input.png
 editppt prepare input.pdf
 editppt prepare input.png --image-backend builtin-imagegen
+editppt prepare input.png --image-backend agent-image-tool
 ```
 
 Purpose: normalize a single image, multiple images, a PDF, or an image-based PPTX into a run directory and generate `deck_manifest.json`, `page_jobs.json`, `notes_manifest.json`, plus per-page `pages/page_NNN/source.png`, `page_request.json`, and text hints. `--image-backend` records the requested run/page contract; selection policy lives in `SKILL.md` subsection "Image Backend Selection".
+
+After selecting a discovered agent-native tool, replace the unresolved discovery metadata before page execution:
+
+```bash
+editppt run backend <run> \
+  --mode agent-image-tool \
+  --runtime-id workbuddy \
+  --tool-name "AI image generation" \
+  --tool-call "native-image-tool" \
+  --model "provider/image-model"
+```
+
+Use the actual runtime/tool/model identifiers. Discovery and capability requirements live in `agent-image-backends.md`; JSON field semantics live in `manifest-schema.md`.
 
 When a PaddleOCR token is configured, `prepare` may submit the input pages to PaddleOCR for content-aware text hints. In a sandboxed or approval-gated environment, request network approval up front for this command instead of accepting a DNS/sandbox failure followed by lower-quality `builtin-ink` fallback; see `SKILL.md` Phase 1 for the approval-rejection policy.
 
@@ -145,7 +163,7 @@ Purpose: record that a page has been dispatched to a worker or claimed for singl
 editppt run record <run> --page page_001 --agent-id <worker-id>
 ```
 
-Purpose: after the page reconstructor writes its required outputs (see `manifest-schema.md`), validate `page.pptx` against `manifest.json` and record the page result. Missing `box_px` / `points_px` on positioned objects is a page failure. The command also fails when `validation.json` does not contain top-level `passed: true` — a failed page is never recorded; fix the root cause, `run reset` the page, and dispatch or claim a fresh page execution.
+Purpose: after the page reconstructor writes its required outputs (see `manifest-schema.md`), recompute deterministic visual QA, validate `page.pptx` against `manifest.json`, and record the page result. Missing `box_px` / `points_px`, unapproved image-ink/text or text/text collisions, shape-color drift, structural-geometry drift, configured diff-threshold violations, and either top-level validation flag not being `true` are page failures. The runtime rewrites the evidence files, so a worker-authored boolean cannot bypass the checks. Fix the root cause, `run reset` the page, and dispatch or claim a fresh page execution.
 
 ```bash
 editppt run reset <run> --page page_001 --agent-id <worker-id> --confirm-lost
@@ -176,10 +194,16 @@ editppt page contact-sheet pages/page_001
 Purpose: create `split_assets_contact.png`, the origin-versus-preview comparison image, from `source.png` and `preview.png` in the page directory.
 
 ```bash
+editppt page visual-qa pages/page_001
+```
+
+Purpose: compare `source.png`, `preview.png`, and `manifest.json`; write `visual-qa.json` and `visual-diff.png`; and fail on the deterministic visual contract. This command is useful while iterating, but `page validate` and `run record` both rerun it.
+
+```bash
 editppt page validate pages/page_001
 ```
 
-Purpose: validate `page.pptx` against `manifest.json` with the same manifest-contract checks `editppt run record` will run (record additionally verifies the full artifact set, hashes, and top-level `passed: true`). Run it before returning so manifest-contract failures are fixed inside the page instead of bouncing back from the parent's record step. Optional `--report <file>` writes a JSON report.
+Purpose: run deterministic visual QA and validate `page.pptx` against `manifest.json` with the same checks `editppt run record` will run (record additionally verifies the full artifact set and hashes). It writes `visual-qa.json`, `visual-diff.png`, and `validation.json` by default. Run it before returning so visual and manifest-contract failures are fixed inside the page instead of bouncing back from the parent's record step.
 
 ## Text Measurement Commands
 
@@ -229,6 +253,18 @@ These commands select Codex OAuth first, then a configured OpenAI-compatible API
 
 ## Asset Processing Commands
 
+Extract a complete foreground object from a locally uniform source region:
+
+```bash
+editppt image extract-source pages/page_001 \
+  --box 80,120,64,64 \
+  --out assets/icon-monitor.png \
+  --id icon-monitor \
+  --fragment assets/icon-monitor.fragment.json
+```
+
+Purpose: preserve the exact visible source pixels while deriving transparency from a uniform border background. Use this only when the complete object is visible and unoccluded. The command rejects non-uniform regions; on rejection, use the image-edit asset-sheet workflow rather than weakening the threshold or keeping an arbitrary rectangular crop. The optional fragment contains the `images[]` placement and `source-faithful-extraction` provenance entry.
+
 Record a selected image output:
 
 ```bash
@@ -238,6 +274,19 @@ editppt image import pages/page_001 \
   --dest assets/icon-sheet.png \
   --role asset_sheet \
   --backend builtin-imagegen
+```
+
+For a discovered agent-native producer, record its concrete identity:
+
+```bash
+editppt image import pages/page_001 \
+  --job-id icon-sheet \
+  --source-image /tmp/generated.png \
+  --dest assets/icon-sheet.png \
+  --role asset_sheet \
+  --backend agent-image-tool \
+  --producer-id workbuddy:native-image-tool \
+  --producer-model provider/image-model
 ```
 
 `--source-image` must be an existing, readable local image. `--backend` records the actual producer and is required; `--fallback-reason` is accepted only when it is consistent with the page's backend contract. Field values and provenance rules live in `manifest-schema.md`.

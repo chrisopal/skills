@@ -1,33 +1,39 @@
 {
   "huixin_consulting_strategy": {
-    "summary": "慧新咨询汇报、战略规划、智能制造诊断、数字化转型蓝图、治理决策与管理层汇报模板；包含目录章节、背景问题、诊断总结、成熟度、热力图、价值链、差距、蓝图、举措、价值测算、治理、RACI、风险、变革和决策页.",
+    "summary": "慧新咨询汇报、战略规划、智能制造诊断、AI转型、数字化蓝图、治理决策与管理层汇报模板，强调结论式写作、证据链和行动闭环.",
     "canvas_format": "ppt169",
-    "page_count": 26,
-    "primary_color": "#4295B6"
+    "page_count": 29,
+    "primary_color": "#0097BA"
   },
   "huixin_management_report": {
     "summary": "慧新公司经营汇报、季度经营分析、部门工作汇报、项目进展汇报、高层管理会议模板；包含财务分析、事业部/产品线业绩、销售月报、经营复盘、销售漏斗、商机管理、人员变化、Excel数据概览、销售预测、人员月度组合图、人员类型饼图和决策事项页.",
     "canvas_format": "ppt169",
     "page_count": 25,
-    "primary_color": "#4295B6"
+    "primary_color": "#0097BA"
   },
   "huixin_market_promotion": {
     "summary": "慧新品牌市场宣传、产品推广、解决方案推广、渠道招商、客户活动、展会路演、销售赋能材料；包含品牌封面、价值主张、痛点场景、产品方案、场景应用、差异化卖点、数据案例背书和转化结尾页型目录，并强制规划场景图/产品图/UI截图/客户现场/科技视觉等配图。",
     "canvas_format": "ppt169",
     "page_count": 8,
-    "primary_color": "#4295B6"
+    "primary_color": "#0097BA"
+  },
+  "huixin_periodic_business_review": {
+    "summary": "慧新事业部月度与季度经营汇报模板，以工作梳理、工作成果、工作亮点、工作规划形成管理闭环并支持决策。",
+    "canvas_format": "ppt169",
+    "page_count": 25,
+    "primary_color": "#0097BA"
   },
   "huixin_product_solution": {
     "summary": "慧新产品解决方案、软件平台、AI平台、智能制造、数字化系统能力展示；包含复杂多层分域架构、业务/功能/系统/数据/集成/技术/部署架构、多系统集成总览、流程、实施、截图和案例页.",
     "canvas_format": "ppt169",
     "page_count": 22,
-    "primary_color": "#4295B6"
+    "primary_color": "#0097BA"
   },
   "huixin_training_enablement": {
     "summary": "慧新企业培训、产品培训、销售赋能、实施交付培训、客户培训和内部学习材料模板；包含课程主线、章节、日程、课前准备、场景导入、界面讲解、对比矩阵、角色演练、SOP、测评结果和FAQ排查页.",
     "canvas_format": "ppt169",
     "page_count": 20,
-    "primary_color": "#4295B6"
+    "primary_color": "#0097BA"
   },
   "中国电信": {
     "summary": "China Telecom related briefings, 政企数字化方案, 转型规划, 内部汇报.",

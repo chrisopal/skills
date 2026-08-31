@@ -1,0 +1,54 @@
+version: 1.0.0
+severity:
+  P0:
+    name: 必须处理
+    definition: 影响正确性、可读性、文件完整性或造成明显误导
+    examples:
+      - 文本被裁切或溢出
+      - 关键对象遮挡
+      - 数据、日期、金额或单位被误改
+      - 文件无法打开
+      - 对比度导致文字无法辨认
+      - 页面对象超出边界且影响输出
+  P1:
+    name: 影响专业度
+    definition: 明显损害一致性、理解效率或品牌可信度
+    examples:
+      - 字体和字号体系混乱
+      - 颜色没有语义且风格割裂
+      - 页面标题位置和边距漂移
+      - 信息层级不清
+      - 图表、架构图风格不统一
+  P2:
+    name: 进一步优化
+    definition: 不影响基本理解，但可以提高审美、表现力或精细度
+    examples:
+      - 图片色调优化
+      - 轻微留白调整
+      - 图标替换
+      - 动画节奏优化
+risk:
+  low:
+    approval: manifest_can_preapprove
+    actions:
+      - exact_font_family_replacement
+      - exact_color_mapping
+      - title_alignment_within_tolerance
+      - image_crop_without_subject_loss
+  medium:
+    approval: explicit_or_pilot
+    actions:
+      - font_size_change
+      - layout_reflow
+      - chart_style_redesign
+      - vector_redraw
+      - image_replacement
+  high:
+    approval: explicit_and_pilot
+    actions:
+      - body_text_rewrite
+      - slide_reorder
+      - slide_split_merge_delete
+      - data_chart_rebuild
+      - generated_image_for_key_message
+      - master_or_animation_reconstruction

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ppt-review-refinement/deck_context.schema.json",
+  "title": "PPT Deck Context",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "deck_type",
+    "topic",
+    "audience",
+    "usage_context",
+    "communication_goal",
+    "single_takeaway",
+    "recommended_personality",
+    "brand_constraints",
+    "assumptions"
+  ],
+  "properties": {
+    "version": {"type": "string"},
+    "source_file": {"type": "string"},
+    "deck_type": {"type": "string", "minLength": 1},
+    "topic": {"type": "string", "minLength": 1},
+    "audience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "secondary"],
+      "properties": {
+        "primary": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "secondary": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "usage_context": {
+      "type": "array",
+      "items": {"enum": ["live_presentation", "send_to_read", "print", "exhibition_loop", "workshop", "unknown"]},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "communication_goal": {"type": "string", "minLength": 1},
+    "single_takeaway": {"type": "string", "minLength": 1},
+    "recommended_personality": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 2,
+      "maxItems": 6,
+      "uniqueItems": true
+    },
+    "brand_constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logos", "colors", "fonts", "do_not_change"],
+      "properties": {
+        "logos": {"type": "array", "items": {"type": "string"}},
+        "colors": {"type": "array", "items": {"type": "string"}},
+        "fonts": {"type": "array", "items": {"type": "string"}},
+        "do_not_change": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["statement", "confidence", "needs_confirmation"],
+        "properties": {
+          "statement": {"type": "string"},
+          "confidence": {"enum": ["high", "medium", "low"]},
+          "needs_confirmation": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

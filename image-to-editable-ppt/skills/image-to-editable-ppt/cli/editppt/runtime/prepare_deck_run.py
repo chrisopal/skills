@@ -101,6 +101,8 @@ def page_request(run_dir, deck, page):
             "page_pptx": str(page_dir / "page.pptx"),
             "preview": str(page_dir / "preview.png"),
             "contact_sheet": str(page_dir / "split_assets_contact.png"),
+            "visual_qa_report": str(page_dir / "visual-qa.json"),
+            "visual_diff": str(page_dir / "visual-diff.png"),
             "validation": str(page_dir / "validation.json"),
             "page_result": str(page_dir / "page_result.json"),
         },

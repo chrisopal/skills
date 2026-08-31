@@ -27,13 +27,28 @@ TLS fingerprint handling:
 """
 
 import argparse
+import codecs
 import datetime
 import io
+import json
 import os
 import re
 import sys
 import time
+from pathlib import Path
 from urllib.parse import urljoin, urlparse
+
+_SCRIPTS_DIR = Path(__file__).resolve().parents[1]
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from console_encoding import configure_utf8_stdio  # noqa: E402
+from _conversion_profile import (  # noqa: E402
+    profile_path_for,
+    write_conversion_profile_best_effort,
+)
+
+configure_utf8_stdio()
 
 try:
     import requests
@@ -68,6 +83,95 @@ def _http_get(url: str, *, headers: dict | None = None, timeout: int | None = No
         )
     return requests.get(url, headers=headers, timeout=timeout,
                         verify=verify, stream=stream)
+
+
+def _normalize_charset(charset: str | None) -> str:
+    """Return a Python codec name when the declared charset is usable."""
+    if not charset:
+        return ""
+    charset = charset.strip().strip('"').strip("'").lower()
+    if not charset:
+        return ""
+    try:
+        return codecs.lookup(charset).name
+    except LookupError:
+        return ""
+
+
+def _charset_from_headers(headers: dict) -> str:
+    content_type = headers.get("Content-Type") or headers.get("content-type") or ""
+    match = re.search(r"charset\s*=\s*([^;\s]+)", content_type, re.I)
+    return _normalize_charset(match.group(1)) if match else ""
+
+
+def _charset_from_html(raw: bytes) -> str:
+    """Extract a charset declaration from the first chunk of HTML bytes."""
+    head = raw[:8192]
+    patterns = [
+        rb"<meta[^>]+charset=[\"']?\s*([a-zA-Z0-9_\-]+)",
+        rb"<meta[^>]+content=[\"'][^\"']*charset=\s*([a-zA-Z0-9_\-]+)",
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, head, re.I)
+        if match:
+            return _normalize_charset(match.group(1).decode("ascii", "ignore"))
+    return ""
+
+
+def _decode_quality_score(text: str) -> int:
+    """Score obvious decode artifacts; lower is better."""
+    mojibake_markers = [
+        "�", "锟", "Ã", "Â", "â€", "â€™", "â€œ", "â€\x9d",
+        "琚", "佸", "鍦", "涓", "鏄", "寤", "骞", "鏈", "鏃", "鈥",
+    ]
+    marker_hits = sum(text.count(marker) for marker in mojibake_markers)
+    control_hits = sum(1 for ch in text if ord(ch) < 32 and ch not in "\t\n\r")
+    return marker_hits * 20 + control_hits * 10 + text.count("\ufffd") * 50
+
+
+def _decode_response_text(response) -> str:
+    """Decode HTTP response bytes without letting guessed encodings override declarations."""
+    raw = response.content
+    declared = [
+        _charset_from_headers(response.headers),
+        _charset_from_html(raw),
+    ]
+    if raw.startswith(codecs.BOM_UTF8):
+        declared.insert(0, "utf-8-sig")
+
+    seen = set()
+    declared = [enc for enc in declared if enc and not (enc in seen or seen.add(enc))]
+    for enc in declared:
+        try:
+            return raw.decode(enc)
+        except UnicodeDecodeError:
+            continue
+
+    candidates = []
+    for enc in [
+        getattr(response, "encoding", None),
+        getattr(response, "apparent_encoding", None),
+        "utf-8",
+        "gb18030",
+        "big5",
+    ]:
+        enc = _normalize_charset(enc)
+        if enc and enc not in candidates:
+            candidates.append(enc)
+
+    decoded = []
+    for enc in candidates:
+        try:
+            text = raw.decode(enc)
+        except UnicodeDecodeError:
+            continue
+        decoded.append((_decode_quality_score(text), enc, text))
+
+    if decoded:
+        decoded.sort(key=lambda item: item[0])
+        return decoded[0][2]
+
+    return raw.decode("utf-8", errors="replace")
 
 try:
     from PIL import Image
@@ -131,12 +235,7 @@ def fetch_url(url: str) -> str:
                              timeout=CONFIG["timeout"], verify=False)
         response.raise_for_status()
 
-        # Enhanced encoding detection (requests handles this well usually, but we force apparent_encoding for Chinese)
-        # curl_cffi exposes the same .apparent_encoding attribute
-        if hasattr(response, "apparent_encoding") and response.apparent_encoding:
-            response.encoding = response.apparent_encoding
-
-        return response.text
+        return _decode_response_text(response)
     except Exception as e:
         raise Exception(f"Failed to fetch {url}: {str(e)}")
 
@@ -219,6 +318,7 @@ def download_and_rewrite_images(
 
     os.makedirs(image_dir, exist_ok=True)
     downloaded = {}
+    manifest_by_filename: dict[str, dict[str, object]] = {}
     saved = 0
 
     for idx, img in enumerate(images):
@@ -243,6 +343,8 @@ def download_and_rewrite_images(
         img["src"] = src
 
         abs_url = urljoin(page_url, src)
+        content_type = ""
+        converted_from = ""
         if abs_url in downloaded:
             saved_name = downloaded[abs_url]
         else:
@@ -269,6 +371,7 @@ def download_and_rewrite_images(
                         pil_image = Image.open(img_data)
 
                         # Update filename to .png
+                        converted_from = filename
                         filename = f"{stem}.png"
                         local_path = os.path.join(image_dir, filename)
 
@@ -313,6 +416,19 @@ def download_and_rewrite_images(
                         f.write(resp.content)
                 downloaded[abs_url] = filename
                 saved_name = filename
+                manifest_by_filename[saved_name] = {
+                    "index": len(manifest_by_filename) + 1,
+                    "filename": saved_name,
+                    "original_filename": converted_from or saved_name,
+                    "asset_kind": "bitmap",
+                    "svg_renderable": True,
+                    "pptx_native_supported": True,
+                    "source_kind": "web_image",
+                    "source_url": abs_url,
+                    "source_page_url": page_url,
+                    "content_type": content_type.split(";")[0] if content_type else "",
+                    "occurrences": [],
+                }
                 saved += 1
             except Exception as e:
                 print(f"   [WARN] Skip image {abs_url}: {e}")
@@ -321,6 +437,27 @@ def download_and_rewrite_images(
         rel_path = os.path.join(
             rel_prefix, saved_name) if rel_prefix else saved_name
         img["src"] = rel_path
+        manifest_item = manifest_by_filename.get(saved_name)
+        if manifest_item is not None:
+            occurrences = manifest_item.setdefault("occurrences", [])
+            if isinstance(occurrences, list):
+                occurrences.append({
+                    "occurrence_index": idx + 1,
+                    "source_url": abs_url,
+                    "alt_text": img.get("alt", ""),
+                })
+                manifest_item["usage_count"] = len(occurrences)
+
+    if manifest_by_filename:
+        manifest_path = os.path.join(image_dir, "image_manifest.json")
+        with open(manifest_path, "w", encoding="utf-8") as f:
+            json.dump(
+                list(manifest_by_filename.values()),
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
+            f.write("\n")
 
     return saved
 
@@ -671,8 +808,13 @@ def simple_html_to_markdown_traversal(soup: Tag | BeautifulSoup | None) -> str:
     return md or ""
 
 
-def process_url(url: str, output_file: str | None = None) -> tuple[bool, str, str | None]:
-    """Fetch, convert, and save one web page as Markdown."""
+def process_url(url: str, output_file: str | None = None) -> tuple[bool, str, str | None, str | None]:
+    """Fetch, convert, and save one web page as Markdown.
+
+    Returns (success, url, error, output_path). output_path is the actual saved
+    Markdown path (derived from the article title when no output_file is given),
+    so a caller can locate a title-named file it did not choose upfront.
+    """
     print(f"\n[Fetching] {url}")
     try:
         html = fetch_url(url)
@@ -736,16 +878,41 @@ def process_url(url: str, output_file: str | None = None) -> tuple[bool, str, st
 
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(full_content)
+        profile_path = write_conversion_profile_best_effort(
+            input_path=url,
+            markdown_path=output_path,
+            converter="web_to_md.py",
+            conversion_type="web",
+            asset_dir=image_dir,
+        )
 
         print(f"   [OK] Saved: {output_path}")
-        return True, url, None
+        if profile_path:
+            print(f"   [OK] Conversion profile: {profile_path}")
+        return True, url, None, output_path
 
     except Exception as e:
         print(f"   [ERROR] {str(e)}")
-        return False, url, str(e)
+        return False, url, str(e), None
 
 
-def main() -> None:
+def _write_emit_result(result_file: str, url: str, markdown_path: str) -> None:
+    """Write the actual saved path as JSON so a caller can locate the output."""
+    md = Path(markdown_path).resolve()
+    profile = profile_path_for(md)
+    payload = {
+        "input": url,
+        "markdown": str(md),
+        "conversion_profile": str(profile) if profile.is_file() else "",
+    }
+    try:
+        Path(result_file).write_text(
+            json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    except OSError as exc:
+        print(f"   [WARN] Could not write --emit-result: {exc}")
+
+
+def main(argv: list[str] | None = None) -> int:
     """Run the CLI entry point."""
     parser = argparse.ArgumentParser(
         description="Web to Markdown Converter (Python)")
@@ -754,8 +921,12 @@ def main() -> None:
         "-f", "--file", help="File containing URLs (one per line)")
     parser.add_argument("-o", "--output", help="Output file (single URL only)")
     parser.add_argument("-d", "--dir", help="Output directory")
+    parser.add_argument(
+        "--emit-result",
+        help="On success, write the saved output path as JSON to this file "
+             "(single-URL dispatcher use, so a title-named file can be located)")
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     if args.dir:
         CONFIG["output_dir"] = args.dir
@@ -771,18 +942,25 @@ def main() -> None:
                          and not l.strip().startswith("#")]
                 targets.extend(lines)
         else:
-            print(f"Error: File {args.file} not found")
+            print(f"Error: File {args.file} not found", file=sys.stderr)
+            return 1
 
     if not targets:
-        parser.print_help()
-        sys.exit(0)
+        parser.print_usage(sys.stderr)
+        print(
+            "web_to_md.py: error: at least one URL or --file is required",
+            file=sys.stderr,
+        )
+        return 2
 
     results = []
     for i, url in enumerate(targets):
         # Allow specific output file only if 1 URL
         out = args.output if (len(targets) == 1 and args.output) else None
-        success, url, err = process_url(url, out)
+        success, url, err, out_path = process_url(url, out)
         results.append((success, url, err))
+        if args.emit_result and success and out_path:
+            _write_emit_result(args.emit_result, url, out_path)
 
     # Summary
     success_count = sum(1 for r in results if r[0])
@@ -797,10 +975,12 @@ def main() -> None:
         for r in results:
             if not r[0]:
                 print(f"   - {r[1]}: {r[2]}")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
     # Disable warnings for verify=False if needed, though often useful to see
     import urllib3
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-    main()
+    raise SystemExit(main())

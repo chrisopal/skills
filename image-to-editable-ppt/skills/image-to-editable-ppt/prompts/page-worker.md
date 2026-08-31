@@ -18,13 +18,13 @@ MANDATORY FIRST ACTION — before looking at the source image, before any decisi
 - {{SKILL_ROOT}}/references/cli-helper.md — editppt command syntax and examples.
 
 Hard rules (reminders only; the details and rationale live in the references above):
-1. Every non-text foreground visual object must be separated through the image-edit asset-sheet workflow per page-decision-tree.md section 2. Backend fallback never permits an object-source fallback: no native-shape/emoji/text-symbol approximation, no direct source.png crops, no downgrade to a warning.
+1. Every non-text foreground visual object must use a compliant separation method from page-decision-tree.md section 2: deterministic source-faithful extraction for complete unoccluded objects on a uniform local background, otherwise image-edit asset-sheet separation. Backend fallback never permits an object-source approximation: no native-shape/emoji/text-symbol substitute, arbitrary source.png crop, or downgrade to a warning.
 2. Execute the three steps in order: (1) background recognition and repair, (2) foreground asset separation, (3) native element reconstruction. Do not consume the text hints in your page dir before the step-1/2 decisions are recorded.
 3. manifest.json is the authoritative build source for page validation and final deck assembly. Build page.pptx and preview.png from manifest.json with the deterministic runtime, never with separate page-local PowerPoint code that bypasses the manifest.
 4. All box_px / points_px / polygon_px values are source.png pixels. Reuse page_request.json.slide and page_request.json.content_box unchanged — do not convert the page to 16:9 or recalculate the canvas; the runtime maps source-pixel coordinates into content_box. Positioned objects without coordinates are page failures.
-5. validation.json must contain a top-level boolean `passed`. Deterministic validation passing never waives an object-source rule.
+5. validation.json must contain top-level booleans `passed` and `visual_qa_passed`; both must be true. Declarative self-check flags never replace runtime-produced visual evidence or waive an object-source rule.
 
-Image backend: execute `page_request.json.image_backend` using the authoritative field contract in `manifest-schema.md`. For `backend_id: builtin-imagegen`, the high-risk reminder is: use `image_gen.imagegen` first; generation needs only `prompt`, while editing requires `view_image` first and then `prompt` plus absolute local `referenced_image_paths`. Missing `mask`, `model`, `size`, `quality`, or `out` never triggers fallback. Import only the exact valid local result path (`output_hint` when supplied), never a scanned "newest" file; enter `editppt image generate/edit` only for a matching `fallback_policy.on` event. If that fallback cannot produce the required image, stop the page with `validation.json.passed=false`. In a network-restricted runtime, request any required approval and state that only task-local prompts and required page images/masks/references are uploaded for this user-requested conversion.
+Image backend: execute `page_request.json.image_backend` using the authoritative field contract in `manifest-schema.md`. For `backend_id: builtin-imagegen`, the high-risk reminder is: use `image_gen.imagegen` first; generation needs only `prompt`, while editing requires `view_image` first and then `prompt` plus absolute local `referenced_image_paths`. Missing `mask`, `model`, `size`, `quality`, or `out` never triggers fallback. For `backend_id: agent-image-tool`, use only the recorded concrete tool after confirming it is callable here and supports generation, reference-image editing, and explicit local output; import with `--backend agent-image-tool --producer-id <runtime:tool>` and the actual model when known. Import only the exact valid local result path (`output_hint` when supplied), never a scanned "newest" file; enter `editppt image generate/edit` only for a matching `fallback_policy.on` event. If that fallback cannot produce the required image, stop the page with `validation.json.passed=false`. In a network-restricted runtime, request any required approval and state that only task-local prompts and required page images/masks/references are uploaded for this user-requested conversion.
 
 Goal: rebuild the source page as object-level editable PowerPoint. Do not invent an object-source strategy outside `page-decision-tree.md`.
 
@@ -33,10 +33,10 @@ If the page dir already contains artifacts (manifest.json, page.pptx, validation
 Work through the page in this order:
 1. Build the page inventory (Pre-Decision Checklist in page-decision-tree.md).
 2. Decide the background (page-decision-tree.md section 1) and record `background_strategy`.
-3. Decide and separate foreground assets (section 2). Run step-1/2 image jobs serially through the backend order above; do not use a batch interface. Put icons/foreground objects onto one sparse asset sheet when they fit, with generous gaps between objects for clean splitting; create multiple sheets only when one sheet cannot fit them. After each selected local output, record and process it with `editppt image import` and `editppt image process-sheet`.
+3. Decide and separate foreground assets (section 2). Try `editppt image extract-source` only for complete, unoccluded objects on a locally uniform background. For everything else, run step-1/2 image jobs serially through the backend order above; do not use a batch interface. Put icons/foreground objects onto one sparse asset sheet when they fit, with generous gaps between objects for clean splitting; create multiple sheets only when one sheet cannot fit them. After each selected image-backend output, record and process it with `editppt image import` and `editppt image process-sheet`.
 4. Rebuild native text, shapes, and tables (section 3). Fill `text_boxes` from the measured text hints per section 3.1; render formulas with `editppt formula render-latex` per section 3.2.
 5. Write manifest.json following the field contracts in manifest-schema.md, including `text_inventory`, `visual_inventory`, `background_strategy`, `quality_checks`, and positioned `text_boxes`/`images`/`shapes`.
-6. Build the artifacts with the deterministic runtime: `editppt page build {{PAGE_DIR}}` (writes page.pptx and preview.png from manifest.json), then `editppt page contact-sheet {{PAGE_DIR}}`, then `editppt page validate {{PAGE_DIR}}` — it runs the same manifest-contract checks `editppt run record` will run, so fix every reported issue here, inside the page.
+6. Build the artifacts with the deterministic runtime: `editppt page build {{PAGE_DIR}}` (writes page.pptx and preview.png from manifest.json), then `editppt page contact-sheet {{PAGE_DIR}}`, then `editppt page validate {{PAGE_DIR}}`. Validation writes `visual-qa.json`, `visual-diff.png`, and `validation.json`, and fails on unapproved collisions, shape-color drift, structural-geometry drift, or configured diff-threshold violations. Fix every reported issue here, inside the page.
 
 The Page dir must contain when you return:
 - manifest.json
@@ -44,12 +44,14 @@ The Page dir must contain when you return:
 - page.pptx
 - preview.png
 - split_assets_contact.png
+- visual-qa.json
+- visual-diff.png
 - validation.json
 - page_result.json
 
-validation.json and page_result.json must follow the exact shapes defined in manifest-schema.md: validation.json carries the top-level boolean `passed` (not only a nested or renamed field), and page_result.json carries the minimal required key set.
+validation.json and page_result.json must follow the exact shapes defined in manifest-schema.md: validation.json carries top-level `passed` and `visual_qa_passed`, and page_result.json carries the visual QA report and diff paths in its minimal required key set.
 
-Before returning, run the Final Self-Check in page-decision-tree.md once: compare preview.png and split_assets_contact.png to the source, confirm `editppt page validate {{PAGE_DIR}}` passes, confirm validation.json contains top-level `passed: true`, and confirm all required outputs exist. Page-local issues are fixed inside the current page by you before returning.
+Before returning, run the Final Self-Check in page-decision-tree.md once: compare preview.png and split_assets_contact.png to the source, inspect visual-diff.png, confirm `editppt page validate {{PAGE_DIR}}` passes, confirm validation.json contains top-level `passed: true` and `visual_qa_passed: true`, and confirm all required outputs exist. Page-local issues are fixed inside the current page by you before returning.
 
 On failure — when a hard rule cannot be satisfied or a required tool is unavailable — stop and return a page failure: write validation.json with `"passed": false` and the concrete failure reason (what failed, the exact error, what the parent must fix), plus page_result.json referencing whatever artifacts exist (omit keys for artifacts that were never produced). Do not fabricate the remaining artifacts and do not build an approximate page to make validation pass; the parent agent will fix the root cause and dispatch or claim a fresh page execution.
 
@@ -58,6 +60,8 @@ page_manifest=`<absolute path>`
 page_pptx=`<absolute path>`
 preview=`<absolute path>`
 contact_sheet=`<absolute path>`
+visual_qa_report=`<absolute path>`
+visual_diff=`<absolute path>`
 validation=`<absolute path>`
 page_result=`<absolute path>`
 ```

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ppt-review-refinement/change_manifest.schema.json",
+  "title": "PPT Change Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "optimization_level",
+    "content_policy",
+    "visual_policy",
+    "image_policy",
+    "editability",
+    "protected_terms",
+    "protected_slides",
+    "accepted_risks"
+  ],
+  "properties": {
+    "version": {"type": "string"},
+    "optimization_level": {"enum": ["L0", "L1", "L2", "L3"]},
+    "approval_status": {"enum": ["draft", "approved", "rejected"]},
+    "approved_by": {"type": "string"},
+    "approved_at": {"type": "string"},
+    "content_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["body_text", "titles", "slide_order", "split_merge_delete", "numbers_and_facts"],
+      "properties": {
+        "body_text": {"enum": ["preserve", "light_edit", "rewrite"]},
+        "titles": {"enum": ["preserve", "optimize", "rewrite"]},
+        "slide_order": {"enum": ["preserve", "reorder_allowed"]},
+        "split_merge_delete": {"enum": ["forbidden", "approval_required", "allowed"]},
+        "numbers_and_facts": {"const": "preserve"}
+      }
+    },
+    "visual_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["theme", "color", "typography", "layout", "charts", "diagrams"],
+      "properties": {
+        "theme": {"enum": ["preserve", "normalize", "redesign"]},
+        "color": {"enum": ["preserve", "normalize", "redesign"]},
+        "typography": {"enum": ["preserve", "normalize", "redesign"]},
+        "layout": {"enum": ["preserve", "optimize", "restructure"]},
+        "charts": {"enum": ["preserve", "restyle", "rebuild_with_same_data"]},
+        "diagrams": {"enum": ["preserve", "restyle", "redraw_editable"]}
+      }
+    },
+    "image_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["crop", "tone_adjust", "replace", "generate"],
+      "properties": {
+        "crop": {"type": "boolean"},
+        "tone_adjust": {"type": "boolean"},
+        "replace": {"enum": ["forbidden", "approval_required", "allowed"]},
+        "generate": {"enum": ["forbidden", "approval_required", "allowed"]}
+      }
+    },
+    "editability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["keep_text_editable", "keep_charts_editable", "keep_diagrams_editable", "avoid_rasterization", "preserve_links", "preserve_animations", "preserve_notes"],
+      "properties": {
+        "keep_text_editable": {"type": "boolean"},
+        "keep_charts_editable": {"type": "boolean"},
+        "keep_diagrams_editable": {"type": "boolean"},
+        "avoid_rasterization": {"type": "boolean"},
+        "preserve_links": {"type": "boolean"},
+        "preserve_animations": {"type": "boolean"},
+        "preserve_notes": {"type": "boolean"}
+      }
+    },
+    "protected_terms": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "protected_slides": {"type": "array", "items": {"type": "integer", "minimum": 1}, "uniqueItems": true},
+    "accepted_risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "description": {"type": "string", "minLength": 1},
+          "slides": {"type": "array", "items": {"type": "integer", "minimum": 1}}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["approval_status"],
+        "properties": {"approval_status": {"const": "approved"}}
+      },
+      "then": {
+        "required": ["approved_by", "approved_at"],
+        "properties": {
+          "approved_by": {"type": "string", "minLength": 1},
+          "approved_at": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  ]
+}

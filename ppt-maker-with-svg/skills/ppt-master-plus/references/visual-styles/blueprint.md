@@ -7,6 +7,7 @@ Engineering schematic — thin line work on dark blueprint paper, isometric proj
 ## 1. Shape & decoration
 
 - Shape language: thin single-weight line frames (no heavy fills); components drawn as outlined geometry; optional isometric / 3D-axonometric projection for structures. Slight or zero corner rounding.
+- Composition geometry: let the schematic be the layout — a full-page annotated drawing as the skeleton with content hung on leader lines; a circular detail blow-up linked to its source; dimension-line brackets framing a hero figure; an isometric exploded stack for structure or sequence; a drawing-sheet title block anchoring one corner.
 - Decoration: the engineering-drawing vocabulary — dimension lines, leader arrows, component codes, coordinate labels, a faint gridline backdrop under everything. Annotation *is* the decoration.
 - Whitespace: the grid breathes through; let line work float on the dark field with measured spacing.
 
@@ -26,8 +27,12 @@ Engineering schematic — thin line work on dark blueprint paper, isometric proj
 
 ## 4. Texture / elevation
 
-- Flat line work, not material elevation. Depth reads from isometric projection and layered line weights, not shadows. Optional subtle corner vignette / accent glow on the dark paper — keep it faint. (Dark-field legibility: [`shared-standards.md §6`](../shared-standards.md).)
+- Flat line work, not material elevation. Depth reads from isometric projection and layered line weights, not shadows. Optional subtle corner vignette / accent glow on the dark paper — keep it faint.
 
 ## 5. Paired image-rendering
 
 `blueprint` — lock it so AI imagery shares the schematic line-drawing aesthetic.
+
+## 6. Illustration propensity
+
+**supportive** — but note the natural illustration here is hand-drawn **SVG schematic line-work / annotated marks**, not raster spot sheets; reach for line diagrams over decorative cutouts. If raster spots are used at all, keep them schematic, sparse, and secondary to the SVG line work. With no user steer this is the default lean; an explicit user request wins either way, and `image_usage: none` writes no illustration rows.

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="section">
+<g id="section-background-7" data-pptx-bounds="0 0 1280 720">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#0097BA"/>
+  <rect x="0" y="6" width="330" height="5" fill="#A4D968"/>
+  <polygon points="880,0 1280,0 1280,290 1110,290" fill="#E8F6F9"/>
+  <polygon points="1040,0 1280,0 1280,160 1145,160" fill="#F1F8E8"/>
+  <rect x="12" y="28" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="28" width="4" height="50" fill="#0097BA"/>
+</g>
+<g id="section-logo-7" data-pptx-bounds="1004 38 188 30">
+  <image href="images/huixin_logo_light.png" x="1004" y="38" width="188" height="29" preserveAspectRatio="xMinYMin meet"/>
+</g>
+<g id="section-title-7" data-pptx-bounds="80 150 980 220">
+  <text x="80" y="188" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700" fill="#0097BA" text-anchor="start">02 / RESULTS</text>
+  <text x="80" y="274" font-family="Microsoft YaHei, Arial, sans-serif" font-size="56" font-weight="700" fill="#111111" text-anchor="start">工作成果</text>
+  <line x1="80" y1="316" x2="860" y2="316" stroke="#0097BA" stroke-width="3"/>
+  <text x="80" y="358" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700" fill="#4B5563" text-anchor="start">目标与实际之间形成了什么结果和偏差？</text>
+</g>
+<g id="section-prompts-7" data-pptx-bounds="80 414 820 68">
+  <rect x="80" y="414" width="390" height="58" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <text x="104" y="450" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#111111" text-anchor="start">关键产出：成果对标与分类</text>
+  <rect x="490" y="414" width="410" height="58" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <text x="514" y="450" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#111111" text-anchor="start">管理视角：结果判断</text>
+</g>
+<g id="section-rail-7" data-pptx-bounds="80 570 1080 90">
+  <line x1="80" y1="602" x2="1160" y2="602" stroke="#D9D9D9" stroke-width="3"/>
+  <rect x="104" y="580" width="44" height="44" fill="#E8F6F9" stroke="#D9D9D9" stroke-width="1" rx="22"/>
+  <text x="126" y="608" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="middle">01</text>
+  <text x="126" y="650" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#4B5563" text-anchor="middle">工作梳理</text>
+  <rect x="414" y="580" width="44" height="44" fill="#A4D968" stroke="#0097BA" stroke-width="1" rx="22"/>
+  <text x="436" y="608" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="middle">02</text>
+  <text x="436" y="650" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#0097BA" text-anchor="middle">工作成果</text>
+  <rect x="724" y="580" width="44" height="44" fill="#E8F6F9" stroke="#D9D9D9" stroke-width="1" rx="22"/>
+  <text x="746" y="608" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="middle">03</text>
+  <text x="746" y="650" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#4B5563" text-anchor="middle">工作亮点</text>
+  <rect x="1034" y="580" width="44" height="44" fill="#E8F6F9" stroke="#D9D9D9" stroke-width="1" rx="22"/>
+  <text x="1056" y="608" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="middle">04</text>
+  <text x="1056" y="650" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#4B5563" text-anchor="middle">工作规划</text>
+</g>
+<g id="page-footer-7" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">07</text>
+</g>
+</svg>

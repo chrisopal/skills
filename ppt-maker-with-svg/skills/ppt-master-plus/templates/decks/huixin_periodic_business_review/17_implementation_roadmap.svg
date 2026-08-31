@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-17" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">04 / PLAN</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">实施路线与检查点</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">月报使用四周节奏，季报使用三个月或四阶段节奏</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="implementation-phases" data-pptx-bounds="64 226 1120 282">
+  <rect x="64" y="226" width="264" height="282" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="64" y="226" width="264" height="52" fill="#0097BA" rx="7"/>
+  <text x="84" y="259" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="start">{{PHASE_1}}</text>
+  <text x="84" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">阶段目标</text>
+  <text x="84" y="342" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#111111" text-anchor="start">{{PHASE_1_GOAL}}</text>
+  <text x="84" y="392" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">关键交付</text>
+  <text x="84" y="420" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{PHASE_1_OUTPUT}}</text>
+  <line x1="84" y1="448" x2="308" y2="448" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="84" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">检查点</text>
+  <text x="308" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{PHASE_1_GATE}}</text>
+  <line x1="328" y1="366" x2="352" y2="366" stroke="#0097BA" stroke-width="3"/>
+  <text x="340" y="360" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700" fill="#0097BA" text-anchor="middle">›</text>
+  <rect x="352" y="226" width="264" height="282" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="352" y="226" width="264" height="52" fill="#0097BA" rx="7"/>
+  <text x="372" y="259" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="start">{{PHASE_2}}</text>
+  <text x="372" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">阶段目标</text>
+  <text x="372" y="342" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#111111" text-anchor="start">{{PHASE_2_GOAL}}</text>
+  <text x="372" y="392" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">关键交付</text>
+  <text x="372" y="420" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{PHASE_2_OUTPUT}}</text>
+  <line x1="372" y1="448" x2="596" y2="448" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="372" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">检查点</text>
+  <text x="596" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{PHASE_2_GATE}}</text>
+  <line x1="616" y1="366" x2="640" y2="366" stroke="#0097BA" stroke-width="3"/>
+  <text x="628" y="360" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700" fill="#0097BA" text-anchor="middle">›</text>
+  <rect x="640" y="226" width="264" height="282" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="640" y="226" width="264" height="52" fill="#A4D968" rx="7"/>
+  <text x="660" y="259" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#111111" text-anchor="start">{{PHASE_3}}</text>
+  <text x="660" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">阶段目标</text>
+  <text x="660" y="342" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#111111" text-anchor="start">{{PHASE_3_GOAL}}</text>
+  <text x="660" y="392" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">关键交付</text>
+  <text x="660" y="420" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{PHASE_3_OUTPUT}}</text>
+  <line x1="660" y1="448" x2="884" y2="448" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="660" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">检查点</text>
+  <text x="884" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#A4D968" text-anchor="end">{{PHASE_3_GATE}}</text>
+  <line x1="904" y1="366" x2="928" y2="366" stroke="#0097BA" stroke-width="3"/>
+  <text x="916" y="360" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700" fill="#0097BA" text-anchor="middle">›</text>
+  <rect x="928" y="226" width="264" height="282" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="928" y="226" width="264" height="52" fill="#4B5563" rx="7"/>
+  <text x="948" y="259" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF" text-anchor="start">{{PHASE_4}}</text>
+  <text x="948" y="314" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">阶段目标</text>
+  <text x="948" y="342" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#111111" text-anchor="start">{{PHASE_4_GOAL}}</text>
+  <text x="948" y="392" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">关键交付</text>
+  <text x="948" y="420" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{PHASE_4_OUTPUT}}</text>
+  <line x1="948" y1="448" x2="1172" y2="448" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="948" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">检查点</text>
+  <text x="1172" y="478" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="end">{{PHASE_4_GATE}}</text>
+</g>
+<g id="roadmap-governance" data-pptx-bounds="64 546 1120 74">
+  <rect x="64" y="546" width="1120" height="74" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="6"/>
+  <text x="88" y="576" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">复盘机制</text>
+  <text x="88" y="604" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{REVIEW_CADENCE}}</text>
+  <text x="480" y="576" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#A4D968" text-anchor="start">升级机制</text>
+  <text x="480" y="604" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{ESCALATION_RULE}}</text>
+  <text x="858" y="576" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#4B5563" text-anchor="start">管理决策点</text>
+  <text x="858" y="604" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" fill="#111111" text-anchor="start">{{DECISION_GATE}}</text>
+</g>
+<g id="page-footer-17" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">17</text>
+</g>
+</svg>

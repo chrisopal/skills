@@ -39,7 +39,7 @@ Image to Editable PPT는 이미지, PDF, 이미지 기반 PPT를 **객체 단위
 - 객체 단위 재구성: 텍스트는 네이티브 텍스트 상자, 단순한 도형은 PowerPoint 도형, 복잡한 시각 요소는 독립 이미지 에셋으로 복원해 세 종류를 따로 조정할 수 있습니다.
 - 측정 기반 텍스트 복원: OCR로 각 페이지의 텍스트 주석(상자 좌표 + 글자 크기 + 크기 그룹)을 생성하고, 모델은 측정값에 따라 텍스트를 복원하며 같은 계층의 글자 크기를 자동으로 일관되게 유지합니다. 자세한 내용은 [설치 및 구성](/ko/installation.md)의 OCR Token 절을 참고하세요.
 - 다중 페이지 병렬 재구성: 다중 페이지 입력은 메인 agent가 page worker/subagent에게 병렬로 분배하고, 단일 페이지 입력은 메인 agent가 같은 재구성 흐름으로 로컬에서 처리합니다.
-- 이미지 생성과 편집은 현재 agent의 내장 `image_gen.imagegen` 도구를 우선 사용합니다. 정해진 폴백 조건을 충족할 때만 `editppt image`를 호출하며, CLI가 Codex OAuth와 OpenAI-compatible API 중 backend를 선택합니다.
+- 이미지 생성과 편집은 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. 다른 agent는 원생 Tool/Skill/Plugin/MCP/이미지 모델을 탐색·검증하며, 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원하지 않으면 기본 `gpt-image-2`의 `editppt image`를 사용합니다.
 - `.pptx` 입력의 페이지 노트는 번역·요약·수정 없이 출력의 해당 페이지에 그대로 복사됩니다.
 - 페이지 순서가 안정적입니다. 여러 이미지는 제공된 순서대로 페이지를 만들고, PDF와 `.pptx`는 원래 페이지 순서를 유지합니다.
 

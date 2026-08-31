@@ -17,7 +17,7 @@ It is useful when screenshot-like or image-based slides need to become easier to
 >
 > "Approve for me" mode is also known to still block some OCR requests, ChatGPT image generation/editing requests, or third-party API calls until you manually approve them. If you are away from the computer, the conversion may stall.
 >
-> During conversion, this skill automatically calls Baidu PaddleOCR-VL (when a token is configured) to correct text boxes, font sizes, and size groups. Image generation/editing prefers Codex's built-in `image_gen.imagegen`; it falls back to `editppt image` (Codex OAuth -> OpenAI-compatible API) only when the built-in tool is unavailable, errors, cannot read an edit input, or returns no valid local image. These calls are required for reconstructing image-based pages into editable PPT files.
+> During conversion, this skill automatically calls Baidu PaddleOCR-VL (when a token is configured) to correct text boxes, font sizes, and size groups. Image generation/editing defaults to Codex's built-in `image_gen.imagegen`; other agents first discover and validate native visual tools, using them only when they support prompt-to-image, reference-image editing, and explicit local output. Otherwise the skill falls back to `editppt image`, whose default model is `gpt-image-2` (Codex OAuth -> OpenAI-compatible API).
 >
 > ![Codex Full Access permission setting](assets/codex-full-access-permission.png)
 
@@ -68,7 +68,7 @@ It is useful when screenshot-like or image-based slides need to become easier to
 
 - Broad input coverage for many slide-reconstruction scenarios: one image, multiple images, multi-page PDFs, and image-based PPT files into editable `.pptx`.
 - Single-page or single-image input can be rebuilt locally by the main agent through the same page workflow; multi-page input is dispatched by the main agent to page workers/subagents, in parallel according to `max_concurrent_pages`.
-- Image generation and editing prefer Codex's built-in `image_gen.imagegen`. Only defined fallback conditions enter the `editppt image` CLI, which then selects local Codex OAuth before an OpenAI-compatible API.
+- Image generation and editing prefer Codex's built-in `image_gen.imagegen`. WorkBuddy, Claude Code, QoderWork, and other runtimes discover and validate native skills/plugins/MCP tools/image models, then use the default `gpt-image-2` `editppt image` CLI when none qualifies.
 - Third-party API fallback configuration lives in `~/.editppt/config.yaml`; on Windows this is `%USERPROFILE%\.editppt\config.yaml`.
 - Text sizes and positions are measurement-driven: prepare generates per-page text annotations (box coordinates + font sizes + size groups), and same-level text keeps one consistent size automatically.
 - Keep multiple images in the provided order; preserve PDF and `.pptx` page order.
@@ -87,14 +87,16 @@ It is useful when screenshot-like or image-based slides need to become easier to
 ## Runtime Requirements
 
 - Single-page or single-image input does not require creating a page worker, but it still must use the same page prompt, artifacts, and `editppt run record` validation flow. Multi-page input requires the agent to dispatch page workers/subagents; if page workers cannot be created, run the skill in an environment that supports page workers.
-- Complex background cleanup, foreground icon extraction, transparent asset sheets, and local image edits run serially per page and prefer the built-in `image_gen.imagegen` tool.
+- Complex background cleanup, foreground icon extraction, transparent asset sheets, and local image edits run serially per page and prefer built-in `image_gen.imagegen` or an agent-native image tool that passes all three capability checks.
 - The CLI fallback is entered only for a defined built-in failure. If local Codex OAuth exists (`~/.codex/auth.json`), the CLI uses it directly; otherwise it uses API fallback.
 - API fallback configuration lives in `~/.editppt/config.yaml`; on Windows this is `%USERPROFILE%\.editppt\config.yaml`.
 - Correcting text sizes and positions relies on a third-party OCR token (Baidu AI Studio, free) — see "Text Correction And OCR Token" below. Without it the skill falls back to the built-in offline detector with reduced text fidelity.
 
 ## Image Backend And Third-Party API Configuration
 
-The complete backend order is Codex's built-in `image_gen.imagegen` -> Codex OAuth -> OpenAI-compatible API. The agent calls the built-in tool directly; Python and the `editppt` CLI cannot call or detect it. The workflow enters the `editppt image` CLI fallback only when the built-in tool is unavailable/not callable, its call errors, an edit input is unreadable, or it returns no valid local image. Inside the CLI fallback, local Codex OAuth is selected first, followed by OpenAI-compatible API settings from `~/.editppt/config.yaml` or environment variables.
+The complete backend order is Codex's built-in `image_gen.imagegen` -> a capability-validated native image tool in the current agent -> the `editppt image` CLI with default model `gpt-image-2` (Codex OAuth -> OpenAI-compatible API). Native candidates may come from tools, skills, plugins, MCP/connectors, or configured image models, but must support prompt-to-image, reference-image editing, and an explicit local output. Image understanding alone, generation without reference editing, or manual-download-only output does not qualify.
+
+Official WorkBuddy material documents ImageGen/image-to-image behavior but not a complete public tool schema, so the installed runtime is still validated. Claude Code officially documents image understanding but no native generator/editor, so it needs an added skill/plugin/MCP image tool or the CLI fallback. QoderWork documents `/gen-image` and image remix, but its public reference-edit contract is partial and is also validated at runtime. For multi-page runs, page workers must expose the same native tool; otherwise the run uses the CLI consistently.
 
 Built-in generation requires only `prompt`. Built-in editing requires only `prompt` and absolute local paths in `referenced_image_paths`, and every input must be viewed first. The built-in tool has no `mask`, `model`, `size`, `quality`, or `out` parameters; their absence never triggers fallback. After success, the workflow accepts only the explicit local path returned by the tool (including `output_hint`), verifies it, and imports it without scanning a directory for a "newest" file.
 
@@ -120,8 +122,8 @@ The skill still runs without a token: it falls back to the built-in offline dete
 
 ## Known Limitations
 
-- Other agents need skill loading, file access, and CLI execution; multi-page runs also need a page worker/subagent dispatch mechanism.
-- The built-in image tool depends on whether the current agent runtime exposes `image_gen.imagegen`; Codex OAuth depends on the local Codex auth session and subscription-side image limits; API fallback depends on the selected OpenAI-compatible service's image generation/editing capabilities.
+- Other agents need skill loading, file access, and CLI execution; multi-page runs also need a page worker/subagent dispatch mechanism. If their native image tool fails the three-capability contract, they must be able to run the `editppt image` fallback.
+- Built-in/native image tools depend on actual runtime capabilities; Codex OAuth depends on the local Codex auth session and subscription-side image limits; API fallback depends on the selected OpenAI-compatible service's image generation/editing capabilities.
 - This skill has relatively complex flow control and high token usage. The cost of converting an image-based PPT into an editable PPT **may be 2-3x the cost of generating an image-based PPT**.
 - Results are limited by the model's baseline visual understanding and its ability to follow the skill workflow; usage quality is **not guaranteed for models below gpt-5.5**.
 - Some image elements and text positions may shift slightly, so output is **not guaranteed to be a 100% replica of the original page**.
@@ -153,7 +155,7 @@ $image-to-editable-ppt convert <path-to-image-based.pptx> into an editable Power
 
 The normal workflow is:
 
-1. Create an isolated job folder, normalize inputs into `pages/page_NNN/source.png`, and write the default `editppt image` backend.
+1. Create an isolated job folder, normalize inputs into `pages/page_NNN/source.png`, discover and validate the current runtime's image tools, and record the selected backend contract; use default `gpt-image-2` through `editppt image` when no native tool qualifies.
 2. If there is exactly 1 page, the main agent first claims it with `editppt run dispatch --local`, then rebuilds it locally from the same page prompt; if there are multiple pages, dispatch them to page workers in `max_concurrent_pages` batches.
 3. The page reconstructor — main-agent local mode or page worker — owns one page directory and completes reconstruction, self-check, and page-local correction there.
 4. Build one page manifest per page with editable text, simple shapes, and positioned image assets.

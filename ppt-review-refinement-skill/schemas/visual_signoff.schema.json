@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ppt-review-refinement/visual_signoff.schema.json",
+  "title": "PPT Final Visual Signoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "status", "reviewer", "reviewed_at", "source_file", "source_sha256", "candidate_file", "candidate_sha256", "reviewed_slides", "confirmed_checks", "notes"],
+  "properties": {
+    "version": {"type": "string"},
+    "status": {"enum": ["approved", "changes_requested", "rejected"]},
+    "reviewer": {"type": "string", "minLength": 1},
+    "reviewed_at": {"type": "string", "minLength": 1},
+    "source_file": {"type": "string", "minLength": 1},
+    "source_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+    "candidate_file": {"type": "string", "minLength": 1},
+    "candidate_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+    "reviewed_slides": {"type": "array", "items": {"type": "integer", "minimum": 1}, "minItems": 1, "uniqueItems": true},
+    "confirmed_checks": {
+      "type": "array",
+      "items": {"enum": ["rendered_all_slides", "checked_slide_overflow", "checked_alignment", "checked_fonts", "checked_images", "checked_editability"]},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "notes": {"type": "string"}
+  }
+}

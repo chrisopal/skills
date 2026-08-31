@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
-  <rect x="0" y="0" width="1280" height="720" fill="#0B2F3A"/>
-  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
-  <polygon points="0,612 460,612 530,720 0,720" fill="#4295B6" opacity="0.92"/>
-  <polygon points="0,646 350,646 398,720 0,720" fill="#B0D776" opacity="0.9"/>
-  <image x="1028" y="36" width="188" height="76" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_dark.png"/>
-  <text x="88" y="190" font-family="Microsoft YaHei" font-size="24" fill="#B0D776">{{SECTION_NO}}</text>
-  <text x="88" y="268" font-family="Microsoft YaHei" font-size="54" font-weight="bold" fill="#FFFFFF">{{SECTION_TITLE}}</text>
-  <text x="88" y="325" font-family="Microsoft YaHei" font-size="22" font-weight="bold" fill="#9BC6D8">{{SECTION_MESSAGE}}</text>
-  <line x1="88" y1="378" x2="840" y2="378" stroke="#4295B6" stroke-width="2"/>
+  <image id="huixin-0826-dark-background" href="images/huixin_dark_bg.png" x="0" y="0" width="1280" height="720" preserveAspectRatio="none" data-pptx-role="background"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#044AAA"/>
+  <polygon points="0,612 460,612 530,720 0,720" fill="#044AAA" opacity="0.92"/>
+  <polygon points="0,646 350,646 398,720 0,720" fill="#1AB6ED" opacity="0.9"/>
+  <image id="huixin-logo" x="1028" y="40" width="176" height="27" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_dark.png" data-logo-variant="dark"/>
+  <text x="88" y="190" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" fill="#1AB6ED">{{SECTION_NO}}</text>
+  <text x="88" y="268" font-family="Microsoft YaHei, Arial, sans-serif" font-size="54" font-weight="bold" fill="#FFFFFF">{{SECTION_TITLE}}</text>
+  <text x="88" y="325" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" fill="#C0DCEF">{{SECTION_MESSAGE}}</text>
+  <line x1="88" y1="378" x2="840" y2="378" stroke="#044AAA" stroke-width="2"/>
   <g id="section-prompts">
-    <rect x="88" y="424" width="220" height="54" rx="4" fill="#FFFFFF" opacity="0.08" stroke="#4295B6"/>
-    <text x="112" y="458" font-family="Microsoft YaHei" font-size="16" fill="#FFFFFF">本章回答：{{QUESTION_1}}</text>
-    <rect x="326" y="424" width="220" height="54" rx="4" fill="#FFFFFF" opacity="0.08" stroke="#4295B6"/>
-    <text x="350" y="458" font-family="Microsoft YaHei" font-size="16" fill="#FFFFFF">关键产出：{{OUTPUT_1}}</text>
-    <rect x="564" y="424" width="220" height="54" rx="4" fill="#FFFFFF" opacity="0.08" stroke="#4295B6"/>
-    <text x="588" y="458" font-family="Microsoft YaHei" font-size="16" fill="#FFFFFF">决策视角：{{ASK_1}}</text>
+    <rect x="88" y="424" width="220" height="54" rx="4" fill="#FFFFFF" opacity="0.08" stroke="#044AAA"/>
+    <text x="112" y="458" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#FFFFFF">本章回答：{{QUESTION_1}}</text>
+    <rect x="326" y="424" width="220" height="54" rx="4" fill="#FFFFFF" opacity="0.08" stroke="#044AAA"/>
+    <text x="350" y="458" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#FFFFFF">关键产出：{{OUTPUT_1}}</text>
+    <rect x="564" y="424" width="220" height="54" rx="4" fill="#FFFFFF" opacity="0.08" stroke="#044AAA"/>
+    <text x="588" y="458" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#FFFFFF">决策视角：{{ASK_1}}</text>
   </g>
 </svg>

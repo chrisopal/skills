@@ -34,13 +34,13 @@ An exact match is not guaranteed. Readable text and simple shapes are restored a
 
 Yes, with conditions. The agent must support skill loading, file access, and CLI execution. Multi-page tasks also require a page-worker or subagent dispatch mechanism. If the current environment cannot create page workers, run multi-page tasks in an environment that can.
 
-Non-Codex environments such as Claude Code, OpenClaw, and Hermes Agent usually do not have Codex OAuth and require an OpenAI-compatible image API fallback. See [Installation and Configuration](/en/installation.md).
+WorkBuddy, Claude Code, QoderWork, and other non-Codex environments first discover and validate their own image tools/skills/plugins/MCP integrations. If none supports prompt-to-image, reference-image editing, and explicit local output, they need usable Codex OAuth or an OpenAI-compatible image API fallback. See [Installation and Configuration](/en/installation.md).
 
 Because results depend on the model's underlying reasoning and its ability to follow the skill, performance is not guaranteed with models below gpt-5.5.
 
 ## Which Image Generator Does It Use? Do I Need an API Key?
 
-Image generation and editing prefer the current agent's built-in `image_gen.imagegen` tool. The workflow falls back to `editppt image` only under defined conditions, such as an unavailable or failed built-in tool, an unreadable edit input, or no valid local image result. The CLI tries local Codex OAuth first, using your subscription's image allowance, and then reads OpenAI-compatible API configuration from `~/.editppt/config.yaml`. Codex subscribers usually do not need to configure an API key. For a third-party fallback, give the AI the service's base URL, model name, and API key; it will save them to user-level configuration and mask sensitive values.
+Image generation and editing default to Codex's built-in `image_gen.imagegen`. Other agents first search native tools, skills, plugins, MCP/connectors, or image models and require prompt-to-image, reference-image editing, and explicit local output; vision-only capability is not an image backend. If none qualifies, the skill uses `editppt image` with default model `gpt-image-2`. The CLI tries local Codex OAuth first and then OpenAI-compatible API configuration from `~/.editppt/config.yaml`. Codex subscribers usually need no API key; third-party fallback needs a base URL, model name, and API key.
 
 ## How Do I Update the Skill?
 

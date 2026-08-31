@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-22" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">CHART / WORKSTREAM</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">工作条线完成度</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">横向比较各工作条线的计划、完成、执行中和风险占比</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="workstream-completion-bars" data-pptx-bounds="64 208 1152 382">
+  <rect x="64" y="208" width="1152" height="382" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <rect x="86" y="228" width="14" height="14" fill="#0097BA" rx="2"/>
+  <text x="108" y="240" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">已完成</text>
+  <rect x="176" y="228" width="14" height="14" fill="#A4D968" rx="2"/>
+  <text x="198" y="240" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">执行中</text>
+  <rect x="274" y="228" width="14" height="14" fill="#D8665B" rx="2"/>
+  <text x="296" y="240" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">风险/滞后</text>
+  <text x="88" y="304" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{WORKSTREAM_1}}</text>
+  <rect x="250" y="286" width="840" height="22" fill="#EEF1F3" rx="11"/>
+  <rect x="250" y="286" width="330" height="22" fill="#0097BA" rx="11"/>
+  <rect x="580" y="286" width="180" height="22" fill="#A4D968"/>
+  <rect x="760" y="286" width="30" height="22" fill="#D8665B"/>
+  <text x="1188" y="303" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{RATE_1}}</text>
+  <text x="88" y="360" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{WORKSTREAM_2}}</text>
+  <rect x="250" y="342" width="840" height="22" fill="#EEF1F3" rx="11"/>
+  <rect x="250" y="342" width="296" height="22" fill="#0097BA" rx="11"/>
+  <rect x="546" y="342" width="202" height="22" fill="#A4D968"/>
+  <rect x="748" y="342" width="70" height="22" fill="#D8665B"/>
+  <text x="1188" y="359" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{RATE_2}}</text>
+  <text x="88" y="416" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{WORKSTREAM_3}}</text>
+  <rect x="250" y="398" width="840" height="22" fill="#EEF1F3" rx="11"/>
+  <rect x="250" y="398" width="262" height="22" fill="#0097BA" rx="11"/>
+  <rect x="512" y="398" width="224" height="22" fill="#A4D968"/>
+  <rect x="736" y="398" width="30" height="22" fill="#D8665B"/>
+  <text x="1188" y="415" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{RATE_3}}</text>
+  <text x="88" y="472" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{WORKSTREAM_4}}</text>
+  <rect x="250" y="454" width="840" height="22" fill="#EEF1F3" rx="11"/>
+  <rect x="250" y="454" width="228" height="22" fill="#0097BA" rx="11"/>
+  <rect x="478" y="454" width="246" height="22" fill="#A4D968"/>
+  <rect x="724" y="454" width="30" height="22" fill="#D8665B"/>
+  <text x="1188" y="471" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{RATE_4}}</text>
+  <text x="88" y="528" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{WORKSTREAM_5}}</text>
+  <rect x="250" y="510" width="840" height="22" fill="#EEF1F3" rx="11"/>
+  <rect x="250" y="510" width="194" height="22" fill="#0097BA" rx="11"/>
+  <rect x="444" y="510" width="268" height="22" fill="#A4D968"/>
+  <rect x="712" y="510" width="70" height="22" fill="#D8665B"/>
+  <text x="1188" y="527" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="end">{{RATE_5}}</text>
+</g>
+<g id="workstream-chart-conclusion" data-pptx-bounds="64 610 1152 36">
+  <rect x="64" y="610" width="1152" height="36" fill="#4B5563" rx="4"/>
+  <text x="84" y="634" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="start">管理结论：{{WORKSTREAM_CHART_CONCLUSION}}</text>
+</g>
+<g id="page-footer-22" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">22</text>
+</g>
+</svg>

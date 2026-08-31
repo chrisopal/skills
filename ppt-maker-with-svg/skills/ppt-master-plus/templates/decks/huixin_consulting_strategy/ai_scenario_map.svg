@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#0097BA"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+    <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+    <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  </g>
+  <text x="64" y="48" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563">AI SCENARIO MAP</text>
+  <text x="64" y="116" font-family="Microsoft YaHei, Arial, sans-serif" font-size="34" font-weight="bold" fill="#111111">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D9D9D9"/>
+
+  <g id="business-value-chain" data-pptx-bounds="64 204 1152 50">
+    <rect x="64" y="204" width="1152" height="50" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="88" y="235" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="bold" fill="#4B5563">业务价值链</text>
+    <rect x="224" y="214" width="142" height="30" rx="3" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="295" y="234" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#111111">{{CHAIN_1}}</text>
+    <rect x="378" y="214" width="142" height="30" rx="3" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="449" y="234" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#111111">{{CHAIN_2}}</text>
+    <rect x="532" y="214" width="142" height="30" rx="3" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="603" y="234" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#111111">{{CHAIN_3}}</text>
+    <rect x="686" y="214" width="142" height="30" rx="3" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="757" y="234" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#111111">{{CHAIN_4}}</text>
+    <rect x="840" y="214" width="142" height="30" rx="3" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="911" y="234" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#111111">{{CHAIN_5}}</text>
+    <rect x="994" y="214" width="142" height="30" rx="3" fill="#FFFFFF" stroke="#D9D9D9"/>
+    <text x="1065" y="234" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#111111">{{CHAIN_6}}</text>
+  </g>
+
+  <g id="ai-scenario-portfolio" data-pptx-bounds="64 278 1152 294">
+    <rect x="64" y="278" width="360" height="132" rx="6" fill="#FFFFFF" stroke="#0097BA" stroke-width="1.5"/>
+    <rect x="64" y="278" width="360" height="34" rx="6" fill="#0097BA"/>
+    <text x="84" y="301" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">01  {{SCENE_1}}</text>
+    <text x="84" y="338" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">角色/触发：{{ROLE_1}} / {{TRIGGER_1}}</text>
+    <text x="84" y="368" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#111111">AI动作：{{AI_ACTION_1}}</text>
+    <text x="84" y="394" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#0097BA">输出/KPI：{{OUTPUT_1}} / {{KPI_1}}</text>
+
+    <rect x="460" y="278" width="360" height="132" rx="6" fill="#FFFFFF" stroke="#A4D968" stroke-width="1.5"/>
+    <rect x="460" y="278" width="360" height="34" rx="6" fill="#A4D968"/>
+    <text x="480" y="301" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="bold" fill="#111111">02  {{SCENE_2}}</text>
+    <text x="480" y="338" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">角色/触发：{{ROLE_2}} / {{TRIGGER_2}}</text>
+    <text x="480" y="368" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#111111">AI动作：{{AI_ACTION_2}}</text>
+    <text x="480" y="394" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4F8E21">输出/KPI：{{OUTPUT_2}} / {{KPI_2}}</text>
+
+    <rect x="856" y="278" width="360" height="132" rx="6" fill="#FFFFFF" stroke="#4B5563" stroke-width="1.5"/>
+    <rect x="856" y="278" width="360" height="34" rx="6" fill="#4B5563"/>
+    <text x="876" y="301" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">03  {{SCENE_3}}</text>
+    <text x="876" y="338" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">角色/触发：{{ROLE_3}} / {{TRIGGER_3}}</text>
+    <text x="876" y="368" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#111111">AI动作：{{AI_ACTION_3}}</text>
+    <text x="876" y="394" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">输出/KPI：{{OUTPUT_3}} / {{KPI_3}}</text>
+
+    <rect x="64" y="436" width="360" height="132" rx="6" fill="#F5F6F7" stroke="#0097BA"/>
+    <text x="84" y="466" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="bold" fill="#0097BA">04  {{SCENE_4}}</text>
+    <text x="84" y="500" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">角色/触发：{{ROLE_4}} / {{TRIGGER_4}}</text>
+    <text x="84" y="530" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#111111">AI动作：{{AI_ACTION_4}}</text>
+    <text x="84" y="554" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#0097BA">输出/KPI：{{OUTPUT_4}} / {{KPI_4}}</text>
+
+    <rect x="460" y="436" width="360" height="132" rx="6" fill="#F5F6F7" stroke="#A4D968"/>
+    <text x="480" y="466" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="bold" fill="#4F8E21">05  {{SCENE_5}}</text>
+    <text x="480" y="500" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">角色/触发：{{ROLE_5}} / {{TRIGGER_5}}</text>
+    <text x="480" y="530" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#111111">AI动作：{{AI_ACTION_5}}</text>
+    <text x="480" y="554" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4F8E21">输出/KPI：{{OUTPUT_5}} / {{KPI_5}}</text>
+
+    <rect x="856" y="436" width="360" height="132" rx="6" fill="#F5F6F7" stroke="#4B5563"/>
+    <text x="876" y="466" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="bold" fill="#4B5563">06  {{SCENE_6}}</text>
+    <text x="876" y="500" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">角色/触发：{{ROLE_6}} / {{TRIGGER_6}}</text>
+    <text x="876" y="530" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#111111">AI动作：{{AI_ACTION_6}}</text>
+    <text x="876" y="554" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#4B5563">输出/KPI：{{OUTPUT_6}} / {{KPI_6}}</text>
+  </g>
+
+  <g id="ai-priority-decision" data-pptx-bounds="64 594 1152 46">
+    <rect x="64" y="594" width="1152" height="46" rx="4" fill="#111111"/>
+    <text x="88" y="623" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF">优先判断：{{PRIORITY_DECISION}}</text>
+    <text x="1192" y="623" text-anchor="end" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" fill="#C0DCEF">依据：{{PRIORITY_BASIS}}</text>
+  </g>
+  <text x="64" y="674" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

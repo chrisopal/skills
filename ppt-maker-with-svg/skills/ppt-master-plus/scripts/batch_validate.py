@@ -16,6 +16,10 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from console_encoding import configure_utf8_stdio
+
+configure_utf8_stdio()
+
 try:
     from project_utils import (
         find_all_projects,
@@ -196,11 +200,11 @@ class BatchValidator:
             if self.summary['missing_readme'] > 0:
                 print(f"  1. Create documentation for projects missing README")
                 print(
-                    f"     Reference: examples/google_annual_report_ppt169_20251116/README.md")
+                    f"     Include the project goal, sources, canvas, artifacts, and export path")
 
             if self.summary['svg_issues'] > 0:
-                print(f"  2. Check and fix SVG viewBox settings")
-                print(f"     Ensure consistency with canvas format")
+                print(f"  2. Check SVG root viewBox settings")
+                print(f"     The SVG root viewBox is the export canvas authority")
 
             if self.summary['missing_spec'] > 0:
                 print(f"  3. Add design specification files")
@@ -292,7 +296,11 @@ def main(argv: list[str] | None = None) -> int:
 
     if not directories:
         parser.print_help()
-        return 0
+        print(
+            "\n[ERROR] Provide at least one directory or pass --all.",
+            file=sys.stderr,
+        )
+        return 1
 
     # Validate each directory
     for directory in directories:
@@ -300,6 +308,13 @@ def main(argv: list[str] | None = None) -> int:
             validator.validate_directory(directory)
         else:
             print(f"[WARN] Skipping non-existent directory: {directory}\n")
+
+    if validator.summary['total'] == 0:
+        print(
+            "[ERROR] No projects were found in the requested directories.",
+            file=sys.stderr,
+        )
+        return 1
 
     # Print summary
     validator.print_summary()

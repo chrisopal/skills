@@ -9,6 +9,8 @@ This document describes the responsibilities, owners, and current field contract
 - `page_request.json`
 - `page_result.json`
 - `pages/page_NNN/validation.json`
+- `pages/page_NNN/visual-qa.json`
+- `pages/page_NNN/visual-diff.png`
 - `pages/page_NNN/manifest.json`
 - `pages/page_NNN/imagegen-jobs.json`
 - `notes_manifest.json`
@@ -37,6 +39,7 @@ Key fields:
   "max_concurrent_pages": 6,
   "image_backend": {
     "backend_id": "builtin-imagegen",
+    "runtime_id": "codex",
     "tool_name": "image_gen.imagegen",
     "required_parameters": {
       "generate": ["prompt"],
@@ -45,6 +48,7 @@ Key fields:
     "input_context_policy": "generate with prompt; before editing, view_image each input, then use prompt plus absolute local referenced_image_paths",
     "save_path_policy": "use only an explicit valid local result/output_hint path, then editppt image import; never scan for a newest file",
     "fallback_command": "editppt image generate/edit",
+    "fallback_model": "gpt-image-2",
     "fallback_order": ["codex-oauth", "openai-compatible-api"],
     "fallback_policy": {
       "on": [
@@ -71,11 +75,24 @@ For `backend_id: "builtin-imagegen"`, these fields are required and have fixed m
 - `input_context_policy`: requires `view_image` on every edit input before the built-in call; generation has no image input.
 - `save_path_policy`: permits only an explicit valid local result path, including `output_hint`, followed by `editppt image import`; newest-file directory scanning is forbidden.
 - `fallback_command`: the CLI surface used only after the fallback policy matches.
+- `fallback_model`: `gpt-image-2`, used by the CLI fallback; it is not passed to the built-in agent tool.
 - `fallback_order`: the CLI's internal order, Codex OAuth before a configured OpenAI-compatible API.
 - `fallback_policy.on`: the only events that permit leaving the built-in tool: it is unavailable/not callable, its call errors, an edit input is unreadable, or it returns no valid local image.
 - `fallback_policy.missing_optional_parameters`: always `false`; absent optional controls never authorize fallback.
 
 Other backend metadata may describe model labels, runtime homes, or handoff text, but it does not change this order. Parent-level tool selection and user-interaction policy live in `SKILL.md` subsection "Image Backend Selection"; page reconstructors execute the copied contract above.
+
+For `backend_id: "agent-image-tool"`, the contract records a tool discovered in a non-Codex or otherwise unknown runtime:
+
+- `runtime_id`: the owning runtime (`workbuddy`, `claude-code`, `qoderwork`, or a concrete identifier); `auto` means discovery has not yet been resolved.
+- `tool_name` / `tool_call`: the concrete native tool, installed skill/plugin, MCP tool, or agent-call syntax. `auto-discover` is allowed only before execution and must be resolved before importing output.
+- `required_capabilities`: always `image-generation`, `reference-image-editing`, and `explicit-local-output`.
+- `discovery_policy.reject_if`: disqualifies vision-input-only/text-only models, generation-only tools that cannot edit a supplied reference, and tools that do not return or save an unambiguous local file.
+- `model`: the discovered native producer model when it is known; it remains `null` while discovery is unresolved.
+- `fallback_model`: always `gpt-image-2` for the built-in and agent-tool contracts. The exact Codex built-in tool does not accept a model parameter, so this field governs only the deterministic CLI fallback.
+- `fallback_order` / `fallback_policy`: the same deterministic CLI fallback order and allowed failure events used by the built-in contract. A missing required capability is treated as tool unavailability before any native call.
+
+The parent agent must follow `references/agent-image-backends.md` to resolve this contract. A model that can inspect an input image but cannot generate and reference-edit images is not a valid backend.
 
 ## `page_jobs.json`
 
@@ -150,6 +167,8 @@ Includes:
 - page pptx path
 - preview path
 - contact sheet path
+- visual QA report path
+- visual diff path
 - validation path
 - page-local output hashes, which may be supplemented by `editppt run record`
 
@@ -162,6 +181,8 @@ Minimal required shape (paths are relative to the page directory):
   "page_pptx": "page.pptx",
   "preview": "preview.png",
   "contact_sheet": "split_assets_contact.png",
+  "visual_qa_report": "visual-qa.json",
+  "visual_diff": "visual-diff.png",
   "validation": "validation.json",
   "page_result": "page_result.json"
 }
@@ -179,11 +200,18 @@ Must contain at top level:
 
 ```json
 {
-  "passed": true
+  "passed": true,
+  "visual_qa_passed": true
 }
 ```
 
-`passed` must be a boolean. `editppt run record` only reads top-level `passed` to decide whether the page can enter final assembly. `status: "pass"`, `runtime_validation.passed`, or other nested fields may remain as supplemental information, but they cannot replace top-level `passed`.
+Both fields must be booleans. `editppt page validate` writes the report after running structural validation and deterministic visual QA; `editppt run record` recomputes both instead of trusting a worker-authored claim. A page enters final assembly only when both fields are `true`. `status: "pass"`, `runtime_validation.passed`, or other nested fields may remain as supplemental information, but they cannot replace these top-level fields.
+
+## `pages/page_NNN/visual-qa.json` and `visual-diff.png`
+
+Owner: computed by `editppt page visual-qa`; recomputed by `editppt page validate` and `editppt run record`.
+
+Purpose: deterministic source-versus-preview evidence. `visual-qa.json` contains top-level `passed`, comparison metrics, and violations grouped by `overlap_violations`, `shape_color_mismatches`, `geometry_mismatches`, `diff_threshold_violations`, and `contract_violations`. `visual-diff.png` is the aligned pixel-difference image used for inspection. These artifacts are required page outputs and cannot be replaced by a declarative self-check boolean.
 
 ## `pages/page_NNN/manifest.json`
 
@@ -206,6 +234,7 @@ Must contain:
 - `shapes`
 - `images`
 - `asset_provenance`
+- optional `visual_qa` policy overrides
 - page strategy
 
 `slide`, `content_box`, and `source.width_px/source.height_px` must come from `page_request.json`. All `box_px`, `points_px`, and `polygon_px` values use `source.png` pixel coordinates; the runtime maps these coordinates into `content_box` instead of stretching them to the whole slide. Coordinate layouts:
@@ -257,6 +286,31 @@ Text alignment:
 }
 ```
 
+Optional `visual_qa` policy overrides use exact object ids and reasoned exceptions:
+
+```json
+{
+  "visual_qa": {
+    "allowed_overlaps": [
+      {"kind": "image-text", "image_id": "image_badge", "text_id": "text_badge_number", "reason": "number intentionally centered inside badge"}
+    ],
+    "color_exemptions": [
+      {"shape_id": "shape_photo_overlay", "reason": "semi-transparent overlay is sampled against variable imagery"}
+    ],
+    "geometry_checks": [
+      {"shape_id": "shape_right_rail", "mode": "source-fill-span", "box_tolerance_px": 8}
+    ],
+    "image_text_overlap_ratio": 0.03,
+    "text_text_overlap_ratio": 0.05,
+    "shape_color_distance": 65,
+    "max_mean_absolute_error": 30,
+    "max_changed_pixel_ratio_40": 0.20
+  }
+}
+```
+
+`allowed_overlaps` and `color_exemptions` are narrow escape hatches for intentional designs. Each entry must name an exact manifest object id (or exact object-id pair) and include a non-empty reason; wildcards and blanket suppression are invalid. `geometry_checks` is recommended for major rails, sidebars, separators, and other structural anchors that are not auto-detected. Diff thresholds are optional because editability can create legitimate pixel-level differences; when present, exceeding them is a hard failure.
+
 `background_strategy` must explain at least:
 
 - `mode`: `native-or-script`, `source-preserving-local-cleanup`, `imagegen-full-clean-base`, or similar.
@@ -268,12 +322,12 @@ Text alignment:
 
 - `path`: the image path as referenced in `images[]`.
 - `source`: the file the asset was produced from (for separated assets and clean bases this is typically `source.png` or the recorded asset sheet; for formulas the `.tex` file). The referenced file must exist.
-- `source_type`: exactly one of `asset-sheet-separated`, `imagegen`, `latex-rendered-formula`, `user-provided`, `user-approved-rasterization`. No other value passes validation.
+- `source_type`: exactly one of `asset-sheet-separated`, `source-faithful-extraction`, `imagegen`, `latex-rendered-formula`, `user-provided`, `user-approved-rasterization`. No other value passes validation.
 - `provenance_note`: a non-empty explanation of how the asset was produced.
 
 Validation keyword-scans the free text of `visual_inventory` and `asset_provenance` entries:
 
-- An item whose description names a foreground object (icon, photo, logo, screenshot, badge, 图标, 照片, ...) must state its separation method in its text — include a term like "asset-sheet separated" / "image edit" / "分离" — unless the text marks it as background, formula, or native structure. Matching is substring-level, so words like "benchmark" or "trademark" also trigger the foreground check ("mark"); give native structural items an explicit "native structural" / "结构" marker in their description to exempt them.
+- An item whose description names a foreground object (icon, photo, logo, screenshot, badge, 图标, 照片, ...) must state its separation method in its text — include a term like "asset-sheet separated" / "image edit" / "source-faithful extraction" / "deterministic extraction" / "分离" — unless the text marks it as background, formula, or native structure. Matching is substring-level, so words like "benchmark" or "trademark" also trigger the foreground check ("mark"); give native structural items an explicit "native structural" / "结构" marker in their description to exempt them.
 - Terms naming forbidden fallbacks — "crop", "approximation", "fallback", "emoji", "裁剪", "近似", "降级", and similar — fail validation wherever they appear in these texts, even inside negations such as "no crop". Describe what was done ("asset-sheet separated from source"), not what was avoided.
 
 `roundRect` shapes must record `source_corner_radius_px`; they may also record `corner_reason`. If the source is a straight-corner rectangle, use `rect`.
@@ -347,13 +401,15 @@ Each imported job records at least the selected output and the backend that actu
       "output": "assets/icon-sheet.png",
       "output_sha256": "...",
       "backend": "builtin-imagegen",
+      "producer_id": null,
+      "producer_model": null,
       "fallback_reason": null
     }
   ]
 }
 ```
 
-`backend` is the actual producer: `builtin-imagegen`, `codex-oauth`, or `openai-compatible-api`; `unknown` is reserved for legacy page directories that have no `image_backend` contract. `editppt image import` requires an explicit producer, rejects files that are not readable images, and checks `backend`/`fallback_reason` against the page contract. `fallback_reason` is `null` when the preferred backend succeeded or the run selected a CLI contract directly; when a built-in contract enters its CLI fallback, it records the matching event from `image_backend.fallback_policy.on`.
+`backend` is the actual producer: `builtin-imagegen`, `agent-image-tool`, `codex-oauth`, or `openai-compatible-api`; `unknown` is reserved for legacy page directories that have no `image_backend` contract. `editppt image import` requires an explicit producer, rejects files that are not readable images, and checks `backend`/`fallback_reason` against the page contract. `agent-image-tool` additionally requires `producer_id` and may record `producer_model`, so a generic runtime contract never erases the concrete producing tool. `fallback_reason` is `null` when the preferred backend succeeded or the run selected a CLI contract directly; when a built-in or agent-tool contract enters its CLI fallback, it records the matching event from `image_backend.fallback_policy.on`.
 
 State and provenance record rules are described in the State Principles section of `SKILL.md` and in the asset processing examples in `cli-helper.md`.
 

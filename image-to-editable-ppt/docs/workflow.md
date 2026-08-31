@@ -4,7 +4,7 @@
 
 ## 整体流程
 
-1. **创建任务目录并归一化输入**：创建独立任务目录，把输入（图片/PDF/图片版 PPT）归一化为 `pages/page_NNN/source.png`，同时检测内置 `image_gen.imagegen` 是否可用并记录本次运行选择的图片 backend。
+1. **发现后端并归一化输入**：优先检测 Codex 内置 `image_gen.imagegen`；其他智能体再发现 Tool、Skill、Plugin、MCP/Connector 或图片模型，并校验文生图、参考图编辑、明确本地输出三项能力。没有合格原生工具时选择默认 `gpt-image-2` 的 `editppt image`。随后创建独立任务目录，把输入归一化为 `pages/page_NNN/source.png` 并记录本次运行的 backend 契约。
 2. **OCR 文字标注（如已配置 Token）**：把整个输入作为一个批量任务提交 OCR，为每页生成文字标注（框坐标、实测字号、字号分组、文字内容），供重建时按测量值还原文字。
 3. **页面分派**：如果只有 1 页，主 agent 用 `editppt run dispatch --local` 认领页面并本地重建；如果有多页，按 `max_concurrent_pages` 分批分派给 page worker 并行重建。
 4. **逐页重建与自检**：页面重建者负责自己的页面目录，完成页面重建、对照源图自检和 page-local 修正，可能进行多轮迭代。每页创建 manifest，重建可编辑文本、简单形状和图片资产；需要时通过 image backend 做前背景分离和素材抽取。

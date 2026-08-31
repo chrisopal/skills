@@ -1,52 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="1280" height="720" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
-  <rect x="0" y="0" width="1280" height="720" fill="#F3F7FA"/>
-  <rect x="0" y="0" width="1280" height="6" fill="#4295B6"/>
-  <rect x="0" y="6" width="360" height="4" fill="#B0D776"/>
-  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei" font-size="13">05 / PROCESS WALKTHROUGH</text>
-  <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMoAAAAyCAYAAAAdpETcAAAYrElEQVR4nO1dCXRU1d3/31ky2UM2AoGQEHYCyK4VQXH7PBW0X1sqFWtri0WqHlqt1A39QHHp0bZ8IKK2eI47Vi1HUPhQDBUEAQ0QwpKF7JN1ksxkJslMZrnf+d3kjpPJZLaXWEvnd86Qmffeve/e+/77/38fRBFEEEEEEUQQQQQRRBBBBBFEEMG/FVg4jQxdFZyF11TAxV0Up02mWG1y+J30otTYwVttdlIzZV25OKe8lHiK02oUjymCiw+aUBtUm0/yXRWPkZqhaXg0ZXN20PTUJTQYuPfgOdpbUk8UpVXQCydyuOjoTxcMypgi+A9nlKr2r/iB2s0UpYrpPRIeo8RokqjEmE8Harbwq7LuUSTBtSoVkVpNWo1KSTdkx8flUtRHBBcvQqIuJ3eQ3dXZyyDh0zfMNqermxy8O+w+vumr5x85onA/GrWKbtlXSPm1LVzxoCK46BCaGOZc+BeDAY0qmow2PZ1s/ociwmzvdhA5nKTQRSEVY6Q3dtD9h4vpH+WNEWaJIHxGSYnJoglJi8jFnaQUKqYhi91A51s/U9TPbZMyaVpmMtkcyhlYF62lgspm2ldtUNxXBP/BPsow3WjWYW/lNWUFg3BrLgICGlWUiKKlxYwNSyesnDqaPXH8Ai+qO0sUq1M2IugRnZYQRavvsPKRcdHfegTswoULvL6+nkaOHEnjxo0LeP+ioiJuMplwLY0YMSKk8ZaWlvLu7m7Ky8sb0nk2Njby8vJy0miCIzeHw0E5OTlYg4DjOn36tJjDxIkTKSEhgf3LGaVWX8ddTjgDLkrSZZK5uxlBVUW+CrSK1dlOH1VsIEu3gcdHpYXUWUNjEx+RMZypVIwoSoPYlYLR9EAXpaEd5/RUY7HStwGTycRZr92YmJjIVq1aRZ9++ilde+214lh7ezvnnFNSUhLzbKNSqQRh3HDDDVRbW0v33Xef+3r89W7jjdraWn733XdTQUEBffHFF3zBggU+r5X9+QPG7e/85s2b6cknn6RQcM899wS8prm5mc+cOZP0ej29+eabfscrxxjufEIwvTg5XN0Up0lj1415gFRMNSgmGEhbrdKSmoUe3m1pbRUTf2ROLnv9+kvIbnMoHo1YRcYoRq2moca2bdt4UlISpaSkiI9Go+H79+8X5/AXv3Ec1xw+fFgM7eWXXxZtkpOTxXkwCfDnP//Zfb1sAwYY6N6jR49m8+bNo5qaGgJz+sLx48c57pOZmUmjRo3y+cF9Dh06NOB9tmzZwt96662Q12bLli20bNky7o/R77//fmgr8XvlypUQHNzXGBMTE+m3v/0tr66uFuvjbz6pqal05513cmjqkDWKvq6egyi1Gg21tLTxGE0iKzcd5SebP6AOu0FohnAhE5f7qv9Ihq5ynhaTG5RSKC27wC0dHWR39DCHTq0istmJdOGPRUKtVdPRJhMt+biA7/7+7CFT5zfffDNNmTLFbZIkJCQQpPzBgwfpiiuuoBdeeIHMZjO5XC6aNm2auOamm26iSZMmkVarJbVaTT/+8Y8Fsf/iF78gEA7MMABtpk+f7r7Xl19+yX/4wx8Kkw7ayGq10saNG8W5oqIimG582LBhok8w3+rVq8V4nE4nWSwWv/NAXwPh5MmTBLNrzpw5QupjPv4Axvv5z39OR44coZ07d9Itt9zCd+zY0e8ZtLS00DvvvCPMNKCrq8tvv01NTULL4vpA88F5zNsTQVFVl9VKdruduIuTsb3nQeQmXcp2XniIO1w2ilJDGygLFDV1lZHdFby5AyYBDIYWsnZYuFGlo3VXTaWNX5WTWqWkboBIwxhZbHY6VNdGQwlfNvjy5cvFQkK6zZgxo995bz8kLy9PXA9GmjZt2oDTzs7OFlJ3w4YN4veKFSsgZQVDgXFARL/+9a/FbzApmNhms7nbb9iwgcaMGUPwBzwBusjLy/N5z2effZY/9dRTFBsbS2DSyZMnB/VYvv76a/7AAw/QZ599Jpjl+eef53fddRfFxcUxT+aUY3n00Udp1qxZghE/+OADoVGfffZZcQ7zwjwuu+wy6uilGQAm61VXXUXDhw8nmL5gpD/84Q/iHASXNIeDZhSjycQbGhtJpVaL0DAGaDK186SkRJabtIDK+OfUYW9RpFUAnTqOKtuPkdFWx4fpMv0uaGNTsxgTYLZYqNlooqxRo1itxcqfOFxCKl3/iYYCUB6IB3bpS0U1fMXEkRQfNfilLTU1NfzQoUNCguN+MTExtHXrVreU37p1K4ekBDH+7Gc/A/OwU6dO8d27d4tr0UZqhb1799KLL77IIQ3xoH/3u98xX0yp0+k4CAdS+/rrr3df8/7773OdTkezZ88WPgWYFFpInl+5ciVMFp9rAC3ojddee42jDYgZ2m758uX0yCOPBLUuc+bMEfeG33X48GFB9N7mIcwn+DF4zk8++aQY10svvcTBKNBKd955J/PFgPL7pZdeSr/5zW/c/ojZbOaSUXwhIHXX1OqFeaNGBpwx8dBq9HpxbkbaEnZI/wovselJp44nJVCzKDpt2E2xmmS/15ktFl5cUipMDzEBjUaoXavFzJuI0ezMZDrTaiEnR7Ag/PFoVIxM3Q5ate8U3TAmjYYCDQ0NtGvXLjp27JiYBwi/urpanKusrBR2OiR8Z2cniFocLykpEYQMMwlEIk2tEydOUF1dnSBMELzFYuHx8fF9VqClpYWnpaX1M5fKysr4+PHjxXcw6iWXXNKTx/UQNpYA5oonPvroI37jjTeK75dffrlg8mAieJ647LLLBLNAE0Da79u3r8/5rKwshnFjze644w4eFxcn1gvAen311VciSIL1gxmVm5vr9mfk/I1Go/u35/ewGAU2q7e9BnUmoVXHiBBvjxxWInQ5Raljyepopy67icdofUdsuMslxiSBxbBYOqjO0Eq5OdmizchX83lDZ7dIIioBDDh1tFYwzFBg3rx5/Qa4dOlSDuZZvHgxmMh9HpIeWLZsGZNMBkyYMIGXlpYKibtx40b39S6Xq58tDKKCs2owGNwMJo9LtLe3+xxrVwAfQAIEOnfuXOHfwB95+OGH6ZprrgnrQUAYwreBcIDplp+fzxcvXsxkoEEytydAD2AIjMETv/rVr+ixxx6jcOGXUSqqqjkm6ylZJJcWFp3hM6blsUtH3MaKWvbw4w1vUpQ6jpRAq4qh8237ySXCzv1haGnh5ZVVfR4sAMbBAy4vL+e5ublsQWYyfVLdQha7Q1FVcY9GYjRzx2HaW9XMb8hOH1TzC6YCCFxqRwBmlfyr1Wq5dEBPnTolCBz2OBxd2aasrEz8ffrpp8X1+I42iPR4h32Tk3uqtcFckPLPPPMMf/DBBxk0kERUFIRef2zevBmmE4dF4QmYcWvWrIHEFn3PnTtXmjLi/JIl4Re/wgTz/A3hEQieQnww4ZdRoG4HurGMNkjJ2+3qoihhfikbKGMq0ltO0cmmf/CZw/+7z0JhLNBuvhJXOGd39Gi+FxZOocU7j9PZZhtpevMrSuCy2SkaUbVBBiJYkydPds8HxH377bcLMwr5gddee00IAAgmJBThkG/btk0cg3DA57rrrhO/f/KTn9C6devcJoRn1Ovtt98WOROEesEI586dE8efeeYZOO4cfUiAsNPT0zmIH+adxF//+lf3d/SBseIera2tQtpLnDt3jiNQAOaDUAWd4JmF4zOijXSs4Yhv377dzTxTp04VJivug/tfuHDBrXmfe+45uvrqq8VvhKbnz58vNBxMuCFhFGly+ZokpHp5RSXPHZvDshPnUKe9jc61fRJWPsQTaI++6jvP9j/JfY9FjrHbbheh7IxYHVtz6Dxv7OqmNqtd+BuKEKWh/zl+gT6tMfBrs0JLioYa9Tpx4gQHoyCKM3369ID32r9/P/IDgmGQG/F1DaJSCB1HR0eL3yByJOn+/ve/IwciAgOSESAc8QGhefox69atE1EvMOfRo0ehDcXx9evXixC3BBgHScyhgKeP4RkBmz17tpCFiNb96U9/AmMwaGtE9cBcGN/48eNZQUGBW2ZiLTwFgef3kBilsamJNzQOzIEgTORWWtvaeLw2mRk6y/kpw06K0fi/YVBgTDBLpekYz0ma745KNDUb/DIKGLvZ0FOntXJqFp1tsdAnlU2C0JUAOZoDJfV0zehUGmzo9Xr++uuvC1MKWvH48eNCSuLvc889587aD4SKigohdffs2SMSmLgexLxy5Up3Q19hZmS1YbadOXMGjnGf6yWOHDniJqzVq1e7o17//Oc/ORgF93n88cfZ448/7m6DsDYiagOZcBKY44EDB0R0DwGGZcuW9bFSvAGmhUPuDUQGZVUCtDGYBN9XrVrFUlJSOKocEGIGPK0jHMf9Nm3aJNZMhpPlvaAtPeGTgpDtPl9aRroAk1VrNO5YtkqlpuExE8hsR2kLKdcqjjb6on67+1hLaxu1Go0U5WHP+wI0ndls4QkJcezuz8/yTyqU26yih2gt6Tus1NzVzdNjogZNq8Ap/8tf/iJyDeECBAtp6+mIo74qIyNDjLOtrY1XVVWJiCUApgShQKsAMGsgbUFIMkoERxltJEwezr9n0rChoYF75nZycnKCXpu1a9ciAy4Y4MUXXwzYDgLFExCeiIrBJF26dCl973vf63Me586ePSsStADMrxkzZggmxVq9++67Yr6YN9YQlQqgZ2ggRNECMgpTqQIyCYCQsb6unmrr6nhKdCazOSz8vbL7iZOLWIgV/D5GIYomZQQMUlMToKwEkgGTLu21V0clxFJyfAyZbMrNL9SAbSuooIbOb5JwgwFvhzVcIG8BUwOmDxjBM+CBcphf/vKXPiNaWDMwjIyqSSDHICX1UEGadt5R1WDhWQRZXFwsfBNPfPzxx+L8rbfeKn5PnDgxqLVG4EQmZv0ySkJv/P3U6b71Lj7BmKj7ApzcLj4qUiuuTmS9tWSH618lc7eBJ0SlsabmZl6rr+sTHvbdtufmD8/KYX8sqOBr84uUVxbjHxWj6G+hBiwcDFW057uO4uJi7m0m+RKeA/32BvpC5bKnDxSUMw/J5M9OhlaBrwInGi+LaOmqEtuFYToprQGDZmoQTj3vM6ZAjIIxnz1/nudmjabouHi2raiG35VfRFEaZUSujtLQx1XNdNsnhfyN6/rb/eEAmXZIPDjUYY+rx1cYMAcCxxwZbmnewdSC1HzllVfgbwi/ArkbZLSxdoicjR492p38HCrI4EKg5zkQkFRduHChmI9IOlut/VIHgQDGkFE8MBD62rFjR7/r/FJy9pgsqm9oFE6P32hTd7c7IZUak83eLVnDhWYRETBlks7JnXSs8U1qtVbxlOh0BjMP9V2BnNzOzi7q7O6xyWemJRBZ7UTxyhgFNWDtVjt9VNVMb5fW859OCLxfIhDgSD/00ENB79XwBdjTyLu88cYbPh3ilJQU1tTUxBGhwn02bdokstrvvfeeu/3s2bPZ+vXrhS8Dsys9Pb1PCUso6OjoELVZINyBmADEKZ1sJExXrFjBfZlgIGT0ce+99yLL32e9cT0ihABC0ldeeaXIyofKrIjSvfzyy+5jvgSO36eTmpLCzpw7L5w8f4QJRx4PSNaATUq+msqMh6jT0aq4Bgx+Spnxc8pJmC9+Jw8bRg0NTaTV+u8Xi2s295RdZMTqaPmMbGzxJeSrw81Bgmo0GjV1OVz0/MlK6rA7uNLXG8EJx8NVwigAQrqy6E8UsHqZF8huoxoZAJPgWu+qXxQwIoGIHAUQbr2cy+US0TjcY6B54bgMEEDQIgLny4SSjDJQCQ20JNbvjjvuwB6esAaM6J4no/hi7oBPJy42llxOJzldrgEXDhunUGFcXVsjfl+SfjP7rOZ/uam9nnRq5WXvOnUCme09oeq42Fh2vriE27yqWPuPSUVNBgNV1+r5mMQYMXD11v8T9APNEC4QE7A5XVRoMJOhq2+WOhwg6gMChWSDsJGEAULCdxmpkrVgfRKsvefwHe1RtoHrIK09s/2yvQT6B3FKCS6ZCrkEMK40icJFQkICO3/+vPAdBqIZ3Gvt2rUikgWfACXzvsr1pZBGEaQ/ILcDf2Ug89MbmPuECRNQ0sMClf4DAak4J3sMQ2LRaDL5tSUxGWgWd8cq7SDVgKG0JZq+anyHjjW8yeePWMEmT5rIEGgIpOngP8nTTZ02nvf2F2QchM1datZTNLmzogkJTZ4crQ17grJ2a7CBLLw/yIz5UGFyECX1a9as6Ym8R0fT2LHhbQWXQGVysNXJEqh8CBZBeT7BvHlFlivISNmiUavZ1JT/om5naDbjQFAxtagwDiXKA8aGP3OhvIIPj9WxytsXUU5iNHUrfBEFii0dLk73fXGeajuUbRmGH8AY47GxsXzv3r1c7uPAFGfNmuWe5MKFC8Wx3nou5Ej6LcCuXbvEOSTaDAaD3wXCs5L+jBQ23ntNhhr83yhSF5RdND43l1VWVXND7y7HgSaNcznZY9zHVKQR7wIbDESpYqnMdJCON77N52X8lM2cMZ0VnT0nivQGinTAXIRPMzZ7jKAE+BMZ2/ORVRN5HqWPyck5LdldQLsqmvjSscPDkogyXAk7G7sPAWmPt7V9s3EM/gWiUWB+sdZardhT4QlJ+MileEfR4uN7tkGgVAXSe8+ePVxeLzXLhx9+SD/60Y9Cdoi/C8C+HOz2DNX0ChZBOxDpaanCZjaZzT7L10VWl/M+8edxwy4nm9NMxcZ8YT4pAWNq8XqjNmuPHwSAGJwu54CBNfhW3oz9yuI8evRoKRU2tysOF+tUKqpqMpERW5DDBJxeCRm+lYzv6Sv4KkPxhmwHZoJZYTQasb2XwVlFJAuZaRATNlQhSikZRUr2hQsXsilTpog9Ht8GohWGhz0BoTFp0qSwhBXWZdAYBQzQ0tLK24xGUnkRHxYaDmSKl12cpBvJ9JbTvLhN2bu7eu8imA37Varbv+ZjEuew9NRU4dDioXs/XPEWksREJE/7HL9p7HB24+6veaG+jZhGrUiryNKWPdUGOtHczmel+38biTcOHjzIERoW3URHu00gGf1BeQt2LcoyC19AlOoHP/iB2BjlqSEQIJAlHV9++SV9/vnngiDAOLKdDOl7l84jyw14Bw8k5PhwH+9xFRYW8vz8/IDEj5D03/72N/Ede/7x0oxAph+cfbydZubMme51lm0QFNi+fTsPVRtC2HqXxvha65BCUhqtxl285wksXLRORyNH9NQWeUKniqeRcdOosau498Xe4QM+SqutRmTrgcTEBFZRWeVzcfAQ09JSCeFq73N4a/2RpBjh2CsubdGq6a1TVRQbhnZCuTuqd5Hwww5GJL0AELSMcgV6bY/cvQekp6eLcnyYH3g3mDu3ldpTzAnTTkZ4INhQjIjnOWLECEGsACqEUR914MAB7JAUWk6r1faJmoG4UC+Ffj0ZAhoM+9ZRoo/j/gItoBn0j3uDaVF0GSgc3VvE6P6N9cHawVRFTgh5pFBD2lLIZ2RkiO/oy3N/jkRIlJuUmMj0dXW82SvhJ/aXD6Cu02LHMnN3E99V/hhxxV4BF3kZ7KqUwAP0Jb2kLe8Lf7x8EttwvIw/dqhYaARFI8IttAg0hM5w2L0HjYIXHGCP+6uv9ggA7J/4/e9/H1S2HlIWe1qARYsWiUE88cQTwndDdh3AvhTcB4yBcnsAL4xDRcCCBQsEA6FaGcD+diTx0G/vuAhr6RlFA2Oi7B5M5Fk8CG2FHY4ysTnYAON7Fj4iDI0Ka2iVwTIXwbQQFt4IS5wWnCrkYg99r0Qbnp5Oo0f5fyGE3lzID9a9Qg6XVdRxKQVCz0vGrqc4bQrT19fzxsYmN8NAWk0YlwuJNeCYHjpSwp8+XEy6WN0gsC+R3emi72en08dLB6fIMYLvFsKi2FEjRrg1CiJLwSAtZhw5uJVcpDx2D82E/2Olzdrz8jedNkpkzCXAvP6YBHhw9lh6+qo8stmVR+XEjRxO6ujdYRnBxYewGCUjYziD1HYIbZIWUJsAOk0cm59xG8Vr08ilMGQsXvrAtFRo+JBardU8LS0Vm3SEUwoGHpOVFbCPJJ2WTUmOIxqE7LoYk1ZDJcYOoakGpcMIvlMI2wZKT0sTkjQxPnBoTWJi8pUML5DodnUSH4T/PkLfcZq6HD1x89GZmQxRLvglw9OD266bmxhLS6dlUXe3Q4S2lSBKxajebKVNhd9sdorg4kHYHteozJGsoqoq4FZVb6RG5xDeLglmsTkt7leqhgMNw5vwy8Es4jWvE8aPY2XlwW9pnJGWwEw2O19ssdKZtg6yIfGmsOImSqWivXWtfFFmSsRXuYjwL3mYrdYafrZlL1Wbvya1Sqdo8F0OE83NWE55qTcomsv894/y0raejHi4HaEdXrzX6XDSuVuvoHFJsRFmuUgQeZC9QMl8/1fGhQfxXi1d+IWSEUQQQQQRRBBBBBFEEEEEEUQQQQQRRBBBBDTk+H9OovLkuPz2lgAAAABJRU5ErkJggg=="/>
-  <text x="64" y="106" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
-  <text x="64" y="140" fill="#4295B6" font-family="Microsoft YaHei" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+  <rect x="0" y="0" width="1280" height="720" fill="#F5F6F7"/>
+  <rect x="0" y="0" width="1280" height="6" fill="#0097BA"/>
+  <rect x="0" y="6" width="360" height="4" fill="#A4D968"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
 
-  <rect x="76" y="196" width="1128" height="320" rx="10" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
-  <line x1="160" y1="356" x2="1088" y2="356" stroke="#D2D3D4" stroke-width="4"/>
+  <text x="64" y="48" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">05 / PROCESS WALKTHROUGH</text>
+  <image x="1030" y="22" width="170" height="40" preserveAspectRatio="xMidYMid meet" href="images/huixin_logo_light.png"/>
+  <text x="64" y="106" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">{{PAGE_TITLE}}</text>
+  <text x="64" y="140" fill="#0097BA" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="700">{{KEY_MESSAGE}}</text>
+
+  <rect x="76" y="196" width="1128" height="320" rx="10" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <line x1="160" y1="356" x2="1088" y2="356" stroke="#D9D9D9" stroke-width="4"/>
   <g id="process-step-1" transform="translate(112 244)">
-    <circle cx="48" cy="112" r="38" fill="#4295B6"/>
-    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="38" font-weight="700">1</text>
-    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_1}}</text>
-    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_1_NOTE}}</text>
+    <circle cx="48" cy="112" r="38" fill="#0097BA"/>
+    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">1</text>
+    <text x="0" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{STEP_1}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{STEP_1_NOTE}}</text>
   </g>
   <g id="process-step-2" transform="translate(340 244)">
-    <circle cx="48" cy="112" r="38" fill="#4295B6"/>
-    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="38" font-weight="700">2</text>
-    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_2}}</text>
-    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_2_NOTE}}</text>
+    <circle cx="48" cy="112" r="38" fill="#0097BA"/>
+    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">2</text>
+    <text x="0" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{STEP_2}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{STEP_2_NOTE}}</text>
   </g>
   <g id="process-step-3" transform="translate(568 244)">
-    <circle cx="48" cy="112" r="38" fill="#B0D776"/>
-    <text x="48" y="126" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="38" font-weight="700">3</text>
-    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_3}}</text>
-    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_3_NOTE}}</text>
+    <circle cx="48" cy="112" r="38" fill="#A4D968"/>
+    <text x="48" y="126" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">3</text>
+    <text x="0" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{STEP_3}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{STEP_3_NOTE}}</text>
   </g>
   <g id="process-step-4" transform="translate(796 244)">
-    <circle cx="48" cy="112" r="38" fill="#4295B6"/>
-    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="38" font-weight="700">4</text>
-    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_4}}</text>
-    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_4_NOTE}}</text>
+    <circle cx="48" cy="112" r="38" fill="#0097BA"/>
+    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">4</text>
+    <text x="0" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{STEP_4}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{STEP_4_NOTE}}</text>
   </g>
   <g id="process-step-5" transform="translate(1024 244)">
-    <circle cx="48" cy="112" r="38" fill="#0B2F3A"/>
-    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei" font-size="38" font-weight="700">5</text>
-    <text x="0" y="42" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="22" font-weight="700">{{STEP_5}}</text>
-    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei" font-size="14">{{STEP_5_NOTE}}</text>
+    <circle cx="48" cy="112" r="38" fill="#111111"/>
+    <text x="48" y="126" text-anchor="middle" fill="#FFFFFF" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700">5</text>
+    <text x="0" y="42" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="700">{{STEP_5}}</text>
+    <text x="0" y="80" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14">{{STEP_5_NOTE}}</text>
   </g>
 
-  <rect x="76" y="548" width="708" height="58" rx="5" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
-  <text x="102" y="583" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">讲师提示：</text>
-  <text x="194" y="583" fill="#4B5563" font-family="Microsoft YaHei" font-size="16">{{FACILITATOR_TIP}}</text>
-  <rect x="824" y="548" width="380" height="58" rx="5" fill="#B0D776"/>
-  <text x="1014" y="584" text-anchor="middle" fill="#0B2F3A" font-family="Microsoft YaHei" font-size="17" font-weight="700">现场演示 / 学员跟练</text>
+  <rect x="76" y="548" width="708" height="58" rx="5" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="102" y="583" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">讲师提示：</text>
+  <text x="194" y="583" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16">{{FACILITATOR_TIP}}</text>
+  <rect x="824" y="548" width="380" height="58" rx="5" fill="#A4D968"/>
+  <text x="1014" y="584" text-anchor="middle" fill="#111111" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700">现场演示 / 学员跟练</text>
 
-  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">Huixin Training Enablement Template</text>
-  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei" font-size="12">{{PAGE_NUM}}</text>
+  <text x="64" y="660" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Huixin Training Enablement Template</text>
+  <text x="1216" y="660" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">{{PAGE_NUM}}</text>
 </svg>

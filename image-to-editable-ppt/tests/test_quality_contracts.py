@@ -56,6 +56,9 @@ class QualityContractTest(unittest.TestCase):
     def test_asset_sheet_separated_assets_are_allowed(self):
         self.assertIn("asset-sheet-separated", ALLOWED_SOURCE_TYPES)
 
+    def test_source_faithful_extraction_assets_are_allowed(self):
+        self.assertIn("source-faithful-extraction", ALLOWED_SOURCE_TYPES)
+
     def test_foreground_native_approximation_is_contract_violation(self):
         manifest = base_manifest()
         manifest["visual_inventory"] = [
@@ -110,6 +113,27 @@ class QualityContractTest(unittest.TestCase):
                 "provenance_note": "split from source-faithful asset sheet generated with editppt image edit",
             }
         ]
+        self.assertEqual([], quality_contract_violations(manifest))
+
+    def test_foreground_deterministic_source_extraction_passes_contract(self):
+        manifest = base_manifest()
+        manifest["visual_inventory"] = [
+            {
+                "id": "flat_icon",
+                "description": "foreground icon separated with source-faithful extraction",
+                "decision": "deterministically separated exact source pixels from a verified uniform background",
+                "path": "assets/flat_icon.png",
+            }
+        ]
+        manifest["asset_provenance"] = [
+            {
+                "path": "assets/flat_icon.png",
+                "source_type": "source-faithful-extraction",
+                "source": "source.png",
+                "provenance_note": "Deterministically separated exact source pixels with editppt image extract-source.",
+            }
+        ]
+
         self.assertEqual([], quality_contract_violations(manifest))
 
     def test_round_rect_writes_ooxml_adjustment(self):

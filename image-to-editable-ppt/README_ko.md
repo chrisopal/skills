@@ -17,7 +17,7 @@
 >
 > “대신 승인” 모드도 OCR 단계, ChatGPT 이미지 생성/편집 단계 또는 타사 API 호출 단계에서 요청을 차단하고 수동 승인을 요구할 수 있습니다. 사용자가 컴퓨터 앞에 없으면 변환 흐름이 멈출 수 있습니다.
 >
-> 변환 과정에서 바이두 PaddleOCR-VL API가 구성되어 있으면 페이지의 텍스트 상자, 글자 크기, 크기 그룹을 자동으로 보정합니다. 이미지 생성/편집은 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. 내장 도구를 사용할 수 없거나 호출 오류가 발생하거나, 편집 입력을 읽을 수 없거나, 유효한 로컬 이미지를 반환하지 않은 경우에만 `editppt image`로 폴백합니다(Codex OAuth → OpenAI-compatible API). 이러한 호출은 이미지 기반 페이지를 편집 가능한 PPT로 재구성하는 데 필요한 단계입니다.
+> 변환 과정에서 바이두 PaddleOCR-VL API가 구성되어 있으면 페이지의 텍스트 상자, 글자 크기, 크기 그룹을 자동으로 보정합니다. 이미지 생성/편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. 다른 agent에서는 원생 시각 도구를 먼저 탐색·검증하며, 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력 세 기능을 모두 지원할 때만 사용합니다. 그렇지 않으면 기본 모델이 `gpt-image-2`인 `editppt image`로 폴백합니다(Codex OAuth → OpenAI-compatible API).
 >
 > ![Codex 전체 액세스 권한 설정 예시](assets/codex-full-access-permission.png)
 
@@ -68,7 +68,7 @@
 
 - 단일 이미지, 여러 이미지, 다중 페이지 PDF, 이미지 기반 PPT 등 다양한 입력을 편집 가능한 `.pptx`로 변환합니다.
 - 단일 페이지/이미지 입력은 메인 agent가 동일한 페이지 재구성 흐름으로 로컬에서 처리할 수 있습니다. 다중 페이지 입력은 메인 agent가 page worker/subagent에게 분배하고 `max_concurrent_pages`에 따라 병렬 처리합니다.
-- 이미지 생성과 편집은 Codex 내장 `image_gen.imagegen`을 우선 사용하며, 명확한 폴백 조건을 충족할 때만 `editppt image` CLI로 전환합니다. CLI는 로컬 Codex OAuth와 OpenAI-compatible API를 순서대로 선택합니다.
+- 이미지 생성과 편집은 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. WorkBuddy, Claude Code, QoderWork 등의 런타임은 원생 Skill/Plugin/MCP/이미지 모델을 탐색·검증하고, 적합한 후보가 없으면 기본 `gpt-image-2`의 `editppt image` CLI를 사용합니다.
 - 타사 API 폴백 설정은 `~/.editppt/config.yaml`에 저장됩니다. Windows에서는 `%USERPROFILE%\.editppt\config.yaml`을 사용합니다.
 - 텍스트 크기와 위치는 측정값을 기반으로 합니다. prepare 단계에서 각 페이지의 텍스트 주석(상자 좌표 + 글자 크기 + 크기 그룹)을 생성하고, 모델은 이 측정값에 따라 텍스트를 복원하며 같은 계층의 텍스트 크기를 자동으로 일관되게 유지합니다.
 - 여러 이미지는 제공된 순서대로 페이지를 생성하고, PDF와 `.pptx`는 원래 페이지 순서를 유지합니다.
@@ -87,14 +87,16 @@
 ## 실행 요구 사항
 
 - 단일 페이지/이미지 입력은 page worker를 만들 필요가 없지만, 동일한 페이지 프롬프트·산출물·`editppt run record` 검증 흐름을 따라야 합니다. 다중 페이지 입력은 agent가 page worker/subagent를 분배할 수 있어야 하며, page worker를 만들 수 없다면 지원되는 환경에서 실행해야 합니다.
-- 복잡한 배경 보완, 전경 아이콘 추출, 투명 asset sheet, 부분 이미지 편집은 페이지별로 순차 실행하며 내장 `image_gen.imagegen`을 우선 사용합니다.
+- 복잡한 배경 보완, 전경 아이콘 추출, 투명 asset sheet, 부분 이미지 편집은 페이지별로 순차 실행하며 내장 `image_gen.imagegen` 또는 세 가지 기능 검증을 통과한 agent 원생 이미지 도구를 우선 사용합니다.
 - 내장 도구가 폴백 조건을 충족할 때만 CLI 폴백으로 전환합니다. 로컬에 Codex OAuth(`~/.codex/auth.json`)가 있으면 CLI가 직접 사용하고, 그렇지 않으면 API 폴백을 사용합니다.
 - API 폴백 설정은 `~/.editppt/config.yaml`에 저장됩니다. Windows에서는 `%USERPROFILE%\.editppt\config.yaml`을 사용합니다.
 - 텍스트 크기와 위치 보정에는 타사 OCR Token(바이두 AI Studio, 무료)이 필요합니다. 자세한 내용은 아래 “텍스트 보정 및 OCR Token”을 참고하세요. 설정하지 않으면 내장 오프라인 감지기로 폴백되어 텍스트 복원 품질이 낮아질 수 있습니다.
 
 ## 이미지 Backend 및 타사 API 구성
 
-전체 backend 우선순위는 Codex 내장 `image_gen.imagegen` → Codex OAuth → OpenAI-compatible API입니다. 내장 도구는 agent가 직접 호출하며 Python/`editppt` CLI에서는 호출하거나 감지할 수 없습니다. 내장 도구를 사용할 수 없거나 호출할 수 없거나, 호출 오류가 발생하거나, 편집 입력을 읽을 수 없거나, 유효한 로컬 이미지를 반환하지 않은 경우에만 `editppt image` CLI 폴백으로 전환합니다. CLI는 먼저 로컬 Codex OAuth를 사용하고, 사용할 수 없으면 `~/.editppt/config.yaml` 또는 환경 변수의 OpenAI-compatible API 설정을 읽습니다.
+전체 backend 우선순위는 Codex 내장 `image_gen.imagegen` → 현재 agent에서 기능 검증을 통과한 원생 이미지 도구 → 기본 모델 `gpt-image-2`의 `editppt image` CLI(Codex OAuth → OpenAI-compatible API)입니다. 원생 후보는 Tool, Skill, Plugin, MCP/Connector 또는 구성된 이미지 모델에서 찾을 수 있지만, 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원해야 합니다. 이미지 이해만 가능하거나 참조 편집이 없거나 수동 다운로드만 가능한 기능은 선택하지 않습니다.
+
+WorkBuddy 공식 자료는 ImageGen/이미지-투-이미지 동작을 설명하지만 공개 도구 스키마는 완전하지 않아 설치된 런타임에서 다시 검증합니다. Claude Code 공식 문서는 이미지 이해만 확인하므로 별도 Skill/Plugin/MCP 이미지 도구가 없으면 CLI를 사용합니다. QoderWork는 `/gen-image`와 이미지 remix를 제공하지만 공개 참조 편집 계약이 부분적이므로 역시 런타임 검증이 필요합니다. 다중 페이지 작업에서는 page worker도 같은 원생 도구를 호출할 수 있어야 하며, 그렇지 않으면 전체 실행에서 CLI를 사용합니다.
 
 내장 이미지 생성에는 `prompt`만 필요합니다. 내장 이미지 편집에는 `prompt`와 로컬 절대 경로인 `referenced_image_paths`만 필요하며 편집 전에 입력 이미지를 먼저 확인해야 합니다. 내장 도구에는 `mask`, `model`, `size`, `quality`, `out` 등의 매개변수가 없으며, 이러한 매개변수가 없다는 이유로 폴백하지 않습니다. 성공 후에는 도구가 명시적으로 반환한 로컬 경로(`output_hint` 포함)만 받아 파일 유효성을 확인한 뒤 가져옵니다. “최신 파일”을 추측하기 위해 디렉터리를 검색하지 않습니다.
 
@@ -120,8 +122,8 @@ Token 없이도 실행할 수 있습니다. 이 경우 skill은 내장 오프라
 
 ## 알려진 문제
 
-- 다른 agent는 skill 로딩, 파일 읽기·쓰기, CLI 실행을 지원해야 하며, 다중 페이지 작업에서는 page worker/subagent 분배도 지원해야 합니다.
-- 내장 이미지 도구는 현재 agent runtime의 `image_gen.imagegen` 제공 여부에 의존합니다. Codex OAuth 경로는 로컬 Codex auth와 구독 측 이미지 할당량에 의존하고, API 폴백은 선택한 OpenAI-compatible 서비스의 이미지 생성/편집 기능에 의존합니다.
+- 다른 agent는 skill 로딩, 파일 읽기·쓰기, CLI 실행을 지원해야 하며, 다중 페이지 작업에서는 page worker/subagent 분배도 지원해야 합니다. 원생 이미지 도구가 세 가지 기능 계약을 통과하지 못하면 `editppt image` 폴백을 실행할 수 있어야 합니다.
+- 내장/원생 이미지 도구는 실제 agent runtime 기능에 의존합니다. Codex OAuth 경로는 로컬 Codex auth와 구독 측 이미지 할당량에 의존하고, API 폴백은 선택한 OpenAI-compatible 서비스의 이미지 생성/편집 기능에 의존합니다.
 - 이 skill은 프로세스 제어가 비교적 복잡하고 Token 사용량이 큽니다. 이미지 PPT를 편집 가능한 PPT로 변환하는 비용은 **이미지 PPT 생성 비용의 2~3배**가 될 수 있습니다.
 - 모델의 기본 이해 능력과 skill 준수 능력에 따라 **gpt-5.5 미만 모델의 사용 결과는 보장하지 않습니다.**
 - 일부 이미지 요소와 텍스트 위치에 약간의 오차가 생길 수 있으며, **원본 페이지를 100% 재현한다고 보장하지 않습니다.**
@@ -153,7 +155,7 @@ $image-to-editable-ppt <path-to-image-based.pptx>를 편집 가능한 PPT로 변
 
 skill은 일반적으로 다음 단계를 수행합니다.
 
-1. 독립 작업 디렉터리를 만들고 입력을 `pages/page_NNN/source.png`로 정규화한 뒤 기본 `editppt image` backend를 기록합니다.
+1. 독립 작업 디렉터리를 만들고 입력을 `pages/page_NNN/source.png`로 정규화한 뒤 현재 런타임의 이미지 도구를 탐색·검증하고 선택된 backend 계약을 기록합니다. 적합한 원생 도구가 없으면 `editppt image`의 기본 `gpt-image-2`를 사용합니다.
 2. 페이지가 하나뿐이면 메인 agent가 먼저 `editppt run dispatch --local`로 페이지를 맡은 뒤 동일한 페이지 프롬프트에 따라 로컬에서 재구성합니다. 페이지가 여러 개면 `max_concurrent_pages`에 따라 묶어 page worker에게 분배합니다.
 3. 페이지 재구성 담당자(로컬 모드의 메인 agent 또는 page worker)는 자신의 페이지 디렉터리에서 페이지 재구성, 자체 점검, page-local 수정을 수행합니다.
 4. 각 페이지에 manifest를 만들고 편집 가능한 텍스트, 단순 도형, 이미지 에셋을 재구성합니다.

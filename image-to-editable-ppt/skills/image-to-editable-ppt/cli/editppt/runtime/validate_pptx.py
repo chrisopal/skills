@@ -21,6 +21,7 @@ ALLOWED_SOURCE_TYPES = {
     "asset-sheet-separated",
     "imagegen",
     "latex-rendered-formula",
+    "source-faithful-extraction",
     "user-provided",
     "user-approved-rasterization",
 }
@@ -80,6 +81,16 @@ ASSET_SHEET_TERMS = {
     "split",
     "分离",
 }
+SOURCE_EXTRACTION_TERMS = {
+    "deterministic separation",
+    "deterministically separated",
+    "exact source pixels",
+    "extract-source",
+    "source-faithful extraction",
+    "source faithful extraction",
+    "确定性分离",
+    "源像素分离",
+}
 FORBIDDEN_FOREGROUND_FALLBACK_TERMS = {
     "approximate",
     "approximation",
@@ -107,6 +118,25 @@ def read_manifest(path):
     if not path:
         return {}
     return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def read_visual_qa_report(manifest_base, report_path=None):
+    path = Path(report_path).resolve() if report_path else Path(manifest_base) / "visual-qa.json"
+    if not path.exists():
+        return path, None, [{"field": "visual-qa.json", "reason": "deterministic visual QA report is missing"}]
+    try:
+        report = read_manifest(path)
+    except Exception as exc:
+        return path, None, [{"field": "visual-qa.json", "reason": f"unable to read visual QA report: {exc}"}]
+    violations = []
+    if report.get("passed") is not True:
+        violations.append(
+            {
+                "field": "visual-qa.json.passed",
+                "reason": "deterministic visual QA did not pass",
+            }
+        )
+    return path, report, violations
 
 
 def compact_text(value):
@@ -164,11 +194,11 @@ def foreground_asset_contract_violations(manifest):
             )
         if not is_foreground_visual_item(item):
             continue
-        if not contains_any(text, ASSET_SHEET_TERMS):
+        if not contains_any(text, ASSET_SHEET_TERMS | SOURCE_EXTRACTION_TERMS):
             violations.append(
                 {
                     "field": field,
-                    "reason": "foreground visual objects must explicitly use source-faithful asset-sheet separation",
+                    "reason": "foreground visual objects must explicitly use source-faithful asset-sheet separation or deterministic extraction",
                 }
             )
         path = visual_item_path(item)
@@ -180,7 +210,7 @@ def foreground_asset_contract_violations(manifest):
                     {
                         "field": field,
                         "path": path,
-                        "reason": "foreground visual objects cannot use user-provided/direct raster provenance; use asset-sheet separation",
+                        "reason": "foreground visual objects cannot use user-provided/direct raster provenance; use a compliant separation path",
                     }
                 )
 
@@ -252,7 +282,7 @@ def page_contract_violations(manifest):
             )
         if (
             is_full_slide_image(image, slide)
-            and source_type in {"user-provided", "user-approved-rasterization"}
+            and source_type in {"user-provided", "user-approved-rasterization", "source-faithful-extraction"}
             and text_boxes
         ):
             violations.append(
@@ -526,8 +556,14 @@ def validate_deck(args):
         else:
             try:
                 page_report = read_manifest(validation_path)
-                if page_report.get("passed") is False:
-                    report["failed_page_validations"].append(str(validation_path))
+                if page_report.get("passed") is not True or page_report.get("visual_qa_passed") is not True:
+                    report["failed_page_validations"].append(
+                        {
+                            "validation": str(validation_path),
+                            "passed": page_report.get("passed"),
+                            "visual_qa_passed": page_report.get("visual_qa_passed"),
+                        }
+                    )
             except Exception as exc:
                 report["failed_page_validations"].append(f"{validation_path}: {exc}")
 
@@ -620,6 +656,7 @@ def main():
     parser.add_argument("--manifest")
     parser.add_argument("--deck-manifest")
     parser.add_argument("--required-text", action="append", default=[])
+    parser.add_argument("--visual-qa-report")
     parser.add_argument("--report")
     args = parser.parse_args()
 
@@ -629,6 +666,10 @@ def main():
     raw_manifest = read_manifest(args.manifest)
     manifest, authoring_violations = normalize_for_validation(raw_manifest)
     manifest_base = Path(args.manifest).resolve().parent if args.manifest else Path.cwd()
+    visual_qa_path, visual_qa_report, visual_qa_violations = read_visual_qa_report(
+        manifest_base,
+        args.visual_qa_report,
+    )
     required = list(args.required_text)
     required.extend(required_texts_from_manifest(manifest))
 
@@ -655,6 +696,9 @@ def main():
         "relationship_targets_checked": 0,
         "warnings": [],
         "page_contract_violations": [],
+        "visual_qa_report": str(visual_qa_path),
+        "visual_qa_passed": bool(visual_qa_report and visual_qa_report.get("passed") is True),
+        "visual_qa_violations": visual_qa_violations,
     }
 
     try:
@@ -793,6 +837,8 @@ def main():
         and not report["missing_provenance_sources"]
         and not report["invalid_asset_provenance"]
         and not report["page_contract_violations"]
+        and report["visual_qa_passed"]
+        and not report["visual_qa_violations"]
         and (report["editable_text_shapes"] > 0 or not required)
     )
 

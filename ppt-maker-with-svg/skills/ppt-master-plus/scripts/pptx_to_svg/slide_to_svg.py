@@ -22,18 +22,56 @@ animation anchor.
 
 from __future__ import annotations
 
+import base64
+import copy
+import hashlib
+import json
 from dataclasses import dataclass, field
 from xml.etree import ElementTree as ET
 
+from pptx_shapes import (
+    CONNECTOR_PRESET_TYPES,
+    NATIVE_FALLBACK_SHA256_ATTR,
+    has_relationship_attributes,
+    svg_native_fallback_markup_fingerprint,
+    svg_text_fingerprint,
+)
+from pptx_effects import (
+    EFFECT_REASON_ATTR,
+    EFFECT_STATUS_ATTR,
+    txbody_has_run_effects,
+    unsupported_effect_metadata,
+)
+
 from .color_resolver import ColorPalette, find_color_elem, resolve_color
+from .chart_to_svg import CHART_URI, CHARTEX_URI, extract_native_chart_payload
 from .custgeom_to_svg import convert_custom_geom
-from .effect_to_svg import convert_effects
-from .emu_units import NS, Xfrm, fmt_num
-from .fill_to_svg import resolve_fill
-from .ln_to_svg import resolve_stroke
-from .ooxml_loader import OoxmlPackage, PartRef, SlideRef
-from .pic_to_svg import convert_blip_fill, convert_picture
+from .effect_to_svg import (
+    EffectResult,
+    convert_effects,
+    unsupported_target_effect_metadata,
+)
+from .emu_units import NS, Xfrm, fmt_num, format_canvas_px_from_emu
+from .fill_to_svg import FillResult, resolve_fill
+from .import_diagnostics import (
+    ImportDiagnostic,
+    append_diagnostic,
+)
+from .ln_to_svg import StrokeResult, resolve_stroke
+from .ooxml_loader import (
+    OoxmlPackage,
+    PartRef,
+    SlideRef,
+    inherited_shape_visibility,
+)
+from .pic_to_svg import (
+    MediaResolutionError,
+    PictureResult,
+    convert_blip_fill,
+    convert_picture,
+)
 from .prstgeom_to_svg import GeomResult, convert_prst_geom
+from .preset_svg_markup import serialize_preset_layers
 from .shape_walker import (
     CONNECTOR, GRAPHIC, GROUP, PICTURE, SHAPE,
     ShapeNode, get_background, walk_sp_tree,
@@ -59,13 +97,18 @@ class AssemblyContext:
     palette: ColorPalette | None
     pkg: OoxmlPackage
     slide_part: PartRef
+    slide_number: int | None = None
     theme_fonts: dict[str, str] = field(default_factory=dict)
     media_subdir: str = "assets"
     embed_images: bool = False
     keep_hidden: bool = False
+    strict: bool = False
     group_id_prefix: str = ""
     render_graphic_previews: bool = True
     asset_name_map: dict[str, str] = field(default_factory=dict)
+    diagnostics: list[ImportDiagnostic] = field(default_factory=list)
+    source_slide_index: int | None = None
+    current_node: ShapeNode | None = None
 
     # Sequence counters (single-element lists so handlers can mutate)
     grad_seq: list[int] = field(default_factory=lambda: [0])
@@ -77,6 +120,53 @@ class AssemblyContext:
     # Accumulated outputs
     defs: list[str] = field(default_factory=list)
     media: dict[str, bytes] = field(default_factory=dict)
+
+    def bind_palette(self) -> None:
+        """Route tolerant color diagnostics through the current object context."""
+        if self.palette is None:
+            return
+        self.palette.strict = self.strict
+        self.palette.diagnostic_sink = self._diagnose_color
+
+    def diagnose(
+        self,
+        code: str,
+        message: str,
+        fallback: str,
+        *,
+        node: ShapeNode | None = None,
+    ) -> None:
+        """Record one recoverable source-contract violation."""
+        source_node = node or self.current_node
+        append_diagnostic(
+            self.diagnostics,
+            ImportDiagnostic(
+                code=code,
+                message=message,
+                fallback=fallback,
+                part_path=self.slide_part.path,
+                slide_index=self.source_slide_index,
+                shape_id=source_node.spid if source_node is not None else "",
+                shape_name=source_node.name if source_node is not None else "",
+                shape_kind=source_node.kind if source_node is not None else "",
+            ),
+        )
+
+    def _diagnose_color(self, code: str, message: str, fallback: str) -> None:
+        self.diagnose(code, message, fallback)
+
+
+def _diagnose_picture_result(
+    ctx: AssemblyContext,
+    result: PictureResult,
+) -> None:
+    """Project recoverable picture losses into the import report."""
+    for diagnostic in result.diagnostics:
+        ctx.diagnose(
+            diagnostic.code,
+            diagnostic.message,
+            diagnostic.fallback,
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -94,13 +184,16 @@ def assemble_slide(
     keep_hidden: bool = False,
     inheritance_mode: str = "flat",
     asset_name_map: dict[str, str] | None = None,
+    strict: bool = False,
+    diagnostics: list[ImportDiagnostic] | None = None,
 ) -> tuple[str, dict[str, bytes]]:
     """Convert one slide to a complete SVG string + media files map.
 
     inheritance_mode controls how master/layout shapes are rendered:
-        - "flat" (default): emit master + layout non-placeholder shapes inline
-          inside the slide SVG. This is the historical behavior, used for
-          round-trip fidelity with svg_to_pptx.
+        - "flat" (default): emit the effective visible Master/Layout
+          non-placeholder shapes inline inside the slide SVG, honoring both
+          source ``showMasterSp`` flags. This view is used for round-trip
+          fidelity with svg_to_pptx.
         - "layered": skip inherited shapes entirely. The slide SVG contains
           only its own shapes. Callers (e.g. /create-template's PPTX import)
           render master/layout once each as separate SVGs and record the
@@ -110,26 +203,44 @@ def assemble_slide(
         palette=palette,
         pkg=pkg,
         slide_part=slide.part,
+        slide_number=pkg.first_slide_number + slide.index - 1,
         theme_fonts=theme_fonts or {},
         media_subdir=media_subdir,
         embed_images=embed_images,
         keep_hidden=keep_hidden,
+        strict=strict,
         render_graphic_previews=(inheritance_mode == "flat"),
         asset_name_map=asset_name_map or {},
+        diagnostics=diagnostics if diagnostics is not None else [],
+        source_slide_index=slide.index,
     )
+    ctx.bind_palette()
 
     canvas_w, canvas_h = pkg.slide_size_px
+    canvas_w_token, canvas_h_token = (
+        format_canvas_px_from_emu(value) for value in pkg.slide_size_emu
+    )
 
     # Background (cSld/bg) — emit as the first body element.
     body_parts: list[str] = []
-    bg_xml = (
-        _emit_background(slide, ctx, canvas_w, canvas_h)
-        if inheritance_mode == "flat"
-        else _emit_part_background(
-            SlideRef(index=slide.index, part=slide.part, layout=None, master=slide.master),
-            ctx, canvas_w, canvas_h,
+    try:
+        bg_xml = (
+            _emit_background(slide, ctx, canvas_w, canvas_h)
+            if inheritance_mode == "flat"
+            else _emit_part_background(
+                SlideRef(index=slide.index, part=slide.part, layout=None, master=slide.master),
+                ctx, canvas_w, canvas_h,
+            )
         )
-    )
+    except (ValueError, MediaResolutionError) as exc:
+        if strict:
+            raise
+        ctx.diagnose(
+            "background-omitted",
+            str(exc),
+            "omit the unsupported background and continue the slide",
+        )
+        bg_xml = ""
     if bg_xml:
         body_parts.append(bg_xml)
 
@@ -161,8 +272,8 @@ def assemble_slide(
     svg = (
         f'<svg xmlns="http://www.w3.org/2000/svg" '
         f'xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" '
-        f'width="{fmt_num(canvas_w)}" height="{fmt_num(canvas_h)}" '
-        f'viewBox="0 0 {fmt_num(canvas_w)} {fmt_num(canvas_h)}">'
+        f'width="{canvas_w_token}" height="{canvas_h_token}" '
+        f'viewBox="0 0 {canvas_w_token} {canvas_h_token}">'
         f"{defs_block}"
         + "\n".join(body_parts)
         + "</svg>"
@@ -182,6 +293,8 @@ def assemble_part_solo(
     embed_images: bool = False,
     keep_hidden: bool = False,
     asset_name_map: dict[str, str] | None = None,
+    strict: bool = False,
+    diagnostics: list[ImportDiagnostic] | None = None,
 ) -> tuple[str, dict[str, bytes]]:
     """Render a single slideMaster or slideLayout part as a standalone SVG.
 
@@ -211,12 +324,18 @@ def assemble_part_solo(
         media_subdir=media_subdir,
         embed_images=embed_images,
         keep_hidden=keep_hidden,
+        strict=strict,
         group_id_prefix=f"{role}-",
         render_graphic_previews=False,
         asset_name_map=asset_name_map or {},
+        diagnostics=diagnostics if diagnostics is not None else [],
     )
+    ctx.bind_palette()
 
     canvas_w, canvas_h = pkg.slide_size_px
+    canvas_w_token, canvas_h_token = (
+        format_canvas_px_from_emu(value) for value in pkg.slide_size_emu
+    )
 
     body_parts: list[str] = []
 
@@ -237,12 +356,22 @@ def assemble_part_solo(
         layout=None,
         master=master_for_theme,
     )
-    bg_xml = _emit_part_background(fake_slide, ctx, canvas_w, canvas_h)
+    try:
+        bg_xml = _emit_part_background(fake_slide, ctx, canvas_w, canvas_h)
+    except (ValueError, MediaResolutionError) as exc:
+        if strict:
+            raise
+        ctx.diagnose(
+            "background-omitted",
+            str(exc),
+            "omit the unsupported background and continue the part",
+        )
+        bg_xml = ""
     if bg_xml:
         body_parts.append(bg_xml)
 
-    # Walk shapes. Placeholders are visualized as lightweight layout guides in
-    # layered master/layout SVGs so template slots remain machine-visible.
+    # Walk shapes. Layered master/layout SVGs retain each placeholder's source
+    # appearance so mirror materialization can recover its editable decoration.
     for node in walk_sp_tree(part.xml):
         if _is_placeholder_node(node):
             chunk = _convert_placeholder_guide(node, ctx, top_level=True)
@@ -257,8 +386,8 @@ def assemble_part_solo(
     svg = (
         f'<svg xmlns="http://www.w3.org/2000/svg" '
         f'xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" '
-        f'width="{fmt_num(canvas_w)}" height="{fmt_num(canvas_h)}" '
-        f'viewBox="0 0 {fmt_num(canvas_w)} {fmt_num(canvas_h)}">'
+        f'width="{canvas_w_token}" height="{canvas_h_token}" '
+        f'viewBox="0 0 {canvas_w_token} {canvas_h_token}">'
         f"{defs_block}"
         + "\n".join(body_parts)
         + "</svg>"
@@ -271,19 +400,59 @@ def assemble_part_solo(
 # ---------------------------------------------------------------------------
 
 def _convert_node(node: ShapeNode, ctx: AssemblyContext, *, top_level: bool) -> str:
-    if node.hidden and not ctx.keep_hidden:
+    previous_node = ctx.current_node
+    ctx.current_node = node
+    try:
+        if node.hidden and not ctx.keep_hidden:
+            return ""
+        if node.kind == SHAPE:
+            return _convert_shape(node, ctx, top_level=top_level)
+        if node.kind == PICTURE:
+            return _convert_picture(node, ctx, top_level=top_level)
+        if node.kind == CONNECTOR:
+            return _convert_connector(node, ctx, top_level=top_level)
+        if node.kind == GROUP:
+            return _convert_group(node, ctx, top_level=top_level)
+        if node.kind == GRAPHIC:
+            return _convert_graphic_fallback(node, ctx, top_level=top_level)
         return ""
-    if node.kind == SHAPE:
-        return _convert_shape(node, ctx, top_level=top_level)
-    if node.kind == PICTURE:
-        return _convert_picture(node, ctx, top_level=top_level)
-    if node.kind == CONNECTOR:
-        return _convert_connector(node, ctx, top_level=top_level)
-    if node.kind == GROUP:
-        return _convert_group(node, ctx, top_level=top_level)
-    if node.kind == GRAPHIC:
-        return _convert_graphic_fallback(node, ctx, top_level=top_level)
-    return ""
+    except ValueError as exc:
+        if ctx.strict:
+            raise
+        ctx.diagnose(
+            "object-replaced",
+            str(exc),
+            "replace only this object with a visible placeholder",
+            node=node,
+        )
+        return _fallback_node_svg(node, ctx, top_level=top_level)
+    finally:
+        ctx.current_node = previous_node
+
+
+def _fallback_node_svg(
+    node: ShapeNode,
+    ctx: AssemblyContext,
+    *,
+    top_level: bool,
+) -> str:
+    """Keep one unsupported source object visible without aborting its deck."""
+    if node.xfrm.w <= 0 or node.xfrm.h <= 0:
+        return ""
+    x = fmt_num(node.xfrm.x)
+    y = fmt_num(node.xfrm.y)
+    width = fmt_num(node.xfrm.w)
+    height = fmt_num(node.xfrm.h)
+    label = _xml_escape(node.name or f"Unsupported {node.kind}")
+    inner = (
+        f'<rect x="{x}" y="{y}" width="{width}" height="{height}" '
+        'fill="#F8FAFC" fill-opacity="0.72" stroke="#DC2626" '
+        'stroke-width="1" stroke-dasharray="6 4"/>'
+        f'<text x="{fmt_num(node.xfrm.x + 8)}" '
+        f'y="{fmt_num(node.xfrm.y + min(18, node.xfrm.h / 2))}" '
+        f'font-size="12" fill="#991B1B">{label}</text>'
+    )
+    return _wrap_shape_group(inner, node, ctx, top_level=top_level)
 
 
 # ---------------------------------------------------------------------------
@@ -300,50 +469,103 @@ def _convert_shape(node: ShapeNode, ctx: AssemblyContext, *, top_level: bool) ->
     blip_fill_elem = sp_pr.find("a:blipFill", NS) if sp_pr is not None else None
     blip_image = ""
     if blip_fill_elem is not None:
-        blip_result = convert_blip_fill(
-            blip_fill_elem, node.xfrm, ctx.slide_part, ctx.pkg,
-            media_subdir=ctx.media_subdir,
-            embed_inline=ctx.embed_images,
-            asset_name_map=ctx.asset_name_map,
-        )
-        if blip_result.svg:
-            blip_image = _clip_blip_image(blip_result.svg, geom, ctx)
-            ctx.media.update(blip_result.media)
+        try:
+            blip_result = convert_blip_fill(
+                blip_fill_elem, node.xfrm, ctx.slide_part, ctx.pkg,
+                media_subdir=ctx.media_subdir,
+                embed_inline=ctx.embed_images,
+                asset_name_map=ctx.asset_name_map,
+                strict=ctx.strict,
+            )
+        except (ValueError, MediaResolutionError) as exc:
+            if ctx.strict:
+                raise
+            ctx.diagnose(
+                "image-fill-omitted",
+                str(exc),
+                "omit the image fill and retain shape geometry/text",
+            )
+        else:
+            _diagnose_picture_result(ctx, blip_result)
+            if blip_result.svg:
+                blip_image = _clip_blip_image(blip_result.svg, geom, ctx)
+                ctx.media.update(blip_result.media)
+
+    # Text body (a:txBody)
+    source_tx_body = node.xml.find("p:txBody", NS)
+    tx_body = _effective_placeholder_tx_body(
+        source_tx_body,
+        node.inherited_body_properties,
+    )
+    is_vertical = is_vertical_txbody(tx_body, node.xfrm)
+    local_has_run_effects = txbody_has_run_effects(source_tx_body)
+    inherited_has_run_effects = txbody_has_run_effects(
+        *node.inherited_lst_styles
+    )
+    has_run_effects = local_has_run_effects or inherited_has_run_effects
+    if geom is not None and has_run_effects:
+        if is_vertical:
+            geom.attrs.update(unsupported_effect_metadata(
+                "unsupported-run-effect-route:vertical-text"
+            ))
+        elif tx_body is not None and has_relationship_attributes(tx_body):
+            geom.attrs.update(unsupported_effect_metadata(
+                "unsupported-run-effect-route:relationship-bearing-text"
+            ))
+        elif inherited_has_run_effects:
+            geom.attrs.update(unsupported_effect_metadata(
+                "unsupported-run-effect-route:inherited-text-style"
+            ))
 
     # Geometry (fill is "none" when blipFill is present, so only stroke draws)
     geom_xml = _build_geometry_xml(node, sp_pr, ctx, geom=geom)
 
-    # Text body (a:txBody)
-    tx_body = node.xml.find("p:txBody", NS)
-    is_vertical = is_vertical_txbody(tx_body, node.xfrm)
-    text_default_fill = _resolve_text_style_default(node, ctx)
-    if tx_body is not None and is_vertical:
-        text_result = convert_vertical_txbody(
-            tx_body, node.xfrm, ctx.palette,
-            theme_fonts=ctx.theme_fonts,
-            default_fill=text_default_fill,
-            default_font_size_px=DEFAULT_FONT_SIZE_PX,
-            fallback_lst_styles=node.inherited_lst_styles,
-            id_prefix=f"{ctx.group_id_prefix}txt",
-            id_seq=ctx.grad_seq,
+    try:
+        text_default_fill = _resolve_text_style_default(node, ctx)
+        if tx_body is not None and is_vertical:
+            text_result = convert_vertical_txbody(
+                tx_body, node.xfrm, ctx.palette,
+                theme_fonts=ctx.theme_fonts,
+                slide_number=ctx.slide_number,
+                default_fill=text_default_fill,
+                default_font_size_px=DEFAULT_FONT_SIZE_PX,
+                fallback_lst_styles=node.inherited_lst_styles,
+                id_prefix=f"{ctx.group_id_prefix}txt",
+                id_seq=ctx.grad_seq,
+            )
+        else:
+            text_result = convert_txbody(
+                tx_body, node.xfrm, ctx.palette,
+                theme_fonts=ctx.theme_fonts,
+                slide_number=ctx.slide_number,
+                default_fill=text_default_fill,
+                default_font_size_px=DEFAULT_FONT_SIZE_PX,
+                fallback_lst_styles=node.inherited_lst_styles,
+                id_prefix=f"{ctx.group_id_prefix}txt",
+                id_seq=ctx.grad_seq,
+            ) if tx_body is not None else TextResult()
+    except ValueError as exc:
+        if ctx.strict:
+            raise
+        ctx.diagnose(
+            "text-omitted",
+            str(exc),
+            "omit this text body and retain the object's other visuals",
         )
-    else:
-        text_result = convert_txbody(
-            tx_body, node.xfrm, ctx.palette,
-            theme_fonts=ctx.theme_fonts,
-            default_fill=text_default_fill,
-            default_font_size_px=DEFAULT_FONT_SIZE_PX,
-            fallback_lst_styles=node.inherited_lst_styles,
-            id_prefix=f"{ctx.group_id_prefix}txt",
-            id_seq=ctx.grad_seq,
-        ) if tx_body is not None else TextResult()
+        text_result = TextResult()
     if text_result.defs:
         ctx.defs.extend(text_result.defs)
 
     if is_vertical:
         # Vertical text: geometry + image in one group, text in separate group
         geom_inner = (blip_image + "\n" + geom_xml) if blip_image else geom_xml
-        shape_xml = _wrap_shape_group(geom_inner, node, ctx, top_level=top_level)
+        shape_xml = _wrap_shape_group(
+            geom_inner,
+            node,
+            ctx,
+            top_level=top_level,
+            extra_attrs=_geometry_group_attrs(geom),
+        )
         if not text_result.svg:
             return shape_xml
         text_group = (
@@ -359,35 +581,130 @@ def _convert_shape(node: ShapeNode, ctx: AssemblyContext, *, top_level: bool) ->
         inner_parts.append(blip_image)
     if geom_xml:
         inner_parts.append(geom_xml)
+    if source_tx_body is not None and geom is not None:
+        inner_parts.append(
+            _txbody_metadata(
+                source_tx_body,
+                text_result.svg,
+            )
+        )
     if text_result.svg:
         inner_parts.append(text_result.svg)
     inner = "\n".join(inner_parts) if inner_parts else ""
-    return _wrap_shape_group(inner, node, ctx, top_level=top_level)
+    return _wrap_shape_group(
+        inner,
+        node,
+        ctx,
+        top_level=top_level,
+        extra_attrs=_geometry_group_attrs(geom),
+    )
+
+
+def _effective_placeholder_tx_body(
+    tx_body: ET.Element | None,
+    inherited_body_properties: tuple[ET.Element, ...],
+) -> ET.Element | None:
+    """Merge inherited placeholder bodyPr settings into one visible text body."""
+    if tx_body is None or not inherited_body_properties:
+        return tx_body
+    effective = copy.deepcopy(tx_body)
+    body_pr = effective.find("a:bodyPr", NS)
+    if body_pr is None:
+        body_pr = ET.Element(f"{{{NS['a']}}}bodyPr")
+        effective.insert(0, body_pr)
+
+    child_groups = (
+        {"prstTxWarp"},
+        {"noAutofit", "normAutofit", "spAutoFit"},
+        {"scene3d"},
+        {"sp3d"},
+    )
+    for inherited in inherited_body_properties:
+        for name, value in inherited.attrib.items():
+            body_pr.attrib.setdefault(name, value)
+        local_names = {
+            child.tag.rsplit("}", 1)[-1]
+            for child in body_pr
+            if isinstance(child.tag, str)
+        }
+        for group in child_groups:
+            if local_names & group:
+                continue
+            inherited_child = next(
+                (
+                    child
+                    for child in inherited
+                    if isinstance(child.tag, str)
+                    and child.tag.rsplit("}", 1)[-1] in group
+                ),
+                None,
+            )
+            if inherited_child is not None:
+                body_pr.append(copy.deepcopy(inherited_child))
+                local_names.add(inherited_child.tag.rsplit("}", 1)[-1])
+    return effective
+
+
+def _txbody_metadata(
+    tx_body: ET.Element,
+    visible_text_svg: str,
+) -> str:
+    """Preserve the native text body while its visible SVG remains authoritative."""
+    if has_relationship_attributes(tx_body):
+        # Relationship ids are part-local and cannot be copied into a newly
+        # generated slide without rebuilding the relationship target.
+        return ""
+    raw = ET.tostring(tx_body, encoding="utf-8")
+    encoded = base64.b64encode(raw).decode("ascii")
+    wrapper = ET.fromstring(
+        f'<svg xmlns="http://www.w3.org/2000/svg">{visible_text_svg}</svg>'
+    )
+    digest = svg_text_fingerprint(wrapper)
+    return (
+        '<metadata data-pptx-part="txbody" data-pptx-encoding="base64" '
+        f'data-pptx-text-sha256="{digest}">{encoded}</metadata>'
+    )
 
 
 def _resolve_geometry(node: ShapeNode, sp_pr: ET.Element | None) -> GeomResult | None:
     """Resolve a DrawingML shape geometry into an absolute SVG geometry model."""
     prst_geom = sp_pr.find("a:prstGeom", NS) if sp_pr is not None else None
     cust_geom = sp_pr.find("a:custGeom", NS) if sp_pr is not None else None
+    prst = prst_geom.attrib.get("prst", "rect") if prst_geom is not None else None
 
     geom: GeomResult | None = None
     if prst_geom is not None:
-        prst = prst_geom.attrib.get("prst", "rect")
         geom = convert_prst_geom(prst, node.xfrm, prst_geom)
-        if geom is None:
-            # Unknown prst — fall back to rect bounding box
-            geom = convert_prst_geom("rect", node.xfrm, None)
     elif cust_geom is not None:
         d = convert_custom_geom(cust_geom, node.xfrm)
         if d:
-            geom = GeomResult(tag="path", path_d=d)
+            raw = ET.tostring(cust_geom, encoding="utf-8")
+            geom = GeomResult(
+                tag="path",
+                path_d=d,
+                attrs={
+                    "data-pptx-part": "geometry",
+                    "data-pptx-geometry-kind": "custom",
+                    "data-pptx-custgeom": base64.b64encode(raw).decode("ascii"),
+                    "data-pptx-geometry-sha256": hashlib.sha256(
+                        d.strip().encode("utf-8")
+                    ).hexdigest(),
+                },
+            )
     else:
         # No geometry hint at all — render bounding rect
         geom = convert_prst_geom("rect", node.xfrm, None)
 
     if geom is None:
         return None
-    if geom.tag != "line" and (node.xfrm.w <= 0 or node.xfrm.h <= 0):
+    permits_degenerate_axis = (
+        node.kind == CONNECTOR
+        or prst in CONNECTOR_PRESET_TYPES
+    )
+    if (
+        not permits_degenerate_axis
+        and (node.xfrm.w <= 0 or node.xfrm.h <= 0)
+    ):
         return None
     return geom
 
@@ -403,29 +720,89 @@ def _build_geometry_xml(node: ShapeNode, sp_pr: ET.Element | None,
 
     # Resolve style defaults early so markers can adopt the theme stroke color
     # when <a:ln> doesn't carry an explicit solidFill.
-    style_defaults = _resolve_shape_style_defaults(node, ctx)
+    try:
+        style_defaults = _resolve_shape_style_defaults(node, ctx)
+    except ValueError as exc:
+        if ctx.strict:
+            raise
+        ctx.diagnose(
+            "shape-style-omitted",
+            str(exc),
+            "omit unresolved theme style defaults",
+        )
+        style_defaults = {}
 
     # Fill / stroke / effect
-    fill = resolve_fill(sp_pr, ctx.palette,
-                        id_prefix="g", id_seq=ctx.grad_seq)
-    stroke = resolve_stroke(
-        sp_pr, ctx.palette,
-        id_prefix="m", id_seq=ctx.marker_seq,
-        style_stroke_default=style_defaults.get("stroke"),
-    )
-    filter_id, effect_defs = convert_effects(sp_pr, ctx.palette,
-                                             id_prefix="fx",
-                                             id_seq=ctx.filter_seq)
+    try:
+        fill = resolve_fill(
+            sp_pr,
+            ctx.palette,
+            id_prefix="g",
+            id_seq=ctx.grad_seq,
+        )
+    except ValueError as exc:
+        if ctx.strict:
+            raise
+        ctx.diagnose(
+            "fill-omitted",
+            str(exc),
+            "omit only the unsupported fill",
+        )
+        fill = FillResult.none_fill()
+    try:
+        stroke = resolve_stroke(
+            sp_pr,
+            ctx.palette,
+            id_prefix="m",
+            id_seq=ctx.marker_seq,
+            style_stroke_default=style_defaults.get("stroke"),
+        )
+    except ValueError as exc:
+        if ctx.strict:
+            raise
+        ctx.diagnose(
+            "stroke-omitted",
+            str(exc),
+            "omit only the unsupported outline",
+        )
+        stroke = StrokeResult(attrs={"stroke": "none"})
+    try:
+        effect = convert_effects(
+            sp_pr,
+            ctx.palette,
+            id_prefix="fx",
+            id_seq=ctx.filter_seq,
+            target_rotation_degrees=node.effective_rotation,
+        )
+    except ValueError as exc:
+        if ctx.strict:
+            raise
+        ctx.diagnose(
+            "effect-omitted",
+            str(exc),
+            "omit only the unsupported visual effect",
+        )
+        effect = EffectResult()
 
     ctx.defs.extend(fill.defs)
     ctx.defs.extend(stroke.defs)
-    ctx.defs.extend(effect_defs)
+    ctx.defs.extend(effect.defs)
+    effect_attrs = dict(effect.metadata)
+    effect_reason = effect_attrs.get(EFFECT_REASON_ATTR)
+    existing_reason = geom.attrs.get(EFFECT_REASON_ATTR)
+    if effect_reason is not None and existing_reason is not None:
+        effect_attrs.update(unsupported_effect_metadata(
+            existing_reason,
+            effect_reason,
+        ))
+    geom.attrs.update(effect_attrs)
+    _diagnose_unsupported_effect(ctx, geom.attrs)
 
     attrs = {**fill.attrs, **stroke.attrs}
     for key, value in style_defaults.items():
         attrs.setdefault(key, value)
-    if filter_id is not None:
-        attrs["filter"] = f"url(#{filter_id})"
+    if effect.filter_id is not None:
+        attrs["filter"] = f"url(#{effect.filter_id})"
 
     # Default fill / stroke when not specified by spPr (matches PowerPoint
     # behavior: a:noFill on shape-level fill if there's a txBody, else any
@@ -437,8 +814,21 @@ def _build_geometry_xml(node: ShapeNode, sp_pr: ET.Element | None,
         # Skip emitting stroke="none" to keep markup tight.
         pass
 
-    geom_attrs_xml = _attrs_to_xml({**geom.attrs, **attrs})
-    return _geom_to_svg(geom, geom_attrs_xml)
+    semantic_attrs = {
+        **geom.attrs,
+        **_object_metadata(node, ctx),
+    }
+    shape_style = node.xml.find("p:style", NS)
+    if shape_style is not None:
+        semantic_attrs["data-pptx-shape-style"] = base64.b64encode(
+            ET.tostring(shape_style, encoding="utf-8")
+        ).decode("ascii")
+    if geom.layers:
+        return _preset_layers_to_svg(geom, semantic_attrs, attrs)
+    return _geom_to_svg(
+        geom,
+        _attrs_to_xml({**semantic_attrs, **attrs}),
+    )
 
 
 def _resolve_shape_style_defaults(node: ShapeNode, ctx: AssemblyContext) -> dict[str, str]:
@@ -484,9 +874,9 @@ def _resolve_ref_color(ref_elem: ET.Element | None, ctx: AssemblyContext) -> str
     return hex_
 
 
-def _geom_to_svg(geom: GeomResult, attrs_xml: str = "") -> str:
+def _geom_to_svg(geom: GeomResult, attrs_xml: str | None = None) -> str:
     """Serialize a resolved geometry with optional SVG attributes."""
-    if not attrs_xml:
+    if attrs_xml is None:
         attrs_xml = _attrs_to_xml(geom.attrs)
     if geom.tag == "path":
         return f'<path d="{geom.path_d}"{attrs_xml}/>'
@@ -495,17 +885,42 @@ def _geom_to_svg(geom: GeomResult, attrs_xml: str = "") -> str:
     return f"<{geom.tag}{attrs_xml}/>"
 
 
+def _preset_layers_to_svg(
+    geom: GeomResult,
+    semantic_attrs: dict[str, str],
+    style_attrs: dict[str, str],
+) -> str:
+    """Serialize one semantic carrier plus every visible preset path layer.
+
+    DrawingML applies shape-level fill/line first, then each preset path can
+    override whether and how that paint is used.  A hidden carrier retains the
+    unmodified shape-level style for native round-trip; visible detail paths
+    reproduce the preset's independent paint behavior without being exported
+    as duplicate PowerPoint shapes.
+    """
+    markup = serialize_preset_layers(
+        geom.layers,
+        semantic_attrs,
+        style_attrs,
+    )
+    geom.attrs["data-pptx-preview-sha256"] = markup.preview_hash
+    semantic_attrs["data-pptx-preview-sha256"] = markup.preview_hash
+    return markup.markup
+
+
 def _clip_blip_image(image_xml: str, geom: GeomResult | None,
                      ctx: AssemblyContext) -> str:
     """Clip image fills to the owning shape geometry when it is not a plain rect."""
     if geom is None or geom.tag == "line":
+        return image_xml
+    if geom.attrs.get("data-pptx-prst") == "rect":
         return image_xml
     if geom.tag == "rect" and not geom.attrs.get("rx") and not geom.attrs.get("ry"):
         return image_xml
 
     ctx.clip_seq[0] += 1
     clip_id = f"{ctx.group_id_prefix}clip{ctx.clip_seq[0]}"
-    clip_shape = _geom_to_svg(geom)
+    clip_shape = _geom_to_svg(geom, "")
     ctx.defs.append(
         f'<clipPath id="{clip_id}" clipPathUnits="userSpaceOnUse">'
         f'{clip_shape}</clipPath>'
@@ -527,16 +942,74 @@ def _inject_clip_path(image_xml: str, clip_id: str) -> str:
 # ---------------------------------------------------------------------------
 
 def _convert_picture(node: ShapeNode, ctx: AssemblyContext, *, top_level: bool) -> str:
-    result = convert_picture(
-        node.xml, node.xfrm, ctx.slide_part, ctx.pkg,
-        media_subdir=ctx.media_subdir,
-        embed_inline=ctx.embed_images,
-        asset_name_map=ctx.asset_name_map,
-    )
+    sp_pr = node.xml.find("p:spPr", NS)
+    geom = _resolve_geometry(node, sp_pr)
+    try:
+        result = convert_picture(
+            node.xml, node.xfrm, ctx.slide_part, ctx.pkg,
+            media_subdir=ctx.media_subdir,
+            embed_inline=ctx.embed_images,
+            asset_name_map=ctx.asset_name_map,
+            strict=ctx.strict,
+        )
+    except MediaResolutionError as exc:
+        if ctx.strict:
+            raise
+        ctx.diagnose(
+            "object-replaced",
+            str(exc),
+            "replace only this picture with a visible placeholder",
+        )
+        return _fallback_node_svg(node, ctx, top_level=top_level)
     if not result.svg:
         return ""
+    _diagnose_picture_result(ctx, result)
     ctx.media.update(result.media)
-    return _wrap_shape_group(result.svg, node, ctx, top_level=top_level)
+    effect = convert_effects(
+        sp_pr,
+        ctx.palette,
+        id_prefix="fx",
+        id_seq=ctx.filter_seq,
+        target_rotation_degrees=node.effective_rotation,
+    )
+    ctx.defs.extend(effect.defs)
+    effect_metadata = dict(effect.metadata)
+    _diagnose_unsupported_effect(ctx, effect_metadata)
+    clipped_svg = _clip_blip_image(result.svg, geom, ctx)
+    picture_attrs = {**_object_metadata(node, ctx), **effect_metadata}
+    group_attrs = _metadata_group_attrs(effect_metadata)
+    if effect.filter_id is not None:
+        filter_attr = f"url(#{effect.filter_id})"
+        if (
+            clipped_svg.startswith("<svg")
+            or clipped_svg.startswith("<image clip-path=")
+        ):
+            # Keep the effect outside the crop viewport so shadows and glows
+            # remain visible beyond the picture geometry in SVG previews.
+            group_attrs.append(f'filter="{filter_attr}"')
+        else:
+            picture_attrs["filter"] = filter_attr
+    picture_svg = _inject_root_svg_attrs(
+        clipped_svg,
+        picture_attrs,
+    )
+    return _wrap_shape_group(
+        picture_svg,
+        node,
+        ctx,
+        top_level=top_level,
+        extra_attrs=group_attrs,
+    )
+
+
+def _inject_root_svg_attrs(markup: str, attrs: dict[str, str]) -> str:
+    """Attach source-object identity to a picture's root SVG element."""
+    attrs_xml = _attrs_to_xml(attrs)
+    for tag in ("image", "svg"):
+        prefix = f"<{tag}"
+        if markup.startswith(prefix):
+            return markup.replace(prefix, f"{prefix}{attrs_xml}", 1)
+    return markup
 
 
 # ---------------------------------------------------------------------------
@@ -545,8 +1018,15 @@ def _convert_picture(node: ShapeNode, ctx: AssemblyContext, *, top_level: bool) 
 
 def _convert_connector(node: ShapeNode, ctx: AssemblyContext, *, top_level: bool) -> str:
     sp_pr = node.xml.find("p:spPr", NS)
-    geom_xml = _build_geometry_xml(node, sp_pr, ctx)
-    return _wrap_shape_group(geom_xml, node, ctx, top_level=top_level)
+    geom = _resolve_geometry(node, sp_pr)
+    geom_xml = _build_geometry_xml(node, sp_pr, ctx, geom=geom)
+    return _wrap_shape_group(
+        geom_xml,
+        node,
+        ctx,
+        top_level=top_level,
+        extra_attrs=_geometry_group_attrs(geom),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -563,7 +1043,18 @@ def _convert_group(node: ShapeNode, ctx: AssemblyContext, *, top_level: bool) ->
     if not inner_parts:
         return ""
     inner = "\n".join(inner_parts)
-    return _wrap_shape_group(inner, node, ctx, top_level=top_level)
+    effect_metadata = unsupported_target_effect_metadata(
+        node.xml.find("p:grpSpPr", NS),
+        "group",
+    )
+    _diagnose_unsupported_effect(ctx, effect_metadata)
+    return _wrap_shape_group(
+        inner,
+        node,
+        ctx,
+        top_level=top_level,
+        extra_attrs=_metadata_group_attrs(effect_metadata),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -579,29 +1070,91 @@ def _convert_graphic_fallback(node: ShapeNode, ctx: AssemblyContext,
     - ``...presentationml/2006/ole`` → render the ``mc:Fallback`` preview
       bitmap that PowerPoint bakes alongside every embedded OLE object.
       Visually identical to what PowerPoint shows for an unedited embed.
-    - everything else (chart / SmartArt / diagram) → labelled bounding
-      rectangle so the slide composition is preserved even though the inner
-      content can't be drawn yet.
+    - supported classic charts → baked preview plus native chart metadata.
+    - everything else (SmartArt / diagram / unsupported chart) → labelled
+      preview or bounding rectangle plus transparent unsupported metadata.
     """
     graphic_data = node.xml.find("a:graphic/a:graphicData", NS)
     uri = graphic_data.attrib.get("uri", "graphicFrame") if graphic_data is not None else "graphicFrame"
 
     if uri == "http://schemas.openxmlformats.org/drawingml/2006/table":
-        rendered = _render_graphic_table(node, ctx, graphic_data)
+        rendered, replacement_attrs, payload_metadata = _render_graphic_table(
+            node,
+            ctx,
+            graphic_data,
+        )
         if rendered:
-            return _wrap_shape_group(rendered, node, ctx, top_level=top_level)
+            inner = (
+                f"{payload_metadata}\n{rendered}"
+                if payload_metadata
+                else rendered
+            )
+            return _wrap_shape_group(
+                inner,
+                node,
+                ctx,
+                top_level=top_level,
+                extra_attrs=replacement_attrs,
+            )
 
-    if uri == "http://schemas.openxmlformats.org/presentationml/2006/ole" and ctx.render_graphic_previews:
-        rendered = _render_graphic_preview(node, ctx)
-        if rendered:
-            labelled = rendered + "\n" + _graphic_preview_label(node, "ole preview")
-            return _wrap_shape_group(labelled, node, ctx, top_level=top_level)
-
+    preview_svg = ""
     if ctx.render_graphic_previews:
-        rendered = _render_graphic_preview(node, ctx)
+        try:
+            preview_svg = _render_graphic_preview(node, ctx)
+        except MediaResolutionError as exc:
+            if ctx.strict:
+                raise
+            ctx.diagnose(
+                "preview-omitted",
+                str(exc),
+                "omit the missing baked preview and retain the native, "
+                "normalized, or placeholder fallback",
+            )
+
+    chart_replacement_attrs: list[str] = []
+    chart_payload_metadata = ""
+    if uri in {CHART_URI, CHARTEX_URI}:
+        rendered, chart_replacement_attrs, chart_payload_metadata = (
+            _render_graphic_chart(
+                node,
+                ctx,
+                graphic_data,
+                preview_svg,
+            )
+        )
         if rendered:
-            labelled = rendered + "\n" + _graphic_preview_label(node, f"{uri.rsplit('/', 1)[-1]} preview")
+            inner = (
+                f"{chart_payload_metadata}\n{rendered}"
+                if chart_payload_metadata
+                else rendered
+            )
+            return _wrap_shape_group(
+                inner,
+                node,
+                ctx,
+                top_level=top_level,
+                extra_attrs=chart_replacement_attrs,
+            )
+
+    if uri == "http://schemas.openxmlformats.org/presentationml/2006/ole":
+        if preview_svg:
+            labelled = (
+                preview_svg
+                + "\n"
+                + _graphic_preview_label(node, "ole preview")
+            )
             return _wrap_shape_group(labelled, node, ctx, top_level=top_level)
+
+    if preview_svg:
+        labelled = (
+            preview_svg
+            + "\n"
+            + _graphic_preview_label(
+                node,
+                f"{uri.rsplit('/', 1)[-1]} preview",
+            )
+        )
+        return _wrap_shape_group(labelled, node, ctx, top_level=top_level)
 
     label = uri.rsplit("/", 1)[-1]
     placeholder = (
@@ -613,7 +1166,15 @@ def _convert_graphic_fallback(node: ShapeNode, ctx: AssemblyContext,
         f'text-anchor="middle" font-size="14" fill="#999999">'
         f"[{_xml_escape(label)}]</text>"
     )
-    return _wrap_shape_group(placeholder, node, ctx, top_level=top_level)
+    if chart_payload_metadata:
+        placeholder = f"{chart_payload_metadata}\n{placeholder}"
+    return _wrap_shape_group(
+        placeholder,
+        node,
+        ctx,
+        top_level=top_level,
+        extra_attrs=chart_replacement_attrs,
+    )
 
 
 def _graphic_preview_label(node: ShapeNode, label: str) -> str:
@@ -626,24 +1187,99 @@ def _graphic_preview_label(node: ShapeNode, label: str) -> str:
     )
 
 
-def _render_graphic_table(node: ShapeNode, ctx: AssemblyContext,
-                          graphic_data: ET.Element | None) -> str:
-    """Convert the <a:tbl> child of a graphicFrame to SVG, or return ''."""
+def _replacement_payload_metadata(payload: object) -> str:
+    payload_json = json.dumps(
+        payload,
+        allow_nan=False,
+        ensure_ascii=False,
+        separators=(",", ":"),
+    )
+    return (
+        '<metadata type="application/json">'
+        f'{_xml_text_escape(payload_json)}</metadata>'
+    )
+
+
+def _render_graphic_table(
+    node: ShapeNode,
+    ctx: AssemblyContext,
+    graphic_data: ET.Element | None,
+) -> tuple[str, list[str], str]:
+    """Convert the <a:tbl> child of a graphicFrame to SVG plus metadata."""
     if graphic_data is None:
-        return ""
+        return "", [], ""
     tbl = graphic_data.find("a:tbl", NS)
     if tbl is None:
-        return ""
+        return "", [], ""
+    table_styles_part = ctx.pkg.resolve_table_styles()
     result = convert_tbl(
         tbl, node.xfrm, ctx.palette,
+        table_styles=(
+            table_styles_part.xml if table_styles_part is not None else None
+        ),
         theme_fonts=ctx.theme_fonts,
+        slide_number=ctx.slide_number,
         id_prefix=f"tbl{ctx.shape_seq[0]}",
         grad_seq=ctx.grad_seq,
         marker_seq=ctx.marker_seq,
     )
     if result.defs:
         ctx.defs.extend(result.defs)
-    return result.svg
+    replacement_attrs: list[str] = ['data-pptx-import-source="pptx"']
+    payload_metadata = ""
+    if result.native_payload:
+        if node.name and not result.native_payload.get("name"):
+            result.native_payload["name"] = node.name
+        payload_metadata = _replacement_payload_metadata(result.native_payload)
+        replacement_attrs.append('data-pptx-replace-with="table"')
+    elif result.native_status:
+        replacement_attrs.append(
+            'data-pptx-replacement-status="'
+            f'{_xml_escape(result.native_status)}"'
+        )
+    if result.effect_reason:
+        effect_metadata = unsupported_effect_metadata(result.effect_reason)
+        _diagnose_unsupported_effect(ctx, effect_metadata)
+        replacement_attrs.extend(_metadata_group_attrs(effect_metadata))
+    return result.svg, replacement_attrs, payload_metadata
+
+
+def _render_graphic_chart(
+    node: ShapeNode,
+    ctx: AssemblyContext,
+    graphic_data: ET.Element | None,
+    preview_svg: str,
+) -> tuple[str, list[str], str]:
+    """Return a chart fallback plus native Chart replacement metadata."""
+    result = extract_native_chart_payload(
+        graphic_data,
+        node.xfrm,
+        ctx.slide_part,
+        ctx.pkg,
+        ctx.palette,
+    )
+    replacement_attrs: list[str] = ['data-pptx-import-source="pptx"']
+    payload_metadata = ""
+    if result.native_payload:
+        if node.name and not result.native_payload.get("name"):
+            result.native_payload["name"] = node.name
+        payload_metadata = _replacement_payload_metadata(result.native_payload)
+        replacement_attrs.append('data-pptx-replace-with="chart"')
+    elif result.native_status:
+        replacement_attrs.append(
+            'data-pptx-replacement-status="'
+            f'{_xml_escape(result.native_status)}"'
+        )
+
+    rendered = preview_svg
+    if rendered:
+        replacement_attrs.append('data-pptx-fallback-kind="source-preview"')
+    elif result.normalized_svg:
+        rendered = result.normalized_svg
+        replacement_attrs.append('data-pptx-fallback-kind="normalized"')
+    else:
+        replacement_attrs.append('data-pptx-fallback-kind="placeholder"')
+    return rendered, replacement_attrs, payload_metadata
 
 
 def _render_graphic_preview(node: ShapeNode, ctx: AssemblyContext) -> str:
@@ -685,9 +1321,11 @@ def _render_graphic_preview(node: ShapeNode, ctx: AssemblyContext) -> str:
         media_subdir=ctx.media_subdir,
         embed_inline=ctx.embed_images,
         asset_name_map=ctx.asset_name_map,
+        strict=ctx.strict,
     )
     if not result.svg:
         return ""
+    _diagnose_picture_result(ctx, result)
     ctx.media.update(result.media)
     return result.svg
 
@@ -797,7 +1435,9 @@ def _emit_background_image(
         media_subdir=ctx.media_subdir,
         embed_inline=ctx.embed_images,
         asset_name_map=ctx.asset_name_map,
+        strict=ctx.strict,
     )
+    _diagnose_picture_result(ctx, result)
     if result.media:
         ctx.media.update(result.media)
     return result.svg
@@ -835,8 +1475,13 @@ def _theme_background_fill(
 
 def _emit_inherited_shapes(slide: SlideRef, ctx: AssemblyContext) -> list[str]:
     parts: list[str] = []
-    for prefix, part in (("master-", slide.master), ("layout-", slide.layout)):
-        if part is None:
+    show_layout_shapes, show_master_shapes = inherited_shape_visibility(slide)
+    inherited_parts = (
+        ("master-", slide.master, show_master_shapes),
+        ("layout-", slide.layout, show_layout_shapes),
+    )
+    for prefix, part, visible in inherited_parts:
+        if part is None or not visible:
             continue
         original_part = ctx.slide_part
         original_prefix = ctx.group_id_prefix
@@ -865,32 +1510,22 @@ def _is_placeholder_node(node: ShapeNode) -> bool:
 
 def _convert_placeholder_guide(node: ShapeNode, ctx: AssemblyContext,
                                *, top_level: bool) -> str:
-    """Emit a lightweight visible guide for template placeholder slots."""
-    ph = node.placeholder
-    label_parts = ["ph"]
-    if ph is not None:
-        if ph.type:
-            label_parts.append(ph.type)
-        if ph.idx:
-            label_parts.append(f"idx={ph.idx}")
-    label = " ".join(label_parts)
-    guide = (
-        f'<rect x="{fmt_num(node.xfrm.x)}" y="{fmt_num(node.xfrm.y)}" '
-        f'width="{fmt_num(node.xfrm.w)}" height="{fmt_num(node.xfrm.h)}" '
-        f'fill="#F8FAFC" fill-opacity="0.18" stroke="#94A3B8" '
-        f'stroke-dasharray="6 4" stroke-width="1"/>'
-        f'<text x="{fmt_num(node.xfrm.x + 8)}" y="{fmt_num(node.xfrm.y + 18)}" '
-        f'font-size="12" fill="#64748B">{_xml_escape(label)}</text>'
-    )
-    return _wrap_shape_group(guide, node, ctx, top_level=top_level)
+    """Emit the source-authored appearance of one template placeholder."""
+    return _convert_node(node, ctx, top_level=top_level)
 
 
 # ---------------------------------------------------------------------------
 # Wrap / utilities
 # ---------------------------------------------------------------------------
 
-def _wrap_shape_group(inner: str, node: ShapeNode, ctx: AssemblyContext,
-                      *, top_level: bool) -> str:
+def _wrap_shape_group(
+    inner: str,
+    node: ShapeNode,
+    ctx: AssemblyContext,
+    *,
+    top_level: bool,
+    extra_attrs: list[str] | None = None,
+) -> str:
     """Wrap a shape's body in a <g> that carries the transform (rotation /
     flip) and an id for animation anchoring."""
     if not inner.strip():
@@ -903,10 +1538,39 @@ def _wrap_shape_group(inner: str, node: ShapeNode, ctx: AssemblyContext,
     g_id = f"{ctx.group_id_prefix}shape-{sid}"
 
     attrs: list[str] = [f'id="{g_id}"']
+    attrs.extend(
+        f'{key}="{_xml_escape(value)}"'
+        for key, value in _object_metadata(
+            node,
+            ctx,
+            fallback_shape_id=sid,
+        ).items()
+    )
     if node.name:
         attrs.append(f'data-name="{_xml_escape(node.name)}"')
     if node.placeholder is not None and node.placeholder.type:
         attrs.append(f'data-ph-type="{_xml_escape(node.placeholder.type)}"')
+    if node.placeholder is not None and node.kind == SHAPE:
+        sp_pr = node.xml.find("p:spPr", NS)
+        if sp_pr is not None and any(
+            sp_pr.find(path, NS) is not None
+            for path in ("a:prstGeom", "a:custGeom")
+        ):
+            attrs.append('data-pptx-placeholder-local-geometry="true"')
+    if extra_attrs:
+        attrs.extend(extra_attrs)
+        if any(
+            attribute.split("=", 1)[0] == "data-pptx-replace-with"
+            for attribute in extra_attrs
+        ):
+            fallback_hash = svg_native_fallback_markup_fingerprint(
+                inner,
+                root_transform=transform,
+                external_markup="".join(ctx.defs),
+            )
+            attrs.append(
+                f'{NATIVE_FALLBACK_SHA256_ATTR}="{fallback_hash}"'
+            )
     if transform:
         attrs.append(f'transform="{transform}"')
     return f"<g {' '.join(attrs)}>\n{inner}\n</g>"
@@ -915,11 +1579,121 @@ def _wrap_shape_group(inner: str, node: ShapeNode, ctx: AssemblyContext,
 def _attrs_to_xml(attrs: dict[str, str]) -> str:
     if not attrs:
         return ""
-    return "".join(f' {k}="{v}"' for k, v in attrs.items())
+    return "".join(f' {key}="{_xml_escape(value)}"' for key, value in attrs.items())
+
+
+def _metadata_group_attrs(attrs: dict[str, str]) -> list[str]:
+    """Serialize import metadata for a logical object wrapper."""
+    return [
+        f'{key}="{_xml_escape(value)}"'
+        for key, value in attrs.items()
+    ]
+
+
+def _diagnose_unsupported_effect(
+    ctx: AssemblyContext,
+    metadata: dict[str, str],
+) -> None:
+    """Copy an import-only blocking effect marker into the conversion report."""
+    reason = metadata.get(EFFECT_REASON_ATTR)
+    if reason is None:
+        return
+    ctx.diagnose(
+        "effect-unsupported",
+        reason,
+        "retain the base object and record blocking effect metadata",
+    )
+
+
+def _geometry_group_attrs(geom: GeomResult | None) -> list[str]:
+    """Mirror native geometry semantics onto the logical shape container."""
+    if geom is None:
+        return []
+    keys = (
+        "data-pptx-prst",
+        "data-pptx-geometry-kind",
+        "data-pptx-geometry-sha256",
+        "data-pptx-preview-sha256",
+        "data-pptx-geometry-status",
+        "data-pptx-geometry-reason",
+        EFFECT_STATUS_ATTR,
+        EFFECT_REASON_ATTR,
+    )
+    attrs: list[str] = []
+    for key, value in geom.attrs.items():
+        if key in keys or key.startswith("data-pptx-av-"):
+            attrs.append(f'{key}="{_xml_escape(value)}"')
+    return attrs
+
+
+def _object_metadata(
+    node: ShapeNode,
+    ctx: AssemblyContext,
+    *,
+    fallback_shape_id: str = "",
+) -> dict[str, str]:
+    """Describe the source object without coupling geometry to its SVG bounds."""
+    object_kind = {
+        SHAPE: "shape",
+        PICTURE: "picture",
+        CONNECTOR: "connector",
+        GROUP: "group",
+        GRAPHIC: "graphic-frame",
+    }.get(node.kind, node.kind)
+    shape_id = node.spid or fallback_shape_id
+    frame = " ".join((
+        fmt_num(node.xfrm.x, 8),
+        fmt_num(node.xfrm.y, 8),
+        fmt_num(node.xfrm.w, 8),
+        fmt_num(node.xfrm.h, 8),
+    ))
+    attrs = {
+        "data-pptx-object": object_kind,
+        "data-pptx-shape-id": shape_id,
+        "data-pptx-shape-scope": _shape_scope(ctx),
+        "data-pptx-frame": frame,
+    }
+    if node.name:
+        attrs["data-pptx-shape-name"] = node.name
+    if node.kind == CONNECTOR:
+        attrs.update(_connector_metadata(node, _shape_scope(ctx)))
+    return attrs
+
+
+def _shape_scope(ctx: AssemblyContext) -> str:
+    if ctx.group_id_prefix.startswith("master-"):
+        return "master"
+    if ctx.group_id_prefix.startswith("layout-"):
+        return "layout"
+    return "slide"
+
+
+def _connector_metadata(node: ShapeNode, scope: str) -> dict[str, str]:
+    """Preserve connector endpoint references when PowerPoint declares them."""
+    attrs: dict[str, str] = {}
+    cnv = node.xml.find("p:nvCxnSpPr/p:cNvCxnSpPr", NS)
+    if cnv is None:
+        return attrs
+
+    for endpoint, prefix in (("stCxn", "start"), ("endCxn", "end")):
+        connection = cnv.find(f"a:{endpoint}", NS)
+        if connection is None:
+            continue
+        shape_id = connection.attrib.get("id")
+        site = connection.attrib.get("idx")
+        if shape_id is not None:
+            attrs[f"data-pptx-{prefix}-shape-id"] = shape_id
+            attrs[f"data-pptx-{prefix}-shape-scope"] = scope
+        if site is not None:
+            attrs[f"data-pptx-{prefix}-site"] = site
+    return attrs
 
 
 def _xml_escape(text: str) -> str:
+    return _xml_text_escape(text).replace('"', "&quot;")
+
+
+def _xml_text_escape(text: str) -> str:
     return (text.replace("&", "&amp;")
                 .replace("<", "&lt;")
-                .replace(">", "&gt;")
-                .replace('"', "&quot;"))
+                .replace(">", "&gt;"))

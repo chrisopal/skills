@@ -1,56 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="4" fill="#4295B6"/>
-  <text x="64" y="45" font-family="Microsoft YaHei" font-size="13" fill="#4B5563">02 / DIAGNOSIS ISSUE TREE</text>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="64" y="45" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563">02 / DIAGNOSIS ISSUE TREE</text>
   <g id="huixin-logo" transform="translate(1032 18) scale(0.52)" data-logo-variant="light">
-    <image x="0" y="0" width="268" height="63" preserveAspectRatio="xMinYMin meet" href="data:image/png;base64,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"/>
+    <image x="0" y="0" width="268" height="63" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
   </g>
-  <text x="64" y="112" font-family="Microsoft YaHei" font-size="34" font-weight="bold" fill="#0B2F3A">{{PAGE_TITLE}}</text>
-  <text x="64" y="154" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#4295B6">{{KEY_MESSAGE}}</text>
-  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D2D3D4" stroke-width="1"/>
-  <rect x="64" y="226" width="250" height="104" rx="4" fill="#0B2F3A"/>
-  <text x="92" y="265" font-family="Microsoft YaHei" font-size="20" font-weight="bold" fill="#FFFFFF">核心问题</text>
-  <text x="92" y="298" font-family="Microsoft YaHei" font-size="15" fill="#FFFFFF" fill-opacity="0.86">增长、效率、质量无法同时提升</text>
-  <line x1="314" y1="278" x2="392" y2="278" stroke="#4295B6" stroke-width="3"/>
-  <line x1="392" y1="278" x2="392" y2="528" stroke="#4295B6" stroke-width="3"/>
+  <text x="64" y="112" font-family="Microsoft YaHei, Arial, sans-serif" font-size="34" font-weight="bold" fill="#111111">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D9D9D9" stroke-width="1"/>
+  <rect x="64" y="226" width="250" height="104" rx="4" fill="#111111"/>
+  <text x="92" y="265" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF">核心问题</text>
+  <text x="92" y="298" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#FFFFFF" fill-opacity="0.86">增长、效率、质量无法同时提升</text>
+  <line x1="314" y1="278" x2="392" y2="278" stroke="#0097BA" stroke-width="3"/>
+  <line x1="392" y1="278" x2="392" y2="528" stroke="#0097BA" stroke-width="3"/>
   <g id="branch-process">
-    <line x1="392" y1="248" x2="448" y2="248" stroke="#4295B6" stroke-width="2"/>
-    <rect x="448" y="198" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
-    <text x="472" y="232" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#0B2F3A">流程体系</text>
-    <text x="472" y="266" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">端到端责任链不清晰</text>
-    <rect x="706" y="198" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
-    <text x="728" y="234" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 1：跨部门交接</text>
-    <text x="728" y="266" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 2：异常升级慢</text>
-    <line x1="674" y1="248" x2="706" y2="248" stroke="#D2D3D4" stroke-width="2"/>
+    <line x1="392" y1="248" x2="448" y2="248" stroke="#0097BA" stroke-width="2"/>
+    <rect x="448" y="198" width="226" height="100" rx="4" fill="#F5F6F7" stroke="#D9D9D9" stroke-width="1"/>
+    <text x="472" y="232" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="bold" fill="#111111">流程体系</text>
+    <text x="472" y="266" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#4B5563">端到端责任链不清晰</text>
+    <rect x="706" y="198" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+    <text x="728" y="234" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">断点 1：跨部门交接</text>
+    <text x="728" y="266" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">断点 2：异常升级慢</text>
+    <line x1="674" y1="248" x2="706" y2="248" stroke="#D9D9D9" stroke-width="2"/>
   </g>
   <g id="branch-data">
-    <line x1="392" y1="378" x2="448" y2="378" stroke="#4295B6" stroke-width="2"/>
-    <rect x="448" y="328" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
-    <text x="472" y="362" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#0B2F3A">数据底座</text>
-    <text x="472" y="396" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">系统孤岛导致口径不一</text>
-    <rect x="706" y="328" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
-    <text x="728" y="364" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 3：数据分散</text>
-    <text x="728" y="396" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 4：指标滞后</text>
-    <line x1="674" y1="378" x2="706" y2="378" stroke="#D2D3D4" stroke-width="2"/>
+    <line x1="392" y1="378" x2="448" y2="378" stroke="#0097BA" stroke-width="2"/>
+    <rect x="448" y="328" width="226" height="100" rx="4" fill="#F5F6F7" stroke="#D9D9D9" stroke-width="1"/>
+    <text x="472" y="362" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="bold" fill="#111111">数据底座</text>
+    <text x="472" y="396" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#4B5563">系统孤岛导致口径不一</text>
+    <rect x="706" y="328" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+    <text x="728" y="364" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">断点 3：数据分散</text>
+    <text x="728" y="396" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">断点 4：指标滞后</text>
+    <line x1="674" y1="378" x2="706" y2="378" stroke="#D9D9D9" stroke-width="2"/>
   </g>
   <g id="branch-org">
-    <line x1="392" y1="508" x2="448" y2="508" stroke="#4295B6" stroke-width="2"/>
-    <rect x="448" y="458" width="226" height="100" rx="4" fill="#F3F7FA" stroke="#D2D3D4" stroke-width="1"/>
-    <text x="472" y="492" font-family="Microsoft YaHei" font-size="19" font-weight="bold" fill="#0B2F3A">组织能力</text>
-    <text x="472" y="526" font-family="Microsoft YaHei" font-size="15" fill="#4B5563">业务与技术协同机制不足</text>
-    <rect x="706" y="458" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D2D3D4" stroke-width="1"/>
-    <text x="728" y="494" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 5：角色模糊</text>
-    <text x="728" y="526" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">断点 6：能力缺口</text>
-    <line x1="674" y1="508" x2="706" y2="508" stroke="#D2D3D4" stroke-width="2"/>
+    <line x1="392" y1="508" x2="448" y2="508" stroke="#0097BA" stroke-width="2"/>
+    <rect x="448" y="458" width="226" height="100" rx="4" fill="#F5F6F7" stroke="#D9D9D9" stroke-width="1"/>
+    <text x="472" y="492" font-family="Microsoft YaHei, Arial, sans-serif" font-size="19" font-weight="bold" fill="#111111">组织能力</text>
+    <text x="472" y="526" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#4B5563">业务与技术协同机制不足</text>
+    <rect x="706" y="458" width="214" height="100" rx="4" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1"/>
+    <text x="728" y="494" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">断点 5：角色模糊</text>
+    <text x="728" y="526" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">断点 6：能力缺口</text>
+    <line x1="674" y1="508" x2="706" y2="508" stroke="#D9D9D9" stroke-width="2"/>
   </g>
-  <rect x="974" y="198" width="242" height="360" rx="4" fill="#FFFFFF" stroke="#4295B6" stroke-width="2"/>
-  <rect x="974" y="198" width="242" height="42" fill="#4295B6"/>
-  <text x="1000" y="226" font-family="Microsoft YaHei" font-size="17" font-weight="bold" fill="#FFFFFF">管理层判断</text>
-  <text x="1000" y="284" font-family="Microsoft YaHei" font-size="42" font-weight="bold" fill="#B0D776">70%</text>
-  <text x="1000" y="318" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">瓶颈来自体系协同</text>
-  <line x1="1000" y1="348" x2="1190" y2="348" stroke="#D2D3D4" stroke-width="1"/>
-  <text x="1000" y="386" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">{{CONTENT_AREA}}</text>
-  <text x="1000" y="428" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">建议优先治理流程、数据、组织</text>
-  <text x="1000" y="456" font-family="Microsoft YaHei" font-size="16" fill="#4B5563">三类基础能力。</text>
-  <text x="64" y="674" font-family="Microsoft YaHei" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+  <rect x="974" y="198" width="242" height="360" rx="4" fill="#FFFFFF" stroke="#0097BA" stroke-width="2"/>
+  <rect x="974" y="198" width="242" height="42" fill="#0097BA"/>
+  <text x="1000" y="226" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="bold" fill="#FFFFFF">管理层判断</text>
+  <text x="1000" y="284" font-family="Microsoft YaHei, Arial, sans-serif" font-size="42" font-weight="bold" fill="#A4D968">70%</text>
+  <text x="1000" y="318" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">瓶颈来自体系协同</text>
+  <line x1="1000" y1="348" x2="1190" y2="348" stroke="#D9D9D9" stroke-width="1"/>
+  <text x="1000" y="386" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">{{CONTENT_AREA}}</text>
+  <text x="1000" y="428" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">建议优先治理流程、数据、组织</text>
+  <text x="1000" y="456" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" fill="#4B5563">三类基础能力。</text>
+  <text x="64" y="674" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
 </svg>

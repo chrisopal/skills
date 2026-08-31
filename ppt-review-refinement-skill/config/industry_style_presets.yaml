@@ -1,0 +1,58 @@
+version: 1.0.0
+presets:
+  industrial_consulting:
+    description: 制造业、智能工厂、企业数字化和管理咨询型方案
+    personality: [专业, 稳重, 工业科技, 咨询表达, 克制]
+    recommended_palette:
+      primary: "#0C2749"
+      secondary: "#0097BA"
+      accent: "#A4D968"
+      neutral: "#D1D3D3"
+      background: "#F5F7F9"
+      surface: "#FFFFFF"
+      text_primary: "#17202A"
+      text_secondary: "#5B6770"
+    image_treatment: 冷色或中性色工业场景，适度品牌色蒙版，避免过度赛博化
+    layout: 清晰网格、结论式标题、少装饰、强调架构和价值链
+  corporate_blue:
+    description: 企业介绍、正式汇报、管理层沟通
+    personality: [正式, 可信, 清晰, 克制]
+    recommended_palette:
+      primary: "#163A5F"
+      secondary: "#2E6E9E"
+      accent: "#E5A13C"
+      neutral: "#D8DEE5"
+      background: "#F7F9FB"
+      surface: "#FFFFFF"
+      text_primary: "#18222D"
+      text_secondary: "#637080"
+    image_treatment: 真实企业与团队照片，统一冷暖和对比度
+    layout: 大标题、稳定留白、对齐严格、数据适度强调
+  marketing_tech:
+    description: 产品发布、市场宣传、创新方案展示
+    personality: [现代, 科技, 轻盈, 有视觉冲击]
+    recommended_palette:
+      primary: "#111827"
+      secondary: "#2563EB"
+      accent: "#22C55E"
+      neutral: "#CBD5E1"
+      background: "#F8FAFC"
+      surface: "#FFFFFF"
+      text_primary: "#0F172A"
+      text_secondary: "#64748B"
+    image_treatment: 高质量产品或应用场景，允许渐变与适度抽象图形
+    layout: 视觉主图与大数字优先，避免信息堆叠
+  government_formal:
+    description: 政府、国企、规划、专项汇报
+    personality: [正式, 稳健, 权威, 条理清晰]
+    recommended_palette:
+      primary: "#7A1F1F"
+      secondary: "#B08D57"
+      accent: "#1F5A78"
+      neutral: "#D9D3C7"
+      background: "#FAF8F4"
+      surface: "#FFFFFF"
+      text_primary: "#26221E"
+      text_secondary: "#6A625B"
+    image_treatment: 实景、规划图、正式建筑与产业场景，避免娱乐化图片
+    layout: 标题规范、层级明确、表格规整、装饰适量

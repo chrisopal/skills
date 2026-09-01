@@ -1,155 +1,154 @@
-# Execution Lock
+# Execution Lock Structure
 
-> **⚠️ Skeleton for Strategist — do NOT copy verbatim into a project.** When producing `<project_path>/spec_lock.md`, emit only `##` sections with filled-in `-` data lines. Do NOT carry over any `>` blockquote guidance, HARD-rule notes, or override examples — those are author-time guidance, not runtime data. Every output line must be parseable data.
->
-> Machine-readable execution contract. Executor MUST `read_file` this before every SVG page. Values not listed here must NOT appear in SVGs. For design narrative (rationale, audience, style), see `design_spec.md`.
->
-> After SVG generation begins, this is the canonical source for color / font / icon / image values. Modifications should go through `scripts/update_spec.py` to keep this file and generated SVGs in sync.
+`spec_lock.md` projects cross-page anchors/routes from audited `design_spec.md` and context; it excludes local paint/type. This file owns structure; [`schemas/spec_lock.schema.json`](./schemas/spec_lock.schema.json) owns grammar.
 
-## canvas
-- viewBox: 0 0 1280 720
-- format: PPT 16:9
+## 1. Author the complete artifact
 
-> Strategist: fill viewBox and format for the chosen canvas. Common values: `0 0 1280 720` (PPT 16:9), `0 0 1024 768` (PPT 4:3), `0 0 1242 1660` (Xiaohongshu), `0 0 1080 1080` (WeChat Moments), `0 0 1080 1920` (Story).
+After Generate Step 4 Gate 1, read the completed Design Spec and current page/resource/template context, compose the entire lock in active context, then create `<project_path>/spec_lock.md` once.
 
-## mode
-- mode: pyramid
+**Mandatory — new-project write**: The first non-empty line is exactly `<!-- ppt-master-schema: spec-lock/v1 -->`, followed by `# Execution Lock`. Write only final sections and values; do not create a blank lock, copy inactive optional sections, or patch scaffold placeholders. Do not reopen final confirmation or interpret it independently.
 
-> Strategist: the deck's narrative skeleton, locked at confirmation `d` Layer 1. One of `pyramid` / `narrative` / `instructional` / `showcase` / `briefing` — see [`references/modes/_index.md`](../references/modes/_index.md). Executor reads only the locked mode's file. Deck-wide. Or the literal `custom` for a bespoke direction no preset captures (a special cadence, a multi-mode fusion, a particular posture) — user-requested or Strategist-recommended (user confirms, like every lock). Then add a sibling `- mode_behavior:` paragraph (how the argument advances, title voice, page rhythm, register) that the Executor follows in place of a preset file. One deck locks one value; don't default to `custom` when a preset fits.
+`project_manager.py scaffold-lock` remains an optional manual convenience and overwrite-safe troubleshooting tool. It is not part of normal Generate authoring. When a credible completed Design Spec/lock pair needs correction, repair only the affected projection after auditing the Design Spec. When the Design Spec was missing and an orphan lock survived, discard that lock as authority and re-author the complete lock from the recovered, audited Design Spec plus current context.
 
-## visual_style
-- visual_style: swiss-minimal
+**Hard rule**: A project lock contains only `##` sections and `- key: value` data lines, except `## forbidden`, whose list items are literal rules. Do not copy guidance paragraphs into the lock.
 
-> Strategist: the deck's visual aesthetic, locked at confirmation `d` Layer 2. A preset name from [`references/visual-styles/_index.md`](../references/visual-styles/_index.md), **or** the literal `custom`. Reference intent (shape / decoration / whitespace / texture) — **not a whitelist**, and **carries no HEX** (color truth stays in `colors`). Executor reads only the locked style's file.
->
-> **`custom`** — add a sibling `- visual_style_behavior:` row with a one-paragraph aesthetic description (shape language, decoration density, whitespace, typographic character, texture); no HEX, no color names. Tail-case, not a default.
+---
 
-## colors
-- bg: #FFFFFF
-- primary: #......
-- accent: #......
-- secondary_accent: #......
-- text: #......
-- text_secondary: #......
-- border: #......
-- image_rendering: vector-illustration
-- image_palette: cool-corporate
+## 2. Base sections
 
-> Strategist: fill only colors actually used. Add extra rows as needed; delete unused rows rather than leave as `#......`.
->
-> **`image_rendering` and `image_palette`** — required only when `images` section below contains `ai`-sourced files. Values MUST be valid names from `references/image-renderings/_index.md` and `references/image-palettes/_index.md`, **or** the literal string `custom`. Image_Generator reads these and applies them deck-wide. Omit both rows when the deck has no AI-generated images.
->
-> **`custom` escape hatch.** When set to `custom`, add a sibling `*_behavior` row carrying a one-paragraph prose description. Image_Generator splices the prose into the prompt in place of the preset file's fewshot snippet. Tail-case only — see [`image-renderings/_index.md`](../references/image-renderings/_index.md) §1.5 / [`image-palettes/_index.md`](../references/image-palettes/_index.md) §2 for invocation rules.
->
-> ```
-> - image_rendering: custom
-> - image_rendering_behavior: "Hand-screened poster aesthetic — slightly misregistered halftone overlays, 3 flat ink colors with visible dot pattern at 12% opacity, no gradients, no anti-aliased edges; reads as silkscreen print."
-> - image_palette: custom
-> - image_palette_behavior: "Primary deep aubergine `#4C1D95` anchors ~35% of canvas; secondary warm cream `#FEF3C7` carries ~55% as breathing field; accent burnished gold `#D4AF37` in 5-10% as ceremonial accents. No fourth color."
-> ```
+| Section | Required keys | Notes |
+| --- | --- | --- |
+| `canvas` | `viewBox`, `format` | `format` is the canonical display name (for example `PPT 16:9`); `viewBox` is the matching exact geometry |
+| `communication` | `primary_language`, `audience`, `objective`, `core_message` | New lock: canonical BCP-47; old lock may omit it. Reject `und` and Chinese without script/region. `objective` merges intent/outcome; `consumption_mode` is optional off PPT |
+| `mode` | `mode` | Preset or `custom` |
+| `visual_style` | `visual_style` | Preset or `custom` |
+| `colors` | Stable semantic color roles | Core identity and recurring roles only; contextual SVG paints need no row; `image_rendering` appears only for AI images |
+| `typography` | `font_family`, `body`, `title` | Core family/size anchors; new locks also write explicit `title_family` and `body_family`; size anchors are unitless px numbers |
+| `icons` | `library`, `inventory` | `library` is the Strategist's primary bundled style choice or `none`; `simple-icons/*` may be selected alone or accompany it; `inventory` indexes the curated synced bundled pool rather than page usage or all usable project-local icons; `stroke_width` is conditional |
+| `page_rhythm` | One `P<NN>` row per page | Values: `anchor`, `dense`, `breathing` |
+| `pptx_structure` | `mode` | Values: `flat`, `structured` |
+| `forbidden` | Literal list items | General standards stay in their owning reference |
 
-## typography
-- font_family: "Microsoft YaHei", Arial, sans-serif
-- title_family: Georgia, SimSun, serif
-- body_family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif
-- emphasis_family: Georgia, SimSun, serif
-- code_family: Consolas, "Courier New", monospace
-- body: 22
-- title: 32
-- subtitle: 24
-- annotation: 14
+Optional data sections: `images`, `page_visualizations` (Chart/Table only). New locks never write
+legacy `page_charts`; existing locks may retain it for read-only compatibility.
+Never declare the same page in both sections.
 
-> **All five family lines are listed explicitly** so Strategist considers every role — `code_family` and `emphasis_family` are easily forgotten. In a real `spec_lock.md`:
-> - Keep any `*_family` whose role genuinely differs from `font_family`.
-> - **Omit** any `*_family` equal to `font_family` — Executor falls back to `font_family` for missing roles, so writing it twice is noise. (Exception: keep `code_family` even when equal — monospace is conceptually distinct.)
-> - `code_family` applies to code snippets only. LaTeX formulas rendered by `latex_render.py` are PNG image assets and must be listed under `images`.
->
-> `font_family` is the default fallback. Every declared family is a CSS font-stack string.
->
-> **Source**: copy verbatim from the *Per-role font stacks* list in `design_spec.md §IV Font Plan`. Stack **order** encodes browser-rendering intent (Latin-led vs. CJK-led) that the breakdown table cannot — strings here must match character-for-character. See `design_spec.md §IV` for the explainer.
->
-> Sizes (`body` / `title` / etc.) are in px, matching SVG units. `body` is the **required baseline anchor** — all other sizes derive as ratios of it (ramp table: `design_spec_reference.md §IV`).
->
-> **Size slots are anchors, not a closed menu.** Common slots (`title` / `subtitle` / `annotation`) cover frequent cases. Add role-specific slots (e.g. `cover_title: 72`, `hero_number: 48`, `chart_annotation: 13`) when needed — common for cover-heavy decks, consulting-style hero numbers, dense pages. Executor may use intermediate sizes as long as the ratio to `body` sits in the role's ramp band.
->
-> **⚠️ PPT-safe stack discipline (HARD rule).** PPTX stores one `typeface` per run with no runtime fallback. Every stack MUST end with a cross-platform pre-installed font: `"Microsoft YaHei", sans-serif` / `SimSun, serif` / `Arial, sans-serif` / `"Times New Roman", serif` / `Consolas, "Courier New", monospace`. Non-preinstalled fonts (Inter / Google Fonts / brand typefaces) may lead the stack only when the Design Spec notes the font-install or embedding requirement.
->
-> **Stack length discipline.** 3-4 fonts per stack is the sweet spot. Converter only writes the **first** Latin and **first** CJK font into PPTX — everything after is silently dropped. macOS-only families (`Songti SC`, `Menlo`, `Monaco`, `Helvetica`) are auto-mapped to Windows equivalents via `FONT_FALLBACK_WIN` (see `scripts/svg_to_pptx/drawingml_utils.py`); stacking both is redundant. Lead with Windows-preinstalled fonts (`Microsoft YaHei` / `SimSun` / `Arial` / `Georgia` / `Consolas`); keep at most **one** macOS-exclusive family (typically `"PingFang SC"`) as a browser-preview nicety.
+The required universal block is:
 
-## icons
-- library: chunk-filled
-- brand_library: simple-icons
-- inventory: target, bolt, shield, users, chart-bar, lightbulb
+```markdown
+## forbidden
+- `mask`, `<style>`, `class`, external CSS, `<foreignObject>`, `textPath`, `@font-face`, `<animate*>`, `<set>`, `<script>` / event attributes, `<iframe>`
+- HTML named entities in text; write typography as raw Unicode and escape XML reserved characters
+```
 
-> `library` MUST be exactly one of `chunk-filled` / `tabler-filled` / `tabler-outline` / `phosphor-duotone` — mixing is forbidden. `brand_library: simple-icons` is optional; include only when the deck uses real company / product brand marks, otherwise omit. `inventory` lists approved icon names (no library prefix); Executor may only use icons from this list.
->
-> **`stroke_width` (stroke-style libraries only)** — required when `library` is stroke-based (currently `tabler-outline`); allowed values `1.5` / `2` / `3`. Executor MUST apply this value to every `<use data-icon="...">` placeholder via `stroke-width`, deck-wide. Omit for non-stroke libraries (`chunk-filled` / `tabler-filled` / `phosphor-duotone`) — ignored there. For heavier weight switch library; do not exceed `3` (at 24×24 strokes merge and the icon stops reading as line art).
->
-> Example for stroke-style libraries:
-> ```
-> - library: tabler-outline
-> - stroke_width: 2
-> - inventory: home, chart-bar, users, bulb
-> ```
+---
 
-## images
-- cover_bg: images/cover_bg.jpg
-- q3_revenue_chart: images/q3_revenue.png | no-crop
-- formula_001: images/formula_001.png | no-crop
+## 3. Conditional sections and fields
 
-> One entry per image file used. Append ` | no-crop` only for images that must not lose pixels (data screenshots, charts, certificates, rendered LaTeX formulas) — Executor will size the container to native ratio and use `preserveAspectRatio="xMidYMid meet"`. Untagged entries default to croppable (`slice`). Remove the section entirely if no images.
+| Trigger | Required addition |
+| --- | --- |
+| `mode.mode: custom` | `mode_behavior` in `mode`; optional `mode_references` only when catalog modes are actually used |
+| `visual_style.visual_style: custom` | `visual_style_behavior` in `visual_style`; optional `visual_style_references` only when catalog styles are actually used |
+| `colors.image_rendering: custom` | `image_rendering_behavior` in `colors`; optional `image_rendering_references` only when catalog renderings are actually used |
+| `icons.library: tabler-outline` | `stroke_width: 1.5`, `2`, or `3` |
+| `pptx_structure.mode: structured` | `template_reuse_scope: layout\|mirror`, `template_adherence`, plus `pptx_masters`, `pptx_layouts`, `page_pptx_layouts`, and `page_layouts` |
+| `pptx_structure.template_reuse_scope: mirror` | `mode: structured` and `template_adherence: strict` |
+| `pptx_structure.template_reuse_scope: style` | `mode: flat`; omit structured mapping sections |
+| `pptx_structure.mode: flat` | Omit all four structured mapping sections |
 
-## page_rhythm
-- P01: anchor
-- P02: dense
-- P03: breathing
-- P04: dense
-- P05: dense
-- P06: breathing
-- P07: anchor
+Structured section value shapes:
 
-> One entry per page. Key: `P<NN>` (zero-padded, matching `§IX Content Outline` in `design_spec.md`). Value: one of the three rhythm tags. Executor reads per page and applies the tag's layout discipline — breaks the "every page looks the same" pattern.
->
-> **Vocabulary** (exactly these three values):
-> - `anchor` — Structural pages (cover / chapter opener / TOC / ending). Follow the template as-is.
-> - `dense` — Information-heavy pages (data, KPIs, comparisons, multi-point lists). Card grids, multi-column layouts, tables, charts all permitted.
-> - `breathing` — Low-density pages (single concept, hero quote, big image + caption, section transition). Avoid **multi-card grid layouts** (multiple parallel rounded containers as the primary structure); organize via naked text, dividers, whitespace, or full-bleed imagery. Single rounded elements (hero image corners, callouts, tags, one emphasis block) are fine. Proportions follow information weight — not a preset ratio menu.
->
-> **Rhythm follows narrative**: `breathing` pages appear where narrative genuinely pauses — section transitions, a single argument worth standalone emphasis, a deliberate stop after a dense sequence. A data briefing or consulting analysis may legitimately be nearly all `dense` — **do not invent filler pages** to pad rhythm. Validation: every `breathing` page must answer "what independent thing is this page saying?".
->
-> **Missing or empty section** → Executor falls back to `dense` for every page (legacy pre-rhythm behavior). Remove the section only for legacy decks; new decks MUST fill it.
+```markdown
+## pptx_masters
+- master-default: Default Master
+
+## pptx_layouts
+- content-two-column: master-default | Two Column | template:03_content
+
+## page_pptx_layouts
+- P01: content-two-column
 
 ## page_layouts
-- P01: 01_cover
-- P03: 02a_chapter
-- P04: 03a_content_abstract
+- P01: 03_content
+```
 
-> One entry per page **that uses a template SVG**. Key: `P<NN>` matching §IX. Value: the template's SVG basename without extension (e.g., `01_cover`, `03a_content_image_text`) — Executor resolves it to `templates/<value>.svg`. Modern templates ship many content-page variants (`03a_content_abstract`, `03b_content_image_text`, `03c_content_three_items` …); the page-type → single-file mapping in `executor-base.md §1` no longer covers them, so this section is the per-page truth.
->
-> **No entry for a page** → that page is free design (no template inheritance). Mixed decks are supported: e.g., cover/chapter pages inherit a template while content pages are free.
->
-> **Hard rule**: Use both `page_layouts` and `page_charts` for the same page only when the layout template is a compatible shell for the chart. Do not assign a conflicting layout just to fill every page: a waterfall chart should not inherit a timeline layout, and KPI cards should not inherit a circle-diagram layout unless that is the intended visual structure. When no compatible layout exists, omit the page from `page_layouts`.
->
-> **Whole section omitted** → entire deck is free design. Equivalent to no rows but cleaner; do this when zero pages reference a template.
->
-> **Strategist source**: copy the per-page SVG choices from `design_spec.md §VI Page Roster` (or §IX outline if Roster is absent). Names must match files in `templates/` exactly — typos cause silent fallback to free design.
+Project each §VII Page/Family/Template into at most one
+`page_visualizations` `<chart|table>/<key>` row per page; Usage, children,
+no-match, and qualitative relationships stay in §IX. Resolve the reference to
+one live SVG. It locks neither type, geometry, nor native output.
 
-## page_charts
-- P05: bar_chart
-- P09: timeline_horizontal
-- P12: quadrant_bubble_scatter
+```markdown
+## page_visualizations
+- P03: chart/line_chart
+- P09: table/record_table
+```
 
-> One entry per page **that adapts a `templates/charts/` chart template**. Key: `P<NN>` matching §IX. Value: chart template basename without `.svg` (must match a key in `templates/charts/charts_index.json`).
->
-> **No entry for a page** → no chart on that page (or a chart that did not match any catalog template — Strategist's `no-template-match` fallback). Both cases mean Executor designs the visualization from scratch per `design_spec.md §VII`.
->
-> **Whole section omitted** → no data-visualization pages in this deck.
->
-> **Strategist source**: copy from `design_spec.md §VII Visualization Reference List` — only the rows whose `reference template path` points to a `templates/charts/` file. Pages marked `no-template-match` in §VII MUST NOT appear here.
+**Legacy compatibility**: keep existing `page_charts` bare keys. Live
+Chart/Table keys resolve unambiguously through two registries; retired Structure
+keys are semantic-only, have no SVG, and rely on §IX (repair upstream when
+insufficient). New locks write `page_visualizations`; dual page declarations
+conflict even when they resolve alike.
 
-## forbidden
-- Mixing icon libraries
-- rgba()
-- `<style>`, `class`, `<foreignObject>`, `textPath`, `@font-face`, `<animate*>`, `<script>`, `<iframe>`, `<symbol>`+`<use>`
-- `<g opacity>` (set opacity on each child element individually)
-- HTML named entities in text (`&nbsp;`, `&mdash;`, `&copy;`, `&ndash;`, `&reg;`, `&hellip;`, `&bull;` …) — write as raw Unicode (`—`, `©`, `→`, NBSP, etc.); XML reserved chars `& < > " '` must be escaped as `&amp; &lt; &gt; &quot; &apos;`. See shared-standards.md §1.0
+Typography projection excludes Character/upgrade References:
+
+| Design Spec §IV declaration | `spec_lock.md` field |
+| --- | --- |
+| Title font stack | `title_family` |
+| Body font stack | `body_family` and compatibility/default `font_family` |
+| Any additional recurring font role `<role>` | `<role>_family` |
+| Every Font Size Hierarchy role `<role>` | lowercase `<role>` with its numeric anchor |
+
+New locks always write `title_family` and `body_family`, even when their values happen to match. Every additional recurring family row and every size-anchor row in the Design Spec must appear under the same lowercase snake_case role; omit only family roles that inherit without an explicit override. Existing locks without family-role fields remain readable through `font_family` fallback. Executor may choose the anchor or a value within that role's `±2px` band; the lock does not enumerate intermediate values. A short non-structural Hero/Display size may remain absent only while the same undeclared value appears at most twice across the deck; its third occurrence requires a named role.
+
+---
+
+## 4. Field Grammar Index
+
+- `font_family`, `title_family`, `body_family`, and every optional `<role>_family` use one non-empty PPT-safe exported family stack. `font_family` is the body/default compatibility stack, not permission to erase role differences.
+- Every non-family `typography` value is a positive finite unitless px anchor. Intermediate values need no lock row when they stay within the mapped role's anchor `±2px`. At most two occurrences of one undeclared short non-structural Hero/Display size may remain sparse; a third occurrence or any structural use requires Design Spec repair and a named anchor.
+- `icons.library` records the primary stylistic library selected from `chunk-filled`, `tabler-filled`, `tabler-outline`, or `phosphor-duotone`, or `none` when no generic bundled icons are selected. Selected `simple-icons/*` brand marks may appear alone or alongside it in `inventory` without becoming a stylistic library. The inventory indexes the curated synced bundled pool without assigning page usage; every SVG already under `<project_path>/icons/` remains valid prepared execution material.
+- `objective` grammar: one concise sentence preserving the deck goal and audience success condition.
+- `image_rendering` grammar: one catalog id, or `custom` with `image_rendering_behavior`.
+- `images`: `- <key>: <path> | source=<via> | pattern=<layout> | crop=<adaptive|no-crop>`; e.g. `- p04: images/a.png | source=user | pattern=full-height image beside the evidence | crop=no-crop`. Use the canonical `images/<filename>` path; `source` and `crop` exactly project §VIII, while `pattern` preserves its non-empty normalized free-form suggestion and any optional hierarchical catalog ids. The pattern remains a recommendation for Executor recall, not a geometry or realization lock. Omit unplaced sheets.
+- Custom reference grammar: comma-separated exact catalog ids with no duplicates. Reference fields are valid only for `custom`; omit them for a genuinely novel direction.
+- `stroke_width` grammar: `1.5`, `2`, or `3`; present only for `tabler-outline`.
+- `page_rhythm` grammar: `P` + at least two digits (`P01`, `P100`) followed by `anchor|dense|breathing`.
+- `page_visualizations` grammar: `P` + at least two digits followed by
+  `chart|table`, `/`, and one canonical visualization key; the family/key must
+  resolve to one SVG through the matching live index.
+- Legacy `page_charts` grammar: `P` + at least two digits followed by one bare
+  key. Chart/Table resolves uniquely across two registries; retired Structure
+  is semantic-only. Never add this section to a new lock.
+- `pptx_masters` grammar: `<master_key>: <PowerPoint picker name>`.
+- `pptx_layouts` grammar: `<layout_key>: <master_key> | <PowerPoint layout name> | <prototype source>`.
+- `page_pptx_layouts` grammar: `P` + at least two digits followed by a declared Layout key.
+- `page_layouts` grammar: `P` + at least two digits followed by a template SVG basename.
+
+Catalog-based custom example:
+
+```markdown
+## mode
+- mode: custom
+- mode_references: pyramid, narrative, instructional
+- mode_behavior: Open conclusion-first with pyramid, develop the risk through a narrative tension-and-resolution act, then close with an instructional action sequence.
+```
+
+---
+
+## 5. Machine Validation
+
+```bash
+python3 skills/ppt-master-plus/scripts/project_manager.py validate <project_path>
+```
+
+Validation reports unresolved `[fill...]` placeholders, wrong casing, unknown sections or fields, illegal enums, malformed page keys, missing catalog assets, broken structured-layout references, and unmet conditions. It neither rewrites the lock nor checks semantic projection; Generate Step 4 Gate 2 owns that check.
+
+Field meaning and selection logic stay in the owning Strategist modules. Executor branch references own consumption behavior. The schema owns only artifact grammar and structural conditions.
+
+## 6. Anchor and extension semantics
+
+- Confirmed core palette roles and every declared typography family/size role remain stable cross-page anchors.
+- Page-local tints, gradient stops, shadow/glow paints, transparency composites, and one-off export-safe display families may be authored from context without adding a lock row.
+- Executor may adjust one occurrence within its declared size role's anchor `±2px` while preserving hierarchy and readability; intermediate values are realization choices, not new lock rows.
+- When a contextual value becomes a recurring semantic role, or one undeclared display size reaches its third occurrence, add the descriptive role, read back and validate affected planning fragments, then reuse it. Structural typography outside its applicable anchor band returns upstream immediately.
+- Do not expand the lock merely to make an informational checker comparison empty. A lock edit should express reuse or identity, not enumerate incidental literals.

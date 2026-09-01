@@ -229,9 +229,14 @@ html, body {
 
 #svg-content svg {
     display: block;
+    /* Both dimensions auto so the box hugs the slide at any aspect ratio: with
+       only height:auto, portrait formats (e.g. 1242x1660) keep their attribute
+       width while max-height shrinks the height, leaving large white bands
+       inside the white card. width:auto lets the element scale proportionally. */
+    width: auto;
+    height: auto;
     max-width: 100%;
     max-height: calc(100vh - 72px);
-    height: auto;
 }
 
 /* ---------- SVG element interaction states ---------- */
@@ -325,11 +330,62 @@ body.svg-dragging * {
     color: #a0a0c0;
 }
 
+/* --- Pending status --- */
+.pending-status {
+    margin: 0 16px 10px;
+    padding: 8px 10px;
+    border: 1px solid #2a2a4a;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.pending-status.empty {
+    color: #7a7a9a;
+    background: #18182a;
+}
+
+.pending-status.active {
+    color: #f8d46b;
+    background: rgba(245, 197, 66, 0.08);
+    border-color: rgba(245, 197, 66, 0.45);
+}
+
+.pending-pages {
+    margin-top: 3px;
+    color: #b8a866;
+    word-break: break-word;
+}
+
 /* --- Annotation input --- */
 #annotation-input {
     padding: 12px 16px;
     border-bottom: 1px solid #2a2a4a;
     flex-shrink: 0;
+}
+
+#annotation-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.annotation-quick-chip {
+    padding: 4px 8px;
+    font-size: 11.5px;
+    color: #c0c0d8;
+    background: #1e1e36;
+    border: 1px solid #3a3a5a;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.annotation-quick-chip:hover {
+    color: #ffffff;
+    background: #2a2a4a;
+    border-color: #4a9eff;
 }
 
 #annotation-text {
@@ -472,28 +528,62 @@ body.svg-dragging * {
     flex-shrink: 0;
 }
 
-.btn-lang-toggle {
+.lang-select {
     position: absolute;
     top: 10px;
     right: 12px;
-    z-index: 2;
+    z-index: 5;
+}
+
+.lang-select-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     min-width: 34px;
     padding: 3px 10px;
     font-size: 12px;
     font-weight: 600;
     color: #c0c0d8;
-    background: transparent;
+    background: #1e1e3a;
     border: 1px solid #3a3a5a;
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 
-.btn-lang-toggle:hover {
+.lang-select-btn:hover {
     color: #ffffff;
     background: #2a2a4a;
     border-color: #5a5a7a;
 }
+
+.lang-caret { font-size: 9px; color: #8a8aa8; }
+
+.lang-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 4px);
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    min-width: 96px;
+    background: #1e1e3a;
+    border: 1px solid #3a3a5a;
+    border-radius: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.lang-menu li {
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #c0c0d8;
+    cursor: pointer;
+}
+
+.lang-menu li:hover,
+.lang-menu li:focus { background: #2a2a4a; color: #ffffff; }
+.lang-menu li.selected { color: #ffffff; font-weight: 600; }
 
 #btn-save {
     padding: 11px 0;

@@ -4,7 +4,7 @@ Ghibli/Disney-inspired hand-drawn animation warmth. Soft painterly forms, gentle
 
 ## 1. Style paragraph (paste-ready, 110 words)
 
-> Hand-drawn animation style inspired by Ghibli and classic Disney storybook aesthetics. Forms are softly rendered with painterly fills and gentle outlines — never harsh, always warm. Color palette is warm and slightly desaturated, with pastel skies, soft greens, warm earth tones, occasional accents of magical color. Lighting is dreamy and atmospheric — soft window light, golden-hour glow, gentle morning haze. Characters (when present) are stylized in a friendly cartoon manner — large expressive eyes, simplified anatomy, warm body language. Subtle painterly brush texture across the image. Atmospheric perspective creates depth — foreground richer, background softer. Overall feel is dreamy, magical, comforting — children's storybook quality.
+> Hand-drawn animation style inspired by Ghibli and classic Disney storybook aesthetics. Forms are softly rendered with painterly fills and gentle outlines — never harsh. Core colors are anchored by the deck roles; dreamy warmth may derive through soft window light, gentle glow, morning haze, brush texture, atmospheric perspective, and coherent pastel/earth-tone transitions. Characters (when present) are stylized in a friendly cartoon manner — large expressive eyes, simplified anatomy, warm body language. Foreground forms are richer and the background softer. Overall feel is dreamy, magical, comforting, and storybook-like.
 
 ---
 
@@ -20,11 +20,13 @@ Ghibli/Disney-inspired hand-drawn animation warmth. Soft painterly forms, gentle
 
 ## 3. Using the deck's HEX values
 
-fantasy-animation reads HEX values through a **warm storybook filter**:
+fantasy-animation uses the deck roles as identity anchors with a storybook treatment:
 
-- Primary HEX: dominant warm scene color (sky, foliage, environment)
-- Secondary HEX: lighter atmospheric tone (cream, soft sky, morning haze)
-- Accent HEX: a small magical pop — perhaps the glow of a window, a flower, a key character element
+- Primary HEX: anchors the dominant environment or character family
+- Secondary HEX: anchors the atmospheric field or haze family
+- Accent HEX: anchors a small magical focal point — perhaps a window, flower, or key character element
+
+Derive light, haze, and material tones coherently from those anchors; choose another rendering only when the required mood would replace the deck identity.
 
 ---
 
@@ -32,4 +34,4 @@ fantasy-animation reads HEX values through a **warm storybook filter**:
 
 **Snippet A — half-page storybook scene, text_policy: none**
 
-> Hand-drawn animation style inspired by Ghibli storybook aesthetics. A soft warm scene of a small cottage on a hillside with a winding path leading down to the foreground. Sky in warm cream-amber `#FEF3C7` transitions to a soft accent peach `#FED7AA` at the horizon. Hillside in gentle warm green-amber blending the deck's primary tone, with painterly brush texture. A simplified storybook tree in the foreground left, hand-drawn cartoon-warm style. A small warm-glowing window in the cottage adds a magical accent color. Atmospheric perspective — distant hills are paler and softer, foreground has more saturated color. Subtle painterly brush quality throughout. Composed as a 600×800 half-page block with 10% inner padding. Simplified storybook style — any figures are gentle cartoon silhouettes, no realistic faces. NO text or labels. Color values are rendering guidance only.
+> Hand-drawn storybook animation. A small cottage sits on a hillside with a winding path leading to the foreground. The sky and haze derive from the deck's secondary-background family, the hillside and tree from primary, and one small glowing cottage window from accent. Coherent lighter/darker atmospheric transitions are allowed; do not replace these families with an unrelated storybook palette. Painterly brush texture, soft light, and atmospheric perspective create the warmth: distant hills are softer, while foreground forms carry more visual weight. A simplified storybook tree stands at foreground left. Composed as a 600×800 half-page block with 10% inner padding. Any figures are gentle cartoon silhouettes with no realistic faces. No text or labels.

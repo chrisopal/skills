@@ -2,10 +2,10 @@
 """
 PPT Master - Visual Review Renderer
 
-Renders project SVGs to 1280x720 PNGs that match the live-preview browser view
-(inlined <use data-icon>, resolved <image href>, full font fallback including CJK).
-The pure renderer for the visual-review workflow — does not edit SVGs, does not
-interpret the rubric.
+Renders project SVGs at their root viewBox dimensions to PNGs that match the
+live-preview browser view (inlined <use data-icon>, resolved <image href>, full
+font fallback including CJK). The pure renderer for the visual-review stage —
+does not edit SVGs, does not interpret the rubric.
 
 Backend: Playwright (Chromium). The cairosvg backend was evaluated and rejected
 because cairo's text API has no font-fallback chain — CJK characters render as
@@ -30,13 +30,24 @@ from __future__ import annotations
 import argparse
 import io
 import json
+import math
 import os
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from contextlib import contextmanager
+from decimal import Decimal
 from pathlib import Path
+from xml.etree import ElementTree as ET
+
+from console_encoding import configure_utf8_stdio
+from server_common import lock_pid, process_alive, read_lock
+from slide_roster import discover_slide_svgs
+from svg_to_pptx.canvas_contract import parse_project_svg_root
+
+configure_utf8_stdio()
 
 
 # Histogram threshold: PNG counts as "all background" if a single quantized
@@ -94,8 +105,8 @@ def is_all_background(png_bytes: bytes) -> bool:
         return False
 
     img = Image.open(io.BytesIO(png_bytes)).convert('RGB')
-    pixels = list(img.getdata())
-    total = len(pixels)
+    pixels = img.getdata()
+    total = img.width * img.height
     if total == 0:
         return True
     counts: dict[tuple[int, int, int], int] = {}
@@ -106,17 +117,42 @@ def is_all_background(png_bytes: bytes) -> bool:
     return dominant / total >= ALL_BG_THRESHOLD
 
 
-def fetch_slide_text(server_url: str, page_name: str, timeout: float = 5.0) -> int:
-    """Probe that the server can return the slide. Returns content length.
-    Used only for failure detection — the actual fetch happens inside the
-    browser via fetch() so the response is parsed by JS, not Python."""
-    url = f"{server_url.rstrip('/')}/api/slide/{page_name}"
+def fetch_slide_content(server_url: str, page_name: str, timeout: float = 5.0) -> str:
+    """Return the live-preview server's inlined SVG content for one slide."""
+    url = f"{server_url.rstrip('/')}/api/slide/{urllib.parse.quote(page_name)}"
     req = urllib.request.Request(url, headers={'Accept': 'application/json'})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         payload = json.loads(resp.read().decode('utf-8'))
-    if 'content' not in payload:
+    content = payload.get('content') if isinstance(payload, dict) else None
+    if not isinstance(content, str):
         raise RuntimeError(f'unexpected response shape from {url}: {payload!r}')
-    return len(payload['content'])
+    return content
+
+
+def _json_number(value: Decimal) -> int | float:
+    """Keep integral canvas values compact while preserving fractional input."""
+    if value == value.to_integral_value():
+        return int(value)
+    return float(value)
+
+
+def parse_slide_canvas(svg_content: str, page_name: str) -> dict:
+    """Read the authoritative canvas from one inlined SVG root viewBox."""
+    try:
+        root = ET.fromstring(svg_content)
+    except ET.ParseError as exc:
+        raise ValueError(f'{page_name}: unable to parse root SVG: {exc}') from exc
+
+    viewbox = parse_project_svg_root(root, context=page_name)
+    width = _json_number(viewbox.width)
+    height = _json_number(viewbox.height)
+    return {
+        'view_box': [_json_number(value) for value in viewbox.values],
+        'width': width,
+        'height': height,
+        'png_width': math.ceil(float(viewbox.width)),
+        'png_height': math.ceil(float(viewbox.height)),
+    }
 
 
 def render_pages(server_url: str, pages: list[str], preview_dir: Path) -> list[dict]:
@@ -133,26 +169,25 @@ def render_pages(server_url: str, pages: list[str], preview_dir: Path) -> list[d
     records: list[dict] = []
 
     inject_js = """
-async (pageName) => {
-    const res = await fetch('/api/slide/' + pageName + '?_=' + Date.now());
-    if (!res.ok) throw new Error('fetch /api/slide/' + pageName + ' returned ' + res.status);
-    const data = await res.json();
+({svgContent, width, height}) => {
     document.documentElement.innerHTML =
         '<head><style>html,body{margin:0;padding:0;background:#0E1116;overflow:hidden}'
-        + ' svg{display:block;width:1280px;height:720px}</style></head>'
-        + '<body>' + data.content + '</body>';
-    return { len: data.content.length };
+        + ' svg{display:block;width:' + width + 'px;height:' + height + 'px}</style></head>'
+        + '<body>' + svgContent + '</body>';
+    return { len: svgContent.length };
 }
 """
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
         try:
-            context = browser.new_context(viewport={'width': 1280, 'height': 720})
+            context = browser.new_context()
             for page_name in pages:
                 rec: dict = {'page': page_name, 'ok': False}
                 try:
-                    fetch_slide_text(server_url, page_name)
+                    svg_content = fetch_slide_content(server_url, page_name)
+                    canvas = parse_slide_canvas(svg_content, page_name)
+                    rec['canvas'] = canvas
                 except urllib.error.URLError as e:
                     rec['error'] = f'server_unreachable: {e!r}'
                     records.append(rec)
@@ -165,22 +200,36 @@ async (pageName) => {
                 stem = page_name[:-4] if page_name.endswith('.svg') else page_name
                 out_path = preview_dir / f'{stem}.png'
 
+                pg = None
                 try:
                     pg = context.new_page()
+                    pg.set_viewport_size({
+                        'width': canvas['png_width'],
+                        'height': canvas['png_height'],
+                    })
                     pg.goto(server_url, wait_until='domcontentloaded')
-                    pg.evaluate(inject_js, page_name)
+                    pg.evaluate(inject_js, {
+                        'svgContent': svg_content,
+                        'width': canvas['width'],
+                        'height': canvas['height'],
+                    })
                     # Wait one frame so font/text shaping settles before capture.
                     pg.wait_for_timeout(100)
                     png_bytes = pg.screenshot(type='png', full_page=False)
-                    pg.close()
 
                     out_path.write_bytes(png_bytes)
-                    rec['ok'] = True
                     rec['path'] = str(out_path)
                     rec['bytes'] = len(png_bytes)
                     rec['all_background'] = is_all_background(png_bytes)
+                    rec['ok'] = True
                 except Exception as e:  # noqa: BLE001 — best-effort per-page
                     rec['error'] = f'{type(e).__name__}: {e}'
+                finally:
+                    if pg is not None:
+                        try:
+                            pg.close()
+                        except Exception:  # noqa: BLE001 — cleanup is best-effort
+                            pass
                 records.append(rec)
         finally:
             browser.close()
@@ -192,7 +241,7 @@ def discover_pages(project_path: Path, requested: list[str] | None) -> list[str]
     svg_dir = project_path / 'svg_output'
     if not svg_dir.is_dir():
         raise FileNotFoundError(f'no svg_output/ in {project_path}')
-    all_svgs = sorted(p.name for p in svg_dir.glob('*.svg'))
+    all_svgs = [path.name for path in discover_slide_svgs(svg_dir)]
     if not requested:
         return all_svgs
     selected: list[str] = []
@@ -204,15 +253,53 @@ def discover_pages(project_path: Path, requested: list[str] | None) -> list[str]
     return selected
 
 
-def check_server(server_url: str) -> None:
-    """Probe server liveness via /api/slides. Raises RuntimeError if down."""
-    url = f"{server_url.rstrip('/')}/api/slides"
+def discover_server_url(project_path: Path) -> str:
+    """Return the live-preview URL recorded for one project."""
+    lock_paths = (
+        project_path / 'live_preview' / 'lock.json',
+        project_path / '.live_preview.lock',
+    )
+    for lock_path in lock_paths:
+        lock = read_lock(lock_path)
+        if not lock or not process_alive(lock_pid(lock)):
+            continue
+        try:
+            port = int(lock.get('port', 0) or 0)
+        except (TypeError, ValueError):
+            port = 0
+        if 1 <= port <= 65535:
+            return f'http://127.0.0.1:{port}'
+    raise RuntimeError(
+        f'no running live-preview server recorded for project: {project_path}'
+    )
+
+
+def check_server(server_url: str, project_path: Path) -> None:
+    """Require a live-preview server that belongs to the target project."""
+    url = f"{server_url.rstrip('/')}/api/health"
     try:
         with urllib.request.urlopen(url, timeout=3.0) as resp:
             if resp.status != 200:
                 raise RuntimeError(f'{url} returned HTTP {resp.status}')
-    except urllib.error.URLError as e:
+            data = json.load(resp)
+    except (urllib.error.URLError, OSError, ValueError) as e:
         raise RuntimeError(f'live-preview server not reachable at {server_url}: {e}')
+    expected_project = str(project_path)
+    expected_svg_output = str((project_path / 'svg_output').resolve())
+    service = data.get('service') if isinstance(data, dict) else None
+    legacy_live_preview = (
+        service is None
+        and isinstance(data, dict)
+        and data.get('svg_output') == expected_svg_output
+    )
+    if (
+        not isinstance(data, dict)
+        or data.get('project') != expected_project
+        or (service != 'live_preview' and not legacy_live_preview)
+    ):
+        raise RuntimeError(
+            f'URL does not belong to this project live preview: {server_url}'
+        )
 
 
 def main() -> int:
@@ -226,8 +313,8 @@ def main() -> int:
              "Accepts '02', '02_three_steps', or '02_three_steps.svg'.",
     )
     parser.add_argument(
-        '--server-url', default='http://localhost:5050',
-        help='Live-preview server URL (default: http://localhost:5050)',
+        '--server-url', default=None,
+        help='Explicit live-preview URL (default: discover it from the project lock)',
     )
     parser.add_argument(
         '--lock-timeout', type=float, default=30.0,
@@ -252,7 +339,8 @@ def main() -> int:
         return 3
 
     try:
-        check_server(args.server_url)
+        server_url = args.server_url or discover_server_url(project_path)
+        check_server(server_url, project_path)
     except RuntimeError as e:
         _safe_print(str(e))
         _safe_print(
@@ -272,7 +360,7 @@ def main() -> int:
 
     with file_lock(lock_path, timeout=args.lock_timeout):
         try:
-            records = render_pages(args.server_url, pages, preview_dir)
+            records = render_pages(server_url, pages, preview_dir)
         except Exception as e:  # noqa: BLE001 — browser launch failure
             _safe_print(f'browser session failed: {type(e).__name__}: {e}')
             _safe_print(
@@ -288,7 +376,7 @@ def main() -> int:
 
     summary = {
         'project': str(project_path),
-        'server_url': args.server_url,
+        'server_url': server_url,
         'rendered': sum(1 for r in records if r['ok']),
         'failed': sum(1 for r in records if not r['ok']),
         'all_background': sum(1 for r in records if r.get('all_background')),

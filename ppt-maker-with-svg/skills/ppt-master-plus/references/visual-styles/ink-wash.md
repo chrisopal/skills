@@ -6,7 +6,8 @@ New-Chinese ink-wash — a rice-paper field, vast literati whitespace, restraine
 
 ## 1. Shape & decoration
 
-- Shape language: minimal brush-stroke marks and hairline dividers; the occasional ink-dark block; a single seal-stamp (印章) square as a focal accent. No cards, no boxes — emptiness is the structure.
+- Shape language: minimal brush-stroke marks and hairline dividers; the occasional ink-dark block; a single seal-stamp (印章) square as a focal accent. No cards, no boxes — emptiness is the structure. The brush-stroke and ink-bleed marks are irregular `<path>` shapes with uneven control points — never an `<ellipse>` / `<circle>` standing in for a wash, which reads as fake ink. (The seal-stamp square is the one deliberate hard edge.)
+- Composition geometry: one broad brush sweep as the page's diagonal spine; an open ensō-like ring framing the core phrase; a vertical scroll band ordering a sequence; a low wash horizon with content floating in the emptiness above; the seal square placed to counterweight an asymmetric field.
 - Decoration: almost none; what little appears reads as brush and seal. Asymmetric, scroll-like composition with deliberate off-balance.
 - Whitespace: vast and intentional — the rice-paper field carries most of the page; a few elements float in great calm.
 
@@ -30,3 +31,7 @@ New-Chinese ink-wash — a rice-paper field, vast literati whitespace, restraine
 ## 5. Paired image-rendering
 
 `ink-notes` or `watercolor` — mono-ink or soft-wash imagery that shares the literati restraint.
+
+## 6. Illustration propensity
+
+**supportive** — a single brush mark or seal can anchor a page, but stillness and whitespace lead; use very few, very quiet. With no user steer this is the default lean; an explicit user request wins either way, and `image_usage: none` writes no illustration rows.

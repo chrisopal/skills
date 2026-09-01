@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#FFFFFF"/>
+  <rect width="1280" height="4" fill="#0097BA"/>
+  <image x="1082" y="22" width="134" height="32" preserveAspectRatio="xMinYMin meet" href="images/huixin_logo_light.png"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+    <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+    <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  </g>
+  <text x="64" y="48" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563">AI OPERATING MODEL</text>
+  <text x="64" y="116" font-family="Microsoft YaHei, Arial, sans-serif" font-size="34" font-weight="bold" fill="#111111">{{PAGE_TITLE}}</text>
+  <text x="64" y="154" font-family="Microsoft YaHei, Arial, sans-serif" font-size="20" font-weight="bold" fill="#0097BA">{{KEY_MESSAGE}}</text>
+  <line x1="64" y1="178" x2="1216" y2="178" stroke="#D9D9D9"/>
+
+  <g id="business-ownership" data-pptx-bounds="64 220 190 338">
+    <rect x="64" y="220" width="190" height="338" rx="6" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <rect x="64" y="220" width="190" height="48" rx="6" fill="#111111"/>
+    <text x="159" y="251" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF">业务牵引</text>
+    <text x="88" y="308" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">FDE / 业务Owner</text>
+    <text x="88" y="342" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{FDE_OWNER}}</text>
+    <line x1="88" y1="366" x2="230" y2="366" stroke="#D9D9D9"/>
+    <text x="88" y="404" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">价值与场景组合</text>
+    <text x="88" y="438" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{VALUE_PORTFOLIO}}</text>
+    <line x1="88" y1="462" x2="230" y2="462" stroke="#D9D9D9"/>
+    <text x="88" y="500" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#0097BA">资源与决策</text>
+    <text x="88" y="534" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{BUSINESS_DECISION}}</text>
+  </g>
+
+  <g id="ai-operating-core" data-pptx-bounds="286 220 698 338">
+    <rect x="286" y="220" width="698" height="338" rx="6" fill="#FFFFFF" stroke="#0097BA" stroke-width="1.5"/>
+    <rect x="310" y="242" width="650" height="54" rx="4" fill="#A4D968"/>
+    <text x="334" y="276" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="bold" fill="#111111">场景与AI产品：{{SCENE_PRODUCT}}</text>
+
+    <rect x="310" y="316" width="310" height="76" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="332" y="346" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#0097BA">数据与知识</text>
+    <text x="332" y="376" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{DATA_KNOWLEDGE}}</text>
+    <rect x="650" y="316" width="310" height="76" rx="4" fill="#0097BA"/>
+    <text x="672" y="346" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF">Agent / Skill</text>
+    <text x="672" y="376" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#FFFFFF">{{AGENT_SKILL}}</text>
+
+    <rect x="310" y="412" width="310" height="76" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <text x="332" y="442" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#0097BA">评测与Trace</text>
+    <text x="332" y="472" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{EVALUATION_TRACE}}</text>
+    <rect x="650" y="412" width="310" height="76" rx="4" fill="#4B5563"/>
+    <text x="672" y="442" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF">权限与治理</text>
+    <text x="672" y="472" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#FFFFFF">{{GOVERNANCE}}</text>
+
+    <line x1="635" y1="296" x2="635" y2="316" stroke="#0097BA" stroke-width="2"/>
+    <line x1="635" y1="392" x2="635" y2="412" stroke="#0097BA" stroke-width="2"/>
+    <rect x="310" y="508" width="650" height="30" rx="4" fill="#111111"/>
+    <text x="635" y="528" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF">持续运营与迭代：{{OPERATIONS}}</text>
+  </g>
+
+  <g id="platform-enablement" data-pptx-bounds="1016 220 200 338">
+    <rect x="1016" y="220" width="200" height="338" rx="6" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <rect x="1016" y="220" width="200" height="48" rx="6" fill="#0097BA"/>
+    <text x="1116" y="251" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF">平台与专业支撑</text>
+    <text x="1040" y="308" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#4B5563">平台 / IT / 数据</text>
+    <text x="1040" y="342" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{PLATFORM_ROLE}}</text>
+    <line x1="1040" y1="366" x2="1192" y2="366" stroke="#D9D9D9"/>
+    <text x="1040" y="404" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#4B5563">安全 / 合规 / 模型风险</text>
+    <text x="1040" y="438" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{RISK_ROLE}}</text>
+    <line x1="1040" y1="462" x2="1192" y2="462" stroke="#D9D9D9"/>
+    <text x="1040" y="500" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#4B5563">生态 / 供应商 / 专家</text>
+    <text x="1040" y="534" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" fill="#111111">{{ECOSYSTEM_ROLE}}</text>
+  </g>
+
+  <g id="operating-loop" data-pptx-bounds="286 584 930 56">
+    <rect x="286" y="584" width="930" height="56" rx="4" fill="#F5F6F7" stroke="#D9D9D9"/>
+    <rect x="310" y="596" width="160" height="32" rx="16" fill="#0097BA"/>
+    <text x="390" y="617" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">Build / 上线</text>
+    <line x1="470" y1="612" x2="526" y2="612" stroke="#0097BA" stroke-width="2"/>
+    <rect x="526" y="596" width="160" height="32" rx="16" fill="#A4D968"/>
+    <text x="606" y="617" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#111111">Evaluate / 评测</text>
+    <line x1="686" y1="612" x2="742" y2="612" stroke="#0097BA" stroke-width="2"/>
+    <rect x="742" y="596" width="184" height="32" rx="16" fill="#4B5563"/>
+    <text x="834" y="617" text-anchor="middle" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">Operate / 运营迭代</text>
+    <text x="1192" y="617" text-anchor="end" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="bold" fill="#0097BA">管理决策：{{OPERATING_DECISION}}</text>
+  </g>
+  <text x="64" y="674" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" fill="#4B5563">Huixin Consulting Strategy Template</text>
+</svg>

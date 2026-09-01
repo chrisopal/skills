@@ -6,7 +6,8 @@ Warm hand-drawn sketchnote — soft paper field, black ink doodle line work, gen
 
 ## 1. Shape & decoration
 
-- Shape language: rounded shapes drawn with a slight wobble; pastel block fills that slightly overshoot their outlines (hand-painted feel); simple cartoon icons.
+- Shape language: rounded shapes drawn with a slight wobble; pastel block fills that slightly overshoot their outlines (hand-painted feel); simple cartoon icons. Draw that wobble as a `<path>` with non-aligned points — a `<rect rx>` is not wobble.
+- Composition geometry: a wavy-arrow journey path structuring the whole page; a radial mind-map around a central doodle; a hand-drawn banner ribbon carrying the title; numbered circles hopping along a dotted route; one cloud frame around the idea that matters.
 - Decoration: small doodles — stars, sparkles, dots, underlines — sprinkled sparingly for warmth; wavy hand-drawn arrows connecting ideas with short inline labels.
 - Whitespace: airy and well-organized; generous gaps between elements keep it friendly, never dense.
 
@@ -30,3 +31,7 @@ Warm hand-drawn sketchnote — soft paper field, black ink doodle line work, gen
 ## 5. Paired image-rendering
 
 `sketch-notes` — cream-paper hand-drawn imagery with soft pastel fills, sharing the friendly note aesthetic.
+
+## 6. Illustration propensity
+
+**core** — doodle spots and hand-drawn marks are intrinsic here, not optional garnish; with no user steer, default to recommending a coherent spot-illustration family (the decoration this style is built on). This sets the default *lean* only: heaviness and placement stay Strategist judgment, an explicit user request wins either way, and `image_usage: none` writes no illustration rows.

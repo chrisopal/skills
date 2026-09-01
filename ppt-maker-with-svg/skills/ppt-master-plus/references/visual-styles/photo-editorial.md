@@ -7,8 +7,11 @@ Photo-led editorial — large full-bleed photography dominates the page, text po
 ## 1. Shape & decoration
 
 - Shape language: large full-bleed / edge-to-edge image fields are the page's spine; text sits in restrained columns, caption blocks, kickers, or overlay headlines. Minimal chrome — the photograph carries the page.
+- Composition geometry: an L-shaped text zone carved out of the full bleed; a headline straddling the photo edge; a diptych / triptych panel split; one floating caption card breaking the image boundary — moves that serve the photograph, never bury it.
 - Decoration: thin rules, section numbering, small figure notes; nothing competes with the image.
 - Whitespace: generous around text; the photo fills, the type breathes beside it. Asymmetric magazine composition.
+
+> **No usable image → fall back to `editorial`.** This style's spine is the photograph; when a page has no suitable image available, render it in the `editorial` text-led layout (magazine columns) rather than a full-bleed placeholder — an empty / dashed image frame contradicts the style's whole premise. A deterministic, observable condition, not a judgment call.
 
 ## 2. Typography character
 
@@ -30,3 +33,7 @@ Photo-led editorial — large full-bleed photography dominates the page, text po
 ## 5. Paired image-rendering
 
 `corporate-photo` — real editorial photography as the hero imagery the layout is built around.
+
+## 6. Illustration propensity
+
+**sparse** — photography *is* the visual; illustration competes with the hero image. With no user steer, default to none. If the user explicitly asks, keep them to tiny captional marks that never rival the photo. `image_usage: none` writes no illustration rows.

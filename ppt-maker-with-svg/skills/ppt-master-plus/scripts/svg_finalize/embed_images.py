@@ -17,6 +17,15 @@ import base64
 import re
 import sys
 import argparse
+from pathlib import Path
+
+_SCRIPTS_DIR = Path(__file__).resolve().parents[1]
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+
+from console_encoding import configure_utf8_stdio  # noqa: E402
+
+configure_utf8_stdio()
 
 
 def get_mime_type(filename: str, file_bytes: bytes | None = None) -> str:
@@ -73,6 +82,19 @@ def _optimize_image_bytes(img_bytes: bytes, mime_type: str,
     try:
         img = PILImage.open(io.BytesIO(img_bytes))
     except Exception:
+        return img_bytes
+
+    # Multi-frame images (animated GIF / WebP / APNG): resize/re-save below
+    # keeps frame 0 only, silently flattening the animation. Pass the
+    # original bytes through — animations are exempt from compression and
+    # the size cap.
+    if getattr(img, 'is_animated', False):
+        if max_dimension:
+            w, h = img.size
+            if w > max_dimension or h > max_dimension:
+                print(f"  [WARN] Animated image kept as-is ({w}x{h} exceeds "
+                      f"max dimension {max_dimension}px); animations are "
+                      f"exempt from size limits")
         return img_bytes
 
     changed = False
@@ -205,7 +227,8 @@ def embed_images_in_svg(svg_path: str, dry_run: bool = False,
         with open(svg_path, 'w', encoding='utf-8') as f:
             f.write(new_content)
     
-    return (images_embedded, new_size)
+    processed_count = len(images_found) if dry_run else images_embedded
+    return (processed_count, new_size)
 
 def main() -> None:
     """Run the CLI entry point."""

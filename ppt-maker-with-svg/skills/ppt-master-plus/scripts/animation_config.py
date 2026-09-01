@@ -2,7 +2,7 @@
 """
 PPT Master - Animation Config Tool
 
-Create and validate optional per-object PPTX animation sidecar files.
+Create and validate optional PPTX animation and deterministic Morph sidecars.
 
 Usage:
     python3 scripts/animation_config.py scaffold <project_path>
@@ -28,17 +28,22 @@ _SCRIPTS_DIR = Path(__file__).resolve().parent
 if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 
+from console_encoding import configure_utf8_stdio  # noqa: E402
 from svg_to_pptx.animation_config import (  # noqa: E402
     build_group_listing,
     load_animation_config,
     validate_animation_config,
+    validate_animation_config_errors,
+    validate_transition_config,
     write_scaffold,
 )
+
+configure_utf8_stdio()
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description='Create or validate PPTX animation sidecar configuration.',
+        description='Create or validate PPTX motion sidecar configuration.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     subparsers = parser.add_subparsers(dest='command', required=True)
@@ -61,7 +66,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     validate = subparsers.add_parser(
         'validate',
-        help='validate animations.json references against svg_output/*.svg',
+        help='validate animations.json values and project-local references',
     )
     validate.add_argument('project_path', help='Project directory')
     validate.add_argument('-c', '--config', default=None, help='Config path; default: <project>/animations.json')
@@ -84,15 +89,20 @@ def main(argv: list[str] | None = None) -> int:
                 output_path=args.output,
                 force=args.force,
             )
-        except FileExistsError as exc:
+        except (FileExistsError, ValueError) as exc:
             print(f'Error: {exc}', file=sys.stderr)
-            print('Use --force to overwrite.', file=sys.stderr)
+            if isinstance(exc, FileExistsError):
+                print('Use --force to overwrite.', file=sys.stderr)
             return 1
         print(f'Animation config scaffold written: {output_path}')
         return 0
 
     if args.command == 'list-groups':
-        lines, anonymous = build_group_listing(project_path)
+        try:
+            lines, anonymous = build_group_listing(project_path)
+        except ValueError as exc:
+            print(f'Error: {exc}', file=sys.stderr)
+            return 1
         for line in lines:
             print(line)
         for warning in anonymous:
@@ -105,13 +115,31 @@ def main(argv: list[str] | None = None) -> int:
         except Exception as exc:
             print(f'Error: {exc}', file=sys.stderr)
             return 1
-        if not config:
+        if config is None:
             print('No animations.json found; default animation policy will be used.')
             return 0
-        warnings = validate_animation_config(project_path, config)
-        if warnings:
-            for warning in warnings:
-                print(f'Warning: {warning}', file=sys.stderr)
+        errors = list(dict.fromkeys(
+            validate_transition_config(config)
+            + validate_animation_config_errors(config)
+        ))
+        if errors:
+            for error in errors:
+                print(f'Error: {error}', file=sys.stderr)
+            return 1
+        reference_messages = validate_animation_config(project_path, config)
+        reference_warnings = [
+            message for message in reference_messages
+            if ' has no id and cannot be customized in animations.json' in message
+        ]
+        reference_errors = [
+            message for message in reference_messages
+            if message not in reference_warnings
+        ]
+        for warning in reference_warnings:
+            print(f'Warning: {warning}', file=sys.stderr)
+        if reference_errors:
+            for error in reference_errors:
+                print(f'Error: {error}', file=sys.stderr)
             return 1
         print('Animation config validated successfully.')
         return 0

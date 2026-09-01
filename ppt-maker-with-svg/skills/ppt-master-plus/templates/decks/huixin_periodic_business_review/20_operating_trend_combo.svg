@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-20" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">CHART / TREND</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">经营指标趋势组合图</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">用柱形图呈现金额，用折线呈现数量或转化率，保持同一统计口径</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="trend-combo-chart" data-pptx-bounds="64 208 790 376">
+  <rect x="64" y="208" width="790" height="376" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <line x1="112" y1="260" x2="812" y2="260" stroke="#D9D9D9" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="112" y1="330" x2="812" y2="330" stroke="#D9D9D9" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="112" y1="400" x2="812" y2="400" stroke="#D9D9D9" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="112" y1="470" x2="812" y2="470" stroke="#D9D9D9" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="112" y1="540" x2="812" y2="540" stroke="#D9D9D9" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="112" y1="240" x2="112" y2="540" stroke="#4B5563" stroke-width="1"/>
+  <line x1="112" y1="540" x2="812" y2="540" stroke="#4B5563" stroke-width="1"/>
+  <rect x="156" y="420" width="68" height="120" fill="#0097BA" rx="4"/>
+  <text x="190" y="408" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="middle">{{AMOUNT_1}}</text>
+  <text x="190" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{PERIOD_1}}</text>
+  <rect x="326" y="356" width="68" height="184" fill="#A4D968" rx="4"/>
+  <text x="360" y="344" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#A4D968" text-anchor="middle">{{AMOUNT_2}}</text>
+  <text x="360" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{PERIOD_2}}</text>
+  <rect x="496" y="390" width="68" height="150" fill="#0097BA" rx="4"/>
+  <text x="530" y="378" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="middle">{{AMOUNT_3}}</text>
+  <text x="530" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{PERIOD_3}}</text>
+  <rect x="666" y="330" width="68" height="210" fill="#A4D968" rx="4"/>
+  <text x="700" y="318" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#A4D968" text-anchor="middle">{{AMOUNT_4}}</text>
+  <text x="700" y="568" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#4B5563" text-anchor="middle">{{PERIOD_4}}</text>
+  <polyline points="190,360,360,300,530,330,700,270" fill="none" stroke="#4B5563" stroke-width="3"/>
+  <circle cx="190" cy="360" r="6" fill="#FFFFFF" stroke="#4B5563" stroke-width="3"/>
+  <text x="190" y="346" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="middle">{{COUNT_1}}</text>
+  <circle cx="360" cy="300" r="6" fill="#FFFFFF" stroke="#4B5563" stroke-width="3"/>
+  <text x="360" y="286" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="middle">{{COUNT_2}}</text>
+  <circle cx="530" cy="330" r="6" fill="#FFFFFF" stroke="#4B5563" stroke-width="3"/>
+  <text x="530" y="316" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="middle">{{COUNT_3}}</text>
+  <circle cx="700" cy="270" r="6" fill="#FFFFFF" stroke="#4B5563" stroke-width="3"/>
+  <text x="700" y="256" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="middle">{{COUNT_4}}</text>
+  <rect x="132" y="226" width="14" height="14" fill="#0097BA" rx="2"/>
+  <text x="154" y="238" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">金额</text>
+  <line x1="220" y1="233" x2="252" y2="233" stroke="#4B5563" stroke-width="3"/>
+  <text x="262" y="238" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#4B5563" text-anchor="start">数量 / 转化率</text>
+</g>
+<g id="trend-insights" data-pptx-bounds="882 208 334 376">
+  <rect x="882" y="208" width="334" height="112" fill="#E8F6F9" stroke="#0097BA" stroke-width="1" rx="7"/>
+  <text x="906" y="244" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">趋势结论</text>
+  <text x="906" y="278" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" fill="#111111" text-anchor="start"><tspan x="906" dy="0">{{TREND_CONCLUSION_1}}</tspan><tspan x="906" dy="25">{{TREND_CONCLUSION_2}}</tspan></text>
+  <rect x="882" y="340" width="334" height="112" fill="#F1F8E8" stroke="#A4D968" stroke-width="1" rx="7"/>
+  <text x="906" y="376" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">关键驱动</text>
+  <text x="906" y="410" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" fill="#111111" text-anchor="start"><tspan x="906" dy="0">{{DRIVER_1}}</tspan><tspan x="906" dy="25">{{DRIVER_2}}</tspan></text>
+  <rect x="882" y="472" width="334" height="112" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="7"/>
+  <text x="906" y="508" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">管理动作</text>
+  <text x="906" y="542" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" fill="#111111" text-anchor="start"><tspan x="906" dy="0">{{TREND_ACTION_1}}</tspan><tspan x="906" dy="25">{{TREND_ACTION_2}}</tspan></text>
+</g>
+<g id="page-footer-20" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">20</text>
+</g>
+</svg>

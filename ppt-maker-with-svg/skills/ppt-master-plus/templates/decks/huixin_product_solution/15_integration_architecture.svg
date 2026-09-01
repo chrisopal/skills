@@ -1,45 +1,50 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <defs>
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 Z" fill="#4295B6"/>
+      <path d="M0 0 L10 5 L0 10 Z" fill="#0097BA"/>
     </marker>
   </defs>
   <rect width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
-  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
+  <rect x="0" y="10" width="320" height="5" fill="#A4D968"/>
   <image href="images/huixin_logo_light.png" x="1036" y="30" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
-  <text x="72" y="70" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#4295B6">02 / INTEGRATION ARCHITECTURE</text>
-  <text x="72" y="124" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700" fill="#0B2F3A">集成架构：统一平台连接业务系统与现场设备</text>
-  <text x="72" y="160" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#4295B6">用标准接口、事件总线和数据模型降低系统间耦合，形成可治理的数据闭环。</text>
-  <rect x="72" y="200" width="1136" height="418" rx="14" fill="#F3F7FA" stroke="#D2D3D4"/>
-  <rect x="512" y="292" width="256" height="150" rx="18" fill="#0B2F3A"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="72" y="70" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#0097BA">02 / INTEGRATION ARCHITECTURE</text>
+  <text x="72" y="124" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700" fill="#111111">集成架构：统一平台连接业务系统与现场设备</text>
+  <text x="72" y="160" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#0097BA">用标准接口、事件总线和数据模型降低系统间耦合，形成可治理的数据闭环。</text>
+  <rect x="72" y="200" width="1136" height="418" rx="14" fill="#F5F6F7" stroke="#D9D9D9"/>
+  <rect x="512" y="292" width="256" height="150" rx="18" fill="#111111"/>
   <text x="640" y="340" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="700" fill="#FFFFFF" text-anchor="middle">统一集成平台</text>
-  <text x="640" y="374" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#B0D776" text-anchor="middle">API 网关 / 事件总线 / 数据映射</text>
-  <rect x="556" y="398" width="168" height="28" rx="14" fill="#4295B6"/>
+  <text x="640" y="374" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#A4D968" text-anchor="middle">API 网关 / 事件总线 / 数据映射</text>
+  <rect x="556" y="398" width="168" height="28" rx="14" fill="#0097BA"/>
   <text x="640" y="417" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#FFFFFF" text-anchor="middle">标准接口和权限隔离</text>
   <g font-family="Microsoft YaHei, Arial, sans-serif" font-weight="700">
-    <rect x="112" y="238" width="180" height="76" rx="12" fill="#FFFFFF" stroke="#4295B6"/><text x="202" y="270" font-size="18" fill="#0B2F3A" text-anchor="middle">ERP</text><text x="202" y="294" font-size="12" fill="#4B5563" text-anchor="middle">订单 / 财务 / 成本</text>
-    <rect x="112" y="424" width="180" height="76" rx="12" fill="#FFFFFF" stroke="#B0D776"/><text x="202" y="456" font-size="18" fill="#0B2F3A" text-anchor="middle">PLM</text><text x="202" y="480" font-size="12" fill="#4B5563" text-anchor="middle">BOM / 工艺 / 变更</text>
-    <rect x="330" y="530" width="180" height="62" rx="12" fill="#FFFFFF" stroke="#D2D3D4"/><text x="420" y="567" font-size="18" fill="#0B2F3A" text-anchor="middle">供应链协同</text>
-    <rect x="770" y="530" width="180" height="62" rx="12" fill="#FFFFFF" stroke="#D2D3D4"/><text x="860" y="567" font-size="18" fill="#0B2F3A" text-anchor="middle">仓储物流</text>
-    <rect x="988" y="238" width="180" height="76" rx="12" fill="#FFFFFF" stroke="#4295B6"/><text x="1078" y="270" font-size="18" fill="#0B2F3A" text-anchor="middle">设备与IoT</text><text x="1078" y="294" font-size="12" fill="#4B5563" text-anchor="middle">采集 / 控制 / 状态</text>
-    <rect x="988" y="424" width="180" height="76" rx="12" fill="#FFFFFF" stroke="#B0D776"/><text x="1078" y="456" font-size="18" fill="#0B2F3A" text-anchor="middle">质量系统</text><text x="1078" y="480" font-size="12" fill="#4B5563" text-anchor="middle">检验 / CAPA / 追溯</text>
+    <rect x="112" y="238" width="180" height="76" rx="12" fill="#FFFFFF" stroke="#0097BA"/><text x="202" y="270" font-size="18" fill="#111111" text-anchor="middle">ERP</text><text x="202" y="294" font-size="12" fill="#4B5563" text-anchor="middle">订单 / 财务 / 成本</text>
+    <rect x="112" y="424" width="180" height="76" rx="12" fill="#FFFFFF" stroke="#A4D968"/><text x="202" y="456" font-size="18" fill="#111111" text-anchor="middle">PLM</text><text x="202" y="480" font-size="12" fill="#4B5563" text-anchor="middle">BOM / 工艺 / 变更</text>
+    <rect x="330" y="530" width="180" height="62" rx="12" fill="#FFFFFF" stroke="#D9D9D9"/><text x="420" y="567" font-size="18" fill="#111111" text-anchor="middle">供应链协同</text>
+    <rect x="770" y="530" width="180" height="62" rx="12" fill="#FFFFFF" stroke="#D9D9D9"/><text x="860" y="567" font-size="18" fill="#111111" text-anchor="middle">仓储物流</text>
+    <rect x="988" y="238" width="180" height="76" rx="12" fill="#FFFFFF" stroke="#0097BA"/><text x="1078" y="270" font-size="18" fill="#111111" text-anchor="middle">设备与IoT</text><text x="1078" y="294" font-size="12" fill="#4B5563" text-anchor="middle">采集 / 控制 / 状态</text>
+    <rect x="988" y="424" width="180" height="76" rx="12" fill="#FFFFFF" stroke="#A4D968"/><text x="1078" y="456" font-size="18" fill="#111111" text-anchor="middle">质量系统</text><text x="1078" y="480" font-size="12" fill="#4B5563" text-anchor="middle">检验 / CAPA / 追溯</text>
   </g>
-  <g stroke="#4295B6" stroke-width="2" fill="none" marker-end="url(#arr)">
-    <path d="M292 276 C382 276 426 315 512 340"/>
-    <path d="M292 462 C382 462 430 410 512 392"/>
-    <path d="M510 562 C570 520 598 478 620 442"/>
-    <path d="M770 398 C848 408 904 450 988 462"/>
-    <path d="M768 342 C850 318 904 276 988 276"/>
-    <path d="M770 562 C720 515 682 478 660 442"/>
+  <g stroke="#0097BA" stroke-width="2" fill="none">
+    <path d="M292 276 C382 276 426 315 512 340" marker-end="url(#arr)"/>
+    <path d="M292 462 C382 462 430 410 512 392" marker-end="url(#arr)"/>
+    <path d="M510 562 C570 520 598 478 620 442" marker-end="url(#arr)"/>
+    <path d="M770 398 C848 408 904 450 988 462" marker-end="url(#arr)"/>
+    <path d="M768 342 C850 318 904 276 988 276" marker-end="url(#arr)"/>
+    <path d="M770 562 C720 515 682 478 660 442" marker-end="url(#arr)"/>
   </g>
-  <rect x="350" y="224" width="144" height="36" rx="18" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <rect x="350" y="224" width="144" height="36" rx="18" fill="#FFFFFF" stroke="#D9D9D9"/>
   <text x="422" y="247" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563" text-anchor="middle">主数据同步</text>
-  <rect x="786" y="224" width="144" height="36" rx="18" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <rect x="786" y="224" width="144" height="36" rx="18" fill="#FFFFFF" stroke="#D9D9D9"/>
   <text x="858" y="247" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563" text-anchor="middle">设备事件流</text>
-  <rect x="350" y="478" width="144" height="36" rx="18" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <rect x="350" y="478" width="144" height="36" rx="18" fill="#FFFFFF" stroke="#D9D9D9"/>
   <text x="422" y="501" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563" text-anchor="middle">工艺版本</text>
-  <rect x="786" y="478" width="144" height="36" rx="18" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <rect x="786" y="478" width="144" height="36" rx="18" fill="#FFFFFF" stroke="#D9D9D9"/>
   <text x="858" y="501" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" fill="#4B5563" text-anchor="middle">质量反馈</text>
   <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Source: 慧新产品解决方案模板样张</text>
   <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">02</text>

@@ -8,26 +8,27 @@ Shared baseline for both acquisition paths. Path-specific behavior lives in the 
 
 ## 1. Trigger Condition
 
-Active when at least one resource list row has `Acquire Via: ai` or `Acquire Via: web`. Rows with `user` / `formula` / `placeholder` are skipped.
+Active when at least one resource row has `Acquire Via: ai` / `web` / `slice`. Rows with `user` / `formula` / `placeholder` are tracked but skipped by these acquisition roles.
 
 | Mode | Trigger |
 |---|---|
-| In-pipeline | `generate-ppt` workflow, image rows present |
+| Default Generate | `generate-ppt` workflow, `design_spec.md §VIII` image rows present |
+| Quick Generate | [`quick-generate`](../workflows/profiles/quick-generate.md) is active and the current main agent has resolved one or more required images in active context |
 | Standalone | Direct request against an existing project |
 
 ---
 
 ## 2. Image Resource List Format
 
-Defined in `design_spec.md §VIII`. Status enum: see [`svg-image-embedding.md`](svg-image-embedding.md).
+Default Generate uses Strategist-owned `design_spec.md §VIII` plus its lock projection. Quick Generate substitutes active-context resource decisions plus required operational manifests; it creates no planning artifact or general resource roster. Status enum: [`svg-image-embedding.md`](svg-image-embedding.md).
 
-| Filename | Dimensions | Purpose | Type | Acquire Via | Status | Reference |
-|---|---|---|---|---|---|---|
-| cover.png | 1280x720 | Cover background | Background | `ai` | Pending | Modern tech abstract, deep blue gradient #0A2540 |
-| team.jpg | 800x600 | Team photo | Photography | `web` | Pending | Diverse engineering team in modern office |
-| formula_001.png | 736x168 | Block equation on P03 | Latex Formula | `formula` | Rendered | `E = mc^2` |
+| Filename | Dimensions | Purpose / Type | Layout pattern | Crop Policy | Acquire Via | Status | Reference |
+|---|---|---|---|---|---|---|---|
+| `<planned file>` | `<planned size>` | `<planned role>` | `<owner-resolved recommendation>` | `adaptive` / `no-crop` | `ai` / `web` / `slice` | Pending | `<acquisition brief>` |
 
-**Required per non-skipped row**: `Acquire Via`, `Status`, `Reference`.
+**Required per non-skipped row**: `Acquire Via` and `Status`. `Reference` is required for every `web` / `slice` row and every newly authored `ai` row. An existing `ai` row whose `Reference` is omitted or blank may continue only through the declared inference in [`image-generator.md`](./image-generator.md) §8; no other path may infer it.
+
+**Quick Generate ownership**: explicit user assets, URLs, and path instructions win. Otherwise the main agent chooses required `user` / `ai` / `web` / `slice` / `formula` rows and AI path `auto`, without interaction.
 
 ---
 
@@ -39,6 +40,7 @@ For each row with `Status: Pending`:
 |---|---|---|---|
 | `ai` | [`image-generator.md`](./image-generator.md) | `image_gen.py` | `Generated` |
 | `web` | [`image-searcher.md`](./image-searcher.md) | `image_search.py` | `Sourced` |
+| `slice` | [`image-generator.md`](./image-generator.md) §4.3 | `slice_images.py` after parent AI sheet is `Generated` | `Generated` |
 | `user` | — | — | (already `Existing`) |
 | `formula` | — | — | (already `Rendered`) |
 | `placeholder` | — | — | (already `Placeholder`) |
@@ -51,9 +53,10 @@ For each row with `Status: Pending`:
 
 Before processing any row:
 
-1. `read_file <project_path>/design_spec.md` — extract color scheme, canvas format, target audience
+1. Read the Default Design Spec/lock, or reuse Quick's active-context resource and visual/page decisions
 2. Group resource list rows by `Acquire Via`
 3. Confirm `project/images/` exists
+4. Materialize explicit user assets, render declared formulas, and finish triggered ai/web/slice acquisition before SVG authoring begins
 
 ---
 
@@ -62,24 +65,35 @@ Before processing any row:
 After all rows reach terminal status:
 
 - Every non-skipped row has a file at `project/images/<filename>`, or is marked `Needs-Manual`
-- No `Pending` rows remain
-- `image_prompts.json` exists when ≥1 ai row processed; every entry has `status ∈ {Generated, Failed, Needs-Manual}` (no `Pending` remaining)
-- `image_sources.json` exists when ≥1 web row processed; every entry has `license_tier ∈ {no-attribution, attribution-required}`
+- Every `slice` row has a generated element file, or is marked `Needs-Manual` because its parent sheet is not available
+- No `Pending` or `Failed` rows remain
+- `image_prompts.json` exists when ≥1 ai row processed; every entry has `status ∈ {Generated, Needs-Manual}` (no `Pending` or `Failed` remaining)
+- `image_sources.json` exists when ≥1 web row processed; every entry has `license_tier ∈ {no-attribution, attribution-required, manual}` (`manual` = a user-supplied `--from-url` replacement)
 
-> `Needs-Manual` is a legitimate terminal state for ai rows — Step 7 entry waits for the user to place the file. See [`image-generator.md`](./image-generator.md) §3.2 Offline Manual Mode.
+> `Needs-Manual` is terminal for acquisition, not export readiness. A later
+> supplied/replaced file must be validated and its row reconciled to
+> `Generated`, `Sourced`, or `Rendered` with the matching manifest evidence.
+> Quick blocks every required row that still says `Needs-Manual`, regardless of
+> whether an unverified candidate file happens to exist. See
+> [`image-generator.md`](./image-generator.md) §7.
 
 ---
 
 ## 6. Failure Handling
 
-**Hard rule**: acquisition failures MUST NOT halt the pipeline.
+**Hard rule — automatic exhaustion before blocking**: acquisition failures MUST NOT open an interactive choice or stop while an untried permitted strategy remains.
 
-1. Try once
-2. On recoverable failure (network, no candidates, license rejection, rate limit), retry once with broadened parameters
-3. On second failure, set `Status: Needs-Manual`, log the reason in conversation, continue
-4. After the phase completes, summarize all `Needs-Manual` rows for the user — list filenames, where prompts live (`images/image_prompts.md` paste-ready blocks for ai rows; refresh via `image_gen.py --render-md` if stale), and where to place generated files (`project/images/<filename>`)
+1. Run the selected path's initial strategy
+2. On recoverable failure (network, no candidates, license rejection, rate limit), continue through materially different strategies that remain inside that path's confirmed permissions; never loop an already exhausted strategy
+3. When the path-specific query/provider/license-stage or backend/retry strategy is exhausted, set `Status: Needs-Manual`, log the reason in conversation, and continue
+4. After the phase completes, summarize all `Needs-Manual` rows for the user — list filenames, where prompts live (`images/image_prompts.md` paste-ready blocks for ai rows; refresh via `image_gen.py --render-md` if stale), and where to place generated files (`project/images/<filename>`). After supply/replacement, validate the file and reconcile the owning row plus manifest to its usable status. For `slice` rows, list the parent sheet filename and target element names; the user places the sheet, then the agent reruns `slice_images.py`.
 
-`Needs-Manual` is also the entry status for **Offline Manual Mode** (no `IMAGE_BACKEND` configured, no host-native image tool in use). Affected ai rows are marked `Needs-Manual` from the start without a failed attempt — see [`image-generator.md`](./image-generator.md) §3.2.
+**Quick Generate export gate**: exhaust allowed automation without asking; stop
+before `--quick-generate` when a required row is not both backed by its
+validated file/provenance and in a usable status. File presence alone never
+bypasses `Needs-Manual`.
+
+`Needs-Manual` is also the entry status for **Offline Manual Mode** (no `IMAGE_BACKEND` configured, no host-native image tool in use). Affected ai rows are marked `Needs-Manual` from the start without a failed attempt — see [`image-generator.md`](./image-generator.md) §7 Offline Manual Mode.
 
 Path-specific retry policies (provider chain, backend chain) live in the path's own reference.
 
@@ -96,13 +110,13 @@ License / attribution data lives **only** in `project/images/image_sources.json`
 - SVG `<title>` / `<desc>` (stripped by `svg_to_pptx.py`)
 - A separate "Image Credits" appendix slide (lost on single-page sharing)
 
-Executor reads the manifest per slide and renders inline credits when needed — see [`executor-base.md`](./executor-base.md) §6.1 and [`image-searcher.md`](./image-searcher.md) §7.
+Executor reads the manifest per slide and renders inline credits when needed — see [`executor-web-image.md`](./executor-web-image.md) §1 and [`image-searcher.md`](./image-searcher.md) §7.
 
 ---
 
-## 8. Handoff with Strategist
+## 8. Intent Ownership
 
-The `Reference` field is **intent**, not a query. Strategist writes free-form intent; the receiving role translates.
+The `Reference` field is **intent**, not a query. Strategist owns it by default; Quick's main agent resolves it in active context. The receiving role translates without reopening it.
 
 | ✅ Intent | ❌ Pre-processed |
 |---|---|
@@ -111,25 +125,24 @@ The `Reference` field is **intent**, not a query. Strategist writes free-form in
 
 ---
 
-## 9. Handoff with Executor
+## 9. Handoff with SVG Authoring
 
-Executor consumes the resource list plus:
+SVG authoring consumes the active profile's resource authority plus:
 
 | Artifact | Path | Purpose |
 |---|---|---|
 | Image files | `project/images/*.{jpg,png,webp}` | `<image>` references |
 | Manifest | `project/images/image_sources.json` | `license_tier` per Sourced image |
 
-Executor does NOT invoke `image_gen.py` / `image_search.py`.
+**Default Generate boundary**: Executor does NOT invoke `image_gen.py` / `image_search.py` / `slice_images.py`; missing material returns to Strategist-owned preparation.
+
+**Quick Generate boundary**: the main agent finishes acquisition before SVG authoring, then neither acquires nor reselects while drawing.
 
 ---
 
 ## 10. Task Completion Checkpoint
 
-```markdown
-## ✅ Image Acquisition Phase Complete
-- [x] {N} rows processed (`ai`: {a} / `web`: {b})
-- [x] {a} `Generated`, {b} `Sourced`, {c} `Needs-Manual`
-- [x] image_prompts.json / image_sources.json written
-- [ ] **Next**: Auto-proceed to Executor phase
-```
+Verify every row, file, triggered manifest/sidecar, and provenance record.
+Default proceeds to Executor. Quick proceeds without interaction after
+preparation and exports only when every required row has validated evidence and
+a usable status. Report only blocking recovery.

@@ -3,8 +3,13 @@ deck_id: huixin_training_enablement
 kind: deck
 summary: 慧新企业培训、产品培训、销售赋能、实施交付培训、客户培训和内部学习材料模板；包含课程主线、章节、日程、课前准备、场景导入、界面讲解、对比矩阵、角色演练、SOP、测评结果和FAQ排查页.
 canvas_format: ppt169
+canvas_width: 1280
+canvas_height: 720
+canvas_viewbox: "0 0 1280 720"
+native_structure_mode: legacy-flat
+replication_mode: standard
 page_count: 20
-primary_color: "#4295B6"
+primary_color: "#0097BA"
 keywords: [huixin, training, enablement, courseware, workshop]
 ---
 
@@ -34,12 +39,17 @@ keywords: [huixin, training, enablement, courseware, workshop]
 
 | Role | Color Value | Usage |
 | --- | --- | --- |
-| **Logo Blue** | `#4295B6` | Course identity, module headers, learning path, key concept blocks |
-| **Logo Green** | `#B0D776` | Practice tasks, checkpoints, completion markers, tips and calls to action |
-| **Logo Gray** | `#D2D3D4` | Dividers, neutral cards, answer zones, timeline rails |
-| **Deep Blue Gray** | `#0B2F3A` | Cover, titles, key summaries, contrast panels |
+| **Logo Blue** | `#0097BA` | Course identity, module headers, learning path, key concept blocks |
+| **Logo Green** | `#A4D968` | Practice tasks, checkpoints, completion markers, tips and calls to action |
+| **Brand Chrome Green** | `#83C410` | Official lockup geometry, fixed double-bar cue, footer ribbon only |
+| **Logo Gray** | `#D9D9D9` | Dividers, neutral cards, answer zones, timeline rails |
+| **Deep Blue Gray** | `#111111` | Cover, titles, key summaries, contrast panels |
+| **Industrial Blue** | `#0B1039` | Dark-page background and industry foundation |
+| **Intelligent Blue** | `#044AAA` | Core modules and primary dark-page structure |
+| **Bright Blue** | `#1AB6ED` | Dark-page section and content emphasis |
+| **Pale Blue** | `#C0DCEF` | Dark-page strategy title, support copy, divider |
 | **Text Gray** | `#4B5563` | Body text, captions, facilitator notes |
-| **Light Blue Gray** | `#F3F7FA` | Page background, learning panels, content modules |
+| **Light Blue Gray** | `#F5F6F7` | Page background, learning panels, content modules |
 | **White** | `#FFFFFF` | Main canvas and card surfaces |
 | **Wordmark Black** | `#000000` | Official Huixin wordmark on light backgrounds |
 
@@ -54,9 +64,29 @@ keywords: [huixin, training, enablement, courseware, workshop]
 | **Caption** | Duration / role / hint | 11-13px | Regular |
 | **Step Number** | Learning steps and tasks | 34-46px | Bold |
 
-**Primary Font**: `"Microsoft YaHei"`
+**Primary Font**: `"Microsoft YaHei, Arial, sans-serif"`
 
-**SVG Font**: `"Microsoft YaHei"` — all SVG text uses Microsoft YaHei / 微软雅黑 as the single design font.
+**SVG Font**: `"Microsoft YaHei, Arial, sans-serif"` — use Microsoft YaHei with Arial fallback.
+
+### Huixin Visual Baseline 0826
+
+This Deck follows the official `慧新全智PPT视觉设计规范0826.pptx`
+(source SHA-256:
+`44539c09286ac6b3fd87898afd0124851439c0817a07f40f3da7041f32a7ff06`).
+Use `#0097BA` for the technology/system spine, `#A4D968` for semantic
+value/improvement, `#4B5563` for body hierarchy, and `#D9D9D9` for fine
+structure. Keep official logo-derived chrome green `#83C410` limited to the
+lockup, double-bar header cue, and fixed ribbon geometry.
+
+Primary typography is `Microsoft YaHei, Arial, sans-serif`; do not lead with
+MiSans or PingFang. Light pages preserve at least 70% white/light-gray surface,
+use the compact top-left double vertical rule, and keep page titles in the
+20-28pt band with 12-18pt body copy and chart/table labels at or above 9pt when
+content density permits. Covers and endings use the 0826 industrial mosaic.
+Dark pages use `#0B1039`, `#044AAA`, `#1AB6ED`, and `#C0DCEF` with the white
+Huixin lockup. The complete shared authority is
+[`../huixin_visual_system_0826.md`](../huixin_visual_system_0826.md).
+
 
 ## V. Logo and Brand Mark
 
@@ -76,7 +106,7 @@ Usage rules:
 
 | Area | Description |
 | --- | --- |
-| **Course Header** | Thin blue top rule, module number, top-right Huixin lockup |
+| **Course Header** | Compact green/blue double vertical rule, module number, left-aligned title, top-right Huixin lockup |
 | **Title Zone** | Page title plus one training objective or key message |
 | **Learning Body** | Objectives, pathways, frameworks, explanations, exercises, quizzes, reflection and action plans |
 | **Footer** | Course name, duration / facilitator placeholder, page number |
@@ -262,5 +292,10 @@ Usage rules:
 | Asset | Purpose | Usage |
 | --- | --- | --- |
 | `images/reference_visual.png` | Imagegen-generated enterprise training journey reference | Optional reference only. Do not paste it as fixed slide content; use it to guide future project-specific courseware visuals. Learning objectives, journey maps, frameworks, practice tasks, quizzes, and action plans remain editable SVG elements. |
-| `images/huixin_logo_light.png` | Official Huixin light-background logo | Use on white and light gray pages. Preserve the official horizontal lockup. |
-| `images/huixin_logo_dark.png` | Official Huixin dark-background logo | Use only on deep blue-gray or black backgrounds. Preserve the official horizontal lockup. |
+| `images/huixin_logo_light.png` | Latest official Huixin Quanzhi horizontal lockup for light surfaces | Use on white and light-gray pages; preserve the complete lockup and do not recreate it. |
+| `images/huixin_logo_dark.png` | Official white Huixin Quanzhi lockup for dark surfaces | Use directly on the 0826 industrial-blue background without a white backing card. |
+| `images/huixin_light_cover_mosaic.png` | Official 0826 industrial mosaic | Use for covers and image-led endings while keeping titles editable in the quiet left region. |
+| `images/huixin_light_content_bg.png` | Official subtle light geometric background | Use on agenda and knowledge overview pages. |
+| `images/huixin_light_chapter_bg.png` | Legacy teal chapter background | Retained for compatibility only; new 0826 chapter pages use the industrial-blue background. |
+| `images/huixin_dark_bg.png` | Official 0826 industrial-blue dark surface | Use for section dividers, dark strategy pages, and restrained executive emphasis. |
+| `images/huixin_light_footer_ribbon.png` | Official blue-green footer ribbon | Use on standard instructional pages with the lower-left logo. |

@@ -1,54 +1,59 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
   <rect width="1280" height="720" fill="#FFFFFF"/>
-  <rect x="0" y="0" width="1280" height="10" fill="#4295B6"/>
-  <rect x="0" y="10" width="320" height="5" fill="#B0D776"/>
+  <rect x="0" y="0" width="1280" height="10" fill="#0097BA"/>
+  <rect x="0" y="10" width="320" height="5" fill="#A4D968"/>
   <image href="images/huixin_logo_light.png" x="1036" y="30" width="170" height="40" preserveAspectRatio="xMidYMid meet"/>
-  <text x="72" y="70" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#4295B6">05 / FUNCTION ARCHITECTURE</text>
-  <text x="72" y="124" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700" fill="#0B2F3A">功能架构：面向工厂一体化的能力矩阵</text>
-  <text x="72" y="160" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#4295B6">上层承载业务应用，中层沉淀平台能力，底层连接数据与设备。</text>
-  <rect x="72" y="198" width="1136" height="420" rx="14" fill="#F3F7FA" stroke="#D2D3D4"/>
+  <g id="huixin-0826-header-accent" data-pptx-bounds="12 20 18 52" data-pptx-role="decoration">
+      <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+      <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+    </g>
+
+  <text x="72" y="70" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" fill="#0097BA">05 / FUNCTION ARCHITECTURE</text>
+  <text x="72" y="124" font-family="Microsoft YaHei, Arial, sans-serif" font-size="38" font-weight="700" fill="#111111">功能架构：面向工厂一体化的能力矩阵</text>
+  <text x="72" y="160" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#0097BA">上层承载业务应用，中层沉淀平台能力，底层连接数据与设备。</text>
+  <rect x="72" y="198" width="1136" height="420" rx="14" fill="#F5F6F7" stroke="#D9D9D9"/>
   <g font-family="Microsoft YaHei, Arial, sans-serif" font-weight="700" text-anchor="middle">
-    <rect x="100" y="230" width="88" height="170" rx="10" fill="#4295B6"/><text x="144" y="306" font-size="18" fill="#FFFFFF"><tspan x="144">工厂应用</tspan><tspan x="144" dy="24">模块</tspan></text>
-    <rect x="100" y="416" width="88" height="60" rx="10" fill="#B0D776"/><text x="144" y="453" font-size="18" fill="#0B2F3A">API中台</text>
-    <rect x="100" y="492" width="88" height="84" rx="10" fill="#0B2F3A"/><text x="144" y="526" font-size="17" fill="#FFFFFF"><tspan x="144">公共平台</tspan><tspan x="144" dy="24">能力</tspan></text>
+    <rect x="100" y="230" width="88" height="170" rx="10" fill="#0097BA"/><text x="144" y="306" font-size="18" fill="#FFFFFF"><tspan x="144">工厂应用</tspan><tspan x="144" dy="24">模块</tspan></text>
+    <rect x="100" y="416" width="88" height="60" rx="10" fill="#A4D968"/><text x="144" y="453" font-size="18" fill="#111111">API中台</text>
+    <rect x="100" y="492" width="88" height="84" rx="10" fill="#111111"/><text x="144" y="526" font-size="17" fill="#FFFFFF"><tspan x="144">公共平台</tspan><tspan x="144" dy="24">能力</tspan></text>
   </g>
-  <rect x="210" y="230" width="790" height="170" rx="12" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <rect x="210" y="230" width="790" height="170" rx="12" fill="#FFFFFF" stroke="#D9D9D9"/>
   <g font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle">
-    <rect x="238" y="256" width="124" height="30" rx="6" fill="#4295B6"/><text x="300" y="277" fill="#FFFFFF">计划管理</text>
-    <rect x="378" y="256" width="124" height="30" rx="6" fill="#4295B6"/><text x="440" y="277" fill="#FFFFFF">生产执行</text>
-    <rect x="518" y="256" width="124" height="30" rx="6" fill="#4295B6"/><text x="580" y="277" fill="#FFFFFF">工艺管理</text>
-    <rect x="658" y="256" width="124" height="30" rx="6" fill="#4295B6"/><text x="720" y="277" fill="#FFFFFF">质量管理</text>
-    <rect x="798" y="256" width="124" height="30" rx="6" fill="#4295B6"/><text x="860" y="277" fill="#FFFFFF">仓储管理</text>
-    <rect x="238" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/><text x="300" y="327" fill="#0B2F3A">设备管理</text>
-    <rect x="378" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/><text x="440" y="327" fill="#0B2F3A">追溯管理</text>
-    <rect x="518" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/><text x="580" y="327" fill="#0B2F3A">报工管理</text>
-    <rect x="658" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/><text x="720" y="327" fill="#0B2F3A">安灯异常</text>
-    <rect x="798" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D2D3D4"/><text x="860" y="327" fill="#0B2F3A">报表看板</text>
-    <rect x="238" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#B0D776"/><text x="300" y="377" fill="#0B2F3A">AI助手</text>
-    <rect x="378" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#B0D776"/><text x="440" y="377" fill="#0B2F3A">知识库</text>
-    <rect x="518" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#B0D776"/><text x="580" y="377" fill="#0B2F3A">指标分析</text>
-    <rect x="658" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#B0D776"/><text x="720" y="377" fill="#0B2F3A">低代码</text>
-    <rect x="798" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#B0D776"/><text x="860" y="377" fill="#0B2F3A">移动协同</text>
+    <rect x="238" y="256" width="124" height="30" rx="6" fill="#0097BA"/><text x="300" y="277" fill="#FFFFFF">计划管理</text>
+    <rect x="378" y="256" width="124" height="30" rx="6" fill="#0097BA"/><text x="440" y="277" fill="#FFFFFF">生产执行</text>
+    <rect x="518" y="256" width="124" height="30" rx="6" fill="#0097BA"/><text x="580" y="277" fill="#FFFFFF">工艺管理</text>
+    <rect x="658" y="256" width="124" height="30" rx="6" fill="#0097BA"/><text x="720" y="277" fill="#FFFFFF">质量管理</text>
+    <rect x="798" y="256" width="124" height="30" rx="6" fill="#0097BA"/><text x="860" y="277" fill="#FFFFFF">仓储管理</text>
+    <rect x="238" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D9D9D9"/><text x="300" y="327" fill="#111111">设备管理</text>
+    <rect x="378" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D9D9D9"/><text x="440" y="327" fill="#111111">追溯管理</text>
+    <rect x="518" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D9D9D9"/><text x="580" y="327" fill="#111111">报工管理</text>
+    <rect x="658" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D9D9D9"/><text x="720" y="327" fill="#111111">安灯异常</text>
+    <rect x="798" y="306" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#D9D9D9"/><text x="860" y="327" fill="#111111">报表看板</text>
+    <rect x="238" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#A4D968"/><text x="300" y="377" fill="#111111">AI助手</text>
+    <rect x="378" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#A4D968"/><text x="440" y="377" fill="#111111">知识库</text>
+    <rect x="518" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#A4D968"/><text x="580" y="377" fill="#111111">指标分析</text>
+    <rect x="658" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#A4D968"/><text x="720" y="377" fill="#111111">低代码</text>
+    <rect x="798" y="356" width="124" height="30" rx="6" fill="#FFFFFF" stroke="#A4D968"/><text x="860" y="377" fill="#111111">移动协同</text>
   </g>
-  <rect x="1020" y="230" width="158" height="170" rx="12" fill="#FFFFFF" stroke="#D2D3D4"/>
-  <text x="1099" y="264" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#0B2F3A" text-anchor="middle">外部系统</text>
+  <rect x="1020" y="230" width="158" height="170" rx="12" fill="#FFFFFF" stroke="#D9D9D9"/>
+  <text x="1099" y="264" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#111111" text-anchor="middle">外部系统</text>
   <text x="1099" y="306" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#4B5563" text-anchor="middle">ERP / PLM</text>
   <text x="1099" y="342" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#4B5563" text-anchor="middle">SRM / WMS</text>
   <text x="1099" y="378" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" fill="#4B5563" text-anchor="middle">OA / 财务</text>
-  <rect x="210" y="416" width="968" height="60" rx="12" fill="#B0D776" fill-opacity="0.55" stroke="#B0D776"/>
+  <rect x="210" y="416" width="968" height="60" rx="12" fill="#A4D968" fill-opacity="0.55" stroke="#A4D968"/>
   <g font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" text-anchor="middle">
-    <rect x="242" y="432" width="180" height="30" rx="6" fill="#FFFFFF"/><text x="332" y="453" fill="#0B2F3A">标准REST接口</text>
-    <rect x="462" y="432" width="180" height="30" rx="6" fill="#FFFFFF"/><text x="552" y="453" fill="#0B2F3A">协议转换</text>
-    <rect x="682" y="432" width="180" height="30" rx="6" fill="#FFFFFF"/><text x="772" y="453" fill="#0B2F3A">权限隔离</text>
-    <rect x="902" y="432" width="180" height="30" rx="6" fill="#FFFFFF"/><text x="992" y="453" fill="#0B2F3A">数据交换</text>
+    <rect x="242" y="432" width="180" height="30" rx="6" fill="#FFFFFF"/><text x="332" y="453" fill="#111111">标准REST接口</text>
+    <rect x="462" y="432" width="180" height="30" rx="6" fill="#FFFFFF"/><text x="552" y="453" fill="#111111">协议转换</text>
+    <rect x="682" y="432" width="180" height="30" rx="6" fill="#FFFFFF"/><text x="772" y="453" fill="#111111">权限隔离</text>
+    <rect x="902" y="432" width="180" height="30" rx="6" fill="#FFFFFF"/><text x="992" y="453" fill="#111111">数据交换</text>
   </g>
-  <rect x="210" y="492" width="968" height="84" rx="12" fill="#FFFFFF" stroke="#D2D3D4"/>
+  <rect x="210" y="492" width="968" height="84" rx="12" fill="#FFFFFF" stroke="#D9D9D9"/>
   <g font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="700" text-anchor="middle">
-    <rect x="242" y="516" width="148" height="34" rx="7" fill="#4295B6" fill-opacity="0.16" stroke="#4295B6"/><text x="316" y="539" fill="#0B2F3A">组织权限</text>
-    <rect x="420" y="516" width="148" height="34" rx="7" fill="#4295B6" fill-opacity="0.16" stroke="#4295B6"/><text x="494" y="539" fill="#0B2F3A">租户模型</text>
-    <rect x="598" y="516" width="148" height="34" rx="7" fill="#4295B6" fill-opacity="0.16" stroke="#4295B6"/><text x="672" y="539" fill="#0B2F3A">消息通知</text>
-    <rect x="776" y="516" width="148" height="34" rx="7" fill="#B0D776" fill-opacity="0.45" stroke="#B0D776"/><text x="850" y="539" fill="#0B2F3A">数据模型</text>
-    <rect x="954" y="516" width="148" height="34" rx="7" fill="#B0D776" fill-opacity="0.45" stroke="#B0D776"/><text x="1028" y="539" fill="#0B2F3A">集成监控</text>
+    <rect x="242" y="516" width="148" height="34" rx="7" fill="#0097BA" fill-opacity="0.16" stroke="#0097BA"/><text x="316" y="539" fill="#111111">组织权限</text>
+    <rect x="420" y="516" width="148" height="34" rx="7" fill="#0097BA" fill-opacity="0.16" stroke="#0097BA"/><text x="494" y="539" fill="#111111">租户模型</text>
+    <rect x="598" y="516" width="148" height="34" rx="7" fill="#0097BA" fill-opacity="0.16" stroke="#0097BA"/><text x="672" y="539" fill="#111111">消息通知</text>
+    <rect x="776" y="516" width="148" height="34" rx="7" fill="#A4D968" fill-opacity="0.45" stroke="#A4D968"/><text x="850" y="539" fill="#111111">数据模型</text>
+    <rect x="954" y="516" width="148" height="34" rx="7" fill="#A4D968" fill-opacity="0.45" stroke="#A4D968"/><text x="1028" y="539" fill="#111111">集成监控</text>
   </g>
   <text x="72" y="686" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12">Source: 慧新产品解决方案模板样张</text>
   <text x="1208" y="686" text-anchor="end" fill="#4B5563" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13">05</text>

@@ -4,73 +4,192 @@
 Examples:
     python3 update_spec.py <project_path> primary=#0066AA
     python3 update_spec.py <project_path> colors.text=#111111
-    python3 update_spec.py <project_path> typography.font_family='"PingFang SC", "Microsoft YaHei", sans-serif'
+    python3 update_spec.py <project_path> \\
+        typography.font_family='Arial, "Microsoft YaHei", sans-serif'
 
 v2 scope:
 - `colors.*` — HEX value replacement across svg_output/*.svg (case-insensitive match).
 - `typography.font_family` — replaces the inner value of every `font-family="..."`
   / `font-family='...'` attribute in svg_output/*.svg. This is a global replace:
-  every text element becomes the new family, regardless of role.
+  every text element becomes the new family, regardless of role, and every
+  existing `typography.*_family` lock row is updated to the same value.
 
 Bare `key=value` (no dot) is treated as `colors.key=value` for backward compat.
 
-Other keys (typography sizes, per-role `typography.*_family` overrides, icons,
-images, canvas, forbidden) are intentionally NOT supported — they involve
-attribute-scoped or semantic replacements whose risk/benefit does not warrant
-bulk propagation. For per-role family changes, edit spec_lock.md and re-author
-the affected pages.
+Other keys as independent targets (typography sizes, per-role
+`typography.*_family` overrides, icons, images, canvas, forbidden) are
+intentionally NOT supported — they involve attribute-scoped or semantic
+replacements whose risk/benefit does not warrant bulk propagation. For
+per-role family changes, edit spec_lock.md and re-author the affected pages.
 """
 from __future__ import annotations
 
 import argparse
+import os
 import re
+import shutil
 import sys
+import tempfile
 from pathlib import Path
+
+from console_encoding import configure_utf8_stdio
+from project_management.project_specs import parse_spec_lock as parse_lock
+
+configure_utf8_stdio()
 
 HEX_RE = re.compile(r"^#(?:[0-9A-Fa-f]{3,4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$")
 FONT_FAMILY_RE = re.compile(r"""(font-family\s*=\s*)(["'])(.*?)\2""")
 
 
-def parse_lock(lock_path: Path) -> dict[str, dict[str, str]]:
-    """Return {section_name: {key: value}} parsed from spec_lock.md.
-
-    The format is:
-        ## section
-        - key: value
-    """
-    sections: dict[str, dict[str, str]] = {}
-    current: str | None = None
-    for raw in lock_path.read_text(encoding="utf-8").splitlines():
-        line = raw.rstrip()
-        if line.startswith("## "):
-            current = line[3:].strip()
-            sections.setdefault(current, {})
-            continue
-        if current is None:
-            continue
-        m = re.match(r"^-\s+([A-Za-z0-9_]+)\s*:\s*(.+?)\s*$", line)
-        if m:
-            sections[current][m.group(1)] = m.group(2)
-    return sections
-
-
-def rewrite_lock(lock_path: Path, section: str, key: str, new_value: str) -> None:
-    """Rewrite the single `- key: old_value` line under `## section`."""
+def plan_lock_values(
+    lock_path: Path, section: str, updates: dict[str, str]
+) -> str:
+    """Return a lock rewrite only after every target row validates."""
     lines = lock_path.read_text(encoding="utf-8").splitlines(keepends=True)
     in_section = False
+    found: set[str] = set()
     for i, raw in enumerate(lines):
-        stripped = raw.rstrip("\n")
+        stripped = raw.rstrip("\r\n")
+        line_ending = raw[len(stripped) :]
         if stripped.startswith("## "):
             in_section = stripped[3:].strip() == section
             continue
         if not in_section:
             continue
         m = re.match(r"^(-\s+)([A-Za-z0-9_]+)(\s*:\s*)(.+?)(\s*)$", stripped)
-        if m and m.group(2) == key:
-            lines[i] = f"{m.group(1)}{m.group(2)}{m.group(3)}{new_value}{m.group(5)}\n"
-            lock_path.write_text("".join(lines), encoding="utf-8")
-            return
-    raise KeyError(f"key {key!r} not found under section {section!r} in {lock_path}")
+        if not m or m.group(2) not in updates:
+            continue
+        key = m.group(2)
+        if key in found:
+            raise ValueError(
+                f"duplicate key {key!r} under section {section!r} in {lock_path}"
+            )
+        found.add(key)
+        lines[i] = (
+            f"{m.group(1)}{key}{m.group(3)}{updates[key]}{m.group(5)}"
+            f"{line_ending}"
+        )
+
+    missing = set(updates) - found
+    if missing:
+        missing_list = ", ".join(sorted(missing))
+        raise KeyError(
+            f"key(s) {missing_list} not found under section {section!r} in {lock_path}"
+        )
+    return "".join(lines)
+
+
+def _plan_color_updates(
+    svg_dir: Path,
+    old_hex: str,
+    new_hex: str,
+) -> list[tuple[Path, str, int]]:
+    """Return planned color rewrites without touching the SVG files."""
+    if not HEX_RE.match(old_hex) or not HEX_RE.match(new_hex):
+        raise ValueError(f"not a HEX color: old={old_hex!r} new={new_hex!r}")
+    pattern = re.compile(
+        rf"{re.escape(old_hex)}(?![0-9A-Fa-f])",
+        re.IGNORECASE,
+    )
+    planned: list[tuple[Path, str, int]] = []
+    for svg in sorted(svg_dir.glob("*.svg")):
+        text = svg.read_text(encoding="utf-8")
+        new_text, count = pattern.subn(new_hex, text)
+        if count > 0:
+            planned.append((svg, new_text, count))
+    return planned
+
+
+def _plan_font_family_updates(
+    svg_dir: Path,
+    new_value: str,
+) -> list[tuple[Path, str, int]]:
+    """Return planned font-family rewrites without touching the SVG files."""
+
+    def replace_value(match: re.Match[str]) -> str:
+        prefix, quote, _inner = match.group(1), match.group(2), match.group(3)
+        outer = quote
+        if outer in new_value:
+            outer = "'" if quote == '"' else '"'
+            if outer in new_value:
+                raise ValueError(
+                    f"new font_family value contains both ' and \" — cannot embed: "
+                    f"{new_value!r}"
+                )
+        return f"{prefix}{outer}{new_value}{outer}"
+
+    planned: list[tuple[Path, str, int]] = []
+    for svg in sorted(svg_dir.glob("*.svg")):
+        text = svg.read_text(encoding="utf-8")
+        new_text, count = FONT_FAMILY_RE.subn(replace_value, text)
+        if count > 0 and new_text != text:
+            planned.append((svg, new_text, count))
+    return planned
+
+
+def _publish_text_updates(updates: list[tuple[Path, str]]) -> None:
+    """Publish existing text files as one rollback unit."""
+    if not updates:
+        return
+    targets = [path for path, _text in updates]
+    if len(targets) != len(set(targets)):
+        raise ValueError("transaction contains duplicate output paths")
+    for target in targets:
+        if not target.is_file() or target.is_symlink():
+            raise OSError(f"transaction target must be a regular file: {target}")
+
+    transaction_dir = Path(
+        tempfile.mkdtemp(
+            prefix=".update-spec-",
+            dir=targets[0].parent,
+        )
+    )
+    staged_dir = transaction_dir / "staged"
+    backup_dir = transaction_dir / "previous"
+    preserve_transaction = False
+    published: list[tuple[Path, Path]] = []
+    try:
+        staged_dir.mkdir()
+        backup_dir.mkdir()
+        staged: list[tuple[Path, Path, Path]] = []
+        transaction_device = transaction_dir.stat().st_dev
+        for index, (target, text) in enumerate(updates):
+            if target.parent.stat().st_dev != transaction_device:
+                raise OSError(
+                    f"cannot atomically publish across filesystems: {target}"
+                )
+            staged_path = staged_dir / f"{index:06d}.new"
+            backup_path = backup_dir / f"{index:06d}.bak"
+            staged_path.write_text(text, encoding="utf-8")
+            shutil.copymode(target, staged_path)
+            shutil.copy2(target, backup_path, follow_symlinks=False)
+            staged.append((target, staged_path, backup_path))
+
+        try:
+            for target, staged_path, backup_path in staged:
+                os.replace(staged_path, target)
+                published.append((target, backup_path))
+        except BaseException as publish_error:
+            rollback_errors: list[str] = []
+            for target, backup_path in reversed(published):
+                try:
+                    os.replace(backup_path, target)
+                except BaseException as rollback_error:
+                    rollback_errors.append(
+                        f"could not restore {target}: "
+                        f"{type(rollback_error).__name__}: {rollback_error}"
+                    )
+            if rollback_errors:
+                preserve_transaction = True
+                raise RuntimeError(
+                    f"update_spec publish failed ({publish_error}); rollback was "
+                    f"incomplete: {'; '.join(rollback_errors)}; recovery directory: "
+                    f"{transaction_dir}"
+                ) from publish_error
+            raise
+    finally:
+        if not preserve_transaction:
+            shutil.rmtree(transaction_dir, ignore_errors=True)
 
 
 def replace_color_in_svgs(
@@ -83,28 +202,20 @@ def replace_color_in_svgs(
     e.g. one file with 50 hits when the rest have 4-8 is likely a stray
     HEX literal inside <text> content rather than a styling attribute.
 
-    Two-phase: plan all file updates in memory, then write to disk. If any
-    exception is raised during planning (e.g. bad HEX, read failure), no files
-    are touched. This keeps svg_output/ and the caller's spec_lock.md write
-    in a consistent pair: either everything is applied or nothing is.
+    Two-phase: plan all file updates in memory, then publish them with rollback.
+    If planning or publishing fails, the original files are retained.
 
     When dry_run=True, the planning phase still runs (so bad HEX still raises
     and callers see which files would change), but no disk writes happen. The
     returned list describes the would-change files.
     """
-    if not HEX_RE.match(old_hex) or not HEX_RE.match(new_hex):
-        raise ValueError(f"not a HEX color: old={old_hex!r} new={new_hex!r}")
-    pattern = re.compile(re.escape(old_hex), re.IGNORECASE)
-    planned: list[tuple[Path, str, int]] = []
-    for svg in sorted(svg_dir.glob("*.svg")):
-        text = svg.read_text(encoding="utf-8")
-        new_text, n = pattern.subn(new_hex, text)
-        if n > 0:
-            planned.append((svg, new_text, n))
+    planned = _plan_color_updates(svg_dir, old_hex, new_hex)
     if not dry_run:
-        for svg, new_text, _ in planned:
-            svg.write_text(new_text, encoding="utf-8")
-    return [(p, n) for p, _, n in planned]
+        _publish_text_updates([
+            (svg, new_text)
+            for svg, new_text, _count in planned
+        ])
+    return [(path, count) for path, _text, count in planned]
 
 
 def replace_font_family_in_svgs(
@@ -118,35 +229,20 @@ def replace_font_family_in_svgs(
     Preserves the outer quote character when possible; if the new value contains
     that same quote type, switches the outer quote to the other kind.
 
-    Two-phase: plan all file updates in memory, then write to disk. The inner
-    `_sub` may raise ValueError when the new value contains both quote kinds —
-    when that happens in the planning phase, no files have been touched yet.
+    Two-phase: plan all file updates in memory, then publish them with rollback.
+    A conflicting quote style fails during planning, before files are touched.
 
     When dry_run=True, the planning phase still runs (so the ValueError still
     fires and callers see which files would change), but no disk writes happen.
     The returned list describes the would-change files.
     """
-    def _sub(m: re.Match[str]) -> str:
-        prefix, quote, _inner = m.group(1), m.group(2), m.group(3)
-        outer = quote
-        if outer in new_value:
-            outer = "'" if quote == '"' else '"'
-            if outer in new_value:
-                raise ValueError(
-                    f"new font_family value contains both ' and \" — cannot embed: {new_value!r}"
-                )
-        return f"{prefix}{outer}{new_value}{outer}"
-
-    planned: list[tuple[Path, str, int]] = []
-    for svg in sorted(svg_dir.glob("*.svg")):
-        text = svg.read_text(encoding="utf-8")
-        new_text, n = FONT_FAMILY_RE.subn(_sub, text)
-        if n > 0 and new_text != text:
-            planned.append((svg, new_text, n))
+    planned = _plan_font_family_updates(svg_dir, new_value)
     if not dry_run:
-        for svg, new_text, _ in planned:
-            svg.write_text(new_text, encoding="utf-8")
-    return [(p, n) for p, _, n in planned]
+        _publish_text_updates([
+            (svg, new_text)
+            for svg, new_text, _count in planned
+        ])
+    return [(path, count) for path, _text, count in planned]
 
 
 def main() -> int:
@@ -154,8 +250,11 @@ def main() -> int:
     ap.add_argument("project_path", type=Path, help="project folder containing spec_lock.md and svg_output/")
     ap.add_argument(
         "assignment",
-        help="section.key=value (e.g. colors.primary=#0066AA, typography.font_family='\"Inter\", Arial, sans-serif'). "
-        "Bare key=value is treated as colors.key=value.",
+        help=(
+            "section.key=value (e.g. colors.primary=#0066AA, "
+            "typography.font_family='Arial, \"Microsoft YaHei\", sans-serif'). "
+            "Bare key=value is treated as colors.key=value."
+        ),
     )
     ap.add_argument(
         "--dry-run",
@@ -201,6 +300,7 @@ def main() -> int:
         return 2
 
     old_value = section_map[key]
+    lock_changes: list[tuple[str, str, str]] = []
 
     if section == "colors":
         if not HEX_RE.match(new_value):
@@ -209,24 +309,69 @@ def main() -> int:
         if old_value == new_value:
             print(f"no change: colors.{key} already = {new_value}")
             return 0
-        # SVGs first (may raise on bad HEX), then lock. Writing lock last
-        # avoids a state where lock claims new_value but SVGs still hold
-        # old_value — that state silences re-runs (parse_lock would then
-        # see new_value == old_value and exit early).
-        changed = replace_color_in_svgs(svg_dir, old_value, new_value, dry_run=args.dry_run)
+        try:
+            planned_lock = plan_lock_values(lock, "colors", {key: new_value})
+        except (KeyError, ValueError) as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        planned_svg = _plan_color_updates(svg_dir, old_value, new_value)
+        changed = [
+            (path, count)
+            for path, _text, count in planned_svg
+        ]
+        lock_changes = [(key, old_value, new_value)]
         if not args.dry_run:
-            rewrite_lock(lock, "colors", key, new_value)
+            try:
+                _publish_text_updates([
+                    *(
+                        (path, new_text)
+                        for path, new_text, _count in planned_svg
+                    ),
+                    (lock, planned_lock),
+                ])
+            except (OSError, RuntimeError, ValueError) as exc:
+                print(f"error: update was not published: {exc}", file=sys.stderr)
+                return 2
     elif section == "typography" and key == "font_family":
-        if old_value == new_value:
-            print(f"no change: typography.font_family already = {new_value}")
+        family_keys = [
+            name
+            for name in section_map
+            if name == "font_family" or name.endswith("_family")
+        ]
+        lock_changes = [
+            (name, section_map[name], new_value)
+            for name in family_keys
+            if section_map[name] != new_value
+        ]
+        if not lock_changes:
+            print(f"no change: all typography.*_family rows already = {new_value}")
             return 0
         try:
-            changed = replace_font_family_in_svgs(svg_dir, new_value, dry_run=args.dry_run)
-        except ValueError as e:
+            planned_lock = plan_lock_values(
+                lock,
+                "typography",
+                {name: new_value for name in family_keys},
+            )
+            planned_svg = _plan_font_family_updates(svg_dir, new_value)
+            changed = [
+                (path, count)
+                for path, _text, count in planned_svg
+            ]
+        except (KeyError, ValueError) as e:
             print(f"error: {e}", file=sys.stderr)
             return 2
         if not args.dry_run:
-            rewrite_lock(lock, "typography", key, new_value)
+            try:
+                _publish_text_updates([
+                    *(
+                        (path, new_text)
+                        for path, new_text, _count in planned_svg
+                    ),
+                    (lock, planned_lock),
+                ])
+            except (OSError, RuntimeError, ValueError) as exc:
+                print(f"error: update was not published: {exc}", file=sys.stderr)
+                return 2
     else:
         print(
             f"error: {section}.{key} is not supported by update_spec.py.\n"
@@ -237,10 +382,17 @@ def main() -> int:
         return 2
 
     if args.dry_run:
-        print(f"[dry-run] spec_lock.md: {section}.{key}  {old_value} → {new_value}")
+        for lock_key, previous, replacement in lock_changes:
+            print(
+                f"[dry-run] spec_lock.md: "
+                f"{section}.{lock_key}  {previous} → {replacement}"
+            )
         print(f"[dry-run] svg_output/:  {len(changed)} file(s) would be updated")
     else:
-        print(f"spec_lock.md: {section}.{key}  {old_value} → {new_value}")
+        for lock_key, previous, replacement in lock_changes:
+            print(
+                f"spec_lock.md: {section}.{lock_key}  {previous} → {replacement}"
+            )
         print(f"svg_output/:  {len(changed)} file(s) updated")
     for p, n in changed:
         suffix = "replacement" if n == 1 else "replacements"

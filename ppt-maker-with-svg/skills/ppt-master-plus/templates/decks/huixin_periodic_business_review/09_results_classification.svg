@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" data-pptx-master="huixin-periodic-master" data-pptx-master-name="慧新月度季度汇报" data-pptx-layout="periodic-blank" data-pptx-layout-name="慧新月度季度通用页" data-pptx-page-role="content">
+<g id="page-header-9" data-pptx-bounds="0 0 1280 178">
+  <rect x="0" y="0" width="1280" height="720" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="4" fill="#0097BA"/>
+  <rect x="0" y="4" width="260" height="4" fill="#A4D968"/>
+  <rect x="12" y="20" width="7" height="50" fill="#83C410"/>
+  <rect x="24" y="20" width="4" height="50" fill="#0097BA"/>
+  <image href="images/huixin_logo_light.png" x="1040" y="24" width="168" height="27" preserveAspectRatio="xMinYMin meet"/>
+  <text x="64" y="44" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#0097BA" text-anchor="start">02 / RESULTS</text>
+  <text x="64" y="102" font-family="Microsoft YaHei, Arial, sans-serif" font-size="36" font-weight="700" fill="#111111" text-anchor="start">成果分类与纠偏</text>
+  <text x="64" y="140" font-family="Microsoft YaHei, Arial, sans-serif" font-size="17" font-weight="700" fill="#0097BA" text-anchor="start">把超目标、正常推进和未达预期放进同一判断框架</text>
+  <line x1="64" y1="166" x2="1216" y2="166" stroke="#D9D9D9" stroke-width="1"/>
+</g>
+<g id="result-classification" data-pptx-bounds="64 208 1120 388">
+  <rect x="64" y="208" width="352" height="388" fill="#FFFFFF" stroke="#A4D968" stroke-width="2" rx="8"/>
+  <rect x="64" y="208" width="352" height="52" fill="#A4D968" rx="8"/>
+  <text x="240" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#111111" text-anchor="middle">超目标 / 重点完成</text>
+  <rect x="84" y="286" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="100" y="310" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_1_ITEM_1}}</text>
+  <text x="100" y="332" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_1_EVIDENCE_1}}</text>
+  <rect x="84" y="362" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="100" y="386" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_1_ITEM_2}}</text>
+  <text x="100" y="408" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_1_EVIDENCE_2}}</text>
+  <rect x="84" y="438" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="100" y="462" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_1_ITEM_3}}</text>
+  <text x="100" y="484" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_1_EVIDENCE_3}}</text>
+  <text x="88" y="548" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#A4D968" text-anchor="start">可复制经验</text>
+  <text x="392" y="548" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="end">{{CLASS_1_ACTION}}</text>
+  <rect x="448" y="208" width="352" height="388" fill="#FFFFFF" stroke="#0097BA" stroke-width="2" rx="8"/>
+  <rect x="448" y="208" width="352" height="52" fill="#0097BA" rx="8"/>
+  <text x="624" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">正常推进</text>
+  <rect x="468" y="286" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="484" y="310" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_2_ITEM_1}}</text>
+  <text x="484" y="332" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_2_EVIDENCE_1}}</text>
+  <rect x="468" y="362" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="484" y="386" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_2_ITEM_2}}</text>
+  <text x="484" y="408" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_2_EVIDENCE_2}}</text>
+  <rect x="468" y="438" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="484" y="462" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_2_ITEM_3}}</text>
+  <text x="484" y="484" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_2_EVIDENCE_3}}</text>
+  <text x="472" y="548" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#0097BA" text-anchor="start">下一里程碑</text>
+  <text x="776" y="548" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="end">{{CLASS_2_ACTION}}</text>
+  <rect x="832" y="208" width="352" height="388" fill="#FFFFFF" stroke="#D8665B" stroke-width="2" rx="8"/>
+  <rect x="832" y="208" width="352" height="52" fill="#D8665B" rx="8"/>
+  <text x="1008" y="242" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle">未达预期</text>
+  <rect x="852" y="286" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="868" y="310" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_3_ITEM_1}}</text>
+  <text x="868" y="332" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_3_EVIDENCE_1}}</text>
+  <rect x="852" y="362" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="868" y="386" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_3_ITEM_2}}</text>
+  <text x="868" y="408" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_3_EVIDENCE_2}}</text>
+  <rect x="852" y="438" width="312" height="60" fill="#F7F8FA" stroke="#D9D9D9" stroke-width="1" rx="5"/>
+  <text x="868" y="462" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="700" fill="#111111" text-anchor="start">{{CLASS_3_ITEM_3}}</text>
+  <text x="868" y="484" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="400" fill="#4B5563" text-anchor="start">{{CLASS_3_EVIDENCE_3}}</text>
+  <text x="856" y="548" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#D8665B" text-anchor="start">纠偏动作</text>
+  <text x="1160" y="548" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="700" fill="#111111" text-anchor="end">{{CLASS_3_ACTION}}</text>
+</g>
+<g id="classification-rule" data-pptx-bounds="64 612 1120 34">
+  <text x="64" y="632" font-family="Microsoft YaHei, Arial, sans-serif" font-size="12" font-weight="400" fill="#4B5563" text-anchor="start">分类规则：结果必须绑定目标口径、事实证据和下一动作，避免只写形容词。</text>
+</g>
+<g id="page-footer-9" data-pptx-bounds="0 672 1280 48">
+  <image href="images/huixin_light_footer_ribbon.png" x="0" y="678" width="1280" height="42" preserveAspectRatio="xMidYMax meet"/>
+  <text x="64" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="10" font-weight="400" fill="#FFFFFF" text-anchor="start">HUIXIN PERIODIC BUSINESS REVIEW</text>
+  <text x="1214" y="704" font-family="Microsoft YaHei, Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="end">09</text>
+</g>
+</svg>

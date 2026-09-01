@@ -990,3 +990,22 @@
 - Remaining notes:
   - Generated project outputs, debug frames, and video files stay local and are not staged by policy.
   - Existing unrelated untracked artifacts remain untouched: `.playwright-mcp/`, `agent-skill-tools-intro-video/`, `ppt-master-plus-v02.zip`.
+## 2026-09-01 01:35:00 CST
+
+- Scope: synchronize the validated `ppt-maker-with-svg/skills/ppt-master-plus` distribution to `origin/main`.
+- Source state:
+  - Synchronized the complete Skill directory from validated commit `39be6e8` on `codex/image-to-editable-ppt-visual-qa` into a clean worktree based on `origin/main` commit `2af6bc9`.
+  - Preserved every non-`ppt-master-plus` path from `origin/main`; no unrelated project or WeChat changes from the feature worktree were copied.
+- Included capability:
+  - Current PPT Master Plus `4.5.0` workflow, references, scripts, template registries, structured-template support and Huixin-first overlay.
+  - Huixin 0826 visual system, five established Huixin Decks, the 25-page monthly/quarterly business-review Deck, and the 29-page consulting strategy Deck.
+  - Consulting writing system with conclusion-first titles, evidence chains, management implications and actionable closes.
+  - AI scenario map, lighthouse scenario and AI Operating Model consulting pages.
+- Validation:
+  - Source and main-sync Skill directories have exact file parity after excluding caches.
+  - `attribution_guard.py`, Skill quick validation, Python/JSON checks and `git diff --check` passed in the main worktree.
+  - Six Huixin Deck template checks passed with 0 blocking errors; the three new AI consulting pages passed with 0 warnings and 0 errors.
+  - `decks_index.json`, `huixin_consulting_strategy` frontmatter and SVG roster all report 29 pages.
+- Commit/push state: committed directly on the `origin/main` lineage and pushed as a fast-forward to remote `main`.
+- Remaining notes:
+  - Generated PPTX/PNG/PDF projects, local ZIP packages and cache directories remain excluded.

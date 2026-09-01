@@ -25,21 +25,25 @@ import logging
 import os
 import re
 import signal
+import subprocess
 import sys
 import threading
 import time
+import urllib.error
+import urllib.request
 import webbrowser
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Optional
+from typing import Iterable, Optional
 
 from flask import Flask, jsonify, request, send_from_directory
 
 logger = logging.getLogger('svg_editor')
 
-# Per-project lock file. Lives at <project_path>/.live_preview.lock and
-# matches the *.lock entry already in the repo .gitignore.
-LOCK_FILE_NAME = '.live_preview.lock'
+# Per-project runtime files live under <project_path>/live_preview/.
+LIVE_PREVIEW_DIR_NAME = 'live_preview'
+LOCK_FILE_NAME = 'lock.json'
+LEGACY_LOCK_FILE_NAME = '.live_preview.lock'
 
 # Local — sys.path injection for sibling module (code-style.md §3)
 _SCRIPTS_DIR = Path(__file__).resolve().parent
@@ -55,13 +59,22 @@ _ROOT_SCRIPTS_DIR = _SCRIPTS_DIR.parent
 if str(_ROOT_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_ROOT_SCRIPTS_DIR))
 
+from console_encoding import configure_utf8_stdio  # noqa: E402
+from resource_paths import icon_search_dirs_for_project  # noqa: E402
+from slide_roster import discover_slide_svgs  # noqa: E402
 from server_common import (  # noqa: E402
     claim_lock as _claim_lock,
+    clear_lock as _clear_lock,
     find_free_port as _find_free_port,
+    lock_pid as _lock_pid,
+    popen_detached as _popen_detached,
     process_alive as _process_alive,
     read_lock as _read_lock,
     release_lock as _release_lock,
+    validate_port as _validate_port,
 )
+
+configure_utf8_stdio()
 
 from annotations import (  # noqa: E402
     assign_temp_ids,
@@ -79,9 +92,14 @@ from embed_icons import (  # noqa: E402
     extract_paths_from_icon,
     generate_icon_group,
 )
+from svg_to_pptx.geometry_properties import (  # noqa: E402
+    GeometryStyleError,
+    INLINE_GEOMETRY_PROPERTIES,
+    materialize_inline_geometry_properties,
+)
 
-_ICONS_DIR = _SCRIPTS_DIR.parent.parent / 'templates' / 'icons'
 _USE_ICON_PATTERN = re.compile(r'<use\s+[^>]*data-icon="[^"]*"[^>]*/>')
+_XLINK_HREF = '{http://www.w3.org/1999/xlink}href'
 
 # Per-path mtime caches: key = absolute path str, value = (mtime, payload).
 # Entry is evicted/replaced when the file's mtime changes, so stale data
@@ -91,6 +109,16 @@ _SLIDE_CACHE: dict = {}  # path -> (mtime, (content, warnings))
 
 _LIST_CACHE_LOCK = threading.Lock()
 _LIST_CACHE: dict = {}  # path -> (mtime, annotation_count_on_disk)
+
+DEFAULT_PORT = 5050
+PUBLIC_HOST = '127.0.0.1'
+STARTUP_TIMEOUT = 15
+
+
+def _server_url(port: int, path: str = '') -> str:
+    """Return the loopback URL shown to users and used by readiness probes."""
+    suffix = path if path.startswith('/') or not path else f'/{path}'
+    return f'http://{PUBLIC_HOST}:{port}{suffix}'
 
 
 def _xml_attr(value: object) -> str:
@@ -111,13 +139,35 @@ def _cache_put(cache: dict, lock: threading.Lock, path: str, mtime: float, value
         cache[path] = (mtime, value)
 
 
-# Lock / liveness helpers are shared with confirm_ui via server_common
-# (imported above as _process_alive / _read_lock / _claim_lock / _release_lock).
+def _normalize_preview_hrefs(root: ET.Element) -> None:
+    """Normalize legacy XLink references in the browser-only SVG copy.
+
+    ElementTree otherwise serializes an unregistered/legacy namespace with an
+    arbitrary prefix. The HTML SVG parser only gives special namespace handling
+    to ``xlink:href``; an arbitrary prefix can therefore render as an inert
+    attribute after ``innerHTML`` insertion. SVG 2 ``href`` works for both
+    images and local ``use`` references and avoids that parser boundary.
+    """
+    for elem in root.iter():
+        legacy_href = elem.get(_XLINK_HREF)
+        if legacy_href is None:
+            continue
+        if elem.get('href') is None:
+            elem.set('href', legacy_href)
+        elem.attrib.pop(_XLINK_HREF, None)
 
 
-def _inline_icons(content: str) -> tuple[str, list[dict]]:
+# Lock / liveness helpers are shared with confirm_ui via server_common.
+
+
+def _inline_icons(
+    content: str,
+    icons_dir: Path,
+    fallback_dir: Optional[Path] = None,
+) -> tuple[str, list[dict]]:
     """Replace <use data-icon="..."/> with rendered <g> for browser preview.
 
+    Resolve icons from the project directory first, then the shared library.
     Returns (rewritten_content, warnings). Each warning is
     ``{"icon": <name>, "reason": <str>}`` so the frontend can surface
     "icon X not found" to the user instead of silently dropping it.
@@ -136,7 +186,7 @@ def _inline_icons(content: str) -> tuple[str, list[dict]]:
             if not icon_name:
                 warnings.append({'icon': '', 'reason': 'missing data-icon attribute'})
                 continue
-            icon_path, _ = resolve_icon_path(icon_name, _ICONS_DIR)
+            icon_path, _ = resolve_icon_path(icon_name, icons_dir, fallback_dir)
             color = str(attrs.get('fill', '#000000'))
             elements, style, base_size = extract_paths_from_icon(icon_path, color)
         except Exception as exc:
@@ -163,6 +213,47 @@ def _inline_icons(content: str) -> tuple[str, list[dict]]:
             )
         new_content = new_content[:match.start()] + replacement + new_content[match.end():]
     return new_content, warnings
+
+
+def _strip_edited_inline_geometry(
+    elem: ET.Element,
+    attr_names: Iterable[str],
+) -> None:
+    """Remove style declarations superseded by edited geometry attributes."""
+    style = elem.get('style')
+    if not style:
+        return
+    tag = elem.tag.rsplit('}', 1)[-1] if '}' in elem.tag else elem.tag
+    supported = INLINE_GEOMETRY_PROPERTIES.get(tag, frozenset())
+    edited = {
+        str(name).lower()
+        for name in attr_names
+        if str(name).lower() in supported
+    }
+    if not edited:
+        return
+
+    retained = []
+    changed = False
+    for raw_declaration in style.split(';'):
+        declaration = raw_declaration.strip()
+        if not declaration:
+            continue
+        if ':' not in declaration:
+            retained.append(declaration)
+            continue
+        raw_name, _raw_value = declaration.split(':', 1)
+        if raw_name.strip().lower() in edited:
+            changed = True
+            continue
+        retained.append(declaration)
+
+    if not changed:
+        return
+    if retained:
+        elem.set('style', '; '.join(retained))
+    else:
+        elem.attrib.pop('style', None)
 
 
 # ---------------------------------------------------------------------------
@@ -217,20 +308,29 @@ def _validate_edit_attrs(attrs: dict, existing_attrs: set[str]) -> Optional[str]
     return None
 
 
-_EDIT_LOG_NAME = '.live_edits.jsonl'
+EDIT_LOG_NAME = 'edits.jsonl'
+ANNOTATION_LOG_NAME = 'annotations.jsonl'
+
+
+def _append_live_preview_log(project_path: Path, filename: str, record: dict) -> None:
+    """Append one live-preview history record under ``live_preview/``."""
+    try:
+        log_dir = _runtime_dir(project_path)
+        log_dir.mkdir(parents=True, exist_ok=True)
+        with open(log_dir / filename, 'a', encoding='utf-8') as fh:
+            fh.write(json.dumps(record, ensure_ascii=False) + '\n')
+    except OSError as exc:
+        logger.warning('live preview log append failed: %s', exc)
 
 
 def _append_edit_log(project_path: Path, record: dict) -> None:
-    """Append one applied edit record (old→new) to the project's history.
+    """Append one applied direct-edit record to the preview history."""
+    _append_live_preview_log(project_path, EDIT_LOG_NAME, record)
 
-    The on-disk JSONL is the durable trail the user can review to see exactly
-    what changed. Un-applied staged edits stay in memory only.
-    """
-    try:
-        with open(project_path / _EDIT_LOG_NAME, 'a', encoding='utf-8') as fh:
-            fh.write(json.dumps(record, ensure_ascii=False) + '\n')
-    except OSError as exc:
-        logger.warning('edit log append failed: %s', exc)
+
+def _append_annotation_log(project_path: Path, record: dict) -> None:
+    """Append one annotation lifecycle record to the preview history."""
+    _append_live_preview_log(project_path, ANNOTATION_LOG_NAME, record)
 
 
 def _find_by_id(root: ET.Element, element_id: str) -> Optional[ET.Element]:
@@ -262,6 +362,10 @@ def _apply_edit_record(root: ET.Element, record: dict) -> tuple[bool, Optional[s
             return ok, reason
     attrs = record.get('attrs')
     if attrs:
+        target = _find_by_id(root, element_id)
+        if target is None:
+            return False, 'not-found'
+        _strip_edited_inline_geometry(target, attrs.keys())
         ok, reason = set_attributes(root, element_id, attrs)
         if not ok:
             return ok, reason
@@ -326,6 +430,7 @@ def create_app(
     svg_dir = project_path / 'svg_output'
     images_dir = project_path / 'images'
     assets_dir = project_path / 'assets'
+    icons_dir, icons_fallback_dir = icon_search_dirs_for_project(project_path)
 
     app = Flask(__name__, static_folder='static', static_url_path='/static')
     app.config['PROJECT_PATH'] = project_path
@@ -393,6 +498,25 @@ def create_app(
             'live': app.config['LIVE_MODE'],
         })
 
+    @app.route('/api/health')
+    def health():
+        """Expose a cheap readiness probe for the daemon launcher."""
+        try:
+            slide_count = len(list(svg_dir.glob('*.svg'))) if svg_dir.exists() else 0
+        except OSError:
+            slide_count = 0
+        resp = jsonify({
+            'status': 'ok',
+            'service': 'live_preview',
+            'pid': os.getpid(),
+            'project': str(project_path),
+            'live': app.config['LIVE_MODE'],
+            'svg_output': str(svg_dir),
+            'slides': slide_count,
+        })
+        resp.headers['Cache-Control'] = 'no-store'
+        return resp
+
     @app.route('/images/<path:filename>')
     def serve_image(filename: str):
         """Serve images referenced by SVGs as `../images/*.png`.
@@ -455,7 +579,7 @@ def create_app(
 
         annotations = app.config['ANNOTATIONS']
         slides = []
-        for svg_file in sorted(svg_dir.glob('*.svg')):
+        for svg_file in discover_slide_svgs(svg_dir):
             path_str = str(svg_file)
             try:
                 mtime = svg_file.stat().st_mtime
@@ -477,8 +601,10 @@ def create_app(
                     logger.warning('slide parse failed: %s: %s', svg_file.name, exc)
                 _cache_put(_LIST_CACHE, _LIST_CACHE_LOCK, path_str, mtime, disk_count)
 
-            mem_count = len(annotations.get(svg_file.name, {}))
-            annotation_count = max(disk_count, mem_count)
+            if svg_file.name in annotations:
+                annotation_count = len(annotations[svg_file.name])
+            else:
+                annotation_count = disk_count
 
             slides.append({
                 'name': svg_file.name,
@@ -494,15 +620,42 @@ def create_app(
     def _safe_svg_path(name: str):
         """Validate slide name and return safe path. Returns None if invalid.
 
-        The early string checks reject obvious bad inputs; the resolve()+startswith()
+        The early string checks reject obvious bad inputs; the resolve()+relative_to()
         check is the authoritative path traversal guard.
         """
         if '/' in name or '\\' in name or '..' in name:
             return None
         svg_file = (svg_dir / name).resolve()
-        if not str(svg_file).startswith(str(svg_dir.resolve())):
+        try:
+            svg_file.relative_to(svg_dir.resolve())
+        except ValueError:
             return None
         return svg_file
+
+    def _get_annotation_snapshot(name: str):
+        """Return the page's complete staged annotation state, loading it once."""
+        annotations = app.config['ANNOTATIONS']
+        if name in annotations:
+            return annotations[name], None
+
+        svg_file = _safe_svg_path(name)
+        if svg_file is None:
+            return None, (jsonify({'error': 'Invalid slide name'}), 400)
+        if not svg_file.exists():
+            return None, (jsonify({'error': 'Slide not found'}), 404)
+
+        try:
+            root = ET.parse(str(svg_file)).getroot()
+        except ET.ParseError as exc:
+            logger.warning('slide parse failed: %s: %s', name, exc)
+            return None, (jsonify({'error': f'Failed to parse SVG: {exc}'}), 500)
+
+        assign_temp_ids(root)
+        annotations[name] = {
+            item['element_id']: item['annotation']
+            for item in parse_annotations(root)
+        }
+        return annotations[name], None
 
     @app.route('/api/slide/<name>')
     def get_slide(name: str):
@@ -533,6 +686,12 @@ def create_app(
                 logger.warning('slide parse failed: %s: %s', name, exc)
                 return jsonify({'error': f'Failed to parse SVG: {exc}'}), 500
 
+            try:
+                materialize_inline_geometry_properties(root)
+            except GeometryStyleError as exc:
+                logger.warning('slide geometry materialization failed: %s: %s', name, exc)
+                return jsonify({'error': f'Invalid inline geometry: {exc}'}), 400
+
             assign_temp_ids(root)
             if pending_edits:
                 ok, reason = _apply_edit_records(root, pending_edits)
@@ -547,19 +706,26 @@ def create_app(
                     if '}' in tag:
                         tag = tag.split('}', 1)[1]
                     id_to_tag[eid] = tag
+            _normalize_preview_hrefs(root)
             content = ET.tostring(root, encoding='unicode', xml_declaration=False)
-            content, warnings = _inline_icons(content)
+            content, warnings = _inline_icons(
+                content,
+                icons_dir,
+                icons_fallback_dir,
+            )
             if not pending_edits:
                 _cache_put(
                     _SLIDE_CACHE, _SLIDE_CACHE_LOCK, path_str, mtime,
                     (content, warnings, disk_annotations, id_to_tag),
                 )
 
-        mem_annotations = app.config['ANNOTATIONS'].get(name, {})
-        merged: dict[str, str] = {}
-        for ann in disk_annotations:
-            merged[ann['element_id']] = ann['annotation']
-        merged.update(mem_annotations)
+        if name in app.config['ANNOTATIONS']:
+            merged = dict(app.config['ANNOTATIONS'][name])
+        else:
+            merged = {
+                ann['element_id']: ann['annotation']
+                for ann in disk_annotations
+            }
 
         annotations_list = [
             {
@@ -597,29 +763,28 @@ def create_app(
         if len(annotation) > 10000:
             return jsonify({'error': 'Annotation too long (max 10000 chars)'}), 400
 
-        if name not in app.config['ANNOTATIONS']:
-            app.config['ANNOTATIONS'][name] = {}
+        annotations, error = _get_annotation_snapshot(name)
+        if error is not None:
+            return error
 
-        app.config['ANNOTATIONS'][name][element_id] = annotation
+        annotations[element_id] = annotation
 
         return jsonify({
             'status': 'ok',
-            'annotations_count': len(app.config['ANNOTATIONS'][name]),
+            'annotations_count': len(annotations),
         })
 
     @app.route('/api/slide/<name>/annotate/<element_id>', methods=['DELETE'])
     def delete_annotate(name: str, element_id: str):
-        annotations = app.config['ANNOTATIONS']
-        # Ensure the file key exists so save-all knows to rewrite this file
-        # even if no new annotations were added (pure delete path).
-        if name not in annotations:
-            annotations[name] = {}
-        if element_id in annotations[name]:
-            del annotations[name][element_id]
+        annotations, error = _get_annotation_snapshot(name)
+        if error is not None:
+            return error
+        if element_id in annotations:
+            del annotations[element_id]
 
         return jsonify({
             'status': 'ok',
-            'annotations_count': len(annotations.get(name, {})),
+            'annotations_count': len(annotations),
         })
 
     @app.route('/api/slide/<name>/edit', methods=['POST'])
@@ -667,6 +832,11 @@ def create_app(
         except ET.ParseError as exc:
             return jsonify({'error': f'Failed to parse SVG: {exc}'}), 500
 
+        try:
+            materialize_inline_geometry_properties(root)
+        except GeometryStyleError as exc:
+            return jsonify({'error': f'Invalid inline geometry: {exc}'}), 400
+
         assign_temp_ids(root)
         pending = app.config['PENDING_EDITS'].get(name) or []
         ok, reason = _apply_edit_records(root, pending)
@@ -696,6 +866,7 @@ def create_app(
             staged['text'] = new_text
         if attrs:
             old_attrs = {k: target.get(k) for k in attrs}
+            _strip_edited_inline_geometry(target, attrs.keys())
             ok, reason = set_attributes(root, element_id, attrs)
             if not ok:
                 return jsonify({'error': f'Attribute edit failed: {reason}'}), (
@@ -759,6 +930,7 @@ def create_app(
 
         filenames = sorted(set(annotations.keys()) | set(pending_edits.keys()))
         for filename in filenames:
+            has_staged_annotations = filename in annotations
             anns = annotations.get(filename, {})
             edits = pending_edits.get(filename, [])
             # anns may be empty when the user deleted all annotations — still
@@ -780,6 +952,13 @@ def create_app(
             if not ok:
                 return jsonify({'error': f'Failed to apply edits in {filename}: {reason}'}), 400
 
+            old_annotations = {
+                item['element_id']: item['annotation']
+                for item in parse_annotations(root)
+            }
+            if not has_staged_annotations:
+                anns = old_annotations
+
             # Clear all existing annotations from the file before writing current state
             for elem in root.iter():
                 elem.attrib.pop('data-edit-target', None)
@@ -796,6 +975,21 @@ def create_app(
 
             tree.write(str(svg_file), encoding='UTF-8', xml_declaration=True)
             ts = time.time()
+            for element_id, annotation_text in anns.items():
+                old_text = old_annotations.get(element_id)
+                action = 'annotation_saved' if old_text is None else 'annotation_updated'
+                if old_text == annotation_text:
+                    action = 'annotation_saved'
+                _append_annotation_log(project_path, {
+                    'ts': ts, 'file': filename, 'element_id': element_id,
+                    'action': action, 'old': old_text, 'new': annotation_text,
+                })
+            for element_id, old_text in old_annotations.items():
+                if element_id not in anns:
+                    _append_annotation_log(project_path, {
+                        'ts': ts, 'file': filename, 'element_id': element_id,
+                        'action': 'annotation_removed', 'old': old_text, 'new': None,
+                    })
             for edit in edits:
                 for chg in edit.get('changes', []):
                     _append_edit_log(project_path, {
@@ -813,14 +1007,192 @@ def create_app(
     return app
 
 
+def _runtime_dir(project_path: Path) -> Path:
+    return project_path / LIVE_PREVIEW_DIR_NAME
+
+
+def _lock_file(project_path: Path) -> Path:
+    return _runtime_dir(project_path) / LOCK_FILE_NAME
+
+
+def _legacy_live_lock(project_path: Path) -> Optional[dict]:
+    """Return a live legacy root lock, if one exists."""
+    legacy_lock = project_path / LEGACY_LOCK_FILE_NAME
+    existing = _read_lock(legacy_lock)
+    if existing and _process_alive(_lock_pid(existing)):
+        return existing
+    return None
+
+
+def _shutdown_existing(project_path: Path) -> int:
+    """Stop a live-preview server for this project (idempotent)."""
+    lock_file = _lock_file(project_path)
+    existing = _read_lock(lock_file)
+    legacy_lock_file = project_path / LEGACY_LOCK_FILE_NAME
+    if not existing:
+        existing = _read_lock(legacy_lock_file)
+        lock_file = legacy_lock_file
+    if not existing:
+        logger.info('no live preview server running — nothing to stop')
+        return 0
+
+    pid = _lock_pid(existing)
+    try:
+        port = int(existing.get('port', 0) or 0)
+    except (TypeError, ValueError):
+        port = 0
+    if not _process_alive(pid):
+        _clear_lock(lock_file)
+        logger.info('live preview already stopped; cleared stale lock')
+        return 0
+
+    if port:
+        try:
+            req = urllib.request.Request(
+                _server_url(port, '/api/shutdown'),
+                data=b'{"reason": "cli-shutdown"}',
+                headers={'Content-Type': 'application/json'},
+                method='POST',
+            )
+            urllib.request.urlopen(req, timeout=3)
+        except OSError:
+            pass
+
+    for _ in range(20):
+        if not _process_alive(pid):
+            break
+        time.sleep(0.1)
+    if _process_alive(pid):
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except OSError:
+            pass
+    _clear_lock(lock_file)
+    logger.info('live preview server stopped (pid=%s)', pid)
+    return 0
+
+
+def _wait_for_ready(
+    port: int,
+    proc: subprocess.Popen,
+    project_path: Path,
+    timeout: int = STARTUP_TIMEOUT,
+) -> bool:
+    """Wait until this project's detached live-preview server responds."""
+    deadline = time.time() + timeout
+    health_url = _server_url(port, '/api/health')
+    last_error = ''
+    while time.time() < deadline:
+        if proc.poll() is not None:
+            logger.error('live preview exited during startup (code=%s)', proc.returncode)
+            return False
+        try:
+            with urllib.request.urlopen(health_url, timeout=1) as response:
+                data = json.load(response)
+                if (
+                    response.status == 200
+                    and isinstance(data, dict)
+                    and data.get('service') == 'live_preview'
+                    and data.get('project') == str(project_path)
+                    and data.get('pid') == proc.pid
+                ):
+                    return True
+                last_error = 'health response belongs to another service or project'
+        except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
+            last_error = str(exc)
+        time.sleep(0.25)
+    logger.error(
+        'live preview did not become ready at %s within %ss%s',
+        health_url,
+        timeout,
+        f' (last error: {last_error})' if last_error else '',
+    )
+    return False
+
+
+def _open_browser(url: str) -> bool:
+    """Best-effort browser launch after the local server is reachable."""
+    try:
+        if os.name == 'nt':
+            os.startfile(url)  # type: ignore[attr-defined]
+            return True
+        return bool(webbrowser.open(url))
+    except OSError as exc:
+        logger.warning('browser auto-open failed: %s', exc)
+    except webbrowser.Error as exc:
+        logger.warning('browser auto-open failed: %s', exc)
+    return False
+
+
+def _reuse_running_server(
+    existing: dict,
+    *,
+    open_browser: bool,
+    requested_port: Optional[int] = None,
+) -> int:
+    """Idempotent relaunch: point at the already-running preview instead of failing.
+
+    A relaunch while the server is alive is the normal second-preview flow
+    (the first server keeps serving after the browser tab is closed), so it
+    must re-open the browser and exit 0 — not error out.
+    """
+    pid = existing.get('pid', '?')
+    try:
+        port = int(existing.get('port', 0) or 0)
+    except (TypeError, ValueError):
+        port = 0
+    if not port:
+        logger.error(
+            'live preview is already running for this project (pid=%s) but its '
+            'lock records no usable port; run --shutdown, then start again',
+            pid,
+        )
+        return 1
+    if requested_port is not None and port != requested_port:
+        logger.error(
+            'live preview is already running for this project on port %s; '
+            'explicit --port %s cannot reuse it. Run --shutdown, then start again',
+            port,
+            requested_port,
+        )
+        return 1
+    url = _server_url(port)
+    logger.info(
+        'live preview already running for this project (pid=%s), reusing: %s',
+        pid, url,
+    )
+    if open_browser and not _open_browser(url):
+        logger.info('browser did not auto-open; open %s manually', url)
+    return 0
+
+
+def _open_browser_async(url: str, delay: float = 0.4) -> None:
+    """Open the browser shortly after Flask starts binding its socket."""
+    def _open() -> None:
+        time.sleep(delay)
+        _open_browser(url)
+
+    threading.Thread(target=_open, daemon=True).start()
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description='PPT Master SVG Editor',
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument('project_dir', help='Path to project directory (contains svg_output/)')
-    parser.add_argument('--port', type=int, default=5050, help='Port to listen on (default: 5050)')
+    parser.add_argument(
+        '--port',
+        type=int,
+        default=None,
+        help=f'Exact port to listen on (default: first free port from {DEFAULT_PORT})',
+    )
     parser.add_argument('--no-browser', action='store_true', help='Do not auto-open browser')
+    parser.add_argument(
+        '--daemon',
+        action='store_true',
+        help='Start the server in the background and return after it is reachable',
+    )
     parser.add_argument(
         '--live',
         action='store_true',
@@ -831,6 +1203,11 @@ def build_parser() -> argparse.ArgumentParser:
         type=int,
         default=None,
         help='Idle timeout in seconds (default: 900; live mode default: 7200; 0 = disabled)',
+    )
+    parser.add_argument(
+        '--shutdown',
+        action='store_true',
+        help='Stop a live-preview server left running for this project, then exit (idempotent).',
     )
     return parser
 
@@ -845,7 +1222,17 @@ def main(argv: Optional[list[str]] = None) -> int:
         datefmt='%H:%M:%S',
     )
 
+    if args.port is not None:
+        try:
+            args.port = _validate_port(args.port)
+        except ValueError as exc:
+            logger.error('%s', exc)
+            return 2
+
     project_path = Path(args.project_dir).resolve()
+    if args.shutdown:
+        return _shutdown_existing(project_path)
+
     svg_output = project_path / 'svg_output'
     if not svg_output.exists():
         if args.live:
@@ -857,27 +1244,102 @@ def main(argv: Optional[list[str]] = None) -> int:
         logger.error('%s is not a directory', svg_output)
         return 1
 
+    legacy_existing = _legacy_live_lock(project_path)
+    if legacy_existing:
+        return _reuse_running_server(
+            legacy_existing,
+            open_browser=not args.no_browser,
+            requested_port=args.port,
+        )
+
+    runtime_dir = _runtime_dir(project_path)
+    lock_file = _lock_file(project_path)
+
+    if args.daemon:
+        existing = _read_lock(lock_file)
+        if existing and _process_alive(_lock_pid(existing)):
+            return _reuse_running_server(
+                existing,
+                open_browser=not args.no_browser,
+                requested_port=args.port,
+            )
+
+        try:
+            runtime_dir.mkdir(parents=True, exist_ok=True)
+        except OSError as exc:
+            logger.error('cannot create live preview runtime directory: %s (%s)', runtime_dir, exc)
+            return 1
+        log_path = runtime_dir / 'server.log'
+        try:
+            port = args.port if args.port is not None else _find_free_port(DEFAULT_PORT)
+        except RuntimeError as exc:
+            logger.error('%s', exc)
+            return 1
+        idle_timeout = args.timeout
+        if idle_timeout is None:
+            idle_timeout = 7200 if args.live else 900
+        cmd = [
+            sys.executable,
+            str(Path(__file__).resolve()),
+            str(project_path),
+            '--port',
+            str(port),
+            '--timeout',
+            str(idle_timeout),
+            '--no-browser',
+        ]
+        if args.live:
+            cmd.append('--live')
+        try:
+            with log_path.open('a', encoding='utf-8') as log:
+                proc = _popen_detached(
+                    cmd,
+                    stdout=log,
+                    stderr=subprocess.STDOUT,
+                    stdin=subprocess.DEVNULL,
+                    logger=logger,
+                )
+        except OSError as exc:
+            logger.error('cannot write live preview log: %s (%s)', log_path, exc)
+            return 1
+        url = _server_url(port)
+        if not _wait_for_ready(port, proc, project_path):
+            if proc.poll() is None:
+                proc.terminate()
+            logger.error('live preview failed to become reachable: %s (log: %s)', url, log_path)
+            return 1
+        logger.info('started live preview in background: %s (pid=%s)', url, proc.pid)
+        logger.info('log: %s', log_path)
+        if not args.no_browser and not _open_browser(url):
+            logger.info('browser did not auto-open; open %s manually', url)
+        return 0
+
     # Pick a free port: another project's preview/confirm server may already
     # hold the default, so bind the next free one instead of crashing — each
     # project then serves its own data on its own port (no cross-project mix-up).
-    port = _find_free_port(args.port)
+    try:
+        port = args.port if args.port is not None else _find_free_port(DEFAULT_PORT)
+    except RuntimeError as exc:
+        logger.error('%s', exc)
+        return 1
 
     # Per-project mutual exclusion. The major driver of orphaned servers is
     # --live mode (which used to disable idle timeout entirely) combined with
-    # silent restarts; refusing duplicate launches catches the accumulation
-    # at its source. Stale locks (dead pid) are overwritten by _claim_lock.
-    lock_file = project_path / LOCK_FILE_NAME
+    # silent restarts; reusing the running server on duplicate launches catches
+    # the accumulation at its source. Stale locks (dead pid) are overwritten
+    # by _claim_lock.
+    try:
+        runtime_dir.mkdir(parents=True, exist_ok=True)
+    except OSError as exc:
+        logger.error('cannot create live preview runtime directory: %s (%s)', runtime_dir, exc)
+        return 1
     existing = _claim_lock(lock_file, port)
     if existing:
-        existing_pid = existing.get('pid', '?')
-        existing_port = existing.get('port', '?')
-        logger.error(
-            'live preview is already running for this project '
-            '(pid=%s, port=%s). Open http://localhost:%s, click '
-            'Exit preview in the browser, or run: kill %s',
-            existing_pid, existing_port, existing_port, existing_pid,
+        return _reuse_running_server(
+            existing,
+            open_browser=not args.no_browser,
+            requested_port=args.port,
         )
-        return 1
     # atexit covers normal interpreter shutdown (Ctrl+C / SystemExit);
     # /api/shutdown and idle timeout call _release_lock directly before
     # os._exit since atexit handlers do not run on os._exit.
@@ -909,9 +1371,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         lock_file=lock_file,
     )
 
-    url = f'http://localhost:{port}'
+    url = _server_url(port)
     if not args.no_browser:
-        webbrowser.open(url)
+        _open_browser_async(url)
 
     mode = "live preview (auto-startup)" if args.live else "live preview"
     svg_count = len(list(svg_output.glob('*.svg')))
@@ -919,7 +1381,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     logger.info('project: %s', project_path)
     logger.info('svg_output: %s (%d slides)', svg_output, svg_count)
     logger.info('idle timeout: %ds (0 = disabled)', idle_timeout)
-    app.run(host='127.0.0.1', port=port, debug=False)
+    app.run(host=PUBLIC_HOST, port=port, debug=False)
     return 0
 
 

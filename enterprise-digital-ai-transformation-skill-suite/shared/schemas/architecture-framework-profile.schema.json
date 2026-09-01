@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "architecture-framework-profile.schema.json",
+  "title": "Huawei 4A Architecture Framework Profile",
+  "type": "object",
+  "required": [
+    "profile_id",
+    "canonical_model",
+    "domains",
+    "cross_cutting_views",
+    "lifecycle_states",
+    "operating_model_alignment",
+    "traceability_rules"
+  ],
+  "properties": {
+    "profile_id": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "canonical_model": {
+      "const": "huawei-4a"
+    },
+    "architecture_method": {
+      "type": "string",
+      "enum": [
+        "togaf-adm-tailored",
+        "huawei-digital-transformation-tailored",
+        "hybrid"
+      ]
+    },
+    "domains": {
+      "type": "object",
+      "required": [
+        "BA",
+        "IA",
+        "AA",
+        "TA"
+      ],
+      "properties": {
+        "BA": {
+          "type": "object",
+          "required": [
+            "enabled",
+            "scope",
+            "minimum_depth"
+          ],
+          "properties": {
+            "enabled": {
+              "const": true
+            },
+            "scope": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minimum_depth": {
+              "type": "string",
+              "enum": [
+                "overview",
+                "domain",
+                "key-relations",
+                "detailed",
+                "implementation-ready"
+              ]
+            },
+            "required_views": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "owner_role_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "IA": {
+          "type": "object",
+          "required": [
+            "enabled",
+            "scope",
+            "minimum_depth"
+          ],
+          "properties": {
+            "enabled": {
+              "const": true
+            },
+            "scope": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minimum_depth": {
+              "type": "string",
+              "enum": [
+                "overview",
+                "domain",
+                "key-relations",
+                "detailed",
+                "implementation-ready"
+              ]
+            },
+            "required_views": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "owner_role_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "AA": {
+          "type": "object",
+          "required": [
+            "enabled",
+            "scope",
+            "minimum_depth"
+          ],
+          "properties": {
+            "enabled": {
+              "const": true
+            },
+            "scope": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minimum_depth": {
+              "type": "string",
+              "enum": [
+                "overview",
+                "domain",
+                "key-relations",
+                "detailed",
+                "implementation-ready"
+              ]
+            },
+            "required_views": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "owner_role_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        },
+        "TA": {
+          "type": "object",
+          "required": [
+            "enabled",
+            "scope",
+            "minimum_depth"
+          ],
+          "properties": {
+            "enabled": {
+              "const": true
+            },
+            "scope": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "minimum_depth": {
+              "type": "string",
+              "enum": [
+                "overview",
+                "domain",
+                "key-relations",
+                "detailed",
+                "implementation-ready"
+              ]
+            },
+            "required_views": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "owner_role_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "information_architecture_policy": {
+      "type": "object",
+      "properties": {
+        "internal_code": {
+          "const": "IA"
+        },
+        "togaf_mapping": {
+          "const": "Data Architecture"
+        },
+        "display_aliases_allowed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "includes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "information",
+              "data",
+              "semantics",
+              "metrics",
+              "metadata",
+              "ontology",
+              "knowledge"
+            ]
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "cross_cutting_views": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "integration",
+          "security-and-trust",
+          "ai-and-knowledge",
+          "nfr-and-resilience",
+          "architecture-governance"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "lifecycle_states": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "as-is",
+          "to-be",
+          "transition"
+        ]
+      },
+      "minItems": 2,
+      "uniqueItems": true
+    },
+    "operating_model_alignment": {
+      "type": "object",
+      "required": [
+        "shared_node_types",
+        "node_id_reuse_required"
+      ],
+      "properties": {
+        "shared_node_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "value-stream",
+              "capability",
+              "process",
+              "business-service",
+              "org-unit",
+              "role",
+              "governance",
+              "kpi"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "node_id_reuse_required": {
+          "const": true
+        },
+        "ba_is_formal_projection": {
+          "const": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "traceability_rules": {
+      "type": "object",
+      "required": [
+        "aa_to_ba_required",
+        "aa_to_ia_required",
+        "ta_to_aa_or_ia_required",
+        "objective_to_roadmap_required"
+      ],
+      "properties": {
+        "aa_to_ba_required": {
+          "type": "boolean"
+        },
+        "aa_to_ia_required": {
+          "type": "boolean"
+        },
+        "ta_to_aa_or_ia_required": {
+          "type": "boolean"
+        },
+        "objective_to_roadmap_required": {
+          "type": "boolean"
+        },
+        "orphan_object_policy": {
+          "enum": [
+            "block",
+            "allow-with-exception",
+            "warn"
+          ]
+        },
+        "minimum_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "tailoring_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "approval": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "draft",
+            "validated",
+            "approved"
+          ]
+        },
+        "approved_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "gate": {
+          "const": "G0"
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

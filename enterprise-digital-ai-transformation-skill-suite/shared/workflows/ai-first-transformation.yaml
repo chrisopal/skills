@@ -1,0 +1,22 @@
+name: ai-first-transformation
+version: 1.2.0
+purpose: 以 AI 场景和工作重构为切入点，但保持 Operating Model 与 4A 完整性
+review_policy:
+  after_each_stage: consulting-quality-review
+  reviewer_must_be_independent: true
+  gate_requires_report: true
+architecture_framework:
+  canonical_model: huawei-4a
+  ai_overlay: [BA+AI, IA+AI, AA+AI, TA+AI]
+stages:
+  - {id: S0, skills: [engagement-scoping, evidence-factbase, strategy-value-agenda], gate: G0-G1}
+  - {id: S1, skills: [as-is-operating-model, as-is-enterprise-architecture, issue-root-cause-opportunity], required_architecture_outputs: [as-is-business-architecture, as-is-information-architecture, as-is-application-architecture, as-is-technology-architecture, as-is-4a-architecture-package, as-is-4a-traceability-matrix], gate: G2-G3}
+  - {id: S2, skills: [to-be-operating-model, to-be-enterprise-architecture, ai-transformation-overlay], required_architecture_outputs: [target-business-architecture, target-information-architecture, target-application-architecture, target-technology-architecture, target-4a-architecture-package, target-4a-traceability-matrix, ai-4a-traceability-matrix], gate: G4}
+  - {id: S3, skills: [gap-initiative-design, portfolio-business-case, roadmap-governance-change], gate: G5-G6}
+  - {id: S4, skills: [scenario-process-detail-design], gate: G7}
+  - {id: S5, skills: [transformation-storyline-builder], gate: G8}
+constraints:
+  every_ai_use_case_requires_business_kpi: true
+  every_ai_use_case_requires_evaluation_and_human_escalation: true
+  every_ai_use_case_requires_four_a_design: true
+  shared_ai_foundation_must_be_separated_from_scenario_delivery: true

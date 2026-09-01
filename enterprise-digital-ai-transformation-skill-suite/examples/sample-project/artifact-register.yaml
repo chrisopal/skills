@@ -1,0 +1,19 @@
+project_id: sample-manufacturing-dtx
+artifacts:
+- artifact_id: sample-manufacturing-dtx-method-4a-profile-001
+  artifact_type: architecture-framework-profile
+  version: 1.0.0
+  status: draft
+  source: project-context.yaml#architecture_framework_profile
+  gate: G0
+gates:
+  G0: not-started
+  G1: not-started
+  G2: not-started
+  G3: not-started
+  G4: not-started
+  G5: not-started
+  G6: not-started
+  G7: not-started
+  G8: not-started
+open_issues: []

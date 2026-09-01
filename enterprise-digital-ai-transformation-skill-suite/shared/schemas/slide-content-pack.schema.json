@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "slide-content-pack.schema.json",
+  "title": "Slide Content Pack",
+  "type": "object",
+  "required": [
+    "artifact_header",
+    "deck_id",
+    "version",
+    "purpose",
+    "audience",
+    "story_arc",
+    "output_formats",
+    "slides"
+  ],
+  "properties": {
+    "artifact_header": {
+      "type": "object"
+    },
+    "deck_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "audience": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decisions_required": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "page_budget": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "language": {
+      "type": "string"
+    },
+    "theme_profile": {
+      "type": "string"
+    },
+    "output_formats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": ["pptx", "pdf", "png", "svg"]
+      },
+      "uniqueItems": true
+    },
+    "story_arc": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "slide_id",
+          "title",
+          "key_message",
+          "artifact_ids",
+          "evidence_ids",
+          "visual_type",
+          "review_status"
+        ],
+        "properties": {
+          "slide_id": {
+            "type": "string"
+          },
+          "section": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "key_message": {
+            "type": "string"
+          },
+          "supporting_points": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "artifact_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "visual_type": {
+            "enum": [
+              "message",
+              "table",
+              "bar",
+              "line",
+              "waterfall",
+              "heatmap",
+              "matrix",
+              "process",
+              "value-stream",
+              "capability-map",
+              "operating-model",
+              "application-architecture",
+              "data-architecture",
+              "technology-architecture",
+              "roadmap",
+              "governance",
+              "business-case",
+              "custom-diagram",
+              "4a-overview",
+              "business-architecture",
+              "information-architecture",
+              "4a-traceability",
+              "transition-architecture",
+              "ai-4a-overlay"
+            ]
+          },
+          "chart_spec": {
+            "type": "object"
+          },
+          "diagram_spec": {
+            "type": "object"
+          },
+          "layout_hint": {
+            "type": "string"
+          },
+          "speaker_notes": {
+            "type": "string"
+          },
+          "review_status": {
+            "enum": [
+              "draft",
+              "validated",
+              "approved"
+            ]
+          },
+          "architecture_domains": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "BA",
+                "IA",
+                "AA",
+                "TA",
+                "cross-cutting",
+                "none"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "architecture_view_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "visual_type": {
+                  "enum": [
+                    "4a-overview",
+                    "business-architecture",
+                    "information-architecture",
+                    "application-architecture",
+                    "technology-architecture",
+                    "4a-traceability",
+                    "transition-architecture",
+                    "ai-4a-overlay"
+                  ]
+                }
+              },
+              "required": ["visual_type"]
+            },
+            "then": {
+              "required": ["architecture_domains", "architecture_view_ids"],
+              "properties": {
+                "architecture_domains": {"minItems": 1},
+                "architecture_view_ids": {"minItems": 1}
+              }
+            }
+          }
+        ]
+      }
+    },
+    "appendix": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "citation_index": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "additionalProperties": true
+}

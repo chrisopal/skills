@@ -1,0 +1,26 @@
+name: engagement-scoping
+version: 1.1.0
+description: 将客户诉求、合同边界和管理层预期转化为项目章程，并确定华为4A架构范围与裁剪规则。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- sponsor-brief
+- proposal-or-contract
+- company-profile
+- known-constraints
+outputs:
+- project-charter
+- scope-map
+- stakeholder-map
+- deliverable-catalog
+- interview-plan
+- question-backlog
+- methodology-profile
+- architecture-framework-profile
+dependencies: []
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

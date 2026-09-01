@@ -1,0 +1,26 @@
+name: strategy-value-agenda
+version: 1.1.0
+description: 把企业战略转化为价值议程、KPI、转型原则和牵引华为 4A 的架构驱动原则。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- project-charter
+- fact-register
+- strategy-documents
+- management-interviews
+- financial-and-operational-kpis
+outputs:
+- strategic-context
+- value-agenda
+- outcome-kpi-tree
+- transformation-principles
+- architecture-driving-principles
+- north-star-hypotheses
+dependencies:
+- evidence-factbase
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- four-a-architecture-package.schema.json
+review_skill: consulting-quality-review

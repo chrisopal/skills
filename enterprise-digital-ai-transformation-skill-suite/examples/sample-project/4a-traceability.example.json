@@ -1,0 +1,62 @@
+[
+  {
+    "trace_id": "trace-001",
+    "source_id": "cap-plan-001",
+    "source_domain": "BA",
+    "relation": "requires_information",
+    "target_id": "obj-order-001",
+    "target_domain": "IA",
+    "state": "to-be",
+    "rationale": "计划能力需要订单对象",
+    "evidence_ids": [
+      "evidence-001"
+    ],
+    "confidence": "high",
+    "status": "draft"
+  },
+  {
+    "trace_id": "trace-002",
+    "source_id": "appsvc-aps-001",
+    "source_domain": "AA",
+    "relation": "supports",
+    "target_id": "cap-plan-001",
+    "target_domain": "BA",
+    "state": "to-be",
+    "rationale": "APS应用服务支撑计划排程能力",
+    "evidence_ids": [
+      "evidence-001"
+    ],
+    "confidence": "high",
+    "status": "draft"
+  },
+  {
+    "trace_id": "trace-003",
+    "source_id": "appsvc-aps-001",
+    "source_domain": "AA",
+    "relation": "manages",
+    "target_id": "obj-capacity-001",
+    "target_domain": "IA",
+    "state": "to-be",
+    "rationale": "APS消费产能对象",
+    "evidence_ids": [
+      "evidence-001"
+    ],
+    "confidence": "high",
+    "status": "draft"
+  },
+  {
+    "trace_id": "trace-004",
+    "source_id": "appsvc-aps-001",
+    "source_domain": "AA",
+    "relation": "runs_on",
+    "target_id": "tech-optimizer-runtime-001",
+    "target_domain": "TA",
+    "state": "to-be",
+    "rationale": "APS优化服务运行在求解Runtime上",
+    "evidence_ids": [
+      "evidence-001"
+    ],
+    "confidence": "medium",
+    "status": "draft"
+  }
+]

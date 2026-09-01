@@ -1,0 +1,33 @@
+name: transformation-storyline-builder
+version: 1.1.0
+description: 将已审批成果编排为故事线、4A蓝图页面和Slide Content Pack。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- approved-artifacts
+- approved-4a-architecture-packages-and-traceability
+- audience-and-decision-needs
+- deck-purpose
+- page-budget
+- presentation-style-profile
+outputs:
+- deck-brief
+- storyline
+- slide-content-pack
+- chart-specs
+- 4a-blueprint-page-specs
+- diagram-specs
+- appendix-plan
+- executive-messages
+- citation-appendix
+dependencies:
+- to-be-enterprise-architecture
+- consulting-quality-review
+shared_schemas:
+- artifact-header.schema.json
+- slide-content-pack.schema.json
+- architecture-view.schema.json
+- architecture-traceability.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

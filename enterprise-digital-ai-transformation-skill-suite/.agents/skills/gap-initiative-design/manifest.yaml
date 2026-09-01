@@ -1,0 +1,40 @@
+name: gap-initiative-design
+version: 1.1.0
+description: 按BA/IA/AA/TA及横向视图比较As-Is与To-Be并设计Initiative。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- as-is-operating-model
+- to-be-operating-model
+- as-is-4a-architecture-package
+- target-4a-architecture-package
+- constraints
+outputs:
+- ba-gap-register
+- ia-gap-register
+- aa-gap-register
+- ta-gap-register
+- cross-cutting-gap-register
+- consolidated-4a-gap-register
+- initiative-catalog
+- initiative-cards
+- architecture-change-package-map
+- work-package-structure
+- dependency-graph
+- quick-win-foundation-and-retirement-map
+dependencies:
+- as-is-enterprise-architecture
+- to-be-operating-model
+- to-be-enterprise-architecture
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- initiative.schema.json
+- architecture-view.schema.json
+- architecture-traceability.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review
+optional_inputs:
+- ai-transformation-overlay

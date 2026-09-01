@@ -1,0 +1,133 @@
+project_id: sample-manufacturing-dtx
+project_name: 示例制造企业数字化与AI转型规划
+workflow_profile: full-transformation
+language: zh-CN
+methodology_profile:
+  operating_model: integrated-operating-model
+  enterprise_architecture: huawei-4a
+  architecture_lifecycle: togaf-adm-tailored
+  ai_overlay: strategy-ba-ia-aa-ta-ai
+sponsor:
+  role: CEO
+business_scope:
+  in_scope:
+  - 订单到交付价值流
+  - 制造运营与质量
+  - 供应链协同
+  - 数据与AI基础能力
+  out_of_scope:
+  - 财务共享中心详细设计
+  - 海外法人组织重组
+architecture_horizon:
+  years: 3
+  transition_architecture_by_wave: true
+key_decisions:
+- 目标 Operating Model 的核心设计选择
+- 目标 BA/IA/AA/TA 蓝图
+- 未来三年数字化与AI投资组合
+- 第一年度灯塔场景和基础平台
+constraints:
+- 关键系统必须平滑演进
+- 预算需分年度并区分软件、实施、基础设施和内部投入
+presentation_profile:
+  audience:
+  - 董事会
+  - CEO
+  - CIO
+  - 业务负责人
+  theme_id: consulting-light-cyan
+  output_formats:
+  - pptx
+  - pdf
+  - png
+  preferred_renderer: ppt-master-plus
+  renderer_route: generate-pptx
+  approved_content_only: true
+architecture_domains:
+- BA
+- IA
+- AA
+- TA
+architecture_rules:
+  ia_internal_code: IA
+  da_alias_allowed: true
+  target_4a_traceability_required: true
+  transition_architecture_required: true
+architecture_framework_profile:
+  profile_id: sample-manufacturing-dtx-huawei-4a-profile-v1
+  canonical_model: huawei-4a
+  architecture_method: togaf-adm-tailored
+  domains:
+    BA:
+      enabled: true
+      scope:
+      - enterprise
+      - order-to-delivery
+      minimum_depth: detailed
+    IA:
+      enabled: true
+      scope:
+      - enterprise-information
+      - data-and-knowledge
+      minimum_depth: key-relations
+    AA:
+      enabled: true
+      scope:
+      - business-applications
+      - integration
+      - ai-applications
+      minimum_depth: detailed
+    TA:
+      enabled: true
+      scope:
+      - platform
+      - infrastructure
+      - operations
+      - security
+      minimum_depth: key-relations
+  information_architecture_policy:
+    internal_code: IA
+    togaf_mapping: Data Architecture
+    display_aliases_allowed:
+    - 数据架构
+    - 信息与数据架构
+    includes:
+    - information
+    - data
+    - semantics
+    - metrics
+    - metadata
+    - ontology
+    - knowledge
+  cross_cutting_views:
+  - integration
+  - security-and-trust
+  - ai-and-knowledge
+  - nfr-and-resilience
+  - architecture-governance
+  lifecycle_states:
+  - as-is
+  - to-be
+  - transition
+  operating_model_alignment:
+    shared_node_types:
+    - value-stream
+    - capability
+    - process
+    - business-service
+    - org-unit
+    - role
+    - governance
+    - kpi
+    node_id_reuse_required: true
+    ba_is_formal_projection: true
+  traceability_rules:
+    aa_to_ba_required: true
+    aa_to_ia_required: true
+    ta_to_aa_or_ia_required: true
+    objective_to_roadmap_required: true
+    orphan_object_policy: allow-with-exception
+    minimum_coverage: 0.8
+  approval:
+    status: draft
+    gate: G0

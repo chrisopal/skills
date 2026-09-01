@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "architecture-view.schema.json",
+  "title": "Huawei 4A Architecture View",
+  "type": "object",
+  "required": [
+    "view_id",
+    "architecture_domain",
+    "state",
+    "name",
+    "scope",
+    "element_ids",
+    "status"
+  ],
+  "properties": {
+    "view_id": {
+      "type": "string"
+    },
+    "architecture_domain": {
+      "enum": [
+        "BA",
+        "IA",
+        "AA",
+        "TA",
+        "cross-cutting"
+      ]
+    },
+    "state": {
+      "enum": [
+        "as-is",
+        "to-be",
+        "transition"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object"
+    },
+    "viewpoint": {
+      "type": "string"
+    },
+    "element_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "relationship_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "upstream_view_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "downstream_view_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "principle_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gap_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "assumed",
+        "validated",
+        "approved",
+        "superseded",
+        "rejected"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

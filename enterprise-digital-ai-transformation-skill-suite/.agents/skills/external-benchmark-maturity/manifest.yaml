@@ -1,0 +1,33 @@
+name: external-benchmark-maturity
+version: 1.1.0
+description: 对Operating Model及BA/IA/AA/TA进行证据化成熟度评估。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- fact-register
+- industry-reference-pack
+- maturity-model
+- peer-benchmark-sources
+- value-agenda
+outputs:
+- maturity-assessment
+- operating-model-maturity-assessment
+- ba-maturity-assessment
+- ia-maturity-assessment
+- aa-maturity-assessment
+- ta-maturity-assessment
+- cross-cutting-maturity-assessment
+- 4a-maturity-profile
+- benchmark-profile
+- score-evidence-map
+- target-maturity
+- maturity-heatmap-data
+dependencies:
+- strategy-value-agenda
+- evidence-factbase
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

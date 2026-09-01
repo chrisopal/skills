@@ -1,0 +1,30 @@
+name: dtx-consulting-orchestrator
+version: 1.2.0
+description: 管理项目状态、依赖、华为4A完整性、任务卡、人工门禁与子Skill调用顺序。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- project-context
+- artifact-register
+- workflow-profile
+- architecture-framework-profile
+- gate-decisions
+- open-issues
+outputs:
+- run-plan
+- task-cards
+- project-state
+- dependency-status
+- 4a-completeness-status
+- gate-request
+- issue-log
+dependencies: []
+shared_schemas:
+- artifact-header.schema.json
+- transformation-model.schema.json
+- architecture-view.schema.json
+- architecture-traceability.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+- task-card.schema.json
+review_skill: consulting-quality-review

@@ -1,0 +1,38 @@
+name: portfolio-business-case
+version: 1.1.0
+description: 评估 Initiative 的价值、风险、4A 变更范围与依赖，形成组合、三年预算和商业论证。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- initiative-catalog
+- architecture-change-package-map
+- target-4a-architecture-package
+- transition-architectures
+- baseline-kpis
+- cost-rates
+- benefit-assumptions
+- resource-capacity
+- risk-model
+- strategic-priorities
+outputs:
+- prioritization-model
+- initiative-scorecards
+- recommended-portfolio
+- 4a-investment-profile
+- budget-and-capacity
+- three-year-budget
+- tco-model
+- benefit-case
+- cash-flow-and-payback
+- sensitivity-analysis
+- value-realization-plan
+dependencies:
+- to-be-enterprise-architecture
+- gap-initiative-design
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

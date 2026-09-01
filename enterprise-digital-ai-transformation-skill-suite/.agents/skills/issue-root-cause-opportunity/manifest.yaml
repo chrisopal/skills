@@ -1,0 +1,33 @@
+name: issue-root-cause-opportunity
+version: 1.1.0
+description: 把痛点转化为有证据的根因、4A 断点、影响和转型机会。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- as-is-operating-model
+- as-is-4a-architecture-package
+- as-is-4a-traceability-matrix
+- as-is-4a-issue-and-debt-register
+- fact-register
+- performance-data
+outputs:
+- issue-tree
+- root-cause-map
+- 4a-breakpoint-map
+- impact-assessment
+- opportunity-themes
+- priority-diagnostic-findings
+- target-design-questions
+dependencies:
+- as-is-operating-model
+- as-is-enterprise-architecture
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review
+optional_inputs:
+- maturity-assessment
+- benchmark-profile

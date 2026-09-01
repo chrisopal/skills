@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "artifact-header.schema.json",
+  "title": "Consulting Artifact Header",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "artifact_type",
+    "project_id",
+    "version",
+    "status",
+    "generated_by",
+    "upstream_artifact_ids",
+    "evidence_ids"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "artifact_type": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "assumed",
+        "validated",
+        "approved",
+        "superseded",
+        "rejected"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "generated_by": {
+      "type": "object",
+      "required": [
+        "skill_name",
+        "skill_version"
+      ],
+      "properties": {
+        "skill_name": {
+          "type": "string"
+        },
+        "skill_version": {
+          "type": "string"
+        },
+        "run_id": {
+          "type": "string"
+        }
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "upstream_artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assumption_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "not-assessed"
+      ]
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "reviewer": {
+          "type": "string"
+        },
+        "reviewed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "gate": {
+          "type": "string"
+        },
+        "decision": {
+          "enum": [
+            "pass",
+            "conditional-pass",
+            "fail",
+            "not-reviewed"
+          ]
+        },
+        "comments": {
+          "type": "string"
+        }
+      }
+    },
+    "architecture_domains": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "BA",
+          "IA",
+          "AA",
+          "TA",
+          "cross-cutting",
+          "none"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "architecture_state": {
+      "enum": [
+        "as-is",
+        "to-be",
+        "transition",
+        "not-applicable"
+      ]
+    },
+    "view_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

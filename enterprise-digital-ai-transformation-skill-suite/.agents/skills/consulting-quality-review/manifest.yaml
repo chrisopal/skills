@@ -1,0 +1,32 @@
+name: consulting-quality-review
+version: 1.2.0
+description: 独立检查证据、Operating Model与BA单一源、4A完整性和跨域追溯。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- artifact-register
+- candidate-artifacts
+- evidence-register
+- quality-gate-definition
+- project-charter
+- architecture-framework-profile
+outputs:
+- quality-review-report
+- 4a-completeness-report
+- 4a-traceability-matrix
+- unsupported-claim-list
+- consistency-issue-list
+- rework-actions
+- gate-recommendation
+dependencies: []
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- initiative.schema.json
+- architecture-view.schema.json
+- architecture-traceability.schema.json
+- four-a-architecture-package.schema.json
+- slide-content-pack.schema.json
+- architecture-framework-profile.schema.json
+- quality-review-report.schema.json

@@ -1,0 +1,24 @@
+task_id: sample-manufacturing-dtx-S0-engagement-scoping-001
+project_id: sample-manufacturing-dtx
+skill_name: engagement-scoping
+skill_version: 1.1.0
+single_primary_skill: true
+inputs:
+- artifact_id: sample-manufacturing-dtx-input-sponsor-brief-001
+  version: 1.0.0
+  status: validated
+  required: true
+expected_outputs:
+- artifact_type: architecture-framework-profile
+  target_version: 1.0.0
+  architecture_domains: [BA, IA, AA, TA, cross-cutting]
+acceptance_criteria:
+- 明确范围、排除项、交付物、审批人和 G0 成功标准
+- Architecture Framework Profile 覆盖 BA、IA、AA、TA 与横向视图
+gate: G0
+review_skill: consulting-quality-review
+reviewer_role: 独立质量审查人
+evidence_policy:
+  facts_require_evidence: true
+  assumptions_require_validation_plan: true
+status: ready

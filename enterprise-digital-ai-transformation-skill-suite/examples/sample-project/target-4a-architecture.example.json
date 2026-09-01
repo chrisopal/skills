@@ -1,0 +1,152 @@
+{
+  "artifact_header": {
+    "artifact_id": "sample-manufacturing-dtx-ea-target-4a-package-002",
+    "artifact_type": "target-4a-architecture-package",
+    "project_id": "sample-manufacturing-dtx",
+    "version": "1.0.0",
+    "status": "draft",
+    "generated_by": {
+      "skill_name": "to-be-enterprise-architecture",
+      "skill_version": "1.1.0"
+    },
+    "upstream_artifact_ids": ["sample-manufacturing-dtx-om-target-001"],
+    "evidence_ids": ["evidence-001"]
+  },
+  "architecture_id": "sample-manufacturing-dtx-target-4a-v1",
+  "project_id": "sample-manufacturing-dtx",
+  "version": "1.0.0",
+  "name": "示例制造企业目标4A架构",
+  "state": "to-be",
+  "status": "draft",
+  "domains": {
+    "BA": {
+      "domain_code": "BA",
+      "name": "目标业务架构",
+      "view_ids": [
+        "view-target-ba-001"
+      ],
+      "node_ids": [
+        "cap-plan-001",
+        "proc-plan-001",
+        "svc-plan-001"
+      ],
+      "owner_ids": [
+        "role-coo"
+      ],
+      "completeness_score": 0.6,
+      "validation_status": "draft"
+    },
+    "IA": {
+      "domain_code": "IA",
+      "name": "目标信息/数据架构",
+      "view_ids": [
+        "view-target-ia-001"
+      ],
+      "node_ids": [
+        "obj-order-001",
+        "obj-capacity-001",
+        "dp-plan-001"
+      ],
+      "owner_ids": [
+        "role-data-owner"
+      ],
+      "completeness_score": 0.5,
+      "validation_status": "draft"
+    },
+    "AA": {
+      "domain_code": "AA",
+      "name": "目标应用架构",
+      "view_ids": [
+        "view-target-aa-001"
+      ],
+      "node_ids": [
+        "appsvc-aps-001",
+        "app-aps-001"
+      ],
+      "owner_ids": [
+        "role-cio"
+      ],
+      "completeness_score": 0.5,
+      "validation_status": "draft"
+    },
+    "TA": {
+      "domain_code": "TA",
+      "name": "目标技术架构",
+      "view_ids": [
+        "view-target-ta-001"
+      ],
+      "node_ids": [
+        "tech-optimizer-runtime-001",
+        "tech-event-platform-001"
+      ],
+      "owner_ids": [
+        "role-cto"
+      ],
+      "completeness_score": 0.4,
+      "validation_status": "draft"
+    }
+  },
+  "cross_cutting_views": {
+    "integration": {
+      "view_ids": [
+        "view-integration-001"
+      ],
+      "node_ids": [
+        "tech-event-platform-001"
+      ],
+      "validation_status": "draft"
+    },
+    "security-and-trust": {
+      "view_ids": [
+        "view-security-001"
+      ],
+      "node_ids": [],
+      "validation_status": "draft"
+    },
+    "ai-and-knowledge": {
+      "view_ids": [
+        "view-ai-001"
+      ],
+      "node_ids": [
+        "tech-optimizer-runtime-001"
+      ],
+      "validation_status": "draft"
+    },
+    "nfr-and-resilience": {
+      "view_ids": [
+        "view-nfr-001"
+      ],
+      "node_ids": [],
+      "validation_status": "draft"
+    },
+    "architecture-governance": {
+      "view_ids": [
+        "view-governance-001"
+      ],
+      "node_ids": [],
+      "validation_status": "draft"
+    }
+  },
+  "traceability_record_ids": [
+    "trace-001",
+    "trace-002",
+    "trace-003",
+    "trace-004"
+  ],
+  "architecture_principle_ids": [
+    "principle-001"
+  ],
+  "architecture_decision_ids": [
+    "adr-001"
+  ],
+  "gap_ids": [
+    "gap-aa-001",
+    "gap-ia-001"
+  ],
+  "evidence_ids": [
+    "evidence-001"
+  ],
+  "artifact_ids": [
+    "artifact-target-4a-001"
+  ]
+}

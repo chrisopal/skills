@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quality-review-report.schema.json",
+  "title": "Consulting Quality Review Report",
+  "type": "object",
+  "required": [
+    "report_id",
+    "project_id",
+    "candidate_artifact_ids",
+    "reviewer",
+    "reviewer_independent",
+    "gate",
+    "decision",
+    "checks",
+    "blocking_findings",
+    "rework_actions"
+  ],
+  "properties": {
+    "report_id": {"type": "string", "minLength": 1},
+    "project_id": {"type": "string", "minLength": 1},
+    "candidate_artifact_ids": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "reviewer": {"type": "string", "minLength": 1},
+    "reviewer_independent": {"const": true},
+    "gate": {"type": "string", "pattern": "^G[0-8]$"},
+    "decision": {"enum": ["pass", "conditional-pass", "fail"]},
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["check_id", "result"],
+        "properties": {
+          "check_id": {"type": "string", "minLength": 1},
+          "result": {"enum": ["pass", "warning", "fail", "not-applicable"]},
+          "artifact_ids": {"type": "array", "items": {"type": "string"}},
+          "node_ids": {"type": "array", "items": {"type": "string"}},
+          "notes": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "traceability_metrics": {
+      "type": "object",
+      "properties": {
+        "coverage": {"type": "number", "minimum": 0, "maximum": 1},
+        "orphan_object_count": {"type": "integer", "minimum": 0},
+        "unsupported_claim_count": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": true
+    },
+    "blocking_findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["finding_id", "description", "owner", "artifact_ids"],
+        "properties": {
+          "finding_id": {"type": "string", "minLength": 1},
+          "description": {"type": "string", "minLength": 1},
+          "owner": {"type": "string", "minLength": 1},
+          "artifact_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+          "node_ids": {"type": "array", "items": {"type": "string"}}
+        },
+        "additionalProperties": true
+      }
+    },
+    "rework_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action_id", "owner", "acceptance_criteria"],
+        "properties": {
+          "action_id": {"type": "string", "minLength": 1},
+          "owner": {"type": "string", "minLength": 1},
+          "acceptance_criteria": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": true
+      }
+    },
+    "reviewed_at": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"decision": {"const": "pass"}}},
+      "then": {"properties": {"blocking_findings": {"maxItems": 0}}}
+    }
+  ],
+  "additionalProperties": true
+}

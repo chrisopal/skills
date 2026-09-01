@@ -1,0 +1,287 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "four-a-architecture-package.schema.json",
+  "title": "Huawei 4A Enterprise Architecture Package",
+  "type": "object",
+  "required": [
+    "artifact_header",
+    "architecture_id",
+    "project_id",
+    "state",
+    "domains",
+    "traceability_record_ids",
+    "status"
+  ],
+  "properties": {
+    "artifact_header": {
+      "type": "object"
+    },
+    "architecture_id": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "as-is",
+        "to-be",
+        "transition"
+      ]
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "assumed",
+        "validated",
+        "approved",
+        "superseded",
+        "rejected"
+      ]
+    },
+    "domains": {
+      "type": "object",
+      "required": [
+        "BA",
+        "IA",
+        "AA",
+        "TA"
+      ],
+      "properties": {
+        "BA": {
+          "$ref": "#/$defs/domainPackage"
+        },
+        "IA": {
+          "$ref": "#/$defs/domainPackage"
+        },
+        "AA": {
+          "$ref": "#/$defs/domainPackage"
+        },
+        "TA": {
+          "$ref": "#/$defs/domainPackage"
+        }
+      },
+      "additionalProperties": false
+    },
+    "cross_cutting_views": {
+      "type": "object",
+      "properties": {
+        "integration": {
+          "$ref": "#/$defs/crossCuttingPackage"
+        },
+        "security-and-trust": {
+          "$ref": "#/$defs/crossCuttingPackage"
+        },
+        "ai-and-knowledge": {
+          "$ref": "#/$defs/crossCuttingPackage"
+        },
+        "nfr-and-resilience": {
+          "$ref": "#/$defs/crossCuttingPackage"
+        },
+        "architecture-governance": {
+          "$ref": "#/$defs/crossCuttingPackage"
+        }
+      },
+      "additionalProperties": false
+    },
+    "traceability_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "transition_from_architecture_id": {
+      "type": "string"
+    },
+    "transition_to_architecture_id": {
+      "type": "string"
+    },
+    "orphan_objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "node_id",
+          "reason",
+          "status"
+        ],
+        "properties": {
+          "node_id": {
+            "type": "string"
+          },
+          "architecture_domain": {
+            "enum": [
+              "BA",
+              "IA",
+              "AA",
+              "TA",
+              "cross-cutting",
+              "none"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "orphan",
+              "unverified",
+              "exception"
+            ]
+          },
+          "resolution": {
+            "type": "string"
+          },
+          "owner_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "architecture_principle_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "architecture_decision_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gap_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "domainPackage": {
+      "type": "object",
+      "required": [
+        "domain_code",
+        "view_ids",
+        "node_ids",
+        "validation_status"
+      ],
+      "properties": {
+        "domain_code": {
+          "enum": [
+            "BA",
+            "IA",
+            "AA",
+            "TA"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "view_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "artifact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "node_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "completeness_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "validation_status": {
+          "enum": [
+            "not-started",
+            "draft",
+            "validated",
+            "approved"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "crossCuttingPackage": {
+      "type": "object",
+      "required": [
+        "view_ids",
+        "validation_status"
+      ],
+      "properties": {
+        "view_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "artifact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "node_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validation_status": {
+          "enum": [
+            "not-started",
+            "draft",
+            "validated",
+            "approved"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

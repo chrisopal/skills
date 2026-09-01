@@ -1,0 +1,23 @@
+name: rapid-assessment
+version: 1.2.0
+purpose: 2-4 周快速诊断与初步路线图，降低详细设计深度但保留 4A 完整性
+review_policy:
+  after_each_stage: consulting-quality-review
+  reviewer_must_be_independent: true
+  gate_requires_report: true
+architecture_framework:
+  canonical_model: huawei-4a
+  domains: [BA, IA, AA, TA]
+  minimum_depth: domain-and-key-relations
+stages:
+  - {id: S0, skills: [engagement-scoping, evidence-factbase], gate: G0-G1}
+  - {id: S1, skills: [strategy-value-agenda, as-is-operating-model, as-is-enterprise-architecture], required_architecture_outputs: [as-is-business-architecture, as-is-information-architecture, as-is-application-architecture, as-is-technology-architecture, as-is-4a-architecture-package, as-is-4a-traceability-matrix], gate: G2}
+  - {id: S2, skills: [issue-root-cause-opportunity, to-be-operating-model, to-be-enterprise-architecture], required_architecture_outputs: [target-business-architecture, target-information-architecture, target-application-architecture, target-technology-architecture, target-4a-architecture-package, target-4a-traceability-matrix], gate: G3-G4}
+  - {id: S3, skills: [gap-initiative-design, portfolio-business-case, roadmap-governance-change], gate: G5-G6}
+  - {id: S4, skills: [transformation-storyline-builder], gate: G8}
+constraints:
+  process_depth: L0-L3
+  business_case: range-based
+  scenario_detail_design: excluded
+  maturity_assessment: optional
+  four_a_traceability: key-elements-only

@@ -1,0 +1,39 @@
+name: ai-transformation-overlay
+version: 1.1.0
+description: 设计BA+AI、IA+AI、AA+AI、TA+AI及评测、Trace、安全和治理。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- value-agenda
+- as-is-operating-model
+- to-be-operating-model
+- as-is-4a-architecture-package
+- target-4a-architecture-package
+- data-and-knowledge-assets
+- risk-and-compliance-requirements
+outputs:
+- ai-transformation-overlay
+- ai-opportunity-landscape
+- ai-use-case-portfolio-candidates
+- ba-ai-human-agent-system-designs
+- ia-ai-data-knowledge-semantic-design
+- aa-ai-agent-skill-application-design
+- ta-ai-platform-runtime-engineering-design
+- ai-4a-traceability-matrix
+- evaluation-and-observability-model
+- responsible-ai-governance
+- ai-foundation-gaps
+dependencies:
+- as-is-enterprise-architecture
+- strategy-value-agenda
+- to-be-operating-model
+- to-be-enterprise-architecture
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- architecture-view.schema.json
+- architecture-traceability.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

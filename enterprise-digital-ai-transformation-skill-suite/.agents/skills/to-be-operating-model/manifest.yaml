@@ -1,0 +1,36 @@
+name: to-be-operating-model
+version: 1.1.0
+description: 设计目标Operating Model并作为Target BA的唯一业务源模型。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- value-agenda
+- priority-diagnostic-findings
+- opportunity-themes
+- target-design-questions
+- as-is-operating-model
+- design-constraints
+- industry-reference-pack
+outputs:
+- to-be-operating-model
+- operating-model-design-principles
+- target-value-streams
+- target-capability-map
+- target-process-architecture
+- target-business-service-model
+- target-org-role-model
+- decision-rights-and-governance
+- target-kpi-system
+- talent-and-ways-of-working
+- target-business-information-requirements
+- to-be-operating-model-blueprint
+- target-ba-source-model
+dependencies:
+- issue-root-cause-opportunity
+- strategy-value-agenda
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

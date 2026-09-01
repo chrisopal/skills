@@ -1,0 +1,55 @@
+name: as-is-enterprise-architecture
+version: 1.1.0
+description: 以华为4A建立As-Is BA、IA、AA、TA、横向视图和跨域追溯。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- fact-register
+- as-is-operating-model
+- application-inventory
+- interface-list
+- data-and-information-assets
+- infrastructure-platform-and-security-materials
+- non-functional-and-compliance-requirements
+outputs:
+- as-is-business-architecture
+- as-is-business-service-catalog
+- as-is-business-information-requirements
+- as-is-information-architecture
+- as-is-information-domain-map
+- as-is-business-object-model
+- as-is-information-flow-and-lineage
+- as-is-master-data-metric-semantic-map
+- as-is-data-ownership-quality-security-view
+- as-is-application-architecture
+- as-is-application-service-catalog
+- as-is-capability-process-application-map
+- as-is-business-object-application-crud-map
+- as-is-integration-api-event-map
+- as-is-application-lifecycle-and-debt-register
+- as-is-technology-architecture
+- as-is-technology-service-catalog
+- as-is-platform-infrastructure-deployment-view
+- as-is-devsecops-operations-observability-view
+- as-is-security-resilience-and-standards-view
+- as-is-technology-lifecycle-and-debt-register
+- as-is-4a-architecture-package
+- as-is-4a-traceability-matrix
+- as-is-integration-and-interoperability-view
+- as-is-security-and-trust-view
+- as-is-ai-and-knowledge-readiness-view
+- as-is-nfr-allocation
+- as-is-4a-issue-and-debt-register
+- architecture-fact-gaps-and-open-questions
+dependencies:
+- as-is-operating-model
+- evidence-factbase
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- architecture-view.schema.json
+- architecture-traceability.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

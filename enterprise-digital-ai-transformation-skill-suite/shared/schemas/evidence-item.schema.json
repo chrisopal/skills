@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evidence-item.schema.json",
+  "title": "Evidence Item",
+  "type": "object",
+  "required": [
+    "evidence_id",
+    "project_id",
+    "source_type",
+    "source_name",
+    "claim_or_observation",
+    "status"
+  ],
+  "properties": {
+    "evidence_id": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "source_type": {
+      "enum": [
+        "document",
+        "interview",
+        "data",
+        "observation",
+        "system",
+        "external-research"
+      ]
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "source_owner": {
+      "type": "string"
+    },
+    "source_date": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "claim_or_observation": {
+      "type": "string"
+    },
+    "raw_excerpt": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string"
+    },
+    "valid_from": {
+      "type": "string"
+    },
+    "valid_to": {
+      "type": "string"
+    },
+    "confidentiality": {
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "status": {
+      "enum": [
+        "unverified",
+        "verified",
+        "conflicted",
+        "superseded"
+      ]
+    },
+    "conflicts_with": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

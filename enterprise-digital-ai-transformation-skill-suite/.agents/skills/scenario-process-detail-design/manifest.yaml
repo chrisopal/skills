@@ -1,0 +1,42 @@
+name: scenario-process-detail-design
+version: 1.1.0
+description: 将重点场景下钻为L3-L5流程及BA/IA/AA/TA实施级设计。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- approved-target-operating-model
+- approved-target-4a-architecture-package
+- priority-scenario
+- initiative-card
+- constraints-and-standards
+outputs:
+- l3-l5-process-model
+- service-blueprint-or-user-journey
+- raci-decision-rights-business-rules-controls
+- human-agent-system-workflow
+- business-object-and-data-requirement-spec
+- information-flow-and-lineage-spec
+- master-data-metric-quality-security-spec
+- knowledge-semantic-and-evaluation-data-spec
+- application-service-and-functional-requirement-spec
+- integration-api-event-spec
+- agent-skill-tool-and-human-workbench-spec
+- permission-audit-and-exception-spec
+- deployment-runtime-capacity-and-nfr-spec
+- security-observability-operations-and-dr-spec
+- environment-devsecops-mlops-llmops-spec
+- mvp-scope
+- acceptance-criteria
+- ai-evaluation-spec
+- codex-ready-task-breakdown
+dependencies:
+- to-be-enterprise-architecture
+- gap-initiative-design
+shared_schemas:
+- artifact-header.schema.json
+- transformation-model.schema.json
+- initiative.schema.json
+- architecture-view.schema.json
+- architecture-traceability.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

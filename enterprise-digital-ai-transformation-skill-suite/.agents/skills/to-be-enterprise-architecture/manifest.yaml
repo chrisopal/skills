@@ -1,0 +1,58 @@
+name: to-be-enterprise-architecture
+version: 1.1.0
+description: 以华为4A设计Target BA、IA、AA、TA、横向架构和Transition Architecture。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- to-be-operating-model
+- as-is-4a-architecture-package
+- as-is-4a-traceability-matrix
+- architecture-driving-principles
+- non-functional-requirements
+- regulatory-and-risk-constraints
+- technology-and-product-constraints
+outputs:
+- target-business-architecture
+- target-business-service-catalog
+- target-business-information-requirements
+- target-information-architecture
+- target-information-domain-and-business-object-model
+- target-master-data-metric-semantic-model
+- target-information-flow-data-product-knowledge-architecture
+- target-data-governance-quality-security-model
+- target-application-architecture
+- target-application-service-catalog
+- target-domain-product-platform-boundaries
+- target-capability-process-application-map
+- target-business-object-application-crud-map
+- target-integration-api-event-architecture
+- application-rationalization-plan
+- target-technology-architecture
+- target-technology-service-catalog
+- target-cloud-edge-network-platform-architecture
+- target-data-integration-ai-platform-architecture
+- target-devsecops-mlops-observability-architecture
+- target-security-resilience-dr-operations-architecture
+- technology-standards-and-product-strategy
+- target-4a-architecture-package
+- target-4a-traceability-matrix
+- architecture-principles-and-standards
+- architecture-decision-records
+- integration-and-interoperability-architecture
+- security-and-trust-architecture
+- ai-and-knowledge-architecture-view
+- nfr-allocation
+- transition-architectures
+dependencies:
+- strategy-value-agenda
+- to-be-operating-model
+- as-is-enterprise-architecture
+shared_schemas:
+- artifact-header.schema.json
+- evidence-item.schema.json
+- transformation-model.schema.json
+- architecture-view.schema.json
+- architecture-traceability.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

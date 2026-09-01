@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "architecture-traceability.schema.json",
+  "title": "Huawei 4A Architecture Traceability Record",
+  "type": "object",
+  "required": [
+    "trace_id",
+    "source_id",
+    "source_domain",
+    "relation",
+    "target_id",
+    "target_domain",
+    "state",
+    "status"
+  ],
+  "properties": {
+    "trace_id": {
+      "type": "string"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "source_domain": {
+      "enum": [
+        "strategy",
+        "BA",
+        "IA",
+        "AA",
+        "TA",
+        "cross-cutting",
+        "transformation"
+      ]
+    },
+    "relation": {
+      "type": "string"
+    },
+    "target_id": {
+      "type": "string"
+    },
+    "target_domain": {
+      "enum": [
+        "strategy",
+        "BA",
+        "IA",
+        "AA",
+        "TA",
+        "cross-cutting",
+        "transformation"
+      ]
+    },
+    "state": {
+      "enum": [
+        "as-is",
+        "to-be",
+        "transition",
+        "not-applicable"
+      ]
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "not-assessed"
+      ]
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "assumed",
+        "validated",
+        "approved",
+        "superseded",
+        "rejected"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

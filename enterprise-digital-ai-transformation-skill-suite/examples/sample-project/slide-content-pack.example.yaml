@@ -1,0 +1,33 @@
+artifact_header:
+  artifact_id: sample-manufacturing-dtx-deck-slide-pack-001
+  artifact_type: slide-content-pack
+  project_id: sample-manufacturing-dtx
+  version: 1.0.0
+  status: draft
+  generated_by:
+    skill_name: transformation-storyline-builder
+    skill_version: 1.1.0
+  upstream_artifact_ids: [sample-manufacturing-dtx-ea-target-4a-package-001]
+  evidence_ids: [evidence-001]
+deck_id: sample-manufacturing-dtx-executive-deck
+version: 1.0.0
+purpose: 向管理层说明目标 4A 蓝图与转型决策
+audience: [CEO, CIO, 业务负责人]
+decisions_required: [批准目标 4A 方向]
+page_budget: 1
+language: zh-CN
+theme_profile: consulting-light-cyan
+output_formats: [pptx]
+story_arc: [Target 4A, Decision]
+slides:
+- slide_id: P01
+  section: Target Architecture
+  title: 目标 4A 必须从业务价值连续追溯到技术底座
+  key_message: BA 驱动 IA 与 AA，TA 支撑应用、信息与非功能要求。
+  supporting_points: [保持 BA、IA、AA、TA 四域完整]
+  artifact_ids: [sample-manufacturing-dtx-ea-target-4a-package-001]
+  evidence_ids: [evidence-001]
+  architecture_domains: [BA, IA, AA, TA, cross-cutting]
+  architecture_view_ids: [view-target-ba-001, view-target-ia-001, view-target-aa-001, view-target-ta-001]
+  visual_type: 4a-overview
+  review_status: draft

@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "transformation-model.schema.json",
+  "title": "Transformation Model Node",
+  "type": "object",
+  "required": [
+    "node_id",
+    "node_type",
+    "name",
+    "state",
+    "status"
+  ],
+  "properties": {
+    "node_id": {
+      "type": "string"
+    },
+    "node_type": {
+      "enum": [
+        "objective",
+        "value-driver",
+        "kpi",
+        "architecture-principle",
+        "architecture-decision",
+        "value-chain",
+        "value-stream",
+        "journey",
+        "capability",
+        "business-service",
+        "process",
+        "activity",
+        "decision",
+        "business-rule",
+        "control",
+        "org-unit",
+        "role",
+        "governance",
+        "policy",
+        "risk",
+        "business-information-requirement",
+        "information-domain",
+        "data-domain",
+        "business-object",
+        "data-entity",
+        "information-flow",
+        "data-lineage",
+        "master-data",
+        "reference-data",
+        "metric-definition",
+        "semantic-definition",
+        "data-product",
+        "analytical-dataset",
+        "evaluation-dataset",
+        "metadata-asset",
+        "ontology",
+        "knowledge-asset",
+        "data-standard",
+        "data-quality-rule",
+        "data-policy",
+        "data-owner",
+        "data-steward",
+        "application-domain",
+        "application-capability",
+        "application-service",
+        "application",
+        "digital-product",
+        "application-component",
+        "workflow-service",
+        "rule-service",
+        "integration-service",
+        "api",
+        "event",
+        "message",
+        "ai-application",
+        "agent",
+        "skill",
+        "tool-connector",
+        "technical-debt",
+        "technology-service",
+        "technology-component",
+        "platform",
+        "compute",
+        "storage",
+        "network",
+        "cloud",
+        "edge",
+        "database",
+        "middleware",
+        "runtime",
+        "data-platform",
+        "integration-platform",
+        "ai-platform",
+        "model-service",
+        "agent-runtime",
+        "vector-engine",
+        "graph-engine",
+        "devsecops-capability",
+        "mlops-capability",
+        "observability-capability",
+        "security-control",
+        "resilience-control",
+        "technology-standard",
+        "issue",
+        "root-cause",
+        "gap",
+        "initiative",
+        "work-package",
+        "cost",
+        "benefit",
+        "transition-architecture",
+        "roadmap-wave",
+        "milestone",
+        "slide"
+      ]
+    },
+    "architecture_domain": {
+      "enum": [
+        "BA",
+        "IA",
+        "AA",
+        "TA",
+        "cross-cutting",
+        "none"
+      ]
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "state": {
+      "enum": [
+        "as-is",
+        "to-be",
+        "transition",
+        "not-applicable"
+      ]
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "assumed",
+        "validated",
+        "approved",
+        "superseded",
+        "rejected"
+      ]
+    },
+    "parent_id": {
+      "type": "string"
+    },
+    "level": {
+      "type": "string"
+    },
+    "owner_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "view_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "attributes": {
+      "type": "object"
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "relation",
+          "target_id"
+        ],
+        "properties": {
+          "relation": {
+            "type": "string"
+          },
+          "target_id": {
+            "type": "string"
+          },
+          "target_domain": {
+            "enum": [
+              "BA",
+              "IA",
+              "AA",
+              "TA",
+              "cross-cutting",
+              "none"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

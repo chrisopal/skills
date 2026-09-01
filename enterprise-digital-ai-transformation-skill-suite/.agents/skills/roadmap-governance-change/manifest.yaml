@@ -1,0 +1,38 @@
+name: roadmap-governance-change
+version: 1.1.0
+description: 以4A Transition Architecture驱动三年路线图、治理和变革。
+entrypoint: SKILL.md
+category: enterprise-transformation-consulting
+inputs:
+- recommended-portfolio
+- dependency-graph
+- 4a-investment-profile
+- budget-and-capacity
+- transition-architectures
+- target-4a-architecture-package
+- to-be-operating-model
+- value-realization-plan
+outputs:
+- multi-year-roadmap
+- wave-plan
+- 4a-evolution-map
+- transition-architecture-by-wave
+- critical-path
+- resource-demand-profile
+- program-governance
+- architecture-governance-and-compliance
+- data-ai-governance
+- change-and-communications-plan
+- talent-and-training-plan
+- benefit-governance
+dependencies:
+- to-be-enterprise-architecture
+- portfolio-business-case
+- gap-initiative-design
+shared_schemas:
+- artifact-header.schema.json
+- initiative.schema.json
+- transformation-model.schema.json
+- four-a-architecture-package.schema.json
+- architecture-framework-profile.schema.json
+review_skill: consulting-quality-review

@@ -1,0 +1,22 @@
+report_id: sample-manufacturing-dtx-review-G0-001
+project_id: sample-manufacturing-dtx
+candidate_artifact_ids:
+- sample-manufacturing-dtx-method-4a-profile-001
+reviewer: independent-consulting-reviewer
+reviewer_independent: true
+gate: G0
+decision: conditional-pass
+checks:
+- check_id: G0-SCOPE-BOUNDARY
+  result: pass
+  artifact_ids: [sample-manufacturing-dtx-method-4a-profile-001]
+  notes: 示例仅验证结构，不代表真实客户审批。
+traceability_metrics:
+  coverage: 0
+  orphan_object_count: 0
+  unsupported_claim_count: 0
+blocking_findings: []
+rework_actions:
+- action_id: G0-APPROVAL-001
+  owner: sponsor
+  acceptance_criteria: 由真实项目 Sponsor 审批范围与 Architecture Framework Profile

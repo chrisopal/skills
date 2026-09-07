@@ -1,3 +1,11 @@
+## 2026-09-07 — Codex efficient delivery skill
+
+- Scope: Add `codex-efficient-delivery/SKILL.md` for clarifying vague requests into executable task prompts, bounded implementation, and evidence-based completion.
+- Simplification: One self-contained skill; no scripts, runtime dependencies, or generated artifacts.
+- Validation: Skill Creator quick validation passed with PyYAML 6.0.3; a two-turn independent smoke test clarified an ambiguous request, produced a task prompt after clarification, and respected the instruction not to execute.
+- Commit/push state: This entry accompanies the scoped skill commit; remote push verification is reported in the delivery response.
+- Remaining limits: Complex project behavior and exact token savings have not been measured. Model choices are recommendations, not automatic configuration changes.
+
 ## 2026-08-11 07:18:02 CST
 
 - Scope: Correct the Huixin Quanzhi logo refresh in both the repository templates and the actively installed `/Users/guojiexie/.codex/skills/ppt-master-plus` Skill after identifying that the installed Skill was an independent stale June copy.

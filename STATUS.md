@@ -24,9 +24,11 @@
   SHA-256 `8d073a6f2d35eb5ba7caee4fd4cebd8035296c2493768778ac1c41c37ee73b20`.
   ZIP CRC/path checks, Huixin-only registry parity, extracted/source byte parity,
   Skill validation, attribution guard and extracted-package export passed.
-- Commit/push: verified source prepared on the `origin/main` lineage for this
-  change's commit and fast-forward push to `origin/main`, not the earlier
-  image-to-editable-PPT feature branch. ZIP and all smoke artifacts stay local.
+- Commit/push: implementation `df3eca3` was fast-forward pushed to `origin/main`
+  and verified with `git ls-remote`, not published only on the earlier
+  image-to-editable-PPT feature branch. ZIP entries are committed Skill source;
+  the ZIP and all smoke artifacts stay local. This status follow-up records the
+  completed publication without changing the package.
 - Limits: no WorkBuddy same-task/model billing A/B or Windows host execution;
   do not equate instruction-byte reduction with a measured token/cost percentage.
   Installed WorkBuddy/Codex Skills are not overwritten automatically; replace

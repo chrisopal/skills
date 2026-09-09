@@ -1,10 +1,17 @@
-# PPT Master Plus v05: Huixin Lite
+# PPT Master Plus v06: Huixin Compact
 
 This distribution retains the upstream 4.5.0 engine and six Huixin Decks.
 Ordinary Huixin generation uses one design direction, selective reference
 loading, no default speaker notes, and compact validation output. Non-Huixin
 Brand/Style/Layout/Deck presets are removed. Generic chart, table and icon
 assets remain available; template count is not itself a token measurement.
+
+The compact ZIP omits AI rendering/palette/type comparison PNGs and five optional
+`reference_visual.png` inspiration images. All six themes, 129 SVG pages,
+production logos/backgrounds, icons, charts, tables and exporter code remain.
+No production image is resized or recompressed. Full planning retains its
+textual rendering choices, but optional comparison thumbnails are unavailable.
+Do not download or regenerate omitted samples during ordinary generation.
 
 ## Install or Upgrade
 
@@ -46,8 +53,12 @@ remain available through their dedicated routes.
 
 ```bash
 python3 /absolute/path/ppt-master-plus/scripts/attribution_guard.py
-python3 /absolute/path/ppt-master-plus/scripts/package_huixin.py /outside/skill/ppt-master-plus-v05.zip
+python3 /absolute/path/ppt-master-plus/scripts/package_huixin.py /outside/skill/ppt-master-plus-v06.zip
 ```
+
+For maintainers who need the reference gallery, build from the full source
+checkout with `--include-reference-images` and a different output filename.
+The compact install contains the preset metadata, not those optional PNGs.
 
 The packager retains source, licensed reusable assets and runtime documents;
 excludes projects, sample PPTX/PDFs, logs, caches, hidden credentials and ZIPs;

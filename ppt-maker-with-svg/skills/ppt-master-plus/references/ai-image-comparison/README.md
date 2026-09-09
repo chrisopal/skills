@@ -1,5 +1,11 @@
 # AI Image Comparison — Reference Gallery
 
+**Compact Plus distribution**: PNG examples are omitted from the default ZIP.
+The manifests and textual rendering choices remain available. Missing previews
+do not invalidate a rendering choice and must not trigger image generation.
+Maintainers may include the existing images with the packager's
+`--include-reference-images` option from the full source checkout.
+
 This directory preserves rendering, legacy palette, and type comparison assets. The current Confirm UI displays **rendering only**; deck colors come directly from the selected PPT color system. The palette gallery remains for legacy diagnostics and must not become a second confirmation control.
 This directory uses **controlled-variable comparison** — vary one dimension while holding the other two fixed — so you can see exactly what each dimension contributes.
 

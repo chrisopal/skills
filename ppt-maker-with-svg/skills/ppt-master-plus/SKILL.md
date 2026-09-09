@@ -11,7 +11,7 @@ description: >
   default generation profile.
 metadata:
   version: "4.5.0"
-  plus_distribution: "v05-huixin-lite"
+  plus_distribution: "v06-huixin-compact"
   copyright: "Copyright (c) 2025-2026 Hugo He"
   license: "MIT"
   official_repository: "https://github.com/hugohe3/ppt-master"
@@ -33,6 +33,8 @@ PPT Master is a routed presentation workflow. This entry owns global execution d
   No competing design directions, confirmation UI, or speaker notes by default.
 - Non-Huixin theme presets are not bundled. Explicit external workspaces and
   explicit free-design requests remain supported through their routed profiles.
+- Compact installs omit optional comparison/reference PNGs, not theme assets.
+  Do not search for or regenerate absent reference galleries during generation.
 - A selected Huixin Deck is a theme and narrative system, not a fixed page
   count. Reuse a prototype only when its role and capacity fit the actual page;
   otherwise author a custom page that preserves the selected Huixin identity,

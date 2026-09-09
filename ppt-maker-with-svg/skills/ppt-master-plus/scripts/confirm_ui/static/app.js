@@ -812,6 +812,9 @@
         var value = String(id || "").trim();
         if (!value || value === "custom") return "";
         if (!/^[A-Za-z0-9_.-]+$/.test(value)) return "";
+        var items = AI_IMAGE_COMPARISON[kind] || [];
+        var item = items.find(function (entry) { return entry.id === value; });
+        if (!item || item.preview_available === false) return "";
         return "/ai-image-comparison/" + kind + "/" + encodeURIComponent(value) + ".png";
     }
 

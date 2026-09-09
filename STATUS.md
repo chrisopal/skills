@@ -1,3 +1,29 @@
+## 2026-09-09: Huixin Compact v06 packaging
+
+- Scope: reduce the install ZIP, not production image fidelity or generation
+  capabilities. Packaging now omits 45 AI comparison PNGs and five optional
+  Huixin reference visuals; full-source builds can include them with
+  `--include-reference-images`. Reference source files remain in Git.
+- Size: v05 69,974,552 bytes -> v06 25,825,213 bytes (63.09% smaller);
+  12,290 files. Local deliverable: `Downloads/ppt-master-plus-v06.zip`.
+  SHA-256: `3124ff2ebd9b4b2b1b2b60cfc7ffdebd51fcd0b73d50bcde6c8138e879a19497`.
+- Preserved: all 129 Huixin SVG pages and all retained template assets are
+  byte-identical to v05; no logo/background recompression, icon pruning,
+  dependency additions or generated artifacts in the commit.
+- Compatibility repair: keep all 20 rendering IDs available without preview
+  PNGs; the confirmation UI omits absent thumbnails instead of requesting
+  broken images or rejecting a valid rendering choice.
+- Validation: six representative pages exported using the extracted compact
+  package in the clean core environment; final SVG gates report zero blocking
+  errors and native PPTX audits pass. Original advisory SVG warnings remain.
+  Full/compact file parity differs by exactly 50 optional PNGs; ZIP CRC,
+  attribution guard, Skill validation, Python syntax, JavaScript syntax,
+  full/compact rendering catalogs, HTTP API and preview URL behavior passed.
+- Publication: this source/status commit is prepared on the verified main
+  lineage for a fast-forward push to `origin/main`; the ZIP stays local.
+- Limits: no Windows-host execution or full browser interaction regression;
+  size reduction is not a claimed additional token/billing reduction.
+
 ## 2026-09-09: Huixin Lite v05 distribution
 
 - Scope: optimize `ppt-maker-with-svg/skills/ppt-master-plus` for lower-context

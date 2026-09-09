@@ -19,11 +19,23 @@ EXCLUDED = {"__pycache__", "node_modules", ".git", ".venv", "venv", "projects",
             "exports", "backup", "validation", ".pytest_cache", ".DS_Store"}
 
 
-def package_files(root: Path) -> list[Path]:
+def is_reference_image(relative: Path) -> bool:
+    parts = relative.parts
+    return relative.suffix.lower() == ".png" and (
+        parts[:2] == ("references", "ai-image-comparison")
+        or (len(parts) == 5 and parts[:2] == ("templates", "decks")
+            and parts[2].startswith("huixin_")
+            and parts[3:] == ("images", "reference_visual.png"))
+    )
+
+
+def package_files(root: Path, *, include_reference_images: bool = False) -> list[Path]:
     root = root.resolve()
     files = []
     for path in sorted(root.rglob("*")):
         rel = path.relative_to(root)
+        if not include_reference_images and is_reference_image(rel):
+            continue
         if not path.is_file() or any(part in EXCLUDED or part.startswith(".")
                                      for part in rel.parts):
             if rel.as_posix() != ".env.example":
@@ -47,6 +59,8 @@ def package_files(root: Path) -> list[Path]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("output", type=Path)
+    parser.add_argument("--include-reference-images", action="store_true",
+                        help="Include optional reference PNGs present in the source checkout")
     args = parser.parse_args()
     require_skill_integrity()
     output = args.output.expanduser().resolve()
@@ -60,7 +74,10 @@ def main() -> int:
             parser.error(f"Non-Huixin entries remain in {kind}_index.json")
         if kind == "decks" and len(catalog) != 6:
             parser.error("The distribution must retain all six Huixin Decks")
-    files = package_files(ROOT)
+    files = package_files(ROOT, include_reference_images=args.include_reference_images)
+    if args.include_reference_images and not any(
+            is_reference_image(path.relative_to(ROOT)) for path in files):
+        parser.error("Reference PNGs are not installed; build the reference bundle from source")
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for path in files:

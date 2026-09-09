@@ -2323,7 +2323,7 @@ def _build_icon_previews() -> dict:
     return previews
 
 
-def _ai_comparison_items(kind: str) -> list[dict[str, str]]:
+def _ai_comparison_items(kind: str) -> list[dict[str, str | bool]]:
     manifest = _AI_IMAGE_COMPARISON_DIR / kind / '_manifest.json'
     if not manifest.exists():
         return []
@@ -2335,8 +2335,6 @@ def _ai_comparison_items(kind: str) -> list[dict[str, str]]:
             continue
         if not re.fullmatch(r'[A-Za-z0-9_.-]+\.png', filename):
             continue
-        if not (_AI_IMAGE_COMPARISON_DIR / kind / filename).exists():
-            continue
         item_id = Path(filename).stem
         items.append({
             'id': item_id,
@@ -2344,6 +2342,7 @@ def _ai_comparison_items(kind: str) -> list[dict[str, str]]:
             'filename': filename,
             'purpose': item.get('purpose') or '',
             'alt_text': item.get('alt_text') or '',
+            'preview_available': (_AI_IMAGE_COMPARISON_DIR / kind / filename).is_file(),
         })
     return items
 

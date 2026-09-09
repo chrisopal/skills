@@ -142,8 +142,8 @@ ordinary Quick and other compatible profiles.
   canvas when present, then fall back to `ppt169`.
 - **PPT Master Plus Huixin default**: no exact root was supplied and the user
   did not explicitly request free design, no template, or no Huixin styling.
-  Read only `templates/decks/decks_index.json`, derive the same one-deck match
-  defined in `workflows/generate-pptx.md` Step 3, and treat that registered
+  Read only `templates/decks/decks_index.json`, select one best matching summary
+  without loading the Default workflow, and treat that registered
   library root as the direct Deck input. Do not open a selector or ask for
   approval in Quick.
 - **Free design**: no exact root was supplied and the user opted out of the Plus

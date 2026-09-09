@@ -1,0 +1,6 @@
+# Base Huixin SVG-to-editable-PPTX generation. Use requirements.txt for extras.
+PyYAML>=6.0.1
+python-pptx>=0.6.21
+XlsxWriter>=3.0.0
+Pillow>=9.0.0
+lxml>=4.9.0

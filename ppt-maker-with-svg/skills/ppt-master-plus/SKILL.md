@@ -7,9 +7,11 @@ description: >
   Use when the user asks to create, reconstruct, regenerate, template, fill, or
   enhance a presentation, requests a presentation-authored narrated/self-running
   video, or mentions ppt-master-plus. This Plus distribution preserves the
-  upstream PPT Master workflow and adds Huixin-first enterprise templates.
+  upstream PPT Master engine with Huixin-only bundled themes and a low-context
+  default generation profile.
 metadata:
   version: "4.5.0"
+  plus_distribution: "v05-huixin-lite"
   copyright: "Copyright (c) 2025-2026 Hugo He"
   license: "MIT"
   official_repository: "https://github.com/hugohe3/ppt-master"
@@ -26,10 +28,11 @@ PPT Master is a routed presentation workflow. This entry owns global execution d
 
 - Keep upstream PPT Master `4.5.0` route ownership, integrity checks, scripts,
   and structured-template contracts as the runtime baseline.
-- When a Generate PPTX request does not name another exact template workspace
-  and does not opt out of Huixin/templates, initialize Stage 1 with the most
-  suitable registered `huixin_*` Deck selected by topic and page-role coverage.
-  The user can still switch to another template or free design in Stage 1.
+- Ordinary new Huixin presentations use `huixin-generate.md` by default, not
+  the full Strategist pipeline. Select one of the six bundled Huixin Decks.
+  No competing design directions, confirmation UI, or speaker notes by default.
+- Non-Huixin theme presets are not bundled. Explicit external workspaces and
+  explicit free-design requests remain supported through their routed profiles.
 - A selected Huixin Deck is a theme and narrative system, not a fixed page
   count. Reuse a prototype only when its role and capacity fit the actual page;
   otherwise author a custom page that preserves the selected Huixin identity,
@@ -52,10 +55,11 @@ PPT Master is a routed presentation workflow. This entry owns global execution d
 
 | Selected route / profile | Runtime authority |
 |---|---|
+| Generate PPTX — ordinary Huixin default | [`workflows/profiles/huixin-generate.md`](workflows/profiles/huixin-generate.md) |
 | Generate PPTX — Image to PPTX | [`workflows/profiles/image-to-pptx.md`](workflows/profiles/image-to-pptx.md); Codex-supported, always Quick |
 | Generate PPTX — Beautify | [`workflows/profiles/beautify-pptx.md`](workflows/profiles/beautify-pptx.md); explicit Quick intent selects Quick, otherwise Default |
-| Generate PPTX — ordinary Default | [`workflows/generate-pptx.md`](workflows/generate-pptx.md) |
-| Generate PPTX — ordinary explicit Quick | [`workflows/profiles/quick-generate.md`](workflows/profiles/quick-generate.md) |
+| Generate PPTX — explicit full planning / native reusable structure | [`workflows/generate-pptx.md`](workflows/generate-pptx.md) |
+| Generate PPTX — other direct generation | [`workflows/profiles/quick-generate.md`](workflows/profiles/quick-generate.md) |
 | Create Template | [`workflows/create-template.md`](workflows/create-template.md) |
 | Fill Native PPTX | [`workflows/template-fill-pptx.md`](workflows/template-fill-pptx.md) |
 | Enhance Native PPTX | [`workflows/native-enhance-pptx.md`](workflows/native-enhance-pptx.md) |
@@ -84,7 +88,7 @@ never compete with it.
 - Match the user's language and source language unless the user explicitly overrides it.
 - Localize user-facing option labels and explanations. Keep exact enum IDs or field names when needed for precision.
 - Keep `design_spec.md` section headings and field names in the template's original English; content values may use the user's language.
-- Before switching roles, read the corresponding role reference and output:
+- Only when the selected profile actually switches roles, read its role reference and output:
 
 ```markdown
 ## [Role Switch: <Role Name>]

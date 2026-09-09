@@ -1,3 +1,37 @@
+## 2026-09-09: Huixin Lite v05 distribution
+
+- Scope: optimize `ppt-maker-with-svg/skills/ppt-master-plus` for lower-context
+  ordinary generation; retain upstream 4.5.0 engine and specialist routes.
+- Simplifications: one default Huixin solution; no default Strategist/Confirm UI,
+  notes or image-style alternatives; conditional reference loading; bounded
+  CLI diagnostics; incremental page repair and compact resume brief.
+- Changed: Skill/router/profile, `huixin_runtime.py`, `package_huixin.py`,
+  core requirements, installation guide, theme registries and discovery docs.
+- Removed 29 non-Huixin Brand/Style/Layout/Deck preset directories. All six
+  Huixin Deck directories remain byte-identical, including 129 SVG prototypes,
+  current logos/backgrounds and consulting AI pages. Generic technical assets
+  remain available on demand.
+- Verification: clean Python 3.12 environment installed only core requirements;
+  six representative pages passed full final SVG gates with zero blocking
+  errors and passed native PPTX delivery audits. Five retained advisory SVG
+  warnings; no source-template cosmetic rewrite was performed. LibreOffice
+  rendered all six pages; inspected the contact sheet, including dense
+  architecture, staffing chart and AI operating model.
+- Negative checks: malformed SVG prevents export; invalid deck/path rejected;
+  explicitly requested missing notes block delivery; supplied notes appear in
+  native PPTX; ZIP exclusion fixtures passed.
+- Package: `ppt-master-plus-v05.zip`, 12,340 files, 69,974,552 bytes;
+  SHA-256 `8d073a6f2d35eb5ba7caee4fd4cebd8035296c2493768778ac1c41c37ee73b20`.
+  ZIP CRC/path checks, Huixin-only registry parity, extracted/source byte parity,
+  Skill validation, attribution guard and extracted-package export passed.
+- Commit/push: verified source prepared on the `origin/main` lineage for this
+  change's commit and fast-forward push to `origin/main`, not the earlier
+  image-to-editable-PPT feature branch. ZIP and all smoke artifacts stay local.
+- Limits: no WorkBuddy same-task/model billing A/B or Windows host execution;
+  do not equate instruction-byte reduction with a measured token/cost percentage.
+  Installed WorkBuddy/Codex Skills are not overwritten automatically; replace
+  the old directory with the ZIP and restart the task, preserving user projects.
+
 ## 2026-08-06 15:18:28 CST
 
 - Scope: Write the executable implementation plan for the approved standalone `ppt-hybrid-studio` skill.

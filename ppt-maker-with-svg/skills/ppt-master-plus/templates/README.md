@@ -1,5 +1,11 @@
 # Template Resources
 
+**Plus v05 distribution**: only six Huixin Decks are bundled. Non-Huixin
+Brand/Style/Layout/Deck presets have been removed. Ordinary generation follows
+[`huixin-generate.md`](../workflows/profiles/huixin-generate.md), reads one
+selected spec and actual page prototypes, and skips the staged planning below.
+Generic chart/table/icon assets and technical schemas remain available on demand.
+
 ## Reusable template kinds
 
 Brand, Style, Layout, and Deck are independent template kinds, not stages of one
@@ -45,7 +51,7 @@ Step 3 prepares candidate input without interaction or reading template
 content. The Stage-1 page confirms the communication contract together with an
 explicit free-design/template choice; only template mode expands these indexes.
 Exact roots supplied for the run or handed off by Create Template appear as
-specified candidates. Ordinary requests default to free design; explicit
+specified candidates. In the upstream full workflow, explicit
 template intent or any supplied root defaults to template mode. Exactly one root
 may be preselected, while multiple roots remain unselected candidates. The user
 can always switch modes. The page accepts one registered choice per kind plus
@@ -55,7 +61,7 @@ root is `explicit`. After that combined confirmation,
 validates and installs every selected workspace into the current
 project as its own `design_spec.<kind>.<id>.md` before Stage 2 starts. Template-aware reading begins in final Stage 2 from
 that project-local copy. Quick skips the page, applies supplied exact roots, and
-otherwise uses free design.
+otherwise uses the Plus Huixin default unless the user opts out.
 
 ## Orthogonal contracts
 

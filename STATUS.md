@@ -1,3 +1,10 @@
+## 2026-09-10 — UI regression acceptance skill
+
+- Scope: Add `ui-regression-acceptance/` for page/control inventories, real browser interactions, blur visibility, persistence readback, reproducible tests and explicit coverage gaps.
+- Validation: Skill Creator validation and 8 positive/negative ledger behavior checks passed; scoped diff checked.
+- Commit/push state: This entry accompanies the isolated skill commit; remote verification is reported in the delivery response.
+- Limits: Ledger validation does not prove actual browser execution; whole-application acceptance is a separate run.
+
 ## 2026-09-09: Huixin Compact v06 packaging
 
 - Scope: reduce the install ZIP, not production image fidelity or generation

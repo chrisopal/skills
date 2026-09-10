@@ -1,0 +1,6 @@
+interface:
+  display_name: "界面逐控件回归验收"
+  short_description: "真实浏览器逐项验证交互、失焦回显、保存刷新及控件覆盖缺口"
+  default_prompt: "使用 $ui-regression-acceptance 对当前应用执行逐页面、逐控件的浏览器回归验收，保留复跑用例并明确未测项。"
+policy:
+  allow_implicit_invocation: true

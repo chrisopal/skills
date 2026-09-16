@@ -1,0 +1,7 @@
+interface:
+  display_name: "Yingzao · 营造"
+  short_description: "把真实建筑与在地文化照片转为有空间关系的编辑海报"
+  brand_color: "#AC3C33"
+  default_prompt: "Use $yingzao to turn my real architecture or place-based cultural photo into an art-directed editorial poster."
+policy:
+  allow_implicit_invocation: true

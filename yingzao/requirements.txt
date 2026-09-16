@@ -1,0 +1,4 @@
+Pillow>=10.0,<13
+numpy>=1.26,<3
+opencv-python-headless>=4.9,<5
+fonttools>=4.55,<5

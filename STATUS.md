@@ -1,3 +1,11 @@
+## 2026-09-16 — Yingzao upstream baseline
+
+- Scope: Import the complete upstream `yingzao/` skill and reusable reference assets at `58c9b8738858bae0ab2c669d0a0fead90d4a80c9`; record provenance in `yingzao/UPSTREAM.md`.
+- Behavior: Original skill files remain byte-for-byte unchanged; no generated user outputs or Python environments are included.
+- Validation: Upstream/source file hashes match; Skill Creator validation, design catalog validation, 24 upstream tests, and diff whitespace checks are required before this commit.
+- Commit/push state: This entry accompanies the baseline commit; remote verification and installed-copy synchronization are reported in the task response.
+- Remaining limits: No real image-generation run; functional adjustments are separate from this baseline.
+
 ## 2026-09-07 — Codex efficient delivery skill
 
 - Scope: Add `codex-efficient-delivery/SKILL.md` for clarifying vague requests into executable task prompts, bounded implementation, and evidence-based completion.

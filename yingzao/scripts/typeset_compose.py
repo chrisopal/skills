@@ -14,6 +14,7 @@ from typing import Any
 sys.dont_write_bytecode = True
 
 from _runtime import ensure_runtime
+from _integrity import sha256
 
 ensure_runtime(("PIL", "fontTools"))
 
@@ -850,7 +851,7 @@ def main() -> int:
         "errors": errors,
         "passed": not errors,
     }
-    if args.report:
+    if args.report and (errors or args.validate_only):
         args.report.parent.mkdir(parents=True, exist_ok=True)
         args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if errors:
@@ -879,6 +880,10 @@ def main() -> int:
         result.convert("RGB").save(args.output, quality=95, subsampling=0)
     else:
         result.save(args.output)
+    report["integrity"] = {"spec_sha256": sha256(args.spec), "guide_sha256": sha256(args.output)}
+    if args.report:
+        args.report.parent.mkdir(parents=True, exist_ok=True)
+        args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"saved {len(layer_reports)} measured text layers to {args.output}")
     return 0
 

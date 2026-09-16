@@ -53,6 +53,15 @@ class RuntimeBootstrapTests(unittest.TestCase):
         self.assertEqual(execve.call_args.args[0], str(candidate))
         self.assertEqual(execve.call_args.args[2][_runtime.HANDOFF_GUARD_ENV], "1")
 
+    def test_virtualenv_symlink_to_same_binary_is_not_skipped(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            interpreter = root / ".venv/bin/python"
+            interpreter.parent.mkdir(parents=True)
+            interpreter.symlink_to(Path(sys.executable).resolve())
+            with patch.dict(os.environ, {_runtime.RUNTIME_OVERRIDE_ENV: ""}):
+                self.assertIn(interpreter.parent.resolve() / interpreter.name, _runtime.runtime_candidates(root))
+
 
 if __name__ == "__main__":
     unittest.main()

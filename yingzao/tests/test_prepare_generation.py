@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import subprocess
 import sys
 import tempfile
@@ -116,6 +117,12 @@ class PrepareGenerationTests(unittest.TestCase):
             ),
             encoding="utf-8",
         )
+        report_data = json.loads(report.read_text())
+        report_data["integrity"] = {
+            "spec_sha256": hashlib.sha256(spec.read_bytes()).hexdigest(),
+            "guide_sha256": hashlib.sha256(guide.read_bytes()).hexdigest(),
+        }
+        report.write_text(json.dumps(report_data), encoding="utf-8")
         recipe = analysis / "recipe.json"
         token_rows = [
             {"id": "cap.subject.identity", "category": "subject", "label": "真实主体"},
@@ -321,6 +328,48 @@ class PrepareGenerationTests(unittest.TestCase):
             )
             self.assertEqual(manifest["input_order"][-1], "support-1")
             self.assertEqual(len(manifest["referenced_image_paths"]), 4)
+
+    def test_rejects_changed_guide_or_spec_and_legacy_report(self) -> None:
+        for target in ("--guide", "--typeset-spec", "--typeset-report"):
+            with self.subTest(target=target), tempfile.TemporaryDirectory() as temp_dir:
+                command = self.make_fixture(Path(temp_dir))
+                path = Path(command[command.index(target) + 1])
+                if target == "--guide":
+                    Image.new("RGB", (640, 360), "#123456").save(path)
+                elif target == "--typeset-spec":
+                    path.write_text(path.read_text() + " ")
+                else:
+                    report = json.loads(path.read_text())
+                    report.pop("integrity")
+                    path.write_text(json.dumps(report))
+                result = subprocess.run(command, capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn("integrity", result.stdout)
+
+    def test_series_constraints_reach_prompt_and_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            command = self.make_fixture(root)
+            series = root / "series.json"
+            series.write_text(json.dumps({"schema_version": 1, "series_id": "city-2026",
+                "shared": {"palette": "mineral red and warm white", "display_glyph": "narrow carved strokes",
+                           "material": "fine paper grain", "identity_policy": "preserve each real roof"}}))
+            result = subprocess.run(command + ["--series-spec", str(series)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            manifest = json.loads((root / "output/yingzao/run/analysis/generation-call.json").read_text())
+            self.assertIn("mineral red and warm white", manifest["tool_arguments"]["prompt"])
+            self.assertEqual(manifest["series"]["sha256"], hashlib.sha256(series.read_bytes()).hexdigest())
+
+    def test_rejects_incomplete_series_before_ready(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            command = self.make_fixture(root)
+            series = root / "series.json"
+            series.write_text(json.dumps({"schema_version": 1, "series_id": "city", "shared": {"palette": "red"}}))
+            result = subprocess.run(command + ["--series-spec", str(series)], capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("four nonempty shared fields", result.stdout)
+            self.assertFalse((root / "output/yingzao/run/analysis/generation-call.json").exists())
 
 
 if __name__ == "__main__":

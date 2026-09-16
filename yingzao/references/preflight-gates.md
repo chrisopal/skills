@@ -28,7 +28,7 @@
    - 原照加居中标题、双居中孤岛、统一滤镜加字、普通渐变、矩形拼版均不通过。只有用户明确要求组照/对照时保留照片矩形。
 
 6. **排版垫图**
-   - `typeset_compose.py` 报告 `passed=true`：字体 cmap、fallback、真实字面、碰撞、溢出、对齐组、primitive 禁穿区、遮挡契约与竖排顺序均通过。
+   - `typeset_compose.py` 报告 `passed=true` 且 spec / guide 内容哈希与本次输入一致（旧报告须重跑排版）：字体 cmap、fallback、真实字面、碰撞、溢出、对齐组、primitive 禁穿区、遮挡契约与竖排顺序均通过。
    - 每个展示层显式声明 `glyph_design_mode`；`literal` 使用 `guide_render: text`，`reinterpret` 使用 `guide_render: scaffold`，不能把全尺寸普通字体轮廓当作重绘垫图。
    - `text-behind-subject` 使用从 Image 1 轮廓得到的 `subject_front + subject-footprint`；规则线或空原因不能证明遮挡。
 

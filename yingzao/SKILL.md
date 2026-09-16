@@ -7,6 +7,10 @@ description: Transform real Chinese architecture and place-based cultural photos
 
 把真实建筑与在地文化照片转译为有主体处理、主动背景、字形设计和空间互动的编辑海报。先从照片提出创意命题，再让一张兼容的主导参考强化它；Token 负责检索与机制追踪，不能替代设计判断。
 
+## 本地维护入口
+
+本仓库在上游基线上维护；来源与版本见 [UPSTREAM.md](UPSTREAM.md)。脚本可统一通过 `python3 <skill-dir>/scripts/run.py <command> ...` 调用，保留调用者工作目录与原脚本参数。首次运行用 `run.py check`；需要运行环境、系列约束或结构化成图读回时，按需读取 [local-workflow.md](references/local-workflow.md)。
+
 ## 核心合同
 
 - 高风格化任务固定使用：Image 1 校正原图、Image 2 一张主导参考实图、Image 3 稀疏中性排版垫图。生成前必须由 `scripts/prepare_generation.py` 编译成一次调用清单，不得互相替代、改序或在调用时重新概括提示词。
@@ -26,7 +30,7 @@ description: Transform real Chinese architecture and place-based cultural photos
 
 ### 0. 建立安全输入
 
-1. 运行 `python3 scripts/check_dependencies.py`。入口会自动寻找调用者目录中的兼容 `.venv`；失败时停止并说明，不全局安装，也不静默降级。
+1. 运行 `python3 scripts/check_dependencies.py`。入口会自动寻找调用者目录中的兼容 `.venv`，再检查用户级 `~/.local/share/yingzao/venv`；失败时停止并说明，不全局安装，也不静默降级。
 2. 产物写入调用者工作目录的 `output/yingzao/<run-id>/`，不得写入 Skill 包。
 3. 每张来源运行 `scripts/photo_preflight.py`，判定 `hero / support / reject`，记录照片轴和构图问题。需要时先用 `scripts/rectify.py` 做确定性校正。
 4. 事实按 `VERIFIED / OBSERVED / USER-CONFIRMED / UNCONFIRMED` 分级；只有前三类进入海报。细则见 [photo-preflight.md](references/photo-preflight.md) 与 [research-and-annotation.md](references/research-and-annotation.md)。
@@ -56,13 +60,13 @@ python3 scripts/design_tokens.py recipe <id> --json \
 
 ### 3. 整体生成
 
-单图和同址多图融合默认使用 edit。先按 [image-generation-workflow.md](references/image-generation-workflow.md) 写提示词并运行 `scripts/prepare_generation.py`；只有脚本返回 `READY` 才能调用图像模型。调用时原样使用清单中的 `tool_arguments`，不得省略主导参考、垫图或主体/背景/互动段。
+单图和同址多图融合默认使用 edit。先按 [image-generation-workflow.md](references/image-generation-workflow.md) 写提示词并运行 `scripts/prepare_generation.py`；排版报告必须由当前垫图和 spec 同次生成，内容哈希不匹配或旧报告应重跑排版；只有脚本返回 `READY` 才能调用图像模型。用户要求系列时，可通过 `--series-spec` 传入同一份共享约束，按 `local-workflow.md` 编入每次调用。调用时原样使用清单中的 `tool_arguments`，不得省略主导参考、垫图或主体/背景/互动段。
 
 多图“合一”时逐图提取主体，重组进共享透视、光向、接触阴影、边缘语言和材质的同一环境；只有用户明确要求组照或对照时才保留照片矩形。
 
 ### 4. 交付与按需扩展
 
-- 生成后先用读图工具打开成图，按 [image-generation-workflow.md](references/image-generation-workflow.md) 做一次五项快速读回，把最明显的 0–3 个问题写入 `analysis/readback.md`；不因此自动重生成。
+- 生成后先用读图工具打开成图，按 [image-generation-workflow.md](references/image-generation-workflow.md) 做一次五项快速读回，把最明显的 0–3 个问题写入 `analysis/readback.md`；可用 `run.py readback` 根据实际读图观察生成该记录；脚本不代替视觉判断，系列任务还需对照共享约束。不因此自动重生成。
 - 用户不要拼图：交付海报。用户要对照：运行 `scripts/make_comparison.py ORIGINAL POSTER OUTPUT`。
 - 邀请用户指出字体、主体处理、构图、材质、文案或融合关系中的具体修改。收到反馈后，局部问题以当前成图为 edit target；主体、背景、主布局、参考方向或图文关系等结构问题回到校正原图，重做命题、参考和垫图。
 - 海报交付后问一次：“要不要继续把这张海报扩展成一张 3×3 视频分镜图，并附一段可直接交给视频模型的提示词？”用户同意后才读取 [video-storyboard.md](references/video-storyboard.md)；不要自动生成视频。

@@ -15,6 +15,7 @@ from typing import Any
 sys.dont_write_bytecode = True
 
 from _runtime import ensure_runtime
+from _integrity import sha256
 
 ensure_runtime(("PIL",))
 
@@ -66,6 +67,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--prompt", type=Path, required=True)
     parser.add_argument("--output-image", type=Path, required=True)
     parser.add_argument("--manifest", type=Path)
+    parser.add_argument("--series-spec", type=Path, help="optional shared series constraints")
     return parser.parse_args()
 
 
@@ -77,14 +79,6 @@ def load_json(path: Path) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"expected a JSON object: {path}")
     return value
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def image_metadata(path: Path) -> dict[str, Any]:
@@ -403,6 +397,30 @@ def main() -> int:
         print(f"ERROR: {exc}")
         return 1
 
+    integrity = report.get("integrity", {})
+    if not isinstance(integrity, dict):
+        integrity = {}
+    for key, path in (("spec_sha256", args.typeset_spec), ("guide_sha256", args.guide)):
+        if integrity.get(key) != sha256(path):
+            errors.append(f"typeset integrity mismatch or missing {key}; rerun typeset_compose.py")
+
+    series = None
+    if args.series_spec:
+        try:
+            series_spec = load_json(args.series_spec)
+            shared = series_spec.get("shared")
+            fields = ("palette", "display_glyph", "material", "identity_policy")
+            if (series_spec.get("schema_version") != 1
+                    or not isinstance(series_spec.get("series_id"), str)
+                    or not series_spec["series_id"].strip()
+                    or not isinstance(shared, dict)
+                    or set(shared) != set(fields)
+                    or any(not isinstance(shared[key], str) or not shared[key].strip() for key in fields)):
+                raise ValueError("series spec requires schema_version=1, series_id and four nonempty shared fields")
+            series = {"spec": series_spec, "sha256": sha256(args.series_spec)}
+        except (OSError, ValueError) as exc:
+            errors.append(str(exc))
+
     if report.get("passed") is not True:
         errors.append("typeset report must have passed=true")
     if list(spec.get("canvas", [])) != list(report.get("canvas", [])):
@@ -413,6 +431,10 @@ def main() -> int:
     bindings, marker_labels, design_errors = validate_design_plan(design_plan, recipe, spec, report)
     errors.extend(design_errors)
     prompt = compile_mechanism_bindings(authored_prompt, bindings, marker_labels)
+    if series:
+        prompt += "\n\nSeries constraints (shared across this series):\n" + json.dumps(
+            series["spec"], ensure_ascii=False, indent=2
+        )
 
     image_data: dict[str, dict[str, Any]] = {}
     for label, path in (("source", args.source), ("reference", args.reference), ("guide", args.guide)):
@@ -529,6 +551,7 @@ def main() -> int:
     manifest = {
         "schema_version": 2,
         "action": "edit",
+        "series": series,
         "input_order": input_order,
         "referenced_image_paths": tool_arguments["referenced_image_paths"],
         "prompt_path": str(staged_prompt),

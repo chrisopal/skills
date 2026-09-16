@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import subprocess
 import sys
 import tempfile
@@ -72,7 +73,11 @@ class TypesetComposeGateTests(unittest.TestCase):
                 capture_output=True,
                 text=True,
             )
-            return completed, json.loads(report_path.read_text(encoding="utf-8"))
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+            if completed.returncode == 0:
+                self.assertEqual(report["integrity"]["spec_sha256"], hashlib.sha256(spec_path.read_bytes()).hexdigest())
+                self.assertEqual(report["integrity"]["guide_sha256"], hashlib.sha256(output_path.read_bytes()).hexdigest())
+            return completed, report
 
     def crossing_rule_spec(self) -> dict:
         return {

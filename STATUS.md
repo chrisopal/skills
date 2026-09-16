@@ -1,3 +1,12 @@
+## 2026-09-16 — Yingzao local execution and validation
+
+- Scope: Add `yingzao/scripts/run.py`, explicit visual readback recording, optional series constraints, and typeset spec/guide fingerprints; document behavior and migration in `yingzao/references/local-workflow.md` and `docs/plans/2026-09-16-yingzao-adaptation-design.md`.
+- Simplification: Reuse the upstream scripts through one dispatcher and share the existing SHA-256 helper; no new runtime dependencies or model calls.
+- Runtime: Fix virtualenv symlink discovery and support the optional user-owned `~/.local/share/yingzao/venv`; default Python dependency check passes.
+- Validation: 32 tests pass (including changed guide/spec, legacy reports, series prompt delivery, readback completeness and preserved input images); Skill Creator, 104-Token/22-Recipe catalog, Python syntax, JSON and diff checks pass.
+- Commit/push state: Original baseline `ead1462` was pushed and synchronized first. This entry accompanies the separate adaptation commit; remote and installed-tree verification are reported in the delivery response.
+- Remaining limits: Visual readback contains Agent observations, not automated OCR or aesthetic inference. Series consistency is an input contract; real generated-image quality remains untested. Existing unrelated workspace changes are excluded.
+
 ## 2026-09-16 — Yingzao upstream baseline
 
 - Scope: Import the complete upstream `yingzao/` skill and reusable reference assets at `58c9b8738858bae0ab2c669d0a0fead90d4a80c9`; record provenance in `yingzao/UPSTREAM.md`.

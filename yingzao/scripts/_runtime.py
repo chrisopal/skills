@@ -31,13 +31,16 @@ def runtime_candidates(start: Path | None = None) -> list[Path]:
     for root in (current, *current.parents):
         candidates.extend((root / ".venv" / "bin" / "python", root / ".venv" / "Scripts" / "python.exe"))
 
-    resolved_current = Path(sys.executable).resolve()
+    candidates.append(Path.home() / ".local" / "share" / "yingzao" / "venv" / "bin" / "python")
+
+    resolved_current = Path(sys.executable).absolute()
     unique: list[Path] = []
     seen: set[Path] = set()
     for candidate in candidates:
         if not candidate.exists():
             continue
-        resolved = candidate.resolve()
+        # Virtualenv symlinks can share a binary while loading different packages.
+        resolved = candidate.absolute()
         if resolved == resolved_current or resolved in seen:
             continue
         seen.add(resolved)

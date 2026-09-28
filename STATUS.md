@@ -1,3 +1,10 @@
+## 2026-09-28 — AI practical book editor v1.2.0
+
+- Scope: Publish `ai-practical-book-editor/` rules, references, reusable templates, evaluation definitions and deterministic tests.
+- Validation: 22 unittest cases passed; package manifest hashes checked. The 40 semantic evaluation cases remain not_run.
+- Commit/push: This entry accompanies the scoped commit to the configured origin branch; remote verification is reported in the delivery response.
+- Exclusions: Local test logs/results and unrelated workspace changes are not included. No client installation or manuscript edits performed.
+
 ## 2026-09-16 — Yingzao local execution and validation
 
 - Scope: Add `yingzao/scripts/run.py`, explicit visual readback recording, optional series constraints, and typeset spec/guide fingerprints; document behavior and migration in `yingzao/references/local-workflow.md` and `docs/plans/2026-09-16-yingzao-adaptation-design.md`.

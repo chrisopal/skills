@@ -1,0 +1,142 @@
+{
+  "skill": "ai-practical-book-editor",
+  "version": "1.2.0",
+  "manifest_excludes_itself": true,
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 2807,
+      "sha256": "b3d507eee3d2d444439e485d724a11113494315e2329e31ddf647b4e591ab9b0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2253,
+      "sha256": "01ff00ce2413c8bbb682aef2d6b207e8ec3e8873858c9fea9f0c4ac7d795346f"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 10213,
+      "sha256": "1c9dbe6047901ee5520ceb279ec0a38ee0b2db49d4a27a9534096472b7db07b2"
+    },
+    {
+      "path": "VALIDATION.md",
+      "bytes": 3018,
+      "sha256": "26685f2bd414b3fd479498169d893a7d4e02ec933934f5e63b80e7de41df478a"
+    },
+    {
+      "path": "evals/RUNNING.md",
+      "bytes": 714,
+      "sha256": "f5120b90ae9c8c7b2cdd8bded1e22a1b3df4907d532d2acd4959447767148fa8"
+    },
+    {
+      "path": "evals/evals.json",
+      "bytes": 17325,
+      "sha256": "533d29254bbeed361d9b1192b0dc7fccd5964e729fec4d5cb7cc8cc5fd1e69f9"
+    },
+    {
+      "path": "examples/current-manuscript-calibration.md",
+      "bytes": 4891,
+      "sha256": "cb1d8b4c209bc94b4562f722802c8f97b1597ec9066ebf9d716bacbeb7142ebd"
+    },
+    {
+      "path": "examples/full-book-test-notes.md",
+      "bytes": 1576,
+      "sha256": "876061239e7edafa46318bf1a10e1d909886081f813ffb10cd856d05415e414c"
+    },
+    {
+      "path": "examples/voice-anchors.md",
+      "bytes": 1471,
+      "sha256": "6536e77a5d29885aee74c6396ec7a7d2c6006b987d9da095bf4fa0277c9f1932"
+    },
+    {
+      "path": "references/book-audit.md",
+      "bytes": 2237,
+      "sha256": "1bdcb9a29629451e99fbbe5f3de304e2e9057dcd68b2bf5ed5316cb880eae8b9"
+    },
+    {
+      "path": "references/case-and-status.md",
+      "bytes": 2299,
+      "sha256": "1ee471fc1de022e14956f95c82ad9550fbaf4b149a90366dae20dd45e546d6e9"
+    },
+    {
+      "path": "references/editorial-guide.md",
+      "bytes": 3711,
+      "sha256": "470c45cd85957ae75fdc641110f3032a932bb95481e6c4afe1cdebcee1d8d8f1"
+    },
+    {
+      "path": "references/fidelity-and-status.md",
+      "bytes": 2361,
+      "sha256": "3e8917d31f74ff327f906cfd6c7d58eefefadd9c569d7c07787879c53e78d054"
+    },
+    {
+      "path": "references/neutral-professional-chinese.md",
+      "bytes": 6122,
+      "sha256": "604834aedb4fdda64674de7c71ced729860f8487363d2afedad31b14cb9465b6"
+    },
+    {
+      "path": "references/reader-check.md",
+      "bytes": 1306,
+      "sha256": "4526c6be4bc6843201c9f67a2fb0ebec462838aa5ba4de2fb97389b347ea671c"
+    },
+    {
+      "path": "references/sources-v1-history.md",
+      "bytes": 2921,
+      "sha256": "2bd14f1eee3040c91e75b9e903d8c810577fd8f4947ecbd3510bf21fa0ee17ee"
+    },
+    {
+      "path": "references/sources.md",
+      "bytes": 1987,
+      "sha256": "6588ab0929170b94490ab3cf451583f0d5c017d23d506f7d4bc1ec79a25e7583"
+    },
+    {
+      "path": "references/style-examples.md",
+      "bytes": 3667,
+      "sha256": "8eb2c447708f94454b8c82745d4268ffcdcd931310a650e09b97afb683bb58ba"
+    },
+    {
+      "path": "references/teaching-and-repetition.md",
+      "bytes": 2455,
+      "sha256": "52f17ac7955a3dcb504a24d96d60d442159e5ff8198a3f75bf36ec49f65335d2"
+    },
+    {
+      "path": "scripts/audit_inventory.py",
+      "bytes": 7265,
+      "sha256": "f9b48c100d75fa351d8f30025815cafe1115f713f00abb06cb972cf05b7f09e1"
+    },
+    {
+      "path": "templates/book-ledgers.md",
+      "bytes": 1221,
+      "sha256": "96e119233e887eef44261fb3f31757ea8aa145bd33e1a7b783049c297f88497d"
+    },
+    {
+      "path": "templates/chapter-revision.md",
+      "bytes": 1386,
+      "sha256": "c0f816b01fb63e6c16a2c79ad6df3a8d023efd0022629ef16b32a16efbe5384d"
+    },
+    {
+      "path": "templates/move-ledger.md",
+      "bytes": 715,
+      "sha256": "5c35555b4c17342d79f7fd3d16dac6fd4341c6432c7dcba6840b0b9354bc70b3"
+    },
+    {
+      "path": "templates/review-report.md",
+      "bytes": 1390,
+      "sha256": "f9ca0032f6269838a0f4acadfd9ca2038a6fda951617898e801aa9a366b56620"
+    },
+    {
+      "path": "templates/revision-task.txt",
+      "bytes": 1088,
+      "sha256": "e25d7adceda3de2d9023d39ab97c666c8394dd997897c9107346d2b9140b1547"
+    },
+    {
+      "path": "tests/test_inventory.py",
+      "bytes": 6253,
+      "sha256": "8e25f763bcc17ea989e7599bb3f94c660f558d80048a4a7078b41571dc305675"
+    },
+    {
+      "path": "tests/test_style_inventory.py",
+      "bytes": 2174,
+      "sha256": "aa79c02abbb4a54ac3c67b7e593b7245fe7307b0a292ba684fdaa13ce58d395b"
+    }
+  ]
+}

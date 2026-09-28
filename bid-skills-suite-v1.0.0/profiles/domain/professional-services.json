@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "type": "domain",
+  "id": "professional-services",
+  "version": "1.0.0",
+  "display_name": "咨询、运维与专业服务",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "focus_terms": [
+      "服务范围",
+      "SLA",
+      "交付物",
+      "人员",
+      "响应时间",
+      "驻场",
+      "考核"
+    ],
+    "fact_fields": {
+      "service_scope": "text",
+      "sla_raw": "text",
+      "staffing_raw": "text",
+      "acceptance_method": "text"
+    },
+    "solution_dimensions": [
+      "方法与工作流程",
+      "组织与职责",
+      "阶段交付物",
+      "响应升级机制",
+      "质量与验收"
+    ],
+    "evidence_types": [
+      "方法论资料",
+      "经授权案例",
+      "人员履历与证照",
+      "服务记录"
+    ],
+    "pitfalls": [
+      "响应时间与解决时间混淆",
+      "虚构人员可用性",
+      "用愿景代替可验收交付物"
+    ]
+  }
+}

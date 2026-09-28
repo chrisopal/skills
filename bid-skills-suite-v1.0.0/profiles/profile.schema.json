@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "type",
+    "id",
+    "version",
+    "display_name",
+    "readiness",
+    "authority",
+    "data"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "type": {
+      "enum": [
+        "procurement",
+        "domain",
+        "layout"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "readiness": {
+      "const": "seed_requires_project_validation"
+    },
+    "authority": {
+      "const": "checklist_only_not_project_facts"
+    },
+    "data": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

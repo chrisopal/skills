@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bid-skills:bid-visuals:output:1.0",
+  "title": "标书配图与图表制作输出",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill_id": {
+      "const": "bid-visuals"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "needs_review",
+        "blocked",
+        "ready"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "revision",
+          "relative_path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "figures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "section_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "architecture",
+                  "flow",
+                  "network",
+                  "schedule",
+                  "configuration",
+                  "data_chart",
+                  "concept"
+                ]
+              },
+              "specification": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_path": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rendered_path": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "caption": {
+                "type": "string",
+                "minLength": 1
+              },
+              "alt_text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "specified",
+                  "rendered",
+                  "reviewed"
+                ]
+              },
+              "rights": {
+                "type": "string",
+                "enum": [
+                  "original",
+                  "authorized",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "section_id",
+              "title",
+              "kind",
+              "specification",
+              "source_path",
+              "rendered_path",
+              "caption",
+              "alt_text",
+              "evidence_ids",
+              "state",
+              "rights"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "unknowns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "figures",
+        "unknowns"
+      ],
+      "additionalProperties": false
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "skill_id",
+    "project_id",
+    "artifact_id",
+    "revision",
+    "created_at",
+    "status",
+    "inputs",
+    "summary",
+    "data",
+    "warnings",
+    "blockers"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "tender",
+            "supplier",
+            "official",
+            "human_decision",
+            "synthetic"
+          ]
+        }
+      },
+      "required": [
+        "source_id",
+        "revision",
+        "sha256",
+        "location",
+        "quote",
+        "kind"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

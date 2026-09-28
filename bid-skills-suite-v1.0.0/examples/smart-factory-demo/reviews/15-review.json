@@ -1,0 +1,170 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-review-remediation",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-15",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "blocked",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-01",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "6b05f10e88cff40d184a35490559203b1bd67e9f4ed51f2d3a4bebff0ae7a2d4"
+    },
+    {
+      "artifact_id": "ART-DEMO-02",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "25caefe7b3e39999045ed8cf347b0bb03deecf2d17d03e729c138810dd95903f"
+    },
+    {
+      "artifact_id": "ART-DEMO-03",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "26689fc1c1beac55fa2c7d28d307196d704a9bf9d86fbe2439a51ef95a7adb6d"
+    },
+    {
+      "artifact_id": "ART-DEMO-04",
+      "revision": 1,
+      "relative_path": "artifacts/04-scoring.json",
+      "sha256": "9ea898335a52986412bc9de79ee0fd8eed1e8d10c02fac2dd5ffbcbe11fffe58"
+    },
+    {
+      "artifact_id": "ART-DEMO-05",
+      "revision": 1,
+      "relative_path": "artifacts/05-compliance.json",
+      "sha256": "08368ef001170159f9a412bc9ca75103075bdb0ca9612ad627573c83a921f142"
+    },
+    {
+      "artifact_id": "ART-DEMO-06",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-rules.json",
+      "sha256": "aaab550e105e1e422aa22bce7e7a583bfc1deabd35835d6e022f59bac4b831ff"
+    },
+    {
+      "artifact_id": "ART-DEMO-07",
+      "revision": 1,
+      "relative_path": "artifacts/07-response-strategy.json",
+      "sha256": "bcfe82e3076c8fbbe9c1c4f74c63719d6797105aaf238e951f55db98eb49c26e"
+    },
+    {
+      "artifact_id": "ART-DEMO-08",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "1b61a8bf1f9512c0e2e5ce2ad2820b607374e4557eda4d6b01a9ed8376ee750d"
+    },
+    {
+      "artifact_id": "ART-DEMO-09",
+      "revision": 1,
+      "relative_path": "artifacts/09-evidence-selection.json",
+      "sha256": "0bde012f0482456b5cb83c7176ddd9d84a41a155a2eed6257760ea1e58860c3e"
+    },
+    {
+      "artifact_id": "ART-DEMO-10",
+      "revision": 1,
+      "relative_path": "artifacts/10-solution-design.json",
+      "sha256": "8a8912a4cbd8112ef256fd5243b7b86f32728605eebd445a776b94db4331e888"
+    },
+    {
+      "artifact_id": "ART-DEMO-11",
+      "revision": 1,
+      "relative_path": "artifacts/11-technical-content.json",
+      "sha256": "635380469e33dc2401041c98281ec4d95186b49e750e98cc7714e08c6cd5da91"
+    },
+    {
+      "artifact_id": "ART-DEMO-12",
+      "revision": 1,
+      "relative_path": "artifacts/12-commercial-content.json",
+      "sha256": "8f5ddb6416db74d2db2824eb2f029a09d4546eab9fb7a46365b82fb22fc9decd"
+    },
+    {
+      "artifact_id": "ART-DEMO-13",
+      "revision": 1,
+      "relative_path": "artifacts/13-visuals.json",
+      "sha256": "2b317b45c79abdfdfb6db0219e0461560431d1e510d9adb92a49e0db8f15f16e"
+    },
+    {
+      "artifact_id": "ART-DEMO-14",
+      "revision": 1,
+      "relative_path": "artifacts/14-layout.json",
+      "sha256": "243a6c82f2e4fd6e269fe11679941398129fb11afa902e5ddea55c4e5b41b6a2"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "review_scope": "limited",
+    "reviewed_inputs_sha256": null,
+    "findings": [
+      {
+        "id": "FIND-001",
+        "severity": "blocking",
+        "category": "qualification",
+        "related_ids": [
+          "C-001",
+          "SEL-002"
+        ],
+        "description": "缺正式营业执照原件，当前不能满足资格材料检查",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L18",
+            "quote": "投标人须提供本企业营业执照复印件。",
+            "kind": "synthetic"
+          }
+        ],
+        "remediation": "向实际资料负责人取得并核验正式原件",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-002",
+        "severity": "warning",
+        "category": "coverage",
+        "related_ids": [
+          "R-003"
+        ],
+        "description": "性能测试前提未明确",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L9",
+            "quote": "R3：常用查询在双方约定测试条件下响应时间不超过 2 秒，并发用户数在项目启动时确认。",
+            "kind": "synthetic"
+          }
+        ],
+        "remediation": "澄清测试条件并更新方案、响应表和评审",
+        "state": "open",
+        "confirmation_ref": null
+      }
+    ],
+    "checks": [
+      {
+        "area": "资格材料",
+        "state": "failed",
+        "note": "合成示例没有正式证照"
+      },
+      {
+        "area": "完整内容与版式",
+        "state": "unknown",
+        "note": "仅有一个示例章节，未渲染成稿"
+      }
+    ],
+    "human_approval_ref": null,
+    "release_recommendation": "blocked",
+    "limitations": [
+      "未进行实际模型运行或真实招标验收"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": [
+    "实际企业资料或确认未提供，不能正式交付。"
+  ]
+}

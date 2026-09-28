@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-response-strategy",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-07",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-02",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "25caefe7b3e39999045ed8cf347b0bb03deecf2d17d03e729c138810dd95903f"
+    },
+    {
+      "artifact_id": "ART-DEMO-03",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "26689fc1c1beac55fa2c7d28d307196d704a9bf9d86fbe2439a51ef95a7adb6d"
+    },
+    {
+      "artifact_id": "ART-DEMO-04",
+      "revision": 1,
+      "relative_path": "artifacts/04-scoring.json",
+      "sha256": "9ea898335a52986412bc9de79ee0fd8eed1e8d10c02fac2dd5ffbcbe11fffe58"
+    },
+    {
+      "artifact_id": "ART-DEMO-05",
+      "revision": 1,
+      "relative_path": "artifacts/05-compliance.json",
+      "sha256": "08368ef001170159f9a412bc9ca75103075bdb0ca9612ad627573c83a921f142"
+    },
+    {
+      "artifact_id": "ART-DEMO-06",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-rules.json",
+      "sha256": "aaab550e105e1e422aa22bce7e7a583bfc1deabd35835d6e022f59bac4b831ff"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "questions": [
+      {
+        "id": "Q-001",
+        "related_ids": [
+          "R-003"
+        ],
+        "question": "性能验收的并发用户数、数据量与网络条件分别是什么？",
+        "impact": "决定容量设计与性能承诺边界",
+        "owner": "售前／客户技术负责人",
+        "answer": null
+      },
+      {
+        "id": "Q-002",
+        "related_ids": [
+          "R-002"
+        ],
+        "question": "ERP接口开放范围与对接责任由谁确认？",
+        "impact": "决定集成工作量与实施计划",
+        "owner": "集成负责人",
+        "answer": null
+      }
+    ],
+    "decisions": [
+      {
+        "id": "DEC-001",
+        "topic": "响应方案边界",
+        "proposal": "按已提供能力设计，追溯适配与接口条件先澄清",
+        "state": "proposed",
+        "confirmation_ref": null,
+        "related_ids": [
+          "R-001",
+          "R-002"
+        ]
+      }
+    ],
+    "response_priorities": [
+      {
+        "related_id": "C-001",
+        "priority": "critical",
+        "rationale": "资格材料缺失，须先补齐"
+      },
+      {
+        "related_id": "S-001",
+        "priority": "high",
+        "rationale": "技术方案占35分且包含不明接口条件"
+      }
+    ],
+    "assumptions": [
+      "示例不作为真实商务承诺"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

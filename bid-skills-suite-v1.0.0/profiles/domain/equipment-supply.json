@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "type": "domain",
+  "id": "equipment-supply",
+  "version": "1.0.0",
+  "display_name": "设备与货物采购",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "focus_terms": [
+      "型号",
+      "参数",
+      "数量",
+      "交期",
+      "检测",
+      "安装",
+      "备件",
+      "质保"
+    ],
+    "fact_fields": {
+      "product_model_raw": "text",
+      "quantity_raw": "text",
+      "parameter_raw": "text",
+      "delivery_raw": "text",
+      "warranty_raw": "text"
+    },
+    "solution_dimensions": [
+      "选型与逐项参数响应",
+      "配置清单",
+      "交付与安装",
+      "检测与验收",
+      "培训与售后"
+    ],
+    "evidence_types": [
+      "制造商资料",
+      "授权书",
+      "检验报告",
+      "供货业绩",
+      "售后能力证明"
+    ],
+    "pitfalls": [
+      "更高参数并不自动兼容",
+      "忽略计量单位",
+      "将概念图片当实际产品证明"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "sources": [
+    {
+      "source_id": "SRC-001",
+      "revision": 1,
+      "relative_path": "inputs/synthetic-tender.md",
+      "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+      "bytes": 1664,
+      "role": "main"
+    },
+    {
+      "source_id": "SRC-002",
+      "revision": 1,
+      "relative_path": "inputs/synthetic-supplier.md",
+      "sha256": "35dcf7e87e47c15a382b882b0c954969a385cd5b873851c2d28a32fbbe51a5e9",
+      "bytes": 429,
+      "role": "supplier"
+    }
+  ]
+}

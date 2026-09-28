@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-technical-writing",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-11",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-03",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "26689fc1c1beac55fa2c7d28d307196d704a9bf9d86fbe2439a51ef95a7adb6d"
+    },
+    {
+      "artifact_id": "ART-DEMO-04",
+      "revision": 1,
+      "relative_path": "artifacts/04-scoring.json",
+      "sha256": "9ea898335a52986412bc9de79ee0fd8eed1e8d10c02fac2dd5ffbcbe11fffe58"
+    },
+    {
+      "artifact_id": "ART-DEMO-05",
+      "revision": 1,
+      "relative_path": "artifacts/05-compliance.json",
+      "sha256": "08368ef001170159f9a412bc9ca75103075bdb0ca9612ad627573c83a921f142"
+    },
+    {
+      "artifact_id": "ART-DEMO-08",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "1b61a8bf1f9512c0e2e5ce2ad2820b607374e4557eda4d6b01a9ed8376ee750d"
+    },
+    {
+      "artifact_id": "ART-DEMO-09",
+      "revision": 1,
+      "relative_path": "artifacts/09-evidence-selection.json",
+      "sha256": "0bde012f0482456b5cb83c7176ddd9d84a41a155a2eed6257760ea1e58860c3e"
+    },
+    {
+      "artifact_id": "ART-DEMO-10",
+      "revision": 1,
+      "relative_path": "artifacts/10-solution-design.json",
+      "sha256": "8a8912a4cbd8112ef256fd5243b7b86f32728605eebd445a776b94db4331e888"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "chapters": [
+      {
+        "id": "CH-001",
+        "section_id": "SEC-02",
+        "title": "技术方案",
+        "body_markdown": "本草稿提出以生产执行服务组织工单与报工，并设计产品批次追溯。ERP接口用于交换生产订单和完工数据，协议与责任范围应经双方调研确认。性能验收需先明确并发量、数据规模与网络条件；当前不能将待确认条件写成无条件承诺。",
+        "base_revision": 0,
+        "requirement_ids": [
+          "R-001",
+          "R-002",
+          "R-003"
+        ],
+        "design_ids": [
+          "D-001"
+        ],
+        "evidence_ids": [
+          "M-001"
+        ],
+        "state": "proposed",
+        "confirmation_ref": null
+      }
+    ],
+    "responses": [
+      {
+        "requirement_id": "R-002",
+        "response": "拟通过接口对接，协议和责任范围待双方确认",
+        "fulfillment": "unknown",
+        "deviation": null,
+        "chapter_ids": [
+          "CH-001"
+        ]
+      }
+    ],
+    "unresolved_claims": [
+      "本示例只演示一个章节，不是完整技术标",
+      "追溯能力、性能参数和资源承诺未确认"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

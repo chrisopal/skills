@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bid-skills:bid-document-layout:output:1.0",
+  "title": "标书排版与文档编排输出",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill_id": {
+      "const": "bid-document-layout"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "needs_review",
+        "blocked",
+        "ready"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "revision",
+          "relative_path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "document_title": {
+          "type": "string"
+        },
+        "draft_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "format_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "section_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "figure_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "style_profile_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "toc_status": {
+          "type": "string",
+          "enum": [
+            "not_created",
+            "needs_update",
+            "verified"
+          ]
+        },
+        "visual_qa": {
+          "type": "string",
+          "enum": [
+            "not_run",
+            "passed",
+            "failed"
+          ]
+        },
+        "layout_findings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "document_title",
+        "draft_path",
+        "format_ids",
+        "section_ids",
+        "figure_ids",
+        "style_profile_id",
+        "toc_status",
+        "visual_qa",
+        "layout_findings"
+      ],
+      "additionalProperties": false
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "skill_id",
+    "project_id",
+    "artifact_id",
+    "revision",
+    "created_at",
+    "status",
+    "inputs",
+    "summary",
+    "data",
+    "warnings",
+    "blockers"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "tender",
+            "supplier",
+            "official",
+            "human_decision",
+            "synthetic"
+          ]
+        }
+      },
+      "required": [
+        "source_id",
+        "revision",
+        "sha256",
+        "location",
+        "quote",
+        "kind"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "status": "seed_requires_project_validation",
+  "profiles": [
+    {
+      "schema_version": "1.0",
+      "type": "procurement",
+      "id": "government-procurement",
+      "version": "1.0.0",
+      "display_name": "政府采购场景检查种子",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "questions": [
+          "采购方式、适用制度和项目地域是否已由可靠资料确认？",
+          "资格、实质性响应、评分和提交要求是否逐项有来源？",
+          "最新官方规则是否需要联网核验，谁负责确认？",
+          "文件与适用规则存在冲突时由谁判断？"
+        ],
+        "must_not_assume": [
+          "不能仅按采购人名称确定规则",
+          "不内置未核验的比例、金额门槛或期限",
+          "不自动声明满足法定条件"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "type": "procurement",
+      "id": "enterprise-procurement",
+      "version": "1.0.0",
+      "display_name": "企业采购场景检查种子",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "questions": [
+          "企业招采制度和邀请范围是否提供？",
+          "技术与商务评审是否分开？",
+          "谈判、澄清、报价及最终确认机制是什么？",
+          "是否存在其他实际适用的强制规则？"
+        ],
+        "must_not_assume": [
+          "企业采购不等于没有法定约束",
+          "不能使用其他企业的资质",
+          "未提供的评分细则保持未知"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "type": "domain",
+      "id": "smart-factory",
+      "version": "1.0.0",
+      "display_name": "智能工厂与企业系统集成",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "focus_terms": [
+          "MES",
+          "MOM",
+          "EAM",
+          "WMS",
+          "QMS",
+          "LIMS",
+          "ERP",
+          "集成",
+          "数据采集"
+        ],
+        "fact_fields": {
+          "functional_scope": "text",
+          "interface_protocol_raw": "text",
+          "deployment_boundary": "text",
+          "concurrency_raw": "text",
+          "latency_raw": "text",
+          "implementation_duration_raw": "text"
+        },
+        "solution_dimensions": [
+          "业务流程与系统边界",
+          "应用与数据架构",
+          "设备及ERP接口",
+          "部署、安全与权限",
+          "迁移、实施、培训与验收"
+        ],
+        "evidence_types": [
+          "产品说明",
+          "客户授权的案例",
+          "接口清单",
+          "测试记录",
+          "人员与资质原件"
+        ],
+        "pitfalls": [
+          "把集成规划写成已对接事实",
+          "未经测试承诺性能",
+          "忽略客户数据与设备条件"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "type": "domain",
+      "id": "construction",
+      "version": "1.0.0",
+      "display_name": "工程建设与施工服务",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "focus_terms": [
+          "工程范围",
+          "施工组织",
+          "工期",
+          "质量",
+          "安全",
+          "竣工",
+          "分包"
+        ],
+        "fact_fields": {
+          "work_scope": "text",
+          "construction_conditions": "text",
+          "schedule_raw": "text",
+          "qualification_scope": "text",
+          "quality_acceptance": "text"
+        },
+        "solution_dimensions": [
+          "施工边界与现场条件",
+          "方法与资源",
+          "进度及依赖",
+          "质量控制",
+          "安全环保",
+          "验收与移交"
+        ],
+        "evidence_types": [
+          "适用资质原件",
+          "人员资格",
+          "授权业绩",
+          "施工方案依据"
+        ],
+        "pitfalls": [
+          "通用模型文本替代专业安全计算",
+          "不经确认承诺资源",
+          "把中标后材料误判为投标否决项"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "type": "domain",
+      "id": "equipment-supply",
+      "version": "1.0.0",
+      "display_name": "设备与货物采购",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "focus_terms": [
+          "型号",
+          "参数",
+          "数量",
+          "交期",
+          "检测",
+          "安装",
+          "备件",
+          "质保"
+        ],
+        "fact_fields": {
+          "product_model_raw": "text",
+          "quantity_raw": "text",
+          "parameter_raw": "text",
+          "delivery_raw": "text",
+          "warranty_raw": "text"
+        },
+        "solution_dimensions": [
+          "选型与逐项参数响应",
+          "配置清单",
+          "交付与安装",
+          "检测与验收",
+          "培训与售后"
+        ],
+        "evidence_types": [
+          "制造商资料",
+          "授权书",
+          "检验报告",
+          "供货业绩",
+          "售后能力证明"
+        ],
+        "pitfalls": [
+          "更高参数并不自动兼容",
+          "忽略计量单位",
+          "将概念图片当实际产品证明"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "type": "domain",
+      "id": "professional-services",
+      "version": "1.0.0",
+      "display_name": "咨询、运维与专业服务",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "focus_terms": [
+          "服务范围",
+          "SLA",
+          "交付物",
+          "人员",
+          "响应时间",
+          "驻场",
+          "考核"
+        ],
+        "fact_fields": {
+          "service_scope": "text",
+          "sla_raw": "text",
+          "staffing_raw": "text",
+          "acceptance_method": "text"
+        },
+        "solution_dimensions": [
+          "方法与工作流程",
+          "组织与职责",
+          "阶段交付物",
+          "响应升级机制",
+          "质量与验收"
+        ],
+        "evidence_types": [
+          "方法论资料",
+          "经授权案例",
+          "人员履历与证照",
+          "服务记录"
+        ],
+        "pitfalls": [
+          "响应时间与解决时间混淆",
+          "虚构人员可用性",
+          "用愿景代替可验收交付物"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "type": "domain",
+      "id": "cable-supply",
+      "version": "1.0.0",
+      "display_name": "电缆供货扩展检查种子",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "focus_terms": [
+          "电压",
+          "截面",
+          "芯数",
+          "型号",
+          "矿用",
+          "光伏",
+          "型式试验",
+          "调价"
+        ],
+        "fact_fields": {
+          "product_family": "text",
+          "product_model": "text",
+          "rated_voltage_raw": "text",
+          "conductor_section_raw": "text",
+          "core_count_raw": "text",
+          "minimum_evidence_count": "number",
+          "price_adjustment_formula_raw": "text"
+        },
+        "solution_dimensions": [
+          "产品族与标包",
+          "参数响应",
+          "检验与认证范围",
+          "供货与批次追溯",
+          "报价输入与调价说明"
+        ],
+        "evidence_types": [
+          "型式试验",
+          "适用安全或产品认证",
+          "独立供货合同",
+          "产品参数原件"
+        ],
+        "pitfalls": [
+          "不推断证书规格包含关系",
+          "保留AND／OR和独立证明数量",
+          "不执行来源中的任意计算代码"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "type": "layout",
+      "id": "a4-neutral",
+      "version": "1.0.0",
+      "display_name": "A4中性工作稿默认建议",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "paper": "A4",
+        "body_font": "由宿主选择已授权且覆盖中文的字体",
+        "priority": "只在招标文件未规定且用户确认时使用",
+        "defaults": {
+          "margins_cm": 2.5,
+          "body_font_pt": 11,
+          "line_spacing": 1.25
+        },
+        "prohibitions": [
+          "不得覆盖客户固定格式",
+          "不代表正式法定模板"
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "type": "layout",
+      "id": "anonymous-bid",
+      "version": "1.0.0",
+      "display_name": "暗标检查种子",
+      "readiness": "seed_requires_project_validation",
+      "authority": "checklist_only_not_project_facts",
+      "data": {
+        "questions": [
+          "是否明确要求暗标，适用哪些文件和阶段？",
+          "正文、图表、页眉、文件属性与文件名是否禁止出现主体身份？",
+          "哪些资格附件必须保留主体信息且另册提交？"
+        ],
+        "prohibitions": [
+          "不删除强制披露信息来假装暗标",
+          "不默认所有项目需要匿名"
+        ]
+      }
+    }
+  ]
+}

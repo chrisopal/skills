@@ -1,0 +1,245 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-source-intake",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-01",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "documents": [
+      {
+        "source_id": "SRC-001",
+        "filename": "synthetic-tender.md",
+        "relative_path": "inputs/synthetic-tender.md",
+        "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+        "bytes": 1664,
+        "role": "main",
+        "revision": 1,
+        "duplicate_group": null,
+        "status": "parsed"
+      },
+      {
+        "source_id": "SRC-002",
+        "filename": "synthetic-supplier.md",
+        "relative_path": "inputs/synthetic-supplier.md",
+        "sha256": "35dcf7e87e47c15a382b882b0c954969a385cd5b873851c2d28a32fbbe51a5e9",
+        "bytes": 429,
+        "role": "supplier",
+        "revision": 1,
+        "duplicate_group": null,
+        "status": "parsed"
+      }
+    ],
+    "blocks": [
+      {
+        "block_id": "SRC-001-B001",
+        "source_id": "SRC-001",
+        "location": "L1",
+        "page": null,
+        "text": "# 演示招标文件（合成数据，仅用于技能练习）",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B002",
+        "source_id": "SRC-001",
+        "location": "L2",
+        "page": null,
+        "text": "本文件不是实际招标公告，不可用于证明实际项目要求。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B003",
+        "source_id": "SRC-001",
+        "location": "L3",
+        "page": null,
+        "text": "项目名称：示范工厂 MES 与设备管理系统建设。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B004",
+        "source_id": "SRC-001",
+        "location": "L4",
+        "page": null,
+        "text": "采购对象：工单执行、扫码报工、产品批次追溯及设备管理。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B005",
+        "source_id": "SRC-001",
+        "location": "L5",
+        "page": null,
+        "text": "投标文件分为技术部分与商务资格部分。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B006",
+        "source_id": "SRC-001",
+        "location": "L6",
+        "page": null,
+        "text": "## 技术与交付要求",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B007",
+        "source_id": "SRC-001",
+        "location": "L7",
+        "page": null,
+        "text": "R1：系统提供工单下达、扫码报工和产品批次追溯。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B008",
+        "source_id": "SRC-001",
+        "location": "L8",
+        "page": null,
+        "text": "R2：与现有 ERP 交换生产订单及完工数据，接口协议以双方调研确认结果为准。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B009",
+        "source_id": "SRC-001",
+        "location": "L9",
+        "page": null,
+        "text": "R3：常用查询在双方约定测试条件下响应时间不超过 2 秒，并发用户数在项目启动时确认。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B010",
+        "source_id": "SRC-001",
+        "location": "L10",
+        "page": null,
+        "text": "R4：合同生效后 90 个日历日内完成上线试运行。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B011",
+        "source_id": "SRC-001",
+        "location": "L11",
+        "page": null,
+        "text": "R5：提供管理员和操作员培训，验收以双方签署的测试记录为依据。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B012",
+        "source_id": "SRC-001",
+        "location": "L12",
+        "page": null,
+        "text": "## 评分办法",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B013",
+        "source_id": "SRC-001",
+        "location": "L13",
+        "page": null,
+        "text": "最高总分为 100 分。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B014",
+        "source_id": "SRC-001",
+        "location": "L14",
+        "page": null,
+        "text": "S1：技术方案最高 35 分，评价需求响应、架构与集成方案的清晰完整程度。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B015",
+        "source_id": "SRC-001",
+        "location": "L15",
+        "page": null,
+        "text": "S2：实施方案最高 25 分，评价计划、资源与验收安排的可执行性。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B016",
+        "source_id": "SRC-001",
+        "location": "L16",
+        "page": null,
+        "text": "S3：服务方案最高 40 分，评价培训、支持与问题闭环机制。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B017",
+        "source_id": "SRC-001",
+        "location": "L17",
+        "page": null,
+        "text": "## 资格与提交",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B018",
+        "source_id": "SRC-001",
+        "location": "L18",
+        "page": null,
+        "text": "投标人须提供本企业营业执照复印件。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B019",
+        "source_id": "SRC-001",
+        "location": "L19",
+        "page": null,
+        "text": "提交虚假资质或业绩材料，投标将被否决。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B020",
+        "source_id": "SRC-001",
+        "location": "L20",
+        "page": null,
+        "text": "商务资格文件须预留法定代表人或授权代表签署位置。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B021",
+        "source_id": "SRC-001",
+        "location": "L21",
+        "page": null,
+        "text": "## 文件格式",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B022",
+        "source_id": "SRC-001",
+        "location": "L22",
+        "page": null,
+        "text": "技术部分依次包含需求响应、技术方案、实施方案、服务方案。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B023",
+        "source_id": "SRC-001",
+        "location": "L23",
+        "page": null,
+        "text": "商务资格部分包含企业信息表、营业执照附件和签署页。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B024",
+        "source_id": "SRC-001",
+        "location": "L24",
+        "page": null,
+        "text": "企业信息表字段为：公司全称、联系人、联系电话。固定字段名称不得改写。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B025",
+        "source_id": "SRC-001",
+        "location": "L25",
+        "page": null,
+        "text": "未规定字号、页边距或必须采用的品牌配色。",
+        "method": "native"
+      }
+    ],
+    "page_audit": [],
+    "coverage": "complete"
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

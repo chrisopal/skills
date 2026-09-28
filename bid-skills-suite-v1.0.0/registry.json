@@ -1,0 +1,295 @@
+{
+  "suite": "bid-skills-suite",
+  "version": "1.0.0",
+  "date": "2026-09-27",
+  "authoring_language": "zh-CN",
+  "business_validation": "NOT_RUN",
+  "skills": [
+    {
+      "sequence": 1,
+      "id": "bid-source-intake",
+      "title": "招标资料整理与原文解析",
+      "group": "A 资料准备与招标理解",
+      "skill_path": "skills/bid-source-intake/SKILL.md",
+      "output_filename": "01-source-intake.json",
+      "output_directory": "artifacts",
+      "depends_on": [],
+      "input_summary": "招标主文件、附件、澄清与补遗文件；文件所属项目及授权使用范围。",
+      "human_gate": "原件角色、缺失附件、重复格式关系、扫描区域和未解析内容由用户确认；不完整结果只供探索分析。"
+    },
+    {
+      "sequence": 2,
+      "id": "bid-project-profile",
+      "title": "项目画像与场景适配",
+      "group": "A 资料准备与招标理解",
+      "skill_path": "skills/bid-project-profile/SKILL.md",
+      "output_filename": "02-project-profile.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-source-intake"
+      ],
+      "input_summary": "01来源清单与原文；用户确认的投标主体、项目目标、参与标包；可用规则包和领域包。",
+      "human_gate": "投标主体、标包、适用规则、核心项目边界及外部服务传输范围需人工确认。"
+    },
+    {
+      "sequence": 3,
+      "id": "bid-requirements",
+      "title": "需求提取与结构化",
+      "group": "A 资料准备与招标理解",
+      "skill_path": "skills/bid-requirements/SKILL.md",
+      "output_filename": "03-requirements.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-source-intake",
+        "bid-project-profile"
+      ],
+      "input_summary": "01完整原文、02项目上下文和领域包；不完整原文仅支持标明范围的初稿。",
+      "human_gate": "矛盾、歧义、重大边界和强制需求由人核验；未经确认的推断不进入正式响应承诺。"
+    },
+    {
+      "sequence": 4,
+      "id": "bid-scoring",
+      "title": "评分体系提取与分析",
+      "group": "A 资料准备与招标理解",
+      "skill_path": "skills/bid-scoring/SKILL.md",
+      "output_filename": "04-scoring.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-source-intake",
+        "bid-project-profile",
+        "bid-requirements"
+      ],
+      "input_summary": "评分办法原文、相关附件、02项目画像和03需求矩阵。",
+      "human_gate": "层级计分、取舍上限、公式歧义和证据适用性需人工确认；总分不平不能自动补足。"
+    },
+    {
+      "sequence": 5,
+      "id": "bid-compliance",
+      "title": "资格、否决条件与提交要求提取",
+      "group": "A 资料准备与招标理解",
+      "skill_path": "skills/bid-compliance/SKILL.md",
+      "output_filename": "05-compliance.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-source-intake",
+        "bid-project-profile",
+        "bid-requirements"
+      ],
+      "input_summary": "招标原文、02上下文、资格与响应性审查表、提交及保证金相关附件。",
+      "human_gate": "所有明确否决与资格条件必须人工复核原文；外部法规核验和特殊合法性问题转有资格人员判断。"
+    },
+    {
+      "sequence": 6,
+      "id": "bid-format-extraction",
+      "title": "强制目录与格式模板提取",
+      "group": "A 资料准备与招标理解",
+      "skill_path": "skills/bid-format-extraction/SKILL.md",
+      "output_filename": "06-format-rules.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-source-intake",
+        "bid-project-profile"
+      ],
+      "input_summary": "招标文件的格式章节、附件表单、原版Word／表格及02上下文。",
+      "human_gate": "强制与参考边界、固定表格能否修改、暗标与身份隐匿要求需由人核验。"
+    },
+    {
+      "sequence": 7,
+      "id": "bid-response-strategy",
+      "title": "需求澄清与投标响应策划",
+      "group": "B 投标策划与证据准备",
+      "skill_path": "skills/bid-response-strategy/SKILL.md",
+      "output_filename": "07-response-strategy.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-project-profile",
+        "bid-requirements",
+        "bid-scoring",
+        "bid-compliance",
+        "bid-format-extraction"
+      ],
+      "input_summary": "02项目画像、03需求、04评分、05合规、06格式；企业能力与限制的已知资料。",
+      "human_gate": "参投范围、重大差异、交期价格承诺与风险接受由授权人决定。"
+    },
+    {
+      "sequence": 8,
+      "id": "bid-outline-planning",
+      "title": "标书目录规划与覆盖映射",
+      "group": "B 投标策划与证据准备",
+      "skill_path": "skills/bid-outline-planning/SKILL.md",
+      "output_filename": "08-outline.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-requirements",
+        "bid-scoring",
+        "bid-compliance",
+        "bid-format-extraction",
+        "bid-response-strategy"
+      ],
+      "input_summary": "03需求、04评分、05合规、06格式、07响应策略；02领域配置。",
+      "human_gate": "强制目录变更、章节归属冲突及未映射项由人确认，冻结后再展开正文。"
+    },
+    {
+      "sequence": 9,
+      "id": "bid-evidence-matching",
+      "title": "企业素材与证明材料匹配",
+      "group": "B 投标策划与证据准备",
+      "skill_path": "skills/bid-evidence-matching/SKILL.md",
+      "output_filename": "09-evidence-selection.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-requirements",
+        "bid-scoring",
+        "bid-compliance",
+        "bid-format-extraction",
+        "bid-outline-planning"
+      ],
+      "input_summary": "需求／评分／资格矩阵、08章节任务卡、已授权企业原件和素材台账、投标截止等适用时间。",
+      "human_gate": "材料真实性、使用授权、适用范围、所需独立份数以及日期边界由材料所有者核验。"
+    },
+    {
+      "sequence": 10,
+      "id": "bid-solution-design",
+      "title": "技术方案设计",
+      "group": "C 方案设计与标书编制",
+      "skill_path": "skills/bid-solution-design/SKILL.md",
+      "output_filename": "10-solution-design.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-project-profile",
+        "bid-requirements",
+        "bid-response-strategy",
+        "bid-outline-planning",
+        "bid-evidence-matching"
+      ],
+      "input_summary": "02上下文、03需求、07响应策略、08章节任务、09证据及企业已确认能力。",
+      "human_gate": "架构边界、选型、关键指标、资源与交付周期须相关负责人确认；专业工程计算另行验证。"
+    },
+    {
+      "sequence": 11,
+      "id": "bid-technical-writing",
+      "title": "技术标正文与响应表编写",
+      "group": "C 方案设计与标书编制",
+      "skill_path": "skills/bid-technical-writing/SKILL.md",
+      "output_filename": "11-technical-content.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-requirements",
+        "bid-scoring",
+        "bid-compliance",
+        "bid-outline-planning",
+        "bid-evidence-matching",
+        "bid-solution-design"
+      ],
+      "input_summary": "08目录任务卡、10确认方案、09素材、03／04／05原始要求，以及用户写作偏好。",
+      "human_gate": "新增承诺、偏离、未证实能力和草稿采纳由人决定；采纳后才成为正式正文版本。"
+    },
+    {
+      "sequence": 12,
+      "id": "bid-commercial-documents",
+      "title": "商务与资格文件编制",
+      "group": "C 方案设计与标书编制",
+      "skill_path": "skills/bid-commercial-documents/SKILL.md",
+      "output_filename": "12-commercial-content.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-project-profile",
+        "bid-compliance",
+        "bid-format-extraction",
+        "bid-evidence-matching"
+      ],
+      "input_summary": "06固定表格、05资格提交要求、09企业原件与已核验字段、已授权价格及商务条件。",
+      "human_gate": "投标主体、价格、税率、付款、保证金、责任承诺及签署须真实授权人确认。"
+    },
+    {
+      "sequence": 13,
+      "id": "bid-visuals",
+      "title": "标书配图与图表制作",
+      "group": "C 方案设计与标书编制",
+      "skill_path": "skills/bid-visuals/SKILL.md",
+      "output_filename": "13-visuals.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-format-extraction",
+        "bid-outline-planning",
+        "bid-solution-design",
+        "bid-technical-writing"
+      ],
+      "input_summary": "08图表任务、10确认方案、11正文、06格式与暗标限制、已授权图片或数据。",
+      "human_gate": "图中实体、接口、数量、品牌、照片来源和外部图像服务的数据授权需确认。"
+    },
+    {
+      "sequence": 14,
+      "id": "bid-document-layout",
+      "title": "标书排版与文档编排",
+      "group": "D 排版评审与交付",
+      "skill_path": "skills/bid-document-layout/SKILL.md",
+      "output_filename": "14-layout.json",
+      "output_directory": "artifacts",
+      "depends_on": [
+        "bid-format-extraction",
+        "bid-outline-planning",
+        "bid-evidence-matching",
+        "bid-technical-writing",
+        "bid-commercial-documents",
+        "bid-visuals"
+      ],
+      "input_summary": "06格式要求、08目录、人工采纳的11／12正文、13图表、授权插页材料。",
+      "human_gate": "未规定的默认版式需确认；暗标、固定模板、复杂插页、最终渲染由人工检查。"
+    },
+    {
+      "sequence": 15,
+      "id": "bid-review-remediation",
+      "title": "综合评审与整改闭环",
+      "group": "D 排版评审与交付",
+      "skill_path": "skills/bid-review-remediation/SKILL.md",
+      "output_filename": "15-review.json",
+      "output_directory": "reviews",
+      "depends_on": [
+        "bid-source-intake",
+        "bid-project-profile",
+        "bid-requirements",
+        "bid-scoring",
+        "bid-compliance",
+        "bid-format-extraction",
+        "bid-response-strategy",
+        "bid-outline-planning",
+        "bid-evidence-matching",
+        "bid-solution-design",
+        "bid-technical-writing",
+        "bid-commercial-documents",
+        "bid-visuals",
+        "bid-document-layout"
+      ],
+      "input_summary": "03—14全部当前产物、原文与企业证据；独立评审模式还需既有投标书及可靠原文抽取。",
+      "human_gate": "阻塞项必须解决；一般警告的接受须真实授权人说明理由；接受风险不等于满足强制要求。"
+    },
+    {
+      "sequence": 16,
+      "id": "bid-export-acceptance",
+      "title": "导出与成稿验收",
+      "group": "D 排版评审与交付",
+      "skill_path": "skills/bid-export-acceptance/SKILL.md",
+      "output_filename": "16-delivery-manifest.json",
+      "output_directory": "deliverables",
+      "depends_on": [
+        "bid-document-layout",
+        "bid-review-remediation"
+      ],
+      "input_summary": "当前14文档工作稿、有效15评审、原始格式要求、用户交付授权及指定输出格式。",
+      "human_gate": "逐页视觉与文本核验、签署待办及对外发布由真实用户确认；没有授权只产内部草稿。"
+    },
+    {
+      "sequence": 17,
+      "id": "bid-orchestrator",
+      "title": "投标编制总控",
+      "group": "E 流程总控",
+      "skill_path": "skills/bid-orchestrator/SKILL.md",
+      "output_filename": "17-workflow-state.json",
+      "output_directory": "work",
+      "depends_on": [],
+      "input_summary": "用户目标、项目工作目录、现有产物索引、可用技能与工具、明确权限边界。",
+      "human_gate": "范围、重大方案与证据、对外承诺、正式交付等节点留给真实授权人；不设置虚构审批人。"
+    }
+  ]
+}

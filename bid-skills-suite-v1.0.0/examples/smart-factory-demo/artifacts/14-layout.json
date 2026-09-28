@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-document-layout",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-14",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-06",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-rules.json",
+      "sha256": "aaab550e105e1e422aa22bce7e7a583bfc1deabd35835d6e022f59bac4b831ff"
+    },
+    {
+      "artifact_id": "ART-DEMO-08",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "1b61a8bf1f9512c0e2e5ce2ad2820b607374e4557eda4d6b01a9ed8376ee750d"
+    },
+    {
+      "artifact_id": "ART-DEMO-09",
+      "revision": 1,
+      "relative_path": "artifacts/09-evidence-selection.json",
+      "sha256": "0bde012f0482456b5cb83c7176ddd9d84a41a155a2eed6257760ea1e58860c3e"
+    },
+    {
+      "artifact_id": "ART-DEMO-11",
+      "revision": 1,
+      "relative_path": "artifacts/11-technical-content.json",
+      "sha256": "635380469e33dc2401041c98281ec4d95186b49e750e98cc7714e08c6cd5da91"
+    },
+    {
+      "artifact_id": "ART-DEMO-12",
+      "revision": 1,
+      "relative_path": "artifacts/12-commercial-content.json",
+      "sha256": "8f5ddb6416db74d2db2824eb2f029a09d4546eab9fb7a46365b82fb22fc9decd"
+    },
+    {
+      "artifact_id": "ART-DEMO-13",
+      "revision": 1,
+      "relative_path": "artifacts/13-visuals.json",
+      "sha256": "2b317b45c79abdfdfb6db0219e0461560431d1e510d9adb92a49e0db8f15f16e"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "document_title": "示范工厂投标工作稿（合成示例）",
+    "draft_path": null,
+    "format_ids": [
+      "F-001",
+      "F-002",
+      "F-003"
+    ],
+    "section_ids": [
+      "SEC-01",
+      "SEC-02",
+      "SEC-03",
+      "SEC-04",
+      "SEC-05"
+    ],
+    "figure_ids": [
+      "FIG-001"
+    ],
+    "style_profile_id": "a4-neutral",
+    "toc_status": "not_created",
+    "visual_qa": "not_run",
+    "layout_findings": [
+      "内容和证据尚未完整，不进入正式排版交付"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "type": "layout",
+  "id": "a4-neutral",
+  "version": "1.0.0",
+  "display_name": "A4中性工作稿默认建议",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "paper": "A4",
+    "body_font": "由宿主选择已授权且覆盖中文的字体",
+    "priority": "只在招标文件未规定且用户确认时使用",
+    "defaults": {
+      "margins_cm": 2.5,
+      "body_font_pt": 11,
+      "line_spacing": 1.25
+    },
+    "prohibitions": [
+      "不得覆盖客户固定格式",
+      "不代表正式法定模板"
+    ]
+  }
+}

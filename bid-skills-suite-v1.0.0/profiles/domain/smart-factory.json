@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "type": "domain",
+  "id": "smart-factory",
+  "version": "1.0.0",
+  "display_name": "智能工厂与企业系统集成",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "focus_terms": [
+      "MES",
+      "MOM",
+      "EAM",
+      "WMS",
+      "QMS",
+      "LIMS",
+      "ERP",
+      "集成",
+      "数据采集"
+    ],
+    "fact_fields": {
+      "functional_scope": "text",
+      "interface_protocol_raw": "text",
+      "deployment_boundary": "text",
+      "concurrency_raw": "text",
+      "latency_raw": "text",
+      "implementation_duration_raw": "text"
+    },
+    "solution_dimensions": [
+      "业务流程与系统边界",
+      "应用与数据架构",
+      "设备及ERP接口",
+      "部署、安全与权限",
+      "迁移、实施、培训与验收"
+    ],
+    "evidence_types": [
+      "产品说明",
+      "客户授权的案例",
+      "接口清单",
+      "测试记录",
+      "人员与资质原件"
+    ],
+    "pitfalls": [
+      "把集成规划写成已对接事实",
+      "未经测试承诺性能",
+      "忽略客户数据与设备条件"
+    ]
+  }
+}

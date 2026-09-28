@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-commercial-documents",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-12",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-02",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "25caefe7b3e39999045ed8cf347b0bb03deecf2d17d03e729c138810dd95903f"
+    },
+    {
+      "artifact_id": "ART-DEMO-05",
+      "revision": 1,
+      "relative_path": "artifacts/05-compliance.json",
+      "sha256": "08368ef001170159f9a412bc9ca75103075bdb0ca9612ad627573c83a921f142"
+    },
+    {
+      "artifact_id": "ART-DEMO-06",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-rules.json",
+      "sha256": "aaab550e105e1e422aa22bce7e7a583bfc1deabd35835d6e022f59bac4b831ff"
+    },
+    {
+      "artifact_id": "ART-DEMO-09",
+      "revision": 1,
+      "relative_path": "artifacts/09-evidence-selection.json",
+      "sha256": "0bde012f0482456b5cb83c7176ddd9d84a41a155a2eed6257760ea1e58860c3e"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "forms": [
+      {
+        "id": "FORM-001",
+        "format_id": "F-002",
+        "title": "企业信息表",
+        "fields": [
+          {
+            "key": "公司全称",
+            "value": "示范数字技术有限公司（虚构）",
+            "sources": [
+              {
+                "source_id": "SRC-002",
+                "revision": 1,
+                "sha256": "35dcf7e87e47c15a382b882b0c954969a385cd5b873851c2d28a32fbbe51a5e9",
+                "location": "L3",
+                "quote": "公司全称：示范数字技术有限公司（虚构）。",
+                "kind": "synthetic"
+              }
+            ],
+            "state": "provided"
+          },
+          {
+            "key": "联系人",
+            "value": null,
+            "sources": [],
+            "state": "missing"
+          },
+          {
+            "key": "联系电话",
+            "value": null,
+            "sources": [],
+            "state": "missing"
+          }
+        ],
+        "state": "draft",
+        "confirmation_ref": null
+      }
+    ],
+    "signature_tasks": [
+      {
+        "form_id": "FORM-001",
+        "position": "授权代表签署区",
+        "actor_role": "实际授权代表",
+        "state": "pending",
+        "confirmation_ref": null
+      }
+    ],
+    "commercial_exceptions": [
+      "未提供正式企业资格资料，不得外发"
+    ],
+    "pricing_check": "not_applicable"
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

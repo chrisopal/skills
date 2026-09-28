@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "type": "procurement",
+  "id": "enterprise-procurement",
+  "version": "1.0.0",
+  "display_name": "企业采购场景检查种子",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "questions": [
+      "企业招采制度和邀请范围是否提供？",
+      "技术与商务评审是否分开？",
+      "谈判、澄清、报价及最终确认机制是什么？",
+      "是否存在其他实际适用的强制规则？"
+    ],
+    "must_not_assume": [
+      "企业采购不等于没有法定约束",
+      "不能使用其他企业的资质",
+      "未提供的评分细则保持未知"
+    ]
+  }
+}

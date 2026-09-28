@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-project-profile",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-02",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-01",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "6b05f10e88cff40d184a35490559203b1bd67e9f4ed51f2d3a4bebff0ae7a2d4"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "project_name": "示范工厂 MES 与设备管理系统建设",
+    "buyer": null,
+    "bidder": "示范数字技术有限公司（虚构）",
+    "procurement_profile_id": "enterprise-procurement",
+    "domain_pack_ids": [
+      "smart-factory"
+    ],
+    "lot_scope": [
+      "范围待实际用户确认"
+    ],
+    "deadlines": [],
+    "key_facts": [
+      {
+        "key": "procurement_object",
+        "value": "工单执行、扫码报工、产品批次追溯及设备管理",
+        "basis_type": "explicit",
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L4",
+            "quote": "采购对象：工单执行、扫码报工、产品批次追溯及设备管理。",
+            "kind": "synthetic"
+          }
+        ]
+      },
+      {
+        "key": "bidder",
+        "value": "示范数字技术有限公司（虚构）",
+        "basis_type": "explicit",
+        "sources": [
+          {
+            "source_id": "SRC-002",
+            "revision": 1,
+            "sha256": "35dcf7e87e47c15a382b882b0c954969a385cd5b873851c2d28a32fbbe51a5e9",
+            "location": "L3",
+            "quote": "公司全称：示范数字技术有限公司（虚构）。",
+            "kind": "synthetic"
+          }
+        ]
+      }
+    ],
+    "applicability_confirmed": false,
+    "unknowns": [
+      "实际采购人及招采制度未确认",
+      "报价、人员和接口资料未提供"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-format-extraction",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-06",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-01",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "6b05f10e88cff40d184a35490559203b1bd67e9f4ed51f2d3a4bebff0ae7a2d4"
+    },
+    {
+      "artifact_id": "ART-DEMO-02",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "25caefe7b3e39999045ed8cf347b0bb03deecf2d17d03e729c138810dd95903f"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "formats": [
+      {
+        "id": "F-001",
+        "kind": "toc",
+        "strength": "mandatory",
+        "title": "技术部分目录",
+        "original_text": "技术部分依次包含需求响应、技术方案、实施方案、服务方案。",
+        "change_policy": "fixed",
+        "template_path": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L22",
+            "quote": "技术部分依次包含需求响应、技术方案、实施方案、服务方案。",
+            "kind": "synthetic"
+          }
+        ]
+      },
+      {
+        "id": "F-002",
+        "kind": "form",
+        "strength": "mandatory",
+        "title": "企业信息表",
+        "original_text": "企业信息表字段为：公司全称、联系人、联系电话。固定字段名称不得改写。",
+        "change_policy": "fill_only",
+        "template_path": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L24",
+            "quote": "企业信息表字段为：公司全称、联系人、联系电话。固定字段名称不得改写。",
+            "kind": "synthetic"
+          }
+        ]
+      },
+      {
+        "id": "F-003",
+        "kind": "attachment",
+        "strength": "mandatory",
+        "title": "商务资格组成",
+        "original_text": "商务资格部分包含企业信息表、营业执照附件和签署页。",
+        "change_policy": "fixed",
+        "template_path": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L23",
+            "quote": "商务资格部分包含企业信息表、营业执照附件和签署页。",
+            "kind": "synthetic"
+          }
+        ]
+      }
+    ],
+    "unknowns": [
+      "未规定的版式需要提出默认方案并确认"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

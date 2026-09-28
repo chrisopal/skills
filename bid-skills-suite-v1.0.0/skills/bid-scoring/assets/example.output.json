@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-scoring",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-04",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-01",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "6b05f10e88cff40d184a35490559203b1bd67e9f4ed51f2d3a4bebff0ae7a2d4"
+    },
+    {
+      "artifact_id": "ART-DEMO-02",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "25caefe7b3e39999045ed8cf347b0bb03deecf2d17d03e729c138810dd95903f"
+    },
+    {
+      "artifact_id": "ART-DEMO-03",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "26689fc1c1beac55fa2c7d28d307196d704a9bf9d86fbe2439a51ef95a7adb6d"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "declared_total": 100,
+    "items": [
+      {
+        "id": "S-001",
+        "parent_id": null,
+        "title": "技术方案",
+        "max_score": 35,
+        "node_type": "scored",
+        "aggregation": "none",
+        "rule_text": "S1：技术方案最高 35 分，评价需求响应、架构与集成方案的清晰完整程度。",
+        "evidence_requirements": [
+          "与需求和企业真实能力一致的说明"
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L14",
+            "quote": "S1：技术方案最高 35 分，评价需求响应、架构与集成方案的清晰完整程度。",
+            "kind": "synthetic"
+          }
+        ]
+      },
+      {
+        "id": "S-002",
+        "parent_id": null,
+        "title": "实施方案",
+        "max_score": 25,
+        "node_type": "scored",
+        "aggregation": "none",
+        "rule_text": "S2：实施方案最高 25 分，评价计划、资源与验收安排的可执行性。",
+        "evidence_requirements": [
+          "与需求和企业真实能力一致的说明"
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L15",
+            "quote": "S2：实施方案最高 25 分，评价计划、资源与验收安排的可执行性。",
+            "kind": "synthetic"
+          }
+        ]
+      },
+      {
+        "id": "S-003",
+        "parent_id": null,
+        "title": "服务方案",
+        "max_score": 40,
+        "node_type": "scored",
+        "aggregation": "none",
+        "rule_text": "S3：服务方案最高 40 分，评价培训、支持与问题闭环机制。",
+        "evidence_requirements": [
+          "与需求和企业真实能力一致的说明"
+        ],
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L16",
+            "quote": "S3：服务方案最高 40 分，评价培训、支持与问题闭环机制。",
+            "kind": "synthetic"
+          }
+        ]
+      }
+    ],
+    "arithmetic_findings": [],
+    "unknowns": [
+      "具体档次和专家主观判断细则未提供，不能推算确定得分"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

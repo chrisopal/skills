@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-compliance",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-05",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-01",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "6b05f10e88cff40d184a35490559203b1bd67e9f4ed51f2d3a4bebff0ae7a2d4"
+    },
+    {
+      "artifact_id": "ART-DEMO-02",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "25caefe7b3e39999045ed8cf347b0bb03deecf2d17d03e729c138810dd95903f"
+    },
+    {
+      "artifact_id": "ART-DEMO-03",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "26689fc1c1beac55fa2c7d28d307196d704a9bf9d86fbe2439a51ef95a7adb6d"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "rules": [
+      {
+        "id": "C-001",
+        "kind": "qualification",
+        "condition": "须提供本企业营业执照复印件",
+        "consequence": null,
+        "fatal": null,
+        "required_action": "取得正式材料并核验投标主体一致",
+        "responsible_role": "企业资料负责人",
+        "due_text": "投标文件编制前",
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L18",
+            "quote": "投标人须提供本企业营业执照复印件。",
+            "kind": "synthetic"
+          }
+        ]
+      },
+      {
+        "id": "C-002",
+        "kind": "rejection",
+        "condition": "提交虚假资质或业绩材料",
+        "consequence": "投标将被否决",
+        "fatal": true,
+        "required_action": "只使用经过核验的真实材料",
+        "responsible_role": "投标负责人",
+        "due_text": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L19",
+            "quote": "提交虚假资质或业绩材料，投标将被否决。",
+            "kind": "synthetic"
+          }
+        ]
+      },
+      {
+        "id": "C-003",
+        "kind": "submission",
+        "condition": "商务资格文件须预留授权签署位置",
+        "consequence": null,
+        "fatal": null,
+        "required_action": "保留签署位置并由授权人处理",
+        "responsible_role": "授权签署人",
+        "due_text": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L20",
+            "quote": "商务资格文件须预留法定代表人或授权代表签署位置。",
+            "kind": "synthetic"
+          }
+        ]
+      }
+    ],
+    "unknowns": [
+      "递交日期、平台和电子签章要求未提供"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

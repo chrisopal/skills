@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "type": "layout",
+  "id": "anonymous-bid",
+  "version": "1.0.0",
+  "display_name": "暗标检查种子",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "questions": [
+      "是否明确要求暗标，适用哪些文件和阶段？",
+      "正文、图表、页眉、文件属性与文件名是否禁止出现主体身份？",
+      "哪些资格附件必须保留主体信息且另册提交？"
+    ],
+    "prohibitions": [
+      "不删除强制披露信息来假装暗标",
+      "不默认所有项目需要匿名"
+    ]
+  }
+}

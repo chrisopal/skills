@@ -1,0 +1,136 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-requirements",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-03",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-01",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "6b05f10e88cff40d184a35490559203b1bd67e9f4ed51f2d3a4bebff0ae7a2d4"
+    },
+    {
+      "artifact_id": "ART-DEMO-02",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "25caefe7b3e39999045ed8cf347b0bb03deecf2d17d03e729c138810dd95903f"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "requirements": [
+      {
+        "id": "R-001",
+        "category": "technical",
+        "text": "系统提供工单下达、扫码报工和产品批次追溯。",
+        "mandatory": "yes",
+        "basis_type": "explicit",
+        "conditions": [],
+        "acceptance": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L7",
+            "quote": "R1：系统提供工单下达、扫码报工和产品批次追溯。",
+            "kind": "synthetic"
+          }
+        ],
+        "related_ids": []
+      },
+      {
+        "id": "R-002",
+        "category": "technical",
+        "text": "与现有 ERP 交换生产订单及完工数据，接口协议以双方调研确认结果为准。",
+        "mandatory": "yes",
+        "basis_type": "explicit",
+        "conditions": [],
+        "acceptance": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L8",
+            "quote": "R2：与现有 ERP 交换生产订单及完工数据，接口协议以双方调研确认结果为准。",
+            "kind": "synthetic"
+          }
+        ],
+        "related_ids": []
+      },
+      {
+        "id": "R-003",
+        "category": "technical",
+        "text": "常用查询在双方约定测试条件下响应时间不超过 2 秒，并发用户数在项目启动时确认。",
+        "mandatory": "yes",
+        "basis_type": "explicit",
+        "conditions": [
+          "测试条件及并发量待双方确认"
+        ],
+        "acceptance": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L9",
+            "quote": "R3：常用查询在双方约定测试条件下响应时间不超过 2 秒，并发用户数在项目启动时确认。",
+            "kind": "synthetic"
+          }
+        ],
+        "related_ids": []
+      },
+      {
+        "id": "R-004",
+        "category": "delivery",
+        "text": "合同生效后 90 个日历日内完成上线试运行。",
+        "mandatory": "yes",
+        "basis_type": "explicit",
+        "conditions": [],
+        "acceptance": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L10",
+            "quote": "R4：合同生效后 90 个日历日内完成上线试运行。",
+            "kind": "synthetic"
+          }
+        ],
+        "related_ids": []
+      },
+      {
+        "id": "R-005",
+        "category": "service",
+        "text": "提供管理员和操作员培训，验收以双方签署的测试记录为依据。",
+        "mandatory": "yes",
+        "basis_type": "explicit",
+        "conditions": [],
+        "acceptance": "双方签署的测试记录",
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "eb80c8e4e625c38b933e4fe23962309b6cd8e891cee6e55330bf338e3e39bf50",
+            "location": "L11",
+            "quote": "R5：提供管理员和操作员培训，验收以双方签署的测试记录为依据。",
+            "kind": "synthetic"
+          }
+        ],
+        "related_ids": []
+      }
+    ],
+    "conflicts": [],
+    "unread_scopes": []
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

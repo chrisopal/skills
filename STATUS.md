@@ -1290,3 +1290,11 @@
 - Remaining notes:
   - Existing legacy consulting SVG warnings about root-group bounds remain advisory and predate this change; the three new pages introduce none.
   - Browser renders and visual-verdict state remain local verification artifacts and are not committed.
+
+## 2026-09-28 CST — Bid skill suite installation and verification
+
+- Scope: installed the 17 skills from `bid-skills-suite-v1.0.0/skills/` into local Codex via links; retained source, profiles, references, schemas, templates, scripts and synthetic test fixtures.
+- Source changes: removed unsupported Codex frontmatter fields; bound project ID across extraction, snapshots, reviews, confirmations and delivery manifests; added ZIP/source parity checks, distribution refresh script and regression tests. Updated installation guidance and QA report.
+- Validation: 17/17 Codex skill validators passed; suite self-check passed; 46/46 Python tests passed; 17/17 installed-path validator smokes passed; Python compilation and local ZIP/checksum checks passed. A fresh Codex CLI read-only smoke loaded `bid-source-intake` and its safety reference.
+- Commit/push state: source and this status entry are committed and pushed on `codex/enterprise-dtx-skill-suite-runtime`; generated ZIPs, checksum manifest, rendered document examples and QA snapshots remain local.
+- Remaining: real bid work, multi-skill model execution, authorization authenticity and production document acceptance are untested.

@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-evidence-matching",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-09",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "blocked",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-03",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "26689fc1c1beac55fa2c7d28d307196d704a9bf9d86fbe2439a51ef95a7adb6d"
+    },
+    {
+      "artifact_id": "ART-DEMO-04",
+      "revision": 1,
+      "relative_path": "artifacts/04-scoring.json",
+      "sha256": "9ea898335a52986412bc9de79ee0fd8eed1e8d10c02fac2dd5ffbcbe11fffe58"
+    },
+    {
+      "artifact_id": "ART-DEMO-05",
+      "revision": 1,
+      "relative_path": "artifacts/05-compliance.json",
+      "sha256": "08368ef001170159f9a412bc9ca75103075bdb0ca9612ad627573c83a921f142"
+    },
+    {
+      "artifact_id": "ART-DEMO-06",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-rules.json",
+      "sha256": "aaab550e105e1e422aa22bce7e7a583bfc1deabd35835d6e022f59bac4b831ff"
+    },
+    {
+      "artifact_id": "ART-DEMO-08",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "1b61a8bf1f9512c0e2e5ce2ad2820b607374e4557eda4d6b01a9ed8376ee750d"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "materials": [
+      {
+        "id": "M-001",
+        "title": "演示企业能力说明",
+        "subject": "示范数字技术有限公司（虚构）",
+        "revision": 1,
+        "sources": [
+          {
+            "source_id": "SRC-002",
+            "revision": 1,
+            "sha256": "35dcf7e87e47c15a382b882b0c954969a385cd5b873851c2d28a32fbbe51a5e9",
+            "location": "L4",
+            "quote": "现有演示产品提供工单和报工模块；批次追溯适配范围仍需核验。",
+            "kind": "synthetic"
+          }
+        ],
+        "authorization": "unknown",
+        "validity_raw": null
+      }
+    ],
+    "selections": [
+      {
+        "id": "SEL-001",
+        "target_ids": [
+          "R-001"
+        ],
+        "material_ids": [
+          "M-001"
+        ],
+        "state": "candidate",
+        "reason": "仅为合成能力说明，不能替代产品测试或正式证明",
+        "required_count": 1,
+        "independent_count": 1,
+        "confirmation_ref": null
+      },
+      {
+        "id": "SEL-002",
+        "target_ids": [
+          "C-001"
+        ],
+        "material_ids": [],
+        "state": "missing",
+        "reason": "未提供营业执照原件",
+        "required_count": 1,
+        "independent_count": 0,
+        "confirmation_ref": null
+      }
+    ],
+    "gaps": [
+      "正式营业执照缺失",
+      "企业能力与对外使用授权未确认"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": [
+    "实际企业资料或确认未提供，不能正式交付。"
+  ]
+}

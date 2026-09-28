@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "type": "domain",
+  "id": "construction",
+  "version": "1.0.0",
+  "display_name": "工程建设与施工服务",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "focus_terms": [
+      "工程范围",
+      "施工组织",
+      "工期",
+      "质量",
+      "安全",
+      "竣工",
+      "分包"
+    ],
+    "fact_fields": {
+      "work_scope": "text",
+      "construction_conditions": "text",
+      "schedule_raw": "text",
+      "qualification_scope": "text",
+      "quality_acceptance": "text"
+    },
+    "solution_dimensions": [
+      "施工边界与现场条件",
+      "方法与资源",
+      "进度及依赖",
+      "质量控制",
+      "安全环保",
+      "验收与移交"
+    ],
+    "evidence_types": [
+      "适用资质原件",
+      "人员资格",
+      "授权业绩",
+      "施工方案依据"
+    ],
+    "pitfalls": [
+      "通用模型文本替代专业安全计算",
+      "不经确认承诺资源",
+      "把中标后材料误判为投标否决项"
+    ]
+  }
+}

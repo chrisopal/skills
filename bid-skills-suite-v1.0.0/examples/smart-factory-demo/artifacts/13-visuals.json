@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-visuals",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-13",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-06",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-rules.json",
+      "sha256": "aaab550e105e1e422aa22bce7e7a583bfc1deabd35835d6e022f59bac4b831ff"
+    },
+    {
+      "artifact_id": "ART-DEMO-08",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "1b61a8bf1f9512c0e2e5ce2ad2820b607374e4557eda4d6b01a9ed8376ee750d"
+    },
+    {
+      "artifact_id": "ART-DEMO-10",
+      "revision": 1,
+      "relative_path": "artifacts/10-solution-design.json",
+      "sha256": "8a8912a4cbd8112ef256fd5243b7b86f32728605eebd445a776b94db4331e888"
+    },
+    {
+      "artifact_id": "ART-DEMO-11",
+      "revision": 1,
+      "relative_path": "artifacts/11-technical-content.json",
+      "sha256": "635380469e33dc2401041c98281ec4d95186b49e750e98cc7714e08c6cd5da91"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "figures": [
+      {
+        "id": "FIG-001",
+        "section_id": "SEC-02",
+        "title": "生产执行与ERP接口关系示意",
+        "kind": "architecture",
+        "specification": "ERP → 生产执行服务：生产订单；生产执行服务 → ERP：完工数据。协议待确认。",
+        "source_path": "assets/architecture.mmd",
+        "rendered_path": null,
+        "caption": "图1 方案讨论示意，接口协议待确认",
+        "alt_text": "ERP与生产执行服务双向交换订单与完工数据",
+        "evidence_ids": [
+          "D-001"
+        ],
+        "state": "specified",
+        "rights": "original"
+      }
+    ],
+    "unknowns": [
+      "尚未渲染、未作专业方案确认"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

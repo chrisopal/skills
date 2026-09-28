@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-orchestrator",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-17",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "mode": "full",
+    "stages": [
+      {
+        "skill_id": "bid-source-intake",
+        "state": "needs_review",
+        "artifact_path": "artifacts/01-source-intake.json",
+        "next_action": "确认合成示例仅用于训练"
+      },
+      {
+        "skill_id": "bid-review-remediation",
+        "state": "blocked",
+        "artifact_path": "reviews/15-review.json",
+        "next_action": "实际项目需要真实材料，不能批准本合成示例"
+      }
+    ],
+    "pending_decisions": [
+      "选择真实项目资料与验收范围"
+    ],
+    "next_skill_ids": [
+      "bid-project-profile"
+    ],
+    "completed_this_run": []
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-export-acceptance",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-16",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "blocked",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-14",
+      "revision": 1,
+      "relative_path": "artifacts/14-layout.json",
+      "sha256": "243a6c82f2e4fd6e269fe11679941398129fb11afa902e5ddea55c4e5b41b6a2"
+    },
+    {
+      "artifact_id": "ART-DEMO-15",
+      "revision": 1,
+      "relative_path": "reviews/15-review.json",
+      "sha256": "57729f933605664e00348b9a81da3a79065b8d466ac5aa3dafb7398ead0a7577"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "review_artifact_id": "ART-DEMO-15",
+    "reviewed_inputs_sha256": null,
+    "artifacts": [],
+    "signature_state": "pending",
+    "user_release_authorization_ref": null,
+    "delivery_status": "blocked",
+    "remaining_actions": [
+      "补齐真实资料和内容",
+      "解决评审发现",
+      "取得实际用户授权",
+      "完成实际文件渲染与检查"
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": [
+    "实际企业资料或确认未提供，不能正式交付。"
+  ]
+}

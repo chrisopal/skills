@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-solution-design",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-10",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-02",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "25caefe7b3e39999045ed8cf347b0bb03deecf2d17d03e729c138810dd95903f"
+    },
+    {
+      "artifact_id": "ART-DEMO-03",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "26689fc1c1beac55fa2c7d28d307196d704a9bf9d86fbe2439a51ef95a7adb6d"
+    },
+    {
+      "artifact_id": "ART-DEMO-07",
+      "revision": 1,
+      "relative_path": "artifacts/07-response-strategy.json",
+      "sha256": "bcfe82e3076c8fbbe9c1c4f74c63719d6797105aaf238e951f55db98eb49c26e"
+    },
+    {
+      "artifact_id": "ART-DEMO-08",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "1b61a8bf1f9512c0e2e5ce2ad2820b607374e4557eda4d6b01a9ed8376ee750d"
+    },
+    {
+      "artifact_id": "ART-DEMO-09",
+      "revision": 1,
+      "relative_path": "artifacts/09-evidence-selection.json",
+      "sha256": "0bde012f0482456b5cb83c7176ddd9d84a41a155a2eed6257760ea1e58860c3e"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "decisions": [
+      {
+        "id": "D-001",
+        "title": "生产执行与接口边界",
+        "requirement_ids": [
+          "R-001",
+          "R-002",
+          "R-003"
+        ],
+        "section_ids": [
+          "SEC-02"
+        ],
+        "approach": "以生产执行服务管理工单、报工和追溯；ERP通过受控接口交换生产订单和完工数据；接口协议和容量参数先确认。",
+        "dependencies": [
+          "客户提供接口文档与测试环境"
+        ],
+        "evidence_ids": [
+          "M-001"
+        ],
+        "assumptions": [
+          "企业追溯能力待核验"
+        ],
+        "acceptance": "双方确认接口测试及性能测试条件后形成验收记录",
+        "state": "proposed",
+        "confirmation_ref": null
+      }
+    ],
+    "scope_in": [
+      "工单与报工",
+      "批次追溯需求分析",
+      "ERP对接方案"
+    ],
+    "scope_out": [
+      "未明确的设备自动控制改造"
+    ],
+    "milestones": [
+      {
+        "name": "需求与接口确认",
+        "duration_raw": null,
+        "deliverable": "确认需求和接口清单",
+        "dependency": "客户人员与资料到位"
+      },
+      {
+        "name": "试运行",
+        "duration_raw": "合同生效后90个日历日目标，资源尚待确认",
+        "deliverable": "试运行记录",
+        "dependency": "方案、开发与测试通过"
+      }
+    ]
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

@@ -1,0 +1,330 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bid-skills:bid-source-intake:output:1.0",
+  "title": "招标资料整理与原文解析输出",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill_id": {
+      "const": "bid-source-intake"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "needs_review",
+        "blocked",
+        "ready"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "revision",
+          "relative_path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "filename": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relative_path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "bytes": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "role": {
+                "type": "string",
+                "enum": [
+                  "main",
+                  "technical",
+                  "commercial",
+                  "clarification",
+                  "addendum",
+                  "supplier",
+                  "unknown"
+                ]
+              },
+              "revision": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "duplicate_group": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "registered",
+                  "parsed",
+                  "needs_review",
+                  "failed"
+                ]
+              }
+            },
+            "required": [
+              "source_id",
+              "filename",
+              "relative_path",
+              "sha256",
+              "bytes",
+              "role",
+              "revision",
+              "duplicate_group",
+              "status"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "block_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "location": {
+                "type": "string",
+                "minLength": 1
+              },
+              "page": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "text": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "native",
+                  "vision",
+                  "ocr",
+                  "manual"
+                ]
+              }
+            },
+            "required": [
+              "block_id",
+              "source_id",
+              "location",
+              "page",
+              "text",
+              "method"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "page_audit": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "page": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "processed",
+                  "needs_review",
+                  "failed",
+                  "blank_verified"
+                ]
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "native",
+                  "vision",
+                  "ocr",
+                  "manual",
+                  "none"
+                ]
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "source_id",
+              "page",
+              "status",
+              "method",
+              "note"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "coverage": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "partial",
+            "complete"
+          ]
+        }
+      },
+      "required": [
+        "documents",
+        "blocks",
+        "page_audit",
+        "coverage"
+      ],
+      "additionalProperties": false
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "skill_id",
+    "project_id",
+    "artifact_id",
+    "revision",
+    "created_at",
+    "status",
+    "inputs",
+    "summary",
+    "data",
+    "warnings",
+    "blockers"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "tender",
+            "supplier",
+            "official",
+            "human_decision",
+            "synthetic"
+          ]
+        }
+      },
+      "required": [
+        "source_id",
+        "revision",
+        "sha256",
+        "location",
+        "quote",
+        "kind"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

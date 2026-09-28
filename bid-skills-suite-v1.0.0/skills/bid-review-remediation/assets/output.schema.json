@@ -1,0 +1,304 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bid-skills:bid-review-remediation:output:1.0",
+  "title": "综合评审与整改闭环输出",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "skill_id": {
+      "const": "bid-review-remediation"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "needs_review",
+        "blocked",
+        "ready"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "relative_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "revision",
+          "relative_path",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "review_scope": {
+          "type": "string",
+          "enum": [
+            "full",
+            "limited"
+          ]
+        },
+        "reviewed_inputs_sha256": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "severity": {
+                "type": "string",
+                "enum": [
+                  "blocking",
+                  "warning",
+                  "advisory"
+                ]
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "qualification",
+                  "rejection",
+                  "coverage",
+                  "scoring",
+                  "evidence",
+                  "consistency",
+                  "layout",
+                  "security"
+                ]
+              },
+              "related_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/source"
+                }
+              },
+              "remediation": {
+                "type": "string",
+                "minLength": 1
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "open",
+                  "resolved",
+                  "accepted_warning"
+                ]
+              },
+              "confirmation_ref": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "severity",
+              "category",
+              "related_ids",
+              "description",
+              "evidence",
+              "remediation",
+              "state",
+              "confirmation_ref"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "area": {
+                "type": "string",
+                "minLength": 1
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "passed",
+                  "failed",
+                  "unknown",
+                  "not_applicable"
+                ]
+              },
+              "note": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "area",
+              "state",
+              "note"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "human_approval_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "release_recommendation": {
+          "type": "string",
+          "enum": [
+            "blocked",
+            "needs_review",
+            "eligible_for_user_release"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "review_scope",
+        "reviewed_inputs_sha256",
+        "findings",
+        "checks",
+        "human_approval_ref",
+        "release_recommendation",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "skill_id",
+    "project_id",
+    "artifact_id",
+    "revision",
+    "created_at",
+    "status",
+    "inputs",
+    "summary",
+    "data",
+    "warnings",
+    "blockers"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "tender",
+            "supplier",
+            "official",
+            "human_decision",
+            "synthetic"
+          ]
+        }
+      },
+      "required": [
+        "source_id",
+        "revision",
+        "sha256",
+        "location",
+        "quote",
+        "kind"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

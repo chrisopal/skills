@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "type": "domain",
+  "id": "cable-supply",
+  "version": "1.0.0",
+  "display_name": "电缆供货扩展检查种子",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "focus_terms": [
+      "电压",
+      "截面",
+      "芯数",
+      "型号",
+      "矿用",
+      "光伏",
+      "型式试验",
+      "调价"
+    ],
+    "fact_fields": {
+      "product_family": "text",
+      "product_model": "text",
+      "rated_voltage_raw": "text",
+      "conductor_section_raw": "text",
+      "core_count_raw": "text",
+      "minimum_evidence_count": "number",
+      "price_adjustment_formula_raw": "text"
+    },
+    "solution_dimensions": [
+      "产品族与标包",
+      "参数响应",
+      "检验与认证范围",
+      "供货与批次追溯",
+      "报价输入与调价说明"
+    ],
+    "evidence_types": [
+      "型式试验",
+      "适用安全或产品认证",
+      "独立供货合同",
+      "产品参数原件"
+    ],
+    "pitfalls": [
+      "不推断证书规格包含关系",
+      "保留AND／OR和独立证明数量",
+      "不执行来源中的任意计算代码"
+    ]
+  }
+}

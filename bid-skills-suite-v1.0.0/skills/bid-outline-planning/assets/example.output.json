@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-outline-planning",
+  "project_id": "DEMO-SMART-FACTORY",
+  "artifact_id": "ART-DEMO-08",
+  "revision": 1,
+  "created_at": "2026-09-27T00:00:00Z",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-DEMO-03",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "26689fc1c1beac55fa2c7d28d307196d704a9bf9d86fbe2439a51ef95a7adb6d"
+    },
+    {
+      "artifact_id": "ART-DEMO-04",
+      "revision": 1,
+      "relative_path": "artifacts/04-scoring.json",
+      "sha256": "9ea898335a52986412bc9de79ee0fd8eed1e8d10c02fac2dd5ffbcbe11fffe58"
+    },
+    {
+      "artifact_id": "ART-DEMO-05",
+      "revision": 1,
+      "relative_path": "artifacts/05-compliance.json",
+      "sha256": "08368ef001170159f9a412bc9ca75103075bdb0ca9612ad627573c83a921f142"
+    },
+    {
+      "artifact_id": "ART-DEMO-06",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-rules.json",
+      "sha256": "aaab550e105e1e422aa22bce7e7a583bfc1deabd35835d6e022f59bac4b831ff"
+    },
+    {
+      "artifact_id": "ART-DEMO-07",
+      "revision": 1,
+      "relative_path": "artifacts/07-response-strategy.json",
+      "sha256": "bcfe82e3076c8fbbe9c1c4f74c63719d6797105aaf238e951f55db98eb49c26e"
+    }
+  ],
+  "summary": "合成示例：演示字段与交接，不代表实际业务验收。",
+  "data": {
+    "sections": [
+      {
+        "id": "SEC-01",
+        "parent_id": null,
+        "number": "1",
+        "title": "需求响应",
+        "locked": true,
+        "requirement_ids": [
+          "R-001",
+          "R-002",
+          "R-003"
+        ],
+        "scoring_ids": [],
+        "compliance_ids": [],
+        "format_ids": [
+          "F-001"
+        ],
+        "task": "逐项回应并披露待确认边界",
+        "evidence_needed": [
+          "原文和经确认的企业资料"
+        ],
+        "visuals_needed": []
+      },
+      {
+        "id": "SEC-02",
+        "parent_id": null,
+        "number": "2",
+        "title": "技术方案",
+        "locked": true,
+        "requirement_ids": [
+          "R-001",
+          "R-002",
+          "R-003"
+        ],
+        "scoring_ids": [
+          "S-001"
+        ],
+        "compliance_ids": [],
+        "format_ids": [
+          "F-001"
+        ],
+        "task": "说明业务范围、接口与性能验证机制",
+        "evidence_needed": [
+          "原文和经确认的企业资料"
+        ],
+        "visuals_needed": [
+          "结构关系图"
+        ]
+      },
+      {
+        "id": "SEC-03",
+        "parent_id": null,
+        "number": "3",
+        "title": "实施方案",
+        "locked": true,
+        "requirement_ids": [
+          "R-004"
+        ],
+        "scoring_ids": [
+          "S-002"
+        ],
+        "compliance_ids": [],
+        "format_ids": [
+          "F-001"
+        ],
+        "task": "解释90天试运行目标的条件、资源与交付物",
+        "evidence_needed": [
+          "原文和经确认的企业资料"
+        ],
+        "visuals_needed": []
+      },
+      {
+        "id": "SEC-04",
+        "parent_id": null,
+        "number": "4",
+        "title": "服务方案",
+        "locked": true,
+        "requirement_ids": [
+          "R-005"
+        ],
+        "scoring_ids": [
+          "S-003"
+        ],
+        "compliance_ids": [],
+        "format_ids": [
+          "F-001"
+        ],
+        "task": "说明培训和问题闭环",
+        "evidence_needed": [
+          "原文和经确认的企业资料"
+        ],
+        "visuals_needed": []
+      },
+      {
+        "id": "SEC-05",
+        "parent_id": null,
+        "number": "5",
+        "title": "商务资格",
+        "locked": false,
+        "requirement_ids": [],
+        "scoring_ids": [],
+        "compliance_ids": [
+          "C-001",
+          "C-002",
+          "C-003"
+        ],
+        "format_ids": [
+          "F-002",
+          "F-003"
+        ],
+        "task": "填写企业信息，提供真实附件并预留签署区",
+        "evidence_needed": [
+          "原文和经确认的企业资料"
+        ],
+        "visuals_needed": []
+      }
+    ],
+    "unmapped_ids": []
+  },
+  "warnings": [
+    "仅合成数据，未运行真实模型或企业验收。"
+  ],
+  "blockers": []
+}

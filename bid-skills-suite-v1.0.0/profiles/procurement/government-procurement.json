@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "type": "procurement",
+  "id": "government-procurement",
+  "version": "1.0.0",
+  "display_name": "政府采购场景检查种子",
+  "readiness": "seed_requires_project_validation",
+  "authority": "checklist_only_not_project_facts",
+  "data": {
+    "questions": [
+      "采购方式、适用制度和项目地域是否已由可靠资料确认？",
+      "资格、实质性响应、评分和提交要求是否逐项有来源？",
+      "最新官方规则是否需要联网核验，谁负责确认？",
+      "文件与适用规则存在冲突时由谁判断？"
+    ],
+    "must_not_assume": [
+      "不能仅按采购人名称确定规则",
+      "不内置未核验的比例、金额门槛或期限",
+      "不自动声明满足法定条件"
+    ]
+  }
+}

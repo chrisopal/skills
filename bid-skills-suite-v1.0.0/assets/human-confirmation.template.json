@@ -1,0 +1,10 @@
+{
+  "project_id": null,
+  "decision": "pending",
+  "actor": null,
+  "decided_at": null,
+  "authorization_ref": null,
+  "review_sha256": null,
+  "snapshot_fingerprint": null,
+  "note": "由真实用户或审批系统给出；AI不得自动将pending改为approved。离线脚本不认证身份。"
+}

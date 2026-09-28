@@ -1078,4 +1078,5 @@
 - Source changes: removed unsupported Codex frontmatter fields; bound project ID across extraction, snapshots, reviews, confirmations and delivery manifests; added ZIP/source parity checks, distribution refresh script and regression tests. Updated installation guidance and QA report.
 - Validation: 17/17 Codex skill validators passed; suite self-check passed; 46/46 Python tests passed; 17/17 installed-path validator smokes passed; Python compilation and local ZIP/checksum checks passed. A fresh Codex CLI read-only smoke loaded `bid-source-intake` and its safety reference.
 - Commit/push state: source and this status entry are committed and pushed on `codex/enterprise-dtx-skill-suite-runtime`; generated ZIPs, checksum manifest, rendered document examples and QA snapshots remain local.
+- Main integration: cherry-picked the suite commit onto `main` as `50bd808`; remote `main` read-back matched this commit. The 20 unrelated feature-branch commits were excluded.
 - Remaining: real bid work, multi-skill model execution, authorization authenticity and production document acceptance are untested.

@@ -1088,3 +1088,12 @@
 - Validation: suite check, 46 engineering tests, 17 Codex quick validations, 17 standalone output validators, installed/source file parity, synthetic project intake/snapshot/release-blocking flow and DOCX/PDF machine checks passed. Two read-only model behavior probes passed for source intake and orchestration.
 - Commit/push state: this report is committed and pushed to `main`; generated test outputs remain local and uncommitted.
 - Remaining: 15 skills have no new model behavior probe; the 102 described business scenarios, visual document QA, real bids and human approvals remain untested.
+
+## 2026-09-28 CST — WeChat title review before writing
+
+- Scope: added and locally installed `wechat-title-reviewer` for 智能体架构笔记, and linked it from the article writer, daily pipeline, and both image-post pipelines. Recorded the current account bio and the 2026-08-29 to 2026-09-27 analytics signal in shared references.
+- Decision: review positioning, title promise, reader appeal, natural topic terms, and recent-title repetition before body writing; rerun only when research changes the core claim. Historical recommendation counts are evidence, not an algorithm or reach guarantee.
+- Validation: new skill quick validation, bundle validation (11 skills), three existing Python tests, Python compilation, and `git diff --check` passed.
+- Commit/push state: source and this status entry are committed and pushed on `codex/enterprise-dtx-skill-suite-runtime`.
+- Main integration: cherry-picked this scope onto `main` after the bid suite follow-up, preserving both status records.
+- Remaining: no live writing run has yet exercised the new title gate; recent-title and factual-evidence inputs still depend on each article brief.

@@ -9,6 +9,8 @@ Use this skill to write or rewrite article drafts for `智能体架构笔记`.
 
 Read `../references/account-positioning.md`, `../references/growth-playbook.md`, `../references/topic-pool-workflow.md`, and `../references/human-writing-playbook.md` before writing.
 
+Before outlining or writing the body, use `../wechat-title-reviewer/SKILL.md` to review the selected topic's proposed title and content promise. Carry its recommended title and promised answer into the draft. If research or drafting changes the central claim or evidence, review the final title again before handoff; the final article reviewer still checks title/body consistency.
+
 ## Topic Identity Gate
 
 Before drafting:

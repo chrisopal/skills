@@ -10,11 +10,12 @@ Use this skill for the daily end-to-end workflow of `智能体架构笔记`.
 This skill orchestrates:
 
 1. `wechat-topic-planner`
-2. `wechat-article-writer`
-3. `wechat-article-human-tone-reviewer`
-4. `wechat-article-layout`
-5. `wechat-article-reviewer`
-6. `wechat-account-operator`
+2. `wechat-title-reviewer` (before outlining or body writing)
+3. `wechat-article-writer`
+4. `wechat-article-human-tone-reviewer`
+5. `wechat-article-layout`
+6. `wechat-article-reviewer`
+7. `wechat-account-operator`
 
 Read:
 
@@ -80,6 +81,7 @@ Forbidden:
    - prefer evidence-backed case reviews, stage summaries, failure reviews, or customer-decision topics over another setup article when scores are close
    - require the selected topic brief to include minimum data package, workflow, permission boundary, and 0-1 validation path if it is a setup article
    - reject the candidate if any of the previous four main articles used the same title frame or section sequence
+   - run `wechat-title-reviewer` on the chosen topic brief and candidate titles before outlining; pass the recommended title, its promised answer, and unresolved fact checks to the writer
 3. Write the article:
    - update the same `topic_id` to `DRAFTING` when the Markdown draft is created
    - title, digest, cover prompt

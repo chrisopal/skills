@@ -14,6 +14,8 @@ Read:
 - `../references/review-checklist.md`
 - `../references/imagepost-draft-api.md`
 
+Before writing product-card copy or image-post titles, use `../wechat-title-reviewer/SKILL.md` on each selected product and its verified value claim. Apply its title promise to the card and draft; keep the shorter image-post format rather than forcing a long-article headline.
+
 Also use:
 
 - `得到大脑（Get笔记）` skill for verified note save / KB attachment

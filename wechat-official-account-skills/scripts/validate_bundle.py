@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED = [
     "wechat-topic-planner",
+    "wechat-title-reviewer",
     "wechat-article-writer",
     "wechat-article-human-tone-reviewer",
     "wechat-article-layout",

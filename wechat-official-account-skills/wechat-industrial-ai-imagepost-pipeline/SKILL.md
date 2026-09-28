@@ -15,6 +15,8 @@ Read:
 - `../references/review-checklist.md`
 - `../references/imagepost-draft-api.md`
 
+Before writing case copy or image-post titles, use `../wechat-title-reviewer/SKILL.md` on the selected case and planned evidence. Apply its title promise to the card and draft; keep the shorter image-post format rather than forcing a long-article headline.
+
 Also use:
 
 - `得到大脑（Get笔记）` skill for verified note save / KB attachment

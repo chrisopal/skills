@@ -1298,3 +1298,11 @@
 - Validation: 17/17 Codex skill validators passed; suite self-check passed; 46/46 Python tests passed; 17/17 installed-path validator smokes passed; Python compilation and local ZIP/checksum checks passed. A fresh Codex CLI read-only smoke loaded `bid-source-intake` and its safety reference.
 - Commit/push state: source and this status entry are committed and pushed on `codex/enterprise-dtx-skill-suite-runtime`; generated ZIPs, checksum manifest, rendered document examples and QA snapshots remain local.
 - Remaining: real bid work, multi-skill model execution, authorization authenticity and production document acceptance are untested.
+
+## 2026-09-28 CST — WeChat title review before writing
+
+- Scope: added and locally installed `wechat-title-reviewer` for 智能体架构笔记, and linked it from the article writer, daily pipeline, and both image-post pipelines. Recorded the current account bio and the 2026-08-29 to 2026-09-27 analytics signal in shared references.
+- Decision: review positioning, title promise, reader appeal, natural topic terms, and recent-title repetition before body writing; rerun only when research changes the core claim. Historical recommendation counts are evidence, not an algorithm or reach guarantee.
+- Validation: new skill quick validation, bundle validation (11 skills), three existing Python tests, Python compilation, and `git diff --check` passed.
+- Commit/push state: source and this status entry are committed and pushed on `codex/enterprise-dtx-skill-suite-runtime`.
+- Remaining: no live writing run has yet exercised the new title gate; recent-title and factual-evidence inputs still depend on each article brief.

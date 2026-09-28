@@ -1080,3 +1080,11 @@
 - Commit/push state: source and this status entry are committed and pushed on `codex/enterprise-dtx-skill-suite-runtime`; generated ZIPs, checksum manifest, rendered document examples and QA snapshots remain local.
 - Main integration: cherry-picked the suite commit onto `main` as `50bd808`; remote `main` read-back matched this commit. The 20 unrelated feature-branch commits were excluded.
 - Remaining: real bid work, multi-skill model execution, authorization authenticity and production document acceptance are untested.
+
+## 2026-09-28 CST — Bid skill suite follow-up test
+
+- Scope: recorded a fresh test of the 17 installed bid skills against the source merged into `main`.
+- Changed files: `bid-skills-suite-v1.0.0/QA_REPORT.md`, `STATUS.md`.
+- Validation: suite check, 46 engineering tests, 17 Codex quick validations, 17 standalone output validators, installed/source file parity, synthetic project intake/snapshot/release-blocking flow and DOCX/PDF machine checks passed. Two read-only model behavior probes passed for source intake and orchestration.
+- Commit/push state: this report is committed and pushed to `main`; generated test outputs remain local and uncommitted.
+- Remaining: 15 skills have no new model behavior probe; the 102 described business scenarios, visual document QA, real bids and human approvals remain untested.

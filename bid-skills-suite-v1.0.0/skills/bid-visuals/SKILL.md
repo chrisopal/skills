@@ -2,7 +2,7 @@
 name: bid-visuals
 description: 制作说明方案的准确图表，确保每张图有任务、数据依据、正文对应和可编辑源。 适用于：架构图、流程图、网络图、实施计划图、配置示意、标书配图、数据图表。
 metadata:
-  version: 1.1.0
+  version: 1.2.0
   language: zh-CN
   sequence: '13'
   suite: bid-skills-suite
@@ -28,6 +28,8 @@ metadata:
 上游技能：`bid-format-extraction, bid-outline-planning, bid-solution-design, bid-technical-writing`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
 ## 执行步骤
+
+图文交接和实际入稿检查见[写作流程](references/WRITING_WORKFLOW.md)。源码、实际渲染文件和已插入工作稿分别核验；正文或方案更新后重新核对图，不用旧图状态证明新版一致。招标原图属于需求来源，不能自动转成供应商已实施证据。
 
 1. **步骤1**
 

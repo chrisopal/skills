@@ -2,7 +2,7 @@
 name: bid-technical-writing
 description: 按明确任务卡编写有证据、有机制、有验收说明的技术正文与逐项响应。 适用于：编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。
 metadata:
-  version: 1.1.0
+  version: 1.2.0
   language: zh-CN
   sequence: '11'
   suite: bid-skills-suite
@@ -30,6 +30,10 @@ metadata:
 上游技能：`bid-requirements, bid-scoring, bid-compliance, bid-outline-planning, bid-evidence-matching, bid-solution-design`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
 ## 执行步骤
+
+编写、编辑或复跑测试时读[写作流程与保存](references/WRITING_WORKFLOW.md)。读取`work/writing-settings.json`中实际设置，记录宿主采用方式；没有设置时按用户偏好与保守默认执行。目录映射、正文出现、逐项响应和语义满足分开检查；使用`writing_checks.py`列出真实漏项。保存段落追溯时绑定当前正文哈希；人工修改后重新核验，不能只更新哈希。
+
+可用`scripts/writing_workspace.py --project /absolute/project --port 8767`打开本地Markdown编辑界面，保存并重开核对。它不调用模型、不自动采纳正文；并行生成采用独立章节提案和一个合并者，共享正文保存必须检查版本/哈希。已有Word/PDF不会随编辑自动更新，需生成新版本。
 
 1. **步骤1**
 

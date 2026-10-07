@@ -15,7 +15,10 @@ DISTRIBUTED_SCRIPTS = {
     'bid-source-intake': ('extract_sources.py', 'paddle_ocr.py'),
     'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
     'bid-project-profile': ('tender_router.py',),
-    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py'),
+    'bid-outline-planning': ('writing_checks.py',),
+    'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py'),
+    'bid-document-layout': ('build_docx.py',),
+    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py'),
 }
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
@@ -25,11 +28,15 @@ DISTRIBUTED_DOCS = {
     'bid-compliance': ('TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-format-extraction': ('TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-evidence-matching': ('KNOWLEDGE.md', 'OCR_SETUP.md'),
-    'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md'),
-    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md'),
+    'bid-outline-planning': ('WRITING_WORKFLOW.md',),
+    'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'WRITING_WORKFLOW.md'),
+    'bid-visuals': ('WRITING_WORKFLOW.md',),
+    'bid-document-layout': ('WRITING_WORKFLOW.md',),
+    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md'),
 }
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
+    'bid-technical-writing': ('ui',),
     'bid-orchestrator': ('tender-routing', 'ui'),
 }
 
@@ -48,6 +55,9 @@ def sync_standalone_resources(root=ROOT):
         for directory in directories:
             shutil.copytree(root / 'assets' / directory,
                             root / 'skills' / skill_id / 'assets' / directory, dirs_exist_ok=True)
+    writing_schema = root / 'skills/bid-technical-writing/assets/output.schema.json'
+    for skill_id in ('bid-technical-writing', 'bid-orchestrator'):
+        shutil.copyfile(writing_schema, root / 'skills' / skill_id / 'assets/writing-output.schema.json')
     shutil.copyfile(root / 'registry.json', root / 'skills/bid-orchestrator/registry.json')
 
 

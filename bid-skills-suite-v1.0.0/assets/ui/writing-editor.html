@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>技术标正文草稿工作台</title>
+  <link rel="stylesheet" href="/assets/ui/writing-editor.css">
+</head>
+<body>
+  <div class="writing-editor" data-ui="enterprise">
+    <header class="topbar">
+      <div class="brand-block">
+        <span class="brand-mark" aria-hidden="true">W</span>
+        <div><strong>正文草稿</strong><span id="project-name" class="meta-text">加载中</span></div>
+      </div>
+      <div class="toolbar" aria-label="工作台操作">
+        <span id="save-state" class="status status-neutral" role="status">正在加载</span>
+        <button id="reload-button" class="button button-secondary" type="button">重载</button>
+        <button id="discard-button" class="button button-secondary" type="button" disabled>放弃当前编辑</button>
+        <button id="save-button" class="button button-primary" type="button">保存草稿</button>
+        <button id="theme-button" class="button button-quiet" type="button" aria-label="切换深浅色">深浅色</button>
+      </div>
+    </header>
+    <main class="workspace-grid">
+      <aside class="chapter-nav" aria-labelledby="chapter-heading">
+        <div class="panel-heading"><h1 id="chapter-heading">章节目录</h1><span id="chapter-count" class="count-badge">—</span></div>
+        <nav id="chapter-list" aria-label="技术标章节"></nav>
+      </aside>
+      <section class="editor-panel" aria-labelledby="editor-heading">
+        <div class="editor-heading">
+          <div><p class="eyebrow">技术标正文</p><h2 id="editor-heading">加载中</h2></div>
+          <span id="chapter-state" class="status status-neutral">未加载</span>
+        </div>
+        <details class="settings-panel" id="settings-panel">
+          <summary>写作设置</summary>
+          <form id="settings-form" class="settings-form">
+            <label for="tone-setting">语气</label>
+            <select id="tone-setting"><option value="plain_chinese">平实中文</option><option value="formal_chinese">正式中文</option></select>
+            <label for="target-words-setting">目标字数（可选）</label>
+            <input id="target-words-setting" type="number" min="1" step="1" inputmode="numeric">
+            <label for="execution-mode-setting">执行模式</label>
+            <select id="execution-mode-setting"><option value="sequential">顺序</option><option value="parallel">并行</option></select>
+            <label for="max-parallel-setting">最大并行数</label>
+            <select id="max-parallel-setting"><option value="1">1</option><option value="2">2</option></select>
+            <p class="settings-guidance">这些设置只记录写作偏好，不会创建自动任务池。</p>
+            <button id="settings-save-button" class="button button-secondary" type="submit">保存并重载设置</button>
+          </form>
+        </details>
+        <div id="error-banner" class="message message-error" role="alert" hidden></div>
+        <label class="field-label" for="body-editor">Markdown 草稿</label>
+        <textarea id="body-editor" class="body-editor" spellcheck="false" disabled></textarea>
+        <div class="editor-footer"><span id="word-count" class="meta-text">0 字</span><span class="status status-warning">正文满足性待复核</span></div>
+      </section>
+      <aside class="reference-panel" aria-labelledby="reference-heading">
+        <div class="panel-heading"><h2 id="reference-heading">只读依据</h2></div>
+        <div id="reference-content" class="reference-content"></div>
+        <div id="coverage-content" class="coverage-content" aria-live="polite"></div>
+      </aside>
+    </main>
+  </div>
+  <script src="/assets/ui/writing-editor.js" defer></script>
+</body>
+</html>

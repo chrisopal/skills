@@ -2,7 +2,7 @@
 name: bid-export-acceptance
 description: 生成并核验实际Word／PDF交付文件，确保成稿对应已审核版本且没有漏页、乱码或内部信息泄漏。 适用于：导出标书、Word/PDF成稿、交付打包、检查目录页码、实际文件验收。
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   language: zh-CN
   sequence: '16'
   suite: bid-skills-suite
@@ -27,11 +27,15 @@ metadata:
 
 上游技能：`bid-document-layout, bid-review-remediation`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
+完整候选编标及宿主对话修订的保存、失效和重导出规则见[写作流程](references/WRITING_WORKFLOW.md)。
+
 ## 执行步骤
 
 1. **步骤1**
 
    重新计算15所绑定输入文件的真实哈希；任何变化先返回15复核，不用“只是排版”跳过验证。
+
+   `last-review` hash不匹配时禁止ready。完整编标可导出明确标注阻塞的`draft_only`候选，但eligible/正式交付门禁和人工授权不变；复杂固定表、真实TOC/页码及逐页QA未由宿主工具完成时不得标passed。
 
 2. **步骤2**
 

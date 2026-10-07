@@ -2,7 +2,7 @@
 name: bid-review-remediation
 description: 对当前确切版本进行合规、覆盖、评分、证据、一致性和版式评审，并驱动可追踪整改。 适用于：审核标书、废标检查、需求覆盖、评分自查、查错、整改复核、独立评审。
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   language: zh-CN
   sequence: '15'
   suite: bid-skills-suite
@@ -27,11 +27,15 @@ metadata:
 
 上游技能：`bid-source-intake, bid-project-profile, bid-requirements, bid-scoring, bid-compliance, bid-format-extraction, bid-response-strategy, bid-outline-planning, bid-evidence-matching, bid-solution-design, bid-technical-writing, bid-commercial-documents, bid-visuals, bid-document-layout`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
+完整候选编标及宿主对话修订的保存、失效和重导出规则见[写作流程](references/WRITING_WORKFLOW.md)。
+
 ## 执行步骤
 
 1. **步骤1**
 
    冻结评审输入集合与文件哈希，包括需求、评分、合规、目录、素材、正文、配图与排版规则；缺必需项时只能出限定范围报告。
+
+   `last-review` hash与当前任一输入字节不一致时不得沿用结论或标ready；需求提取与评分输入分别复核。
 
 2. **步骤2**
 

@@ -32,6 +32,8 @@ DISTRIBUTED_DOCS = {
     'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'WRITING_WORKFLOW.md'),
     'bid-visuals': ('WRITING_WORKFLOW.md',),
     'bid-document-layout': ('WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md'),
+    'bid-review-remediation': ('WRITING_WORKFLOW.md',),
+    'bid-export-acceptance': ('WRITING_WORKFLOW.md',),
     'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md'),
 }
 DISTRIBUTED_ASSET_DIRS = {

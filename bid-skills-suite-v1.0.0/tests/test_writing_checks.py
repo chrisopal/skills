@@ -90,6 +90,34 @@ class WritingChecksTests(unittest.TestCase):
         self.files[11].write_text(json.dumps(payload))
         self.assertFalse(self.check()['structural_valid'])
 
+    def test_response_copied_into_body_cannot_prove_paragraph_trace(self):
+        writing = json.loads(self.files[11].read_text())
+        response = writing['data']['responses'][0]
+        chapter = next(c for c in writing['data']['chapters'] if c['id'] in response['chapter_ids'])
+        chapter['body_markdown'] += '\n\n' + response['response']
+        self.files[11].write_text(json.dumps(writing))
+        trace = {'writing_sha256': writing_checks.digest(self.files[11]), 'links': [
+            {'chapter_id': chapter['id'], 'requirement_id': response['requirement_id'],
+             'body_quote': response['response']}]}
+        (self.project / 'artifacts/11-writing-trace.json').write_text(json.dumps(trace))
+        result = self.check()
+        self.assertFalse(result['structural_valid'])
+        self.assertIn('段落追溯不能用响应全文或纯需求原文自证', result['errors'])
+        self.assertIn(response['requirement_id'], result['written_without_paragraph_trace'])
+
+    def test_original_requirement_alone_cannot_prove_paragraph_trace(self):
+        writing = json.loads(self.files[11].read_text())
+        chapter = writing['data']['chapters'][0]
+        requirement_id = chapter['requirement_ids'][0]
+        requirements = json.loads(self.files[3].read_text())['data']['requirements']
+        quote = next(r['text'] for r in requirements if r['id'] == requirement_id)
+        chapter['body_markdown'] += '\n\n' + quote
+        self.files[11].write_text(json.dumps(writing))
+        trace = {'writing_sha256': writing_checks.digest(self.files[11]), 'links': [
+            {'chapter_id': chapter['id'], 'requirement_id': requirement_id, 'body_quote': quote}]}
+        (self.project / 'artifacts/11-writing-trace.json').write_text(json.dumps(trace))
+        self.assertFalse(self.check()['structural_valid'])
+
     def test_raw_classification_json_is_hashed_without_inventing_envelope(self):
         source = self.project / 'classification.json'
         source.write_text(json.dumps({'project_id': 'TEST-WRITING', 'decision': 'proposal'}))

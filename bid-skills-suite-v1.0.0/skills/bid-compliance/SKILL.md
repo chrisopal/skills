@@ -2,7 +2,7 @@
 name: bid-compliance
 description: 区分资格条件、实质性响应、明确否决、提交要求和履约风险，防止高风险漏项。 适用于：废标项、否决投标、资格条件、盖章签字、递交、保证金、文件完整性要求。
 metadata:
-  version: 1.0.0
+  version: 1.2.0
   language: zh-CN
   sequence: '5'
   suite: bid-skills-suite
@@ -26,6 +26,10 @@ metadata:
 输入：招标原文、02上下文、资格与响应性审查表、提交及保证金相关附件。
 
 上游技能：`bid-source-intake, bid-project-profile, bid-requirements`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
+
+## 首次分类与模板
+
+读取并绑定02分类路由产物，按 [分类与模板路由](references/TENDER_ROUTING.md) 使用各类别否决检查。原文明确后果、普通技术要求、低分、履约风险、招标失败分别记录；不因模板提示可能风险而生成废标事实。
 
 ## 执行步骤
 

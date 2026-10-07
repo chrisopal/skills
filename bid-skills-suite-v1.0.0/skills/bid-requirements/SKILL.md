@@ -2,7 +2,7 @@
 name: bid-requirements
 description: 建立原文可追溯的原子需求矩阵，保留条件、数量、单位、约束与验收依据。 适用于：提取技术需求、功能清单、参数要求、商务与验收需求、形成需求矩阵。
 metadata:
-  version: 1.0.0
+  version: 1.2.0
   language: zh-CN
   sequence: '3'
   suite: bid-skills-suite
@@ -26,6 +26,10 @@ metadata:
 输入：01完整原文、02项目上下文和领域包；不完整原文仅支持标明范围的初稿。
 
 上游技能：`bid-source-intake, bid-project-profile`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
+
+## 首次分类与模板
+
+读取02的分类路由产物和对应标包模板，按 [分类与模板路由](references/TENDER_ROUTING.md) 同时处理公共要求和各组件要求；将路由产物实际身份加入inputs。模板只决定检查维度，不缩减全文范围，不把行业常见功能添加为客户事实。跨页表格先核对列与对象关系。
 
 ## 执行步骤
 

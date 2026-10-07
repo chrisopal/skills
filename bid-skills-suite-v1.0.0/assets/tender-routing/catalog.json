@@ -1,0 +1,283 @@
+{
+  "schema_version": "1.0",
+  "catalog_version": "1.0.0",
+  "catalog_id": "tender-routing",
+  "source_kind": "instruction_catalog_only",
+  "classification": {
+    "base_categories": [
+      {
+        "id": "construction",
+        "title": "工程施工",
+        "definition": "以现场施工、安装、改造或工程实施为主要采购对象，范围、工序或现场交付是核心工作。"
+      },
+      {
+        "id": "hardware_supply",
+        "title": "硬件供货",
+        "definition": "以设备、仪器、部件、材料或其他实体货物供货为主要采购对象，交付物的型号、数量或性能是核心工作。"
+      },
+      {
+        "id": "software_integration",
+        "title": "软件与集成",
+        "definition": "以软件、平台、应用、数据、接口、部署、配置或系统集成为主要采购对象，软件功能或集成结果是核心工作。"
+      },
+      {
+        "id": "service_outsourcing",
+        "title": "服务外包",
+        "definition": "以持续的人力服务、运营、维护、咨询、培训或按服务量交付为主要采购对象，服务过程或服务结果是核心工作。"
+      }
+    ],
+    "scenario_tags": {
+      "purpose": "场景标签可并列，不能替代基础类别或单独形成第五类。",
+      "examples": [
+        "smart_factory",
+        "smart_park",
+        "smart_campus",
+        "energy_management",
+        "manufacturing",
+        "data_center"
+      ],
+      "instruction": "只有原文能支持时才记录标签；标签不改变标包内基础类别数量。"
+    },
+    "model_instructions": [
+      "先按每个标包的实际采购范围判断基础类别；标包数量与类别组合是两个独立维度。",
+      "以语义和交付范围判断，不得仅因出现设备、软件、安装、服务等关键词自动分类。",
+      "只有原文分别描述了采购的工作或范围，才增加一个组件；供应商历史业绩、嵌入式固件、例行安装、保修和售后通常不单独增加组件。",
+      "同一标包含两个或以上实际采购类别时标记 mixed；只有一个类别时标记 single；信息不足时标记 unknown，不猜测。",
+      "将智能工厂、智慧园区、智慧校园等记录为 scenario_tags；它们不是互斥的第五种基础类别。",
+      "每个选中的类别必须引用原文块的 source_id、location 和 quote；quote 必须是原文块的连续文字（允许空白归一化）。",
+      "判断单包前交叉核对公告、前附表、采购清单、报价表中的全部包件/标段/合同及兼投兼中规则；总项目一行不能覆盖子包，分报价表或可1/2中标人也不自动等于固定多包，有歧义时标记 unknown。",
+      "软件采购要检查独立软件报价行、许可、数量和实际平台数据对接；不能只看标题，也不能把所有随设备交付的软件一概排除。",
+      "不要从模板、行业常识或法律常识补写项目事实、法定门槛、金额、期限、默认参数或否决后果。"
+    ],
+    "negative_boundary_examples": [
+      {
+        "case": "硬件采购附带嵌入式固件",
+        "classification": "hardware_supply",
+        "reason": "固件是随设备交付的组成部分，原文没有单独采购软件实施范围。"
+      },
+      {
+        "case": "系统项目包含例行安装、调试和保修",
+        "classification": "software_integration",
+        "reason": "例行安装和保修是软件交付的配套活动，不能仅凭关键词新增施工或服务组件。"
+      },
+      {
+        "case": "投标人被要求提供既往设备项目业绩",
+        "classification": "unknown",
+        "reason": "供应商资格证据不等于本次采购范围，不能据此新增硬件供货组件。"
+      },
+      {
+        "case": "同一标包明确采购设备并要求独立运维团队持续服务",
+        "classification": "mixed",
+        "reason": "设备供货和持续服务均是被采购的独立范围。"
+      },
+      {
+        "case": "设备清单之外另列软件报价行、许可数量和平台数据对接",
+        "classification": "mixed",
+        "reason": "独立软件采购范围有原文证据，不能因为项目标题或设备主项而排除软件组件。"
+      }
+    ]
+  },
+  "common_extraction_plan": {
+    "source_kind": "instruction",
+    "notice": "以下字段和检查清单是抽取指导，不是本项目事实；每一项都必须回指本项目原文。",
+    "tracks": {
+      "basic_info": {
+        "fields": [
+          "project_name",
+          "project_id_raw",
+          "project_number",
+          "purchaser_or_owner",
+          "procurement_scope",
+          "budget",
+          "ceiling",
+          "procurement_method_raw",
+          "tender_document_version",
+          "submission_deadline",
+          "delivery_period",
+          "location",
+          "contact_and_clarification_channel",
+          "lot_list_and_lot_boundaries"
+        ],
+        "checklist": [
+          "区分公告信息、采购文件信息和澄清/补遗信息。",
+          "时间、金额、数量、单位和标包边界只记录原文明确值；缺失项保留 unknown。",
+          "检查补遗、答疑和分册之间的覆盖关系，不擅自决定冲突优先级。"
+        ]
+      },
+      "requirements": {
+        "fields": [
+          "requirement_id_or_source_location",
+          "requirement_text",
+          "mandatory_or_optional_as_stated",
+          "quantity_unit_and_constraints",
+          "delivery_or_acceptance_condition",
+          "dependency_and_scope_boundary",
+          "open_questions"
+        ],
+        "checklist": [
+          "把功能、性能、数量、接口、工期、服务和验收条件分开记录。",
+          "保留来源、原文、解释和未知状态；不得把建议改写成要求。",
+          "需求抽取与评分表、资格条件和否决条件保持独立引用。"
+        ]
+      },
+      "scoring": {
+        "fields": [
+          "criterion_id_or_source_location",
+          "criterion_text",
+          "score_or_weight_as_stated",
+          "scoring_method_and_tiers",
+          "evidence_condition",
+          "arithmetic_or_scope_unknowns"
+        ],
+        "checklist": [
+          "保留评分层级、计分方法、封顶/扣分/区间等原文语义。",
+          "评分项与技术需求分开，不能把评分描述当成必须交付的需求。",
+          "总分、价格公式和证据条件没有原文支撑时标为 unknown。"
+        ]
+      },
+      "disqualification": {
+        "fields": [
+          "rule_id_or_source_location",
+          "condition_text",
+          "trigger_scope",
+          "explicit_consequence_as_stated",
+          "submission_or_qualification_evidence",
+          "applicability_unknowns"
+        ],
+        "checklist": [
+          "仅抽取原文明确的资格、实质性响应、提交和否决条件。",
+          "只有原文明确写出后果时才记录 consequence；不得推导法定后果。",
+          "把缺材料、待确认适用范围和未核验真实性保留为风险或 unknown。"
+        ]
+      }
+    },
+    "evidence_acceptance_checks": [
+      "每个事实、需求、评分项和否决条件带 source_id/location/quote。",
+      "证据位置能够回读到 intake.data.blocks，原文变化后必须重新生成 intake。",
+      "验收条件记录测试对象、条件、结果和签署/记录依据（若原文有），不替客户确认通过。",
+      "证据不足时保留缺口，不以模板字段、模型置信度或文件存在替代业务验收。"
+    ]
+  },
+  "templates": [
+    {
+      "category": "construction",
+      "title": "工程施工抽取模板",
+      "source_kind": "instruction",
+      "requirement_facets": [
+        "施工范围、区域、界面和现场条件",
+        "施工工序、方法、进度、资源和安全/质量要求（仅按原文）",
+        "设备安装、调试、试运行与其他专业接口",
+        "材料、临时设施、成品保护和竣工资料责任",
+        "工程量、单位、工期和验收节点"
+      ],
+      "scoring_checks": [
+        "施工组织、进度计划、资源配置、质量安全方案是否为独立评分项",
+        "工程量清单、技术响应、样板/施工方案的评分证据和计分层级",
+        "价格或工期评分公式是否完整且有原文依据"
+      ],
+      "disqualification_checks": [
+        {"check": "未响应明确的施工范围、工期或实质性技术条件", "consequence": "仅记录原文明确的否决/无效后果；原文未写时保留 unknown"},
+        {"check": "资格、签署、保证金或提交文件缺失", "consequence": "仅记录原文明确的资格不通过或否决后果；不推导法规后果"}
+      ],
+      "evidence_acceptance_checks": [
+        "现场条件、隐蔽工程、试运行、竣工资料和签署记录的来源与验收依据",
+        "工程量、单位、边界和变更条件可由原文或已确认文件回读",
+        "施工安全、质量和进度结论不以模板默认值替代项目确认"
+      ],
+      "negative_boundary_examples": [
+        "软件部署附带常规机房上架，不单独增加施工组件，除非原文采购独立施工范围。",
+        "设备供货附带到货安装，不单独增加施工组件，除非安装工程本身是独立采购内容。"
+      ]
+    },
+    {
+      "category": "hardware_supply",
+      "title": "硬件供货抽取模板",
+      "source_kind": "instruction",
+      "requirement_facets": [
+        "设备/材料名称、型号、数量、单位和配置边界",
+        "性能、兼容性、环境、接口、认证或检测要求（仅按原文）",
+        "供货范围、包装运输、到货、安装配合和备品备件",
+        "交付、开箱验收、安装调试配合和质量保证期限（按原文）",
+        "替代型号、偏离和分项报价规则"
+      ],
+      "scoring_checks": [
+        "技术参数响应、品牌型号、供货方案和样品/检测证据的评分条件",
+        "业绩、授权、原厂证明等评分证据与资格条件的区别",
+        "分项报价、总价、交货期或价格评分公式是否原文完整"
+      ],
+      "disqualification_checks": [
+        {"check": "型号、数量、关键参数或供货范围未按原文响应", "consequence": "仅记录原文明确的否决/无效后果；不得自行判断实质性偏离"},
+        {"check": "授权、检测、认证、样品或资格材料缺失", "consequence": "仅记录采购文件明确的后果；未明确时列为待核验风险"}
+      ],
+      "evidence_acceptance_checks": [
+        "型号、序列/批次、数量、检测和到货记录的来源可回读",
+        "开箱、功能、性能和培训验收条件按原文拆分并保留签署依据",
+        "历史项目、产品宣传和配置建议不能替代本项目交付证据"
+      ],
+      "negative_boundary_examples": [
+        "设备内置固件或软件界面默认属于硬件交付组成部分，不自动增加软件组件。",
+        "供应商既往硬件业绩只是证据要求，不代表本项目采购了另一类硬件。"
+      ]
+    },
+    {
+      "category": "software_integration",
+      "title": "软件与集成抽取模板",
+      "source_kind": "instruction",
+      "requirement_facets": [
+        "业务功能、角色、流程、数据对象和报表",
+        "部署、环境、接口、数据迁移、权限和安全边界",
+        "性能、可用性、兼容性、扩展性和版本约束（仅按原文）",
+        "实施计划、配置开发、联调、培训、上线和维保范围",
+        "源代码、许可证、文档、数据归属和交付物（如原文有）"
+      ],
+      "scoring_checks": [
+        "功能覆盖、架构、接口/集成、实施方法和演示/验证的评分层级",
+        "性能、安全、可用性和服务方案评分的证据条件",
+        "软件报价、授权数量、实施服务或价格评分公式是否分别明确"
+      ],
+      "disqualification_checks": [
+        {"check": "核心功能、接口、兼容性或实质性技术条件未响应", "consequence": "仅记录采购文件明确的否决/无效后果；不把评分低分推导为否决"},
+        {"check": "授权、承诺、演示、签署或提交文件不符合明确格式", "consequence": "仅记录原文明确的提交/资格后果；其余保留人工核验"}
+      ],
+      "evidence_acceptance_checks": [
+        "需求、接口、测试条件、测试结果、缺陷关闭和用户签署记录可回读",
+        "性能或并发指标保留测试前提，不用模板默认阈值补全",
+        "软件上线成功、演示成功和业务验收通过分别记录，不相互替代"
+      ],
+      "negative_boundary_examples": [
+        "软件项目的例行安装、调试和保修属于交付配套，不自动增加施工或服务组件。",
+        "设备采购附带嵌入式固件不单独归为软件与集成，除非原文采购独立软件成果。"
+      ]
+    },
+    {
+      "category": "service_outsourcing",
+      "title": "服务外包抽取模板",
+      "source_kind": "instruction",
+      "requirement_facets": [
+        "服务对象、服务边界、工作量、班次、地点和服务周期",
+        "岗位、人员资质、驻场/响应、交接和管理机制",
+        "服务SLA、响应时间、质量指标和升级闭环（仅按原文）",
+        "运营、运维、客服、咨询、培训或数据处理交付物",
+        "服务计价单位、考核、结算、变更和退出条件（如原文有）"
+      ],
+      "scoring_checks": [
+        "服务组织、人员配置、SLA、应急和质量保障的评分条件",
+        "服务案例、人员证据、响应承诺和方案演示的评分层级",
+        "服务量、周期、单价、考核扣款或价格公式是否完整"
+      ],
+      "disqualification_checks": [
+        {"check": "服务范围、人员、响应或实质性SLA未按原文响应", "consequence": "仅记录原文明确的否决/无效后果；普通评分不足不改写为否决"},
+        {"check": "资格、授权、人员证明、承诺或提交格式缺失", "consequence": "仅记录原文明确的资格/提交后果；不推导法定后果"}
+      ],
+      "evidence_acceptance_checks": [
+        "人员到岗、工单、响应、服务记录、考核和问题闭环可回读",
+        "服务量、周期和质量指标保留原文口径，不用默认SLA补全",
+        "培训完成或月报提交不自动等于服务质量验收通过"
+      ],
+      "negative_boundary_examples": [
+        "硬件或软件项目的保修、售后和一次性培训不自动构成服务外包组件。",
+        "只有原文将持续运维、运营或人力服务作为独立采购范围时才增加服务组件。"
+      ]
+    }
+  ]
+}

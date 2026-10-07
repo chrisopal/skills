@@ -2,7 +2,7 @@
 name: bid-format-extraction
 description: 忠实提取必须遵守的文件结构、固定表格与版式规则，为规划与排版提供约束。 适用于：提取强制目录、投标文件格式、固定表格、商务技术分册、暗标版式。
 metadata:
-  version: 1.0.0
+  version: 1.2.0
   language: zh-CN
   sequence: '6'
   suite: bid-skills-suite
@@ -26,6 +26,10 @@ metadata:
 输入：招标文件的格式章节、附件表单、原版Word／表格及02上下文。
 
 上游技能：`bid-source-intake, bid-project-profile`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
+
+## 首次分类与模板
+
+读取并绑定02分类路由产物，按 [分类与模板路由](references/TENDER_ROUTING.md) 保留不同标包的格式与分册约束。分类提取模板只帮助理解，不替代客户强制目录、固定表格或暗标规则。
 
 ## 执行步骤
 

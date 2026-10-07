@@ -1,0 +1,769 @@
+{
+  "schema_version": "1.0",
+  "annotation_method": "primary_agent_source_review",
+  "human_expert_review": "NOT_RUN",
+  "created_on": "2026-10-07",
+  "samples": [
+    {
+      "sample_id": "construction_01",
+      "sha256": "58a5bbd9ad65525245355112f657a1c0cbedfe45f9ef3b0759b35fabc012f4b7",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "construction"
+          ],
+          "evidence": [
+            {
+              "page": 8,
+              "quote": "招标范围：国家中医药传承创新中心楼施工图纸及工程量清单所包含的全部工程。"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "construction_01-A01",
+          "track": "basic_info",
+          "page": 7,
+          "quote": "项目招标编号：E4500002802004925001",
+          "meaning": "项目编号"
+        },
+        {
+          "id": "construction_01-A02",
+          "track": "basic_info",
+          "page": 7,
+          "quote": "合同估算价：25128.38万元",
+          "meaning": "合同估算价不是最终报价"
+        },
+        {
+          "id": "construction_01-A03",
+          "track": "requirements",
+          "page": 8,
+          "quote": "招标范围：国家中医药传承创新中心楼施工图纸及工程量清单所包含的全部工程。",
+          "meaning": "承包范围对应图纸及清单，不能只读公告"
+        },
+        {
+          "id": "construction_01-A04",
+          "track": "requirements",
+          "page": 7,
+          "quote": "要求工期：840日历天",
+          "meaning": "工期840日历天"
+        },
+        {
+          "id": "construction_01-A05",
+          "track": "scoring",
+          "page": 60,
+          "quote": "技术标评分标准（满分分值权重35.0%）",
+          "meaning": "技术评分权重35%，不能与未加权子项再次相加"
+        },
+        {
+          "id": "construction_01-A06",
+          "track": "scoring",
+          "page": 69,
+          "quote": "报价分评分标准（报价分分值权重=45%）",
+          "meaning": "报价评分权重45%"
+        },
+        {
+          "id": "construction_01-A07",
+          "track": "disqualification",
+          "page": 79,
+          "quote": "投标人或其投标文件有下列情形之一的，其投标作否决投标处理：B1.1有第二章“投标人须知”第1.4.3、1.4.4项规定的任何一种情形的；B1.2有串通投标或弄虚作假或有其他违法行为的；",
+          "meaning": "串通、造假等明确否决；交叉引用另需追踪"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "construction_02",
+      "sha256": "8c25c084c70de4cda6b26451d854c0a74655765cea19d093ab117a291dbbaede",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "construction"
+          ],
+          "evidence": [
+            {
+              "page": 3,
+              "quote": "包件一：杨浦区9套"
+            }
+          ]
+        },
+        {
+          "lot_id": "2",
+          "categories": [
+            "construction"
+          ],
+          "evidence": [
+            {
+              "page": 3,
+              "quote": "包件二：宝山区7套"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "construction_02-A01",
+          "track": "basic_info",
+          "page": 3,
+          "quote": "预算金额：总预算172.83万元",
+          "meaning": "总预算"
+        },
+        {
+          "id": "construction_02-A02",
+          "track": "basic_info",
+          "page": 3,
+          "quote": "包件一：杨浦区9套最高限价66.4217万元（含税），包件二：宝山区7套65.0291万元（含税）",
+          "meaning": "分包限价与预算不得混淆"
+        },
+        {
+          "id": "construction_02-A03",
+          "track": "requirements",
+          "page": 3,
+          "quote": "工期要求：为合同签订后30天内竣工",
+          "meaning": "工期起算条件"
+        },
+        {
+          "id": "construction_02-A04",
+          "track": "requirements",
+          "page": 3,
+          "quote": "本项目投标人可兼投两个包件，但不可兼中",
+          "meaning": "可兼投不可兼中"
+        },
+        {
+          "id": "construction_02-A05",
+          "track": "scoring",
+          "page": 58,
+          "quote": "技术标的评定（总分50分）",
+          "meaning": "技术总分50"
+        },
+        {
+          "id": "construction_02-A06",
+          "track": "scoring",
+          "page": 60,
+          "quote": "商务标的评定（总分50分）",
+          "meaning": "商务总分50"
+        },
+        {
+          "id": "construction_02-A07",
+          "track": "disqualification",
+          "page": 10,
+          "quote": "其投标将作为否决投标处理：(1)投标人未提交投标保证金或投标保证金金额不足、投标保证金的形式、投标保证金的有效期不符合招标文件要求；",
+          "meaning": "保证金缺失或不符合要求的后果"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "hardware_supply_01",
+      "sha256": "3437a26ff0bca75523fc97a62ac93a25cc45ffcb231193653adea5eda6f4c4bf",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "hardware_supply"
+          ],
+          "evidence": [
+            {
+              "page": 3,
+              "quote": "采购需求：拟购置5套高性能GPU服务器整机"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "hardware_supply_01-A01",
+          "track": "basic_info",
+          "page": 3,
+          "quote": "预算金额：1325万元最高限价（如有）：1325万元",
+          "meaning": "预算与限价均1325万元"
+        },
+        {
+          "id": "hardware_supply_01-A02",
+          "track": "requirements",
+          "page": 3,
+          "quote": "采购需求：拟购置5套高性能GPU服务器整机",
+          "meaning": "采购5套整机"
+        },
+        {
+          "id": "hardware_supply_01-A03",
+          "track": "requirements",
+          "page": 34,
+          "quote": "配备不少于8张计算显卡，每张计算显卡BF16计算峰值大于等于1900TFLOPS，显存不低于80GB",
+          "meaning": "显卡数量、精度及算力显存约束不可丢失"
+        },
+        {
+          "id": "hardware_supply_01-A04",
+          "track": "requirements",
+          "page": 34,
+          "quote": "或配备2至4路ARM64架构CPU，总核心数量不少于128核，主频不低于2.4GHz。",
+          "meaning": "CPU方案为或关系，不得要求同时满足两种架构"
+        },
+        {
+          "id": "hardware_supply_01-A05",
+          "track": "scoring",
+          "page": 39,
+          "quote": "商务及技术部分：70分投标报价：30分",
+          "meaning": "商务技术70及价格30"
+        },
+        {
+          "id": "hardware_supply_01-A06",
+          "track": "scoring",
+          "page": 39,
+          "quote": "所投产品技术参数完全满足或优于招标文件要求的，得23分",
+          "meaning": "参数响应最高23分"
+        },
+        {
+          "id": "hardware_supply_01-A07",
+          "track": "disqualification",
+          "page": 36,
+          "quote": "有一项不符合审查标准的，资格审查不合格，其投标无效。",
+          "meaning": "资格审查不合格导致投标无效"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "hardware_supply_02",
+      "sha256": "becd86a37a126ac6cd246de4c7de29639ec6a5de6414c7e3fc8a56a467208dfd",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "hardware_supply",
+            "software_integration"
+          ],
+          "evidence": [
+            {
+              "page": 27,
+              "quote": "建设终端管理系统覆盖2500点专用工作站；2、建设终端管理系统覆盖500点运维终端；3、采购7台服务器；4、采购7套操作系统。"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "hardware_supply_02-A01",
+          "track": "basic_info",
+          "page": 7,
+          "quote": "最高限价为人民币170万元",
+          "meaning": "限价170万元"
+        },
+        {
+          "id": "hardware_supply_02-A02",
+          "track": "requirements",
+          "page": 27,
+          "quote": "建设终端管理系统覆盖2500点专用工作站",
+          "meaning": "软件授权/管理范围，名称中的服务器不能限制为纯硬件"
+        },
+        {
+          "id": "hardware_supply_02-A03",
+          "track": "requirements",
+          "page": 27,
+          "quote": "采购7台服务器；",
+          "meaning": "采购7台实体设备"
+        },
+        {
+          "id": "hardware_supply_02-A04",
+          "track": "requirements",
+          "page": 28,
+          "quote": "需将终端管理系统的资产数据和审计信息纳入总台网络安全统一监测平台",
+          "meaning": "实际软件集成范围"
+        },
+        {
+          "id": "hardware_supply_02-A05",
+          "track": "scoring",
+          "page": 26,
+          "quote": "投标报价得分=(评标基准价／投标报价)×50%×100",
+          "meaning": "价格满分50的计算式"
+        },
+        {
+          "id": "hardware_supply_02-A06",
+          "track": "scoring",
+          "page": 26,
+          "quote": "#代表重要指标，满足或优于该指标得1分，共计25项，共计25分",
+          "meaning": "技术重要项累计规则"
+        },
+        {
+          "id": "hardware_supply_02-A07",
+          "track": "disqualification",
+          "page": 7,
+          "quote": "超过最高限价或者无报价投标的，投标无效。",
+          "meaning": "限价/无报价后果"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "software_integration_01",
+      "sha256": "984b17b2147776159dbc14ca333072e07103d510486bac597df4b37915887238",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "software_integration"
+          ],
+          "evidence": [
+            {
+              "page": 3,
+              "quote": "为中国老龄科学研究中心提供调查管理平台及客户端开发服务"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "software_integration_01-A01",
+          "track": "basic_info",
+          "page": 3,
+          "quote": "项目编号：HXZB2025612",
+          "meaning": "项目编号"
+        },
+        {
+          "id": "software_integration_01-A02",
+          "track": "basic_info",
+          "page": 3,
+          "quote": "预算金额：100万元",
+          "meaning": "预算100万元"
+        },
+        {
+          "id": "software_integration_01-A03",
+          "track": "requirements",
+          "page": 3,
+          "quote": "2026年2月10日前完成系统上线，2026年3月30日前完成本地部署与安装，2026年4月10日前完成项目实施和验收",
+          "meaning": "三个里程碑不得合并为同一个截止日期"
+        },
+        {
+          "id": "software_integration_01-A04",
+          "track": "requirements",
+          "page": 35,
+          "quote": "支持全流程操作日志记录，支持调查全程录音，通过GPS记录调查员GPS定位数据",
+          "meaning": "数据质控模块的明确要求"
+        },
+        {
+          "id": "software_integration_01-A05",
+          "track": "requirements",
+          "page": 36,
+          "quote": "省级督导员：1.查看本省及下属地市数据；2.监控本省调查进度与质量。",
+          "meaning": "角色的数据范围"
+        },
+        {
+          "id": "software_integration_01-A06",
+          "track": "scoring",
+          "page": 32,
+          "quote": "每提供一个有效业绩证明得3分，本项最高得15分",
+          "meaning": "业绩3分每项、封顶15分"
+        },
+        {
+          "id": "software_integration_01-A07",
+          "track": "scoring",
+          "page": 34,
+          "quote": "投标报价得分＝（评标基准价/投标报价）×10",
+          "meaning": "报价满分10的公式"
+        },
+        {
+          "id": "software_integration_01-A08",
+          "track": "disqualification",
+          "page": 26,
+          "quote": "投标人《商务技术文件》有任何一项不符合《符合性审查要求》要求的，投标无效。",
+          "meaning": "符合性审查不合格后果，需结合明细判断"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "software_integration_02",
+      "sha256": "d57683e2f1bf4de8a55dacd45715ae360251904ccdc9776acf899b0c4d3484aa",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "software_integration",
+            "service_outsourcing"
+          ],
+          "evidence": [
+            {
+              "page": 65,
+              "quote": "既包括日常运行维护和功能升级改造，又包括企业事项办理、商务领域统计监测等"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "software_integration_02-A01",
+          "track": "basic_info",
+          "page": 5,
+          "quote": "预算金额：1507.42万元（人民币）",
+          "meaning": "预算"
+        },
+        {
+          "id": "software_integration_02-A02",
+          "track": "basic_info",
+          "page": 5,
+          "quote": "合同履行期限：12个月",
+          "meaning": "履行期"
+        },
+        {
+          "id": "software_integration_02-A03",
+          "track": "requirements",
+          "page": 66,
+          "quote": "项目需结合WEB开发、移动开发等多种方式，以B/S架构为支撑",
+          "meaning": "技术架构要求"
+        },
+        {
+          "id": "software_integration_02-A04",
+          "track": "requirements",
+          "page": 158,
+          "quote": "同时为保障护照签证办理应用的正常运行进行日常业务运维、应用系统运行监控预警",
+          "meaning": "独立运行维护工作，不只是产品免费保修"
+        },
+        {
+          "id": "software_integration_02-A05",
+          "track": "scoring",
+          "page": 169,
+          "quote": "价格评分部分（10分）",
+          "meaning": "价格10分"
+        },
+        {
+          "id": "software_integration_02-A06",
+          "track": "scoring",
+          "page": 171,
+          "quote": "技术服务评分部分（69分）",
+          "meaning": "技术服务69分，与商务21分及价格10分共同构成100分"
+        },
+        {
+          "id": "software_integration_02-A07",
+          "track": "disqualification",
+          "page": 5,
+          "quote": "超过项目预算金额或超过规定的分项限价的投标将被拒绝。",
+          "meaning": "预算及分项限价分别受限"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "service_outsourcing_01",
+      "sha256": "bb9d74bd09c742e0ce27d873726cebd8c6993a45fafc42027acb74a20fea5728",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "service_outsourcing"
+          ],
+          "evidence": [
+            {
+              "page": 22,
+              "quote": "提供不少于2名驻场服务工程师"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "service_outsourcing_01-A01",
+          "track": "basic_info",
+          "page": 3,
+          "quote": "项目预算人民币130万元",
+          "meaning": "预算"
+        },
+        {
+          "id": "service_outsourcing_01-A02",
+          "track": "requirements",
+          "page": 4,
+          "quote": "2024年10月1日-2025年7月31日",
+          "meaning": "服务期"
+        },
+        {
+          "id": "service_outsourcing_01-A03",
+          "track": "requirements",
+          "page": 22,
+          "quote": "提供不少于2名驻场服务工程师",
+          "meaning": "最低驻场人数"
+        },
+        {
+          "id": "service_outsourcing_01-A04",
+          "track": "requirements",
+          "page": 22,
+          "quote": "Oracle的原厂高级服务，10人天",
+          "meaning": "原厂服务工作量，不是采购Oracle新软件"
+        },
+        {
+          "id": "service_outsourcing_01-A05",
+          "track": "scoring",
+          "page": 42,
+          "quote": "价格标评分（10分）",
+          "meaning": "价格10分"
+        },
+        {
+          "id": "service_outsourcing_01-A06",
+          "track": "scoring",
+          "page": 43,
+          "quote": "整体运维方案及实施30",
+          "meaning": "整体运维方案30分"
+        },
+        {
+          "id": "service_outsourcing_01-A07",
+          "track": "disqualification",
+          "page": 18,
+          "quote": "投标人不确认的，其投标无效。",
+          "meaning": "报价修正需投标人确认，不能省略其上下文触发条件"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "service_outsourcing_02",
+      "sha256": "b0dbb99958102139219aa3857ecf7ec5a3103440167330eb6f2e0848aa386f76",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "service_outsourcing"
+          ],
+          "evidence": [
+            {
+              "page": 4,
+              "quote": "依托安全服务机构所提供的专业化信息安全服务，建立和完善信息安全保障体系"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "service_outsourcing_02-A01",
+          "track": "basic_info",
+          "page": 4,
+          "quote": "项目预算金额：683.72万元",
+          "meaning": "预算"
+        },
+        {
+          "id": "service_outsourcing_02-A02",
+          "track": "requirements",
+          "page": 4,
+          "quote": "满足“事前可预防、事中可控制、事后可恢复”的信息安全保障需求",
+          "meaning": "信息安全服务目标"
+        },
+        {
+          "id": "service_outsourcing_02-A03",
+          "track": "scoring",
+          "page": 32,
+          "quote": "投标报价(10分)",
+          "meaning": "报价10分"
+        },
+        {
+          "id": "service_outsourcing_02-A04",
+          "track": "scoring",
+          "page": 32,
+          "quote": "技术部分(70分)",
+          "meaning": "技术70分"
+        },
+        {
+          "id": "service_outsourcing_02-A05",
+          "track": "disqualification",
+          "page": 9,
+          "quote": "投标人的报价不得超过采购项目预算金额，否则将被作为无效投标处理。",
+          "meaning": "超预算无效"
+        },
+        {
+          "id": "service_outsourcing_02-A06",
+          "track": "disqualification",
+          "page": 2,
+          "quote": "若有一项带“★”的指标要求未响应或不满足，其投标将按无效投标处理。",
+          "meaning": "星号项明确否决，需结合具体星号条款"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "mixed_smart_01",
+      "sha256": "d21e4a8857d058ccd505010114c1806462c40d5a6320b4c8e49f19a3d4a2773a",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "exact_lots",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "construction",
+            "hardware_supply",
+            "software_integration"
+          ],
+          "evidence": [
+            {
+              "page": 3,
+              "quote": "招标范围内的空调系统、综合音视频系统、侧屏LCD屏幕、配电柜升级改造所需的软硬件供应、施工安装及调试集成服务等。"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "mixed_smart_01-A01",
+          "track": "basic_info",
+          "page": 3,
+          "quote": "预算金额：439.70万元",
+          "meaning": "预算"
+        },
+        {
+          "id": "mixed_smart_01-A02",
+          "track": "requirements",
+          "page": 3,
+          "quote": "软硬件供应、施工安装及调试集成服务等",
+          "meaning": "软件硬件施工集成共同范围"
+        },
+        {
+          "id": "mixed_smart_01-A03",
+          "track": "requirements",
+          "page": 3,
+          "quote": "2025年5月31日前完成交工验收",
+          "meaning": "交工验收时限"
+        },
+        {
+          "id": "mixed_smart_01-A04",
+          "track": "scoring",
+          "page": 94,
+          "quote": "商务部分38分技术部分50分价格部分10分政策得分2分合计100分",
+          "meaning": "评分四部分，不能漏政策分"
+        },
+        {
+          "id": "mixed_smart_01-A05",
+          "track": "scoring",
+          "page": 94,
+          "quote": "提供一份合同得2分，最高得10分",
+          "meaning": "业绩计分封顶"
+        },
+        {
+          "id": "mixed_smart_01-A06",
+          "track": "disqualification",
+          "page": 9,
+          "quote": "如未在《投标人须知资料表》中规定可以采购进口产品，投标人所投产品如为进口产品，其投标属于无效投标情形。",
+          "meaning": "进口条件要结合前附表确认，不可无条件扩写"
+        }
+      ],
+      "unavailable_tracks": {}
+    },
+    {
+      "sample_id": "mixed_smart_02",
+      "sha256": "712fedcf8f698936d0417cf63d2899e2722c3cf452e4893633d97972f30abbf9",
+      "annotation_status": "ai_reviewed_not_human_gold",
+      "coverage": "selected_anchors_not_exhaustive",
+      "classification_scope": "procurement_components_only",
+      "lots": [
+        {
+          "lot_id": "1",
+          "categories": [
+            "construction",
+            "hardware_supply",
+            "software_integration"
+          ],
+          "evidence": [
+            {
+              "page": 2,
+              "quote": "集成电脑屏幕（大屏）黑板、视频录制监控（前后）、视频录制收音设备、影像设备、吸音墙、吊顶、木质门、单体方形桌椅和控制系统集成。"
+            },
+            {
+              "page": 11,
+              "quote": "智慧课堂系统要求与学校现有教学平台无缝对接，共享课程数据、备课资料、班级管理、题库、作业、试卷等"
+            },
+            {
+              "page": 19,
+              "quote": "15 智慧课堂系统软件 2 套"
+            }
+          ]
+        }
+      ],
+      "anchors": [
+        {
+          "id": "mixed_smart_02-A01",
+          "track": "basic_info",
+          "page": 1,
+          "quote": "招标文件编号：设备招标[2024-008]号",
+          "meaning": "采购编号"
+        },
+        {
+          "id": "mixed_smart_02-A02",
+          "track": "requirements",
+          "page": 2,
+          "quote": "决定将6-214、12-507两间教室改建成智慧教室",
+          "meaning": "两间教室范围"
+        },
+        {
+          "id": "mixed_smart_02-A03",
+          "track": "requirements",
+          "page": 20,
+          "quote": "请投标人提供设计方案，包括：平面示意图、CAD施工图、效果图，务必需提供电子文档。",
+          "meaning": "装饰方案交付要求"
+        },
+        {
+          "id": "mixed_smart_02-A04",
+          "track": "scoring",
+          "page": 4,
+          "quote": "磋商报价得分=(基准价／磋商报价)*15",
+          "meaning": "设备部分价格15分，不代表装修也使用该评分"
+        },
+        {
+          "id": "mixed_smart_02-A05",
+          "track": "scoring",
+          "page": 5,
+          "quote": "总演示时长不超过15分钟，未演示部分不得分",
+          "meaning": "演示时限和评分后果，非直接废标"
+        },
+        {
+          "id": "mixed_smart_02-A06",
+          "track": "disqualification",
+          "page": 6,
+          "quote": "未交纳投标保证金，投标无效。",
+          "meaning": "缺保证金投标无效"
+        }
+      ],
+      "unavailable_tracks": {},
+      "notes": [
+        "原文P4允许确定一个或两个中标人，实际标包划分不作固定真值；本条仅核对工程、硬件及软件集成采购组件。P11要求平台数据对接，P19单列2套智慧课堂系统软件。"
+      ]
+    }
+  ],
+  "annotation_revisions": [
+    {
+      "sample_id": "mixed_smart_02",
+      "reason": "初版漏标软件组件。独立预测提出P11平台对接后，回看P19报价表图像确认独立软件2套；依原文修正候选标注，不把模型与初标不一致自动判作模型错误。",
+      "before": [
+        "construction",
+        "hardware_supply"
+      ],
+      "after": [
+        "construction",
+        "hardware_supply",
+        "software_integration"
+      ],
+      "human_expert_review": "NOT_RUN"
+    }
+  ]
+}

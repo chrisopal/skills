@@ -30,7 +30,7 @@ DISTRIBUTED_DOCS = {
 }
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
-    'bid-orchestrator': ('tender-routing',),
+    'bid-orchestrator': ('tender-routing', 'ui'),
 }
 
 

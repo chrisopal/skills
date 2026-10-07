@@ -80,6 +80,11 @@ def check(root=ROOT):
         if not local.is_file() or local.read_bytes()!=writing_schema.read_bytes():
             errors.append(skill_id+': 独立写作校验契约缺失或不一致')
     errors.extend(check_installable_zips(root,registry))
+    settings_example = root/'assets/writing-settings.example.json'
+    for skill_id in ('bid-technical-writing', 'bid-visuals', 'bid-orchestrator'):
+        local = root/'skills'/skill_id/'assets/writing-settings.example.json'
+        if not local.is_file() or local.read_bytes()!=settings_example.read_bytes():
+            errors.append(skill_id+': 配图设置示例缺失或不一致')
     return {'skills':len(skills),'schema_documents_validated':count,'errors':errors,'passed':not errors,'real_model_e2e':'NOT_RUN'}
 
 def main():

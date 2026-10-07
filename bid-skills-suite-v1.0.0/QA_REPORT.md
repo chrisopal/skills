@@ -114,3 +114,13 @@ python -m unittest discover -s tests -v
 - 知识：独立合成项目执行本地文件导入、索引/Wiki构建回读、关键词命中及零结果；资料完整性通过。合成企业文件未进入两个真实项目。真实企业选材和WorkBuddy/Codex宿主私有知识库认证/检索连通为NOT_RUN。
 - 执行边界：01—06及原understand总控状态保持原状；独立记录本轮限定编写测试，07—14为候选/建议/草稿。全文语义充分性、整标编制、行业专家复核、正式采纳、正式16导出交付、真实OCR、跨宿主和Windows运行均未验收。没有新增依赖、Bid Agent应用API、数据库或部署变化。静态HTML/Python适配器没有npm lint/typecheck/build任务。
 - 证据：本机bid-agent/output/tender-analysis下的qingcaosha-20261007-1d6fda69与dongtai-20261007-f7781569保留writing-browser-result.json、writing-document-result.json、writing-coverage.json、writing-test-state.json、保存审计、图源、工作稿、渲染和HTML测试报告。原件、生成报告、ZIP、校验清单与一次性运行结果保留本地；Git仅交付可复用源码、Skill规则、测试及说明。
+
+## 2026-10-07：1.6.0 配图设置与目录显示
+
+- 变更：新增visuals配置示例及编辑表单，保存开关、Mermaid/SVG、宿主生图工具/模型偏好、风格、比例和数量；旧设置补默认，版本/哈希冲突保护不变，禁用保留原值。顶层和visuals采用字段白名单，不接收Key/凭据或未知字段。13与总控明确读取当前配置、记录实际采用参数和不支持项；配置不会启动模型任务。
+- 目录：共享outline_view按parent_id排列和嵌套，显示一、/1.1/3.2.1，保留原编号、ID及自定义格式。报告与编辑器可折叠，长标题换行、目录独立滚动；拒绝重复ID、悬空父节点和循环。新增可复用render_writing_report.py，保留实际响应fulfillment/偏差、当前图源和缺口；下载核验项目/当前11与13/实际文件哈希、正整数页数及DOCX结构/PDF签名。
+- 工程：`python3.13 -m unittest discover -s tests -q` 167/167通过，含9项目录/配置增量回归与5项审核修复回归；17 Skill、34 Schema、17独立ZIP/source parity及11/17隔离设置/报告运行通过。73个Python文件py_compile、17个quick_validate、编辑器node --check、git diff --check通过。独立审核两处问题修正后APPROVE；没有新增依赖、应用API、数据库或部署变化。
+- 两份实际项目：各30个目录节点，青草沙数字目录与东台中文分册均正确嵌套；原始08仍revision 2，11/13及当前6/5页DOCX/PDF的哈希保持有效。两个编辑器用最终服务保存设置至revision 3并刷新回读，分别16:9/最多2张与4:3/最多3张。东台关闭配图后控件禁用且原值保留，折叠/展开与未写章节导航不改变1284字正文；青草沙998字正文不变。原需求、条件适用性与材料缺口不变，仍仅关联7/9项草稿，其余138/292项未写。
+- 浏览器：东台共享编辑器实际1366/1440/1920/390、报告1440/1920/390宽度无页面横向溢出；青草沙另外核验1280编辑器及390报告。浅深主题、报告键盘折叠、设置回读及全部30节点存在通过。新增模型占位文字实际浅色4.67:1、深色6.78:1；这是新增角色采样，不是全站无障碍认证。本轮解决了1.5.0指定尺寸未生效的工具问题，但没有补造1.5.0验收，也未补测其放弃编辑原生确认分支。
+- 证据：两份项目work/visual-settings-outline-result.json记录当前设置版本/哈希和正文/文档核验，work/visual-settings-proof-light.jpg、visual-settings-proof-dark.jpg及outline-proof截图记录实际页面。已有1.5.0报告保留于reports/history；当前报告由同源生成器重建。所有客户文件、生成报告、截图、ZIP、校验清单和临时执行证据留本地。
+- 未运行：真实概念生图/模型参数兼容、宿主私有知识库、跨宿主及Windows、整本内容/评分满足性、复杂固定模板和正式采纳/交付。已有Mermaid及章节Word/PDF属于前轮限定工作稿，本轮没有将配置保存冒充图片生成。Python静态HTML无npm lint/typecheck/build任务。

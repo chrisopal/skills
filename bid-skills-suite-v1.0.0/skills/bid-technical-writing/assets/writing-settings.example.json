@@ -1,0 +1,16 @@
+{
+  "tone": "plain_chinese",
+  "target_words": null,
+  "execution_mode": "sequential",
+  "max_parallel": 1,
+  "visuals": {
+    "enabled": true,
+    "diagram_renderer": "auto",
+    "image_mode": "host",
+    "tool": "auto",
+    "model": "",
+    "style": "企业概念示意",
+    "aspect_ratio": "16:9",
+    "max_images": 2
+  }
+}

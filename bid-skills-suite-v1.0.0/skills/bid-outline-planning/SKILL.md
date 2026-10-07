@@ -2,7 +2,7 @@
 name: bid-outline-planning
 description: 生成遵守强制格式且可证明覆盖需求与评分的目录，并为每个章节建立写作任务卡。 适用于：生成标书目录、技术标大纲、章节规划、需求到章节映射、强制目录补充。
 metadata:
-  version: 1.1.0
+  version: 1.2.0
   language: zh-CN
   sequence: '8'
   suite: bid-skills-suite
@@ -28,6 +28,8 @@ metadata:
 上游技能：`bid-requirements, bid-scoring, bid-compliance, bid-format-extraction, bid-response-strategy`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
 ## 执行步骤
+
+目录按`parent_id`组织父子关系，保持强制章节顺序；生成子编号时使用一致的编号体系，避免“一.1”等中文与小数混拼。客户指定特殊编号保留原样。展示可使用`outline_view.py`派生前序与缩进，不改写原件规则或已绑定产物；目录图形清楚不代表需求已写完。
 
 继续理解结果或执行目录/写作适配测试时，读[写作交接与实际检查](references/WRITING_WORKFLOW.md)。06识别客户结构不等于08已经创建目录；有条件的表单保留条件，不将招标人侧记录或不适用范本列为投标人必交项。限定测试可先保存候选目录，正式冻结仍落实真实确认。
 

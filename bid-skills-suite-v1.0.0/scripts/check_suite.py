@@ -5,6 +5,7 @@ import json,re,sys,zipfile
 from pathlib import Path
 import yaml
 from validate_output import validate
+from refresh_distribution import DISTRIBUTED_SCRIPTS, DISTRIBUTED_DOCS
 ROOT=Path(__file__).resolve().parents[1]
 
 def check_installable_zips(root, registry):
@@ -55,8 +56,14 @@ def check(root=ROOT):
             if not (file.parent/required).is_file():errors.append(name+': 缺文件 '+required)
     if any(p.suffix.lower() in {'.ttf','.otf','.ttc','.woff','.woff2'} for p in root.rglob('*') if p.is_file()):errors.append('不允许打包字体文件')
     if any(p.is_symlink() for p in root.rglob('*')):errors.append('不允许打包符号链接')
-    for skill_id,script in (('bid-source-intake','extract_sources.py'),('bid-orchestrator','bidkit.py')):
-        if (root/'scripts'/script).read_bytes()!=(root/'skills'/skill_id/'scripts'/script).read_bytes():errors.append(skill_id+': 独立安装脚本与套件脚本不一致')
+    for skill_id, scripts in DISTRIBUTED_SCRIPTS.items():
+        for script in scripts:
+            local=root/'skills'/skill_id/'scripts'/script
+            if not local.is_file() or (root/'scripts'/script).read_bytes()!=local.read_bytes():errors.append(skill_id+': 独立安装脚本与套件脚本不一致 '+script)
+    for skill_id, docs in DISTRIBUTED_DOCS.items():
+        for doc in docs:
+            local=root/'skills'/skill_id/'references'/doc
+            if not local.is_file() or (root/'docs'/doc).read_bytes()!=local.read_bytes():errors.append(skill_id+': 独立安装说明与套件说明不一致 '+doc)
     errors.extend(check_installable_zips(root,registry))
     return {'skills':len(skills),'schema_documents_validated':count,'errors':errors,'passed':not errors,'real_model_e2e':'NOT_RUN'}
 

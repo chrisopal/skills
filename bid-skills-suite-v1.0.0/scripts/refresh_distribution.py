@@ -4,10 +4,34 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shutil
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# Keep standalone installations executable without referring to the suite checkout.
+DISTRIBUTED_SCRIPTS = {
+    'bid-source-intake': ('extract_sources.py', 'paddle_ocr.py'),
+    'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
+    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
+}
+DISTRIBUTED_DOCS = {
+    'bid-source-intake': ('OCR_SETUP.md',),
+    'bid-evidence-matching': ('KNOWLEDGE.md', 'OCR_SETUP.md'),
+    'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md'),
+    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md'),
+}
+
+
+def sync_standalone_resources(root=ROOT):
+    for skill_id, names in DISTRIBUTED_SCRIPTS.items():
+        for name in names:
+            shutil.copyfile(root / 'scripts' / name, root / 'skills' / skill_id / 'scripts' / name)
+    for skill_id, names in DISTRIBUTED_DOCS.items():
+        for name in names:
+            shutil.copyfile(root / 'docs' / name, root / 'skills' / skill_id / 'references' / name)
+    shutil.copyfile(root / 'registry.json', root / 'skills/bid-orchestrator/registry.json')
 
 
 def distribution_files(directory: Path):
@@ -19,6 +43,7 @@ def distribution_files(directory: Path):
 
 
 def main():
+    sync_standalone_resources()
     registry = json.loads((ROOT / 'registry.json').read_text(encoding='utf-8'))
     destination = ROOT / 'installable-zips'
     destination.mkdir(exist_ok=True)

@@ -2,7 +2,7 @@
 name: bid-evidence-matching
 description: 建立要求与真实企业证据的对应关系，明确适用、待核验和缺失，而非只有相似度结果。 适用于：匹配资质业绩人员、证书筛选、素材选用、材料缺口、证据有效期、设备检测报告。
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   language: zh-CN
   sequence: '9'
   suite: bid-skills-suite
@@ -24,6 +24,8 @@ metadata:
 先读 [共同证据与安全约定](references/evidence-and-safety.md)。仅当需要细化操作时读 [专项操作手册](references/playbook.md)；输出字段与示例参见 [产物契约](references/output-contract.md)。
 
 输入：需求／评分／资格矩阵、08章节任务卡、已授权企业原件和素材台账、投标截止等适用时间。
+
+资料接入按 [本地文件、宿主知识库与项目 Wiki](references/KNOWLEDGE.md) 执行。本技能自带 `scripts/knowledge.py`：`add-local` 保存上传材料，`import-host` 保存实际宿主检索快照，`search` 查询本地已登记内容。先校验索引哈希，再回读命中的完整原文和定位，建立 M-ID 及选用关系。Wiki 供阅读，检索命中仍是候选；资质、合同和检测报告需要完整证明原件。
 
 上游技能：`bid-requirements, bid-scoring, bid-compliance, bid-format-extraction, bid-outline-planning`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 

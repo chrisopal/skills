@@ -1,6 +1,6 @@
 # 可选命令行工作流
 
-这些命令只提供文件层辅助，不调用模型。所有模型理解、视觉、专业判断与真实人工确认仍由宿主和用户完成。以下示例从套件根目录执行，路径按本机替换。
+这些命令提供文件层辅助，默认不调用模型。显式启用 PaddleOCR 时会请求已配置 OCR 服务；其他模型理解、宿主检索、视觉、专业判断与真实人工确认仍由宿主和用户完成。以下示例从套件根目录执行，路径按本机替换。
 
 ## 1. 初始化，不覆盖现有目录
 
@@ -18,7 +18,18 @@ python scripts/bidkit.py compose-profiles --packs profiles/procurement/enterpris
 python scripts/extract_sources.py --project ./my-bid --project-id BID-001 --out my-bid/artifacts/01-source-intake-r1.json
 ```
 
-解析脚本只做本地原生提取，不做OCR；扫描、图像和复杂DOCX会明确标需复核。宿主视觉／OCR工具补读后应保存新revision，保留真实页和来源。不是运行这条命令就完整解析通过。
+默认只做本地原生提取；扫描、图像和复杂DOCX会明确标需复核。配置 [PaddleOCR 服务](OCR_SETUP.md) 后，可加 `--ocr paddle-service` 补读扫描 PDF 和 PNG/JPEG。远端服务仅在已有授权范围内加 `--allow-remote-ocr`。新结果保存新文件；脚本补全输入哈希并按既有结果递增 revision，保留真实页与来源。完成机器提取仍需核验业务内容。
+
+## 2.1 项目知识与 Wiki
+
+```bash
+python scripts/knowledge.py add-local --project ./my-bid --file /path/to/supplier.md
+python scripts/knowledge.py import-host --project ./my-bid --file /path/to/host-results.json
+python scripts/knowledge.py search --project ./my-bid --query "设备运维"
+python scripts/knowledge.py validate --project ./my-bid
+```
+
+根据实际来源选择 add-local 或 import-host，不要求两者都有输入。宿主检索由 Agent 先执行真实工具调用，快照格式见 [知识接入](KNOWLEDGE.md)。项目 Wiki 自动生成到 `artifacts/knowledge/wiki/`；知识查询不会自动接受资质或业绩。扫描的企业资料在 add-local 时也可显式启用相同 OCR 选项。
 
 ## 3. 校验模型填好的产物
 

@@ -2,7 +2,7 @@
 name: bid-technical-writing
 description: 按明确任务卡编写有证据、有机制、有验收说明的技术正文与逐项响应。 适用于：编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   language: zh-CN
   sequence: '11'
   suite: bid-skills-suite
@@ -24,6 +24,8 @@ metadata:
 先读 [共同证据与安全约定](references/evidence-and-safety.md)。仅当需要细化操作时读 [专项操作手册](references/playbook.md)；输出字段与示例参见 [产物契约](references/output-contract.md)。
 
 输入：08目录任务卡、10确认方案、09素材、03／04／05原始要求，以及用户写作偏好。
+
+项目知识来源和读取方式见 [知识接入](references/KNOWLEDGE.md)。优先使用09已选材料，按章节读取 `artifacts/knowledge/index.json` 及相关 source/content 快照；把实际采用文件及哈希写入 inputs。宿主知识库只有真实检索并落盘后才成为可追溯输入；新增参考材料交09核验。搜索摘要截断时回读全文，Wiki 内容不能自动升级成资质、业绩或已实现能力。
 
 上游技能：`bid-requirements, bid-scoring, bid-compliance, bid-outline-planning, bid-evidence-matching, bid-solution-design`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 

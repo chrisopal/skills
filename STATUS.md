@@ -1313,3 +1313,9 @@
 - Validation: new skill quick validation, bundle validation (11 skills), three existing Python tests, Python compilation, and `git diff --check` passed.
 - Commit/push state: source and this status entry are committed and pushed on `codex/enterprise-dtx-skill-suite-runtime`.
 - Remaining: no live writing run has yet exercised the new title gate; recent-title and factual-evidence inputs still depend on each article brief.
+
+## 2026-10-07 — 投标 Skill OCR 与项目知识接入
+
+- 完成内容：套件升级为 1.1.0，保留原安装路径与 17 个 Skill。原生解析默认离线，显式 PaddleOCR 服务支持扫描 PDF、PNG/JPEG、来源哈希及项目绑定的递增版本；技术图优先 Mermaid/SVG，概念图使用实际宿主生图能力。本地企业文件与宿主真实检索快照统一保存为项目知识索引、关键词检索及可重建 Wiki，总控、素材、方案和写作按确切来源交接。未新增强制 Python 依赖。
+- 验证：`python3.13 -m unittest discover -s tests -q` 81/81 通过；17/17 Skill quick_validate；44 个 Python 文件 py_compile；套件结构、34 个 Schema 样例、17 个独立包源码一致性通过。独立包隔离运行及已安装路径的原件导入、检索、哈希检查和 Wiki 回读通过。独立审阅所提的补充 OCR 失败、版本冲突、响应格式、凭据及 Wiki 渲染风险已加入回归。
+- 风险/后续：测试 OCR 端点为本地协议测试服务器，宿主检索输入为合成快照。未配置真实 OCR 地址/Key，未实际调用宿主知识库或生图模型；真实识别质量、平台连通性和实际投标交付验收为 NOT_RUN。远端知识更新需重新检索，不提供跨平台后台同步；Wiki 不替代证明原件。分发 ZIP、校验清单、临时演练项目保留本地，不提交。

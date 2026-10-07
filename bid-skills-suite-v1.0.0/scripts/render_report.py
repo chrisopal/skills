@@ -34,6 +34,7 @@ REQUIRED_STAGES = (
 STALE_STATES = {"stale", "not_started", "in_progress", "pending", "blocked", "failed"}
 
 CATEGORY_LABELS = {
+    "qualification": "资格条件",
     "delivery": "交付与范围",
     "functional": "功能需求",
     "integration": "集成与数据",

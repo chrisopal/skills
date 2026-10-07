@@ -15,18 +15,18 @@ DISTRIBUTED_SCRIPTS = {
     'bid-source-intake': ('extract_sources.py', 'paddle_ocr.py'),
     'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
     'bid-project-profile': ('tender_router.py',),
-    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py'),
+    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py'),
 }
 DISTRIBUTED_DOCS = {
-    'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md'),
+    'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-project-profile': ('TENDER_ROUTING.md',),
-    'bid-requirements': ('TENDER_ROUTING.md',),
+    'bid-requirements': ('TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-scoring': ('TENDER_ROUTING.md',),
-    'bid-compliance': ('TENDER_ROUTING.md',),
-    'bid-format-extraction': ('TENDER_ROUTING.md',),
+    'bid-compliance': ('TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
+    'bid-format-extraction': ('TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-evidence-matching': ('KNOWLEDGE.md', 'OCR_SETUP.md'),
     'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md'),
-    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md'),
+    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md'),
 }
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
@@ -35,6 +35,9 @@ DISTRIBUTED_ASSET_DIRS = {
 
 
 def sync_standalone_resources(root=ROOT):
+    for directory in (root/'skills').iterdir():
+        if (directory/'SKILL.md').is_file():
+            shutil.copyfile(root/'scripts/validate_output.py', directory/'scripts/validate_output.py')
     for skill_id, names in DISTRIBUTED_SCRIPTS.items():
         for name in names:
             shutil.copyfile(root / 'scripts' / name, root / 'skills' / skill_id / 'scripts' / name)

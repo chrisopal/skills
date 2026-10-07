@@ -2,7 +2,7 @@
 name: bid-scoring
 description: 还原评分层级、计分方法和证据条件，形成可行动的评分覆盖矩阵。 适用于：提取评分项、分析评分表、检查分值、得分条件、价格公式、评审重点。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '4'
   suite: bid-skills-suite

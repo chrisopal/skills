@@ -5,11 +5,12 @@
 ## 1. 初始化，不覆盖现有目录
 
 ```bash
-python scripts/bidkit.py init --project ./my-bid --project-id BID-001
+python scripts/bidkit.py init --project ./my-bid --project-id BID-001 --mode understand
 python scripts/bidkit.py register-source --project ./my-bid --file /absolute/path/tender.pdf --role main
 ```
 
 注册会复制原件到项目inputs并计算SHA256。不要把实际客户目录直接当空项目目录初始化。
+`--mode`可用full、understand、review_only、revise；按本轮任务范围选择，省略仍默认full。
 
 ## 2. 配置与原生解析
 

@@ -44,6 +44,11 @@ def validate(payload: dict, schema: dict) -> list[str]:
             if set(row['material_ids'])-mids:errors.append(row['id']+': 素材ID不存在')
             if row['state']=='accepted' and (row['independent_count']<row['required_count'] or not row['material_ids']):
                 errors.append(row['id']+': 被接受的选用未满足独立证明数量')
+    if skill=='bid-requirements':
+        requirement_ids={row['id'] for row in data['requirements']}
+        for conflict in data['conflicts']:
+            if set(conflict['requirement_ids'])-requirement_ids:
+                errors.append(conflict['id']+': 冲突引用不存在的需求ID')
     if skill=='bid-review-remediation' and data['release_recommendation']=='eligible_for_user_release':
         if data['review_scope']!='full' or payload['status']!='ready' or not data['human_approval_ref']:
             errors.append('交付建议必须基于完整范围、ready状态与人工审核记录')

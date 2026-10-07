@@ -2,7 +2,7 @@
 name: bid-orchestrator
 description: 按任务范围调度16个业务技能，传递确切上下文、组织人工确认、识别变更和阻塞。 适用于：完整投标流程、启动编标、继续上次任务、安排技能、仅理解／仅评审、补遗影响分析。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '17'
   suite: bid-skills-suite
@@ -37,12 +37,14 @@ metadata:
 ## 首次分类与模板
 
 首次识别执行01全来源读取→02分类与模板路由→03/04/05/06提取，详细操作见 [分类与模板路由](references/TENDER_ROUTING.md)。总控调用scripts/tender_router.py生成简报，再由宿主按原文填写分类决定并校验组合模板。四类基础采购内容与智慧化场景标签分开，标包数量与每包组合分开。下游必须绑定本轮路由和原文版本；unknown和缺失页继续保留。
+类别/组合/标包有重大歧义时请用户决定；范围清楚可继续候选理解提取，正式采纳范围与承诺前落实理解确认。具体时点及记录见同一说明，不以脚本通过冒充批准。
 
 ## 执行步骤
 
 1. **明确模式**
 
    full完整编标、understand仅理解、review_only独立评审、revise补遗修订。没有项目目录时初始化，不自动调用外部服务。
+   初始化使用`bidkit.py init --mode`保存所选模式；17与work/project.json保持一致。阶段前后保存实际状态，结束再依据记录汇总，不补造运行历史。
 
 2. **步骤2**
 
@@ -79,6 +81,10 @@ metadata:
 01—14产物放项目`artifacts/`，15放`reviews/`，16放`deliverables/`，17放`work/`。来源原件只读置于`inputs/`；图表置于`assets/`；规则配置置于`profiles/`。路径始终相对用户指定项目根，不写死本技能安装目录。
 
 每个输出记录`project_id / artifact_id / revision / inputs / status`。`inputs`内SHA256从实际输入文件计算。缺依赖、未运行检查和待确认分别保留；不把模型产生结果等同于业务完成。
+
+理解提取的跨页、条件、模板适用性与执行问题按 [执行质量复核](references/EXECUTION_QUALITY.md) 检查，保存项目`work/execution-review.md`，区分当前产物修正和套件改进。
+
+需要结构化展示时，按 [HTML报告](references/REPORTS.md) 调用`scripts/render_report.py --project /absolute/project --out reports/tender-report.html`。JSON/Markdown保留，HTML读取同一版本输入；生成后检查实际浏览器的筛选、原文定位与宽窄布局。
 
 可选执行本技能目录内的校验器：
 

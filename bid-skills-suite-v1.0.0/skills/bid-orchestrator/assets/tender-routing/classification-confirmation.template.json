@@ -1,0 +1,16 @@
+{
+  "project_id": null,
+  "classification_ref": {
+    "artifact_id": null,
+    "revision": null,
+    "relative_path": null,
+    "sha256": null
+  },
+  "participating_lot_ids": [],
+  "decision": "pending",
+  "questions": [],
+  "actor": null,
+  "decided_at": null,
+  "authorization_ref": null,
+  "note": "填写实际候选范围及真实确认依据；AI不得伪造用户批准，离线JSON不能认证身份。"
+}

@@ -2,7 +2,7 @@
 name: bid-source-intake
 description: 将多份原件整理为可追溯的结构化原文，同时明确未读、扫描、图像和解析异常范围。 适用于：整理招标文件、读取附件、PDF/DOCX解析、扫描件处理、多文件归集、检查是否漏页。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '1'
   suite: bid-skills-suite
@@ -68,6 +68,8 @@ metadata:
    保存原文块与逐页完整性报告。只将已核实的完整性范围交给02—06；任何后续补读形成新版本并提示下游失效。
 
 ## 产物与交接
+
+原生提取完整不等于跨页条款语义完整。保留页边界、续表及页眉页脚位置，将需跨页理解的范围交03；按[执行质量复核](references/EXECUTION_QUALITY.md)记录原生、语义与视觉检查各自范围。
 
 保存 `01-source-intake.json`（机器可读）和同名 `.md`（可读报告），使用 [JSON模板](assets/output.template.json) 与 [报告模板](assets/report.template.md)。字段必须符合 [JSON Schema](assets/output.schema.json)。不要把模板空值直接当结果；详细演示见 [合成示例](assets/example.output.json)。
 

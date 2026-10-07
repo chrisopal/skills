@@ -8,7 +8,7 @@
 
 ## Q：什么情况下不该用这个 skill？
 
-如果没有强烈的可编辑需求，请不要使用。更轻量的做法是直接使用 `gpt-image-2` 的图像编辑能力：把你不满意的那一页 PPT 图片发给它，让它针对性修改并返回修改后的图片。
+上游目前以 `gpt-image-2.5-sunburst` 举例说明更轻量的仅图片编辑方式：提交要修改的页面图片并获取修改后的图片；使用前确认当前工具实际提供该模型。这不产生对象级可编辑 PPT，也不改变本 fork 的 CLI 默认模型 `gpt-image-2`。
 
 另外，本 skill 不负责从文章、报告、大纲或想法生成全新 PPT——那是 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill) 的职责。
 
@@ -44,7 +44,7 @@
 
 ## Q：如何更新 skill 到最新版本？
 
-直接让 agent 帮你更新（发一句「更新 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill」），或从 Releases 下载最新 zip 替换原目录，然后重启 agent 生效。API 凭据和 OCR Token 保存在 `~/.editppt/config.yaml`，在 skill 目录之外，更新不会丢失。详见[安装与配置](installation.md)。
+按[安装与配置](installation.md)中的 `npx -y skills@latest add ...` 流程，从 `chrisopal/skills` 的已审查提交更新，再刷新 CLI 并检查本地能力。不要用上游 ZIP 覆盖 portable-backend/visual-QA 定制。凭据保存在技能目录之外的 `~/.editppt/config.yaml`。
 
 ## Q：转换到一半停住了怎么办？
 

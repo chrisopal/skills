@@ -1,37 +1,33 @@
 # 安装与配置
 
-## 一句话安装
+## 安装 / 更新
 
-推荐直接把下面这句话发给你的 agent，让它帮你安装：
+本目录是 `chrisopal/skills` 中保留 portable-backend 和 visual-QA 定制的版本。请从包含这些定制的已审查 fork 提交安装，安装包路径为 `image-to-editable-ppt/skills/image-to-editable-ppt/`。
 
-```text
-安装 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill
-```
-
-安装后，正常转换、图片 API fallback 和 OCR Token 配置都由 AI 在执行过程中检查和处理；你只需要在 AI 询问时提供第三方 API 信息或 OCR Token。
-
-## 手动安装
-
-从 [GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases) 下载 `image-to-editable-ppt-skill-v*.zip`，解压后把其中的 `image-to-editable-ppt` 文件夹放到 agent 的 skills 目录（Codex 为 `~/.codex/skills/image-to-editable-ppt`），然后重启 agent。
-
-如果你在本地开发这个仓库，可以把 skill 目录软链接到 skills 目录，方便实时调试修改：
+将 `<fork-commit>` 替换为包含本地定制的已审查提交 SHA，将 `<agent-id>` 替换为当前智能体标识（例如 `codex`），将 `<skill-root>` 替换为实际安装目录。不要假定默认分支已包含这些定制，也不要用上游发行 ZIP 覆盖本版本。
 
 ```bash
-mkdir -p ~/.codex/skills
-ln -s /path/to/image-to-editable-ppt-skill/skills/image-to-editable-ppt ~/.codex/skills/image-to-editable-ppt
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
 
-## 更新 skill
+更新后重新加载技能上下文，确认 `run backend --help` 中仍有 `agent-image-tool`，且 visual-QA 与提取命令可用。API 凭据和 OCR Token 保存在技能目录之外的 `~/.editppt/config.yaml`。CLI 默认模型仍为 `gpt-image-2`。
 
-推荐直接把下面这句话发给你的 agent：
+## 从本地 checkout 安装
 
-```text
-更新 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill
+已检出并验证目标 fork 提交时，也可用本地技能目录安装；随后执行上面的 CLI 刷新和检查。
+
+```bash
+npx -y skills@latest add /path/to/chrisopal-skills/image-to-editable-ppt/skills/image-to-editable-ppt \
+  --skill image-to-editable-ppt --agent <agent-id> --global
 ```
-
-手动更新时，从 [GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases) 下载最新 zip，解压后替换原来的 `image-to-editable-ppt` 目录。更新完成后重启 agent 生效。
-
-更新是安全的：图片 API 凭据和 OCR Token 都保存在 `~/.editppt/config.yaml`（Windows 下为 `%USERPROFILE%\.editppt\config.yaml`），在 skill 安装目录之外，更新或重装不会丢失。每个版本的变更内容可以查看 [Releases 页面](https://github.com/ningzimu/image-to-editable-ppt-skill/releases)或仓库的 `CHANGELOG.md`。
 
 ## 运行权限建议
 

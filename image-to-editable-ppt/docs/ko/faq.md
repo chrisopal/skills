@@ -8,7 +8,7 @@
 
 ## Q: 어떤 경우에 이 skill을 사용하지 말아야 하나요?
 
-편집 가능성이 꼭 필요하지 않다면 사용하지 마세요. 더 가벼운 방법은 `gpt-image-2`의 이미지 편집 기능을 직접 사용하는 것입니다. 마음에 들지 않는 PPT 페이지 이미지를 보내고 필요한 부분만 수정한 이미지를 돌려받을 수 있습니다.
+Upstream은 더 가벼운 이미지 전용 편집의 예로 `gpt-image-2.5-sunburst`를 사용합니다. 페이지 이미지를 보내 필요한 부분을 수정한 이미지를 받되, 현재 도구에서 해당 모델을 제공하는지 먼저 확인하세요. 이 방식은 객체 수준 편집 가능한 PPT를 만들지 않으며 이 fork의 CLI 기본 모델 `gpt-image-2`도 바꾸지 않습니다.
 
 또한 이 skill은 글, 보고서, 개요 또는 아이디어에서 새로운 PPT를 만드는 용도가 아닙니다. 그 역할은 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)이 담당합니다.
 
@@ -44,7 +44,7 @@ WorkBuddy, Claude Code, QoderWork 같은 Codex 외 환경은 먼저 자체 이�
 
 ## Q: skill을 최신 버전으로 업데이트하려면 어떻게 하나요?
 
-agent에게 “image-to-editable-ppt skill을 업데이트해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.”라고 보내거나 Releases에서 최신 zip을 내려받아 기존 디렉터리를 교체한 뒤 agent를 다시 시작하세요. API 자격 증명과 OCR Token은 skill 디렉터리 밖의 `~/.editppt/config.yaml`에 저장되므로 업데이트해도 사라지지 않습니다. 자세한 내용은 [설치 및 구성](/ko/installation.md)을 참고하세요.
+[설치 및 구성](/ko/installation.md)의 `npx -y skills@latest add ...` 절차에 따라 `chrisopal/skills`의 검토 완료 커밋에서 업데이트한 뒤 CLI를 갱신하고 로컬 기능을 확인하세요. upstream ZIP으로 portable-backend/visual-QA 사용자 정의를 덮어쓰지 마세요. 자격 증명은 패키지 밖의 `~/.editppt/config.yaml`에 유지됩니다.
 
 ## Q: 변환이 중간에 멈추면 어떻게 해야 하나요?
 

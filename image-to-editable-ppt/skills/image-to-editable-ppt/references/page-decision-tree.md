@@ -130,7 +130,7 @@ An asset sheet is source-faithful separation, not redraw. The generation prompt 
 - Put as many icons and foreground visual objects as practical onto one sparse asset sheet. Create multiple asset sheets only when a single sheet cannot fit all required objects with clear separation.
 - Every object complete, not touching or overlapping other objects, with generous empty space between neighboring objects and sufficient outer padding so `process-sheet` can split each icon/object cleanly.
 - Object count and order match `visual_inventory`.
-- No readable text, labels, pseudo-text, or watermarks.
+- Remove ordinary editable text and labels; preserve identity text classified under section 3.1 (such as logo wordmarks). Do not add pseudo-text or watermarks.
 - No whole cards, whole panels, whole charts, or full-page fragments.
 - No redrawing, beautifying, simplifying, synonym-symbol replacement, or "cleaner" substitute icons.
 
@@ -165,7 +165,7 @@ Exceptions — text that is part of brand or background identity rather than edi
 
 Explain each exception in `visual_inventory` or `asset_provenance`. Never disguise main titles, subtitles, body text, table text, legends, axis labels, numbers, tags, or button text as exceptions.
 
-Do not guess font sizes or positions by eye — `editppt prepare` already measured them. Every page dir contains `text_hints.json` (each detected line's source-pixel `box_px`, glyph height, and derived font sizes; the `backend` field records which detector produced them) and `text_hints.png`, the source image with every detected line framed and labeled. If missing, regenerate with `editppt page hints <page_dir>`. Use the hints like this:
+Use reliable measured font sizes and positions first; inspect the source to correct missing or implausible measurements rather than treating detection as ground truth. Every page dir contains `text_hints.json` (each detected line's source-pixel `box_px`, glyph height, and derived font sizes; the `backend` field records which detector produced them) and `text_hints.png`, the source image with every detected line framed and labeled. If missing, regenerate with `editppt page hints <page_dir>`. Use the hints like this:
 
 - Match each detected line in the overlay image to the text you read in the source.
 - Copy the measured `box_px` and the matching font size column (`font_pt_if_cjk` for CJK text, `font_pt_if_latin` for Latin) into the corresponding `text_boxes` item.

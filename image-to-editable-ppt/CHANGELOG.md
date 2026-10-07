@@ -16,6 +16,11 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Documentation
 
+- Preserve the existing OCR consent, restricted-network approval, hints, and active-lease contracts; backport autonomous routine execution guidance without changing backend or visual-QA semantics.
+- Use scoped, reviewed fork commits with `npx -y skills@latest add`, refresh the editable CLI, and verify fork capabilities after updates across Chinese, English, and Korean guides.
+- Refresh the upstream image-only alternative example while explicitly retaining the fork's `gpt-image-2` CLI default.
+- Record the pinned upstream comparison and deferred runtime conflicts; strengthen offline regression coverage without importing incompatible runtime behavior.
+
 - Add complete Korean README and English and Korean versions of the Docsify usage documentation, with synchronized language navigation, search, and pagination. (#26)
 - Align all usage guides with the built-in-first image backend policy and block delivery when compliant image assets cannot be produced. (#26)
 - Add compact documentation, Telegram, and issue support links to all README language versions, and remove the obsolete community QR code. (#28, #29)

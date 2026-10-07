@@ -61,7 +61,7 @@ Public `editppt image generate/edit` parameters are intentionally narrow. Requir
 ## Skill Script Commands
 
 ```bash
-python <skill-root>/scripts/build-page-worker-prompt.py <run> --page page_001 --out <absolute-run-dir>/pages/page_001/worker-prompt.md
+python3 <skill-root>/scripts/build-page-worker-prompt.py <run> --page page_001 --out <absolute-run-dir>/pages/page_001/worker-prompt.md
 ```
 
 Purpose: generate a page-worker prompt from the skill-local `prompts/page-worker.md` template. This is a skill script, not an `editppt` CLI command, because it reads skill documentation and references.
@@ -144,7 +144,7 @@ Purpose: read current run state and return the next stage. `stage=rebuild_page_l
 Generate the page-worker prompt with the skill script before spawning a worker:
 
 ```bash
-python <skill-root>/scripts/build-page-worker-prompt.py <run> --page page_001 --out <absolute-run-dir>/pages/page_001/worker-prompt.md
+python3 <skill-root>/scripts/build-page-worker-prompt.py <run> --page page_001 --out <absolute-run-dir>/pages/page_001/worker-prompt.md
 ```
 
 ```bash

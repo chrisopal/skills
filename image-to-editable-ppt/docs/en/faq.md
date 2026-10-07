@@ -8,7 +8,7 @@ This skill uses a multi-agent reconstruction workflow. The AI runs a rebuild →
 
 ## When Should I Not Use This Skill?
 
-Do not use it unless you have a strong need for editability. A lighter alternative is to use `gpt-image-2` directly: send it the slide image you want to change and ask it to make targeted edits and return the revised image.
+Upstream now illustrates the lighter image-only editing option with `gpt-image-2.5-sunburst`: submit the page image for targeted edits and receive a revised image; first verify that your current tool offers that model. This does not create object-level editable PPT and does not change this fork's CLI default, `gpt-image-2`.
 
 This skill also does not generate a new presentation from an article, report, outline, or idea. That is the responsibility of [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill).
 
@@ -44,7 +44,7 @@ Image generation and editing default to Codex's built-in `image_gen.imagegen`. O
 
 ## How Do I Update the Skill?
 
-Ask your agent to update it by sending: “Update the image-to-editable-ppt skill from https://github.com/ningzimu/image-to-editable-ppt-skill”. Alternatively, download the latest zip from Releases, replace the existing directory, and restart the agent. API credentials and the OCR Token are stored outside the skill directory in `~/.editppt/config.yaml`, so updates do not remove them. See [Installation and Configuration](/en/installation.md).
+Follow the `npx -y skills@latest add ...` flow in [Installation and Configuration](/en/installation.md), using a reviewed `chrisopal/skills` commit, then refresh the CLI and verify local capabilities. Do not overwrite the portable-backend/visual-QA edition with an upstream ZIP. Credentials remain outside the package in `~/.editppt/config.yaml`.
 
 ## What Should I Do If a Conversion Stops Partway Through?
 

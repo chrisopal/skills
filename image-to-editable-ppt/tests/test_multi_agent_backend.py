@@ -1277,6 +1277,10 @@ class MultiAgentBackendTest(unittest.TestCase):
 
             page_dir = run_dir / "pages/page_002"
             write_page_outputs(page_dir, "Refresh Page", validation_passed=False)
+            # Compatible portion of upstream 7e86fb3: a rejected handoff must
+            # preserve evidence and state; repair validation through the CLI.
+            before = {path: path.read_bytes() for path in page_dir.rglob("*") if path.is_file()}
+            jobs_before = (run_dir / "page_jobs.json").read_bytes()
 
             first = subprocess.run(
                 [
@@ -1297,7 +1301,11 @@ class MultiAgentBackendTest(unittest.TestCase):
             jobs = read_json(run_dir / "page_jobs.json")
             self.assertEqual("dispatched", jobs["pages"][1]["status"])
 
-            write_json(page_dir / "validation.json", {"passed": True})
+            self.assertEqual(jobs_before, (run_dir / "page_jobs.json").read_bytes())
+            self.assertEqual(before, {path: path.read_bytes() for path in page_dir.rglob("*") if path.is_file()})
+            validation = run_cli("page", "validate", page_dir, "--report", "validation.json")
+            self.assertEqual(0, validation.returncode, validation.stdout + validation.stderr)
+            self.assertIs(read_json(page_dir / "validation.json")["visual_qa_passed"], True)
             second = subprocess.run(
                 [
                     sys.executable,

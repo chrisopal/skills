@@ -1,37 +1,33 @@
 # 설치 및 구성
 
-## 한 문장으로 설치하기
+## 설치 / 업데이트
 
-아래 문장을 agent에게 보내 설치를 맡기는 방법을 권장합니다.
+이 디렉터리는 portable-backend와 visual-QA 사용자 정의를 보존하는 `chrisopal/skills` 버전입니다. 해당 기능이 포함된 검토 완료 fork 커밋의 `image-to-editable-ppt/skills/image-to-editable-ppt/` 경로에서 설치하세요.
 
-```text
-image-to-editable-ppt skill을 설치해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.
-```
-
-설치 후 일반 변환, 이미지 API 폴백, OCR Token 설정은 AI가 실행 중 확인하고 처리합니다. AI가 요청할 때 타사 API 정보나 OCR Token만 제공하면 됩니다.
-
-## 수동 설치
-
-[GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases)에서 `image-to-editable-ppt-skill-v*.zip`을 내려받아 압축을 풉니다. 그 안의 `image-to-editable-ppt` 폴더를 agent의 skills 디렉터리(Codex는 `~/.codex/skills/image-to-editable-ppt`)에 넣고 agent를 다시 시작하세요.
-
-이 저장소를 로컬에서 개발하는 경우 skill 디렉터리를 skills 디렉터리에 심볼릭 링크해 변경 사항을 실시간으로 테스트할 수 있습니다.
+`<fork-commit>`은 로컬 사용자 정의가 포함된 검토 완료 커밋 SHA로, `<agent-id>`는 현재 agent 식별자(예: `codex`)로, `<skill-root>`는 실제 설치 경로로 바꾸세요. 기본 브랜치에 해당 변경이 있다고 가정하거나 upstream 배포 ZIP으로 덮어쓰지 마세요.
 
 ```bash
-mkdir -p ~/.codex/skills
-ln -s /path/to/image-to-editable-ppt-skill/skills/image-to-editable-ppt ~/.codex/skills/image-to-editable-ppt
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
 
-## skill 업데이트
+업데이트 후 skill 컨텍스트를 다시 로드하세요. `run backend --help`에 `agent-image-tool`이 있고 visual-QA 및 추출 명령이 사용 가능한지 확인하세요. API 자격 증명과 OCR Token은 패키지 밖의 `~/.editppt/config.yaml`에 유지됩니다. CLI 기본 모델은 여전히 `gpt-image-2`입니다.
 
-아래 문장을 agent에게 보내 업데이트를 맡기는 방법을 권장합니다.
+## 로컬 checkout에서 설치
 
-```text
-image-to-editable-ppt skill을 업데이트해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.
+원하는 fork 커밋을 체크아웃하고 검증했다면 로컬 skill 디렉터리에서도 설치할 수 있습니다. 이후 위의 CLI 갱신 및 확인 단계를 실행하세요.
+
+```bash
+npx -y skills@latest add /path/to/chrisopal-skills/image-to-editable-ppt/skills/image-to-editable-ppt \
+  --skill image-to-editable-ppt --agent <agent-id> --global
 ```
-
-수동으로 업데이트하려면 [GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases)에서 최신 zip을 내려받아 압축을 풀고 기존 `image-to-editable-ppt` 디렉터리를 교체하세요. 업데이트 후 agent를 다시 시작하면 적용됩니다.
-
-업데이트는 안전합니다. 이미지 API 자격 증명과 OCR Token은 skill 설치 디렉터리 밖의 `~/.editppt/config.yaml`(Windows에서는 `%USERPROFILE%\.editppt\config.yaml`)에 저장되므로 업데이트하거나 다시 설치해도 사라지지 않습니다. 각 버전의 변경 사항은 [Releases 페이지](https://github.com/ningzimu/image-to-editable-ppt-skill/releases) 또는 저장소의 `CHANGELOG.md`에서 확인할 수 있습니다.
 
 ## 실행 권한 권장 사항
 

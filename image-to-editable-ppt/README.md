@@ -30,7 +30,7 @@
 >
 > **如果没有强烈的可编辑需求，请不要使用这个 skill。**
 >
-> 更轻量的做法是直接使用 gpt-image-2 的图像编辑能力：把你不满意的那一页 PPT 图片发给它，让它针对性修改，并返回修改后的图片。
+> 上游目前以 `gpt-image-2.5-sunburst` 举例说明更轻量的仅图片编辑方式：提交要修改的页面图片并获取修改后的图片；使用前确认当前工具实际提供该模型。这不产生对象级可编辑 PPT，也不改变本 fork 的 CLI 默认模型 `gpt-image-2`。
 
 > [!TIP]
 > 本 skill 不负责从文章、报告、大纲或想法直接生成全新 PPT。如果你要做的是“生成一份 PPT”，可以使用 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)。
@@ -130,17 +130,29 @@ CLI fallback 的 `editppt image generate/edit` 参数面保持精简：请求输
 
 ## 安装
 
-```text
-安装 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill
-```
+本目录是 `chrisopal/skills` 中保留 portable-backend 和 visual-QA 定制的版本。请从包含这些定制的已审查 fork 提交安装，安装包路径为 `image-to-editable-ppt/skills/image-to-editable-ppt/`。
 
-安装 skill 后，正常转换、图片 API fallback 和 OCR Token 配置都由 AI 在执行过程中检查和处理；你只需要在 AI 询问时提供第三方 API 信息或 OCR Token。
+```text
+从 chrisopal/skills 中已审查且包含本地定制的提交安装 image-to-editable-ppt，保留 portable-backend 和 visual-QA。
+```
 
 ## 更新
 
-```text
-更新 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill
+将 `<fork-commit>` 替换为包含本地定制的已审查提交 SHA，将 `<agent-id>` 替换为当前智能体标识（例如 `codex`），将 `<skill-root>` 替换为实际安装目录。不要假定默认分支已包含这些定制，也不要用上游发行 ZIP 覆盖本版本。
+
+```bash
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
+
+更新后重新加载技能上下文，确认 `run backend --help` 中仍有 `agent-image-tool`，且 visual-QA 与提取命令可用。API 凭据和 OCR Token 保存在技能目录之外的 `~/.editppt/config.yaml`。CLI 默认模型仍为 `gpt-image-2`。
 
 ## 使用方式
 

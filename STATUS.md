@@ -1265,3 +1265,27 @@
 - Remaining notes:
   - Existing legacy consulting SVG warnings about root-group bounds remain advisory and predate this change; the three new pages introduce none.
   - Browser renders and visual-verdict state remain local verification artifacts and are not committed.
+## 2026-10-07: Selective image-to-editable-ppt upstream contract sync
+
+- Scope: compare current main `f95bc08`, PR #3 head `39be6e8`, and upstream
+  `ningzimu/image-to-editable-ppt-skill@b7be494`; preserve the embedded layout.
+- Review: `docs/reviews/2026-10-07-image-to-editable-ppt-upstream.md` inventories
+  all 109 baseline paths (54 identical, 41 modified, 10 upstream-only, 4 local-only)
+  and separates compatible backports, local customizations, and deferred conflicts.
+- Changed: routine execution and measured-text/identity-text guidance; fork-safe
+  installation/update instructions and image-only model examples in Chinese,
+  English, and Korean; eight contract regressions and one strengthened record test.
+- Preserved: every tracked CLI source file matches PR #3, including portable
+  backend discovery/provenance, visual-QA gates, source extraction, and the
+  `gpt-image-2` default. Runtime/model/recovery/table/path/region upgrades are
+  explicitly deferred; this change does not merge PR #3 or replace user installs.
+- Verification: baseline 95/95 and modified 103/103 unit tests passed after
+  installing declared CLI dependencies in an isolated venv; Skill Creator quick
+  validation, doctor, command help, compileall, Markdown fences, 109-path inventory,
+  and git diff checks passed. Three read-only skill-use scenarios were checked.
+- Commit/push state: verified source is prepared on the isolated
+  `codex/image-to-editable-ppt-contract-sync` branch for a PR based on
+  `codex/image-to-editable-ppt-visual-qa`; publication will be recorded after push.
+- Not tested: live OCR/image services, a complete fresh conversion, live worker
+  orchestration, new model support, real PowerPoint opening, or npx installation.
+  Generated fixtures and logs remain untracked.

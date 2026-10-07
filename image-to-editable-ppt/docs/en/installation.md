@@ -1,37 +1,33 @@
 # Installation and Configuration
 
-## One-Sentence Installation
+## Install / Update
 
-We recommend sending the following sentence directly to your agent and letting it install the skill:
+This is the `chrisopal/skills` edition with portable-backend and visual-QA customizations. Install from a reviewed fork commit containing those customizations, at `image-to-editable-ppt/skills/image-to-editable-ppt/`.
 
-```text
-Install the image-to-editable-ppt skill from https://github.com/ningzimu/image-to-editable-ppt-skill
-```
-
-After installation, the AI checks and handles normal conversion requirements, image API fallback, and OCR Token configuration as part of the workflow. You only need to provide third-party API details or an OCR Token when asked.
-
-## Manual Installation
-
-Download `image-to-editable-ppt-skill-v*.zip` from [GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases). Extract it, place the included `image-to-editable-ppt` folder in your agent's skills directory (`~/.codex/skills/image-to-editable-ppt` for Codex), and restart the agent.
-
-If you are developing this repository locally, you can symlink the skill directory into your skills directory so changes are available immediately:
+Replace `<fork-commit>` with a reviewed commit SHA containing the local customizations, `<agent-id>` with your agent identifier (for example `codex`), and `<skill-root>` with the installed package directory. Do not assume the default branch contains these changes or overwrite this edition with an upstream release ZIP.
 
 ```bash
-mkdir -p ~/.codex/skills
-ln -s /path/to/image-to-editable-ppt-skill/skills/image-to-editable-ppt ~/.codex/skills/image-to-editable-ppt
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
 
-## Updating the Skill
+Reload the skill context after updating. Confirm that `run backend --help` still lists `agent-image-tool` and that visual-QA and extraction commands remain available. API credentials and the OCR Token stay outside the package in `~/.editppt/config.yaml`. The CLI default remains `gpt-image-2`.
 
-We recommend sending the following sentence directly to your agent:
+## Install from a Local Checkout
 
-```text
-Update the image-to-editable-ppt skill from https://github.com/ningzimu/image-to-editable-ppt-skill
+After checking out and verifying the desired fork commit, you can also install from the local skill directory; then refresh and check the CLI as above.
+
+```bash
+npx -y skills@latest add /path/to/chrisopal-skills/image-to-editable-ppt/skills/image-to-editable-ppt \
+  --skill image-to-editable-ppt --agent <agent-id> --global
 ```
-
-To update manually, download the latest zip from [GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases), extract it, and replace the existing `image-to-editable-ppt` directory. Restart the agent when the update is complete.
-
-Updates are safe: image API credentials and the OCR Token are stored outside the skill installation directory in `~/.editppt/config.yaml` (`%USERPROFILE%\.editppt\config.yaml` on Windows), so updates and reinstalls will not remove them. See the [Releases page](https://github.com/ningzimu/image-to-editable-ppt-skill/releases) or the repository's `CHANGELOG.md` for changes in each version.
 
 ## Recommended Permissions
 

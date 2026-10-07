@@ -47,7 +47,7 @@ If you are already using the skill and run into problems, see [FAQ](/en/faq.md).
 
 **This is not a lightweight converter.** The skill uses a multi-agent reconstruction workflow in which AI performs a rebuild → self-check → page-level revision loop, potentially over multiple iterations. It can consume substantial tokens: reconstructing a 10-slide deck may use an entire five-hour ChatGPT allowance, and a single slide may take more than 10 minutes. **ChatGPT Pro is recommended; Plus users should proceed with caution.**
 
-**Do not use this skill unless you have a strong need for editability.** A lighter alternative is to use `gpt-image-2` directly: send it the slide image you want to change and ask it to make the targeted edits.
+Upstream now illustrates the lighter image-only editing option with `gpt-image-2.5-sunburst`: submit the page image for targeted edits and receive a revised image; first verify that your current tool offers that model. This does not create object-level editable PPT and does not change this fork's CLI default, `gpt-image-2`.
 
 **We recommend running this skill in Codex with Full Access enabled.** Otherwise, approval prompts may repeatedly interrupt OCR, image generation, and subagent dispatch. See [Installation and Configuration](/en/installation.md).
 

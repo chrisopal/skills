@@ -30,7 +30,7 @@
 >
 > **편집 가능성이 꼭 필요하지 않다면 이 skill을 사용하지 마세요.**
 >
-> 더 가벼운 방법은 gpt-image-2의 이미지 편집 기능을 직접 사용하는 것입니다. 마음에 들지 않는 PPT 페이지 이미지를 보내고 필요한 부분만 수정한 이미지를 돌려받을 수 있습니다.
+> Upstream은 더 가벼운 이미지 전용 편집의 예로 `gpt-image-2.5-sunburst`를 사용합니다. 페이지 이미지를 보내 필요한 부분을 수정한 이미지를 받되, 현재 도구에서 해당 모델을 제공하는지 먼저 확인하세요. 이 방식은 객체 수준 편집 가능한 PPT를 만들지 않으며 이 fork의 CLI 기본 모델 `gpt-image-2`도 바꾸지 않습니다.
 
 > [!TIP]
 > 이 skill은 글, 보고서, 개요 또는 아이디어에서 새로운 PPT를 직접 만드는 용도가 아닙니다. “PPT 생성”이 목적이라면 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)을 사용하세요.
@@ -130,17 +130,29 @@ Token 없이도 실행할 수 있습니다. 이 경우 skill은 내장 오프라
 
 ## 설치
 
-```text
-image-to-editable-ppt skill을 설치해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.
-```
+이 디렉터리는 portable-backend와 visual-QA 사용자 정의를 보존하는 `chrisopal/skills` 버전입니다. 해당 기능이 포함된 검토 완료 fork 커밋의 `image-to-editable-ppt/skills/image-to-editable-ppt/` 경로에서 설치하세요.
 
-skill 설치 후 일반 변환, 이미지 API 폴백, OCR Token 설정은 AI가 실행 중 확인하고 처리합니다. AI가 요청할 때 타사 API 정보나 OCR Token만 제공하면 됩니다.
+```text
+chrisopal/skills의 검토 완료 커밋에서 image-to-editable-ppt를 설치하고 로컬 portable-backend와 visual-QA 사용자 정의를 모두 보존해 주세요.
+```
 
 ## 업데이트
 
-```text
-image-to-editable-ppt skill을 업데이트해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.
+`<fork-commit>`은 로컬 사용자 정의가 포함된 검토 완료 커밋 SHA로, `<agent-id>`는 현재 agent 식별자(예: `codex`)로, `<skill-root>`는 실제 설치 경로로 바꾸세요. 기본 브랜치에 해당 변경이 있다고 가정하거나 upstream 배포 ZIP으로 덮어쓰지 마세요.
+
+```bash
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
+
+업데이트 후 skill 컨텍스트를 다시 로드하세요. `run backend --help`에 `agent-image-tool`이 있고 visual-QA 및 추출 명령이 사용 가능한지 확인하세요. API 자격 증명과 OCR Token은 패키지 밖의 `~/.editppt/config.yaml`에 유지됩니다. CLI 기본 모델은 여전히 `gpt-image-2`입니다.
 
 ## 사용 방법
 

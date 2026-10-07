@@ -164,20 +164,57 @@ class WritingWorkspaceTest(unittest.TestCase):
 
     def test_settings_are_validated_and_persisted(self) -> None:
         workspace = self._workspace()
+        settings_path = self.project / "work/writing-settings.json"
+        settings_path.write_text(json.dumps({"tone": "plain_chinese", "target_words": None,
+                                             "execution_mode": "sequential", "max_parallel": 1,
+                                             "revision": 3}), encoding="utf-8")
         initial = workspace.settings()
+        self.assertTrue(initial["visuals"]["enabled"])
+        self.assertEqual(initial["visuals"]["diagram_renderer"], "auto")
+        self.assertEqual(initial["visuals"]["image_mode"], "host")
+        self.assertEqual(initial["visuals"]["max_images"], 2)
         with self.assertRaises(WorkspaceError) as missing_guard:
             workspace.save_settings({"tone": "formal_chinese"})
         self.assertEqual(missing_guard.exception.code, "invalid_input")
         settings = workspace.save_settings({"tone": "formal_chinese", "target_words": 1200,
                                              "execution_mode": "parallel", "max_parallel": 2,
+                                             "visuals": {"enabled": False, "diagram_renderer": "svg",
+                                                         "image_mode": "disabled", "tool": "local",
+                                                         "model": "preferred-model", "style": "clean",
+                                                         "aspect_ratio": "4:3", "max_images": 4},
                                              "expected_revision": initial["revision"],
                                              "expected_sha256": initial["sha256"]})
         self.assertEqual(self._workspace().settings(), settings)
         self.assertTrue((self.project / "work/writing-settings.json").exists())
+        self.assertEqual(settings["visuals"]["model"], "preferred-model")
+        self.assertFalse(settings["visuals"]["enabled"])
+        for invalid in (
+            {"visuals": {"max_images": True}},
+            {"visuals": {"diagram_renderer": "raster"}},
+            {"visuals": {"style": "x" * 201}},
+            {"visuals": {"api_key": "should-never-be-stored"}},
+        ):
+            current = workspace.settings()
+            invalid.update({"expected_revision": current["revision"],
+                            "expected_sha256": current["sha256"]})
+            with self.assertRaises(WorkspaceError):
+                workspace.save_settings(invalid)
         with self.assertRaises(WorkspaceError) as caught:
             workspace.save_settings({"tone": "plain_chinese", "expected_revision": 0,
                                      "expected_sha256": ""})
         self.assertEqual(caught.exception.code, "stale_settings")
+
+    def test_settings_reject_unknown_fields_without_persisting_credentials(self) -> None:
+        workspace = self._workspace()
+        before = workspace.settings()
+        for field in ("private_key", "bearer", "cookie", "unknown_preference"):
+            for payload in ({field: "do-not-store"}, {"visuals": {field: "do-not-store"}}):
+                payload.update({"expected_revision": before["revision"],
+                                "expected_sha256": before["sha256"]})
+                with self.subTest(payload=payload), self.assertRaises(WorkspaceError):
+                    workspace.save_settings(payload)
+                self.assertEqual(workspace.settings(), before)
+        self.assertFalse((self.project / "work/writing-settings.json").exists())
 
     def test_save_preflights_history_and_audit_paths_before_writing(self) -> None:
         outside = Path(self.temp.name).parent / (Path(self.temp.name).name + "-outside")
@@ -214,7 +251,33 @@ class WritingWorkspaceTest(unittest.TestCase):
         self.assertNotIn("innerHTML", script)
         self.assertIn("unsavedBuffers", script)
         self.assertIn("放弃当前编辑", script)
-        self.assertIn("settings-form", (SUITE_ROOT / "assets/ui/writing-editor.html").read_text(encoding="utf-8"))
+        page = (SUITE_ROOT / "assets/ui/writing-editor.html").read_text(encoding="utf-8")
+        self.assertIn("settings-form", page)
+        for field in ("visuals-enabled-setting", "diagram-renderer-setting", "image-mode-setting",
+                      "visual-tool-setting", "visual-model-setting", "visual-style-setting",
+                      "visual-aspect-ratio-setting", "visual-max-images-setting"):
+            self.assertIn(field, page)
+
+    def test_outline_state_has_parent_order_and_display_number(self) -> None:
+        path = self.project / 'artifacts/08-outline.json'
+        outline = json.loads(path.read_text())
+        outline['data']['sections'][0]['number'] = '一'
+        outline['data']['sections'][1]['number'] = '二'
+        child = dict(outline['data']['sections'][1], id='SEC-3', parent_id='SEC-1',
+                     number='一.1', title='子章节')
+        outline['data']['sections'].append(child)
+        path.write_text(json.dumps(outline), encoding='utf-8')
+        rows = self._workspace().state()['chapters']
+        self.assertEqual([r['section_id'] for r in rows], ['SEC-1', 'SEC-3', 'SEC-2'])
+        self.assertEqual(rows[1]['parent_id'], 'SEC-1')
+        self.assertEqual(rows[1]['display_number'], '1.1')
+        self.assertEqual(rows[1]['depth'], 1)
+        child['parent_id'] = 'missing'
+        outline['data']['sections'][-1] = child
+        path.write_text(json.dumps(outline), encoding='utf-8')
+        with self.assertRaises(WorkspaceError) as caught:
+            self._workspace().state()
+        self.assertEqual(caught.exception.code, 'invalid_project')
 
     def test_external_request_origin_is_rejected(self) -> None:
         server = create_server(self._workspace(), 0)

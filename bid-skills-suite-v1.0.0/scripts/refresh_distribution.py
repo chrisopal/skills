@@ -15,10 +15,10 @@ DISTRIBUTED_SCRIPTS = {
     'bid-source-intake': ('extract_sources.py', 'paddle_ocr.py'),
     'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
     'bid-project-profile': ('tender_router.py',),
-    'bid-outline-planning': ('writing_checks.py',),
-    'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py'),
+    'bid-outline-planning': ('writing_checks.py', 'outline_view.py'),
+    'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py', 'outline_view.py', 'render_writing_report.py'),
     'bid-document-layout': ('build_docx.py',),
-    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py'),
+    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'outline_view.py', 'render_writing_report.py'),
 }
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
@@ -58,6 +58,9 @@ def sync_standalone_resources(root=ROOT):
     writing_schema = root / 'skills/bid-technical-writing/assets/output.schema.json'
     for skill_id in ('bid-technical-writing', 'bid-orchestrator'):
         shutil.copyfile(writing_schema, root / 'skills' / skill_id / 'assets/writing-output.schema.json')
+    for skill_id in ('bid-technical-writing', 'bid-visuals', 'bid-orchestrator'):
+        shutil.copyfile(root / 'assets/writing-settings.example.json',
+                        root / 'skills' / skill_id / 'assets/writing-settings.example.json')
     shutil.copyfile(root / 'registry.json', root / 'skills/bid-orchestrator/registry.json')
 
 

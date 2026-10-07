@@ -3,6 +3,7 @@
 
   var state = null;
   var selectedId = null;
+  var collapsedSections = Object.create(null);
   var dirty = false;
   var unsavedBuffers = Object.create(null);
   var loadSequence = 0;
@@ -15,6 +16,9 @@
   var settingsSaveButton = document.getElementById("settings-save-button");
   var errorBanner = document.getElementById("error-banner");
   var saveState = document.getElementById("save-state");
+  var visualFieldIds = ["diagram-renderer-setting", "image-mode-setting", "visual-tool-setting",
+    "visual-model-setting", "visual-style-setting", "visual-aspect-ratio-setting",
+    "visual-max-images-setting"];
 
   function setStatus(text, kind) {
     saveState.textContent = text;
@@ -31,8 +35,19 @@
     reloadButton.disabled = busy;
     discardButton.disabled = busy || !dirty;
     settingsSaveButton.disabled = busy;
-    Array.prototype.forEach.call(document.querySelectorAll(".chapter-link"), function (button) {
+    document.querySelectorAll("#settings-form input, #settings-form select").forEach(function (field) {
+      var isVisualField = visualFieldIds.indexOf(field.id) !== -1;
+      field.disabled = busy || (isVisualField && !document.getElementById("visuals-enabled-setting").checked);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".chapter-link, .chapter-toggle"), function (button) {
       button.disabled = busy;
+    });
+  }
+
+  function updateVisualFieldState() {
+    var enabled = document.getElementById("visuals-enabled-setting").checked;
+    visualFieldIds.forEach(function (id) {
+      document.getElementById(id).disabled = !enabled || settingsSaveButton.disabled;
     });
   }
 
@@ -42,20 +57,61 @@
     var list = document.getElementById("chapter-list");
     while (list.firstChild) list.removeChild(list.firstChild);
     var chapters = state.chapters || [];
+    var groups = Object.create(null);
     document.getElementById("chapter-count").textContent = text(chapters.length);
     chapters.forEach(function (chapter) {
+      var item = document.createElement("li");
+      item.className = "chapter-item";
+      item.dataset.sectionId = chapter.section_id;
+      var row = document.createElement("div");
+      row.className = "chapter-row";
       var button = document.createElement("button");
       button.type = "button";
       button.className = "chapter-link" + (chapter.id === selectedId ? " is-selected" : "") + (chapter.written ? " is-written" : "");
       button.addEventListener("click", function () { selectChapter(chapter.id); });
       var label = document.createElement("span");
-      label.textContent = text(chapter.number) + " " + text(chapter.title);
+      label.className = "chapter-label";
+      var number = document.createElement("span");
+      number.className = "chapter-number";
+      number.textContent = text(chapter.display_number || chapter.number);
+      var title = document.createElement("span");
+      title.className = "chapter-title";
+      title.textContent = text(chapter.title);
+      label.appendChild(number);
+      label.appendChild(title);
       var status = document.createElement("span");
       status.className = "chapter-state";
       status.textContent = chapter.written ? "已写" : "未写";
       button.appendChild(label);
       button.appendChild(status);
-      list.appendChild(button);
+      if (chapter.id === selectedId) button.setAttribute("aria-current", "page");
+      var children = null;
+      if (chapter.children_count) {
+        children = document.createElement("ul");
+        children.className = "chapter-children";
+        children.id = "group-" + chapter.section_id;
+        children.hidden = !!collapsedSections[chapter.section_id];
+        var toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "chapter-toggle";
+        toggle.setAttribute("aria-controls", children.id);
+        function updateToggle() {
+          toggle.setAttribute("aria-expanded", String(!children.hidden));
+          toggle.setAttribute("aria-label", (children.hidden ? "展开" : "折叠") + text(chapter.title));
+          toggle.textContent = children.hidden ? "▸" : "▾";
+        }
+        toggle.addEventListener("click", function () {
+          children.hidden = !children.hidden;
+          collapsedSections[chapter.section_id] = children.hidden;
+          updateToggle();
+        });
+        updateToggle();
+        row.appendChild(toggle);
+      } else row.classList.add("is-leaf");
+      row.appendChild(button);
+      item.appendChild(row);
+      if (children) { item.appendChild(children); groups[chapter.section_id] = children; }
+      (groups[chapter.parent_id] || list).appendChild(item);
     });
   }
 
@@ -221,10 +277,20 @@
 
   function applySettings(settings) {
     settings = settings || {};
+    var visuals = settings.visuals || {};
     document.getElementById("tone-setting").value = text(settings.tone || "plain_chinese");
     document.getElementById("target-words-setting").value = settings.target_words || "";
     document.getElementById("execution-mode-setting").value = text(settings.execution_mode || "sequential");
     document.getElementById("max-parallel-setting").value = text(settings.max_parallel || 1);
+    document.getElementById("visuals-enabled-setting").checked = visuals.enabled !== false;
+    document.getElementById("diagram-renderer-setting").value = text(visuals.diagram_renderer || "auto");
+    document.getElementById("image-mode-setting").value = text(visuals.image_mode || "host");
+    document.getElementById("visual-tool-setting").value = text(visuals.tool || "auto");
+    document.getElementById("visual-model-setting").value = text(visuals.model || "");
+    document.getElementById("visual-style-setting").value = text(visuals.style || "enterprise_concept");
+    document.getElementById("visual-aspect-ratio-setting").value = text(visuals.aspect_ratio || "16:9");
+    document.getElementById("visual-max-images-setting").value = text(visuals.max_images || 2);
+    updateVisualFieldState();
   }
 
   function load(chapterId) {
@@ -290,20 +356,29 @@
       target_words: target ? Number(target) : null,
       execution_mode: document.getElementById("execution-mode-setting").value,
       max_parallel: Number(document.getElementById("max-parallel-setting").value),
+      visuals: { enabled: document.getElementById("visuals-enabled-setting").checked,
+        diagram_renderer: document.getElementById("diagram-renderer-setting").value,
+        image_mode: document.getElementById("image-mode-setting").value,
+        tool: document.getElementById("visual-tool-setting").value,
+        model: document.getElementById("visual-model-setting").value,
+        style: document.getElementById("visual-style-setting").value,
+        aspect_ratio: document.getElementById("visual-aspect-ratio-setting").value,
+        max_images: Number(document.getElementById("visual-max-images-setting").value) },
       expected_revision: state && state.settings ? state.settings.revision : 0,
       expected_sha256: state && state.settings ? state.settings.sha256 : "" };
-    settingsSaveButton.disabled = true;
+    setBusy(true);
     fetch("/api/settings", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(request) })
       .then(function (response) { return response.json().then(function (data) { if (!response.ok) { var error = new Error(data.error && data.error.message || "设置保存失败"); error.code = data.error && data.error.code; throw error; } return data; }); })
       .then(function () { setStatus("设置已保存并重载", "success"); return load(selectedId); })
       .catch(function (error) { setStatus(error.code === "stale_settings" ? "设置发生冲突" : "设置保存失败", "error"); showError(error.message); })
-      .finally(function () { settingsSaveButton.disabled = false; });
+      .finally(function () { setBusy(false); updateVisualFieldState(); });
   }
 
   bodyEditor.addEventListener("input", function () { unsavedBuffers[selectedId] = bodyEditor.value; dirty = true; discardButton.disabled = false; document.getElementById("word-count").textContent = bodyEditor.value.length + " 字"; setStatus("有未保存修改", "warning"); });
   saveButton.addEventListener("click", save);
   discardButton.addEventListener("click", discardCurrent);
   reloadButton.addEventListener("click", function () { if (!dirty || window.confirm("重载会丢弃当前未保存内容，继续吗？")) { delete unsavedBuffers[selectedId]; dirty = false; load(selectedId); } });
+  document.getElementById("visuals-enabled-setting").addEventListener("change", updateVisualFieldState);
   settingsForm.addEventListener("submit", saveSettings);
   document.getElementById("theme-button").addEventListener("click", function () { document.documentElement.setAttribute("data-theme", document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"); });
   window.addEventListener("beforeunload", function (event) { if (dirty || saveInFlight) { event.preventDefault(); event.returnValue = ""; } });

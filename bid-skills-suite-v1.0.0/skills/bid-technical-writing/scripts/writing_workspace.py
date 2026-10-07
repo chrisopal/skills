@@ -16,6 +16,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+from outline_view import ordered_sections
+
 
 SUITE_ROOT = Path(__file__).resolve().parents[1]
 UI_ROOT = SUITE_ROOT / "assets" / "ui"
@@ -25,6 +27,16 @@ DEFAULT_SETTINGS = {
     "execution_mode": "sequential",
     "max_parallel": 1,
     "guidance": "仅作为写作偏好记录，不代表自动任务池或已执行的生成任务。",
+    "visuals": {
+        "enabled": True,
+        "diagram_renderer": "auto",
+        "image_mode": "host",
+        "tool": "auto",
+        "model": "",
+        "style": "企业概念示意",
+        "aspect_ratio": "16:9",
+        "max_images": 2,
+    },
 }
 
 
@@ -213,7 +225,7 @@ class WritingWorkspace:
     def settings(self) -> dict:
         path = self._settings_path()
         if not path.is_file():
-            result = dict(DEFAULT_SETTINGS)
+            result = _copy_json(DEFAULT_SETTINGS)
             result.update({"revision": 0, "sha256": ""})
             return result
         value = _read_json(path)
@@ -223,8 +235,21 @@ class WritingWorkspace:
 
     @staticmethod
     def _validate_settings(value: dict) -> dict:
-        result = dict(DEFAULT_SETTINGS)
-        result.update(value)
+        if not isinstance(value, dict):
+            raise WorkspaceError("设置必须是对象", "invalid_input")
+        WritingWorkspace._reject_secret_fields(value)
+        if set(value) - (set(DEFAULT_SETTINGS) | {"revision"}):
+            raise WorkspaceError("设置包含不支持的字段", "invalid_input")
+        result = _copy_json(DEFAULT_SETTINGS)
+        incoming = dict(value)
+        incoming_visuals = incoming.pop("visuals", None)
+        result.update(incoming)
+        if incoming_visuals is not None:
+            if not isinstance(incoming_visuals, dict):
+                raise WorkspaceError("visuals 必须是对象", "invalid_input")
+            if set(incoming_visuals) - set(DEFAULT_SETTINGS["visuals"]):
+                raise WorkspaceError("配图设置包含不支持的字段", "invalid_input")
+            result["visuals"].update(incoming_visuals)
         if result["tone"] not in {"plain_chinese", "formal_chinese"}:
             raise WorkspaceError("tone 必须是 plain_chinese 或 formal_chinese", "invalid_input")
         target = result.get("target_words")
@@ -232,10 +257,43 @@ class WritingWorkspace:
             raise WorkspaceError("target_words 必须是正整数", "invalid_input")
         if result["execution_mode"] not in {"sequential", "parallel"}:
             raise WorkspaceError("execution_mode 无效", "invalid_input")
-        if result["max_parallel"] not in {1, 2}:
+        if isinstance(result["max_parallel"], bool) or result["max_parallel"] not in {1, 2}:
             raise WorkspaceError("max_parallel 只能是 1 或 2", "invalid_input")
+        visuals = result["visuals"]
+        if not isinstance(visuals.get("enabled"), bool):
+            raise WorkspaceError("visuals.enabled 必须是布尔值", "invalid_input")
+        if visuals.get("diagram_renderer") not in {"auto", "mermaid", "svg"}:
+            raise WorkspaceError("visuals.diagram_renderer 无效", "invalid_input")
+        if visuals.get("image_mode") not in {"host", "disabled"}:
+            raise WorkspaceError("visuals.image_mode 无效", "invalid_input")
+        for field in ("tool", "model", "style"):
+            if not isinstance(visuals.get(field), str) or len(visuals[field]) > 200:
+                raise WorkspaceError(
+                    f"visuals.{field} 必须是 200 字符以内的文本", "invalid_input")
+        if visuals.get("aspect_ratio") not in {"16:9", "4:3", "1:1"}:
+            raise WorkspaceError("visuals.aspect_ratio 无效", "invalid_input")
+        max_images = visuals.get("max_images")
+        if (isinstance(max_images, bool) or not isinstance(max_images, int)
+                or not 1 <= max_images <= 8):
+            raise WorkspaceError("visuals.max_images 必须是 1 到 8 的整数", "invalid_input")
         result["guidance"] = DEFAULT_SETTINGS["guidance"]
         return result
+
+    @staticmethod
+    def _reject_secret_fields(value: object) -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                normalized = str(key).lower().replace("-", "_")
+                secret_name = (
+                    r"(?:secret|token|password|api[_-]?key|"
+                    r"access[_-]?(?:key|token)|authorization|credential)"
+                )
+                if normalized in {"key", "auth"} or re.search(secret_name, normalized):
+                    raise WorkspaceError("设置不能包含密钥或凭据字段", "invalid_input")
+                WritingWorkspace._reject_secret_fields(child)
+        elif isinstance(value, list):
+            for child in value:
+                WritingWorkspace._reject_secret_fields(child)
 
     def save_settings(self, value: dict) -> dict:
         if not isinstance(value, dict):
@@ -359,13 +417,20 @@ class WritingWorkspace:
         current = {x.get("id"): x for x in writing.get("data", {}).get("chapters", [])
                    if isinstance(x, dict) and x.get("id")}
         rows = []
-        for section in outline.get("data", {}).get("sections", []):
+        try:
+            sections = ordered_sections(outline.get("data", {}).get("sections", []))
+        except ValueError as exc:
+            raise WorkspaceError(str(exc), "invalid_project", 422) from exc
+        for section in sections:
             chapter = current.get(section.get("id")) or current.get(f"CH-{section.get('id')}")
             # A chapter normally uses its own ID; section ID is retained for unwritten nav items.
             if chapter is None:
                 chapter = next((x for x in current.values() if x.get("section_id") == section.get("id")), None)
             rows.append({"id": chapter.get("id") if chapter else section.get("id"),
                          "section_id": section.get("id"), "number": section.get("number", ""),
+                         "parent_id": section.get("parent_id"), "depth": section["depth"],
+                         "display_number": section["display_number"],
+                         "children_count": section["children_count"],
                          "title": section.get("title", "未命名章节"), "written": bool(chapter),
                          "state": (chapter or {}).get("state", "unwritten"),
                          "requirement_ids": section.get("requirement_ids", []),

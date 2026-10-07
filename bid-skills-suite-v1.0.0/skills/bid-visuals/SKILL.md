@@ -2,7 +2,7 @@
 name: bid-visuals
 description: 制作说明方案的准确图表，确保每张图有任务、数据依据、正文对应和可编辑源。 适用于：架构图、流程图、网络图、实施计划图、配置示意、标书配图、数据图表。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '13'
   suite: bid-skills-suite
@@ -24,6 +24,8 @@ metadata:
 先读 [共同证据与安全约定](references/evidence-and-safety.md)。仅当需要细化操作时读 [专项操作手册](references/playbook.md)；输出字段与示例参见 [产物契约](references/output-contract.md)。
 
 输入：08图表任务、10确认方案、11正文、06格式与暗标限制、已授权图片或数据。
+
+先读取`work/writing-settings.json`中的`visuals`，缺省按[配置示例](assets/writing-settings.example.json)与当前用户指令。`enabled`决定可选配图，`diagram_renderer`决定auto/Mermaid/SVG，`image_mode`决定宿主概念生图或关闭；`tool/model`是可用工具和模型偏好，`style/aspect_ratio/max_images`是风格、比例与本次最多概念图数。仅保存偏好不算已生成；实际参数映射和不可用项按[写作流程](references/WRITING_WORKFLOW.md)记录。必要图表与关闭配置冲突时保留待处理项，不能省略后宣称符合要求。
 
 上游技能：`bid-format-extraction, bid-outline-planning, bid-solution-design, bid-technical-writing`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 

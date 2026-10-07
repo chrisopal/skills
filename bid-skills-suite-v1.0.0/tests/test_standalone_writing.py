@@ -34,6 +34,14 @@ r=w.save({'chapter_id':s['chapter']['id'], 'expected_revision':s['writing']['rev
 assert r['writing']['revision']==s['writing']['revision']+1
 assert r['chapter']['state']=='proposed'
 assert (Path(sys.argv[1])/'assets/ui/writing-editor.js').is_file()
+settings=w.settings()
+saved=w.save_settings({'visuals':{'enabled':True,'aspect_ratio':'4:3','max_images':3},
+ 'expected_revision':settings['revision'],'expected_sha256':settings['sha256']})
+assert w.settings()['visuals']['aspect_ratio']=='4:3'
+from render_writing_report import outline_html
+assert '1.1' in outline_html([{'id':'a','number':'一','parent_id':None},
+                            {'id':'b','number':'一.1','parent_id':'a'}])
+assert (Path(sys.argv[1])/'assets/ui/writing-report.css').is_file()
 print(json.dumps({'saved':True, 'revision':r['writing']['revision']}))
 '''
                 result = subprocess.run([shutil.which('python3.13') or 'python', '-c', script,

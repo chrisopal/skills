@@ -24,7 +24,7 @@
     <main class="workspace-grid">
       <aside class="chapter-nav" aria-labelledby="chapter-heading">
         <div class="panel-heading"><h1 id="chapter-heading">章节目录</h1><span id="chapter-count" class="count-badge">—</span></div>
-        <nav id="chapter-list" aria-label="技术标章节"></nav>
+        <ul id="chapter-list" aria-label="章节目录"></ul>
       </aside>
       <section class="editor-panel" aria-labelledby="editor-heading">
         <div class="editor-heading">
@@ -42,7 +42,24 @@
             <select id="execution-mode-setting"><option value="sequential">顺序</option><option value="parallel">并行</option></select>
             <label for="max-parallel-setting">最大并行数</label>
             <select id="max-parallel-setting"><option value="1">1</option><option value="2">2</option></select>
-            <p class="settings-guidance">这些设置只记录写作偏好，不会创建自动任务池。</p>
+            <h3 class="settings-section">配图与生图</h3>
+            <label for="visuals-enabled-setting">配图</label>
+            <label class="checkbox-label"><input id="visuals-enabled-setting" type="checkbox" checked> 启用</label>
+            <label for="diagram-renderer-setting">图表渲染器</label>
+            <select id="diagram-renderer-setting"><option value="auto">自动</option><option value="mermaid">Mermaid</option><option value="svg">SVG</option></select>
+            <label for="image-mode-setting">生图模式</label>
+            <select id="image-mode-setting"><option value="host">当前 Agent 的生图工具</option><option value="disabled">关闭概念生图</option></select>
+            <label for="visual-tool-setting">生图工具偏好</label>
+            <input id="visual-tool-setting" type="text" maxlength="200" value="auto" placeholder="自动或实际工具名称" autocomplete="off">
+            <label for="visual-model-setting">模型偏好（可选）</label>
+            <input id="visual-model-setting" type="text" maxlength="200" placeholder="留空由当前 Agent 选择" autocomplete="off">
+            <label for="visual-style-setting">视觉风格</label>
+            <input id="visual-style-setting" type="text" maxlength="200" value="企业概念示意" autocomplete="off">
+            <label for="visual-aspect-ratio-setting">画幅比例</label>
+            <select id="visual-aspect-ratio-setting"><option value="16:9">16:9</option><option value="4:3">4:3</option><option value="1:1">1:1</option></select>
+            <label for="visual-max-images-setting">每次最多生图数</label>
+            <input id="visual-max-images-setting" type="number" min="1" max="8" step="1" value="2" inputmode="numeric">
+            <p class="settings-guidance">按当前 Agent 实际可用工具执行；配置保存后仍需生成图片。密钥在宿主配置。</p>
             <button id="settings-save-button" class="button button-secondary" type="submit">保存并重载设置</button>
           </form>
         </details>

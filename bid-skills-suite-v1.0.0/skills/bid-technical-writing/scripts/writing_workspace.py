@@ -29,7 +29,7 @@ DEFAULT_SETTINGS = {
     "guidance": "仅作为写作偏好记录，不代表自动任务池或已执行的生成任务。",
     "visuals": {
         "enabled": True,
-        "diagram_renderer": "auto",
+        "diagram_renderer": "svg",
         "image_mode": "host",
         "tool": "auto",
         "model": "",

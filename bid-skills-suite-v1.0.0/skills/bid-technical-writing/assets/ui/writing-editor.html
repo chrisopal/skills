@@ -45,10 +45,10 @@
             <h3 class="settings-section">配图与生图</h3>
             <label for="visuals-enabled-setting">配图</label>
             <label class="checkbox-label"><input id="visuals-enabled-setting" type="checkbox" checked> 启用</label>
-            <label for="diagram-renderer-setting">图表渲染器</label>
-            <select id="diagram-renderer-setting"><option value="auto">自动</option><option value="mermaid">Mermaid</option><option value="svg">SVG</option></select>
-            <label for="image-mode-setting">生图模式</label>
-            <select id="image-mode-setting"><option value="host">当前 Agent 的生图工具</option><option value="disabled">关闭概念生图</option></select>
+            <label for="diagram-renderer-setting">架构与流程图</label>
+            <select id="diagram-renderer-setting"><option value="svg">SVG（默认，可编辑）</option><option value="mermaid">Mermaid</option><option value="auto">自动（优先 SVG）</option></select>
+            <label for="image-mode-setting">界面示意与概念配图</label>
+            <select id="image-mode-setting"><option value="host">Agent 自带生图 Skill（默认）</option><option value="disabled">关闭生成式配图</option></select>
             <label for="visual-tool-setting">生图工具偏好</label>
             <input id="visual-tool-setting" type="text" maxlength="200" value="auto" placeholder="自动或实际工具名称" autocomplete="off">
             <label for="visual-model-setting">模型偏好（可选）</label>
@@ -59,7 +59,7 @@
             <select id="visual-aspect-ratio-setting"><option value="16:9">16:9</option><option value="4:3">4:3</option><option value="1:1">1:1</option></select>
             <label for="visual-max-images-setting">每次最多生图数</label>
             <input id="visual-max-images-setting" type="number" min="1" max="8" step="1" value="2" inputmode="numeric">
-            <p class="settings-guidance">按当前 Agent 实际可用工具执行；配置保存后仍需生成图片。密钥在宿主配置。</p>
+            <p class="settings-guidance">可选择配图方式；架构图默认 SVG，界面示意默认调用 Agent 自带生图 Skill。逐图要求优先；配置保存后由 Skill 执行生成。</p>
             <button id="settings-save-button" class="button button-secondary" type="submit">保存并重载设置</button>
           </form>
         </details>
@@ -67,6 +67,7 @@
         <label class="field-label" for="body-editor">Markdown 草稿</label>
         <textarea id="body-editor" class="body-editor" spellcheck="false" disabled></textarea>
         <div class="editor-footer"><span id="word-count" class="meta-text">0 字</span><span class="status status-warning">正文满足性待复核</span></div>
+        <section id="chapter-figures" class="chapter-figures" aria-label="章节配图"></section>
       </section>
       <aside class="reference-panel" aria-labelledby="reference-heading">
         <div class="panel-heading"><h2 id="reference-heading">只读依据</h2></div>

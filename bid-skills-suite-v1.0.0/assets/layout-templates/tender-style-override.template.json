@@ -1,0 +1,24 @@
+{
+  "project_id": null,
+  "base_template_id": "general-bid-v1",
+  "base_template_sha256": null,
+  "format_artifact": {
+    "relative_path": null,
+    "revision": null,
+    "sha256": null
+  },
+  "overrides": [],
+  "override_row_example": {
+    "format_id": null,
+    "source_page": null,
+    "quote": null,
+    "scope": null,
+    "field": null,
+    "before": null,
+    "after": null
+  },
+  "unresolved": [],
+  "effective_style": {},
+  "status": "draft",
+  "formal_adoption": "NOT_CONFIRMED"
+}

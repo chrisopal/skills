@@ -154,12 +154,16 @@ def render_project(project, editor_url, output='reports/writing-test-report.html
             figures += f'<img alt="{esc(figure.get("alt_text", ""))}" src="{link(figure["rendered_path"])}">'
         figures += f'<p class="muted">{esc(figure.get("caption", ""))}</p>'
         if figure.get('source_path'):
-            figures += f'<a href="{link(figure["source_path"])}">可编辑图源</a>'
+            source_label = ('可编辑图源' if Path(figure['source_path']).suffix.lower()
+                            in ('.svg', '.mmd') else '图源或生成规格')
+            figures += f'<a href="{link(figure["source_path"])}">{source_label}</a>'
         figures += '</section>'
     rows = response_html(writing['data'].get('responses', []), req)
     gaps = ''.join('<li>' + esc(gap) + '</li>' for gap in coverage.get('evidence_gaps', []) + coverage.get('unresolved_claims', []))
     visual = state['settings']['visuals']
-    config_note = ('配图已启用' if visual['enabled'] else '配图已关闭') + '；概念生图：' + ('宿主工具' if visual['image_mode'] == 'host' else '关闭')
+    config_note = ('配图已启用' if visual['enabled'] else '配图已关闭') + '；界面示意/概念配图：' + ('Agent 自带生图 Skill' if visual['image_mode'] == 'host' else '关闭')
+    diagram_label = {'svg': 'SVG', 'mermaid': 'Mermaid', 'auto': '自动（优先 SVG）'}
+    config_note += '；架构与流程图：' + diagram_label[visual['diagram_renderer']]
     config_note += f'；模型偏好：{visual["model"] or "由宿主选择"}；比例：{visual["aspect_ratio"]}；最多{visual["max_images"]}张。'
     css = (ROOT / 'assets/ui/writing-report.css').read_text()
     page = f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}｜写作测试</title><style>{css}</style>

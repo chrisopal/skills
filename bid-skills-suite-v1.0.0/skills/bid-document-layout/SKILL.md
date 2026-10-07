@@ -2,7 +2,7 @@
 name: bid-document-layout
 description: 组织可编辑文档工作稿，落实格式、目录、图表、附件与分册要求，并生成渲染检查清单。 适用于：标书排版、Word模板、标题编号、目录页码、表格跨页、装订分册、页眉页脚。
 metadata:
-  version: 1.1.0
+  version: 1.2.0
   language: zh-CN
   sequence: '14'
   suite: bid-skills-suite
@@ -30,6 +30,10 @@ metadata:
 ## 执行步骤
 
 实际编辑保存及工作稿检查见[写作流程](references/WRITING_WORKFLOW.md)。06指定的正文字体、字号与行距优先；基础脚本通过document-spec的`style`显式接收，无法实现的客户格式列缺口。章节编辑保存后已有DOCX/PDF不会自动更新，重新构建新版本并绑定最新正文、图和素材后检查。
+
+版式依据与可执行模板见[模板指南](references/BID_LAYOUT_TEMPLATES.md)、[通用候选模板](assets/layout-templates/general-bid-v1.json)和[项目覆盖记录](assets/layout-templates/tender-style-override.template.json)。06及有效补遗优先，未规定项才使用候选默认；公文标准不直接当投标强制标准。将模板/06版本与哈希、逐项覆盖和最终style保存到项目`work/effective-layout.json`。叙述段缩进不应用于标题、表格或图注；正文间不插空白段，保留固定表填写/签署空位。
+
+如果原文规定投标文件全篇字体、字号和行距，覆盖标题/副标题/三级标题/表格/图注等全部适用部分，不擅自收窄为正文。基础生成器仅生成工作稿，保留内部说明和页眉页脚；暗标禁用这些内容、横向或复杂固定表等要求须由宿主工具落实，不能将基础输出作为正式符合证明。
 
 1. **步骤1**
 
@@ -89,7 +93,7 @@ python scripts/validate_output.py /absolute/path/to/14-layout.json
 
 ## 人工确认点
 
-未规定的默认版式需确认；暗标、固定模板、复杂插页、最终渲染由人工检查。
+通用模板可先生成候选工作稿；正式采用未规定的默认版式时确认。暗标、固定模板、复杂插页、最终渲染由人工检查。
 
 ## 常见陷阱
 

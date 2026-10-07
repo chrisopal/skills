@@ -170,7 +170,7 @@ class WritingWorkspaceTest(unittest.TestCase):
                                              "revision": 3}), encoding="utf-8")
         initial = workspace.settings()
         self.assertTrue(initial["visuals"]["enabled"])
-        self.assertEqual(initial["visuals"]["diagram_renderer"], "auto")
+        self.assertEqual(initial["visuals"]["diagram_renderer"], "svg")
         self.assertEqual(initial["visuals"]["image_mode"], "host")
         self.assertEqual(initial["visuals"]["max_images"], 2)
         with self.assertRaises(WorkspaceError) as missing_guard:
@@ -178,7 +178,7 @@ class WritingWorkspaceTest(unittest.TestCase):
         self.assertEqual(missing_guard.exception.code, "invalid_input")
         settings = workspace.save_settings({"tone": "formal_chinese", "target_words": 1200,
                                              "execution_mode": "parallel", "max_parallel": 2,
-                                             "visuals": {"enabled": False, "diagram_renderer": "svg",
+                                             "visuals": {"enabled": False, "diagram_renderer": "mermaid",
                                                          "image_mode": "disabled", "tool": "local",
                                                          "model": "preferred-model", "style": "clean",
                                                          "aspect_ratio": "4:3", "max_images": 4},
@@ -187,6 +187,7 @@ class WritingWorkspaceTest(unittest.TestCase):
         self.assertEqual(self._workspace().settings(), settings)
         self.assertTrue((self.project / "work/writing-settings.json").exists())
         self.assertEqual(settings["visuals"]["model"], "preferred-model")
+        self.assertEqual(settings["visuals"]["diagram_renderer"], "mermaid")
         self.assertFalse(settings["visuals"]["enabled"])
         for invalid in (
             {"visuals": {"max_images": True}},

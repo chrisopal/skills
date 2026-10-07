@@ -2,7 +2,7 @@
 name: bid-orchestrator
 description: 按任务范围调度16个业务技能，传递确切上下文、组织人工确认、识别变更和阻塞。 适用于：完整投标流程、启动编标、继续上次任务、安排技能、仅理解／仅评审、补遗影响分析。
 metadata:
-  version: 1.3.0
+  version: 1.4.0
   language: zh-CN
   sequence: '17'
   suite: bid-skills-suite
@@ -84,7 +84,7 @@ metadata:
 
 理解提取的跨页、条件、模板适用性与执行问题按 [执行质量复核](references/EXECUTION_QUALITY.md) 检查，保存项目`work/execution-review.md`，区分当前产物修正和套件改进。
 
-需要结构化展示时，按 [HTML报告](references/REPORTS.md) 调用`scripts/render_report.py --project /absolute/project --out reports/tender-report.html`。JSON/Markdown保留，HTML读取同一版本输入；生成后检查实际浏览器的筛选、原文定位与宽窄布局。
+需要结构化展示时，按 [HTML报告](references/REPORTS.md) 调用`scripts/render_report.py --project /absolute/project --out reports/tender-report.html`。默认UI遵循enterprise-ui-design；使用随包语义Token、扁平文档布局和真实操作，支持浅深色及原版回退。JSON/Markdown保留，HTML读取同一版本输入；生成后检查实际浏览器的筛选、原文定位、浅深色、宽窄布局与控件对比度，不以代码检查代替视觉验收。
 
 可选执行本技能目录内的校验器：
 

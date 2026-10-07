@@ -163,6 +163,22 @@ class ReportRendererTests(unittest.TestCase):
         with self.assertRaises(FileExistsError):
             render_report.generate(self.project)
 
+    def test_analysis_copy_does_not_change_literal_source_quotes(self) -> None:
+        artifact_path = self.project / "artifacts/03-requirements-r2.json"
+        artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
+        artifact["data"]["requirements"][0]["sources"][0]["quote"] = "needs_review：原文技术术语template_path"
+        artifact["data"]["unknowns"] = ["未重建模板，template_path留空，降为reference。"]
+        artifact_path.write_text(json.dumps(artifact, ensure_ascii=False), encoding="utf-8")
+        workflow_path = self.project / "work/17-workflow-state.json"
+        workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
+        entry = next(item for item in workflow["inputs"] if item["relative_path"] == "artifacts/03-requirements-r2.json")
+        entry["sha256"] = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        workflow_path.write_text(json.dumps(workflow, ensure_ascii=False), encoding="utf-8")
+        render_report.generate(self.project)
+        document = (self.project / "reports/tender-report.html").read_text(encoding="utf-8")
+        self.assertIn("needs_review：原文技术术语template_path", document)
+        self.assertIn("未重建模板，模板文件路径留空，降为参考格式。", document)
+
     def test_overwrite_preserves_previous_report_and_manifest(self) -> None:
         render_report.generate(self.project)
         manifest = render_report.generate(self.project, overwrite=True)

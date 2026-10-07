@@ -2,7 +2,7 @@
 name: bid-format-extraction
 description: 忠实提取必须遵守的文件结构、固定表格与版式规则，为规划与排版提供约束。 适用于：提取强制目录、投标文件格式、固定表格、商务技术分册、暗标版式。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '6'
   suite: bid-skills-suite
@@ -66,6 +66,8 @@ metadata:
    输出格式约束和待填写模板索引，交08和12／14；未发现强制目录时明确检索范围和状态，禁止写“没有任何格式要求”。
 
 ## 产物与交接
+
+按[执行质量复核](references/EXECUTION_QUALITY.md)对照项目文件组成与通用范本，区分mandatory/reference/unknown。未实际重建模板时template_path留null；填写路径前检查实际文件，不创建悬空索引。
 
 保存 `06-format-rules.json`（机器可读）和同名 `.md`（可读报告），使用 [JSON模板](assets/output.template.json) 与 [报告模板](assets/report.template.md)。字段必须符合 [JSON Schema](assets/output.schema.json)。不要把模板空值直接当结果；详细演示见 [合成示例](assets/example.output.json)。
 

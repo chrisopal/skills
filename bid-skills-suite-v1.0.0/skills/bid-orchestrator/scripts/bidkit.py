@@ -14,6 +14,7 @@ from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
 SCOPES=('inputs','artifacts','assets','profiles')
+MODES=('full','understand','review_only','revise')
 
 def now():return datetime.now(timezone.utc).isoformat()
 def read(path):return json.loads(Path(path).read_text(encoding='utf-8'))
@@ -42,15 +43,16 @@ def safe(root,relative):
     if not result.is_relative_to(root):raise ValueError('路径或符号链接越界')
     return result
 
-def init_project(project,project_id):
+def init_project(project,project_id,mode='full'):
+    if mode not in MODES:raise ValueError('未知执行模式：'+str(mode))
     project=Path(project)
     if project.exists() and any(project.iterdir()):raise ValueError('目标目录非空，拒绝覆盖')
     project.mkdir(parents=True,exist_ok=True)
     for d in (*SCOPES,'reviews','deliverables','confirmations','work'): (project/d).mkdir()
-    atomic(project/'work/project.json',{'project_id':project_id,'created_at':now(),'mode':'full','notes':'单写入者工作目录；不提供用户鉴权或数据库级并发控制。'})
+    atomic(project/'work/project.json',{'project_id':project_id,'created_at':now(),'mode':mode,'notes':'单写入者工作目录；不提供用户鉴权或数据库级并发控制。'})
     atomic(project/'inputs/source-registry.json',{'sources':[]})
     (project/'.gitignore').write_text('*\n!.gitignore\n',encoding='utf-8')
-    return {'created':str(project.resolve()),'project_id':project_id}
+    return {'created':str(project.resolve()),'project_id':project_id,'mode':mode}
 
 def register_source(project,file,role):
     project=Path(project).resolve();file=Path(file).resolve()
@@ -191,7 +193,7 @@ def release_gate(project,review_path,snapshot_path,approval_path):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);sub=parser.add_subparsers(dest='command',required=True)
-    p=sub.add_parser('init');p.add_argument('--project',required=True);p.add_argument('--project-id',required=True)
+    p=sub.add_parser('init');p.add_argument('--project',required=True);p.add_argument('--project-id',required=True);p.add_argument('--mode',choices=MODES,default='full')
     p=sub.add_parser('register-source');p.add_argument('--project',required=True);p.add_argument('--file',required=True);p.add_argument('--role',choices=['main','technical','commercial','clarification','addendum','supplier','unknown'],default='unknown')
     p=sub.add_parser('snapshot');p.add_argument('--project',required=True);p.add_argument('--out',default='reviews/input-snapshot.json')
     p=sub.add_parser('verify-snapshot');p.add_argument('--project',required=True);p.add_argument('--snapshot',required=True)
@@ -202,7 +204,7 @@ def main():
     p=sub.add_parser('impact');p.add_argument('--skill-id',required=True)
     args=parser.parse_args()
     try:
-        if args.command=='init':result=init_project(args.project,args.project_id)
+        if args.command=='init':result=init_project(args.project,args.project_id,args.mode)
         elif args.command=='register-source':result=register_source(args.project,args.file,args.role)
         elif args.command=='snapshot':result=snapshot(args.project,args.out)
         elif args.command=='verify-snapshot':result=verify_snapshot(args.project,args.snapshot)

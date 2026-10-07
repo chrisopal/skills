@@ -51,6 +51,11 @@ class StructureTests(unittest.TestCase):
         x=sample(9);x['data']['selections'][0].update(state='accepted',confirmation_ref='TEST-ONLY',required_count=2);self.assertTrue(validate(x,schema(9)))
     def test_extra_field_rejected(self):
         x=sample(3);x['data']['auto_approve']=True;self.assertTrue(validate(x,schema(3)))
+    def test_conflict_cannot_reference_removed_requirement(self):
+        x=sample(3)
+        x['data']['conflicts']=[{'id':'CF-1','requirement_ids':['REMOVED'],
+                               'description':'Synthetic dangling reference','resolution':None}]
+        self.assertTrue(validate(x,schema(3)))
     def test_invalid_release_recommendation_rejected(self):
         x=sample(15);x['data']['release_recommendation']='eligible_for_user_release';self.assertTrue(validate(x,schema(15)))
 
@@ -59,6 +64,14 @@ class FileTests(unittest.TestCase):
     def tearDown(self):self.tmp.cleanup()
     def test_init_refuses_overwrite(self):
         with self.assertRaises(ValueError):bidkit.init_project(self.p,'OTHER')
+    def test_init_preserves_understand_scope(self):
+        target=self.root/'understand'
+        bidkit.init_project(target,'SCOPE-TEST',mode='understand')
+        self.assertEqual(bidkit.read(target/'work/project.json')['mode'],'understand')
+    def test_init_rejects_invalid_mode_before_creating_directory(self):
+        target=self.root/'invalid-mode'
+        with self.assertRaises(ValueError):bidkit.init_project(target,'SCOPE-TEST',mode='automatic_approval')
+        self.assertFalse(target.exists())
     def test_register_preserves_bytes(self):
         source=self.root/'a.md';source.write_text('原文\n',encoding='utf-8');x=bidkit.register_source(self.p,source,'main');self.assertEqual(x['sha256'],bidkit.digest(source));self.assertEqual((self.p/x['relative_path']).read_bytes(),source.read_bytes())
     def test_register_collision_does_not_delete_file(self):

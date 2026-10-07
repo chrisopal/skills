@@ -2,7 +2,7 @@
 name: bid-requirements
 description: 建立原文可追溯的原子需求矩阵，保留条件、数量、单位、约束与验收依据。 适用于：提取技术需求、功能清单、参数要求、商务与验收需求、形成需求矩阵。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '3'
   suite: bid-skills-suite
@@ -66,6 +66,8 @@ metadata:
    生成需求矩阵与缺口摘要，抽查关键参数及全部高风险条款原位引用；交04、07、08使用，保留变更映射而非每次重排ID。
 
 ## 产物与交接
+
+提取前后按[执行质量复核](references/EXECUTION_QUALITY.md)检查所有页尾接续、自然段需求、标题串入、实际条件和验收依据；跨页分别引用，不用套话补齐。修订保持ID并保存映射，冲突只引用现行ID。
 
 保存 `03-requirements.json`（机器可读）和同名 `.md`（可读报告），使用 [JSON模板](assets/output.template.json) 与 [报告模板](assets/report.template.md)。字段必须符合 [JSON Schema](assets/output.schema.json)。不要把模板空值直接当结果；详细演示见 [合成示例](assets/example.output.json)。
 

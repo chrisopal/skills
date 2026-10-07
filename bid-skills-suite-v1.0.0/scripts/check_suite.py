@@ -45,6 +45,9 @@ def check(root=ROOT):
         if len(meta.get('compatibility',''))>500:errors.append(name+': compatibility过长')
         if any(not isinstance(v,str) for v in meta.get('metadata',{}).values()):errors.append(name+': metadata值必须是字符串')
         if len(text.splitlines())>500:errors.append(name+': SKILL.md超过500行')
+        validator=file.parent/'scripts/validate_output.py'
+        if validator.is_file() and validator.read_bytes()!=(root/'scripts/validate_output.py').read_bytes():
+            errors.append(name+': 独立安装校验器与套件不一致')
         for link in re.findall(r'\]\(([^)]+)\)',text):
             if not link.startswith(('https://','http://','#')) and not (file.parent/link.split('#')[0]).is_file():errors.append(name+': 无效本地链接 '+link)
         schema=json.loads((file.parent/'assets/output.schema.json').read_text())

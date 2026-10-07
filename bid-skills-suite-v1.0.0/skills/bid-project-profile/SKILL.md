@@ -2,7 +2,7 @@
 name: bid-project-profile
 description: 建立所有后续技能共同使用的项目上下文，并选择明确版本的场景配置。 适用于：识别采购类型、项目画像、政府或企业采购场景、行业适配、选择领域包。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '2'
   suite: bid-skills-suite
@@ -93,7 +93,7 @@ python scripts/validate_output.py /absolute/path/to/02-project-profile.json
 
 ## 人工确认点
 
-投标主体、标包、适用规则、核心项目边界及外部服务传输范围需人工确认。
+投标主体、参与标包、适用规则、核心项目边界及外部服务传输范围需真实授权确认。类型识别先保存候选与模板依据：明确范围可继续03—06候选提取，重大分类/组合歧义或用户要求先确认时再请用户决定；正式采纳前落实理解确认。记录绑定实际路由版本，详见[分类确认时点](references/TENDER_ROUTING.md)。
 
 ## 常见陷阱
 

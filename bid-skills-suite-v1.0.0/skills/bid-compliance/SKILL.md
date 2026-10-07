@@ -2,7 +2,7 @@
 name: bid-compliance
 description: 区分资格条件、实质性响应、明确否决、提交要求和履约风险，防止高风险漏项。 适用于：废标项、否决投标、资格条件、盖章签字、递交、保证金、文件完整性要求。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '5'
   suite: bid-skills-suite
@@ -66,6 +66,8 @@ metadata:
    责任角色、证据、最晚处理点和当前状态。交09准备证据、12填报、15／16正式检查。
 
 ## 产物与交接
+
+按[执行质量复核](references/EXECUTION_QUALITY.md)核对条件及后果的原位来源。调度摘要不构成金额或用户补充事实；履约责任与投标否决分开，金额/期限回查原文和必要原图。
 
 保存 `05-compliance.json`（机器可读）和同名 `.md`（可读报告），使用 [JSON模板](assets/output.template.json) 与 [报告模板](assets/report.template.md)。字段必须符合 [JSON Schema](assets/output.schema.json)。不要把模板空值直接当结果；详细演示见 [合成示例](assets/example.output.json)。
 

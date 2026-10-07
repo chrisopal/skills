@@ -1283,9 +1283,11 @@
   installing declared CLI dependencies in an isolated venv; Skill Creator quick
   validation, doctor, command help, compileall, Markdown fences, 109-path inventory,
   and git diff checks passed. Three read-only skill-use scenarios were checked.
-- Commit/push state: verified source is prepared on the isolated
-  `codex/image-to-editable-ppt-contract-sync` branch for a PR based on
-  `codex/image-to-editable-ppt-visual-qa`; publication will be recorded after push.
+- Commit/push state: source commit `36d6285` is published on the isolated
+  `codex/image-to-editable-ppt-contract-sync` branch through the connected GitHub
+  account; fetched remote tree `a9ed10ba` exactly matches the tested local tree.
+  Draft PR #4 targets `codex/image-to-editable-ppt-visual-qa`; main and PR #3 remain
+  unchanged. This follow-up records publication and the changelog PR reference.
 - Not tested: live OCR/image services, a complete fresh conversion, live worker
   orchestration, new model support, real PowerPoint opening, or npx installation.
   Generated fixtures and logs remain untracked.

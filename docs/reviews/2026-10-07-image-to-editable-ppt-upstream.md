@@ -13,7 +13,7 @@
 | 本地专项提交 | `c23a4d0` visual QA、`122c18b` 后端边界文档、`16c7e35` portable backend |
 | 本次变更分支 | `codex/image-to-editable-ppt-contract-sync`，从 PR #3 head 建立，供增量审查 |
 
-当前 `main` 尚未包含 PR #3 的本地功能，不能把它当成保留定制的安装源。PR #3 还包含其他技能的大量改动，因此本次既不合并整个 PR #3 到 `main`，也不改写 PR #3 的 head。本次 PR 应以 `codex/image-to-editable-ppt-visual-qa` 为 base，后续进入 `main` 的方式需单独审查。GitHub PR 元数据中的 `base_sha=380f1c6` 是 PR 快照；本报告的当前 main 使用实际 Git ref `f95bc08`。
+当前 `main` 尚未包含 PR #3 的本地功能，不能把它当成保留定制的安装源。PR #3 还包含其他技能的大量改动，因此本次既不合并整个 PR #3 到 `main`，也不改写 PR #3 的 head。[草稿 PR #4](https://github.com/chrisopal/skills/pull/4) 以 `codex/image-to-editable-ppt-visual-qa` 为 base，后续进入 `main` 的方式需单独审查。GitHub PR #3 元数据中的 `base_sha=380f1c6` 是 PR 快照；本报告的当前 main 使用实际 Git ref `f95bc08`。
 
 映射为 fork `image-to-editable-ppt/<path>` ↔ upstream `<path>`。通过 `git ls-tree -r` 的文件模式与 blob 哈希逐一比较，排除 `.git`、缓存和临时输出。基线共有 **109 个路径：54 相同、41 修改、10 上游独有、4 本地独有**。下表同时标明 PR #3 路径相对当前 main 是否不同，避免把本地定制误认为上游新增。
 

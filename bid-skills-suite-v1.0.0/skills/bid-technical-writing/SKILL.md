@@ -2,7 +2,7 @@
 name: bid-technical-writing
 description: 按明确任务卡编写有证据、有机制、有验收说明的技术正文与逐项响应。 适用于：编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。
 metadata:
-  version: 1.4.0
+  version: 1.5.0
   language: zh-CN
   sequence: '11'
   suite: bid-skills-suite
@@ -33,6 +33,8 @@ metadata:
 
 编写、编辑或复跑测试时读[写作流程与保存](references/WRITING_WORKFLOW.md)。读取`work/writing-settings.json`中实际设置，记录宿主采用方式；没有设置时按用户偏好与保守默认执行。目录映射、正文出现、逐项响应和语义满足分开检查；使用`writing_checks.py`列出真实漏项。保存段落追溯时绑定当前正文哈希；人工修改后重新核验，不能只更新哈希。
 
+完整编标可生成全部要求章节、固定表和逐项需求/评分映射的候选稿；缺供应商事实保留空白或阻塞。宿主Agent对话修订记录受影响`chapter_id`/`requirement_id`/`FIG-ID`，以`base_revision`和hash CAS合并，并将目录变更传播到设计、证据、写作和图表；修改已评审文件即使只有一段也使15/16失效。
+
 可用`scripts/writing_workspace.py --project /absolute/project --port 8767`打开本地Markdown编辑界面，保存并重开核对。它不调用模型、不自动采纳正文；并行生成采用独立章节提案和一个合并者，共享正文保存必须检查版本/哈希。已有Word/PDF不会随编辑自动更新，需生成新版本。
 
 配图需求同时读取写作设置的`visuals`，将图型、风格、比例及数量偏好交13；示例见[写作设置](assets/writing-settings.example.json)。编辑器与章节报告按父子关系展示目录；报告可用`render_writing_report.py`从当前产物生成，不以模板空值或旧文档证明已生成。
@@ -49,7 +51,7 @@ metadata:
 
 3. **步骤3**
 
-   每项事实性能力与关键参数关联R／D／M-ID内部追溯；没有证明不写“已成功实施”“完全兼容”等确定措辞。
+   数值指标的对象、单位、计算能力、原始配置和标准版本须逐项对照原件；归纳不能降低要求，原文已明确的版本不写成未知。每项事实性能力与关键参数关联R／D／M-ID内部追溯；没有证明不写“已成功实施”“完全兼容”等确定措辞。
 
 4. **步骤4**
 

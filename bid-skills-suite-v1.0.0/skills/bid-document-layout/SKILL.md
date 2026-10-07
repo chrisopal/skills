@@ -2,7 +2,7 @@
 name: bid-document-layout
 description: 组织可编辑文档工作稿，落实格式、目录、图表、附件与分册要求，并生成渲染检查清单。 适用于：标书排版、Word模板、标题编号、目录页码、表格跨页、装订分册、页眉页脚。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '14'
   suite: bid-skills-suite
@@ -30,6 +30,8 @@ metadata:
 ## 执行步骤
 
 实际编辑保存及工作稿检查见[写作流程](references/WRITING_WORKFLOW.md)。06指定的正文字体、字号与行距优先；基础脚本通过document-spec的`style`显式接收，无法实现的客户格式列缺口。章节编辑保存后已有DOCX/PDF不会自动更新，重新构建新版本并绑定最新正文、图和素材后检查。
+
+完整编标中的复杂固定表、真实可编辑目录/页码、目录域刷新和逐页QA必须由宿主文档工具完成；单章`build_docx`只能作为基础候选工作稿。宿主对话修订若改变目录、正文、图表或附件，必须按当前字节重建分页、TOC和评分索引，并交15重新评审后才能进入16。
 
 版式依据与可执行模板见[模板指南](references/BID_LAYOUT_TEMPLATES.md)、[通用候选模板](assets/layout-templates/general-bid-v1.json)和[项目覆盖记录](assets/layout-templates/tender-style-override.template.json)。06及有效补遗优先，未规定项才使用候选默认；公文标准不直接当投标强制标准。将模板/06版本与哈希、逐项覆盖和最终style保存到项目`work/effective-layout.json`。叙述段缩进不应用于标题、表格或图注；正文间不插空白段，保留固定表填写/签署空位。
 

@@ -136,6 +136,12 @@ h2 { font-size: 20px; }
 .reference-group li { margin: 4px 0; overflow-wrap: anywhere; }
 .reference-group a { color: var(--ui-action-text); }
 .empty-state { padding: 12px; border: 1px dashed var(--ui-border-control); color: var(--ui-text-tertiary); font-size: 12px; }
+.chapter-figures { margin-top: 20px; border-top: 1px solid var(--ui-border-subtle); padding-top: 16px; }
+.chapter-figures h3 { margin: 0 0 12px; font-size: 14px; }
+.chapter-figures figure { margin: 0 0 20px; }
+.chapter-figures img { display: block; width: 100%; height: auto; border: 1px solid var(--ui-border); background: #fff; }
+.chapter-figures figcaption { margin: 8px 0 4px; color: var(--ui-text-secondary); font-size: 12px; }
+.chapter-figures a { color: var(--ui-action-text); }
 
 @media (max-width: 1024px) {
   .workspace-grid { grid-template-columns: 260px minmax(0, 1fr); }

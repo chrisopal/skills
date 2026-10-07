@@ -2,7 +2,7 @@
 name: bid-visuals
 description: 制作说明方案的准确图表，确保每张图有任务、数据依据、正文对应和可编辑源。 适用于：架构图、流程图、网络图、实施计划图、配置示意、标书配图、数据图表。
 metadata:
-  version: 1.3.0
+  version: 1.4.0
   language: zh-CN
   sequence: '13'
   suite: bid-skills-suite
@@ -25,13 +25,15 @@ metadata:
 
 输入：08图表任务、10确认方案、11正文、06格式与暗标限制、已授权图片或数据。
 
-先读取`work/writing-settings.json`中的`visuals`，缺省按[配置示例](assets/writing-settings.example.json)与当前用户指令。`enabled`决定可选配图，`diagram_renderer`决定auto/Mermaid/SVG，`image_mode`决定宿主概念生图或关闭；`tool/model`是可用工具和模型偏好，`style/aspect_ratio/max_images`是风格、比例与本次最多概念图数。仅保存偏好不算已生成；实际参数映射和不可用项按[写作流程](references/WRITING_WORKFLOW.md)记录。必要图表与关闭配置冲突时保留待处理项，不能省略后宣称符合要求。
+先读取`work/writing-settings.json`中的`visuals`，缺省按[配置示例](assets/writing-settings.example.json)与当前用户指令。`enabled`决定可选配图，`diagram_renderer`决定SVG（默认）/Mermaid/auto，`image_mode`决定宿主界面示意、概念生图或关闭；`tool/model`是可用工具和模型偏好，`style/aspect_ratio/max_images`是风格、比例与本次最多概念图数。仅保存偏好不算已生成；实际参数映射和不可用项按[写作流程](references/WRITING_WORKFLOW.md)记录。必要图表与关闭配置冲突时保留待处理项，不能省略后宣称符合要求。
 
 上游技能：`bid-format-extraction, bid-outline-planning, bid-solution-design, bid-technical-writing`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
 ## 执行步骤
 
 图文交接和实际入稿检查见[写作流程](references/WRITING_WORKFLOW.md)。源码、实际渲染文件和已插入工作稿分别核验；正文或方案更新后重新核对图，不用旧图状态证明新版一致。招标原图属于需求来源，不能自动转成供应商已实施证据。
+
+本技能负责驱动实际生图：先区分界面设计示意、技术结构图与真实证据图片，再发现当前宿主已开放的工具并执行。Codex有Imagegen时加载其技能并调用实际工具；WorkBuddy等宿主使用该Agent实际提供的生图技能/插件/工具，不写死Codex接口或模型。软件核心操作需要界面示意时，不用流程图替代；生成画面标注“界面设计示意，非实际系统截图”。允许用户选择配图方式，优先级为逐图明确指令、已保存的项目偏好、默认规则。架构图、流程图默认SVG；系统界面示意默认使用当前Agent自带生图Skill。宿主能力、调用、实际文件、章节预览与入稿都要核验，只有偏好/提示词不能标已生成。
 
 1. **步骤1**
 
@@ -43,11 +45,11 @@ metadata:
 
 3. **步骤3**
 
-   架构图、流程图、网络图优先 Mermaid；复杂布局或宿主无法渲染 Mermaid 时直接生成 SVG。保留 `.mmd`／`.svg` 可编辑源，使用宿主已安装的渲染工具生成插图并检查文字与连线。只有源码时状态为 specified，实际渲染后才可标 rendered；数据图表由给定数据生成并保留计算来源。
+   架构图、流程图、网络图默认 SVG；用户选择 Mermaid 时遵从选择。auto 也优先 SVG；显式选用方式不可用时记录缺口，不擅自更换用户选择。保留 `.mmd`／`.svg` 可编辑源，使用宿主已安装的渲染工具生成插图并检查文字与连线。只有源码时状态为 specified，实际渲染后才可标 rendered；数据图表由给定数据生成并保留计算来源。
 
 4. **步骤4**
 
-   概念架构示意图需要生成式视觉时，调用本次宿主实际开放的生图工具／模型，并标注示意属性；保存生成文件、实际工具与模型（工具未返回则记未确认）、输入方案版本和图注到图表 specification 及本次执行记录。不在本技能写死模型或 Key，无生图工具时保留图表规格与缺口。企业现场、资质、检测记录只能使用授权真实材料。
+   界面设计示意或概念图需要生成式视觉时，调用本次宿主实际开放的生图工具／模型，并标注示意属性；保存生成文件、提示词/规格、实际工具与模型（工具未返回则记未确认）、输入方案版本和图注到图表 specification 及本次执行记录。栅格图的生成规格可用于再生，不冒称对象可编辑。无生图工具或实际调用失败时保留规格与缺口；企业现场、资质、检测记录及已实现系统截图只能使用授权真实材料。
 
 5. **步骤5**
 

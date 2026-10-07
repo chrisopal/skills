@@ -138,6 +138,54 @@
     var figures = state.visuals && state.visuals.data && state.visuals.data.figures || [];
     var sectionId = state.chapter && state.chapter.section_id;
     figures = figures.filter(function (figure) { return !sectionId || figure.section_id === sectionId; });
+    var previews = document.getElementById("chapter-figures");
+    while (previews.firstChild) previews.removeChild(previews.firstChild);
+    var previewHeading = document.createElement("h3");
+    previewHeading.textContent = "章节配图";
+    previews.appendChild(previewHeading);
+    var rendered = figures.filter(function (figure) {
+      return /\.(png|jpe?g)$/i.test(figure.rendered_path || "")
+        && (figure.state === "rendered" || figure.state === "reviewed");
+    });
+    if (!rendered.length) {
+      var noPreview = document.createElement("p");
+      noPreview.className = "meta-text";
+      noPreview.textContent = "本章暂无已渲染配图。";
+      previews.appendChild(noPreview);
+    }
+    rendered.forEach(function (figure) {
+      var card = document.createElement("figure");
+      var link = document.createElement("a");
+      link.href = "/api/file?path=" + encodeURIComponent(figure.rendered_path);
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.setAttribute("aria-label", "查看大图：" + text(figure.title));
+      var image = document.createElement("img");
+      image.src = link.href;
+      image.alt = text(figure.alt_text || figure.title);
+      image.loading = "lazy";
+      image.onerror = function () {
+        image.hidden = true;
+        var error = document.createElement("p");
+        error.className = "message message-error";
+        error.textContent = "图片加载失败，请核对图表文件。";
+        link.appendChild(error);
+      };
+      link.appendChild(image);
+      card.appendChild(link);
+      var caption = document.createElement("figcaption");
+      caption.textContent = text(figure.title) + " · " + text(figure.caption);
+      card.appendChild(caption);
+      if (figure.source_path) {
+        var source = document.createElement("a");
+        source.href = "/api/file?path=" + encodeURIComponent(figure.source_path);
+        source.target = "_blank";
+        source.rel = "noopener";
+        source.textContent = /\.svg$/i.test(figure.source_path) ? "查看 SVG 源文件" : "查看图源或生成规格";
+        card.appendChild(source);
+      }
+      previews.appendChild(card);
+    });
     var group = document.createElement("section");
     group.className = "reference-group";
     var heading = document.createElement("h3");
@@ -283,7 +331,7 @@
     document.getElementById("execution-mode-setting").value = text(settings.execution_mode || "sequential");
     document.getElementById("max-parallel-setting").value = text(settings.max_parallel || 1);
     document.getElementById("visuals-enabled-setting").checked = visuals.enabled !== false;
-    document.getElementById("diagram-renderer-setting").value = text(visuals.diagram_renderer || "auto");
+    document.getElementById("diagram-renderer-setting").value = text(visuals.diagram_renderer || "svg");
     document.getElementById("image-mode-setting").value = text(visuals.image_mode || "host");
     document.getElementById("visual-tool-setting").value = text(visuals.tool || "auto");
     document.getElementById("visual-model-setting").value = text(visuals.model || "");

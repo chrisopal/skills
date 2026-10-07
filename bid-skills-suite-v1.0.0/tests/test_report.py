@@ -102,6 +102,21 @@ class ReportRendererTests(unittest.TestCase):
         with self.assertRaisesRegex(render_report.ReportInputError, "输入哈希不匹配"):
             render_report.generate(self.project)
 
+    def test_qualification_requirement_group_and_filter_use_chinese_label(self) -> None:
+        artifact_path = self.project / "artifacts/03-requirements-r2.json"
+        artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
+        artifact["data"]["requirements"][0]["category"] = "qualification"
+        artifact_path.write_text(json.dumps(artifact, ensure_ascii=False), encoding="utf-8")
+        workflow_path = self.project / "work/17-workflow-state.json"
+        workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
+        entry = next(item for item in workflow["inputs"] if item["relative_path"] == "artifacts/03-requirements-r2.json")
+        entry["sha256"] = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        workflow_path.write_text(json.dumps(workflow), encoding="utf-8")
+        render_report.generate(self.project)
+        document = (self.project / "reports/tender-report.html").read_text(encoding="utf-8")
+        self.assertTrue('<option value="qualification">资格条件</option>' in document, "资格需求筛选项应显示中文标签")
+        self.assertNotIn('<h3>qualification', document)
+
     def test_path_escape_is_rejected_before_reading(self) -> None:
         workflow_path = self.project / "work/17-workflow-state.json"
         workflow = json.loads(workflow_path.read_text(encoding="utf-8"))

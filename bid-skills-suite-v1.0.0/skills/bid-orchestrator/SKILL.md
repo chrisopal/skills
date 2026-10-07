@@ -2,7 +2,7 @@
 name: bid-orchestrator
 description: 按任务范围调度16个业务技能，传递确切上下文、组织人工确认、识别变更和阻塞。 适用于：完整投标流程、启动编标、继续上次任务、安排技能、仅理解／仅评审、补遗影响分析。
 metadata:
-  version: 1.4.0
+  version: 1.4.1
   language: zh-CN
   sequence: '17'
   suite: bid-skills-suite

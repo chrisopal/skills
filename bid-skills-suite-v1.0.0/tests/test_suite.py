@@ -134,6 +134,24 @@ class ReleaseTests(unittest.TestCase):
         self.approval=self.p/'confirmations/release.json';bidkit.atomic(self.approval,{'project_id':'TEST-ONLY','decision':'approved','actor':'TEST-ONLY','decided_at':'2026-09-27T00:00:00Z','authorization_ref':'TEST-ONLY','review_sha256':bidkit.digest(self.review),'snapshot_fingerprint':snap['fingerprint']})
     def tearDown(self):self.tmp.cleanup()
     def test_mechanical_gate(self):self.assertEqual(bidkit.release_gate(self.p,self.review,self.snap,self.approval)['mechanical_gate'],'passed')
+    def test_ready_simulation_review_does_not_authorize_release(self):
+        review=bidkit.read(self.review)
+        review['data'].update(release_recommendation='needs_review',human_approval_ref=None)
+        review['summary']='SIMULATION_REVIEW_PASSED: synthetic document test only'
+        bidkit.atomic(self.review,review)
+        self.assertEqual(validate(review,schema(15)),[])
+        with self.assertRaisesRegex(ValueError,'不具备完整交付建议'):
+            bidkit.release_gate(self.p,self.review,self.snap,self.approval)
+    def test_draft_only_simulation_manifest_cannot_use_production_bundle(self):
+        manifest=sample(16)
+        manifest.update(project_id='TEST-ONLY',status='ready',blockers=[])
+        manifest['data'].update(delivery_status='draft_only',signature_state='not_applicable',
+                                user_release_authorization_ref=None,remaining_actions=[])
+        self.assertEqual(validate(manifest,schema(16)),[])
+        path=self.p/'deliverables/simulation-manifest.json'
+        bidkit.atomic(path,manifest)
+        with self.assertRaisesRegex(ValueError,'交付尚未完成'):
+            bundle(self.p,self.review,self.snap,self.approval,path,self.root/'out.zip')
     def test_review_from_other_project_blocks(self):
         x=bidkit.read(self.review);x['project_id']='OTHER-PROJECT';bidkit.atomic(self.review,x)
         approval=bidkit.read(self.approval);approval['review_sha256']=bidkit.digest(self.review);bidkit.atomic(self.approval,approval)

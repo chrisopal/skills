@@ -1,6 +1,6 @@
 # 投标编制 Skill 套件
 
-**版本 1.8.0 · 2026-10-08 · 中文 · 16个业务技能 + 1个总控技能**
+**版本 1.9.0 · 2026-10-08 · 中文 · 16个业务技能 + 1个总控技能**
 
 新增完整候选编标与宿主对话修订流程：固定表单、全部章节及逐项响应继续推进，缺失企业事实和报价留空。修改后作废旧审核/导出，重新核对当前版本、页码及实际文件；正式采纳与递交门禁保留。
 
@@ -79,3 +79,5 @@ python -m unittest discover -s tests -v
 文档脚本额外依赖见`requirements.txt`。PDF转换还需要系统已安装LibreOffice；没有时使用宿主导出工具，不会自动安装。
 
 理解报告：[JSON/Markdown与HTML展示](docs/REPORTS.md)。运行质量：[执行复核](docs/EXECUTION_QUALITY.md)、[已发现问题与修复状态](docs/KNOWN_ISSUES.md)。
+
+明确授权的模拟企业材料端到端测试参见 [SIMULATION_TESTING](docs/SIMULATION_TESTING.md)，模拟评审通过与正式发布授权保持分开。

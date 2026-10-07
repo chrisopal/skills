@@ -19,6 +19,10 @@ metadata:
 
 当用户提出“编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。”时使用。不另造技术方案，不扩张确认范围，不将草稿自动覆盖人工成稿。
 
+## 合成测试
+
+用户明确授权模拟材料且不真实投标时，按 [合成材料闭环测试](references/SIMULATION_TESTING.md) 在独立项目执行。材料、每页成稿及模拟签署显著标记，实际知识/内容/文件检查通过后单列模拟结论；不改变正式发布门禁。
+
 ## 开始前
 
 先读 [共同证据与安全约定](references/evidence-and-safety.md)。仅当需要细化操作时读 [专项操作手册](references/playbook.md)；输出字段与示例参见 [产物契约](references/output-contract.md)。

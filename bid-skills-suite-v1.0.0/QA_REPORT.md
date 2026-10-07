@@ -147,3 +147,15 @@ python -m unittest discover -s tests -v
 - 工程：170项现行单元测试通过；17 Skill、34 Schema样例及17独立分发源码一致性通过。无新增依赖、Bid Agent应用API、数据库、前端源码或部署变化；本次静态HTML没有npm lint/typecheck/build任务。
 - 验收边界：正式16状态blocked、delivery_status=draft_only；当前没有主体资质、人员社保、财务业绩、授权报价、接口容量实测或签章，原2025截止期已过。正式指定SimSun字体/Microsoft Word原生分页、Windows、WorkBuddy真实宿主生图/私有知识库及本轮OCR模型运行NOT_RUN。内部候选输出完成不等于真实企业/业务验收。
 - 证据：本机bid-agent/output/tender-analysis/qingcaosha-full-20261007-1d6fda69保留full-validation.json、17-workflow-state.json、delivery-manifest.json、当前15/16、实际DOCX/PDF、逐页渲染、语义及视觉复核、保存审计和HTML。客户文件、生成媒体/报告、ZIP、校验清单及一次性运行记录不提交Git；Git仅交付Skill规程、独立分发引用及验证说明。
+
+## 2026-10-08：1.9.0 明确授权的合成材料完整闭环
+
+- 在独立本地青草沙simulation项目完成虚构主体、六人、三月社保、年度/中期财务、信用、四独立合同及报价的20份文字材料和20张证明页面，全部显著标记；真实入库20知识条目、40文件哈希、命中/零命中检索、Wiki及完整正文回读。原full候选和原78页招标文件不覆盖。
+- 当前37章、145唯一响应及18设计完成独立逐项语义复核；19固定形式、5独立成员详细表、六项报价/税额/342人日核对。模拟文档材料29项可满足，116项实际履约/容量/外部动作仍为拟执行，不冒充已测事实或竞争得分。五项原文冲突resolution=null，条件性证书与七项标准版本保留。
+- 实际Microsoft Word for Mac打开、更新47 PAGEREF、保存并导出167页PDF；20可编辑表格、27图片像素、37目录/书签、全部145响应、ZIP CRC/XML/关系/无宏外链修订、每页标记和12pt核验通过。LibreOffice兼容另存232页，除动态域结果外全部正文、表格、图片像素和书签完整；不同引擎分页不要求相同，最终交付采用原生Word。
+- 独立视觉逐张回看14联系表覆盖167页，放大全部27含图页、目录/报价/固定表及响应首尾，高风险缺陷为零。167扫描PDF页全部解码，五文件加密ZIP逐文件解密哈希一致且错误密码拒绝；包内ASCII名称保留中文对应映射。
+- 六个缺知识/缺图/旧哈希/错价/追溯自证/冻结修改负向用例实际拒绝；正式check-release对当前模拟15确实exit 2拒绝完整发布建议，共七项负向通过。15为ready/needs_review/human_approval_ref=null；16为ready/draft_only/signature_state=not_applicable，12实际签署任务仍pending。最终审核指纹与16实际字节相符。模拟结论SIMULATION_REVIEW_PASSED与真实门禁分开。
+- HTML按enterprise-ui-design回看1440/1920/390浅深色、37目录与9.3正文、145响应恢复/零结果、社保1条/零结果、27图卡与大图加载关闭及9报告回读，无页面横向溢出。Word真实浏览器下载SHA与审核Word一致。旧rr未定义展示错误已修正，当前重新加载无JS错误。
+- 工程：174项unittest通过（新增2正式门禁与2追溯自证回归），17 Skill/34 Schema及17ZIP源码一致性、17 quick_validate、4改动脚本编译、HTML node --check和diff检查通过。无新增依赖、应用API、数据库、应用前端或部署变化；静态报告无npm lint/typecheck/build任务。
+- 修复与规程：复制项目须重跑当前来源身份路由，真实中文字形/图题/宽高/分页空段/相邻表保存完整性/跨引擎页码域/追溯自证/ZIP命名均写入规程或实际整改记录。DOCX f2cdce659a5b435616b5e63a0ec64933d6bc220ef289f3897b3ee8471b803445，PDF 574b487924ad387fa84e85ae00be8d35b9d9a7dfc8432d1520a23bf8f34b08d3。所有客户文件、模拟材料、媒体、报告、导出、ZIP和一次性脚本仅留本地bid-agent/output/tender-analysis/qingcaosha-simulation-20261008。
+- 未测：Windows Word、WorkBuddy真实生图/私有知识库、本轮OCR模型；真实主体资格/签署/上传/付款/提交、接口容量/性能及正式客户验收。源码按Skills仓库约定提交推送功能分支，不合并dev/main。

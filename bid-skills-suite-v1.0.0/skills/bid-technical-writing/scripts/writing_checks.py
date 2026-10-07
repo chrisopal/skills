@@ -150,6 +150,8 @@ def check_project(project, outline_path, writing_path, visuals_path=None):
             errors.append(figure['id'] + ': 图表没有渲染文件')
     trace_path = project / 'artifacts/11-writing-trace.json'
     trace_state, traced = 'missing', set()
+    response_text = {r['requirement_id']: ''.join(r['response'].split()) for r in responses}
+    requirement_text = {r['id']: ''.join(r['text'].split()) for r in requirements}
     if trace_path.exists():
         trace = json.loads(trace_path.read_text(encoding='utf-8'))
         if trace.get('writing_sha256') != digest(writing_path):
@@ -159,7 +161,13 @@ def check_project(project, outline_path, writing_path, visuals_path=None):
             trace_state = 'current'
             for link in trace.get('links', []):
                 chapter = chapter_by.get(link['chapter_id'])
-                if (not chapter or link['requirement_id'] not in chapter['requirement_ids']
+                quote = ''.join(link['body_quote'].split())
+                if quote and quote in {
+                    response_text.get(link['requirement_id']),
+                    requirement_text.get(link['requirement_id']),
+                }:
+                    errors.append('段落追溯不能用响应全文或纯需求原文自证')
+                elif (not chapter or link['requirement_id'] not in chapter['requirement_ids']
                         or not link['body_quote']
                         or link['body_quote'] not in chapter['body_markdown']):
                     errors.append('段落追溯不存在或与正文不一致')

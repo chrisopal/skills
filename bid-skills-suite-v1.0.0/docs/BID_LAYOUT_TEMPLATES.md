@@ -57,3 +57,7 @@ python scripts/build_docx.py --spec assets/layout-templates/general-bid-v1.json 
 先读回DOCX样式和实际段落：正文2字符缩进，标题/表格/图注不跟随缩进，段前后距与行距正确，没有用空行制造间距。再逐页渲染检查字体替换、断行、孤标题、表头、裁切、空白页、图片和图注。源模板成功加载或结构测试通过不替代最终文件验收。
 
 生成器清除与明确字体竞争的主题字体属性，并同步复杂脚本字号；这是避免模板主题覆盖显式字体的实现约束，仍须验证实际引擎。[Microsoft Open XML字体说明](https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oi29500/aef3c9a6-5d6c-434b-90b7-85e761fd8e62)。
+
+## 整本目录的实际引擎验证
+
+整本标书采用可更新的TOC/PAGEREF域。更新域后在实际交付引擎保存Word并导出PDF，逐项核对目录和评分索引。原生Word与LibreOffice可以有不同页数，必须分别验证内容完整性；不能将跨引擎页码差异当作内容丢失，也不能交付沿用旧引擎页码的静态目录。标题定位按章节顺序，排除正文中相同名称的引用。

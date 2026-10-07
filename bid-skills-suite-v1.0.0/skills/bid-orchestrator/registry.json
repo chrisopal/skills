@@ -1,6 +1,6 @@
 {
   "suite": "bid-skills-suite",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "date": "2026-10-07",
   "authoring_language": "zh-CN",
   "business_validation": "NOT_RUN",
@@ -291,5 +291,19 @@
       "input_summary": "用户目标、项目工作目录、现有产物索引、可用技能与工具、明确权限边界。 当前宿主可用OCR/知识检索/绘图能力、项目知识索引与真实配置。",
       "human_gate": "范围、重大方案与证据、对外承诺、正式交付等节点留给真实授权人；不设置虚构审批人。"
     }
-  ]
+  ],
+  "tender_routing": {
+    "base_categories": [
+      "construction",
+      "hardware_supply",
+      "software_integration",
+      "service_outsourcing"
+    ],
+    "entrypoint": "scripts/tender_router.py",
+    "catalog": "assets/tender-routing/catalog.json",
+    "decision_schema": "assets/tender-routing/decision.schema.json",
+    "candidate_output": "artifacts/02-tender-routing.json",
+    "model_classification": "host_semantic_with_source_evidence",
+    "business_validation": "pilot_only_see_QA_REPORT"
+  }
 }

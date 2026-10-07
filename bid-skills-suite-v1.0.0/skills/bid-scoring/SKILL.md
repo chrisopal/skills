@@ -2,7 +2,7 @@
 name: bid-scoring
 description: 还原评分层级、计分方法和证据条件，形成可行动的评分覆盖矩阵。 适用于：提取评分项、分析评分表、检查分值、得分条件、价格公式、评审重点。
 metadata:
-  version: 1.0.0
+  version: 1.2.0
   language: zh-CN
   sequence: '4'
   suite: bid-skills-suite
@@ -26,6 +26,10 @@ metadata:
 输入：评分办法原文、相关附件、02项目画像和03需求矩阵。
 
 上游技能：`bid-source-intake, bid-project-profile, bid-requirements`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
+
+## 首次分类与模板
+
+读取并绑定02分类路由产物，按 [分类与模板路由](references/TENDER_ROUTING.md) 使用公共评分检查和每包类别检查。评分依据直接读取原文，不能只从03需求推导。未选用的范本选项、汇总权重和计分叶子分别判断，混合包各组件评分不重复加总。
 
 ## 执行步骤
 

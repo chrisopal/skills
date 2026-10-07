@@ -5,7 +5,7 @@ import json,re,sys,zipfile
 from pathlib import Path
 import yaml
 from validate_output import validate
-from refresh_distribution import DISTRIBUTED_SCRIPTS, DISTRIBUTED_DOCS
+from refresh_distribution import DISTRIBUTED_SCRIPTS, DISTRIBUTED_DOCS, DISTRIBUTED_ASSET_DIRS
 ROOT=Path(__file__).resolve().parents[1]
 
 def check_installable_zips(root, registry):
@@ -64,6 +64,13 @@ def check(root=ROOT):
         for doc in docs:
             local=root/'skills'/skill_id/'references'/doc
             if not local.is_file() or (root/'docs'/doc).read_bytes()!=local.read_bytes():errors.append(skill_id+': 独立安装说明与套件说明不一致 '+doc)
+    for skill_id, directories in DISTRIBUTED_ASSET_DIRS.items():
+        for directory in directories:
+            canonical=root/'assets'/directory
+            local=root/'skills'/skill_id/'assets'/directory
+            source_files={p.relative_to(canonical):p.read_bytes() for p in canonical.rglob('*') if p.is_file()}
+            local_files={p.relative_to(local):p.read_bytes() for p in local.rglob('*') if p.is_file()}
+            if source_files!=local_files:errors.append(skill_id+': 独立安装资源与套件资源不一致 '+directory)
     errors.extend(check_installable_zips(root,registry))
     return {'skills':len(skills),'schema_documents_validated':count,'errors':errors,'passed':not errors,'real_model_e2e':'NOT_RUN'}
 

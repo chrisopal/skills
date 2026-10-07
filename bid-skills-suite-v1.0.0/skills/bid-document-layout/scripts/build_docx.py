@@ -4,7 +4,7 @@
 Not a universal template-preserving engine. Fixed forms/complex attachments require host tools.
 """
 from __future__ import annotations
-import argparse, json, sys
+import argparse, json, math, sys
 from pathlib import Path
 
 def build(spec_path: Path,out_path: Path,asset_root: Path):
@@ -14,13 +14,25 @@ def build(spec_path: Path,out_path: Path,asset_root: Path):
     from docx.oxml.ns import qn
     spec=json.loads(spec_path.read_text(encoding='utf-8'))
     if out_path.exists():raise ValueError('拒绝覆盖已有文档，请使用新版本文件名')
+    typography = spec.get('style', {})
+    if not isinstance(typography, dict):raise ValueError('style必须是对象')
+    if set(typography)-{'body_size_pt','body_line_spacing','body_east_asia_font'}:
+        raise ValueError('不支持的正文样式字段')
+    body_size = typography.get('body_size_pt', 11)
+    spacing = typography.get('body_line_spacing', 1.25)
+    font = typography.get('body_east_asia_font', 'SimSun')
+    for value, limit in [(body_size, 72), (spacing, 5)]:
+        if (isinstance(value, bool) or not isinstance(value, (int, float))
+                or not math.isfinite(value) or not 0 < value <= limit):
+            raise ValueError('正文字号或行距无效')
+    if not isinstance(font, str) or not font.strip():raise ValueError('中文字体名称无效')
     document=Document();section=document.sections[0]
     section.page_width=Cm(21);section.page_height=Cm(29.7)
     section.top_margin=section.bottom_margin=Cm(2.3);section.left_margin=section.right_margin=Cm(2.5)
     for name in ['Normal','Title','Subtitle','Heading 1','Heading 2','Heading 3']:
-        style=document.styles[name];style.font.name='Arial';style.font.size=Pt(11 if name=='Normal' else (22 if name=='Title' else 13))
-        style.element.get_or_add_rPr().get_or_add_rFonts().set(qn('w:eastAsia'),'SimSun' if name=='Normal' else 'SimHei')
-        style.paragraph_format.space_after=Pt(7);style.paragraph_format.line_spacing=1.25
+        style=document.styles[name];style.font.name='Arial';style.font.size=Pt(body_size if name=='Normal' else (22 if name=='Title' else 13))
+        style.element.get_or_add_rPr().get_or_add_rFonts().set(qn('w:eastAsia'),font if name=='Normal' else 'SimHei')
+        style.paragraph_format.space_after=Pt(7);style.paragraph_format.line_spacing=spacing
     document.core_properties.title=spec['title'];document.core_properties.author='';document.core_properties.last_modified_by=''
     section.header.paragraphs[0].text='内部工作稿｜需人工复核与签署'
     footer=section.footer.paragraphs[0];footer.alignment=2
@@ -36,12 +48,25 @@ def build(spec_path: Path,out_path: Path,asset_root: Path):
         for table_spec in item.get('tables',[]):
             headers=table_spec['headers'];rows=table_spec['rows']
             if not headers or any(len(row)!=len(headers) for row in rows):raise ValueError('表格列数不一致')
+            widths = table_spec.get('widths_cm')
+            if widths is not None:
+                if (not isinstance(widths, list) or len(widths) != len(headers)
+                        or any(isinstance(w, bool) or not isinstance(w, (int, float))
+                               or not math.isfinite(w) or w <= 0 for w in widths)
+                        or sum(widths) > 16):
+                    raise ValueError('表格列宽必须为正数，与列数一致且总宽不超过16厘米')
             table=document.add_table(rows=1,cols=len(headers));table.style='Table Grid'
+            if widths is not None:
+                table.autofit = False
+                for column, width in zip(table.columns, widths):column.width = Cm(width)
             trPr=table.rows[0]._tr.get_or_add_trPr();repeat=OxmlElement('w:tblHeader');trPr.append(repeat)
             for i,v in enumerate(headers):table.rows[0].cells[i].text=str(v)
             for values in rows:
                 cells=table.add_row().cells
                 for i,v in enumerate(values):cells[i].text=str(v)
+            if widths is not None:
+                for row in table.rows:
+                    for cell, width in zip(row.cells, widths):cell.width = Cm(width)
             document.add_paragraph('')
         for image in item.get('images',[]):
             rel=Path(image['path']);path=(asset_root/rel).resolve()

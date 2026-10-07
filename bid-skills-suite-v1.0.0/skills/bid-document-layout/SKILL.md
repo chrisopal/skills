@@ -2,7 +2,7 @@
 name: bid-document-layout
 description: 组织可编辑文档工作稿，落实格式、目录、图表、附件与分册要求，并生成渲染检查清单。 适用于：标书排版、Word模板、标题编号、目录页码、表格跨页、装订分册、页眉页脚。
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   language: zh-CN
   sequence: '14'
   suite: bid-skills-suite
@@ -28,6 +28,8 @@ metadata:
 上游技能：`bid-format-extraction, bid-outline-planning, bid-evidence-matching, bid-technical-writing, bid-commercial-documents, bid-visuals`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
 ## 执行步骤
+
+实际编辑保存及工作稿检查见[写作流程](references/WRITING_WORKFLOW.md)。06指定的正文字体、字号与行距优先；基础脚本通过document-spec的`style`显式接收，无法实现的客户格式列缺口。章节编辑保存后已有DOCX/PDF不会自动更新，重新构建新版本并绑定最新正文、图和素材后检查。
 
 1. **步骤1**
 

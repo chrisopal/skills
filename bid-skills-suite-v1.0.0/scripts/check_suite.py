@@ -74,6 +74,11 @@ def check(root=ROOT):
             source_files={p.relative_to(canonical):p.read_bytes() for p in canonical.rglob('*') if p.is_file()}
             local_files={p.relative_to(local):p.read_bytes() for p in local.rglob('*') if p.is_file()}
             if source_files!=local_files:errors.append(skill_id+': 独立安装资源与套件资源不一致 '+directory)
+    writing_schema = root/'skills/bid-technical-writing/assets/output.schema.json'
+    for skill_id in ('bid-technical-writing', 'bid-orchestrator'):
+        local = root/'skills'/skill_id/'assets/writing-output.schema.json'
+        if not local.is_file() or local.read_bytes()!=writing_schema.read_bytes():
+            errors.append(skill_id+': 独立写作校验契约缺失或不一致')
     errors.extend(check_installable_zips(root,registry))
     return {'skills':len(skills),'schema_documents_validated':count,'errors':errors,'passed':not errors,'real_model_e2e':'NOT_RUN'}
 

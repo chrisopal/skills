@@ -1,0 +1,31 @@
+{
+  "name": "consulting-ppt-image",
+  "version": "1.0.1",
+  "distribution": "public",
+  "private_reference_material": false,
+  "files": {
+    ".gitignore": "5a4a9c480c1e0d6a3142c28034a51bb9f7fd0381706f5123c521846f96725116",
+    "CHANGELOG.md": "aa2be74a0efa9ebc9926e4ebaba4ced0b74f80e2ffc5c5ae8393f738f9c6f265",
+    "README.md": "0fdd567c288f38a805649f2c865b941646e849a23c647c83560e21e3bb7f837b",
+    "SKILL.md": "f938939ac6b71babea9cb5ef1608239fac5763ddb08069b252bc993472d7635a",
+    "STATUS.md": "d09c214e43d96dde4cef687bf08577cd203cd12f1c263c60a61a21f2bfc5a1c8",
+    "TEST_REPORT.md": "4f5a15bf3c753208715aecbb1bfe4c9fa99e6f3c1873b533775d3215d9048f01",
+    "agents/openai.yaml": "bc2b9b1afcf9f6ae59e30d6a7aed1838ed4f78f06897ad6cbbff0acbea86aef0",
+    "assets/white-inkgreen.json": "71f4ab7bfd8ee4d86c4de04f5d9cc929bd0880382b1c0e6b0aa2f8af9da57328",
+    "examples/generic-35/README.md": "bd5c383e1997cba36eb3d0b0c0a916c4849b0dab28c8809d7d6d7dadacddf7c1",
+    "examples/generic-35/slide-content-pack.outline.json": "d82049b8b3b3fe56bfd9d494924de85df569af304adc8278420014d2a1151f0c",
+    "examples/minimal/slide-content-pack.json": "faef9c5b5d49c2c674be57dcf5e0dd761c6a123b7bfcdd937f324f219b8c62dd",
+    "references/content-contract.md": "e3898b540de2feaea91ce7f058bd2be7dbf401683849eac0ccfc62bae8d822d3",
+    "references/evidence-rules.md": "cb4f42dd73aa29943eeaa07ab6be2c2742fba11c639ab3fe2f7a64e402eacda6",
+    "references/migration-from-v2.md": "195ccc39f3733d882e3513fea68c2f87d79cb719f5c769bac133425434b97896",
+    "references/platform-notes.md": "f5fc6700e111770df4f79073068cd9a7bf3609f33c76ba71013a13bbf5d417c6",
+    "references/quality-gates.md": "343b252b73d9559565a0f642fb3f98b4ca5260bdb4effde03989d8733851877b",
+    "references/visual-system.md": "0e84069e5cea2412d556d3b78c719938178123ead19ed1582e74f30c4c750277",
+    "references/workflow.md": "ca7c5fa471f458acc774138c56d6f1cd2690f20937ec28816fae2500c04769a9",
+    "requirements.txt": "376d0bdaefe7e4da461979d01ed96c16a4d12fb77e05c34f7e5c8900c63d61b7",
+    "schemas/slide-content-pack.schema.json": "aa40a934359985fddd260990e38752b2d7aa7a55519137f7b2977bc48ab94423",
+    "scripts/ppt_pipeline.py": "1fb5947e7ec50b0805aa2b516bc5b92e567327ee2b8d2fdccf739fed8911b940",
+    "templates/slide-review.json": "2634d59971b924ac32147e57a18a2aa94babb662af35d93cdeb1f07c91670fb7",
+    "tests/test_pipeline.py": "f4bb1a88cfaf662ed2934c10b223d36d805849e709b2d6062504e78f1649382e"
+  }
+}

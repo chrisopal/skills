@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.venv/
+work/
+projects/
+output/
+.pytest_cache/

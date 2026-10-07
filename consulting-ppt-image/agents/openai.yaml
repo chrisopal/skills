@@ -1,0 +1,4 @@
+interface:
+  display_name: "咨询型图片PPT"
+  short_description: "统一故事线与样式，逐页生成、版本审校并按确认原图组装PPT。"
+  default_prompt: "Use $consulting-ppt-image to turn the approved slide-content-pack into consistent standalone slide images and an audited PPTX."

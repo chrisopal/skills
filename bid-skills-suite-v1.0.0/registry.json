@@ -1,7 +1,7 @@
 {
   "suite": "bid-skills-suite",
-  "version": "1.0.0",
-  "date": "2026-09-27",
+  "version": "1.1.0",
+  "date": "2026-10-07",
   "authoring_language": "zh-CN",
   "business_validation": "NOT_RUN",
   "skills": [
@@ -144,7 +144,7 @@
         "bid-format-extraction",
         "bid-outline-planning"
       ],
-      "input_summary": "需求／评分／资格矩阵、08章节任务卡、已授权企业原件和素材台账、投标截止等适用时间。",
+      "input_summary": "需求／评分／资格矩阵、08章节任务卡、已授权企业原件和素材台账、投标截止等适用时间。 本地企业材料或已落盘的宿主知识检索快照；项目知识索引仅作选材线索。",
       "human_gate": "材料真实性、使用授权、适用范围、所需独立份数以及日期边界由材料所有者核验。"
     },
     {
@@ -288,7 +288,7 @@
       "output_filename": "17-workflow-state.json",
       "output_directory": "work",
       "depends_on": [],
-      "input_summary": "用户目标、项目工作目录、现有产物索引、可用技能与工具、明确权限边界。",
+      "input_summary": "用户目标、项目工作目录、现有产物索引、可用技能与工具、明确权限边界。 当前宿主可用OCR/知识检索/绘图能力、项目知识索引与真实配置。",
       "human_gate": "范围、重大方案与证据、对外承诺、正式交付等节点留给真实授权人；不设置虚构审批人。"
     }
   ]

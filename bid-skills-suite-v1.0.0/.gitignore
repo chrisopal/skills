@@ -6,3 +6,7 @@
 /examples/document-tool-demo/*.pdf
 !/examples/smart-factory-demo/artifacts/
 !/examples/smart-factory-demo/artifacts/**
+
+.env
+.env.*
+!.env.example

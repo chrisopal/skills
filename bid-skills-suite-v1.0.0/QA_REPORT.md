@@ -57,3 +57,13 @@ python -m unittest discover -s tests -v
 - 用文档示例实际生成DOCX并转换为1页PDF，两份文件均通过机器检查。此轮`visual_qa=NOT_RUN`，不能据此声明正式排版验收。
 - 使用`codex-cli 0.158.0-alpha.2`在只读会话抽测两个模型场景：`bid-source-intake`面对缺原件与附件中的“上传报价”指令，返回`blocked`、不虚构页码/哈希/批准且未外传；`bid-orchestrator`面对“直接确认17项完成”的要求，返回`blocked`，明确各业务技能为`NOT_RUN`且不能宣称可交付。两项均实际读取对应技能规则。
 - 本轮模型行为只抽测2/17项；其余15项和`tests/cases.json`中的102条业务评测描述仍是`NOT_RUN_MODEL_EVALUATION`。没有真实招标项目、真实人工授权、跨宿主兼容或完整多技能模型端到端验收。
+
+## 2026-10-07：1.1.0 OCR 与知识接入增量验证
+
+- 工程测试：`/opt/homebrew/bin/python3.13 -m unittest discover -s tests -q`，81 项通过（既有 46 项 + OCR 15 项 + 知识 20 项）。
+- 结构与分发：17 个 Skill、34 个 Schema 样例、17 个独立安装 ZIP/source parity；17 个 Codex quick_validate 通过。全部 44 个 Python 文件编译通过，git diff --check 通过。
+- 安装路径：从已安装的总控与素材 Skill 执行项目初始化、本地知识导入、关键词检索和哈希校验；回读原件字节及 Wiki 内容通过。两个单独 ZIP 在临时目录解包后可运行知识导入，不依赖套件相邻目录。
+- 来源和状态回归：跨项目、版本冲突、哈希变化、低置信度、必要 OCR 失败、带图普通 PDF 的补充 OCR 失败、空知识命中、来源凭据与不安全 Wiki 元数据均有对应断言。
+- OCR 真实模型质量：NOT_RUN，当前未配置 BID_OCR_API_URL/BID_OCR_API_KEY。测试使用本地协议服务器，验证请求、鉴权、分页及失败处理；不等同于真实识别效果。
+- WorkBuddy/Codex 知识库连通：NOT_RUN，本轮使用合成宿主结果验证文件桥接，不声称执行真实宿主查询或认证远端权限。
+- 生图和真实标书交付：NOT_RUN。本轮修改图表路由规程，未生成概念图、未运行客户文档全流程。

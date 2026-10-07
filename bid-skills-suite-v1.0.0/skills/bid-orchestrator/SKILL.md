@@ -2,7 +2,7 @@
 name: bid-orchestrator
 description: 按任务范围调度16个业务技能，传递确切上下文、组织人工确认、识别变更和阻塞。 适用于：完整投标流程、启动编标、继续上次任务、安排技能、仅理解／仅评审、补遗影响分析。
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   language: zh-CN
   sequence: '17'
   suite: bid-skills-suite
@@ -24,6 +24,13 @@ metadata:
 先读 [共同证据与安全约定](references/evidence-and-safety.md)。仅当需要细化操作时读 [专项操作手册](references/playbook.md)；输出字段与示例参见 [产物契约](references/output-contract.md)。
 
 输入：用户目标、项目工作目录、现有产物索引、可用技能与工具、明确权限边界。
+
+## OCR、知识与绘图能力准备
+
+- 读取本次宿主实际开放的工具。原文先原生解析；扫描件按 [OCR 配置](references/OCR_SETUP.md) 使用已配置的 PaddleOCR 服务，Key 只从环境读取。缺配置保留待补读页，不把脚本成功退出当完整识别。
+- 企业材料支持本地文件与宿主知识库检索。按 [知识接入](references/KNOWLEDGE.md) 运行 `scripts/knowledge.py add-local` 或保存实际宿主结果后 `import-host`，生成项目索引和 Wiki。继续任务先 `validate`；09选材、10方案、11写作读取确切快照，不凭聊天记忆重建企业事实。
+- 不假定宿主有某个固定知识库 API 或生图模型。工具不可用时明确缺口。架构图／流程图优先 Mermaid，其次 SVG；概念图使用实际可用的宿主生图工具，并保存图文件与来源说明。
+- 项目知识是候选资料，真实证照／业绩仍需完整原件。新的知识快照进入既有评审快照范围；输入变化后更新受影响阶段状态，不能沿用旧评审结论。
 
 上游技能：`由用户提供原件与目标；总控按范围调度`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 

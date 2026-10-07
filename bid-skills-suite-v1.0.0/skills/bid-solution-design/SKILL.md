@@ -2,7 +2,7 @@
 name: bid-solution-design
 description: 先完成可解释的技术设计与边界，再让写作技能将其展开成正文。 适用于：设计投标技术方案、系统架构、设备配置、施工组织、实施计划、服务方案。
 metadata:
-  version: 1.0.0
+  version: 1.1.0
   language: zh-CN
   sequence: '10'
   suite: bid-skills-suite
@@ -28,6 +28,8 @@ metadata:
 上游技能：`bid-project-profile, bid-requirements, bid-response-strategy, bid-outline-planning, bid-evidence-matching`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
 ## 执行步骤
+
+使用本地或宿主知识库材料时，先读取09的选用结果及项目 `artifacts/knowledge/index.json` 中对应快照。领域知识可辅助提出方案，企业能力与实施承诺仍要有本项目适用证据；将实际读取的知识文件、版本和哈希纳入 inputs。与招标要求或已确认方案冲突时列出差异，不用检索结果自动覆盖。
 
 1. **步骤1**
 

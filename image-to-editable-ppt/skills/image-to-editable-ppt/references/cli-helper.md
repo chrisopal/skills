@@ -56,12 +56,12 @@ editppt formula render-latex --help
 
 `editppt image` is the CLI fallback layer. Within that layer it automatically chooses Codex OAuth first, then OpenAI-compatible API credentials from `~/.editppt/config.yaml` or environment variables if OAuth is unavailable. See `manifest-schema.md` for the run/page backend field contract. `editppt doctor` checks CLI backend readiness; it cannot discover whether an agent runtime exposes the built-in tool.
 
-Public `editppt image generate/edit` parameters are intentionally narrow. Required request inputs are `--prompt` or `--prompt-file`, plus at least one `--image` for `edit`. CLI fallback calls should pass an explicit `--out`. Retained useful controls are `--model` (default `gpt-image-2`), `--size` (default `auto`), `--quality` (default `auto`), `--force`, `--dry-run`, `--timeout`, and edit-only `--mask`. The CLI does not pass any other image API options.
+Public `editppt image generate/edit` parameters are intentionally narrow. Required request inputs are `--prompt` or `--prompt-file`, plus at least one `--image` for `edit`. CLI fallback calls should pass an explicit `--out`. Retained useful controls are `--model` (default `gpt-image-2.5-sunburst`), `--size` (default `auto`), `--quality` (default `auto`), `--force`, `--dry-run`, `--timeout`, and edit-only `--mask`. The CLI does not pass any other image API options. Quality values are `low`, `medium`, `high`, `auto`, and (only for GPT Image 2.5 Sunburst/Flare, including dated snapshots and provider-prefixed names) `xhigh` or `max`. An explicit `--model` overrides `IMAGE_TO_EDITABLE_PPT_IMAGE_MODEL`, which overrides the saved config model; explicit legacy model settings are preserved.
 
 ## Skill Script Commands
 
 ```bash
-python <skill-root>/scripts/build-page-worker-prompt.py <run> --page page_001 --out <absolute-run-dir>/pages/page_001/worker-prompt.md
+python3 <skill-root>/scripts/build-page-worker-prompt.py <run> --page page_001 --out <absolute-run-dir>/pages/page_001/worker-prompt.md
 ```
 
 Purpose: generate a page-worker prompt from the skill-local `prompts/page-worker.md` template. This is a skill script, not an `editppt` CLI command, because it reads skill documentation and references.
@@ -144,7 +144,7 @@ Purpose: read current run state and return the next stage. `stage=rebuild_page_l
 Generate the page-worker prompt with the skill script before spawning a worker:
 
 ```bash
-python <skill-root>/scripts/build-page-worker-prompt.py <run> --page page_001 --out <absolute-run-dir>/pages/page_001/worker-prompt.md
+python3 <skill-root>/scripts/build-page-worker-prompt.py <run> --page page_001 --out <absolute-run-dir>/pages/page_001/worker-prompt.md
 ```
 
 ```bash

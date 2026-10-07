@@ -3,6 +3,7 @@ import argparse
 import json
 
 from deck_run_state import load_deck, load_jobs, read_json, run_dir_from_target, save_deck, write_json
+from runtime_env import DEFAULT_IMAGE_MODEL
 
 
 def backend_contract(args):
@@ -17,7 +18,7 @@ def backend_contract(args):
         "fallback_command": args.fallback_command,
         "runtime_home": args.runtime_home,
         "model": None if is_builtin else args.model,
-        "fallback_model": "gpt-image-2" if is_builtin or is_agent_tool else None,
+        "fallback_model": DEFAULT_IMAGE_MODEL if is_builtin or is_agent_tool else None,
         "requires_openai_api_key": requires_api_key,
         "mode_policy": "generate-or-edit-per-asset",
         "chroma_key_helper": "editppt image process-sheet",
@@ -146,7 +147,7 @@ def main():
         if args.tool_call is None:
             args.tool_call = "runtime-native image generation/edit tool or skill"
         if args.fallback_command is None:
-            args.fallback_command = "editppt image generate/edit --model gpt-image-2"
+            args.fallback_command = f"editppt image generate/edit --model {DEFAULT_IMAGE_MODEL}"
         if args.input_context_policy is None:
             args.input_context_policy = (
                 "inspect every local input with the runtime's vision capability, then pass prompt plus all reference "
@@ -156,7 +157,7 @@ def main():
         if args.runtime_id is None:
             args.runtime_id = "standalone-cli"
         if args.model is None:
-            args.model = "gpt-image-2"
+            args.model = DEFAULT_IMAGE_MODEL
         if args.tool_name is None:
             args.tool_name = "editppt image"
         if args.tool_call is None:

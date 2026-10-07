@@ -8,7 +8,7 @@
 
 ## Q：什么情况下不该用这个 skill？
 
-如果没有强烈的可编辑需求，请不要使用。更轻量的做法是直接使用 `gpt-image-2` 的图像编辑能力：把你不满意的那一页 PPT 图片发给它，让它针对性修改并返回修改后的图片。
+若只需修改页面图片，可使用 `gpt-image-2.5-sunburst`：提交页面图片并获取修改后的图片；使用前确认当前工具实际提供该模型。这不产生对象级可编辑 PPT。
 
 另外，本 skill 不负责从文章、报告、大纲或想法生成全新 PPT——那是 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill) 的职责。
 
@@ -40,11 +40,11 @@
 
 ## Q：图片生成用的是什么？需要配 API key 吗？
 
-图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。其他智能体会先查找原生 Tool、Skill、Plugin、MCP/Connector 或图片模型，并校验文生图、参考图编辑和明确本地输出；只会看图的不算图片 backend。没有合格候选时使用默认模型为 `gpt-image-2` 的 `editppt image`，CLI 先尝试本机 Codex OAuth，再读取 `~/.editppt/config.yaml` 的 OpenAI-compatible API 配置。Codex 会员通常不需要 API key；第三方 fallback 需要 base URL、模型名和 API key。
+图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。其他智能体会先查找原生 Tool、Skill、Plugin、MCP/Connector 或图片模型，并校验文生图、参考图编辑和明确本地输出；只会看图的不算图片 backend。没有合格候选时使用默认模型为 `gpt-image-2.5-sunburst` 的 `editppt image`，CLI 先尝试本机 Codex OAuth，再读取 `~/.editppt/config.yaml` 的 OpenAI-compatible API 配置。Codex 会员通常不需要 API key；第三方 fallback 需要 base URL、模型名和 API key。
 
 ## Q：如何更新 skill 到最新版本？
 
-直接让 agent 帮你更新（发一句「更新 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill」），或从 Releases 下载最新 zip 替换原目录，然后重启 agent 生效。API 凭据和 OCR Token 保存在 `~/.editppt/config.yaml`，在 skill 目录之外，更新不会丢失。详见[安装与配置](installation.md)。
+按[安装与配置](installation.md)中的 `npx -y skills@latest add ...` 流程，从 `chrisopal/skills` 的已审查提交更新，再刷新 CLI 并检查本地能力。不要用上游 ZIP 覆盖 portable-backend/visual-QA 定制。凭据保存在技能目录之外的 `~/.editppt/config.yaml`。
 
 ## Q：转换到一半停住了怎么办？
 

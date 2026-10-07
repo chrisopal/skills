@@ -1,3 +1,13 @@
+## 2026-10-07: GPT Image 2.5 follow-up on PR #4
+
+- Scope: resolve deferred model item C1 after the user's explicit GPT Image 2.5 request; selectively backport upstream `d3ac8c5` using verified OpenAI generation/editing API documentation.
+- Changed: default CLI/doctor model to `gpt-image-2.5-sunburst`; support Sunburst/Flare snapshots, provider prefixes, and model-gated `xhigh`/`max`; use the same default for portable fallback metadata and commands. Keep quality `auto` and explicit CLI/environment/config choices.
+- Preserved: built-in-first and native capability discovery, native producer models, fallback events, OAuth/API routing, visual-QA gates, source extraction, state transitions, and existing run files. Only four CLI source files have model-related changes relative to PR #3; all other CLI files are byte-identical.
+- Documentation: synchronized Chinese/English/Korean guides, skill references, changelog, and the per-file upstream review. C1 is resolved; C2-C8 remain deferred.
+- Verification: 112/112 unit tests, Skill Creator quick validation, isolated doctor (`ok=true`, default Sunburst), and CLI help checks passed. Added nine offline model regressions, including saved-config precedence, mocked generation/editing request payloads, and portable run/page metadata.
+- Commit/push tracking: this entry accompanies the model-migration commit on `codex/image-to-editable-ppt-contract-sync`; stacked draft PR #4 records publication and verification. Main and PR #3 are not merged or modified.
+- Not tested: live OAuth/API image availability or output quality, live OCR, full conversion, actual Office opening, or user installation. Temporary outputs are excluded from Git.
+
 ## 2026-08-11 07:18:02 CST
 
 - Scope: Correct the Huixin Quanzhi logo refresh in both the repository templates and the actively installed `/Users/guojiexie/.codex/skills/ppt-master-plus` Skill after identifying that the installed Skill was an independent stale June copy.
@@ -1265,3 +1275,29 @@
 - Remaining notes:
   - Existing legacy consulting SVG warnings about root-group bounds remain advisory and predate this change; the three new pages introduce none.
   - Browser renders and visual-verdict state remain local verification artifacts and are not committed.
+## 2026-10-07: Selective image-to-editable-ppt upstream contract sync
+
+- Scope: compare current main `f95bc08`, PR #3 head `39be6e8`, and upstream
+  `ningzimu/image-to-editable-ppt-skill@b7be494`; preserve the embedded layout.
+- Review: `docs/reviews/2026-10-07-image-to-editable-ppt-upstream.md` inventories
+  all 109 baseline paths (54 identical, 41 modified, 10 upstream-only, 4 local-only)
+  and separates compatible backports, local customizations, and deferred conflicts.
+- Changed: routine execution and measured-text/identity-text guidance; fork-safe
+  installation/update instructions and image-only model examples in Chinese,
+  English, and Korean; eight contract regressions and one strengthened record test.
+- Preserved at initial sync `a35ce9e`: every tracked CLI source file matches PR #3, including portable
+  backend discovery/provenance, visual-QA gates, source extraction, and the
+  `gpt-image-2` default. Runtime/model/recovery/table/path/region upgrades are
+  initially deferred; the subsequent user-requested GPT Image 2.5 migration is recorded separately. This change does not merge PR #3 or replace user installs.
+- Verification: baseline 95/95 and modified 103/103 unit tests passed after
+  installing declared CLI dependencies in an isolated venv; Skill Creator quick
+  validation, doctor, command help, compileall, Markdown fences, 109-path inventory,
+  and git diff checks passed. Three read-only skill-use scenarios were checked.
+- Commit/push state: source commit `36d6285` is published on the isolated
+  `codex/image-to-editable-ppt-contract-sync` branch through the connected GitHub
+  account; fetched remote tree `a9ed10ba` exactly matches the tested local tree.
+  Draft PR #4 targets `codex/image-to-editable-ppt-visual-qa`; main and PR #3 remain
+  unchanged. This follow-up records publication and the changelog PR reference.
+- Not tested: live OCR/image services, a complete fresh conversion, live worker
+  orchestration, new model support, real PowerPoint opening, or npx installation.
+  Generated fixtures and logs remain untracked.

@@ -33,6 +33,7 @@ These parent-level rules are stated once here; page-level rules live in the refe
 - A user request to convert visual slides into editable PPT authorizes the required OCR and image-backend calls for that conversion, unless the user explicitly requests local-only processing or marks the input as confidential/no-external-processing. Do not refuse solely because the workflow calls PaddleOCR, the built-in `image_gen.imagegen` tool, Codex OAuth/ChatGPT image endpoints, or a user-configured OpenAI-compatible API; those calls are necessary to the skill.
 - Only send task-local page images, prompts, masks, and reference images required for the current conversion. Never send unrelated local files, API keys, auth tokens, credentials, or generated artifacts that are not needed by the current OCR/image operation. Third-party API endpoints are allowed only when already configured by the user or explicitly specified for this run.
 - In network-restricted environments, request any approval required by the current runtime before external OCR/image calls, including `editppt prepare` or `editppt run hints` when `PADDLE_OCR_TOKEN` is set and every CLI fallback `editppt image generate/edit` call. The approval justification must say this is a user-requested `image-to-editable-ppt` conversion, that the upload is limited to task-local page images/prompts/masks/references, and that OCR/image-backend calls are part of this skill's required workflow. Do not present the required call as unsafe or ask the user to re-approve it unless they requested local-only/confidential handling or the approval system explicitly rejects the request.
+- Execute routine reconstruction, configured backend fallback, and local repairs autonomously. Do not add confirmation gates; retain the OCR choices in Phase 1 and any approval required by the runtime. A missing prerequisite that only the user can supply is a concrete blocker, not a request to debug the workflow.
 - All page object decisions follow `references/page-decision-tree.md`, including its no-fallback rule for foreground visual objects and its rule that deterministic validation is a structure gate that never waives an object-source decision.
 - `manifest.json` is the authoritative page build source: `editppt run record` validates `page.pptx` against it, and `editppt run finalize` rebuilds the final deck from recorded page manifests. Required fields and coordinate contracts are defined in `references/manifest-schema.md`.
 - `editppt prepare` writes per-page text measurements (`text_hints.json`/`text_hints.png`). How page reconstructors consume them is defined in `references/page-decision-tree.md` section 3.1.
@@ -40,11 +41,11 @@ These parent-level rules are stated once here; page-level rules live in the refe
 
 ### Image Backend Selection
 
-This subsection is the authoritative execution policy for every page-local image job. The default GPT path is Codex `image_gen.imagegen`; the deterministic CLI fallback defaults to `gpt-image-2`. Before prepare, inspect the current runtime and choose exactly one contract:
+This subsection is the authoritative execution policy for every page-local image job. The default GPT path is Codex `image_gen.imagegen`; the deterministic CLI fallback defaults to `gpt-image-2.5-sunburst`. Before prepare, inspect the current runtime and choose exactly one contract:
 
 1. If the exact callable tool `image_gen.imagegen` exists, pass `--image-backend builtin-imagegen`. Do not probe it through Python or shell and do not replace it with a similarly named tool.
 2. Otherwise inspect the runtime's available native tools, installed skills/plugins, MCP tools, and configured image models as `references/agent-image-backends.md` requires. Select a candidate only if it supports all three capabilities: prompt-to-image generation, reference-image editing, and an explicit valid local output path. Image understanding or image input alone is not enough. Pass `--image-backend agent-image-tool`, then record the discovered runtime, tool, and model with `editppt run backend`.
-3. If no candidate passes, keep the default `editppt-image-cli` contract. Its image model defaults to `gpt-image-2`; it selects Codex OAuth first and a configured OpenAI-compatible API second.
+3. If no candidate passes, keep the default `editppt-image-cli` contract. Its image model defaults to `gpt-image-2.5-sunburst`; it selects Codex OAuth first and a configured OpenAI-compatible API second.
 
 For a multi-page run, a discovered agent-native tool is eligible only when page workers can call the same tool. Otherwise use the CLI contract so every page has the same executable backend. Run image jobs serially within each page.
 
@@ -87,13 +88,13 @@ editppt run next <run>
 
 When `stage=rebuild_page_locally` is returned, the run has exactly one page. The parent agent must claim local execution before writing page artifacts:
 
-1. `python <skill-root>/scripts/build-page-worker-prompt.py <run> --page <page_id> --out <absolute-run-dir>/pages/<page_id>/worker-prompt.md`
+1. `python3 <skill-root>/scripts/build-page-worker-prompt.py <run> --page <page_id> --out <absolute-run-dir>/pages/<page_id>/worker-prompt.md`
 2. `editppt run dispatch <run> --page <page_id> --agent-id main --prompt-file <absolute-run-dir>/pages/<page_id>/worker-prompt.md --local`
 3. Read the generated prompt and rebuild the page inside that page directory yourself, producing the same required outputs a page worker would produce.
 
 When `stage=dispatch_pages` is returned, the following steps are mandatory for each suggested page:
 
-1. `python <skill-root>/scripts/build-page-worker-prompt.py <run> --page <page_id> --out <absolute-run-dir>/pages/<page_id>/worker-prompt.md`
+1. `python3 <skill-root>/scripts/build-page-worker-prompt.py <run> --page <page_id> --out <absolute-run-dir>/pages/<page_id>/worker-prompt.md`
 2. Spawn a page worker using the current environment's available subagent/multi-agent tool.
 3. `editppt run dispatch <run> --page <page_id> --agent-id <id> --prompt-file <absolute-run-dir>/pages/<page_id>/worker-prompt.md`
 
@@ -170,13 +171,18 @@ Agents continue only from file facts and `editppt run next`. Required states:
 
 ## Updating This Skill
 
-Reinstall through the installation channel, refresh the CLI from the updated skill directory, then restart the agent session and verify:
+Preserve the installed fork's source when updating. This package includes portable image backends and deterministic visual QA that an upstream reinstall would remove. Resolve `<fork-commit>` to a reviewed commit of `chrisopal/skills` containing those customizations; do not assume its default branch includes them. Use the scoped package URL below, select the current agent, and replace `<skill-root>` with the installed package directory. Keep user configuration in `~/.editppt/config.yaml` outside the package.
 
 ```bash
-npx -y skills@latest add ningzimu/image-to-editable-ppt-skill \
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
   --skill image-to-editable-ppt \
   --agent <agent-id> \
   --global
 pipx install --force --editable <skill-root>/cli
 editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
+
+Reload the agent's skill context after the update. Check that `run backend --help` still lists `agent-image-tool`; the visual QA and extraction help commands must also succeed. The CLI default is `gpt-image-2.5-sunburst`; preserve explicit user model settings when updating. An upstream-only reinstall is a separate choice that removes the local contracts; never make that choice implicitly during an update.

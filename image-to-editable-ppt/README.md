@@ -17,7 +17,7 @@
 >
 > “替我审批”模式已知仍可能在 OCR 阶段、ChatGPT 图片生成/编辑阶段或第三方 API 调用阶段拦截请求，要求你手动审批；如果你不在电脑旁，转换流程会停住。
 >
-> 本 skill 会在转换过程中自动调用百度 PaddleOCR-VL 接口（如果已配置 Token）来校正页面文字框、字体大小和字号分组。图片生成/编辑默认优先调用 Codex 内置 `image_gen.imagegen`；其他智能体会先发现并校验原生视觉工具，只有同时支持文生图、参考图编辑和明确本地输出时才使用。否则降级到默认模型为 `gpt-image-2` 的 `editppt image`（Codex OAuth → OpenAI-compatible API）。这些调用是把图片式页面重建成可编辑 PPT 的必要步骤。
+> 本 skill 会在转换过程中自动调用百度 PaddleOCR-VL 接口（如果已配置 Token）来校正页面文字框、字体大小和字号分组。图片生成/编辑默认优先调用 Codex 内置 `image_gen.imagegen`；其他智能体会先发现并校验原生视觉工具，只有同时支持文生图、参考图编辑和明确本地输出时才使用。否则降级到默认模型为 `gpt-image-2.5-sunburst` 的 `editppt image`（Codex OAuth → OpenAI-compatible API）。这些调用是把图片式页面重建成可编辑 PPT 的必要步骤。
 >
 > ![Codex 完全访问权限设置示意](assets/codex-full-access-permission.png)
 
@@ -30,7 +30,7 @@
 >
 > **如果没有强烈的可编辑需求，请不要使用这个 skill。**
 >
-> 更轻量的做法是直接使用 gpt-image-2 的图像编辑能力：把你不满意的那一页 PPT 图片发给它，让它针对性修改，并返回修改后的图片。
+> 若只需修改页面图片，可使用 `gpt-image-2.5-sunburst`：提交页面图片并获取修改后的图片；使用前确认当前工具实际提供该模型。这不产生对象级可编辑 PPT。
 
 > [!TIP]
 > 本 skill 不负责从文章、报告、大纲或想法直接生成全新 PPT。如果你要做的是“生成一份 PPT”，可以使用 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)。
@@ -68,7 +68,7 @@
 
 - 适用场景广泛，支持多种输入：单张图片、多张图片、多页 PDF、图片版PPT 到可编辑 `.pptx`。
 - 单页/单图输入可由主 agent 本地执行同一页面重建流程；多页输入由主 agent 分派给 page worker/subagent，并按 `max_concurrent_pages` 并行处理。
-- 图片生成和编辑优先使用 Codex 内置 `image_gen.imagegen`；WorkBuddy、Claude Code、QoderWork 等运行时会发现并校验原生 Skill/Plugin/MCP/视觉模型，不合格或不可用时进入默认 `gpt-image-2` 的 `editppt image` CLI。
+- 图片生成和编辑优先使用 Codex 内置 `image_gen.imagegen`；WorkBuddy、Claude Code、QoderWork 等运行时会发现并校验原生 Skill/Plugin/MCP/视觉模型，不合格或不可用时进入默认 `gpt-image-2.5-sunburst` 的 `editppt image` CLI。
 - 第三方 API fallback 配置保存在 `~/.editppt/config.yaml`；Windows 下对应 `%USERPROFILE%\.editppt\config.yaml`。
 - 文字大小与位置由测量驱动：prepare 阶段为每页生成文字标注（框坐标 + 字号 + 字号分组），模型按测量值还原文字，同级文字字号自动保持一致。
 - 多张图片按提供顺序生成页面；PDF 和 `.pptx` 保留原页码顺序。
@@ -94,7 +94,7 @@
 
 ## 图片 Backend 与第三方 API 配置
 
-完整后端优先级是：Codex 内置 `image_gen.imagegen` → 当前智能体中通过能力校验的原生图片工具 → 默认 `gpt-image-2` 的 `editppt image` CLI（Codex OAuth → OpenAI-compatible API）。原生候选可以来自 Tool、Skill、Plugin、MCP/Connector 或已配置图片模型，但必须同时支持文生图、参考图编辑和明确返回/保存本地文件；只支持图片理解、只支持文生图或只能手动下载的能力都不会被选中。
+完整后端优先级是：Codex 内置 `image_gen.imagegen` → 当前智能体中通过能力校验的原生图片工具 → 默认 `gpt-image-2.5-sunburst` 的 `editppt image` CLI（Codex OAuth → OpenAI-compatible API）。原生候选可以来自 Tool、Skill、Plugin、MCP/Connector 或已配置图片模型，但必须同时支持文生图、参考图编辑和明确返回/保存本地文件；只支持图片理解、只支持文生图或只能手动下载的能力都不会被选中。
 
 WorkBuddy 官方资料提供 ImageGen/图生图能力，但公开工具参数并不完整，因此安装后仍会做运行时校验；Claude Code 官方只确认图片理解，需另装 Skill/Plugin/MCP 图片工具，否则直接使用 CLI；QoderWork 提供 `/gen-image` 和图片 remix，但参考图编辑契约不完整，同样要通过运行时校验。多页任务还要求 page worker 能调用同一原生工具，否则统一使用 CLI，避免不同页面后端不一致。
 
@@ -130,17 +130,29 @@ CLI fallback 的 `editppt image generate/edit` 参数面保持精简：请求输
 
 ## 安装
 
-```text
-安装 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill
-```
+本目录是 `chrisopal/skills` 中保留 portable-backend 和 visual-QA 定制的版本。请从包含这些定制的已审查 fork 提交安装，安装包路径为 `image-to-editable-ppt/skills/image-to-editable-ppt/`。
 
-安装 skill 后，正常转换、图片 API fallback 和 OCR Token 配置都由 AI 在执行过程中检查和处理；你只需要在 AI 询问时提供第三方 API 信息或 OCR Token。
+```text
+从 chrisopal/skills 中已审查且包含本地定制的提交安装 image-to-editable-ppt，保留 portable-backend 和 visual-QA。
+```
 
 ## 更新
 
-```text
-更新 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill
+将 `<fork-commit>` 替换为包含本地定制的已审查提交 SHA，将 `<agent-id>` 替换为当前智能体标识（例如 `codex`），将 `<skill-root>` 替换为实际安装目录。不要假定默认分支已包含这些定制，也不要用上游发行 ZIP 覆盖本版本。
+
+```bash
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
+
+更新后重新加载技能上下文，确认 `run backend --help` 中仍有 `agent-image-tool`，且 visual-QA 与提取命令可用。API 凭据和 OCR Token 保存在技能目录之外的 `~/.editppt/config.yaml`。CLI 默认模型已升级为 `gpt-image-2.5-sunburst`；显式配置的模型不会被更新过程覆盖。
 
 ## 使用方式
 
@@ -155,7 +167,7 @@ $image-to-editable-ppt 把 <path-to-image-based.pptx> 转成可编辑 PPT。
 
 skill 通常会完成这些步骤：
 
-1. 创建独立任务目录，把输入归一化为 `pages/page_NNN/source.png`，发现并校验当前运行时的图片工具，写入本次运行的 backend 契约；没有合格原生工具时使用默认 `gpt-image-2` 的 `editppt image`。
+1. 创建独立任务目录，把输入归一化为 `pages/page_NNN/source.png`，发现并校验当前运行时的图片工具，写入本次运行的 backend 契约；没有合格原生工具时使用默认 `gpt-image-2.5-sunburst` 的 `editppt image`。
 2. 如果只有 1 页，主 agent 先用 `editppt run dispatch --local` 认领页面，再按同一页面 prompt 本地重建；如果有多页，则按 `max_concurrent_pages` 分批分派给 page worker 重建。
 3. 页面重建者（主 agent 本地模式或 page worker）负责自己的页面目录，完成页面重建、自检和 page-local 修正。
 4. 每页创建 manifest，重建可编辑文本、简单形状和图片资产。

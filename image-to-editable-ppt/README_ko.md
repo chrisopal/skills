@@ -17,7 +17,7 @@
 >
 > “대신 승인” 모드도 OCR 단계, ChatGPT 이미지 생성/편집 단계 또는 타사 API 호출 단계에서 요청을 차단하고 수동 승인을 요구할 수 있습니다. 사용자가 컴퓨터 앞에 없으면 변환 흐름이 멈출 수 있습니다.
 >
-> 변환 과정에서 바이두 PaddleOCR-VL API가 구성되어 있으면 페이지의 텍스트 상자, 글자 크기, 크기 그룹을 자동으로 보정합니다. 이미지 생성/편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. 다른 agent에서는 원생 시각 도구를 먼저 탐색·검증하며, 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력 세 기능을 모두 지원할 때만 사용합니다. 그렇지 않으면 기본 모델이 `gpt-image-2`인 `editppt image`로 폴백합니다(Codex OAuth → OpenAI-compatible API).
+> 변환 과정에서 바이두 PaddleOCR-VL API가 구성되어 있으면 페이지의 텍스트 상자, 글자 크기, 크기 그룹을 자동으로 보정합니다. 이미지 생성/편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. 다른 agent에서는 원생 시각 도구를 먼저 탐색·검증하며, 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력 세 기능을 모두 지원할 때만 사용합니다. 그렇지 않으면 기본 모델이 `gpt-image-2.5-sunburst`인 `editppt image`로 폴백합니다(Codex OAuth → OpenAI-compatible API).
 >
 > ![Codex 전체 액세스 권한 설정 예시](assets/codex-full-access-permission.png)
 
@@ -30,7 +30,7 @@
 >
 > **편집 가능성이 꼭 필요하지 않다면 이 skill을 사용하지 마세요.**
 >
-> 더 가벼운 방법은 gpt-image-2의 이미지 편집 기능을 직접 사용하는 것입니다. 마음에 들지 않는 PPT 페이지 이미지를 보내고 필요한 부분만 수정한 이미지를 돌려받을 수 있습니다.
+> 이미지만 간단히 편집하려면 `gpt-image-2.5-sunburst`에 페이지 이미지를 보내 필요한 부분을 수정한 이미지를 받으세요. 먼저 현재 도구에서 해당 모델을 제공하는지 확인하세요. 이 방식은 객체 수준 편집 가능한 PPT를 만들지 않습니다.
 
 > [!TIP]
 > 이 skill은 글, 보고서, 개요 또는 아이디어에서 새로운 PPT를 직접 만드는 용도가 아닙니다. “PPT 생성”이 목적이라면 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)을 사용하세요.
@@ -68,7 +68,7 @@
 
 - 단일 이미지, 여러 이미지, 다중 페이지 PDF, 이미지 기반 PPT 등 다양한 입력을 편집 가능한 `.pptx`로 변환합니다.
 - 단일 페이지/이미지 입력은 메인 agent가 동일한 페이지 재구성 흐름으로 로컬에서 처리할 수 있습니다. 다중 페이지 입력은 메인 agent가 page worker/subagent에게 분배하고 `max_concurrent_pages`에 따라 병렬 처리합니다.
-- 이미지 생성과 편집은 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. WorkBuddy, Claude Code, QoderWork 등의 런타임은 원생 Skill/Plugin/MCP/이미지 모델을 탐색·검증하고, 적합한 후보가 없으면 기본 `gpt-image-2`의 `editppt image` CLI를 사용합니다.
+- 이미지 생성과 편집은 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. WorkBuddy, Claude Code, QoderWork 등의 런타임은 원생 Skill/Plugin/MCP/이미지 모델을 탐색·검증하고, 적합한 후보가 없으면 기본 `gpt-image-2.5-sunburst`의 `editppt image` CLI를 사용합니다.
 - 타사 API 폴백 설정은 `~/.editppt/config.yaml`에 저장됩니다. Windows에서는 `%USERPROFILE%\.editppt\config.yaml`을 사용합니다.
 - 텍스트 크기와 위치는 측정값을 기반으로 합니다. prepare 단계에서 각 페이지의 텍스트 주석(상자 좌표 + 글자 크기 + 크기 그룹)을 생성하고, 모델은 이 측정값에 따라 텍스트를 복원하며 같은 계층의 텍스트 크기를 자동으로 일관되게 유지합니다.
 - 여러 이미지는 제공된 순서대로 페이지를 생성하고, PDF와 `.pptx`는 원래 페이지 순서를 유지합니다.
@@ -94,7 +94,7 @@
 
 ## 이미지 Backend 및 타사 API 구성
 
-전체 backend 우선순위는 Codex 내장 `image_gen.imagegen` → 현재 agent에서 기능 검증을 통과한 원생 이미지 도구 → 기본 모델 `gpt-image-2`의 `editppt image` CLI(Codex OAuth → OpenAI-compatible API)입니다. 원생 후보는 Tool, Skill, Plugin, MCP/Connector 또는 구성된 이미지 모델에서 찾을 수 있지만, 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원해야 합니다. 이미지 이해만 가능하거나 참조 편집이 없거나 수동 다운로드만 가능한 기능은 선택하지 않습니다.
+전체 backend 우선순위는 Codex 내장 `image_gen.imagegen` → 현재 agent에서 기능 검증을 통과한 원생 이미지 도구 → 기본 모델 `gpt-image-2.5-sunburst`의 `editppt image` CLI(Codex OAuth → OpenAI-compatible API)입니다. 원생 후보는 Tool, Skill, Plugin, MCP/Connector 또는 구성된 이미지 모델에서 찾을 수 있지만, 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원해야 합니다. 이미지 이해만 가능하거나 참조 편집이 없거나 수동 다운로드만 가능한 기능은 선택하지 않습니다.
 
 WorkBuddy 공식 자료는 ImageGen/이미지-투-이미지 동작을 설명하지만 공개 도구 스키마는 완전하지 않아 설치된 런타임에서 다시 검증합니다. Claude Code 공식 문서는 이미지 이해만 확인하므로 별도 Skill/Plugin/MCP 이미지 도구가 없으면 CLI를 사용합니다. QoderWork는 `/gen-image`와 이미지 remix를 제공하지만 공개 참조 편집 계약이 부분적이므로 역시 런타임 검증이 필요합니다. 다중 페이지 작업에서는 page worker도 같은 원생 도구를 호출할 수 있어야 하며, 그렇지 않으면 전체 실행에서 CLI를 사용합니다.
 
@@ -130,17 +130,29 @@ Token 없이도 실행할 수 있습니다. 이 경우 skill은 내장 오프라
 
 ## 설치
 
-```text
-image-to-editable-ppt skill을 설치해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.
-```
+이 디렉터리는 portable-backend와 visual-QA 사용자 정의를 보존하는 `chrisopal/skills` 버전입니다. 해당 기능이 포함된 검토 완료 fork 커밋의 `image-to-editable-ppt/skills/image-to-editable-ppt/` 경로에서 설치하세요.
 
-skill 설치 후 일반 변환, 이미지 API 폴백, OCR Token 설정은 AI가 실행 중 확인하고 처리합니다. AI가 요청할 때 타사 API 정보나 OCR Token만 제공하면 됩니다.
+```text
+chrisopal/skills의 검토 완료 커밋에서 image-to-editable-ppt를 설치하고 로컬 portable-backend와 visual-QA 사용자 정의를 모두 보존해 주세요.
+```
 
 ## 업데이트
 
-```text
-image-to-editable-ppt skill을 업데이트해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.
+`<fork-commit>`은 로컬 사용자 정의가 포함된 검토 완료 커밋 SHA로, `<agent-id>`는 현재 agent 식별자(예: `codex`)로, `<skill-root>`는 실제 설치 경로로 바꾸세요. 기본 브랜치에 해당 변경이 있다고 가정하거나 upstream 배포 ZIP으로 덮어쓰지 마세요.
+
+```bash
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
+
+업데이트 후 skill 컨텍스트를 다시 로드하세요. `run backend --help`에 `agent-image-tool`이 있고 visual-QA 및 추출 명령이 사용 가능한지 확인하세요. API 자격 증명과 OCR Token은 패키지 밖의 `~/.editppt/config.yaml`에 유지됩니다. CLI 기본 모델은 이제 `gpt-image-2.5-sunburst`이며 업데이트해도 명시적으로 설정한 모델은 덮어쓰지 않습니다.
 
 ## 사용 방법
 
@@ -155,7 +167,7 @@ $image-to-editable-ppt <path-to-image-based.pptx>를 편집 가능한 PPT로 변
 
 skill은 일반적으로 다음 단계를 수행합니다.
 
-1. 독립 작업 디렉터리를 만들고 입력을 `pages/page_NNN/source.png`로 정규화한 뒤 현재 런타임의 이미지 도구를 탐색·검증하고 선택된 backend 계약을 기록합니다. 적합한 원생 도구가 없으면 `editppt image`의 기본 `gpt-image-2`를 사용합니다.
+1. 독립 작업 디렉터리를 만들고 입력을 `pages/page_NNN/source.png`로 정규화한 뒤 현재 런타임의 이미지 도구를 탐색·검증하고 선택된 backend 계약을 기록합니다. 적합한 원생 도구가 없으면 `editppt image`의 기본 `gpt-image-2.5-sunburst`를 사용합니다.
 2. 페이지가 하나뿐이면 메인 agent가 먼저 `editppt run dispatch --local`로 페이지를 맡은 뒤 동일한 페이지 프롬프트에 따라 로컬에서 재구성합니다. 페이지가 여러 개면 `max_concurrent_pages`에 따라 묶어 page worker에게 분배합니다.
 3. 페이지 재구성 담당자(로컬 모드의 메인 agent 또는 page worker)는 자신의 페이지 디렉터리에서 페이지 재구성, 자체 점검, page-local 수정을 수행합니다.
 4. 각 페이지에 manifest를 만들고 편집 가능한 텍스트, 단순 도형, 이미지 에셋을 재구성합니다.

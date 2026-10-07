@@ -1,37 +1,35 @@
 # 安装与配置
 
-## 一句话安装
+## 安装 / 更新
 
-推荐直接把下面这句话发给你的 agent，让它帮你安装：
+本目录是 `chrisopal/skills` 中保留 portable-backend 和 visual-QA 定制的版本。请从包含这些定制的已审查 fork 提交安装，安装包路径为 `image-to-editable-ppt/skills/image-to-editable-ppt/`。
 
-```text
-安装 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill
-```
-
-安装后，正常转换、图片 API fallback 和 OCR Token 配置都由 AI 在执行过程中检查和处理；你只需要在 AI 询问时提供第三方 API 信息或 OCR Token。
-
-## 手动安装
-
-从 [GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases) 下载 `image-to-editable-ppt-skill-v*.zip`，解压后把其中的 `image-to-editable-ppt` 文件夹放到 agent 的 skills 目录（Codex 为 `~/.codex/skills/image-to-editable-ppt`），然后重启 agent。
-
-如果你在本地开发这个仓库，可以把 skill 目录软链接到 skills 目录，方便实时调试修改：
+将 `<fork-commit>` 替换为包含本地定制的已审查提交 SHA，将 `<agent-id>` 替换为当前智能体标识（例如 `codex`），将 `<skill-root>` 替换为实际安装目录。不要假定默认分支已包含这些定制，也不要用上游发行 ZIP 覆盖本版本。
 
 ```bash
-mkdir -p ~/.codex/skills
-ln -s /path/to/image-to-editable-ppt-skill/skills/image-to-editable-ppt ~/.codex/skills/image-to-editable-ppt
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
 
-## 更新 skill
+更新后重新加载技能上下文，确认 `run backend --help` 中仍有 `agent-image-tool`，且 visual-QA 与提取命令可用。API 凭据和 OCR Token 保存在技能目录之外的 `~/.editppt/config.yaml`。CLI 默认模型已升级为 `gpt-image-2.5-sunburst`；显式配置的模型不会被更新过程覆盖。
 
-推荐直接把下面这句话发给你的 agent：
+模型默认值适用于 `editppt image` CLI。可用 `editppt config --model gpt-image-2.5-sunburst` 更新已保存的旧模型设置；单次请求可用 `--model gpt-image-2.5-flare`、受支持的日期快照或服务商命名空间（如 `openai/gpt-image-2.5-sunburst`）。显式 `--model` 优先于环境变量，环境变量优先于配置文件；显式选择 `gpt-image-2` 仍有效。`--quality` 默认保留 `auto`；新增 `xhigh`、`max` 仅适用于 2.5 Sunburst/Flare。原生图片工具使用其自身提供的模型，不向 Codex 内置工具传入 `model`。具体服务是否开放所选模型仍取决于账号和服务商。
 
-```text
-更新 image-to-editable-ppt 这个 skill，地址是 https://github.com/ningzimu/image-to-editable-ppt-skill
+## 从本地 checkout 安装
+
+已检出并验证目标 fork 提交时，也可用本地技能目录安装；随后执行上面的 CLI 刷新和检查。
+
+```bash
+npx -y skills@latest add /path/to/chrisopal-skills/image-to-editable-ppt/skills/image-to-editable-ppt \
+  --skill image-to-editable-ppt --agent <agent-id> --global
 ```
-
-手动更新时，从 [GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases) 下载最新 zip，解压后替换原来的 `image-to-editable-ppt` 目录。更新完成后重启 agent 生效。
-
-更新是安全的：图片 API 凭据和 OCR Token 都保存在 `~/.editppt/config.yaml`（Windows 下为 `%USERPROFILE%\.editppt\config.yaml`），在 skill 安装目录之外，更新或重装不会丢失。每个版本的变更内容可以查看 [Releases 页面](https://github.com/ningzimu/image-to-editable-ppt-skill/releases)或仓库的 `CHANGELOG.md`。
 
 ## 运行权限建议
 
@@ -60,7 +58,7 @@ ln -s /path/to/image-to-editable-ppt-skill/skills/image-to-editable-ppt ~/.codex
 
 ## 图片 Backend 与第三方 API 配置
 
-图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。在 WorkBuddy、Claude Code、QoderWork 或其他智能体中，skill 会发现 Tool、Skill、Plugin、MCP/Connector 和已配置图片模型；候选必须同时支持文生图、参考图编辑和明确本地输出，否则使用默认模型为 `gpt-image-2` 的 `editppt image` CLI。CLI 优先使用本机 Codex OAuth（`~/.codex/auth.json`），不可用时再读取 OpenAI-compatible API 配置。
+图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。在 WorkBuddy、Claude Code、QoderWork 或其他智能体中，skill 会发现 Tool、Skill、Plugin、MCP/Connector 和已配置图片模型；候选必须同时支持文生图、参考图编辑和明确本地输出，否则使用默认模型为 `gpt-image-2.5-sunburst` 的 `editppt image` CLI。CLI 优先使用本机 Codex OAuth（`~/.codex/auth.json`），不可用时再读取 OpenAI-compatible API 配置。
 
 WorkBuddy 的 ImageGen 和 QoderWork 的 `/gen-image`/remix 需要在安装环境中确认参考图编辑契约；Claude Code 官方只确认图片理解，因此通常需要额外图片 Skill/Plugin/MCP，或直接使用 CLI fallback。只会“看图”的视觉模型不能作为图片 backend。
 

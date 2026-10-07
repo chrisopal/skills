@@ -1,37 +1,35 @@
 # 설치 및 구성
 
-## 한 문장으로 설치하기
+## 설치 / 업데이트
 
-아래 문장을 agent에게 보내 설치를 맡기는 방법을 권장합니다.
+이 디렉터리는 portable-backend와 visual-QA 사용자 정의를 보존하는 `chrisopal/skills` 버전입니다. 해당 기능이 포함된 검토 완료 fork 커밋의 `image-to-editable-ppt/skills/image-to-editable-ppt/` 경로에서 설치하세요.
 
-```text
-image-to-editable-ppt skill을 설치해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.
-```
-
-설치 후 일반 변환, 이미지 API 폴백, OCR Token 설정은 AI가 실행 중 확인하고 처리합니다. AI가 요청할 때 타사 API 정보나 OCR Token만 제공하면 됩니다.
-
-## 수동 설치
-
-[GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases)에서 `image-to-editable-ppt-skill-v*.zip`을 내려받아 압축을 풉니다. 그 안의 `image-to-editable-ppt` 폴더를 agent의 skills 디렉터리(Codex는 `~/.codex/skills/image-to-editable-ppt`)에 넣고 agent를 다시 시작하세요.
-
-이 저장소를 로컬에서 개발하는 경우 skill 디렉터리를 skills 디렉터리에 심볼릭 링크해 변경 사항을 실시간으로 테스트할 수 있습니다.
+`<fork-commit>`은 로컬 사용자 정의가 포함된 검토 완료 커밋 SHA로, `<agent-id>`는 현재 agent 식별자(예: `codex`)로, `<skill-root>`는 실제 설치 경로로 바꾸세요. 기본 브랜치에 해당 변경이 있다고 가정하거나 upstream 배포 ZIP으로 덮어쓰지 마세요.
 
 ```bash
-mkdir -p ~/.codex/skills
-ln -s /path/to/image-to-editable-ppt-skill/skills/image-to-editable-ppt ~/.codex/skills/image-to-editable-ppt
+npx -y skills@latest add "https://github.com/chrisopal/skills/tree/<fork-commit>/image-to-editable-ppt/skills/image-to-editable-ppt" \
+  --skill image-to-editable-ppt \
+  --agent <agent-id> \
+  --global
+pipx install --force --editable <skill-root>/cli
+editppt doctor
+editppt page visual-qa --help
+editppt image extract-source --help
+editppt run backend --help
 ```
 
-## skill 업데이트
+업데이트 후 skill 컨텍스트를 다시 로드하세요. `run backend --help`에 `agent-image-tool`이 있고 visual-QA 및 추출 명령이 사용 가능한지 확인하세요. API 자격 증명과 OCR Token은 패키지 밖의 `~/.editppt/config.yaml`에 유지됩니다. CLI 기본 모델은 이제 `gpt-image-2.5-sunburst`이며 업데이트해도 명시적으로 설정한 모델은 덮어쓰지 않습니다.
 
-아래 문장을 agent에게 보내 업데이트를 맡기는 방법을 권장합니다.
+모델 기본값은 `editppt image` CLI에 적용됩니다. 저장된 이전 모델 설정은 `editppt config --model gpt-image-2.5-sunburst`로 변경할 수 있습니다. 개별 요청에서는 `--model gpt-image-2.5-flare`, 지원되는 날짜별 스냅샷 또는 `openai/gpt-image-2.5-sunburst` 같은 공급자 네임스페이스를 선택할 수 있습니다. 명시적 `--model`이 환경 변수보다 우선하고 환경 변수는 설정 파일보다 우선합니다. `gpt-image-2`를 명시적으로 선택하는 방식도 계속 지원합니다. `--quality` 기본값은 `auto`이며 새 값인 `xhigh`와 `max`는 2.5 Sunburst/Flare에만 사용할 수 있습니다. 원생 이미지 도구는 자체 제공 모델을 사용하며 Codex 내장 도구에는 `model`을 전달하지 않습니다. 선택한 모델의 실제 가용성은 계정과 공급자에 따라 달라집니다.
 
-```text
-image-to-editable-ppt skill을 업데이트해 주세요. 주소는 https://github.com/ningzimu/image-to-editable-ppt-skill 입니다.
+## 로컬 checkout에서 설치
+
+원하는 fork 커밋을 체크아웃하고 검증했다면 로컬 skill 디렉터리에서도 설치할 수 있습니다. 이후 위의 CLI 갱신 및 확인 단계를 실행하세요.
+
+```bash
+npx -y skills@latest add /path/to/chrisopal-skills/image-to-editable-ppt/skills/image-to-editable-ppt \
+  --skill image-to-editable-ppt --agent <agent-id> --global
 ```
-
-수동으로 업데이트하려면 [GitHub Releases](https://github.com/ningzimu/image-to-editable-ppt-skill/releases)에서 최신 zip을 내려받아 압축을 풀고 기존 `image-to-editable-ppt` 디렉터리를 교체하세요. 업데이트 후 agent를 다시 시작하면 적용됩니다.
-
-업데이트는 안전합니다. 이미지 API 자격 증명과 OCR Token은 skill 설치 디렉터리 밖의 `~/.editppt/config.yaml`(Windows에서는 `%USERPROFILE%\.editppt\config.yaml`)에 저장되므로 업데이트하거나 다시 설치해도 사라지지 않습니다. 각 버전의 변경 사항은 [Releases 페이지](https://github.com/ningzimu/image-to-editable-ppt-skill/releases) 또는 저장소의 `CHANGELOG.md`에서 확인할 수 있습니다.
 
 ## 실행 권한 권장 사항
 
@@ -60,7 +58,7 @@ Token 없이도 실행할 수 있습니다. 이 경우 skill은 내장 오프라
 
 ## 이미지 Backend 및 타사 API 구성
 
-이미지 생성과 편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. WorkBuddy, Claude Code, QoderWork 또는 다른 agent에서는 Tool, Skill, Plugin, MCP/Connector와 구성된 이미지 모델을 탐색합니다. 후보는 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원해야 하며, 그렇지 않으면 기본 모델 `gpt-image-2`의 `editppt image` CLI를 사용합니다. CLI는 로컬 Codex OAuth(`~/.codex/auth.json`)를 우선 사용한 뒤 OpenAI-compatible API 설정을 읽습니다.
+이미지 생성과 편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. WorkBuddy, Claude Code, QoderWork 또는 다른 agent에서는 Tool, Skill, Plugin, MCP/Connector와 구성된 이미지 모델을 탐색합니다. 후보는 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원해야 하며, 그렇지 않으면 기본 모델 `gpt-image-2.5-sunburst`의 `editppt image` CLI를 사용합니다. CLI는 로컬 Codex OAuth(`~/.codex/auth.json`)를 우선 사용한 뒤 OpenAI-compatible API 설정을 읽습니다.
 
 WorkBuddy ImageGen과 QoderWork `/gen-image`/remix는 설치된 환경에서 참조 편집 계약을 다시 확인해야 합니다. Claude Code 공식 문서는 이미지 이해만 확인하므로 별도 이미지 Skill/Plugin/MCP 도구가 없으면 CLI 폴백을 사용합니다. 이미지를 보기만 하는 시각 모델은 이미지 backend가 아닙니다.
 

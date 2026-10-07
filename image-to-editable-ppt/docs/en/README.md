@@ -39,7 +39,7 @@ If you are already using the skill and run into problems, see [FAQ](/en/faq.md).
 - Object-level reconstruction: text becomes native text boxes, simple geometry becomes PowerPoint shapes, and complex visual elements remain separate image assets, so all three object types can be adjusted independently.
 - Measurement-driven text restoration: OCR generates text annotations for every page, including bounding boxes, font sizes, font-size groups, and recognized text. The model reconstructs text from these measurements and automatically keeps same-level text at consistent sizes. See the OCR Token section in [Installation and Configuration](/en/installation.md).
 - Parallel multi-page reconstruction: the main agent dispatches multi-page inputs to page workers/subagents in parallel; single-page inputs use the same reconstruction flow locally in the main agent.
-- Image generation and editing prefer Codex's built-in `image_gen.imagegen`. Other agents discover and validate native tools/skills/plugins/MCP/image models, requiring prompt-to-image, reference-image editing, and explicit local output; otherwise they use `editppt image` with default `gpt-image-2`.
+- Image generation and editing prefer Codex's built-in `image_gen.imagegen`. Other agents discover and validate native tools/skills/plugins/MCP/image models, requiring prompt-to-image, reference-image editing, and explicit local output; otherwise they use `editppt image` with default `gpt-image-2.5-sunburst`.
 - Speaker notes from `.pptx` inputs are copied unchanged to the matching output pages without translation, summarization, or rewriting.
 - Stable page order: multiple images follow the order provided, while PDFs and `.pptx` files preserve their original page order.
 
@@ -47,7 +47,7 @@ If you are already using the skill and run into problems, see [FAQ](/en/faq.md).
 
 **This is not a lightweight converter.** The skill uses a multi-agent reconstruction workflow in which AI performs a rebuild → self-check → page-level revision loop, potentially over multiple iterations. It can consume substantial tokens: reconstructing a 10-slide deck may use an entire five-hour ChatGPT allowance, and a single slide may take more than 10 minutes. **ChatGPT Pro is recommended; Plus users should proceed with caution.**
 
-**Do not use this skill unless you have a strong need for editability.** A lighter alternative is to use `gpt-image-2` directly: send it the slide image you want to change and ask it to make the targeted edits.
+For lighter image-only editing, use `gpt-image-2.5-sunburst`: submit the page image for targeted edits and receive a revised image; first verify that your current tool offers that model. This does not create object-level editable PPT.
 
 **We recommend running this skill in Codex with Full Access enabled.** Otherwise, approval prompts may repeatedly interrupt OCR, image generation, and subagent dispatch. See [Installation and Configuration](/en/installation.md).
 

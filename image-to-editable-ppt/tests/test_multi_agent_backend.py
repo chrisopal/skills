@@ -871,7 +871,7 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertEqual("builtin-imagegen", backend["backend_id"])
             self.assertEqual("image_gen.imagegen", backend["tool_name"])
             self.assertIsNone(backend["model"])
-            self.assertEqual("gpt-image-2", backend["fallback_model"])
+            self.assertEqual("gpt-image-2.5-sunburst", backend["fallback_model"])
             self.assertEqual(
                 {"generate": ["prompt"], "edit": ["prompt", "referenced_image_paths"]},
                 backend["required_parameters"],
@@ -907,7 +907,7 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertEqual("agent-image-tool", backend["backend_id"])
             self.assertEqual("auto", backend["runtime_id"])
             self.assertIsNone(backend["model"])
-            self.assertEqual("gpt-image-2", backend["fallback_model"])
+            self.assertEqual("gpt-image-2.5-sunburst", backend["fallback_model"])
             self.assertEqual(
                 ["image-generation", "reference-image-editing", "explicit-local-output"],
                 backend["required_capabilities"],
@@ -1147,6 +1147,7 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertEqual(0, result.returncode, result.stderr)
             deck = read_json(run_dir / "deck_manifest.json")
             self.assertEqual("editppt-image-cli", deck["image_backend"]["backend_id"])
+            self.assertEqual("gpt-image-2", deck["image_backend"]["model"])
             request = read_json(run_dir / "pages/page_002/page_request.json")
             self.assertEqual(deck["image_backend"], request["image_backend"])
 
@@ -1277,6 +1278,10 @@ class MultiAgentBackendTest(unittest.TestCase):
 
             page_dir = run_dir / "pages/page_002"
             write_page_outputs(page_dir, "Refresh Page", validation_passed=False)
+            # Compatible portion of upstream 7e86fb3: a rejected handoff must
+            # preserve evidence and state; repair validation through the CLI.
+            before = {path: path.read_bytes() for path in page_dir.rglob("*") if path.is_file()}
+            jobs_before = (run_dir / "page_jobs.json").read_bytes()
 
             first = subprocess.run(
                 [
@@ -1297,7 +1302,11 @@ class MultiAgentBackendTest(unittest.TestCase):
             jobs = read_json(run_dir / "page_jobs.json")
             self.assertEqual("dispatched", jobs["pages"][1]["status"])
 
-            write_json(page_dir / "validation.json", {"passed": True})
+            self.assertEqual(jobs_before, (run_dir / "page_jobs.json").read_bytes())
+            self.assertEqual(before, {path: path.read_bytes() for path in page_dir.rglob("*") if path.is_file()})
+            validation = run_cli("page", "validate", page_dir, "--report", "validation.json")
+            self.assertEqual(0, validation.returncode, validation.stdout + validation.stderr)
+            self.assertIs(read_json(page_dir / "validation.json")["visual_qa_passed"], True)
             second = subprocess.run(
                 [
                     sys.executable,

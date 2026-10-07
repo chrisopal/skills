@@ -6,15 +6,22 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ### Features
 
+- Default CLI image requests and portable fallback metadata to `gpt-image-2.5-sunburst`; support Sunburst/Flare snapshots and model-gated `xhigh`/`max` quality while preserving explicit model choices and the default `auto` quality. (#4)
+
 - Add deterministic source-versus-preview visual QA with required reports and diff artifacts, including image-ink/text and text/text collision detection, shape-color drift checks, and structural-geometry checks.
 - Add `editppt image extract-source` for exact-pixel transparent extraction of complete, unoccluded foreground objects on locally uniform backgrounds, with explicit provenance and automatic rejection of unsuitable regions.
-- Add a capability-gated `agent-image-tool` backend for WorkBuddy, Claude Code, QoderWork, and other runtimes while preserving Codex `image_gen.imagegen` and `gpt-image-2` as the preferred/default GPT paths.
+- Add a capability-gated `agent-image-tool` backend for WorkBuddy, Claude Code, QoderWork, and other runtimes while preserving Codex `image_gen.imagegen` and `gpt-image-2.5-sunburst` as the preferred/default GPT paths.
 
 ### Fixes
 
 - Prevent pages with icon/text overlap, incorrect dark shape fills, or stretched vertical rails from passing `page validate`, `run record`, or deck finalization through declarative self-check flags alone.
 
 ### Documentation
+
+- Preserve the existing OCR consent, restricted-network approval, hints, and active-lease contracts; backport autonomous routine execution guidance without changing backend or visual-QA semantics. (#4)
+- Use scoped, reviewed fork commits with `npx -y skills@latest add`, refresh the editable CLI, and verify fork capabilities after updates across Chinese, English, and Korean guides. (#4)
+- Synchronize Chinese, English, and Korean model defaults, image-only alternatives, and configuration migration guidance while preserving portable-backend and visual-QA contracts. (#4)
+- Record the pinned upstream comparison and deferred runtime conflicts; strengthen offline regression coverage without importing incompatible runtime behavior. (#4)
 
 - Add complete Korean README and English and Korean versions of the Docsify usage documentation, with synchronized language navigation, search, and pagination. (#26)
 - Align all usage guides with the built-in-first image backend policy and block delivery when compliant image assets cannot be produced. (#26)

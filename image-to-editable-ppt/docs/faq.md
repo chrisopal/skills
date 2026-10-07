@@ -8,7 +8,7 @@
 
 ## Q：什么情况下不该用这个 skill？
 
-上游目前以 `gpt-image-2.5-sunburst` 举例说明更轻量的仅图片编辑方式：提交要修改的页面图片并获取修改后的图片；使用前确认当前工具实际提供该模型。这不产生对象级可编辑 PPT，也不改变本 fork 的 CLI 默认模型 `gpt-image-2`。
+若只需修改页面图片，可使用 `gpt-image-2.5-sunburst`：提交页面图片并获取修改后的图片；使用前确认当前工具实际提供该模型。这不产生对象级可编辑 PPT。
 
 另外，本 skill 不负责从文章、报告、大纲或想法生成全新 PPT——那是 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill) 的职责。
 
@@ -40,7 +40,7 @@
 
 ## Q：图片生成用的是什么？需要配 API key 吗？
 
-图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。其他智能体会先查找原生 Tool、Skill、Plugin、MCP/Connector 或图片模型，并校验文生图、参考图编辑和明确本地输出；只会看图的不算图片 backend。没有合格候选时使用默认模型为 `gpt-image-2` 的 `editppt image`，CLI 先尝试本机 Codex OAuth，再读取 `~/.editppt/config.yaml` 的 OpenAI-compatible API 配置。Codex 会员通常不需要 API key；第三方 fallback 需要 base URL、模型名和 API key。
+图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。其他智能体会先查找原生 Tool、Skill、Plugin、MCP/Connector 或图片模型，并校验文生图、参考图编辑和明确本地输出；只会看图的不算图片 backend。没有合格候选时使用默认模型为 `gpt-image-2.5-sunburst` 的 `editppt image`，CLI 先尝试本机 Codex OAuth，再读取 `~/.editppt/config.yaml` 的 OpenAI-compatible API 配置。Codex 会员通常不需要 API key；第三方 fallback 需要 base URL、模型名和 API key。
 
 ## Q：如何更新 skill 到最新版本？
 

@@ -17,7 +17,7 @@ It is useful when screenshot-like or image-based slides need to become easier to
 >
 > "Approve for me" mode is also known to still block some OCR requests, ChatGPT image generation/editing requests, or third-party API calls until you manually approve them. If you are away from the computer, the conversion may stall.
 >
-> During conversion, this skill automatically calls Baidu PaddleOCR-VL (when a token is configured) to correct text boxes, font sizes, and size groups. Image generation/editing defaults to Codex's built-in `image_gen.imagegen`; other agents first discover and validate native visual tools, using them only when they support prompt-to-image, reference-image editing, and explicit local output. Otherwise the skill falls back to `editppt image`, whose default model is `gpt-image-2` (Codex OAuth -> OpenAI-compatible API).
+> During conversion, this skill automatically calls Baidu PaddleOCR-VL (when a token is configured) to correct text boxes, font sizes, and size groups. Image generation/editing defaults to Codex's built-in `image_gen.imagegen`; other agents first discover and validate native visual tools, using them only when they support prompt-to-image, reference-image editing, and explicit local output. Otherwise the skill falls back to `editppt image`, whose default model is `gpt-image-2.5-sunburst` (Codex OAuth -> OpenAI-compatible API).
 >
 > ![Codex Full Access permission setting](assets/codex-full-access-permission.png)
 
@@ -30,7 +30,7 @@ It is useful when screenshot-like or image-based slides need to become easier to
 >
 > **If you do not strongly need editability, avoid this skill.**
 >
-> Upstream now illustrates the lighter image-only editing option with `gpt-image-2.5-sunburst`: submit the page image for targeted edits and receive a revised image; first verify that your current tool offers that model. This does not create object-level editable PPT and does not change this fork's CLI default, `gpt-image-2`.
+> For lighter image-only editing, use `gpt-image-2.5-sunburst`: submit the page image for targeted edits and receive a revised image; first verify that your current tool offers that model. This does not create object-level editable PPT.
 
 > [!TIP]
 > This skill does not create new decks from articles, reports, outlines, or ideas. If your goal is to generate a PPT, use [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill).
@@ -68,7 +68,7 @@ It is useful when screenshot-like or image-based slides need to become easier to
 
 - Broad input coverage for many slide-reconstruction scenarios: one image, multiple images, multi-page PDFs, and image-based PPT files into editable `.pptx`.
 - Single-page or single-image input can be rebuilt locally by the main agent through the same page workflow; multi-page input is dispatched by the main agent to page workers/subagents, in parallel according to `max_concurrent_pages`.
-- Image generation and editing prefer Codex's built-in `image_gen.imagegen`. WorkBuddy, Claude Code, QoderWork, and other runtimes discover and validate native skills/plugins/MCP tools/image models, then use the default `gpt-image-2` `editppt image` CLI when none qualifies.
+- Image generation and editing prefer Codex's built-in `image_gen.imagegen`. WorkBuddy, Claude Code, QoderWork, and other runtimes discover and validate native skills/plugins/MCP tools/image models, then use the default `gpt-image-2.5-sunburst` `editppt image` CLI when none qualifies.
 - Third-party API fallback configuration lives in `~/.editppt/config.yaml`; on Windows this is `%USERPROFILE%\.editppt\config.yaml`.
 - Text sizes and positions are measurement-driven: prepare generates per-page text annotations (box coordinates + font sizes + size groups), and same-level text keeps one consistent size automatically.
 - Keep multiple images in the provided order; preserve PDF and `.pptx` page order.
@@ -94,7 +94,7 @@ It is useful when screenshot-like or image-based slides need to become easier to
 
 ## Image Backend And Third-Party API Configuration
 
-The complete backend order is Codex's built-in `image_gen.imagegen` -> a capability-validated native image tool in the current agent -> the `editppt image` CLI with default model `gpt-image-2` (Codex OAuth -> OpenAI-compatible API). Native candidates may come from tools, skills, plugins, MCP/connectors, or configured image models, but must support prompt-to-image, reference-image editing, and an explicit local output. Image understanding alone, generation without reference editing, or manual-download-only output does not qualify.
+The complete backend order is Codex's built-in `image_gen.imagegen` -> a capability-validated native image tool in the current agent -> the `editppt image` CLI with default model `gpt-image-2.5-sunburst` (Codex OAuth -> OpenAI-compatible API). Native candidates may come from tools, skills, plugins, MCP/connectors, or configured image models, but must support prompt-to-image, reference-image editing, and an explicit local output. Image understanding alone, generation without reference editing, or manual-download-only output does not qualify.
 
 Official WorkBuddy material documents ImageGen/image-to-image behavior but not a complete public tool schema, so the installed runtime is still validated. Claude Code officially documents image understanding but no native generator/editor, so it needs an added skill/plugin/MCP image tool or the CLI fallback. QoderWork documents `/gen-image` and image remix, but its public reference-edit contract is partial and is also validated at runtime. For multi-page runs, page workers must expose the same native tool; otherwise the run uses the CLI consistently.
 
@@ -152,7 +152,7 @@ editppt image extract-source --help
 editppt run backend --help
 ```
 
-Reload the skill context after updating. Confirm that `run backend --help` still lists `agent-image-tool` and that visual-QA and extraction commands remain available. API credentials and the OCR Token stay outside the package in `~/.editppt/config.yaml`. The CLI default remains `gpt-image-2`.
+Reload the skill context after updating. Confirm that `run backend --help` still lists `agent-image-tool` and that visual-QA and extraction commands remain available. API credentials and the OCR Token stay outside the package in `~/.editppt/config.yaml`. The CLI default is now `gpt-image-2.5-sunburst`; updating does not overwrite an explicitly configured model.
 
 ## Usage
 
@@ -167,7 +167,7 @@ $image-to-editable-ppt convert <path-to-image-based.pptx> into an editable Power
 
 The normal workflow is:
 
-1. Create an isolated job folder, normalize inputs into `pages/page_NNN/source.png`, discover and validate the current runtime's image tools, and record the selected backend contract; use default `gpt-image-2` through `editppt image` when no native tool qualifies.
+1. Create an isolated job folder, normalize inputs into `pages/page_NNN/source.png`, discover and validate the current runtime's image tools, and record the selected backend contract; use default `gpt-image-2.5-sunburst` through `editppt image` when no native tool qualifies.
 2. If there is exactly 1 page, the main agent first claims it with `editppt run dispatch --local`, then rebuilds it locally from the same page prompt; if there are multiple pages, dispatch them to page workers in `max_concurrent_pages` batches.
 3. The page reconstructor — main-agent local mode or page worker — owns one page directory and completes reconstruction, self-check, and page-local correction there.
 4. Build one page manifest per page with editable text, simple shapes, and positioned image assets.

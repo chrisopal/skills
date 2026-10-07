@@ -18,7 +18,9 @@ editppt image extract-source --help
 editppt run backend --help
 ```
 
-업데이트 후 skill 컨텍스트를 다시 로드하세요. `run backend --help`에 `agent-image-tool`이 있고 visual-QA 및 추출 명령이 사용 가능한지 확인하세요. API 자격 증명과 OCR Token은 패키지 밖의 `~/.editppt/config.yaml`에 유지됩니다. CLI 기본 모델은 여전히 `gpt-image-2`입니다.
+업데이트 후 skill 컨텍스트를 다시 로드하세요. `run backend --help`에 `agent-image-tool`이 있고 visual-QA 및 추출 명령이 사용 가능한지 확인하세요. API 자격 증명과 OCR Token은 패키지 밖의 `~/.editppt/config.yaml`에 유지됩니다. CLI 기본 모델은 이제 `gpt-image-2.5-sunburst`이며 업데이트해도 명시적으로 설정한 모델은 덮어쓰지 않습니다.
+
+모델 기본값은 `editppt image` CLI에 적용됩니다. 저장된 이전 모델 설정은 `editppt config --model gpt-image-2.5-sunburst`로 변경할 수 있습니다. 개별 요청에서는 `--model gpt-image-2.5-flare`, 지원되는 날짜별 스냅샷 또는 `openai/gpt-image-2.5-sunburst` 같은 공급자 네임스페이스를 선택할 수 있습니다. 명시적 `--model`이 환경 변수보다 우선하고 환경 변수는 설정 파일보다 우선합니다. `gpt-image-2`를 명시적으로 선택하는 방식도 계속 지원합니다. `--quality` 기본값은 `auto`이며 새 값인 `xhigh`와 `max`는 2.5 Sunburst/Flare에만 사용할 수 있습니다. 원생 이미지 도구는 자체 제공 모델을 사용하며 Codex 내장 도구에는 `model`을 전달하지 않습니다. 선택한 모델의 실제 가용성은 계정과 공급자에 따라 달라집니다.
 
 ## 로컬 checkout에서 설치
 
@@ -56,7 +58,7 @@ Token 없이도 실행할 수 있습니다. 이 경우 skill은 내장 오프라
 
 ## 이미지 Backend 및 타사 API 구성
 
-이미지 생성과 편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. WorkBuddy, Claude Code, QoderWork 또는 다른 agent에서는 Tool, Skill, Plugin, MCP/Connector와 구성된 이미지 모델을 탐색합니다. 후보는 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원해야 하며, 그렇지 않으면 기본 모델 `gpt-image-2`의 `editppt image` CLI를 사용합니다. CLI는 로컬 Codex OAuth(`~/.codex/auth.json`)를 우선 사용한 뒤 OpenAI-compatible API 설정을 읽습니다.
+이미지 생성과 편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. WorkBuddy, Claude Code, QoderWork 또는 다른 agent에서는 Tool, Skill, Plugin, MCP/Connector와 구성된 이미지 모델을 탐색합니다. 후보는 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 모두 지원해야 하며, 그렇지 않으면 기본 모델 `gpt-image-2.5-sunburst`의 `editppt image` CLI를 사용합니다. CLI는 로컬 Codex OAuth(`~/.codex/auth.json`)를 우선 사용한 뒤 OpenAI-compatible API 설정을 읽습니다.
 
 WorkBuddy ImageGen과 QoderWork `/gen-image`/remix는 설치된 환경에서 참조 편집 계약을 다시 확인해야 합니다. Claude Code 공식 문서는 이미지 이해만 확인하므로 별도 이미지 Skill/Plugin/MCP 도구가 없으면 CLI 폴백을 사용합니다. 이미지를 보기만 하는 시각 모델은 이미지 backend가 아닙니다.
 

@@ -18,7 +18,9 @@ editppt image extract-source --help
 editppt run backend --help
 ```
 
-Reload the skill context after updating. Confirm that `run backend --help` still lists `agent-image-tool` and that visual-QA and extraction commands remain available. API credentials and the OCR Token stay outside the package in `~/.editppt/config.yaml`. The CLI default remains `gpt-image-2`.
+Reload the skill context after updating. Confirm that `run backend --help` still lists `agent-image-tool` and that visual-QA and extraction commands remain available. API credentials and the OCR Token stay outside the package in `~/.editppt/config.yaml`. The CLI default is now `gpt-image-2.5-sunburst`; updating does not overwrite an explicitly configured model.
+
+The model default applies to the `editppt image` CLI. Use `editppt config --model gpt-image-2.5-sunburst` to update a saved legacy model setting; individual requests can select `--model gpt-image-2.5-flare`, a supported dated snapshot, or a provider namespace such as `openai/gpt-image-2.5-sunburst`. An explicit `--model` takes precedence over the environment, which takes precedence over the config file; explicitly selecting `gpt-image-2` remains supported. `--quality` still defaults to `auto`; the new `xhigh` and `max` values require 2.5 Sunburst/Flare. Native image tools use their own offered models; no `model` is passed to the Codex built-in tool. Availability of the chosen model still depends on your account and provider.
 
 ## Install from a Local Checkout
 
@@ -56,7 +58,7 @@ The skill also works without a Token by falling back to its built-in offline det
 
 ## Image Backend and Third-Party API Configuration
 
-Image generation and editing default to Codex's built-in `image_gen.imagegen`. In WorkBuddy, Claude Code, QoderWork, or another agent, the skill discovers tools, skills, plugins, MCP/connectors, and configured image models. A candidate must support prompt-to-image, reference-image editing, and explicit local output; otherwise the skill uses the `editppt image` CLI with default model `gpt-image-2`. The CLI prefers local Codex OAuth (`~/.codex/auth.json`) and then OpenAI-compatible API configuration.
+Image generation and editing default to Codex's built-in `image_gen.imagegen`. In WorkBuddy, Claude Code, QoderWork, or another agent, the skill discovers tools, skills, plugins, MCP/connectors, and configured image models. A candidate must support prompt-to-image, reference-image editing, and explicit local output; otherwise the skill uses the `editppt image` CLI with default model `gpt-image-2.5-sunburst`. The CLI prefers local Codex OAuth (`~/.codex/auth.json`) and then OpenAI-compatible API configuration.
 
 WorkBuddy ImageGen and QoderWork `/gen-image`/remix still require runtime verification of the reference-edit contract. Claude Code officially documents image understanding but no native generator/editor, so it normally needs an added image skill/plugin/MCP tool or the CLI fallback. A vision model that can only inspect images is not an image backend.
 

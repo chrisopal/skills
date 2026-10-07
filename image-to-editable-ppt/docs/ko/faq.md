@@ -8,7 +8,7 @@
 
 ## Q: 어떤 경우에 이 skill을 사용하지 말아야 하나요?
 
-Upstream은 더 가벼운 이미지 전용 편집의 예로 `gpt-image-2.5-sunburst`를 사용합니다. 페이지 이미지를 보내 필요한 부분을 수정한 이미지를 받되, 현재 도구에서 해당 모델을 제공하는지 먼저 확인하세요. 이 방식은 객체 수준 편집 가능한 PPT를 만들지 않으며 이 fork의 CLI 기본 모델 `gpt-image-2`도 바꾸지 않습니다.
+이미지만 간단히 편집하려면 `gpt-image-2.5-sunburst`에 페이지 이미지를 보내 필요한 부분을 수정한 이미지를 받으세요. 먼저 현재 도구에서 해당 모델을 제공하는지 확인하세요. 이 방식은 객체 수준 편집 가능한 PPT를 만들지 않습니다.
 
 또한 이 skill은 글, 보고서, 개요 또는 아이디어에서 새로운 PPT를 만드는 용도가 아닙니다. 그 역할은 [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill)이 담당합니다.
 
@@ -40,7 +40,7 @@ WorkBuddy, Claude Code, QoderWork 같은 Codex 외 환경은 먼저 자체 이�
 
 ## Q: 이미지 생성에는 무엇을 사용하나요? API key가 필요한가요?
 
-이미지 생성과 편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. 다른 agent는 원생 Tool, Skill, Plugin, MCP/Connector 또는 이미지 모델을 먼저 찾고 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 요구합니다. 이미지를 보기만 하는 기능은 backend가 아닙니다. 적합한 후보가 없으면 기본 모델 `gpt-image-2`의 `editppt image`를 사용하며, CLI는 로컬 Codex OAuth를 먼저 시도한 뒤 `~/.editppt/config.yaml`의 OpenAI-compatible API 설정을 읽습니다. Codex 회원은 일반적으로 API key가 필요 없고, 타사 폴백에는 base URL, 모델명, API key가 필요합니다.
+이미지 생성과 편집은 기본적으로 Codex 내장 `image_gen.imagegen`을 우선 사용합니다. 다른 agent는 원생 Tool, Skill, Plugin, MCP/Connector 또는 이미지 모델을 먼저 찾고 프롬프트 이미지 생성, 참조 이미지 편집, 명시적 로컬 출력을 요구합니다. 이미지를 보기만 하는 기능은 backend가 아닙니다. 적합한 후보가 없으면 기본 모델 `gpt-image-2.5-sunburst`의 `editppt image`를 사용하며, CLI는 로컬 Codex OAuth를 먼저 시도한 뒤 `~/.editppt/config.yaml`의 OpenAI-compatible API 설정을 읽습니다. Codex 회원은 일반적으로 API key가 필요 없고, 타사 폴백에는 base URL, 모델명, API key가 필요합니다.
 
 ## Q: skill을 최신 버전으로 업데이트하려면 어떻게 하나요?
 

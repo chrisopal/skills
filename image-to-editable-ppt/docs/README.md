@@ -39,7 +39,7 @@ Image to Editable PPT 是一个把图片、PDF、图片版 PPT 转成**对象级
 - 对象级重建：文字恢复为原生文本框，简单几何恢复为 PowerPoint 形状，复杂视觉元素保留为独立图片资产，三类对象可以分开调整。
 - 测量驱动的文字还原：通过 OCR 为每页生成文字标注（框坐标 + 字号 + 字号分组），模型按测量值还原文字，同级文字字号自动保持一致，参见[安装与配置](installation.md)的 OCR Token 一节。
 - 多页并行重建：多页输入由主 agent 分派给 page worker/subagent 并行处理；单页输入由主 agent 本地执行同一重建流程。
-- 图片生成和编辑优先调用 Codex 内置 `image_gen.imagegen`；其他智能体会发现并校验原生 Tool/Skill/Plugin/MCP/图片模型，必须支持文生图、参考图编辑和明确本地输出，否则使用默认 `gpt-image-2` 的 `editppt image`。
+- 图片生成和编辑优先调用 Codex 内置 `image_gen.imagegen`；其他智能体会发现并校验原生 Tool/Skill/Plugin/MCP/图片模型，必须支持文生图、参考图编辑和明确本地输出，否则使用默认 `gpt-image-2.5-sunburst` 的 `editppt image`。
 - `.pptx` 输入的页面备注会原样复制到输出对应页，不翻译、不摘要、不改写。
 - 页面顺序稳定：多张图片按提供顺序生成页面，PDF 和 `.pptx` 保留原页码顺序。
 
@@ -47,7 +47,7 @@ Image to Editable PPT 是一个把图片、PDF、图片版 PPT 转成**对象级
 
 **这不是轻量转换器。** 本 skill 采用多智能体协作复原流程，AI 会执行「重建 → 自我检查 → 页面内修正」的循环，可能进行多轮迭代，整体比较费 token。复原一个 10 页 PPT 有可能消耗完 ChatGPT 的 5 小时额度，单页复原时间可能在 10 分钟以上。**推荐 ChatGPT Pro 用户使用；Plus 用户请谨慎使用。**
 
-上游目前以 `gpt-image-2.5-sunburst` 举例说明更轻量的仅图片编辑方式：提交要修改的页面图片并获取修改后的图片；使用前确认当前工具实际提供该模型。这不产生对象级可编辑 PPT，也不改变本 fork 的 CLI 默认模型 `gpt-image-2`。
+若只需修改页面图片，可使用 `gpt-image-2.5-sunburst`：提交页面图片并获取修改后的图片；使用前确认当前工具实际提供该模型。这不产生对象级可编辑 PPT。
 
 **建议在 Codex 中使用「完全访问权限」执行本 skill**，否则 OCR、图片生成和子 agent 分派等步骤会被审批请求频繁打断，详见[安装与配置](installation.md)。
 

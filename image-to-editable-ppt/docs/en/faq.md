@@ -8,7 +8,7 @@ This skill uses a multi-agent reconstruction workflow. The AI runs a rebuild →
 
 ## When Should I Not Use This Skill?
 
-Upstream now illustrates the lighter image-only editing option with `gpt-image-2.5-sunburst`: submit the page image for targeted edits and receive a revised image; first verify that your current tool offers that model. This does not create object-level editable PPT and does not change this fork's CLI default, `gpt-image-2`.
+For lighter image-only editing, use `gpt-image-2.5-sunburst`: submit the page image for targeted edits and receive a revised image; first verify that your current tool offers that model. This does not create object-level editable PPT.
 
 This skill also does not generate a new presentation from an article, report, outline, or idea. That is the responsibility of [codex-ppt-skill](https://github.com/ningzimu/codex-ppt-skill).
 
@@ -40,7 +40,7 @@ Because results depend on the model's underlying reasoning and its ability to fo
 
 ## Which Image Generator Does It Use? Do I Need an API Key?
 
-Image generation and editing default to Codex's built-in `image_gen.imagegen`. Other agents first search native tools, skills, plugins, MCP/connectors, or image models and require prompt-to-image, reference-image editing, and explicit local output; vision-only capability is not an image backend. If none qualifies, the skill uses `editppt image` with default model `gpt-image-2`. The CLI tries local Codex OAuth first and then OpenAI-compatible API configuration from `~/.editppt/config.yaml`. Codex subscribers usually need no API key; third-party fallback needs a base URL, model name, and API key.
+Image generation and editing default to Codex's built-in `image_gen.imagegen`. Other agents first search native tools, skills, plugins, MCP/connectors, or image models and require prompt-to-image, reference-image editing, and explicit local output; vision-only capability is not an image backend. If none qualifies, the skill uses `editppt image` with default model `gpt-image-2.5-sunburst`. The CLI tries local Codex OAuth first and then OpenAI-compatible API configuration from `~/.editppt/config.yaml`. Codex subscribers usually need no API key; third-party fallback needs a base URL, model name, and API key.
 
 ## How Do I Update the Skill?
 

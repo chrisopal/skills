@@ -41,11 +41,11 @@ These parent-level rules are stated once here; page-level rules live in the refe
 
 ### Image Backend Selection
 
-This subsection is the authoritative execution policy for every page-local image job. The default GPT path is Codex `image_gen.imagegen`; the deterministic CLI fallback defaults to `gpt-image-2`. Before prepare, inspect the current runtime and choose exactly one contract:
+This subsection is the authoritative execution policy for every page-local image job. The default GPT path is Codex `image_gen.imagegen`; the deterministic CLI fallback defaults to `gpt-image-2.5-sunburst`. Before prepare, inspect the current runtime and choose exactly one contract:
 
 1. If the exact callable tool `image_gen.imagegen` exists, pass `--image-backend builtin-imagegen`. Do not probe it through Python or shell and do not replace it with a similarly named tool.
 2. Otherwise inspect the runtime's available native tools, installed skills/plugins, MCP tools, and configured image models as `references/agent-image-backends.md` requires. Select a candidate only if it supports all three capabilities: prompt-to-image generation, reference-image editing, and an explicit valid local output path. Image understanding or image input alone is not enough. Pass `--image-backend agent-image-tool`, then record the discovered runtime, tool, and model with `editppt run backend`.
-3. If no candidate passes, keep the default `editppt-image-cli` contract. Its image model defaults to `gpt-image-2`; it selects Codex OAuth first and a configured OpenAI-compatible API second.
+3. If no candidate passes, keep the default `editppt-image-cli` contract. Its image model defaults to `gpt-image-2.5-sunburst`; it selects Codex OAuth first and a configured OpenAI-compatible API second.
 
 For a multi-page run, a discovered agent-native tool is eligible only when page workers can call the same tool. Otherwise use the CLI contract so every page has the same executable backend. Run image jobs serially within each page.
 
@@ -185,4 +185,4 @@ editppt image extract-source --help
 editppt run backend --help
 ```
 
-Reload the agent's skill context after the update. Check that `run backend --help` still lists `agent-image-tool`; the visual QA and extraction help commands must also succeed. This refresh does not change the fork's CLI default model (`gpt-image-2`). An upstream-only reinstall is a separate choice that removes the local contracts; never make that choice implicitly during an update.
+Reload the agent's skill context after the update. Check that `run backend --help` still lists `agent-image-tool`; the visual QA and extraction help commands must also succeed. The CLI default is `gpt-image-2.5-sunburst`; preserve explicit user model settings when updating. An upstream-only reinstall is a separate choice that removes the local contracts; never make that choice implicitly during an update.

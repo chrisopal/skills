@@ -48,7 +48,7 @@ Key fields:
     "input_context_policy": "generate with prompt; before editing, view_image each input, then use prompt plus absolute local referenced_image_paths",
     "save_path_policy": "use only an explicit valid local result/output_hint path, then editppt image import; never scan for a newest file",
     "fallback_command": "editppt image generate/edit",
-    "fallback_model": "gpt-image-2",
+    "fallback_model": "gpt-image-2.5-sunburst",
     "fallback_order": ["codex-oauth", "openai-compatible-api"],
     "fallback_policy": {
       "on": [
@@ -75,7 +75,7 @@ For `backend_id: "builtin-imagegen"`, these fields are required and have fixed m
 - `input_context_policy`: requires `view_image` on every edit input before the built-in call; generation has no image input.
 - `save_path_policy`: permits only an explicit valid local result path, including `output_hint`, followed by `editppt image import`; newest-file directory scanning is forbidden.
 - `fallback_command`: the CLI surface used only after the fallback policy matches.
-- `fallback_model`: `gpt-image-2`, used by the CLI fallback; it is not passed to the built-in agent tool.
+- `fallback_model`: `gpt-image-2.5-sunburst`, used by the CLI fallback; it is not passed to the built-in agent tool.
 - `fallback_order`: the CLI's internal order, Codex OAuth before a configured OpenAI-compatible API.
 - `fallback_policy.on`: the only events that permit leaving the built-in tool: it is unavailable/not callable, its call errors, an edit input is unreadable, or it returns no valid local image.
 - `fallback_policy.missing_optional_parameters`: always `false`; absent optional controls never authorize fallback.
@@ -89,7 +89,7 @@ For `backend_id: "agent-image-tool"`, the contract records a tool discovered in 
 - `required_capabilities`: always `image-generation`, `reference-image-editing`, and `explicit-local-output`.
 - `discovery_policy.reject_if`: disqualifies vision-input-only/text-only models, generation-only tools that cannot edit a supplied reference, and tools that do not return or save an unambiguous local file.
 - `model`: the discovered native producer model when it is known; it remains `null` while discovery is unresolved.
-- `fallback_model`: always `gpt-image-2` for the built-in and agent-tool contracts. The exact Codex built-in tool does not accept a model parameter, so this field governs only the deterministic CLI fallback.
+- `fallback_model`: always `gpt-image-2.5-sunburst` for the built-in and agent-tool contracts. The exact Codex built-in tool does not accept a model parameter, so this field governs only the deterministic CLI fallback.
 - `fallback_order` / `fallback_policy`: the same deterministic CLI fallback order and allowed failure events used by the built-in contract. A missing required capability is treated as tool unavailability before any native call.
 
 The parent agent must follow `references/agent-image-backends.md` to resolve this contract. A model that can inspect an input image but cannot generate and reference-edit images is not a valid backend.

@@ -18,7 +18,9 @@ editppt image extract-source --help
 editppt run backend --help
 ```
 
-更新后重新加载技能上下文，确认 `run backend --help` 中仍有 `agent-image-tool`，且 visual-QA 与提取命令可用。API 凭据和 OCR Token 保存在技能目录之外的 `~/.editppt/config.yaml`。CLI 默认模型仍为 `gpt-image-2`。
+更新后重新加载技能上下文，确认 `run backend --help` 中仍有 `agent-image-tool`，且 visual-QA 与提取命令可用。API 凭据和 OCR Token 保存在技能目录之外的 `~/.editppt/config.yaml`。CLI 默认模型已升级为 `gpt-image-2.5-sunburst`；显式配置的模型不会被更新过程覆盖。
+
+模型默认值适用于 `editppt image` CLI。可用 `editppt config --model gpt-image-2.5-sunburst` 更新已保存的旧模型设置；单次请求可用 `--model gpt-image-2.5-flare`、受支持的日期快照或服务商命名空间（如 `openai/gpt-image-2.5-sunburst`）。显式 `--model` 优先于环境变量，环境变量优先于配置文件；显式选择 `gpt-image-2` 仍有效。`--quality` 默认保留 `auto`；新增 `xhigh`、`max` 仅适用于 2.5 Sunburst/Flare。原生图片工具使用其自身提供的模型，不向 Codex 内置工具传入 `model`。具体服务是否开放所选模型仍取决于账号和服务商。
 
 ## 从本地 checkout 安装
 
@@ -56,7 +58,7 @@ npx -y skills@latest add /path/to/chrisopal-skills/image-to-editable-ppt/skills/
 
 ## 图片 Backend 与第三方 API 配置
 
-图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。在 WorkBuddy、Claude Code、QoderWork 或其他智能体中，skill 会发现 Tool、Skill、Plugin、MCP/Connector 和已配置图片模型；候选必须同时支持文生图、参考图编辑和明确本地输出，否则使用默认模型为 `gpt-image-2` 的 `editppt image` CLI。CLI 优先使用本机 Codex OAuth（`~/.codex/auth.json`），不可用时再读取 OpenAI-compatible API 配置。
+图片生成和编辑默认优先调用 Codex 内置 `image_gen.imagegen`。在 WorkBuddy、Claude Code、QoderWork 或其他智能体中，skill 会发现 Tool、Skill、Plugin、MCP/Connector 和已配置图片模型；候选必须同时支持文生图、参考图编辑和明确本地输出，否则使用默认模型为 `gpt-image-2.5-sunburst` 的 `editppt image` CLI。CLI 优先使用本机 Codex OAuth（`~/.codex/auth.json`），不可用时再读取 OpenAI-compatible API 配置。
 
 WorkBuddy 的 ImageGen 和 QoderWork 的 `/gen-image`/remix 需要在安装环境中确认参考图编辑契约；Claude Code 官方只确认图片理解，因此通常需要额外图片 Skill/Plugin/MCP，或直接使用 CLI fallback。只会“看图”的视觉模型不能作为图片 backend。
 

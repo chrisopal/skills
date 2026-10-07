@@ -64,16 +64,19 @@ class EntryContractTest(unittest.TestCase):
                     self.assertIn(step, text)
                 self.assertNotIn("npx -y skills@latest add ningzimu/", text)
 
-    def test_lightweight_example_is_separate_from_the_fork_default(self):
+    def test_model_docs_match_default_and_keep_image_only_limit(self):
         with mock.patch.dict(os.environ, {}, clear=True):
-            self.assertEqual("gpt-image-2", image_gen._default_model())
+            self.assertEqual("gpt-image-2.5-sunburst", image_gen._default_model())
             self.assertEqual(runtime_env.DEFAULT_IMAGE_MODEL, image_gen._default_model())
         paths = [*READMES, *(d / "README.md" for d in DOC_DIRS), *(d / "faq.md" for d in DOC_DIRS)]
         for path in paths:
             with self.subTest(path=path):
                 examples = [line for line in path.read_text().splitlines() if "gpt-image-2.5-sunburst" in line]
-                self.assertEqual(1, len(examples))
-                self.assertIn("`gpt-image-2`", examples[0])
+                self.assertTrue(examples)
+                self.assertTrue(any(any(limit in line for limit in (
+                    "这不产生对象级可编辑 PPT", "does not create object-level editable PPT",
+                    "객체 수준 편집 가능한 PPT를 만들지 않습니다",
+                )) for line in examples))
 
     def test_portable_backend_and_visual_qa_stay_in_worker_contract(self):
         prompt = (SKILL / "prompts/page-worker.md").read_text()

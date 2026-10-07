@@ -871,7 +871,7 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertEqual("builtin-imagegen", backend["backend_id"])
             self.assertEqual("image_gen.imagegen", backend["tool_name"])
             self.assertIsNone(backend["model"])
-            self.assertEqual("gpt-image-2", backend["fallback_model"])
+            self.assertEqual("gpt-image-2.5-sunburst", backend["fallback_model"])
             self.assertEqual(
                 {"generate": ["prompt"], "edit": ["prompt", "referenced_image_paths"]},
                 backend["required_parameters"],
@@ -907,7 +907,7 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertEqual("agent-image-tool", backend["backend_id"])
             self.assertEqual("auto", backend["runtime_id"])
             self.assertIsNone(backend["model"])
-            self.assertEqual("gpt-image-2", backend["fallback_model"])
+            self.assertEqual("gpt-image-2.5-sunburst", backend["fallback_model"])
             self.assertEqual(
                 ["image-generation", "reference-image-editing", "explicit-local-output"],
                 backend["required_capabilities"],
@@ -1147,6 +1147,7 @@ class MultiAgentBackendTest(unittest.TestCase):
             self.assertEqual(0, result.returncode, result.stderr)
             deck = read_json(run_dir / "deck_manifest.json")
             self.assertEqual("editppt-image-cli", deck["image_backend"]["backend_id"])
+            self.assertEqual("gpt-image-2", deck["image_backend"]["model"])
             request = read_json(run_dir / "pages/page_002/page_request.json")
             self.assertEqual(deck["image_backend"], request["image_backend"])
 

@@ -1,6 +1,6 @@
 # 投标编制 Skill 套件
 
-**版本 1.11.0 · 2026-10-08 · 中文 · 16个业务技能 + 1个总控技能**
+**版本 1.12.0 · 2026-10-08 · 中文 · 16个业务技能 + 1个总控技能**
 
 新增宿主子Agent按章节并行编写、独立提案、限次重试、恢复与协调者版本合并；任务状态与实际Agent身份落盘，不能以配置保存冒充已并行执行。详见[并行章节写作](docs/PARALLEL_WRITING.md)。
 
@@ -86,4 +86,4 @@ python -m unittest discover -s tests -v
 
 ## 技术图工具与模板
 
-13按图型选择Draw.io、PlantUML或Mermaid，SVG/PNG独立选择；系统界面仍默认使用宿主生图Skill。工具发现、版本化导出、对话修改与布局模板见[DIAGRAM_TOOLS.md](docs/DIAGRAM_TOOLS.md)。本地运行工具不是新增Python依赖；安装与宿主能力需实际核验。
+13新增可选择的[enterprise-diagrams](../enterprise-diagrams/SKILL.md)独立 Skill：八类结构、六套主题、JSON可编辑源和SVG矢量输出；配置diagram_engine=blueprint，PNG使用宿主已有CairoSVG。保留Draw.io/PlantUML/Mermaid与auto路由，SVG/PNG独立选择；系统界面仍默认使用宿主生图Skill。工具发现、版本化导出、对话修改与布局模板见[DIAGRAM_TOOLS.md](docs/DIAGRAM_TOOLS.md)。本地运行工具不是新增Python依赖；安装与宿主能力需实际核验。

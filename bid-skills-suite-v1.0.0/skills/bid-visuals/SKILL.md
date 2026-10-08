@@ -2,7 +2,7 @@
 name: bid-visuals
 description: 制作说明方案的准确图表，确保每张图有任务、数据依据、正文对应和可编辑源。 适用于：架构图、流程图、网络图、实施计划图、配置示意、标书配图、数据图表。
 metadata:
-  version: 1.6.0
+  version: "1.12.0"
   language: zh-CN
   sequence: '13'
   suite: bid-skills-suite
@@ -25,7 +25,7 @@ metadata:
 
 输入：08图表任务、10确认方案、11正文、06格式与暗标限制、已授权图片或数据。
 
-先读取`work/writing-settings.json`中的`visuals`，缺省按[配置示例](assets/writing-settings.example.json)与当前用户指令。`enabled`决定可选配图，`diagram_engine`决定技术图引擎（默认auto按图型路由Draw.io、PlantUML或Mermaid），`diagram_format`决定SVG（默认）或PNG输出，`layout_template`决定auto、layered、swimlane、sequence或flow布局，`architecture_layers`可指定3—6层；`image_mode`决定宿主界面示意、概念生图或关闭；`tool/model`是可用工具和模型偏好，`style/aspect_ratio/max_images`是风格、比例与本次最多概念图数。仅保存偏好不算已生成；实际参数映射和不可用项按[写作流程](references/WRITING_WORKFLOW.md)记录。旧`diagram_renderer`仅在读写已保存设置时一次性迁移，新保存不接受该字段。必要图表与关闭配置冲突时保留待处理项，不能省略后宣称符合要求。
+先读取`work/writing-settings.json`中的`visuals`，缺省按[配置示例](assets/writing-settings.example.json)与当前用户指令。`enabled`决定可选配图，`diagram_engine`决定技术图引擎（默认auto按图型路由Draw.io、PlantUML或Mermaid），`diagram_format`决定SVG（默认）或PNG输出，`layout_template`决定auto、layered、flow、pipeline、swimlane、network、parallel、sequence或matrix布局，`architecture_layers`可指定1—12层；`image_mode`决定宿主界面示意、概念生图或关闭；`tool/model`是可用工具和模型偏好，`style/aspect_ratio/max_images`是风格、比例与本次最多概念图数。`diagram_engine=blueprint`选择新增 Enterprise Diagrams 参考版式；`diagram_theme`可选reference、blue、teal、green、slate、monochrome，按[图表规格](references/ENTERPRISE_DIAGRAMS.md)写入JSON图源并渲染。Draw.io保持可用，auto路由不变。仅保存偏好不算已生成；实际参数映射和不可用项按[写作流程](references/WRITING_WORKFLOW.md)记录。旧`diagram_renderer`仅在读写已保存设置时一次性迁移，新保存不接受该字段。必要图表与关闭配置冲突时保留待处理项，不能省略后宣称符合要求。
 
 上游技能：`bid-format-extraction, bid-outline-planning, bid-solution-design, bid-technical-writing`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
@@ -47,7 +47,7 @@ metadata:
 
 3. **步骤3**
 
-   技术图由`scripts/diagram_tools.py`驱动，使用[DIAGRAM_TOOLS.md](references/DIAGRAM_TOOLS.md)中的doctor、plan、render流程；不要在本技能中臆造命令行参数。auto按图型选择Draw.io、PlantUML或Mermaid，默认SVG输出；显式选用方式不可用时记录provider unavailable缺口，不擅自更换用户选择。保留引擎源和输出文件，并检查文字与连线。只有源码时状态为specified，实际渲染后才可标rendered；数据图表由给定数据生成并保留计算来源。
+   技术图由`scripts/diagram_tools.py`驱动，使用[DIAGRAM_TOOLS.md](references/DIAGRAM_TOOLS.md)中的doctor、plan、render流程；不要在本技能中臆造命令行参数。显式blueprint时加载独立enterprise-diagrams Skill，或用自带scripts/diagram_svg.py和[规格](references/ENTERPRISE_DIAGRAMS.md)，把实际主题/布局写入.diagram.json后调用同一render流程。auto按图型选择Draw.io、PlantUML或Mermaid，默认SVG输出；显式选用方式不可用时记录provider unavailable缺口，不擅自更换用户选择。保留引擎源和输出文件，并检查文字与连线。只有源码时状态为specified，实际渲染后才可标rendered；数据图表由给定数据生成并保留计算来源。
 
 4. **步骤4**
 

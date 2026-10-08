@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "style": {
     "background": "#ffffff",
     "text": "#0f172a",
@@ -70,6 +70,62 @@
       "kind": "flow",
       "engine": "mermaid",
       "guidance": "开始结束明确、条件出口有标签、异常路径完整；复杂多角色流程选泳道"
+    },
+    {
+      "id": "blueprint-layered",
+      "kind": "architecture",
+      "engine": "blueprint",
+      "layout": "layered",
+      "guidance": "保存可编辑JSON源，使用六套可选主题；主体来自当前设计，密集图按A4可读性拆分"
+    },
+    {
+      "id": "blueprint-flow",
+      "kind": "flow",
+      "engine": "blueprint",
+      "layout": "flow",
+      "guidance": "保存可编辑JSON源，使用六套可选主题；主体来自当前设计，密集图按A4可读性拆分"
+    },
+    {
+      "id": "blueprint-pipeline",
+      "kind": "pipeline",
+      "engine": "blueprint",
+      "layout": "pipeline",
+      "guidance": "保存可编辑JSON源，使用六套可选主题；主体来自当前设计，密集图按A4可读性拆分"
+    },
+    {
+      "id": "blueprint-swimlane",
+      "kind": "swimlane",
+      "engine": "blueprint",
+      "layout": "swimlane",
+      "guidance": "保存可编辑JSON源，使用六套可选主题；主体来自当前设计，密集图按A4可读性拆分"
+    },
+    {
+      "id": "blueprint-network",
+      "kind": "network",
+      "engine": "blueprint",
+      "layout": "network",
+      "guidance": "保存可编辑JSON源，使用六套可选主题；主体来自当前设计，密集图按A4可读性拆分"
+    },
+    {
+      "id": "blueprint-parallel",
+      "kind": "parallel",
+      "engine": "blueprint",
+      "layout": "parallel",
+      "guidance": "保存可编辑JSON源，使用六套可选主题；主体来自当前设计，密集图按A4可读性拆分"
+    },
+    {
+      "id": "blueprint-sequence",
+      "kind": "sequence",
+      "engine": "blueprint",
+      "layout": "sequence",
+      "guidance": "保存可编辑JSON源，使用六套可选主题；主体来自当前设计，密集图按A4可读性拆分"
+    },
+    {
+      "id": "blueprint-matrix",
+      "kind": "matrix",
+      "engine": "blueprint",
+      "layout": "matrix",
+      "guidance": "保存可编辑JSON源，使用六套可选主题；主体来自当前设计，密集图按A4可读性拆分"
     }
   ]
 }

@@ -9,17 +9,22 @@ import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+COMPANION_RESOURCES = {
+    'scripts/diagram_svg.py': 'scripts/diagram_svg.py',
+    'assets/diagram-themes.json': 'assets/diagram-themes.json',
+    'references/spec.md': 'docs/ENTERPRISE_DIAGRAMS.md',
+}
 
 # Keep standalone installations executable without referring to the suite checkout.
 DISTRIBUTED_SCRIPTS = {
-    'bid-visuals': ('diagram_tools.py',),
+    'bid-visuals': ('diagram_tools.py', 'diagram_svg.py'),
     'bid-source-intake': ('extract_sources.py', 'paddle_ocr.py'),
     'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
     'bid-project-profile': ('tender_router.py',),
     'bid-outline-planning': ('writing_checks.py', 'outline_view.py'),
     'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py'),
     'bid-document-layout': ('build_docx.py', 'convert_pdf.py'),
-    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py', 'diagram_tools.py'),
+    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py', 'diagram_tools.py', 'diagram_svg.py'),
 }
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
@@ -32,11 +37,11 @@ DISTRIBUTED_DOCS = {
     'bid-commercial-documents': ('SIMULATION_TESTING.md',),
     'bid-outline-planning': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md',),
     'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md', 'PARALLEL_WRITING.md'),
-    'bid-visuals': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'DIAGRAM_TOOLS.md'),
+    'bid-visuals': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'DIAGRAM_TOOLS.md', 'ENTERPRISE_DIAGRAMS.md'),
     'bid-document-layout': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'BID_LAYOUT_TEMPLATES.md'),
     'bid-review-remediation': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md'),
     'bid-export-acceptance': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md'),
-    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md', 'DIAGRAM_TOOLS.md', 'PARALLEL_WRITING.md'),
+    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md', 'DIAGRAM_TOOLS.md', 'ENTERPRISE_DIAGRAMS.md', 'PARALLEL_WRITING.md'),
 }
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
@@ -48,6 +53,9 @@ DISTRIBUTED_ASSET_DIRS = {
 
 
 def sync_standalone_resources(root=ROOT):
+    companion = root.parent / 'enterprise-diagrams'
+    for source, target in COMPANION_RESOURCES.items():
+        shutil.copyfile(companion / source, root / target)
     for directory in (root/'skills').iterdir():
         if (directory/'SKILL.md').is_file():
             shutil.copyfile(root/'scripts/validate_output.py', directory/'scripts/validate_output.py')
@@ -67,6 +75,9 @@ def sync_standalone_resources(root=ROOT):
     for skill_id in ('bid-technical-writing', 'bid-visuals', 'bid-orchestrator'):
         shutil.copyfile(root / 'assets/writing-settings.example.json',
                         root / 'skills' / skill_id / 'assets/writing-settings.example.json')
+    for skill_id in ('bid-visuals', 'bid-orchestrator'):
+        shutil.copyfile(root / 'assets/diagram-themes.json',
+                        root / 'skills' / skill_id / 'assets/diagram-themes.json')
     shutil.copyfile(root / 'registry.json', root / 'skills/bid-orchestrator/registry.json')
 
 

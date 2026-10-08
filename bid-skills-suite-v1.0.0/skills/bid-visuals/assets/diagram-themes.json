@@ -1,0 +1,40 @@
+{
+  "reference": {
+    "canvas": "#FFFFFF",
+    "text": "#17324D",
+    "muted": "#5C7188",
+    "header": "#FFFFFF",
+    "header_text": "#5C7188",
+    "grid": "#D8E1EA",
+    "group": "#C8D4DF",
+    "roles": {
+      "primary": {"fill": "#DAEFF1", "stroke": "#0F6C7A"},
+      "process": {"fill": "#DDE9F6", "stroke": "#2B5879"},
+      "data": {"fill": "#E7E0F2", "stroke": "#674591"},
+      "success": {"fill": "#E4F0DA", "stroke": "#507F45"},
+      "decision": {"fill": "#FFF3D2", "stroke": "#C68D00"},
+      "neutral": {"fill": "#EEF0F3", "stroke": "#637080"},
+      "warning": {"fill": "#FFF3D2", "stroke": "#C68D00"}
+    }
+  },
+  "blue": {
+    "canvas": "#FFFFFF", "text": "#23415D", "muted": "#61758A", "header": "#FFFFFF", "header_text": "#61758A", "grid": "#D8E6F5", "group": "#C4D9EF",
+    "roles": {"primary": {"fill": "#E2EEFF", "stroke": "#2563EB"}, "process": {"fill": "#E8F5FF", "stroke": "#087EA4"}, "data": {"fill": "#EDF3FF", "stroke": "#4169E1"}, "success": {"fill": "#E9F8F0", "stroke": "#25855A"}, "decision": {"fill": "#F1ECFF", "stroke": "#7651B5"}, "neutral": {"fill": "#F0F4F8", "stroke": "#61758A"}, "warning": {"fill": "#FFF5E6", "stroke": "#C56A00"}}
+  },
+  "teal": {
+    "canvas": "#FFFFFF", "text": "#234E51", "muted": "#5F7779", "header": "#FFFFFF", "header_text": "#5F7779", "grid": "#CCE7E5", "group": "#B9DEDB",
+    "roles": {"primary": {"fill": "#E0F3F2", "stroke": "#087F8C"}, "process": {"fill": "#E5F8F2", "stroke": "#00897B"}, "data": {"fill": "#E7F4F9", "stroke": "#137C8B"}, "success": {"fill": "#E7F7EC", "stroke": "#2E8B57"}, "decision": {"fill": "#F3EDFF", "stroke": "#7957B3"}, "neutral": {"fill": "#EFF7F7", "stroke": "#5E7778"}, "warning": {"fill": "#FFF5E7", "stroke": "#BF6B0A"}}
+  },
+  "green": {
+    "canvas": "#FFFFFF", "text": "#315237", "muted": "#637A68", "header": "#FFFFFF", "header_text": "#637A68", "grid": "#D5E8D8", "group": "#C6DEC9",
+    "roles": {"primary": {"fill": "#E6F3E8", "stroke": "#3A7D44"}, "process": {"fill": "#E1F4ED", "stroke": "#198754"}, "data": {"fill": "#EBF5F0", "stroke": "#3F836D"}, "success": {"fill": "#E5F7E8", "stroke": "#2E8B57"}, "decision": {"fill": "#F3ECFF", "stroke": "#7952A8"}, "neutral": {"fill": "#F0F6F1", "stroke": "#647A68"}, "warning": {"fill": "#FFF5E5", "stroke": "#BA700D"}}
+  },
+  "slate": {
+    "canvas": "#FFFFFF", "text": "#34445A", "muted": "#6A7787", "header": "#FFFFFF", "header_text": "#6A7787", "grid": "#DCE2E8", "group": "#CBD3DC",
+    "roles": {"primary": {"fill": "#E8EFF8", "stroke": "#476B9E"}, "process": {"fill": "#E9F3F3", "stroke": "#347C82"}, "data": {"fill": "#EDF1F8", "stroke": "#5D70A2"}, "success": {"fill": "#E9F4EC", "stroke": "#47805A"}, "decision": {"fill": "#F1ECF8", "stroke": "#776496"}, "neutral": {"fill": "#EFF2F5", "stroke": "#657486"}, "warning": {"fill": "#FFF3E5", "stroke": "#A87534"}}
+  },
+  "monochrome": {
+    "canvas": "#FFFFFF", "text": "#202124", "muted": "#5F6368", "header": "#FFFFFF", "header_text": "#5F6368", "grid": "#DADCE0", "group": "#BDBDBD",
+    "roles": {"primary": {"fill": "#F1F3F4", "stroke": "#3C4043"}, "process": {"fill": "#F5F5F5", "stroke": "#5F6368"}, "data": {"fill": "#FAFAFA", "stroke": "#70757A"}, "success": {"fill": "#F0F0F0", "stroke": "#4D5156"}, "decision": {"fill": "#F7F7F7", "stroke": "#666666"}, "neutral": {"fill": "#F8F9FA", "stroke": "#80868B"}, "warning": {"fill": "#F3F3F3", "stroke": "#6B6B6B"}}
+  }
+}

@@ -202,7 +202,8 @@ class WritingWorkspaceTest(unittest.TestCase):
             {"visuals": {"diagram_engine": "raster"}},
             {"visuals": {"diagram_format": "jpeg"}},
             {"visuals": {"layout_template": "grid"}},
-            {"visuals": {"architecture_layers": 2}},
+            {"visuals": {"architecture_layers": 0}},
+            {"visuals": {"diagram_theme": "unknown"}},
             {"visuals": {"style": "x" * 201}},
             {"visuals": {"api_key": "should-never-be-stored"}},
         ):
@@ -215,6 +216,20 @@ class WritingWorkspaceTest(unittest.TestCase):
             workspace.save_settings({"tone": "plain_chinese", "expected_revision": 0,
                                      "expected_sha256": ""})
         self.assertEqual(caught.exception.code, "stale_settings")
+
+    def test_blueprint_theme_and_eight_layers_persist_without_changing_drawio(self):
+        workspace = self._workspace()
+        initial = workspace.settings()
+        saved = workspace.save_settings({"visuals": {"diagram_engine": "blueprint",
+            "diagram_theme": "teal", "layout_template": "layered", "architecture_layers": 8},
+            "expected_revision": initial["revision"], "expected_sha256": initial["sha256"]})
+        self.assertEqual(self._workspace().settings(), saved)
+        self.assertEqual(saved["visuals"]["diagram_theme"], "teal")
+        self.assertEqual(saved["visuals"]["architecture_layers"], 8)
+        switched = workspace.save_settings({"visuals": dict(saved["visuals"], diagram_engine="drawio"),
+            "expected_revision": saved["revision"], "expected_sha256": saved["sha256"]})
+        self.assertEqual(switched["visuals"]["diagram_engine"], "drawio")
+        self.assertEqual(switched["visuals"]["diagram_theme"], "teal")
 
     def test_legacy_diagram_renderer_is_migrated_once_on_read(self) -> None:
         workspace = self._workspace()

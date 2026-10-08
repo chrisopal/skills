@@ -2,7 +2,7 @@
 name: bid-technical-writing
 description: 按明确任务卡编写有证据、有机制、有验收说明的技术正文与逐项响应。 适用于：编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。
 metadata:
-  version: 1.5.0
+  version: 1.6.0
   language: zh-CN
   sequence: '11'
   suite: bid-skills-suite
@@ -32,6 +32,10 @@ metadata:
 项目知识来源和读取方式见 [知识接入](references/KNOWLEDGE.md)。优先使用09已选材料，按章节读取 `artifacts/knowledge/index.json` 及相关 source/content 快照；把实际采用文件及哈希写入 inputs。宿主知识库只有真实检索并落盘后才成为可追溯输入；新增参考材料交09核验。搜索摘要截断时回读全文，Wiki 内容不能自动升级成资质、业绩或已实现能力。
 
 上游技能：`bid-requirements, bid-scoring, bid-compliance, bid-outline-planning, bid-evidence-matching, bid-solution-design`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
+
+## 分章并行
+
+多章写作先读[宿主子Agent分章写作](references/PARALLEL_WRITING.md)。协调者按设置用宿主实际子Agent工具派发，scripts/writing_batch.py提供版本任务与回收/合并校验；脚本不调用模型。作为章节子Agent时只处理当前任务上下文并写该次独立提案，禁止同时改总11或其他工作者文件。没有子Agent能力时如实记录串行；成功章保留，失败章限次重试。合并后的正文、追溯、响应和图文需对当前版本重新检查。
 
 ## 执行步骤
 

@@ -175,3 +175,13 @@ python -m unittest discover -s tests -v
 - 追溯与门禁：18条新正文引用重新逐项核对；其余127条引用对应同一未改正文并逐字回读，不视为本轮全书重新评审。当前11 Schema通过。旧13引用11过期被writing_checks正确拒绝，7项历史图缺CLI收据警告保留；没有只换哈希假刷新图/审核/导出。原167页完整模拟Word/PDF及原15/16状态未变，本轮不重新导出整标。
 - 展示：enterprise-ui-design报告实际1366/1440/1920/390无页面横向溢出，窄屏表格独立滚动；浅深主题、两章导航、追溯展开、无控制台错误及实际下载正文SHA一致通过。视觉复核93/100。没有应用API、数据库、项目依赖或部署变更；Python/静态HTML无npm构建任务。
 - 边界：真实模型失败重试的宿主路径未故意触发，限次/保留成功章由回归验证；WorkBuddy真实原生能力、Windows、完整新版本审核导出与真实业务验收NOT_RUN。所有客户原件、模拟材料、候选稿、运行记录、报告、截图、ZIP及校验清单留本机，不提交Git。
+
+
+## 2026-10-08：1.12.0 Enterprise Diagrams 参考版式与主题
+
+- 行为：新增独立 enterprise-diagrams Skill 与 blueprint 引擎，可编辑 JSON → 纯矢量 SVG，八种布局、六种主题、1—12层偏好。既有 Draw.io、PlantUML、Mermaid 和 auto 路由保留；系统界面继续用宿主生图 Skill。编辑器保存主题、切换 Draw.io 后禁用且保留该主题、刷新回读；保存设置自身不调用模型。总控/配图独立包包含同源渲染器、主题和规格，版本冻结/CAS/不覆盖输出仍生效。
+- 工程：suite `/opt/homebrew/bin/python3.13 -m unittest discover -s tests -q` 215项通过；enterprise-diagrams 同命令22项通过。check_suite为17 Skill/34 Schema/17独立ZIP及规范源同源检查通过；18 quick_validate、91 Python文件py_compile、编辑器node --check及diff检查通过。实际负例拒绝悬空边/节点重叠/损坏JSON/主题不匹配/源变更/缺PNG工具与过大栅格；rendered记录必须含实际状态、主题、布局与边安全字段，不能用只有哈希的收据冒充检查。审计文件不提供不可伪造的工具执行证明，视觉/业务验收另外记录。
+- 实际图形：11组结构和边界样例×6主题为66张SVG、11张PNG，覆盖分层、分支/合并、返回迭代、多行工艺、责任泳道、网络分区、并行汇聚、简单时序/自调用、矩阵、长中文/ASCII和十二层密集结构。修复分支及合并标签靠共有线段造成左右反置、网络相反边共路、泳道未贯通和标题被穿线、自调用多行标签压下一消息。独立5例几何与实际图片复核通过；最终时序问题再由主会话实际PNG/Word回看和回归修复。原始Draw.io32.3.0实际导出通过且源SHA不变，libavoid仍显式失败无发布。
+- 入稿：八类图形实际A4 Word/PDF样稿9页，8个标题、8张嵌入图/关系与当前PNG SHA一致，PDF每页有意义内容、8图均在页面内；全部9页实际字形与版式回看。宽工艺图原版本提示小字，采用四工序一行的分组版入稿；十二层图保留小字/超高拆图提示。DOCX SHA为55a5a949fb69b529d4f9d275d0f62a5ed7717c40b2e4517f6716afbeaee0cd41，PDF为7caa2adeda2aa07b28427425066d4c2267506668dd1fc24ae344c6c26f419174。使用内置LibreOffice；隔离字体配置初次缺中文字形，以项目内FONTCONFIG_FILE引用已有宋体/黑体目录后重新渲染，不安装字体、不改全局配置、不换桌面编译器。
+- 展示：enterprise-ui-design独立报告11导航/6主题实际SVG均加载，1440/1920/390无页面横向溢出，深浅主题及图源入口正常；窄屏导航从纵向占屏改成横向滚动。实际配图设置保存/重开、Draw.io切换回读、无浏览器错误通过；视觉复核94/100。安装symlink已检查；没有声称全新会话自动触发或跨宿主模型验证。
+- 边界：纯Skill源码和本机隔离样稿；原青草沙完整模拟投标及并行写作候选未覆盖。WorkBuddy真实加载/模型、Windows字体/Word、复杂嵌套alt/loop、正式投标业务验收NOT_RUN；复杂结构保留PlantUML/Draw.io处理。无新依赖、应用API、数据库、部署或应用前端变更，故应用npm lint/build与后端集成不适用。图源/媒体/报告/Word/PDF/收据/ZIP和一次性证据仅在本机output/tender-analysis/enterprise-diagrams-20261008。

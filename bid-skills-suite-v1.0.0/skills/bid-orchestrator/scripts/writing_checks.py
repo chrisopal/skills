@@ -21,7 +21,7 @@ def inside(project, path):
     return target
 
 
-_RENDER_ENGINES = {'drawio': '.drawio', 'plantuml': '.puml', 'mermaid': '.mmd'}
+_RENDER_ENGINES = {'drawio': '.drawio', 'plantuml': '.puml', 'mermaid': '.mmd', 'blueprint': '.diagram.json'}
 _RENDER_RECORD_FIELDS = {
     'engine', 'source_sha256', 'output_sha256', 'receipt_path', 'receipt_sha256',
     'base_source_sha256', 'cas_result',
@@ -45,7 +45,7 @@ def _check_render_record(project, figure, source, rendered, errors):
     if engine not in _RENDER_ENGINES:
         errors.append(figure_id + ': render_record.engine 无效')
     expected_suffix = _RENDER_ENGINES.get(engine)
-    if expected_suffix and source.suffix.lower() != expected_suffix:
+    if expected_suffix and not source.name.lower().endswith(expected_suffix):
         errors.append(figure_id + ': render_record.engine 与图源扩展名不一致')
     for field in ('source_sha256', 'output_sha256', 'receipt_sha256', 'base_source_sha256'):
         if not isinstance(record[field], str) or not _SHA256.fullmatch(record[field]):
@@ -89,6 +89,29 @@ def _check_render_record(project, figure, source, rendered, errors):
     for field, value in expected.items():
         if receipt_value.get(field) != value:
             errors.append(figure_id + ': render receipt 的 ' + field + ' 与记录不一致')
+    if receipt_value.get('state') != 'rendered':
+        errors.append(figure_id + ': render receipt 未记录实际渲染状态')
+    if engine == 'blueprint':
+        style = receipt_value.get('diagram_style')
+        try:
+            specification = json.loads(source.read_text(encoding='utf-8'))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            specification = None
+        if (not isinstance(style, dict) or not isinstance(specification, dict)
+                or style.get('theme') != specification.get('theme', 'reference')
+                or style.get('layout') != specification.get('layout')
+                or not isinstance(style.get('nodes'), list)
+                or not isinstance(style.get('edges'), list)
+                or not isinstance(specification.get('nodes'), list)
+                or not isinstance(specification.get('edges'), list)
+                or len(style['nodes']) != len(specification.get('nodes', []))
+                or len(style['edges']) != len(specification.get('edges', []))
+                or any(not isinstance(edge, dict) or edge.get('safe') is not True
+                       for edge in style['edges'])):
+            errors.append(figure_id + ': 新图表实际样式与JSON源不一致或缺失布局记录')
+        expected_theme = receipt_value.get('expected_theme')
+        if expected_theme is not None and (not isinstance(style, dict) or style.get('theme') != expected_theme):
+            errors.append(figure_id + ': 新图表实际主题与计划不一致')
 
 
 def check_project(project, outline_path, writing_path, visuals_path=None):
@@ -228,7 +251,8 @@ def check_project(project, outline_path, writing_path, visuals_path=None):
             errors.append(figure['id'] + ': 图表没有渲染文件')
         source = paths.get('source_path')
         rendered = paths.get('rendered_path')
-        native_source = source and source.suffix.lower() in {'.drawio', '.puml'}
+        native_source = source and (source.suffix.lower() in {'.drawio', '.puml'}
+                                    or source.name.lower().endswith('.diagram.json'))
         if (figure['state'] in {'rendered', 'reviewed'} and native_source
                 and not figure.get('render_record')):
             errors.append(figure['id'] + ': rendered/reviewed 的原生图源缺少 render_record')

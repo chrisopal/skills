@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "title": "企业数据平台交付链路",
+  "subtitle": "从业务入口到可审计交付的主路径",
+  "footer": "可编辑 JSON 源文件 · reference theme",
+  "layout": "layered",
+  "theme": "reference",
+  "width": 1200,
+  "nodes": [
+    {"id": "intake", "title": "需求接入", "description": "统一收集业务目标与边界", "row": 0, "col": 0, "role": "primary", "badge": "1"},
+    {"id": "model", "title": "业务建模", "description": "拆解流程、角色与数据对象", "row": 0, "col": 1, "role": "process", "badge": "2"},
+    {"id": "data", "title": "数据底座", "description": "指标、主数据与证据留痕", "row": 0, "col": 2, "role": "data", "badge": "3"},
+    {"id": "review", "title": "规则评审", "description": "发现冲突后回到建模阶段", "row": 0, "col": 3, "role": "decision", "shape": "diamond", "badge": "4"},
+    {"id": "delivery", "title": "交付运行", "description": "输出可验收的方案与记录", "row": 0, "col": 4, "role": "success", "badge": "5"}
+  ],
+  "edges": [
+    {"from": "intake", "to": "model", "label": "目标", "kind": "normal"},
+    {"from": "model", "to": "data", "label": "对象", "kind": "normal"},
+    {"from": "data", "to": "review", "label": "证据", "kind": "normal"},
+    {"from": "review", "to": "delivery", "label": "通过", "kind": "normal"},
+    {"from": "review", "to": "model", "label": "需修订", "kind": "feedback", "route": "left"}
+  ],
+  "groups": [
+    {"id": "governance", "title": "可审计交付域", "members": ["model", "data", "review", "delivery"], "kind": "zone", "role": "neutral"}
+  ]
+}

@@ -30,6 +30,7 @@ DEFAULT_SETTINGS = {
     "visuals": {
         "enabled": True,
         "diagram_engine": "auto",
+        "diagram_theme": "reference",
         "diagram_format": "svg",
         "layout_template": "auto",
         "architecture_layers": None,
@@ -305,16 +306,18 @@ class WritingWorkspace:
         visuals = result["visuals"]
         if not isinstance(visuals.get("enabled"), bool):
             raise WorkspaceError("visuals.enabled 必须是布尔值", "invalid_input")
-        if visuals.get("diagram_engine") not in {"auto", "drawio", "plantuml", "mermaid"}:
+        if visuals.get("diagram_engine") not in {"auto", "drawio", "plantuml", "mermaid", "blueprint"}:
             raise WorkspaceError("visuals.diagram_engine 无效", "invalid_input")
+        if visuals.get("diagram_theme") not in {"reference", "blue", "teal", "green", "slate", "monochrome"}:
+            raise WorkspaceError("visuals.diagram_theme 无效", "invalid_input")
         if visuals.get("diagram_format") not in {"svg", "png"}:
             raise WorkspaceError("visuals.diagram_format 无效", "invalid_input")
-        if visuals.get("layout_template") not in {"auto", "layered", "swimlane", "sequence", "flow"}:
+        if visuals.get("layout_template") not in {"auto", "layered", "swimlane", "sequence", "flow", "pipeline", "network", "parallel", "matrix"}:
             raise WorkspaceError("visuals.layout_template 无效", "invalid_input")
         layers = visuals.get("architecture_layers")
         if (layers is not None and (isinstance(layers, bool) or not isinstance(layers, int)
-                                    or not 3 <= layers <= 6)):
-            raise WorkspaceError("visuals.architecture_layers 必须为空或 3 到 6 的整数", "invalid_input")
+                                    or not 1 <= layers <= 12)):
+            raise WorkspaceError("visuals.architecture_layers 必须为空或 1 到 12 的整数", "invalid_input")
         if visuals.get("image_mode") not in {"host", "disabled"}:
             raise WorkspaceError("visuals.image_mode 无效", "invalid_input")
         for field in ("tool", "model", "style"):

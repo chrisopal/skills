@@ -176,12 +176,68 @@ class WritingChecksTests(unittest.TestCase):
         result = self.check()
         self.assertTrue(result['structural_valid'], result['errors'])
 
+    def test_blueprint_actual_render_audited_and_theme_tamper_rejected(self):
+        import diagram_tools
+        from diagram_fixtures import corpus
+        source = self.project / 'assets/architecture.diagram.json'
+        rendered = self.project / 'assets/architecture.svg'
+        source.write_text(json.dumps(corpus()['layered-eight']))
+        receipt = diagram_tools.render(self.project, source, rendered, 'blueprint',
+                                       base_sha256=diagram_tools.digest(source))
+        receipt_path = rendered.with_name(rendered.name + '.receipt.json')
+        record = {key: receipt[key] for key in ('engine', 'source_sha256',
+                  'output_sha256', 'base_source_sha256', 'cas_result')}
+        record.update(receipt_path=str(receipt_path.relative_to(self.project)),
+                      receipt_sha256=diagram_tools.digest(receipt_path))
+        self.change(13, lambda d: d['figures'][0].update(
+            source_path='assets/architecture.diagram.json',
+            rendered_path='assets/architecture.svg', state='reviewed', render_record=record))
+        result = self.check()
+        self.assertTrue(result['structural_valid'], result['errors'])
+        spec = json.loads(source.read_text()); spec['theme'] = 'green'
+        source.write_text(json.dumps(spec))
+        result = self.check()
+        self.assertFalse(result['structural_valid'])
+        self.assertTrue(any('图源哈希' in error for error in result['errors']))
+        for field in ('nodes', 'edges'):
+            with self.subTest(field=field):
+                malformed = dict(spec)
+                malformed['theme'] = receipt['diagram_style']['theme']
+                malformed[field] = None
+                source.write_text(json.dumps(malformed))
+                result = self.check()
+                self.assertFalse(result['structural_valid'])
+                self.assertTrue(any('缺失布局记录' in error for error in result['errors']))
+        self.change(13, lambda d: d['figures'][0].pop('render_record'))
+        self.assertTrue(any('缺少 render_record' in error for error in self.check()['errors']))
+
     def test_native_source_tampering_invalidates_render_record(self):
         source, _, _ = self.add_audited_native_figure()
         source.write_text('<mxfile><diagram>tampered</diagram></mxfile>')
         result = self.check()
         self.assertFalse(result['structural_valid'])
         self.assertTrue(any('图源哈希' in error for error in result['errors']))
+
+    def test_blueprint_receipt_missing_layout_is_rejected_even_with_valid_hashes(self):
+        _, _, receipt = self.add_audited_native_figure()
+        native = self.project / 'assets/architecture.diagram.json'
+        native.write_text(json.dumps({'layout': 'layered', 'nodes': [], 'edges': []}))
+        value = json.loads(receipt.read_text())
+        value.update(engine='blueprint', source_path='assets/architecture.diagram.json',
+                     source_sha256=writing_checks.digest(native),
+                     base_source_sha256=writing_checks.digest(native))
+        receipt.write_text(json.dumps(value))
+        def change_record(data):
+            figure = data['figures'][0]
+            figure['source_path'] = 'assets/architecture.diagram.json'
+            figure['render_record'].update(engine='blueprint',
+                source_sha256=writing_checks.digest(native),
+                base_source_sha256=writing_checks.digest(native),
+                receipt_sha256=writing_checks.digest(receipt))
+        self.change(13, change_record)
+        result = self.check()
+        self.assertFalse(result['structural_valid'])
+        self.assertTrue(any('缺失布局记录' in error for error in result['errors']))
 
     def test_native_rendered_output_tampering_invalidates_render_record(self):
         _, rendered, _ = self.add_audited_native_figure()

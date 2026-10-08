@@ -166,7 +166,7 @@
               "alt_text",
               "evidence_ids",
               "state",
-            "rights"
+              "rights"
             ],
             "additionalProperties": false,
             "allOf": [
@@ -181,7 +181,7 @@
                     },
                     "source_path": {
                       "type": "string",
-                      "pattern": "\\.(drawio|puml)$"
+                      "pattern": "\\.(drawio|puml|diagram\\.json)$"
                     }
                   },
                   "required": [
@@ -248,7 +248,8 @@
           "enum": [
             "drawio",
             "plantuml",
-            "mermaid"
+            "mermaid",
+            "blueprint"
           ]
         },
         "source_sha256": {

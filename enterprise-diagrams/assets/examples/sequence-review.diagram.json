@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "title": "评审反馈时序",
+  "subtitle": "参与者均位于 row 0，边按消息顺序展开",
+  "layout": "sequence",
+  "theme": "teal",
+  "nodes": [
+    {"id": "client", "title": "业务方", "description": "提出问题", "row": 0, "col": 0, "role": "primary"},
+    {"id": "agent", "title": "方案智能体", "description": "编排解析与校验", "row": 0, "col": 1, "role": "process"},
+    {"id": "reviewer", "title": "评审人", "description": "确认边界", "row": 0, "col": 2, "role": "decision"}
+  ],
+  "edges": [
+    {"from": "client", "to": "agent", "label": "提交需求"},
+    {"from": "agent", "to": "agent", "label": "读取上下文", "kind": "dashed"},
+    {"from": "agent", "to": "reviewer", "label": "发送评审包"},
+    {"from": "reviewer", "to": "agent", "label": "修订意见", "kind": "feedback"},
+    {"from": "agent", "to": "client", "label": "交付结果"}
+  ]
+}

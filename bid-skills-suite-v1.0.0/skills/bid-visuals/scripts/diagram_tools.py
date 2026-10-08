@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import math
 import os
@@ -31,6 +32,9 @@ def digest(path):
 
 
 def command_for(engine):
+    if engine == 'blueprint':
+        script = Path(__file__).with_name('diagram_svg.py')
+        return [sys.executable, str(script)] if script.is_file() else None
     if engine == 'drawio':
         executable = shutil.which('drawio')
         if not executable:
@@ -53,38 +57,42 @@ def command_for(engine):
     if engine == 'mermaid':
         executable = shutil.which('mmdc')
         return [executable] if executable else None
-    raise DiagramError('绘图工具必须为 drawio、plantuml 或 mermaid')
+    raise DiagramError('绘图工具必须为 drawio、plantuml、mermaid 或 blueprint')
 
 
 def doctor():
     result = {}
-    for engine in ('drawio', 'plantuml', 'mermaid'):
+    for engine in ('drawio', 'plantuml', 'mermaid', 'blueprint'):
         command = command_for(engine)
         result[engine] = {'available': bool(command), 'command': command,
                           'verification': 'located_only'}
     result['host_image_skill'] = {'available': None, 'verification': 'discover_in_host'}
+    result['blueprint']['png_available'] = importlib.util.find_spec('cairosvg') is not None
     return result
 
 
 def plan(settings, kind, capabilities=None, complex_flow=False):
     visuals = settings.get('visuals', settings)
     requested = visuals.get('diagram_engine', 'auto')
-    if requested not in ('auto', 'drawio', 'plantuml', 'mermaid'):
+    if requested not in ('auto', 'drawio', 'plantuml', 'mermaid', 'blueprint'):
         raise DiagramError('diagram_engine 无效')
     output_format = visuals.get('diagram_format', 'svg')
     if output_format not in ('svg', 'png'):
         raise DiagramError('diagram_format 无效')
     template = visuals.get('layout_template', 'auto')
-    if template not in ('auto', 'layered', 'swimlane', 'sequence', 'flow'):
+    if template not in ('auto', 'layered', 'swimlane', 'sequence', 'flow', 'pipeline', 'network', 'parallel', 'matrix'):
         raise DiagramError('layout_template 无效')
     layers = visuals.get('architecture_layers')
-    if layers is not None and (type(layers) is not int or not 3 <= layers <= 6):
-        raise DiagramError('architecture_layers 须为空或 3—6 的整数')
+    if layers is not None and (type(layers) is not int or not 1 <= layers <= 12):
+        raise DiagramError('architecture_layers 须为空或 1—12 的整数')
+    theme = visuals.get('diagram_theme', 'reference')
+    if theme not in ('reference', 'blue', 'teal', 'green', 'slate', 'monochrome'):
+        raise DiagramError('diagram_theme 无效')
     if kind == 'sequence':
         preferred = 'plantuml'
     elif kind == 'flow' and not complex_flow:
         preferred = 'mermaid'
-    elif kind in ('architecture', 'network', 'flow', 'swimlane', 'configuration'):
+    elif kind in ('architecture', 'network', 'flow', 'swimlane', 'configuration', 'pipeline', 'parallel', 'matrix'):
         preferred = 'drawio'
     else:
         raise DiagramError('此路由仅处理技术结构图；界面示意由宿主生图 Skill 执行')
@@ -97,9 +105,14 @@ def plan(settings, kind, capabilities=None, complex_flow=False):
     if template == 'auto':
         template = {'architecture': 'layered', 'sequence': 'sequence',
                     'swimlane': 'swimlane'}.get(kind, 'flow')
+        if requested == 'blueprint' and kind in ('network', 'configuration'):
+            template = 'network' if kind == 'network' else 'matrix'
+        if requested == 'blueprint' and kind in ('pipeline', 'parallel', 'matrix'):
+            template = kind
     return {'engine': available or candidates[0], 'requested_engine': requested,
             'preferred_engine': preferred, 'format': output_format,
             'layout_template': template,
+            'diagram_theme': theme,
             'architecture_layers': layers,
             'status': 'planned' if available else 'blocked',
             'fallback_reason': (f'{preferred} 未安装，auto 选择 {available}'
@@ -189,7 +202,8 @@ def validate_image(path, engine):
         raise DiagramError('输出仅支持 SVG 或 PNG')
 
 
-def render(project, source, out, engine, *, layout='none', base_sha256=None, timeout=60):
+def render(project, source, out, engine, *, layout='none', base_sha256=None, timeout=60,
+           expected_theme=None):
     project = Path(project).resolve()
     source, out = inside(project, source), inside(project, out)
     receipt_path = out.with_name(out.name + '.receipt.json')
@@ -197,8 +211,8 @@ def render(project, source, out, engine, *, layout='none', base_sha256=None, tim
         raise DiagramError('拒绝覆盖已有图表或调用记录，请使用新版本文件名')
     if not source.is_file():
         raise DiagramError('图源不存在')
-    extensions = {'drawio': '.drawio', 'plantuml': '.puml', 'mermaid': '.mmd'}
-    if engine not in extensions or source.suffix != extensions[engine]:
+    extensions = {'drawio': '.drawio', 'plantuml': '.puml', 'mermaid': '.mmd', 'blueprint': '.diagram.json'}
+    if engine not in extensions or not source.name.endswith(extensions[engine]):
         raise DiagramError('工具与图源扩展名不匹配')
     if out.suffix not in ('.svg', '.png'):
         raise DiagramError('输出仅支持 SVG 或 PNG')
@@ -224,8 +238,27 @@ def render(project, source, out, engine, *, layout='none', base_sha256=None, tim
         snapshot.write_bytes(source.read_bytes())
         if digest(snapshot) != before:
             raise DiagramError('读取图源时版本改变，拒绝渲染')
+        source_style = None
+        if engine == 'blueprint':
+            try:
+                source_style = json.loads(snapshot.read_text(encoding='utf-8'))
+            except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise DiagramError('图源不是有效的UTF-8 JSON') from exc
+            if not isinstance(source_style, dict):
+                raise DiagramError('图源必须为JSON对象')
+            if expected_theme is not None and expected_theme not in (
+                    'reference', 'blue', 'teal', 'green', 'slate', 'monochrome'):
+                raise DiagramError('计划主题无效')
+            if expected_theme is not None and source_style.get('theme', 'reference') != expected_theme:
+                raise DiagramError('图源主题与当前图表计划不一致，请保存新源或明确逐图覆盖')
+        elif expected_theme is not None:
+            raise DiagramError('expected_theme仅适用于新图表引擎')
         # Draw.io exports a copy; optional layout never mutates the retained source.
-        if engine == 'drawio':
+        if engine == 'blueprint':
+            vector_output = temporary if output_format == 'svg' else Path(folder) / 'vector.svg'
+            command += ['--source', str(snapshot), '--out', str(vector_output)]
+            payload = None
+        elif engine == 'drawio':
             command += ['-x', '-f', output_format, '-e', '-b', '24', '--disable-update',
                         '--theme', 'light', '-o', str(temporary)]
             if layout != 'none':
@@ -255,9 +288,44 @@ def render(project, source, out, engine, *, layout='none', base_sha256=None, tim
             raise DiagramError(f'{engine} 渲染超时，未发布图表') from exc
         if completed.returncode:
             # Full logs remain the host's responsibility; do not print source or environment.
+            if engine == 'blueprint':
+                detail = completed.stderr.decode('utf-8', errors='replace').strip().splitlines()
+                reason = detail[-1][-300:] if detail else '没有返回错误原因'
+                raise DiagramError(f'新图表渲染失败：{reason}')
             raise DiagramError(f'{engine} 渲染失败，退出码 {completed.returncode}')
         if engine == 'plantuml':
             temporary.write_bytes(completed.stdout)
+        style_metadata = None
+        raster_command = None
+        if engine == 'blueprint':
+            try:
+                style_metadata = json.loads(completed.stdout)
+            except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+                raise DiagramError('新图表引擎未返回有效布局记录') from exc
+            if (not isinstance(style_metadata, dict)
+                    or style_metadata.get('theme') != source_style.get('theme', 'reference')
+                    or style_metadata.get('layout') != source_style.get('layout')
+                    or not isinstance(style_metadata.get('nodes'), list)
+                    or not isinstance(style_metadata.get('edges'), list)
+                    or any(not isinstance(edge, dict) or edge.get('safe') is not True
+                           for edge in style_metadata['edges'])):
+                raise DiagramError('新图表引擎布局记录不完整或存在不安全连线')
+            if output_format == 'png':
+                width, height = style_metadata.get('width'), style_metadata.get('height')
+                if (not isinstance(width, (int, float)) or not isinstance(height, (int, float))
+                        or not math.isfinite(width) or not math.isfinite(height)
+                        or width <= 0 or height <= 0 or width * height * 16 > 64 * 1024 * 1024):
+                    raise DiagramError('图表过大，PNG像素超出64MiB校验限额；请拆图或输出SVG')
+                if importlib.util.find_spec('cairosvg') is None:
+                    raise DiagramError('PNG需要宿主已有CairoSVG；保留JSON源，可改用SVG')
+                raster_command = [sys.executable, '-m', 'cairosvg', str(vector_output),
+                                  '-f', 'png', '-s', '2', '-o', str(temporary)]
+                try:
+                    raster = subprocess.run(raster_command, capture_output=True, timeout=timeout)
+                except subprocess.TimeoutExpired as exc:
+                    raise DiagramError('新图表PNG转换超时，未发布图表') from exc
+                if raster.returncode:
+                    raise DiagramError('新图表PNG转换失败，未发布图表')
         if digest(source) != before:
             raise DiagramError('渲染期间图源改变，拒绝发布过期图表')
         validate_image(temporary, engine)
@@ -270,6 +338,11 @@ def render(project, source, out, engine, *, layout='none', base_sha256=None, tim
                    'output_sha256': digest(temporary),
                    'created_at': datetime.now(timezone.utc).isoformat(),
                    'visual_review': 'NOT_RUN'}
+        if style_metadata is not None:
+            receipt['diagram_style'] = style_metadata
+            receipt['expected_theme'] = expected_theme
+        if raster_command is not None:
+            receipt['raster_command'] = raster_command
         # Use exclusive creation to protect another renderer publishing the same filename.
         published = False
         receipt_created = False
@@ -303,10 +376,11 @@ def main():
     rendering.add_argument('--project', type=Path, required=True)
     rendering.add_argument('--source', type=Path, required=True)
     rendering.add_argument('--out', type=Path, required=True)
-    rendering.add_argument('--engine', choices=('drawio', 'plantuml', 'mermaid'), required=True)
+    rendering.add_argument('--engine', choices=('drawio', 'plantuml', 'mermaid', 'blueprint'), required=True)
     rendering.add_argument('--layout', default='none')
     rendering.add_argument('--base-sha256', required=True)
     rendering.add_argument('--timeout', type=int, default=60)
+    rendering.add_argument('--expected-theme', choices=('reference','blue','teal','green','slate','monochrome'))
     args = parser.parse_args()
     try:
         if args.action == 'doctor':
@@ -316,7 +390,8 @@ def main():
             result = plan(settings, args.kind, complex_flow=args.complex_flow)
         else:
             result = render(args.project, args.source, args.out, args.engine,
-                            layout=args.layout, base_sha256=args.base_sha256, timeout=args.timeout)
+                            layout=args.layout, base_sha256=args.base_sha256, timeout=args.timeout,
+                            expected_theme=args.expected_theme)
     except (DiagramError, OSError, ValueError) as exc:
         print(json.dumps({'error': str(exc)}, ensure_ascii=False))
         return 1

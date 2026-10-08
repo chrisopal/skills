@@ -2,7 +2,7 @@
 name: bid-technical-writing
 description: 按明确任务卡编写有证据、有机制、有验收说明的技术正文与逐项响应。 适用于：编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。
 metadata:
-  version: 1.6.0
+  version: "1.12.0"
   language: zh-CN
   sequence: '11'
   suite: bid-skills-suite
@@ -45,7 +45,7 @@ metadata:
 
 可用`scripts/writing_workspace.py --project /absolute/project --port 8767`打开本地Markdown编辑界面，保存并重开核对。它不调用模型、不自动采纳正文；并行生成采用独立章节提案和一个合并者，共享正文保存必须检查版本/哈希。已有Word/PDF不会随编辑自动更新，需生成新版本。
 
-配图需求同时读取写作设置的`visuals`，将图型、风格、比例及数量偏好交13；示例见[写作设置](assets/writing-settings.example.json)。编辑器与章节报告按父子关系展示目录；报告可用`render_writing_report.py`从当前产物生成，不以模板空值或旧文档证明已生成。
+配图需求同时读取写作设置的`visuals`，将图型、风格、比例及数量偏好交13；用户选blueprint时将diagram_theme与layout_template交13，调用独立enterprise-diagrams参考版式，保留Draw.io可选路径；示例见[写作设置](assets/writing-settings.example.json)。编辑器与章节报告按父子关系展示目录；报告可用`render_writing_report.py`从当前产物生成，不以模板空值或旧文档证明已生成。
 
 写软件核心功能时检查是否需要界面设计示意及功能架构图；明确区分生成原型与真实产品截图。将本章操作、页面、流程和边界交13，由13按设置中的auto路由调用`scripts/diagram_tools.py`或当前宿主的实际生图能力，技术图默认输出SVG。完成写作测试时逐张打开实际图、核对章节预览及Word/PDF入稿，不以只保存生图配置或流程图代替所需界面。
 

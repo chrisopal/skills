@@ -65,17 +65,18 @@ python scripts/writing_workspace.py --project /absolute/project --port 8767
 | 字段 | 默认 | 执行含义 |
 |---|---|---|
 | visuals.enabled | true | 是否生成可选配图；关闭仍需标出招标强制图表缺口 |
-| diagram_engine | auto | 技术图引擎路由：分层架构、网络和复杂流程优先Draw.io；时序、泳道优先PlantUML；简单流程优先Mermaid。显式选择不可用时记录缺口 |
+| diagram_engine | auto | 可选blueprint调用独立Enterprise Diagrams参考SVG版式；保留drawio、plantuml、mermaid与auto。 技术图引擎路由：分层架构、网络和复杂流程优先Draw.io；时序优先PlantUML，泳道优先Draw.io；简单流程优先Mermaid。显式选择不可用时记录缺口 |
+| diagram_theme | reference | blueprint颜色主题：reference、blue、teal、green、slate、monochrome；其它引擎禁用主题控件但保留偏好 |
 | diagram_format | svg | 技术图输出格式，默认SVG；可选PNG。引擎与输出格式是两个独立偏好 |
-| layout_template | auto | 布局模板：auto、layered、swimlane、sequence或flow |
-| architecture_layers | null | 可选架构层数，仅接受3—6；留空由图表工具按任务决定 |
+| layout_template | auto | auto、layered、flow、pipeline、swimlane、network、parallel、sequence、matrix；新扩展布局供blueprint使用 |
+| architecture_layers | null | 可选架构层数，接受1—12；留空由图表工具按任务决定 |
 | image_mode | host | 界面示意、概念配图默认由Agent自带生图Skill驱动实际工具；disabled关闭生成式配图 |
 | tool / model | auto / 空 | 实际工具名与模型偏好；不得编造固定宿主接口或未返回的实际模型 |
 | style | 企业概念示意 | 传入图表规格和实际生成描述，服从06格式/暗标 |
 | aspect_ratio | 16:9 | 支持16:9、4:3、1:1；实际工具支持则传参，否则写入生成描述并检查成图比例 |
 | max_images | 2 | 本次最多1—8张概念图，不是需要用装饰图填满的数量指标 |
 
-13调用前读取当前设置、图任务和实际工具参数。技术图使用即将提供的`DIAGRAM_TOOLS.md`与`scripts/diagram_tools.py`：先执行doctor，再按任务执行plan/render；具体参数以该文档和宿主实际版本为准，不在技能中臆造命令行参数。工具或模型偏好不可用时标明原因；auto可按宿主能力选择，指定偏好不能悄悄替换后声称已采用。保存配置版本/哈希、实际工具、实际模型（未返回则未确认）、采用参数/未支持项及实际文件到13图表specification与执行记录。原文、企业私有材料向外部图像服务传输仍遵守已有授权；配置本身不是传输授权。无自动模型任务池，实际调用由Agent执行。
+13调用前读取当前设置、图任务和实际工具参数。技术图使用`DIAGRAM_TOOLS.md`与`scripts/diagram_tools.py`：先执行doctor，再按任务执行plan/render；具体参数以该文档和宿主实际版本为准，不在技能中臆造命令行参数。工具或模型偏好不可用时标明原因；auto可按宿主能力选择，指定偏好不能悄悄替换后声称已采用。保存配置版本/哈希、实际工具、实际模型（未返回则未确认）、采用参数/未支持项及实际文件到13图表specification与执行记录。原文、企业私有材料向外部图像服务传输仍遵守已有授权；配置本身不是传输授权。无自动模型任务池，实际调用由Agent执行。
 
 ## Skill驱动的宿主生图
 

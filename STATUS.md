@@ -1389,3 +1389,11 @@
 - 完成内容：总控/技术写作新增宿主原生章节派发、独立提案、并发槽位、实际Agent身份、限次失败重试、恢复检查点和串行CAS合并；ready候选支持宿主修改后显式重新回收并保留哈希历史。编辑器明确执行模式由总控读取，设置保存不启动任务；自包含规程/脚本同步11/17独立分发。
 - 验证：203项unittest，17 Skill/34 Schema及17独立ZIP分发一致性，17 quick_validate、70脚本编译/diff检查通过；Codex实际两个Agent并行编写青草沙9.3/9.4共18需求，合并14→16、35章正文未变，真实篡改拒绝/重开回读/正文Schema及四视口浅深HTML下载SHA通过。
 - 风险/后续：本轮只验两章候选；旧13输入过期被准确拒绝，原167页完整模拟标书及审核未变。WorkBuddy、Windows、真实模型失败重试及新整标审核导出未运行；无新增依赖/API/数据库/部署。源代码按仓库规则提交并推送当前codex/enterprise-dtx-skill-suite-runtime，不合并dev/main；客户文件和生成证据留本地。
+
+
+## 2026-10-08 — Enterprise Diagrams 独立Skill与投标主题配置
+
+- 完成内容：新增enterprise-diagrams纯JSON/SVG渲染、八类布局和六种主题；bid-skills-suite-v1.0.0升级1.12.0，blueprint引擎/主题/1—12层配置、同源独立分发与实际成图审计，保留Draw.io和既有auto路径。修复分支/合并标注归属、泳道标题/贯通及多行自调用压线。
+- 验证：215项套件、22项渲染器测试；17 Skill/34 Schema/17ZIP及规范源一致性、18 quick_validate、91 Python编译、JS语法/diff通过。66 SVG/11 PNG、11组边界与6主题、真实Draw.io导出及拒绝负例通过；八类图实际9页A4 Word/PDF、8图媒体关系/哈希/页面内边界与逐页字形回看通过。报告1440/1920/390、主题/导航、设置保存刷新和无浏览器错误通过。
+- 提交范围：只包括独立Skill、套件源码/模板/规程/测试与本条记录，按仓库规则提交推送当前codex/enterprise-dtx-skill-suite-runtime，不合并dev/main；生成媒体、客户文件、样稿和一次性证据留本地。
+- 风险/后续：WorkBuddy真实宿主、Windows Word/字体、复杂嵌套时序与正式业务验收未运行；密集图明确拆图提示。无新增依赖/API/数据库/部署或应用前端改动。已有用户改动保留。

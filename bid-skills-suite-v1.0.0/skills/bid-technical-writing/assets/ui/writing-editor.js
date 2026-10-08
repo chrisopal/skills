@@ -16,7 +16,7 @@
   var settingsSaveButton = document.getElementById("settings-save-button");
   var errorBanner = document.getElementById("error-banner");
   var saveState = document.getElementById("save-state");
-  var visualFieldIds = ["diagram-engine-setting", "diagram-format-setting", "layout-template-setting",
+  var visualFieldIds = ["diagram-engine-setting", "diagram-theme-setting", "diagram-format-setting", "layout-template-setting",
     "architecture-layers-setting", "image-mode-setting", "visual-tool-setting",
     "visual-model-setting", "visual-style-setting", "visual-aspect-ratio-setting",
     "visual-max-images-setting"];
@@ -40,6 +40,9 @@
       var isVisualField = visualFieldIds.indexOf(field.id) !== -1;
       field.disabled = busy || (isVisualField && !document.getElementById("visuals-enabled-setting").checked);
     });
+    document.getElementById("diagram-theme-setting").disabled = busy ||
+      !document.getElementById("visuals-enabled-setting").checked ||
+      document.getElementById("diagram-engine-setting").value !== "blueprint";
     Array.prototype.forEach.call(document.querySelectorAll(".chapter-link, .chapter-toggle"), function (button) {
       button.disabled = busy;
     });
@@ -48,7 +51,8 @@
   function updateVisualFieldState() {
     var enabled = document.getElementById("visuals-enabled-setting").checked;
     visualFieldIds.forEach(function (id) {
-      document.getElementById(id).disabled = !enabled || settingsSaveButton.disabled;
+      document.getElementById(id).disabled = !enabled || settingsSaveButton.disabled ||
+        (id === "diagram-theme-setting" && document.getElementById("diagram-engine-setting").value !== "blueprint");
     });
   }
 
@@ -333,6 +337,7 @@
     document.getElementById("max-parallel-setting").value = text(settings.max_parallel || 1);
     document.getElementById("visuals-enabled-setting").checked = visuals.enabled !== false;
     document.getElementById("diagram-engine-setting").value = text(visuals.diagram_engine || "auto");
+    document.getElementById("diagram-theme-setting").value = text(visuals.diagram_theme || "reference");
     document.getElementById("diagram-format-setting").value = text(visuals.diagram_format || "svg");
     document.getElementById("layout-template-setting").value = text(visuals.layout_template || "auto");
     document.getElementById("architecture-layers-setting").value = visuals.architecture_layers == null ? "" : text(visuals.architecture_layers);
@@ -410,6 +415,7 @@
       max_parallel: Number(document.getElementById("max-parallel-setting").value),
       visuals: { enabled: document.getElementById("visuals-enabled-setting").checked,
         diagram_engine: document.getElementById("diagram-engine-setting").value,
+        diagram_theme: document.getElementById("diagram-theme-setting").value,
         diagram_format: document.getElementById("diagram-format-setting").value,
         layout_template: document.getElementById("layout-template-setting").value,
         architecture_layers: document.getElementById("architecture-layers-setting").value
@@ -435,6 +441,7 @@
   discardButton.addEventListener("click", discardCurrent);
   reloadButton.addEventListener("click", function () { if (!dirty || window.confirm("重载会丢弃当前未保存内容，继续吗？")) { delete unsavedBuffers[selectedId]; dirty = false; load(selectedId); } });
   document.getElementById("visuals-enabled-setting").addEventListener("change", updateVisualFieldState);
+  document.getElementById("diagram-engine-setting").addEventListener("change", updateVisualFieldState);
   settingsForm.addEventListener("submit", saveSettings);
   document.getElementById("theme-button").addEventListener("click", function () { document.documentElement.setAttribute("data-theme", document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"); });
   window.addEventListener("beforeunload", function (event) { if (dirty || saveInFlight) { event.preventDefault(); event.returnValue = ""; } });

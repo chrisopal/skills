@@ -2,6 +2,7 @@
 import json
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 import zipfile
@@ -11,6 +12,29 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class StandaloneWritingTests(unittest.TestCase):
+    def test_isolated_visual_and_orchestrator_packages_render_blueprint(self):
+        from diagram_fixtures import corpus
+        import hashlib
+        for number, skill in [(13, 'bid-visuals'), (17, 'bid-orchestrator')]:
+            with self.subTest(skill=skill), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                with zipfile.ZipFile(ROOT / f'installable-zips/{number:02d}-{skill}.zip') as archive:
+                    archive.extractall(root)
+                package = root / skill
+                project = root / 'project'; project.mkdir()
+                source = project / 'diagram.diagram.json'
+                source.write_text(json.dumps(corpus()['flow-branch']))
+                result = subprocess.run([sys.executable, str(package/'scripts/diagram_tools.py'),
+                    'render', '--project', str(project), '--source', source.name,
+                    '--engine', 'blueprint', '--out', 'figure.svg',
+                    '--base-sha256', hashlib.sha256(source.read_bytes()).hexdigest()],
+                    capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(json.loads(result.stdout)['diagram_style']['theme'], 'reference')
+                self.assertTrue((project/'figure.svg').is_file())
+                self.assertTrue((package/'assets/diagram-themes.json').is_file())
+                self.assertTrue((package/'references/ENTERPRISE_DIAGRAMS.md').is_file())
+
     def test_isolated_packages_coordinate_and_merge_chapter_proposals(self):
         for number, skill in [(11, 'bid-technical-writing'), (17, 'bid-orchestrator')]:
             with self.subTest(skill=skill), tempfile.TemporaryDirectory() as temp:

@@ -2,7 +2,7 @@
 name: bid-orchestrator
 description: 按任务范围调度16个业务技能，传递确切上下文、组织人工确认、识别变更和阻塞。 适用于：完整投标流程、启动编标、继续上次任务、安排技能、仅理解／仅评审、补遗影响分析。
 metadata:
-  version: 1.9.0
+  version: "1.12.0"
   language: zh-CN
   sequence: '17'
   suite: bid-skills-suite
@@ -33,7 +33,7 @@ metadata:
 
 - 读取本次宿主实际开放的工具。原文先原生解析；扫描件按 [OCR 配置](references/OCR_SETUP.md) 使用已配置的 PaddleOCR 服务，Key 只从环境读取。缺配置保留待补读页，不把脚本成功退出当完整识别。
 - 企业材料支持本地文件与宿主知识库检索。按 [知识接入](references/KNOWLEDGE.md) 运行 `scripts/knowledge.py add-local` 或保存实际宿主结果后 `import-host`，生成项目索引和 Wiki。继续任务先 `validate`；09选材、10方案、11写作读取确切快照，不凭聊天记忆重建企业事实。
-- 不假定宿主有某个固定知识库 API 或生图模型。工具不可用时明确缺口。技术图按`visuals.diagram_engine=auto`路由：分层架构、网络和复杂流程优先Draw.io，时序／泳道优先PlantUML，简单流程优先Mermaid，默认SVG输出；界面示意与概念图默认由当前Agent自带生图Skill调用实际工具，并保存图文件与来源说明。
+- 不假定宿主有某个固定知识库 API 或生图模型。工具不可用时明确缺口。技术图可配置`visuals.diagram_engine=blueprint`调用独立enterprise-diagrams参考版式，选择六套`diagram_theme`，由13保存JSON源并实际渲染；独立总控包自带同源渲染器和[规格](references/ENTERPRISE_DIAGRAMS.md)。Draw.io仍保留。按`visuals.diagram_engine=auto`路由：分层架构、网络和复杂流程优先Draw.io，时序／泳道优先PlantUML，简单流程优先Mermaid，默认SVG输出；界面示意与概念图默认由当前Agent自带生图Skill调用实际工具，并保存图文件与来源说明。
 - 调度13前读取`work/writing-settings.json`的`visuals`配图配置，按[写作流程](references/WRITING_WORKFLOW.md)核对工具可用性和实际参数。配置偏好不替代调用记录；关闭配图不能无声遗漏招标强制图表。目录展示按父子关系排序与展开，不更改原始强制格式。
 - 项目知识是候选资料，真实证照／业绩仍需完整原件。新的知识快照进入既有评审快照范围；输入变化后更新受影响阶段状态，不能沿用旧评审结论。
 

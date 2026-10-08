@@ -29,6 +29,18 @@ class DiagramToolsTests(unittest.TestCase):
         self.assertEqual(result['engine'], 'mermaid')
         self.assertTrue(result['fallback_reason'])
 
+    def test_blueprint_selection_keeps_theme_and_existing_auto_rules(self):
+        available = {name: {'available': True} for name in ('drawio', 'plantuml', 'mermaid', 'blueprint')}
+        for kind, layout in [('architecture', 'layered'), ('network', 'network'),
+                             ('flow', 'flow'), ('sequence', 'sequence'), ('swimlane', 'swimlane')]:
+            result = module.plan({'diagram_engine': 'blueprint', 'diagram_theme': 'green',
+                'architecture_layers': 8}, kind, available)
+            self.assertEqual(result['engine'], 'blueprint')
+            self.assertEqual(result['diagram_theme'], 'green')
+            self.assertEqual(result['layout_template'], layout)
+        self.assertEqual(module.plan({}, 'architecture', available)['engine'], 'drawio')
+        self.assertEqual(module.plan({'diagram_engine': 'drawio'}, 'architecture', available)['engine'], 'drawio')
+
     def test_render_publishes_valid_file_and_receipt_without_changing_source(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
@@ -103,7 +115,7 @@ class DiagramToolsTests(unittest.TestCase):
                 module.validate_image(target, 'drawio')
 
     def test_invalid_layout_layers_and_missing_base_are_rejected(self):
-        for settings in ({'layout_template': 'bogus'}, {'architecture_layers': 2},
+        for settings in ({'layout_template': 'bogus'}, {'architecture_layers': 0},
                          {'architecture_layers': True}, {'architecture_layers': '4'}):
             with self.assertRaises(module.DiagramError):
                 module.plan(settings, 'architecture')

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Enterprise Diagrams"
+  short_description: "Generate editable enterprise diagrams as SVG"
+  brand_color: "#102A43"
+  default_prompt: "Use $enterprise-diagrams to render an editable enterprise diagram from a JSON specification."
+policy:
+  allow_implicit_invocation: true

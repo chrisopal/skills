@@ -5,7 +5,8 @@ import json,re,sys,zipfile
 from pathlib import Path
 import yaml
 from validate_output import validate
-from refresh_distribution import DISTRIBUTED_SCRIPTS, DISTRIBUTED_DOCS, DISTRIBUTED_ASSET_DIRS
+from refresh_distribution import (DISTRIBUTED_SCRIPTS, DISTRIBUTED_DOCS,
+                                  DISTRIBUTED_ASSET_DIRS, COMPANION_RESOURCES)
 ROOT=Path(__file__).resolve().parents[1]
 
 def check_installable_zips(root, registry):
@@ -80,6 +81,16 @@ def check(root=ROOT):
         if not local.is_file() or local.read_bytes()!=writing_schema.read_bytes():
             errors.append(skill_id+': 独立写作校验契约缺失或不一致')
     errors.extend(check_installable_zips(root,registry))
+    companion = root.parent/'enterprise-diagrams'
+    if companion.is_dir():
+        for source, target in COMPANION_RESOURCES.items():
+            canonical, local = companion/source, root/target
+            if not local.is_file() or local.read_bytes()!=canonical.read_bytes():
+                errors.append('enterprise-diagrams规范源与分发副本不一致 '+target)
+    for skill_id in ('bid-visuals', 'bid-orchestrator'):
+        local = root/'skills'/skill_id/'assets/diagram-themes.json'
+        if not local.is_file() or local.read_bytes()!=(root/'assets/diagram-themes.json').read_bytes():
+            errors.append(skill_id+': 颜色主题资源缺失或不一致')
     settings_example = root/'assets/writing-settings.example.json'
     for skill_id in ('bid-technical-writing', 'bid-visuals', 'bid-orchestrator'):
         local = root/'skills'/skill_id/'assets/writing-settings.example.json'

@@ -38,7 +38,7 @@
             <select id="tone-setting"><option value="plain_chinese">平实中文</option><option value="formal_chinese">正式中文</option></select>
             <label for="target-words-setting">目标字数（可选）</label>
             <input id="target-words-setting" type="number" min="1" step="1" inputmode="numeric">
-            <label for="execution-mode-setting">执行模式</label>
+            <label for="execution-mode-setting">章节执行模式</label>
             <select id="execution-mode-setting"><option value="sequential">顺序</option><option value="parallel">并行</option></select>
             <label for="max-parallel-setting">最大并行数</label>
             <select id="max-parallel-setting"><option value="1">1</option><option value="2">2</option></select>
@@ -65,7 +65,7 @@
             <select id="visual-aspect-ratio-setting"><option value="16:9">16:9</option><option value="4:3">4:3</option><option value="1:1">1:1</option></select>
             <label for="visual-max-images-setting">每次最多生图数</label>
             <input id="visual-max-images-setting" type="number" min="1" max="8" step="1" value="2" inputmode="numeric">
-            <p class="settings-guidance">技术图默认自动选择引擎并输出 SVG：分层架构/网络/复杂流程优先 Draw.io，时序优先 PlantUML、泳道优先 Draw.io，简单流程优先 Mermaid。界面示意默认调用当前宿主实际生图能力；配置保存后仍需按图任务执行并记录结果。</p>
+            <p class="settings-guidance">总控读取执行设置后按章派发，子Agent各自保存草稿，由总控统一合并；保存设置本身不启动写作。技术图默认自动选择引擎并输出 SVG：分层架构/网络/复杂流程优先 Draw.io，时序优先 PlantUML、泳道优先 Draw.io，简单流程优先 Mermaid。界面示意默认调用当前宿主实际生图能力；配置保存后仍需按图任务执行并记录结果。</p>
             <button id="settings-save-button" class="button button-secondary" type="submit">保存并重载设置</button>
           </form>
         </details>

@@ -17,9 +17,9 @@ DISTRIBUTED_SCRIPTS = {
     'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
     'bid-project-profile': ('tender_router.py',),
     'bid-outline-planning': ('writing_checks.py', 'outline_view.py'),
-    'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py', 'outline_view.py', 'render_writing_report.py'),
+    'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py'),
     'bid-document-layout': ('build_docx.py', 'convert_pdf.py'),
-    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py', 'diagram_tools.py'),
+    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py', 'diagram_tools.py'),
 }
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
@@ -30,13 +30,13 @@ DISTRIBUTED_DOCS = {
     'bid-format-extraction': ('TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-evidence-matching': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'SIMULATION_TESTING.md'),
     'bid-commercial-documents': ('SIMULATION_TESTING.md',),
-    'bid-outline-planning': ('WRITING_WORKFLOW.md',),
-    'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md'),
-    'bid-visuals': ('WRITING_WORKFLOW.md', 'DIAGRAM_TOOLS.md'),
-    'bid-document-layout': ('WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md'),
-    'bid-review-remediation': ('WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md'),
-    'bid-export-acceptance': ('WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md'),
-    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md', 'DIAGRAM_TOOLS.md'),
+    'bid-outline-planning': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md',),
+    'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md', 'PARALLEL_WRITING.md'),
+    'bid-visuals': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'DIAGRAM_TOOLS.md'),
+    'bid-document-layout': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'BID_LAYOUT_TEMPLATES.md'),
+    'bid-review-remediation': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md'),
+    'bid-export-acceptance': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md'),
+    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md', 'DIAGRAM_TOOLS.md', 'PARALLEL_WRITING.md'),
 }
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),

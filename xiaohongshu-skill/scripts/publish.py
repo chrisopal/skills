@@ -18,12 +18,14 @@ from urllib.parse import urlsplit
 
 from ._utils import is_element_blocked
 from .client import CAPTCHA_URL_PATTERNS, DEFAULT_COOKIE_PATH, XiaohongshuClient
+from .selectors import get_selector_contract
 
 PUBLISH_URL = "https://creator.xiaohongshu.com/publish/publish?source=official"
 PUBLISH_TIMEZONE = timezone(timedelta(hours=8), name="Asia/Shanghai")
 PUBLISH_STATUS_CONFIRMED = "confirmed"
 PUBLISH_STATUS_SUBMITTED_UNCONFIRMED = "submitted_unconfirmed"
 PUBLISH_STATUS_FAILED = "failed"
+PUBLISH_STATUS_DRAFT_SAVED = "draft_saved"
 TITLE_LENGTH_WARNING_THRESHOLD = 20
 SCHEDULE_FORMAT = "%Y-%m-%d %H:%M"
 MIN_SCHEDULE_DELAY = timedelta(hours=1)
@@ -31,6 +33,21 @@ MAX_SCHEDULE_DELAY = timedelta(days=14)
 LOGIN_URL_MARKERS = ("/login", "passport", "signin")
 TRUSTED_CONFIRMATION_HOSTS = ("creator.xiaohongshu.com",)
 FAILED_DESTINATION_MARKERS = ("/error", "/404", "/500", "/maintenance")
+CONTENT_EDITOR_SELECTOR = get_selector_contract("publish.content_editor").primary
+VIDEO_COMPLETION_MARKER_SELECTORS = get_selector_contract(
+    "publish.video_completion_marker"
+).selectors
+COVER_TRIGGER_SELECTOR = get_selector_contract("publish.cover_trigger").primary
+COVER_EDIT_BUTTON_SELECTOR = get_selector_contract("publish.cover_edit_button").primary
+COVER_FILE_INPUT_SELECTOR = get_selector_contract("publish.cover_file_input").primary
+COVER_COMPLETE_BUTTON_SELECTOR = get_selector_contract(
+    "publish.cover_complete_button"
+).primary
+DRAFT_BOX_SELECTOR = get_selector_contract("publish.draft_box").primary
+DRAFT_SAVE_LABELS = frozenset(
+    get_selector_contract("publish.draft_save_control").selectors
+)
+ACCOUNT_HEADER_SELECTORS = get_selector_contract("publish.account_header").selectors
 
 
 @dataclass(frozen=True)
@@ -162,6 +179,174 @@ class PublishAction:
     def __init__(self, client: XiaohongshuClient):
         self.client = client
 
+    @staticmethod
+    def _normalize_editor_text(value: Any) -> str:
+        """Normalize browser line endings without rewriting body text."""
+        if not isinstance(value, str):
+            return ""
+        normalized = value.replace("\r\n", "\n").replace("\r", "\n")
+        return re.sub(r"\n+", "\n", normalized)
+
+    @staticmethod
+    def _compose_expected_body(content: str, tags: Optional[List[str]]) -> str:
+        """Build the exact body expected after deterministic hashtag append."""
+        body = content or ""
+        clean_tags = [tag.lstrip("#").strip() for tag in (tags or [])[:10]]
+        clean_tags = [tag for tag in clean_tags if tag]
+        if not clean_tags:
+            return body
+        suffix = " ".join(f"#{tag}" for tag in clean_tags)
+        return f"{body.rstrip(chr(10))}\n\n{suffix}" if body else suffix
+
+    @staticmethod
+    def _is_visible(locator) -> bool:
+        """Read visibility from a Playwright locator without trusting mocks."""
+        try:
+            return locator.count() > 0 and locator.first.is_visible() is True
+        except Exception:
+            return False
+
+    def _content_editor(self):
+        """Return the unique modern body editor, with legacy fallbacks."""
+        page = self.client.page
+        selectors = (
+            CONTENT_EDITOR_SELECTOR,
+            *get_selector_contract("publish.content_editor").fallbacks,
+        )
+        for selector in selectors:
+            try:
+                editor = page.locator(selector)
+                if editor.count() == 1:
+                    return editor.first
+                if editor.count() > 1 and selector == CONTENT_EDITOR_SELECTOR:
+                    # A body editor must be unambiguous.  Do not bind a title,
+                    # hidden editor, or stale draft node by guessing.
+                    continue
+            except Exception:
+                continue
+        return None
+
+    def _read_content(self) -> str:
+        """Read the body editor while preserving all non-newline characters."""
+        editor = self._content_editor()
+        if editor is None:
+            return ""
+        for reader in ("inner_text", "text_content", "input_value"):
+            try:
+                value = getattr(editor, reader)()
+                normalized = self._normalize_editor_text(value)
+                if normalized:
+                    return normalized
+            except Exception:
+                continue
+        return ""
+
+    def _video_completion_state(self, video_path: str) -> Dict[str, Any]:
+        """Return upload completion evidence from the current page."""
+        page = self.client.page
+        filename = os.path.basename(video_path)
+        uploader = None
+        try:
+            candidates = page.locator(
+                ".upload-content, .upload-video, [class*='video-upload'], [class*='upload-video']"
+            ).filter(has_text=filename)
+            candidate_count = candidates.count()
+            if candidate_count != 1:
+                return {
+                    "complete": False,
+                    "markers": [],
+                    "busy": False,
+                    "terminal": False,
+                    "reason": "uploader_scope_missing_or_ambiguous",
+                }
+            uploader = candidates.first
+        except Exception:
+            return {
+                "complete": False,
+                "markers": [],
+                "busy": False,
+                "terminal": False,
+                "reason": "uploader_scope_unavailable",
+            }
+
+        # Prefer evidence inside the uploader containing this filename.  A
+        # stale preview or another upload on the page must not complete this
+        # upload by supplying an unrelated terminal marker.
+        scope = uploader
+        markers: list[str] = []
+        marker_queries = (
+            ("filename", filename),
+            ("reupload", VIDEO_COMPLETION_MARKER_SELECTORS[1]),
+            ("hd_check", VIDEO_COMPLETION_MARKER_SELECTORS[2]),
+        )
+        for name, query in marker_queries:
+            try:
+                locator = (
+                    scope.get_by_text(filename, exact=True)
+                    if name == "filename"
+                    else scope.locator(query)
+                )
+                if self._is_visible(locator):
+                    markers.append(name)
+            except Exception:
+                continue
+
+        # Terminal labels and the filename must belong to the current upload.
+        # Scope progress checks to the nearest uploader rather than treating a
+        # page-level busy widget as evidence that this video is still busy.
+        terminal = "reupload" in markers or "hd_check" in markers
+        busy = False
+        try:
+            scope_text = scope.inner_text()
+        except Exception:
+            scope_text = ""
+        if re.search(r"上传中|处理中|取消上传", scope_text or ""):
+            busy = True
+        if not busy:
+            for selector in (
+                '[aria-busy="true"]',
+                ".uploading",
+                ".upload-progress",
+                ".progress-bar",
+            ):
+                try:
+                    scoped = scope.locator(selector)
+                    if self._is_visible(scoped):
+                        busy = True
+                        break
+                except Exception:
+                    continue
+        return {
+            "complete": "filename" in markers and terminal and not busy,
+            "markers": markers,
+            "busy": busy,
+            "terminal": terminal,
+        }
+
+    def _check_account_binding(self, expected_account: Optional[str]) -> Dict[str, Any]:
+        """Verify an expected account from Creator Center header evidence."""
+        if not expected_account:
+            return {"expected_account": None, "account_ok": True}
+        page = self.client.page
+        observed: list[str] = []
+        try:
+            for selector in ACCOUNT_HEADER_SELECTORS:
+                loc = page.locator(selector)
+                for index in range(loc.count()):
+                    item = loc.nth(index)
+                    if item.is_visible() is True:
+                        text = item.inner_text()
+                        if isinstance(text, str):
+                            observed.append(text.strip())
+        except Exception:
+            pass
+        matched = any(expected_account == value for value in observed)
+        return {
+            "expected_account": expected_account,
+            "observed_account": expected_account if matched else None,
+            "account_ok": matched,
+        }
+
     def _navigate_to_publish(self):
         """导航到创作者中心发布页"""
         print("打开创作者中心发布页...", file=sys.stderr)
@@ -275,7 +460,7 @@ class PublishAction:
 
         print(f"全部 {len(valid_paths)} 张图片上传完成", file=sys.stderr)
 
-    def _upload_video(self, video_path: str):
+    def _upload_video(self, video_path: str, timeout: float = 600):
         """上传视频文件"""
         page = self.client.page
 
@@ -292,22 +477,22 @@ class PublishAction:
             upload_input = page.locator('input[type="file"]')
             upload_input.set_input_files(abs_path)
 
-        # 等待发布按钮可点击（视频处理完成标志），最多等 10 分钟
+        # The upload page now exposes completion through the filename and
+        # processing labels while the publish control lives in a closed-shadow
+        # xhs-publish-btn.  Never infer readiness from the old red button.
         print("等待视频处理完成...", file=sys.stderr)
-        btn_selector = '.publish-page-publish-btn button.bg-red'
-        for attempt in range(600):
-            try:
-                btn = page.locator(btn_selector)
-                if btn.count() > 0 and btn.is_visible():
-                    disabled = btn.get_attribute('disabled')
-                    if disabled is None:
-                        print("视频处理完成", file=sys.stderr)
-                        return
-            except Exception:
-                pass
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            state = self._video_completion_state(video_path)
+            if state["complete"]:
+                print(
+                    f"视频处理完成，依据: {','.join(state['markers'])}",
+                    file=sys.stderr,
+                )
+                return state
             time.sleep(1)
 
-        print("警告: 等待视频处理超时", file=sys.stderr)
+        raise TimeoutError(f"等待视频处理完成超时（{timeout:g} 秒）")
 
     def _fill_title(self, title: str):
         """填写标题"""
@@ -315,7 +500,6 @@ class PublishAction:
         try:
             title_input = page.locator('div.d-input input')
             title_input.first.fill(title)
-            time.sleep(random.uniform(0.5, 1.5))
 
             # 检查标题是否超长
             max_suffix = page.locator('div.title-container div.max_suffix')
@@ -331,25 +515,7 @@ class PublishAction:
         """填写正文"""
         page = self.client.page
 
-        # 尝试两种编辑器：Quill 或 contenteditable
-        content_el = None
-        try:
-            ql = page.locator('div.ql-editor')
-            if ql.count() > 0:
-                content_el = ql.first
-        except Exception:
-            pass
-
-        if content_el is None:
-            try:
-                # 通过 placeholder 查找
-                content_el = page.locator('p[data-placeholder*="输入正文描述"]').first
-                # 向上找 textbox 父元素
-                parent = page.locator('[role="textbox"]')
-                if parent.count() > 0:
-                    content_el = parent.first
-            except Exception:
-                pass
+        content_el = self._content_editor()
 
         if content_el is None:
             print("未找到正文输入框", file=sys.stderr)
@@ -357,9 +523,12 @@ class PublishAction:
 
         try:
             content_el.click()
-            time.sleep(0.3)
-            page.keyboard.type(content, delay=random.randint(20, 60))
-            time.sleep(random.uniform(0.5, 1.5))
+            content_el.fill(content)
+
+            readback = self._read_content()
+            expected = self._normalize_editor_text(content)
+            if readback != expected:
+                print("正文已写入，但读回内容未能确认绑定", file=sys.stderr)
 
             # 检查正文是否超长
             length_error = page.locator('div.edit-container div.length-error')
@@ -372,64 +541,35 @@ class PublishAction:
             print(f"填写正文失败: {e}", file=sys.stderr)
 
     def _input_tags(self, tags: List[str]):
-        """输入话题标签（通过 # 触发联想）"""
+        """Append exact safe hashtag text while preserving the existing body."""
         if not tags:
             return
 
-        page = self.client.page
-
-        # 先移动光标到正文末尾
-        content_el = None
-        try:
-            ql = page.locator('div.ql-editor')
-            if ql.count() > 0:
-                content_el = ql.first
-            else:
-                content_el = page.locator('[role="textbox"]').first
-        except Exception:
-            return
-
+        content_el = self._content_editor()
         if content_el is None:
             return
 
+        clean_tags = [tag.lstrip("#").strip() for tag in tags[:10] if tag.lstrip("#").strip()]
+        if not clean_tags:
+            return
+        body = self._read_content()
+        if not body:
+            raise RuntimeError("无法读回正文，拒绝追加标签")
+        suffix = " ".join(f"#{tag}" for tag in clean_tags)
+        combined = f"{body.rstrip(chr(10))}\n\n{suffix}" if body else suffix
         try:
-            content_el.click()
-            time.sleep(0.3)
-            # 按 End 键移动到末尾
-            page.keyboard.press('End')
-            page.keyboard.press('Enter')
-            page.keyboard.press('Enter')
-            time.sleep(0.5)
-        except Exception:
-            pass
-
-        # 限制最多 10 个标签
-        tags = tags[:10]
-
-        for tag in tags:
-            tag = tag.lstrip('#')
-            try:
-                # 输入 #
-                page.keyboard.type('#', delay=100)
-                time.sleep(0.3)
-
-                # 逐字输入标签文字
-                page.keyboard.type(tag, delay=50)
-                time.sleep(1)
-
-                # 尝试点击联想下拉框的第一个选项
-                topic_item = page.locator('#creator-editor-topic-container .item')
-                if topic_item.count() > 0:
-                    topic_item.first.click()
-                    print(f"标签「{tag}」已通过联想选择", file=sys.stderr)
-                else:
-                    # 没有联想，输入空格结束
-                    page.keyboard.type(' ', delay=50)
-                    print(f"标签「{tag}」已直接输入", file=sys.stderr)
-
-                time.sleep(0.5)
-            except Exception as e:
-                print(f"输入标签「{tag}」失败: {e}", file=sys.stderr)
+            content_el.fill(combined)
+            readback = self._read_content()
+            if (
+                not readback
+                or not readback.startswith(self._normalize_editor_text(body))
+                or not readback.endswith(suffix)
+            ):
+                raise RuntimeError("正文绑定读回失败，拒绝覆盖正文")
+            print(f"已按原文追加 {len(clean_tags)} 个标签", file=sys.stderr)
+        except Exception as exc:
+            print(f"追加标签失败: {exc}", file=sys.stderr)
+            raise
 
     def _set_visibility(self, page, visibility: str):
         """设置可见范围
@@ -593,6 +733,469 @@ class PublishAction:
         except Exception as e:
             print(f"设置定时发布失败: {e}", file=sys.stderr)
             raise RuntimeError("设置定时发布失败，已阻止继续发布") from e
+
+    def _set_cover(self, cover_path: str, timeout: float = 30) -> Dict[str, Any]:
+        """Set a video cover through the native editor and verify it closes."""
+        page = self.client.page
+        if not os.path.isfile(cover_path):
+            raise ValueError(f"封面文件不存在: {cover_path}")
+
+        trigger = page.locator(COVER_TRIGGER_SELECTOR)
+        if not self._is_visible(trigger):
+            raise RuntimeError("未找到可编辑的视频封面预览")
+        before = self._cover_readback()
+        before_source = before.get("cover_source")
+        trigger.first.hover()
+        edit_button = page.locator(COVER_EDIT_BUTTON_SELECTOR)
+        if not self._is_visible(edit_button):
+            raise RuntimeError("未找到精确的编辑封面按钮")
+        edit_button.first.click()
+
+        modal = page.locator(".mojito-container")
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline and not self._is_visible(modal):
+            time.sleep(0.2)
+        if not self._is_visible(modal):
+            raise TimeoutError("打开封面编辑器超时")
+
+        file_input = page.locator(COVER_FILE_INPUT_SELECTOR)
+        if file_input.count() == 0:
+            raise RuntimeError("封面编辑器未提供原生图片上传控件")
+        file_input.first.set_input_files(os.path.abspath(cover_path))
+
+        # The editor must decode the newly selected image before completion is
+        # allowed.  A visible input or an unchanged old thumbnail is not proof
+        # that the native editor accepted the file.
+        selected = None
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            selected = self._cover_modal_readback()
+            if selected.get("decoded") and selected.get("source"):
+                if not before_source or selected["source"] != before_source:
+                    break
+            time.sleep(0.2)
+        if not selected or not selected.get("decoded") or not selected.get("source"):
+            raise TimeoutError("封面编辑器未读回已解码的新图片")
+        if before_source and selected["source"] == before_source:
+            raise RuntimeError("封面编辑器仍显示旧图片，已停止")
+
+        complete = page.locator(COVER_COMPLETE_BUTTON_SELECTOR)
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            try:
+                if self._is_visible(complete) and complete.first.is_enabled() is True:
+                    complete.first.click()
+                    break
+            except Exception:
+                pass
+            time.sleep(0.2)
+        else:
+            raise TimeoutError("封面解析未完成，已停止，不会自动重新上传视频")
+
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if not self._is_visible(modal):
+                evidence = self._cover_readback()
+                if not evidence["cover_ok"]:
+                    raise RuntimeError("封面编辑器已关闭，但未读回渲染后的封面")
+                after_source = evidence.get("cover_source")
+                if not after_source or (before_source and after_source == before_source):
+                    raise RuntimeError("封面编辑器关闭后封面来源未发生变化")
+                print("视频封面已更新", file=sys.stderr)
+                return {
+                    "cover_path": os.path.abspath(cover_path),
+                    **evidence,
+                }
+            time.sleep(0.2)
+        raise TimeoutError("封面编辑器未关闭，已停止，不会自动重新上传视频")
+
+    def _cover_modal_readback(self) -> Dict[str, Any]:
+        """Read one visible, decoded image selected inside the cover modal."""
+        page = self.client.page
+        try:
+            state = page.evaluate(
+                """() => {
+                    const modal = document.querySelector('.mojito-container');
+                    if (!modal) return {decoded: false, source: ''};
+                    const visible = element => {
+                        const style = getComputedStyle(element);
+                        const rect = element.getBoundingClientRect();
+                        return rect.width > 0 && rect.height > 0 &&
+                            style.display !== 'none' && style.visibility !== 'hidden';
+                    };
+                    const image = Array.from(modal.querySelectorAll('img')).find(
+                        item => visible(item) && item.complete && item.naturalWidth > 0 && item.src
+                    );
+                    return image
+                        ? {decoded: true, source: image.currentSrc || image.src}
+                        : {decoded: false, source: ''};
+                }"""
+            )
+        except Exception:
+            return {"decoded": False, "source": ""}
+        return state if isinstance(state, dict) else {"decoded": False, "source": ""}
+
+    def _cover_readback(self) -> Dict[str, Any]:
+        """Read the rendered cover background, excluding unrelated modal images."""
+        page = self.client.page
+        try:
+            preview = page.locator(COVER_TRIGGER_SELECTOR)
+        except Exception:
+            return {"cover_ok": False, "cover_readback": "missing_preview"}
+        if not self._is_visible(preview):
+            return {"cover_ok": False, "cover_readback": "missing_preview"}
+        try:
+            readback = preview.evaluate(
+                r"""async el => {
+                    const nodes = [el, el.closest('.cover')].filter(Boolean);
+                    for (const node of nodes) {
+                        const style = getComputedStyle(node);
+                        const value = style.backgroundImage || node.style.backgroundImage || '';
+                        if (!value || value === 'none') continue;
+                        const match = value.match(/url\(["']?(.*?)["']?\)/);
+                        if (!match) continue;
+                        const source = new URL(match[1], document.baseURI).href;
+                        const existing = Array.from(document.images).find(
+                            image => image.currentSrc === source || image.src === source
+                        );
+                        if (existing && existing.complete) {
+                            return {
+                                background: value,
+                                source,
+                                loaded: existing.naturalWidth > 0,
+                            };
+                        }
+                        const loaded = await new Promise(resolve => {
+                            const image = new Image();
+                            const finish = value => {
+                                clearTimeout(timer);
+                                resolve(value);
+                            };
+                            const timer = setTimeout(() => finish(false), 2000);
+                            image.onload = () => finish(image.naturalWidth > 0);
+                            image.onerror = () => finish(false);
+                            image.src = source;
+                            if (image.complete) finish(image.naturalWidth > 0);
+                        });
+                        return {background: value, source, loaded};
+                    }
+                    return {background: '', loaded: false};
+                }"""
+            )
+        except Exception:
+            readback = None
+        if isinstance(readback, dict):
+            background = readback.get("background", "")
+            loaded = readback.get("loaded") is True
+            source = readback.get("source") or ""
+        else:
+            background = ""
+            loaded = False
+            source = ""
+        if isinstance(background, str) and "url(" in background and loaded:
+            return {
+                "cover_ok": True,
+                "cover_readback": "background_image",
+                "cover_source": source,
+            }
+        return {
+            "cover_ok": False,
+            "cover_readback": "background_not_loaded",
+            "cover_source": source,
+        }
+
+    def _resume_draft(
+        self,
+        title: str,
+        *,
+        expected_body: Optional[str] = None,
+        require_cover: bool = False,
+        timeout: float = 15,
+    ) -> Dict[str, Any]:
+        """Open one exact draft card and verify its editor before mutations."""
+        page = self.client.page
+        draft_nav = page.get_by_text(re.compile(r"^草稿箱(?:\(\d+\))?$"))
+        visible_navs = [
+            draft_nav.nth(index)
+            for index in range(draft_nav.count())
+            if draft_nav.nth(index).is_visible()
+        ]
+        if visible_navs:
+            if len(visible_navs) != 1:
+                raise ValueError("草稿箱入口不唯一，拒绝恢复")
+            visible_navs[0].click()
+            time.sleep(0.5)
+
+        title_matches = page.get_by_text(title, exact=True)
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            try:
+                visible_titles = [
+                    title_matches.nth(index)
+                    for index in range(title_matches.count())
+                    if title_matches.nth(index).is_visible()
+                ]
+            except Exception:
+                visible_titles = []
+            visible_count = len(visible_titles)
+            if visible_count:
+                if visible_count != 1:
+                    raise ValueError(f"草稿标题不唯一，拒绝恢复: {title}")
+                try:
+                    card = visible_titles[0].locator(
+                        "xpath=ancestor::*[.//*[normalize-space(text())='编辑']][1]"
+                    )
+                    edit = card.get_by_text("编辑", exact=True)
+                    if edit.count() != 1 or not self._is_visible(edit):
+                        raise ValueError(f"草稿编辑入口不唯一: {title}")
+                    edit.click()
+                except ValueError:
+                    raise
+                except Exception as exc:
+                    raise RuntimeError("无法定位精确草稿卡片的编辑入口") from exc
+                time.sleep(0.5)
+                break
+            time.sleep(0.2)
+        else:
+            raise ValueError(f"未找到标题完全匹配的草稿: {title}")
+
+        title_input = page.locator('div.d-input input').first
+        try:
+            readback = title_input.input_value()
+        except Exception as exc:
+            raise RuntimeError("恢复草稿后无法读回标题") from exc
+        if readback != title:
+            raise RuntimeError("恢复草稿标题读回不一致")
+        body = self._read_content()
+        body_ok = expected_body is None or (
+            self._normalize_editor_text(body)
+            == self._normalize_editor_text(expected_body)
+        )
+        if not body_ok:
+            raise RuntimeError("恢复草稿正文与预期不一致，拒绝继续")
+        cover = self._cover_readback()
+        if require_cover and not cover["cover_ok"]:
+            raise RuntimeError("恢复草稿未读回渲染后的封面，拒绝继续")
+        return {
+            "title": title,
+            "title_ok": True,
+            "body_ok": body_ok,
+            "cover_readback": cover,
+            "resume_draft": True,
+        }
+
+    def _click_shadow_save_control(self) -> Dict[str, Any]:
+        """Click one semantically identified save button in the closed widget.
+
+        The publish widget keeps its controls in a closed shadow root, so a
+        normal locator cannot distinguish ``保存`` from ``发布``.  Chromium's
+        DOM inspection protocol exposes the pierced tree for inspection; the
+        final click is still performed on the resolved button object after a
+        runtime check of its exact label, connected state, disabled state, and
+        rendered visibility.
+        """
+        page = self.client.page
+        try:
+            cdp = page.context.new_cdp_session(page)
+            tree = cdp.send(
+                "DOM.getDocument", {"depth": -1, "pierce": True}
+            ).get("root", {})
+        except Exception as exc:
+            raise RuntimeError("无法通过浏览器协议检查草稿保存控件") from exc
+
+        def descendants(node: Dict[str, Any]):
+            yield node
+            for key in ("children", "shadowRoots", "contentDocument"):
+                values = node.get(key) or []
+                if isinstance(values, dict):
+                    values = [values]
+                for child in values:
+                    if isinstance(child, dict):
+                        yield from descendants(child)
+
+        hosts = [
+            node
+            for node in descendants(tree)
+            if str(node.get("nodeName", "")).lower() == "xhs-publish-btn"
+        ]
+        if len(hosts) != 1:
+            raise RuntimeError("新版发布控件不唯一，拒绝猜测草稿保存入口")
+
+        def text_content(node: Dict[str, Any]) -> str:
+            node_value = node.get("nodeValue")
+            if isinstance(node_value, str) and node_value:
+                return node_value
+            return "".join(
+                text_content(child)
+                for child in node.get("children", []) or []
+                if isinstance(child, dict)
+            )
+
+        buttons = []
+        for node in descendants(hosts[0]):
+            if str(node.get("nodeName", "")).lower() != "button":
+                continue
+            label = " ".join(text_content(node).split())
+            if label in DRAFT_SAVE_LABELS:
+                buttons.append((node, label))
+        if len(buttons) != 1:
+            raise RuntimeError("未找到唯一语义明确的草稿保存按钮")
+
+        node, label = buttons[0]
+        node_id = node.get("nodeId")
+        if not node_id:
+            raise RuntimeError("草稿保存按钮缺少可解析的浏览器节点")
+        try:
+            resolved = cdp.send("DOM.resolveNode", {"nodeId": node_id})
+            object_id = resolved.get("object", {}).get("objectId")
+            if not object_id:
+                raise RuntimeError("无法解析草稿保存按钮")
+            result = cdp.send(
+                "Runtime.callFunctionOn",
+                {
+                    "objectId": object_id,
+                    "functionDeclaration": """
+                        function(expectedLabel) {
+                            const actualLabel = (this.textContent || '').trim().replace(/\\s+/g, ' ');
+                            const style = getComputedStyle(this);
+                            const rect = this.getBoundingClientRect();
+                            const visible = Boolean(
+                                this.isConnected &&
+                                rect.width > 0 &&
+                                rect.height > 0 &&
+                                style.display !== 'none' &&
+                                style.visibility !== 'hidden' &&
+                                style.opacity !== '0'
+                            );
+                            if (actualLabel !== expectedLabel) {
+                                return {ok: false, reason: 'label_changed'};
+                            }
+                            if (!visible) {
+                                return {ok: false, reason: 'not_visible'};
+                            }
+                            if (this.disabled || this.hasAttribute('disabled') || this.getAttribute('aria-disabled') === 'true') {
+                                return {ok: false, reason: 'disabled'};
+                            }
+                            this.click();
+                            return {ok: true, label: actualLabel};
+                        }
+                    """,
+                    "arguments": [{"value": label}],
+                    "returnByValue": True,
+                },
+            )
+            value = result.get("result", {}).get("value")
+            if not isinstance(value, dict) or value.get("ok") is not True:
+                reason = value.get("reason", "unknown") if isinstance(value, dict) else "unknown"
+                raise RuntimeError(f"草稿保存按钮复核失败: {reason}")
+            return {"save_control": label, "save_control_clicked": True}
+        except RuntimeError:
+            raise
+        except Exception as exc:
+            raise RuntimeError("点击语义明确的草稿保存按钮失败") from exc
+        finally:
+            try:
+                if "object_id" in locals() and object_id:
+                    cdp.send("Runtime.releaseObject", {"objectId": object_id})
+            except Exception:
+                pass
+
+    def _save_draft(
+        self,
+        title: str,
+        *,
+        expected_body: Optional[str] = None,
+        require_cover: bool = False,
+        timeout: float = 15,
+    ) -> Dict[str, Any]:
+        """Save through the widget, reopen the card, and verify its contents."""
+        page = self.client.page
+        if expected_body is None:
+            raise ValueError("保存草稿必须提供预期正文以完成读回校验")
+        save_control = self._click_shadow_save_control()
+
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            draft_box = page.locator(DRAFT_BOX_SELECTOR)
+            title_matches = page.get_by_text(title, exact=True)
+            if self._is_visible(draft_box):
+                visible_title_nodes = [
+                    title_matches.nth(index)
+                    for index in range(title_matches.count())
+                    if title_matches.nth(index).is_visible()
+                ]
+                visible_titles = len(visible_title_nodes)
+                if visible_titles == 1:
+                    try:
+                        card = visible_title_nodes[0].locator(
+                            "xpath=ancestor::*[.//*[normalize-space(text())='编辑']][1]"
+                        )
+                        edit = card.get_by_text("编辑", exact=True)
+                        if edit.count() != 1 or not self._is_visible(edit):
+                            raise ValueError(f"保存后草稿编辑入口不唯一: {title}")
+                        edit.click()
+                        time.sleep(0.5)
+                        title_input = page.locator('div.d-input input').first
+                        if title_input.input_value() != title:
+                            raise ValueError("保存后草稿标题读回不一致")
+                        body = self._read_content()
+                        body_ok = expected_body is None or (
+                            self._normalize_editor_text(body)
+                            == self._normalize_editor_text(expected_body)
+                        )
+                        if not body_ok:
+                            raise ValueError("保存后草稿正文读回不一致")
+                        cover = self._cover_readback()
+                        if require_cover and not cover["cover_ok"]:
+                            raise ValueError("保存后草稿封面读回不一致")
+                        return {
+                            "draft_box_visible": True,
+                            "draft_title": title,
+                            "draft_title_exact": True,
+                            "body_ok": body_ok,
+                            "cover_readback": cover,
+                            "draft_readback": "title_body_cover",
+                            **save_control,
+                        }
+                    except ValueError:
+                        raise
+                    except Exception as exc:
+                        raise RuntimeError("无法重新打开保存后的精确草稿卡片") from exc
+                if visible_titles > 1:
+                    raise ValueError(f"保存后草稿标题不唯一: {title}")
+            time.sleep(0.2)
+        raise TimeoutError(f"保存草稿后未读回精确标题: {title}")
+
+    def _video_preview_status(self) -> Dict[str, Any]:
+        """Keep local blob playback evidence separate from remote playback."""
+        try:
+            state = self.client.page.evaluate(
+                """() => {
+                    const media = Array.from(document.querySelectorAll('video'));
+                    const item = media.find(node => node.offsetParent !== null);
+                    if (!item) return {status: 'unavailable', source: 'unknown'};
+                    const src = item.currentSrc || item.src || '';
+                    const source = /^(blob:|data:|file:)/.test(src) ? 'local'
+                        : /^https?:/.test(src) ? 'remote' : 'unknown';
+                    const evidence = {source, ready_state: item.readyState};
+                    if (item.error) return {...evidence, status: 'error', code: item.error.code};
+                    if (item.readyState >= 2 && Number.isFinite(item.duration) && item.duration > 0 && src) {
+                        return {...evidence, status: 'available', duration: item.duration};
+                    }
+                    return {...evidence, status: 'pending'};
+                }"""
+            )
+        except Exception:
+            state = {"status": "unavailable", "source": "unknown"}
+        if not isinstance(state, dict):
+            state = {"status": "unavailable", "source": "unknown"}
+        source, status = state.get("source", "unknown"), state.get("status", "unavailable")
+        return {
+            "preview_source": source,
+            "local_preview": status if source == "local" else "not_observed",
+            "remote_preview": status if source == "remote" else "not_observed",
+            "media_error_code": state.get("code"),
+        }
 
     def _click_publish_button(self) -> bool:
         """点击发布按钮
@@ -841,8 +1444,16 @@ class PublishAction:
         for warning in validation.warnings:
             print(f"警告: {warning}", file=sys.stderr)
 
-    def _check_publish_ready(self) -> Dict[str, Any]:
-        """检查发布前的状态（三要素校验）"""
+    def _check_publish_ready(
+        self,
+        *,
+        expected_title: Optional[str] = None,
+        expected_content: Optional[str] = None,
+        expected_account: Optional[str] = None,
+        expected_visibility: str = "公开可见",
+        require_cover: bool = False,
+    ) -> Dict[str, Any]:
+        """Check title/body/cover/visibility/account and upload readiness."""
         page = self.client.page
         status = {}
 
@@ -852,15 +1463,79 @@ class PublishAction:
             status["title"] = title_input.input_value() if title_input.count() > 0 else ""
         except Exception:
             status["title"] = ""
+        status["title_ok"] = bool(status["title"])
 
-        # 检查发布按钮可见性
         try:
             btn = page.locator('.publish-page-publish-btn button.bg-red')
             status["publish_button_visible"] = btn.count() > 0 and btn.is_visible()
         except Exception:
             status["publish_button_visible"] = False
 
-        status["title_ok"] = bool(status["title"])
+        # Read the body through the unique contenteditable binding after the
+        # legacy checks above, preserving the established mock/browser order.
+        status["content"] = self._read_content()
+        status["content_ok"] = (
+            self._normalize_editor_text(status["content"])
+            == self._normalize_editor_text(expected_content)
+            if expected_content is not None
+            else bool(status["content"])
+        )
+        if expected_title is not None:
+            status["title_ok"] = status["title"] == expected_title
+
+        # The closed-shadow widget is the current publish control.  A legacy
+        # button remains a compatibility fallback for older Creator Center UI.
+        status["publish_widget_visible"] = False
+        status["publish_widget_ready"] = False
+        try:
+            widgets = page.locator("xhs-publish-btn")
+            for index in range(widgets.count()):
+                widget = widgets.nth(index)
+                if not self._is_visible(widget):
+                    continue
+                status["publish_widget_visible"] = True
+                disabled = widget.get_attribute("submit-disabled")
+                is_publish = widget.get_attribute("is-publish")
+                if disabled != "true" and is_publish != "false":
+                    status["publish_widget_ready"] = widget.bounding_box() is not None
+                    if status["publish_widget_ready"]:
+                        break
+        except Exception:
+            pass
+
+        status["publish_button_ready"] = bool(
+            status["publish_widget_ready"] or status["publish_button_visible"]
+        )
+        cover = self._cover_readback()
+        status["cover_readback"] = cover
+        status["cover_ok"] = cover["cover_ok"] if require_cover else True
+        status["visibility_ok"] = False
+        try:
+            permission = page.locator("div.permission-card-wrapper")
+            if permission.count() == 1 and permission.first.is_visible() is True:
+                selected = permission.first.locator("div.d-select-content")
+                selected = selected.first if selected.count() else permission.first
+                if not selected.is_visible():
+                    raise RuntimeError("可见范围当前选中项不可见")
+                selected_text = selected.inner_text() or ""
+                status["visibility_ok"] = expected_visibility in selected_text
+        except Exception:
+            status["visibility_ok"] = False
+        if expected_account:
+            status.update(self._check_account_binding(expected_account))
+        else:
+            status["account_ok"] = True
+        status["expected_account"] = expected_account
+        status["ready"] = all(
+            (
+                status["title_ok"],
+                status["content_ok"],
+                status["cover_ok"],
+                status["visibility_ok"],
+                status["account_ok"],
+                status["publish_button_ready"],
+            )
+        )
         return status
 
     def publish_image(
@@ -978,6 +1653,11 @@ class PublishAction:
         auto_publish: bool = False,
         is_original: bool = False,
         visibility: str = "公开可见",
+        cover_path: Optional[str] = None,
+        resume_draft: bool = False,
+        save_draft: bool = True,
+        upload_timeout: float = 600,
+        expected_account: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         发布视频笔记
@@ -991,84 +1671,199 @@ class PublishAction:
             auto_publish: 是否自动发布（默认 False）
             is_original: 是否声明原创（默认 False）
             visibility: 可见范围，公开可见/仅自己可见/仅互关好友可见
+            cover_path: 可选的本地视频封面图片
+            resume_draft: 按完全匹配标题恢复现有草稿，不重新上传视频
+            save_draft: 准备模式下保存草稿并读回精确标题
+            upload_timeout: 视频处理最长等待秒数
+            expected_account: 可选的当前账号精确显示名
 
         Returns:
             操作结果
         """
         validation = validate_publish_request(
             title=title,
-            media_paths=[video_path],
+            media_paths=None if resume_draft else [video_path],
             schedule_time=schedule_time,
         )
         self._emit_validation_warnings(validation)
         validated_video_path = (validation.media_paths or (video_path,))[0]
+        validated_cover_path = None
+        if cover_path:
+            validated_cover_path = validate_media_paths([cover_path])[0]
+        expected_body = self._compose_expected_body(content, tags)
 
         self._navigate_to_publish()
-        self._click_publish_tab("上传视频")
+        account_readback = self._check_account_binding(expected_account)
+        if not account_readback["account_ok"]:
+            return {
+                "status": PUBLISH_STATUS_FAILED,
+                "action": "publish_video",
+                "title": title,
+                "video_path": video_path,
+                "success": False,
+                "published": False,
+                "account_readback": account_readback,
+                "message": "当前账号与 expected_account 不匹配，未上传或编辑",
+                "warnings": list(validation.warnings),
+            }
+        if resume_draft:
+            try:
+                draft_readback = self._resume_draft(
+                    title,
+                    expected_body=expected_body,
+                    require_cover=True,
+                )
+            except (RuntimeError, ValueError, TimeoutError) as exc:
+                return {
+                    "status": PUBLISH_STATUS_FAILED,
+                    "action": "publish_video",
+                    "title": title,
+                    "video_path": video_path,
+                    "resume_draft": True,
+                    "success": False,
+                    "published": False,
+                    "message": str(exc),
+                    "warnings": list(validation.warnings),
+                }
+        else:
+            self._click_publish_tab("上传视频")
+            self._upload_video(validated_video_path, timeout=upload_timeout)
+            self._fill_title(title)
+            self._fill_content(content)
+            draft_readback = {"resume_draft": False}
 
-        # 1. 上传视频
-        self._upload_video(validated_video_path)
-        time.sleep(random.uniform(1.5, 3.0))
+        # Cover parsing is independent from video upload.  If the editor gets
+        # stuck, return a hard failure and never retry the video upload.
+        cover_readback = {"cover_ok": True}
+        if validated_cover_path and not resume_draft:
+            try:
+                cover_readback = self._set_cover(validated_cover_path)
+            except (RuntimeError, ValueError, TimeoutError) as exc:
+                return {
+                    "status": PUBLISH_STATUS_FAILED,
+                    "action": "publish_video",
+                    "title": title,
+                    "video_path": video_path,
+                    "cover_path": cover_path,
+                    "success": False,
+                    "published": False,
+                    "message": str(exc),
+                    "warnings": list(validation.warnings),
+                }
 
-        # 2. 填写标题
-        self._fill_title(title)
-        time.sleep(random.uniform(1.0, 2.0))
-
-        # 3. 填写正文
-        self._fill_content(content)
-        time.sleep(random.uniform(1.0, 2.5))
-
-        # 4. 添加标签
-        if tags:
-            self._input_tags(tags)
-            time.sleep(random.uniform(1.0, 2.0))
+        # Tags are appended as exact text and never selected from a fuzzy
+        # suggestion list.  A resumed draft keeps its existing body intact.
+        if tags and not resume_draft:
+            try:
+                self._input_tags(tags)
+            except (RuntimeError, ValueError) as exc:
+                return {
+                    "status": PUBLISH_STATUS_FAILED,
+                    "action": "publish_video",
+                    "title": title,
+                    "video_path": video_path,
+                    "cover_path": cover_path,
+                    "success": False,
+                    "published": False,
+                    "message": str(exc),
+                    "warnings": list(validation.warnings),
+                }
 
         # 5. 设置可见范围
         self._set_visibility(self.client.page, visibility)
-        time.sleep(random.uniform(0.5, 1.0))
 
         # 6. 原创声明
         if is_original:
             self._set_original(self.client.page)
-            time.sleep(random.uniform(0.5, 1.0))
 
         # 7. 定时发布
         if schedule_time:
             self._set_schedule(schedule_time)
-            time.sleep(random.uniform(0.5, 1.5))
 
-        # 8. 校验
-        ready = self._check_publish_ready()
+        # 8. 校验所有 fields required for a publish click.
+        ready = self._check_publish_ready(
+            expected_title=title,
+            expected_content=expected_body,
+            expected_account=expected_account,
+            expected_visibility=visibility,
+            require_cover=True,
+        )
+        ready["video_preview"] = self._video_preview_status()
+        ready["cover_readback"] = cover_readback
+        ready["draft_readback"] = draft_readback
+        ready["account_readback"] = account_readback
         print(f"发布前校验: {ready}", file=sys.stderr)
+
+        base = {
+            "action": "publish_video",
+            "title": title,
+            "video_path": video_path,
+            "cover_path": cover_path,
+            "schedule_time": schedule_time,
+            "is_original": is_original,
+            "visibility": visibility,
+            "resume_draft": resume_draft,
+            "warnings": list(validation.warnings),
+            "ready_check": ready,
+        }
+
+        # A missing readiness key is a hard failure.  Test doubles must model
+        # the same evidence as the real browser path.
+        required_ready = (
+            "title_ok",
+            "content_ok",
+            "cover_ok",
+            "visibility_ok",
+            "account_ok",
+            "publish_button_ready",
+        )
+        if not all(ready.get(key, False) for key in required_ready):
+            return {
+                **base,
+                "status": PUBLISH_STATUS_FAILED,
+                "success": False,
+                "published": False,
+                "message": "发布前校验未通过，未点击发布按钮",
+            }
 
         if auto_publish:
             confirmation = self._publish_and_confirm()
-            result = {
-                "action": "publish_video",
-                "title": title,
-                "video_path": video_path,
-                "schedule_time": schedule_time,
-                "is_original": is_original,
-                "visibility": visibility,
-                "warnings": list(validation.warnings),
-            }
+            result = dict(base)
             result.update(self._confirmation_fields(confirmation))
             return result
-        else:
+
+        if not save_draft:
             return {
+                **base,
                 "status": "ready",
-                "action": "publish_video",
-                "title": title,
-                "video_path": video_path,
-                "schedule_time": schedule_time,
-                "is_original": is_original,
-                "visibility": visibility,
                 "success": False,
                 "published": False,
-                "ready_check": ready,
-                "warnings": list(validation.warnings),
-                "message": "已填写完毕，停在发布按钮处。请确认后使用 --auto-publish 发布。",
+                "message": "已填写完毕，未保存草稿。",
             }
+
+        try:
+            draft_saved = self._save_draft(
+                title,
+                expected_body=expected_body,
+                require_cover=True,
+            )
+        except (RuntimeError, ValueError, TimeoutError) as exc:
+            return {
+                **base,
+                "status": PUBLISH_STATUS_FAILED,
+                "success": False,
+                "published": False,
+                "message": str(exc),
+            }
+        return {
+            **base,
+            "status": PUBLISH_STATUS_DRAFT_SAVED,
+            "success": False,
+            "published": False,
+            "draft_saved": True,
+            "draft_readback": draft_saved,
+            "message": "已保存草稿并读回完全匹配的标题，未点击发布。",
+        }
 
 
     def publish_longform(
@@ -1381,6 +2176,11 @@ def publish_video(
     visibility: str = "公开可见",
     headless: bool = True,
     cookie_path: str = DEFAULT_COOKIE_PATH,
+    cover_path: Optional[str] = None,
+    resume_draft: bool = False,
+    save_draft: bool = True,
+    upload_timeout: float = 600,
+    expected_account: Optional[str] = None,
 ) -> Dict[str, Any]:
     """发布视频笔记"""
     client = XiaohongshuClient(headless=headless, cookie_path=cookie_path)
@@ -1391,6 +2191,9 @@ def publish_video(
             title=title, content=content, video_path=video_path,
             tags=tags, schedule_time=schedule_time, auto_publish=auto_publish,
             is_original=is_original, visibility=visibility,
+            cover_path=cover_path, resume_draft=resume_draft,
+            save_draft=save_draft, upload_timeout=upload_timeout,
+            expected_account=expected_account,
         )
     finally:
         client.close()

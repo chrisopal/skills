@@ -1,9 +1,9 @@
 ---
 name: xiaohongshu-skill
-description: 小红书 / Xiaohongshu / RedNote AI Agent Skill。用 Python Playwright 搜索和读取内容、管理登录会话、发布图文/视频/长文、评论、点赞和收藏；默认输出 JSON，任何写操作都必须先获得用户确认。用户提到 xiaohongshu、小红书、rednote、小红书搜索、发到小红书、小红书笔记分析、小红书运营或小红书自动化时触发。
+description: 小红书 / Xiaohongshu / RedNote 浏览器技能。搜索和读取内容，管理登录，按清单准备视频、封面、正文和草稿，发布图文、视频与长文。需要小红书发布、运营或笔记读取时使用；公开提交及互动须有用户明确授权。
 license: Apache-2.0
-compatibility: Requires Python 3.10 or newer and Playwright Chromium. Supports Windows, macOS, and Linux.
 metadata:
+  compatibility: Requires Python 3.10 or newer and Playwright Chromium. Supports Windows, macOS, and Linux.
   openclaw:
     emoji: "📕"
     requires:
@@ -17,6 +17,8 @@ metadata:
 ---
 
 # 小红书 Skill
+
+本版本由 Chrisopal/skills 维护；来源与上游版本见 [UPSTREAM.md](UPSTREAM.md)。
 
 通过 JSON CLI 操作小红书浏览器会话。执行入口统一为：
 
@@ -32,6 +34,8 @@ uv run python -m scripts <command>
 1. 展示目标账号、内容、媒体和操作类型。
 2. 获得用户明确确认。
 3. 只执行用户确认的单次操作。
+
+用户已明确授权的同一次操作不重复确认。用户要求准备素材或检查发布能力时，可以上传、填写和保存草稿；这不代表授权公开提交。用户告知已手动发布后立即停止该笔记的自动提交，并记录状态。
 
 遇到验证码、登录页或安全验证页时停止。不要自动绕过验证，不要运行批量抓取或批量互动。
 
@@ -56,6 +60,23 @@ uv run python -m scripts <command>
 | 查看参数 | `python -m scripts <command> --help` |
 
 完整命令见 `docs/API.md`；安装和平台接入见 `docs/INSTALL.md`、`docs/INTEGRATIONS.md`。
+
+## 视频与封面一起准备
+
+已有视频、封面和文案时，优先使用发布清单，避免逐项复制或重新上传。详见 [视频工作流](docs/VIDEO_WORKFLOW.md) 和 [清单示例](examples/video-manifest.json)。
+
+```bash
+uv run python -m scripts publish-video --manifest /path/to/job.json --preflight
+uv run python -m scripts publish-video --manifest /path/to/job.json --headless=false
+```
+
+- 清单带入账号、完整标题、正文、标签、视频、封面及可见范围；相对文件路径按清单目录解析。
+- 先做本地预检；只有草稿保存成功才返回 `draft_saved`。恢复清单时优先打开已有草稿，标题不唯一时停止，不猜选。
+- 标签默认作为准确的 `#话题` 文本加入正文，不选择模糊联想首项；不要将文本标签说成已绑定平台话题。
+- 封面通过实际编辑器上传，正文替换后读回校验。上传超时或封面解析失败必须报错，不能当成准备完成。
+- 已准备的清单可在用户授权后加 `--auto-publish`；不要为了确认而重新生成清单。
+- 用户手动发布后：`uv run python -m scripts publish-video --manifest /path/to/job.json --record-published`。这是用户报告，不是独立的发布验收。
+- 清单旁保存任务状态，profile 目录保存按内容指纹索引的发布账本；改名或复制清单也不能重复提交已发布及结果不确定的任务。更换账号、素材或文案后使用新清单重新核对；不要删除状态绕过重复提交保护。
 
 ## 初始化
 
@@ -85,7 +106,7 @@ uv run python -m scripts explore --limit=10
 
 ## 发布语义
 
-发布命令默认填写表单并返回 `ready`。用户确认后才能追加 `--auto-publish`。
+图文及长文命令默认填写表单并返回 `ready`。视频命令默认保存草稿并返回 `draft_saved`，浏览器关闭后仍可恢复。公开提交需要用户明确授权；确认后才能追加 `--auto-publish`。
 
 自动提交可能返回：
 

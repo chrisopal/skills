@@ -1,0 +1,24 @@
+name: Xiaohongshu skill checks
+on:
+  push:
+    paths: ['xiaohongshu-skill/**', '.github/workflows/xiaohongshu.yml']
+  pull_request:
+    paths: ['xiaohongshu-skill/**', '.github/workflows/xiaohongshu.yml']
+permissions:
+  contents: read
+jobs:
+  offline-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: xiaohongshu-skill
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: astral-sh/setup-uv@d0cc045d04ccac9d8b7881df0226f9e82c39688e # v6
+        with:
+          version: "0.12.4"
+          python-version: "3.12"
+      - run: uv sync --frozen --group dev
+      - run: uv run playwright install --with-deps chromium
+      - run: uv run python -m scripts.quality check

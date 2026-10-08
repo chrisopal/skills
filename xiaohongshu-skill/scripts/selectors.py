@@ -152,9 +152,68 @@ SELECTOR_CONTRACTS: tuple[SelectorContract, ...] = (
         owner="publish",
         purpose="Fill the publish content editor",
         selectors=(
+            'div[contenteditable="true"]',
             "div.ql-editor",
             '[role="textbox"]',
-            'div[contenteditable="true"]',
+        ),
+    ),
+    SelectorContract(
+        name="publish.video_completion_marker",
+        owner="publish",
+        purpose="Detect that the uploaded video has finished processing",
+        selectors=(
+            'xhs-publish-btn',
+            'text="重新上传"',
+            'text="检测为高清视频"',
+        ),
+    ),
+    SelectorContract(
+        name="publish.cover_trigger",
+        owner="publish",
+        purpose="Open the native video cover editor",
+        selectors=(".cover-plugin-preview .cover > .default",),
+    ),
+    SelectorContract(
+        name="publish.cover_edit_button",
+        owner="publish",
+        purpose="Open cover editing from the native cover preview",
+        selectors=('text="编辑封面"',),
+    ),
+    SelectorContract(
+        name="publish.cover_file_input",
+        owner="publish",
+        purpose="Upload a replacement video cover image",
+        selectors=(
+            'input[type="file"][accept="image/png, image/jpeg, image/*"]',
+        ),
+    ),
+    SelectorContract(
+        name="publish.cover_complete_button",
+        owner="publish",
+        purpose="Finish native cover editing",
+        selectors=('text="完成"',),
+    ),
+    SelectorContract(
+        name="publish.draft_save_control",
+        owner="publish",
+        purpose="Identify the semantic save control inside the closed publish widget",
+        selectors=("保存", "存草稿", "保存草稿", "暂存"),
+    ),
+    SelectorContract(
+        name="publish.draft_box",
+        owner="publish",
+        purpose="Verify that a saved draft is visible in the Creator Center",
+        selectors=('text=/^草稿箱(?:\\(\\d+\\))?$/',),
+    ),
+    SelectorContract(
+        name="publish.account_header",
+        owner="publish",
+        purpose="Verify the expected account in the Creator Center header",
+        selectors=(
+            'header [data-testid*="account"]',
+            'header [class*="account"]',
+            'header [class*="user"]',
+            'header [class*="name"]',
         ),
     ),
     SelectorContract(

@@ -1,3 +1,26 @@
+## 2026-10-08: Xiaohongshu video publishing adaptation
+
+- Scope: vendor `DeliciousBuding/xiaohongshu-skill` 1.5.1 at
+  `afa96802d3e61cdd5e7bd7b37ec59182bbe07d37` into `xiaohongshu-skill/`;
+  preserve 103 upstream tracked files in baseline commit `23b0dcab`, source
+  provenance and Apache-2.0 attribution, then adapt in a separate commit.
+- Changes: video manifest CLI, file/account preflight, exact content/tag readback,
+  native cover handling, saved-draft resume, bounded upload detection and a
+  profile-local fingerprint ledger that blocks copied/renamed published jobs.
+- Simplifications: reuse the existing Playwright client and atomic JSON writer;
+  no second publishing service, production dependencies, fuzzy topic selection,
+  repeated media upload on resume, or repeated authorization for the same action.
+- Verification: upstream baseline 306 passed / 1 skipped; adaptation validation
+  includes offline Chromium fixtures (353 passed / 1 skipped overall),
+  unit/contract tests, Ruff, docs/site/selector checks, Python compilation and
+  Codex Skill validation. Save-button order, unchanged covers and unrelated
+  upload markers have explicit browser regressions.
+- Delivery: this adaptation is prepared on `codex/xiaohongshu-publish-efficiency`
+  for a fast-forward update to `origin/main`; installed Codex skill is synchronized
+  from committed source after push, preserving its environment and login data.
+- Limits: no real-account public submission or published-video playback test;
+  user already published the current video manually. No measured speed claim.
+
 ## 2026-09-09: Huixin Compact v06 packaging
 
 - Scope: reduce the install ZIP, not production image fidelity or generation

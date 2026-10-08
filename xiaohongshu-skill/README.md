@@ -1,5 +1,7 @@
 # xiaohongshu-skill
 
+> Chrisopal 维护版：支持视频发布清单、自定义封面、草稿恢复和重复提交保护。使用方法见 [视频工作流](docs/VIDEO_WORKFLOW.md)，上游记录见 [UPSTREAM.md](UPSTREAM.md)。
+
 [![CI](https://github.com/DeliciousBuding/xiaohongshu-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/DeliciousBuding/xiaohongshu-skill/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/DeliciousBuding/xiaohongshu-skill)](https://github.com/DeliciousBuding/xiaohongshu-skill/releases)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)

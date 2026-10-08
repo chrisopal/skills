@@ -169,7 +169,7 @@ OUTPUT_CONTRACTS: tuple[OutputContract, ...] = (
             "status", "action", "title", "video_path", "schedule_time", "success",
             "published", "message", "warnings",
         ),
-        notes="status is ready, confirmed, submitted_unconfirmed, or failed; never retry submitted_unconfirmed automatically",
+        notes="status is draft_saved, ready, preflight_ready, recorded_published, confirmed, submitted_unconfirmed, or failed; recorded_published is a user report, not independent verification; never retry an uncertain submission",
     ),
     OutputContract(
         name="publish_md.result",

@@ -149,3 +149,16 @@ def test_profile_link_contract_uses_precise_channel_selector():
     assert LOGIN_PROFILE_LINK_CONTRACT.primary == (
         'a.link-wrapper[href^="/user/profile/"]:has(span.channel)'
     )
+
+
+def test_publish_contracts_capture_modern_video_and_cover_controls():
+    editor = get_selector_contract("publish.content_editor")
+    completion = get_selector_contract("publish.video_completion_marker")
+    cover = get_selector_contract("publish.cover_file_input")
+
+    assert editor.primary == 'div[contenteditable="true"]'
+    assert 'text="重新上传"' in completion.selectors
+    assert 'text="检测为高清视频"' in completion.selectors
+    assert cover.primary == (
+        'input[type="file"][accept="image/png, image/jpeg, image/*"]'
+    )

@@ -110,18 +110,16 @@ class TestFillContent:
         mock_ql = MagicMock()
         mock_ql.count.return_value = 1
         mock_ql.first = MagicMock()
+        mock_ql.first.inner_text.return_value = "测试正文内容"
 
         mock_length_error = MagicMock()
         mock_length_error.count.return_value = 0
 
-        self.client.page.locator.side_effect = [mock_ql, mock_length_error]
+        self.client.page.locator.side_effect = [mock_ql, mock_ql, mock_length_error]
 
         self.action._fill_content("测试正文内容")
         mock_ql.first.click.assert_called_once()
-        # delay 已改为 random.randint(20, 60)，只验证内容和 delay 范围
-        call_args = self.client.page.keyboard.type.call_args
-        assert call_args[0][0] == "测试正文内容"
-        assert 20 <= call_args[1]["delay"] <= 60
+        mock_ql.first.fill.assert_called_once_with("测试正文内容")
 
 
 class TestInputTags:
@@ -143,36 +141,37 @@ class TestInputTags:
         mock_ql = MagicMock()
         mock_ql.count.return_value = 1
         mock_ql.first = MagicMock()
+        mock_ql.first.inner_text.side_effect = [
+            "正文",
+            "正文\n\n" + " ".join(f"#tag{i}" for i in range(10)),
+        ]
 
         mock_topic = MagicMock()
         mock_topic.count.return_value = 0
 
-        self.client.page.locator.side_effect = [mock_ql] + [mock_topic] * 20
+        self.client.page.locator.side_effect = [mock_ql] * 4 + [mock_topic] * 20
 
         tags = [f"tag{i}" for i in range(15)]
         self.action._input_tags(tags)
-        # # 被输入了（每个标签输入 # + 标签文字 + 可能的空格）
-        # 验证只处理了 10 个标签（tags[:10]）
-        type_calls = self.client.page.keyboard.type.call_args_list
-        hash_calls = [c for c in type_calls if c[0][0] == '#']
-        assert len(hash_calls) == 10
+        mock_ql.first.fill.assert_called_once()
+        assert mock_ql.first.fill.call_args[0][0] == (
+            "正文\n\n" + " ".join(f"#tag{i}" for i in range(10))
+        )
 
     def test_strip_hash_prefix(self):
         """自动去除 # 前缀"""
         mock_ql = MagicMock()
         mock_ql.count.return_value = 1
         mock_ql.first = MagicMock()
+        mock_ql.first.inner_text.side_effect = ["正文", "正文\n\n#测试标签"]
 
         mock_topic = MagicMock()
         mock_topic.count.return_value = 0
 
-        self.client.page.locator.side_effect = [mock_ql, mock_topic]
+        self.client.page.locator.side_effect = [mock_ql] * 4
 
         self.action._input_tags(["#测试标签"])
-        type_calls = self.client.page.keyboard.type.call_args_list
-        # 应该输入 #, 测试标签, 空格 —— 标签本身不含 #
-        tag_calls = [c for c in type_calls if c[0][0] == '测试标签']
-        assert len(tag_calls) == 1
+        assert mock_ql.first.fill.call_args[0][0] == "正文\n\n#测试标签"
 
 
 class TestCheckPublishReady:
@@ -332,13 +331,22 @@ class TestPublishVideo:
     def test_publish_video_no_auto(self, mock_ready, mock_content, mock_title,
                                     mock_upload, mock_tab, mock_nav):
         """视频发布（不自动发布）"""
-        mock_ready.return_value = {"title": "视频", "title_ok": True}
+        mock_ready.return_value = {
+            "title": "视频",
+            "title_ok": True,
+            "content_ok": True,
+            "cover_ok": True,
+            "visibility_ok": True,
+            "account_ok": True,
+            "publish_button_ready": True,
+        }
 
         result = self.action.publish_video(
             title="视频标题",
             content="视频描述",
             video_path="video.mp4",
             auto_publish=False,
+            save_draft=False,
         )
         assert result["status"] == "ready"
         assert result["published"] is False
@@ -363,7 +371,15 @@ class TestPublishVideo:
     def test_publish_video_auto_fail(self, mock_confirm, mock_ready, mock_content,
                                       mock_title, mock_upload, mock_tab, mock_nav):
         """视频发布（自动发布失败）"""
-        mock_ready.return_value = {"title": "视频", "title_ok": True}
+        mock_ready.return_value = {
+            "title": "视频",
+            "title_ok": True,
+            "content_ok": True,
+            "cover_ok": True,
+            "visibility_ok": True,
+            "account_ok": True,
+            "publish_button_ready": True,
+        }
 
         result = self.action.publish_video(
             title="视频",
@@ -683,3 +699,171 @@ class TestUploadVideo:
         """视频文件不存在抛出异常"""
         with pytest.raises(ValueError, match="视频文件不存在"):
             self.action._upload_video("nonexistent.mp4")
+
+    @patch("os.path.exists", return_value=True)
+    @patch.object(PublishAction, "_video_completion_state")
+    def test_video_completion_uses_modern_processing_evidence(
+        self, mock_state, mock_exists
+    ):
+        upload = MagicMock()
+        self.client.page.locator.return_value = upload
+        mock_state.return_value = {
+            "complete": True,
+            "markers": ["filename", "reupload", "hd_check"],
+            "busy": False,
+        }
+
+        result = self.action._upload_video("video.mp4", timeout=1)
+
+        assert result["complete"] is True
+        upload.set_input_files.assert_called_once()
+
+    @patch("os.path.exists", return_value=True)
+    @patch.object(PublishAction, "_video_completion_state")
+    def test_video_completion_timeout_fails_closed(self, mock_state, mock_exists):
+        self.client.page.locator.return_value = MagicMock()
+        mock_state.return_value = {"complete": False, "markers": [], "busy": False}
+
+        with pytest.raises(TimeoutError, match="超时"):
+            self.action._upload_video("video.mp4", timeout=0)
+
+
+class TestVideoReliabilityControls:
+    def setup_method(self):
+        self.client = MagicMock(spec=XiaohongshuClient)
+        self.client.page = MagicMock()
+        self.action = PublishAction(self.client)
+
+    def test_cover_uses_native_edit_flow_and_checks_modal_close(self, tmp_path):
+        cover = tmp_path / "cover.jpg"
+        cover.write_bytes(b"cover")
+        trigger = MagicMock()
+        edit = MagicMock()
+        modal = MagicMock()
+        file_input = MagicMock()
+        complete = MagicMock()
+        for locator in (trigger, edit, modal, file_input, complete):
+            locator.first = locator
+            locator.count.return_value = 1
+            locator.is_visible.return_value = True
+        complete.is_enabled.return_value = True
+        modal.is_visible.side_effect = [True, True, False]
+        trigger.evaluate.side_effect = [
+            {"background": 'url("old-cover.jpg")', "source": "old-cover", "loaded": True},
+            {"background": 'url("new-cover.jpg")', "source": "new-cover", "loaded": True},
+        ]
+        self.client.page.locator.side_effect = [
+            trigger,
+            trigger,
+            edit,
+            modal,
+            file_input,
+            complete,
+            trigger,
+        ]
+        self.action._cover_modal_readback = MagicMock(
+            return_value={"decoded": True, "source": "new-cover"}
+        )
+
+        result = self.action._set_cover(str(cover), timeout=1)
+
+        assert result["cover_ok"] is True
+        trigger.hover.assert_called_once()
+        edit.click.assert_called_once()
+        file_input.set_input_files.assert_called_once_with(str(cover.resolve()))
+        complete.click.assert_called_once()
+
+    def test_save_draft_uses_semantic_shadow_control_and_exact_title(self):
+        draft_box = MagicMock()
+        draft_box.count.return_value = 1
+        draft_box.is_visible.return_value = True
+        draft_box.first = draft_box
+        title = MagicMock()
+        title.count.return_value = 1
+        title.nth.return_value = title
+        title.is_visible.return_value = True
+        card = MagicMock()
+        card.count.return_value = 1
+        card.first = card
+        edit = MagicMock()
+        edit.count.return_value = 1
+        edit.first = edit
+        edit.is_visible.return_value = True
+        card.get_by_text.return_value = edit
+        title_input = MagicMock()
+        title_input.first = title_input
+        title_input.input_value.return_value = "精确标题"
+        editor = MagicMock()
+        editor.count.return_value = 1
+        editor.first = editor
+        editor.inner_text.return_value = "正文"
+        trigger = MagicMock()
+        trigger.first = trigger
+        trigger.count.return_value = 1
+        trigger.is_visible.return_value = True
+        trigger.evaluate.return_value = {"background": 'url("cover.jpg")', "loaded": True}
+        self.client.page.locator.side_effect = [
+            draft_box,
+            title_input,
+            editor,
+            trigger,
+        ]
+        self.client.page.get_by_text.side_effect = [title]
+        title.locator.return_value = card
+        click_save = self.action._click_shadow_save_control = MagicMock(
+            return_value={"save_control": "保存", "save_control_clicked": True}
+        )
+
+        evidence = self.action._save_draft("精确标题", expected_body="正文", timeout=1)
+
+        assert evidence["draft_title_exact"] is True
+        click_save.assert_called_once_with()
+        assert evidence["save_control"] == "保存"
+
+    def test_resume_draft_fails_when_exact_title_is_missing(self):
+        draft_box = MagicMock()
+        draft_box.count.return_value = 1
+        draft_box.is_visible.return_value = True
+        titles = MagicMock()
+        titles.count.return_value = 0
+        self.client.page.locator.return_value = draft_box
+        self.client.page.get_by_text.return_value = titles
+
+        with pytest.raises(ValueError, match="未找到标题完全匹配"):
+            self.action._resume_draft("不存在", timeout=0)
+
+    @patch.object(PublishAction, "_publish_and_confirm")
+    @patch.object(PublishAction, "_check_publish_ready")
+    @patch.object(PublishAction, "_upload_video")
+    @patch.object(PublishAction, "_fill_title")
+    @patch.object(PublishAction, "_fill_content")
+    @patch.object(PublishAction, "_click_publish_tab")
+    @patch.object(PublishAction, "_navigate_to_publish")
+    def test_auto_publish_stops_when_body_readback_is_not_ready(
+        self,
+        mock_nav,
+        mock_tab,
+        mock_content,
+        mock_title,
+        mock_upload,
+        mock_ready,
+        mock_confirm,
+    ):
+        mock_ready.return_value = {
+            "title_ok": True,
+            "content_ok": False,
+            "cover_ok": True,
+            "visibility_ok": True,
+            "account_ok": True,
+            "publish_button_ready": True,
+        }
+        with patch("scripts.publish.validate_publish_request", return_value=PublishValidation(schedule_at=None, warnings=())):
+            result = self.action.publish_video(
+                title="视频",
+                content="正文",
+                video_path="video.mp4",
+                auto_publish=True,
+            )
+
+        assert result["status"] == "failed"
+        mock_confirm.assert_not_called()

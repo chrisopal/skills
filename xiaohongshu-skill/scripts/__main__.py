@@ -28,6 +28,7 @@ from . import (
     strategy,
     templates,
     user,
+    video_manifest,
 )
 from .client import CaptchaError, XiaohongshuClient
 from .output_contracts import get_output_contracts
@@ -382,7 +383,7 @@ def cmd_explore(args):
 def _publish_exit_code(result):
     """Map publish confirmation states to stable CLI exit codes."""
     status = result.get("status")
-    if status in {"confirmed", "ready"}:
+    if status in {"confirmed", "ready", "draft_saved", "preflight_ready", "recorded_published"}:
         return 0
     if status == "submitted_unconfirmed":
         return 2
@@ -409,7 +410,37 @@ def cmd_publish(args):
 
 def cmd_publish_video(args):
     """发布视频笔记"""
+    if args.upload_timeout <= 0:
+        raise ValueError("upload-timeout 必须大于零")
+    if args.manifest:
+        if any(getattr(args, name) is not None for name in (
+            "title", "content", "video", "tags", "cover", "account", "schedule_time",
+        )):
+            raise ValueError("--manifest 不能与单独的内容、媒体或账号参数混用")
+        result = video_manifest.run_video_manifest(
+            args.manifest, publisher=publish.publish_video,
+            preflight=args.preflight, record_published=args.record_published,
+            auto_publish=args.auto_publish, resume_draft=args.resume_draft,
+            profile=_profile(args), headless=_headless(args),
+            cookie_path=_cookie_path(args), upload_timeout=args.upload_timeout,
+        )
+        print(format_output(result))
+        return _publish_exit_code(result)
+    if args.preflight or args.record_published:
+        raise ValueError("--preflight 和 --record-published 需要 --manifest")
+    if not all((args.title, args.content, args.video)):
+        raise ValueError("请提供 --manifest，或同时提供 --title、--content、--video")
     tags = [t.strip() for t in args.tags.split(",")] if args.tags else None
+    options = {}
+    for name, value in (
+        ("cover_path", args.cover), ("expected_account", args.account),
+    ):
+        if value is not None:
+            options[name] = value
+    if args.resume_draft:
+        options["resume_draft"] = True
+    if args.upload_timeout != 600:
+        options["upload_timeout"] = args.upload_timeout
     result = publish.publish_video(
         title=args.title,
         content=args.content,
@@ -419,6 +450,7 @@ def cmd_publish_video(args):
         auto_publish=args.auto_publish,
         headless=_headless(args),
         cookie_path=_cookie_path(args),
+        **options,
     )
     print(format_output(result))
     return _publish_exit_code(result)
@@ -728,9 +760,16 @@ def main():
 
     # publish-video (发布视频笔记)
     pubv_p = subparsers.add_parser("publish-video", help="发布视频笔记")
-    pubv_p.add_argument("--title", required=True, help="标题")
-    pubv_p.add_argument("--content", required=True, help="正文内容")
-    pubv_p.add_argument("--video", required=True, help="视频文件路径")
+    pubv_p.add_argument("--manifest", help="UTF-8 JSON 发布清单；相对路径按清单目录解析")
+    pubv_p.add_argument("--title", help="标题")
+    pubv_p.add_argument("--content", help="正文内容")
+    pubv_p.add_argument("--video", help="视频文件路径")
+    pubv_p.add_argument("--cover", help="自定义视频封面图片路径")
+    pubv_p.add_argument("--account", help="期望的创作者账号显示名称，填写前核对")
+    pubv_p.add_argument("--preflight", action="store_true", help="仅检查清单和本地素材，不启动浏览器")
+    pubv_p.add_argument("--resume-draft", action="store_true", help="按完整标题恢复唯一草稿，不重新上传")
+    pubv_p.add_argument("--record-published", action="store_true", help="记录用户已手动发布，阻止清单重复提交")
+    pubv_p.add_argument("--upload-timeout", type=int, default=600, help="上传处理超时秒数，默认600")
     pubv_p.add_argument("--tags", help="话题标签，逗号分隔")
     pubv_p.add_argument("--schedule-time", help="定时发布（格式: 2025-01-01 12:00）")
     pubv_p.add_argument("--auto-publish", action="store_true", help="自动点击发布")

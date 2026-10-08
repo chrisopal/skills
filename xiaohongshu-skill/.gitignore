@@ -44,3 +44,6 @@ cookies.json
 .coverage
 htmlcov/
 .worktrees/
+*.state.json
+*.json.lock
+*.state.json.tmp

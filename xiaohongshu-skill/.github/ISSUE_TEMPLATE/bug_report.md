@@ -12,9 +12,9 @@ assignees: DeliciousBuding
 
 ## 复现步骤
 
-1. 
-2. 
-3. 
+1.
+2.
+3.
 
 ## 期望行为
 

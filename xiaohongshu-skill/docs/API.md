@@ -141,3 +141,7 @@ python -m scripts sop --type=comment --replies='[{"feed_id":"abc","xsec_token":"
 | 0 | 成功 |
 | 1 | 错误（解析失败、未登录等） |
 | 2 | 严重错误 |
+
+## 视频清单扩展（Chrisopal 维护版）
+
+`publish-video` 新增 `--manifest`、`--preflight`、`--cover`、`--account`、`--resume-draft`、`--upload-timeout` 和 `--record-published`。视频默认保存草稿；清单恢复与提交状态见 [视频工作流](VIDEO_WORKFLOW.md)。清单不能与单独的内容或媒体参数混用。

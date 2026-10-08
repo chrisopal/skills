@@ -1,0 +1,79 @@
+{
+  "style": {
+    "body_size_pt": 11,
+    "body_line_spacing": 1.5,
+    "body_east_asia_font": "Songti SC",
+    "body_latin_font": "Times New Roman",
+    "body_first_line_indent_chars": 2,
+    "body_space_before_pt": 0,
+    "body_space_after_pt": 0,
+    "body_alignment": "justify",
+    "heading_sizes_pt": [
+      16,
+      14,
+      12
+    ],
+    "heading_east_asia_font": "Heiti SC",
+    "title_size_pt": 22,
+    "subtitle_size_pt": 13,
+    "heading_space_before_pt": 12,
+    "heading_space_after_pt": 6,
+    "table_size_pt": 10.5,
+    "caption_size_pt": 10.5,
+    "page_margins_cm": {
+      "top": 2.5,
+      "bottom": 2.5,
+      "left": 2.5,
+      "right": 2.5
+    }
+  },
+  "cover": {
+    "title": "投标文件标题",
+    "subtitle": "项目编号或版本（示例）",
+    "alignment": "center",
+    "own_page": true,
+    "metadata_rows": [
+      {
+        "label": "项目名称",
+        "value": "示例项目"
+      },
+      {
+        "label": "文件状态",
+        "value": "内部工作稿"
+      }
+    ],
+    "typography": {
+      "title_east_asia_font": "Heiti SC",
+      "subtitle_east_asia_font": "Songti SC",
+      "metadata_east_asia_font": "Songti SC",
+      "title_size_pt": 22,
+      "subtitle_size_pt": 13,
+      "metadata_size_pt": 11
+    }
+  },
+  "toc": {
+    "enabled": true,
+    "title": "目录",
+    "levels": 3,
+    "typography": {
+      "east_asia_font": "Songti SC",
+      "latin_font": "Times New Roman",
+      "size_pt": 11,
+      "line_spacing": 1.2,
+      "space_before_pt": 0,
+      "space_after_pt": 3,
+      "alignment": "left"
+    }
+  },
+  "header": {
+    "text": "内部工作稿｜需人工复核与签署",
+    "alignment": "left"
+  },
+  "footer": {
+    "text": "",
+    "alignment": "right",
+    "page_field": true,
+    "page_prefix": "第 ",
+    "page_suffix": " 页"
+  }
+}

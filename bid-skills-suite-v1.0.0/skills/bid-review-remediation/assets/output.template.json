@@ -15,7 +15,12 @@
     "checks": [],
     "human_approval_ref": null,
     "release_recommendation": "blocked",
-    "limitations": []
+    "limitations": [],
+    "core_matrix": {
+      "compliance": [],
+      "materials": [],
+      "scoring": []
+    }
   },
   "warnings": [
     "此文件是空模板，不是执行结果。"

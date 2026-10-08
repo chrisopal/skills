@@ -159,7 +159,12 @@
     "release_recommendation": "blocked",
     "limitations": [
       "未进行实际模型运行或真实招标验收"
-    ]
+    ],
+    "core_matrix": {
+      "compliance": [],
+      "materials": [],
+      "scoring": []
+    }
   },
   "warnings": [
     "仅合成数据，未运行真实模型或企业验收。"

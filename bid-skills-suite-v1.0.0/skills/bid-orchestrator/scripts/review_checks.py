@@ -325,7 +325,15 @@ def check(project, review, snapshot_path):
                     warnings.append(ident + ': 自评分值需另有原规则计算/假设记录，不代表评委评分')
     for missing_target in sorted(proof_targets - material_targets - not_applicable_targets):
         blockers.append(missing_target + ': 上游漏建资格/必需证明材料选用组')
+    from writing_policy import check_project_policy
+    try:
+        writing_policy = check_project_policy(project)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        writing_policy = {'passed': False, 'blocking_issues': ['写作策略无法检查：' + str(exc)]}
+    blockers.extend(writing_policy['blocking_issues'])
+    warnings.extend(writing_policy.get('recommendation_issues', []))
     return {'current': current['current'], 'matrix_complete': not errors,
+            'writing_policy': writing_policy,
             'errors': errors, 'release_blockers': list(dict.fromkeys(blockers)),
             'warnings': list(dict.fromkeys(warnings)),
             'counts': {a: len(stages[a]) for a in STAGES},

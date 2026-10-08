@@ -19,7 +19,7 @@
   var visualFieldIds = ["diagram-engine-setting", "diagram-theme-setting", "diagram-format-setting", "layout-template-setting",
     "architecture-layers-setting", "image-mode-setting", "visual-tool-setting",
     "visual-model-setting", "visual-style-setting", "visual-aspect-ratio-setting",
-    "visual-max-images-setting"];
+    "visual-max-images-setting", "system-ui-policy-setting", "min-ui-images-setting"];
 
   function setStatus(text, kind) {
     saveState.textContent = text;
@@ -57,6 +57,55 @@
   }
 
   function text(value) { return value === null || value === undefined ? "" : String(value); }
+
+  function clone(value) {
+    if (value === null || value === undefined) return value;
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function visibleWordCount(markdown) {
+    var value = text(markdown)
+      .replace(/^\s*(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\s*\1\s*$/gm, "")
+      .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, "")
+      .replace(/!\[[^\]]*\]\([^\n]*?\)|!\[[^\]]*\]\[[^\]]*\]/g, "")
+      .replace(/^\s*\[[^\]]+\]:\s*\S+.*$/gm, "")
+      .replace(/\[([^\]]+)\]\([^\n]*?\)|\[([^\]]+)\]\[[^\]]*\]/g, function (_, first, second) { return first || second; })
+      .replace(/<[^>]*>/g, "")
+      .replace(/^\s*(?:#{1,6}\s+|[-+*]\s+|\d+[.)]\s+|>\s*)/gm, "")
+      .replace(/^\s*\|?\s*:?-{3,}:?\s*(?:\|\s*:?-{3,}:?\s*)*\|?\s*$/gm, "")
+      .replace(/[*_`|~]/g, "");
+    var decoded = new DOMParser().parseFromString(value, "text/html").body.textContent;
+    return Array.from(decoded.replace(/\s/g, "")).length;
+  }
+
+  function selectedSectionId() {
+    return text(state && state.chapter && (state.chapter.section_id || state.chapter.id));
+  }
+
+  function chapterFigures(sectionId) {
+    var figures = state && state.visuals && state.visuals.data && state.visuals.data.figures || [];
+    return figures.filter(function (figure) { return !sectionId || figure.section_id === sectionId; });
+  }
+
+  function interfaceFigureCount(sectionId) {
+    var rows = state && state.coverage && state.coverage.writing_policy && state.coverage.writing_policy.chapters || [];
+    var checked = rows.find(function (row) { return row.section_id === sectionId; });
+    return checked ? checked.ui_image_count : 0;
+  }
+
+  function policyIssues(policy, actualWords, actualImages) {
+    var issues = policy && Array.isArray(policy.issues) ? policy.issues.slice() : [];
+    if (policy && policy.min_words != null && actualWords < Number(policy.min_words)) {
+      issues.push("可见正文少于最低建议 " + policy.min_words + " 字");
+    }
+    if (policy && policy.max_words != null && actualWords > Number(policy.max_words)) {
+      issues.push("可见正文超过最高建议 " + policy.max_words + " 字");
+    }
+    if (policy && policy.ui_required && actualImages < Number(policy.min_ui_images || 1)) {
+      issues.push("缺少界面示意图（至少 " + Number(policy.min_ui_images || 1) + " 张）");
+    }
+    return issues.filter(function (value, index, values) { return value && values.indexOf(value) === index; });
+  }
 
   function renderChapterList() {
     var list = document.getElementById("chapter-list");
@@ -120,6 +169,176 @@
     });
   }
 
+  function appendOption(select, value, label) {
+    var option = document.createElement("option");
+    option.value = value;
+    option.textContent = label;
+    select.appendChild(option);
+  }
+
+  function renderChapterOverrides(settings) {
+    var root = document.getElementById("chapter-overrides");
+    while (root.firstChild) root.removeChild(root.firstChild);
+    var chapters = state && state.chapters || [];
+    var overrides = settings && settings.chapter_overrides || {};
+    if (!chapters.length) {
+      var empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.textContent = "暂无可覆盖章节";
+      root.appendChild(empty);
+      return;
+    }
+    chapters.filter(function (chapter) { return text(chapter.section_id || chapter.id) === selectedSectionId(); }).forEach(function (chapter) {
+      var sectionId = text(chapter.section_id || chapter.id);
+      var current = overrides[sectionId] || {};
+      var item = document.createElement("fieldset");
+      item.className = "chapter-override";
+      var legend = document.createElement("legend");
+      legend.textContent = text(chapter.display_number || chapter.number) + " " + text(chapter.title);
+      item.appendChild(legend);
+      var fields = document.createElement("div");
+      fields.className = "chapter-override-fields";
+      var targetLabel = document.createElement("label");
+      targetLabel.textContent = "目标字数";
+      var target = document.createElement("input");
+      target.type = "number";
+      target.min = "1";
+      target.step = "1";
+      target.inputMode = "numeric";
+      target.placeholder = "继承推荐";
+      target.value = current.target_words == null ? "" : text(current.target_words);
+      target.dataset.overrideField = "target_words";
+      targetLabel.htmlFor = "override-target-" + sectionId;
+      target.id = "override-target-" + sectionId;
+      targetLabel.appendChild(target);
+      fields.appendChild(targetLabel);
+
+      var detailLabel = document.createElement("label");
+      detailLabel.textContent = "详细程度";
+      var detail = document.createElement("select");
+      detail.id = "override-detail-" + sectionId;
+      detail.dataset.overrideField = "detail_level";
+      appendOption(detail, "auto", "继承推荐");
+      appendOption(detail, "brief", "简略");
+      appendOption(detail, "standard", "标准");
+      appendOption(detail, "detailed", "详细");
+      detail.value = text(current.detail_level || "auto");
+      detailLabel.htmlFor = detail.id;
+      detailLabel.appendChild(detail);
+      fields.appendChild(detailLabel);
+
+      var uiLabel = document.createElement("label");
+      uiLabel.textContent = "界面示意图";
+      var ui = document.createElement("select");
+      ui.id = "override-ui-" + sectionId;
+      ui.dataset.overrideField = "ui_required";
+      appendOption(ui, "inherit", "继承推荐");
+      appendOption(ui, "true", "必配");
+      appendOption(ui, "false", "不要求");
+      ui.value = current.ui_required === true ? "true" : (current.ui_required === false ? "false" : "inherit");
+      uiLabel.htmlFor = ui.id;
+      uiLabel.appendChild(ui);
+      fields.appendChild(uiLabel);
+
+      var minLabel = document.createElement("label");
+      minLabel.textContent = "最低图数";
+      var min = document.createElement("input");
+      min.id = "override-min-images-" + sectionId;
+      min.type = "number";
+      min.min = "1";
+      min.max = "8";
+      min.step = "1";
+      min.inputMode = "numeric";
+      min.placeholder = "继承推荐";
+      min.value = current.min_ui_images == null ? "" : text(current.min_ui_images);
+      min.dataset.overrideField = "min_ui_images";
+      minLabel.htmlFor = min.id;
+      minLabel.appendChild(min);
+      fields.appendChild(minLabel);
+      item.appendChild(fields);
+      root.appendChild(item);
+    });
+  }
+
+  function renderChapterPolicy() {
+    var root = document.getElementById("chapter-policy");
+    while (root.firstChild) root.removeChild(root.firstChild);
+    var policy = state && state.chapter_policy || {};
+    var hasPolicy = !!(state && state.chapter_policy);
+    var actualWords = visibleWordCount(bodyEditor.value);
+    var actualImages = interfaceFigureCount(selectedSectionId());
+    var issues = policyIssues(policy, actualWords, actualImages);
+    var heading = document.createElement("h3");
+    heading.id = "chapter-policy-heading";
+    heading.textContent = "当前章节建议";
+    root.appendChild(heading);
+    var summary = document.createElement("div");
+    summary.className = "policy-summary";
+    var targetText = policy.target_words == null ? "未设目标" : text(policy.target_words) + " 字";
+    var range = policy.min_words == null && policy.max_words == null ? "" : "（" + text(policy.min_words || "—") + "–" + text(policy.max_words || "—") + " 字）";
+    var detailLabels = { auto: "自动", brief: "简略", standard: "标准", detailed: "详细" };
+    summary.textContent = "可见正文 " + actualWords + " 字 · 推荐 " + targetText + range
+      + " · 详细程度：" + (detailLabels[policy.detail_level] || "自动")
+      + " · 界面示意图：" + actualImages + " 张";
+    root.appendChild(summary);
+    if (policy.source || policy.system_section) {
+      var source = document.createElement("div");
+      source.className = "coverage-trace";
+      var sourceLabels = {recommendation:"自动推荐",chapter:"逐章指定",global:"统一目标"};
+      source.textContent = "依据：" + (sourceLabels[policy.source] || "自动推荐") + (policy.system_section ? " · 系统功能章" : "");
+      root.appendChild(source);
+    }
+    if (policy.ui_required) {
+      var uiNotice = document.createElement("div");
+      uiNotice.className = "coverage-trace";
+      uiNotice.textContent = "本章要求界面示意图，最低 " + Number(policy.min_ui_images || 1) + " 张；技术架构图不能替代。";
+      root.appendChild(uiNotice);
+    }
+    if (policy.reasons && policy.reasons.length) {
+      var reasons = document.createElement("ul");
+      reasons.className = "policy-list";
+      policy.reasons.forEach(function (reason) { var li = document.createElement("li"); li.textContent = text(reason); reasons.appendChild(li); });
+      root.appendChild(reasons);
+    }
+    if (policy.scoring_basis && policy.scoring_basis.length) {
+      var scoring = document.createElement("details");
+      var scoringSummary = document.createElement("summary");
+      scoringSummary.textContent = "评分依据（" + policy.scoring_basis.length + "）";
+      scoring.appendChild(scoringSummary);
+      var scoringList = document.createElement("ul");
+      scoringList.className = "policy-list";
+      policy.scoring_basis.forEach(function (basis) {
+        var li = document.createElement("li");
+        li.textContent = text(basis.title) + " · " + text(basis.rule_text) + (basis.inherited ? " · 父章关联" : "");
+        scoringList.appendChild(li);
+      });
+      scoring.appendChild(scoringList);
+      root.appendChild(scoring);
+    }
+    if (policy.expansion_requirements && policy.expansion_requirements.length) {
+      var expansion = document.createElement("div");
+      expansion.className = "coverage-group";
+      expansion.textContent = "展开要求：" + policy.expansion_requirements.join("；");
+      root.appendChild(expansion);
+    }
+    if (!hasPolicy) {
+      var pending = document.createElement("div");
+      pending.className = "coverage-trace";
+      pending.textContent = "当前章节策略建议待加载，篇幅与界面图暂不能判定。";
+      root.appendChild(pending);
+    } else if (issues.length) {
+      var issue = document.createElement("div");
+      issue.className = "message message-error policy-issues";
+      issue.textContent = "当前策略缺口：" + issues.join("；");
+      root.appendChild(issue);
+    } else {
+      var ok = document.createElement("div");
+      ok.className = "coverage-trace policy-ok";
+      ok.textContent = "当前正文未发现篇幅或界面图缺口。";
+      root.appendChild(ok);
+    }
+  }
+
   function renderReferences() {
     var root = document.getElementById("reference-content");
     while (root.firstChild) root.removeChild(root.firstChild);
@@ -146,7 +365,7 @@
     var previews = document.getElementById("chapter-figures");
     while (previews.firstChild) previews.removeChild(previews.firstChild);
     var previewHeading = document.createElement("h3");
-    previewHeading.textContent = "章节配图";
+    previewHeading.textContent = "章节配图（界面示意图与技术图分开）";
     previews.appendChild(previewHeading);
     var rendered = figures.filter(function (figure) {
       return /\.(png|jpe?g)$/i.test(figure.rendered_path || "")
@@ -242,6 +461,28 @@
         + "；评分满足性待复核" + ((coverage.scoring_pending_review || []).length ? "（存在待复核项）" : "");
       root.appendChild(scoringStatus);
     }
+    var writingPolicy = coverage.writing_policy && coverage.writing_policy.chapters || [];
+    if (writingPolicy.length) {
+      var policyGroup = document.createElement("div");
+      policyGroup.className = "coverage-group writing-policy-coverage";
+      var policyTitle = document.createElement("strong");
+      policyTitle.textContent = "篇幅与界面图检查（" + writingPolicy.length + "）";
+      policyGroup.appendChild(policyTitle);
+      var policyList = document.createElement("ul");
+      writingPolicy.forEach(function (chapter) {
+        var item = document.createElement("li");
+        var lengthLabels = {not_set:"未设目标",too_short:"篇幅不足",too_long:"超出篇幅",in_range:"篇幅符合"};
+        var uiLabels = {not_required:"无需界面图",missing:"界面图缺失",complete:"界面图已核验"};
+        var lengthLabel = chapter.actual_words == null ? "字数未检查" : text(chapter.actual_words) + " 字 · " + (lengthLabels[chapter.length_status] || "待复核");
+        var uiLabel = chapter.ui_status ? " · " + (uiLabels[chapter.ui_status] || "配图待复核") : "";
+        var navChapter = (state.chapters || []).find(function (row) {return row.section_id === chapter.section_id;});
+        item.textContent = text(navChapter ? (navChapter.display_number + " " + navChapter.title) : chapter.section_id) + "：" + lengthLabel + uiLabel;
+        if (chapter.issues && chapter.issues.length) item.textContent += " · " + chapter.issues.join("；");
+        policyList.appendChild(item);
+      });
+      policyGroup.appendChild(policyList);
+      root.appendChild(policyGroup);
+    }
     var labels = [["planned_not_written", "目录已规划但尚未写作"], ["missing_responses", "尚未形成响应"],
       ["unwritten_scoring", "尚未写作的评分项"], ["evidence_gaps", "证据缺口"]];
     labels.forEach(function (entry) {
@@ -324,7 +565,8 @@
     bodyEditor.disabled = false;
     dirty = Object.prototype.hasOwnProperty.call(unsavedBuffers, selectedId);
     discardButton.disabled = !dirty;
-    document.getElementById("word-count").textContent = bodyEditor.value.length + " 字";
+    document.getElementById("word-count").textContent = visibleWordCount(bodyEditor.value) + " 可见字";
+    renderChapterPolicy();
     renderReferences();
   }
 
@@ -333,6 +575,8 @@
     var visuals = settings.visuals || {};
     document.getElementById("tone-setting").value = text(settings.tone || "plain_chinese");
     document.getElementById("target-words-setting").value = settings.target_words || "";
+    document.getElementById("length-mode-setting").value = text(settings.length_mode || "auto_scoring");
+    document.getElementById("length-tolerance-setting").value = settings.length_tolerance == null ? "0.2" : text(settings.length_tolerance);
     document.getElementById("execution-mode-setting").value = text(settings.execution_mode || "sequential");
     document.getElementById("max-parallel-setting").value = text(settings.max_parallel || 1);
     document.getElementById("visuals-enabled-setting").checked = visuals.enabled !== false;
@@ -342,11 +586,17 @@
     document.getElementById("layout-template-setting").value = text(visuals.layout_template || "auto");
     document.getElementById("architecture-layers-setting").value = visuals.architecture_layers == null ? "" : text(visuals.architecture_layers);
     document.getElementById("image-mode-setting").value = text(visuals.image_mode || "host");
+    document.getElementById("system-ui-policy-setting").value = text(visuals.system_ui_policy || "auto");
+    document.getElementById("min-ui-images-setting").value = text(visuals.min_ui_images || 1);
     document.getElementById("visual-tool-setting").value = text(visuals.tool || "auto");
     document.getElementById("visual-model-setting").value = text(visuals.model || "");
     document.getElementById("visual-style-setting").value = text(visuals.style || "enterprise_concept");
     document.getElementById("visual-aspect-ratio-setting").value = text(visuals.aspect_ratio || "16:9");
     document.getElementById("visual-max-images-setting").value = text(visuals.max_images || 2);
+    document.getElementById("target-words-hint").textContent = document.getElementById("length-mode-setting").value === "fixed"
+      ? "所有未覆盖章节使用此基准"
+      : "自动模式按评分复杂度缩放";
+    renderChapterOverrides(settings);
     updateVisualFieldState();
   }
 
@@ -406,28 +656,61 @@
     load(selectedId);
   }
 
+  function collectChapterOverrides(existing) {
+    var overrides = clone(existing || {}) || {};
+    (state && state.chapters || []).forEach(function (chapter) {
+      var sectionId = text(chapter.section_id || chapter.id);
+      var target = document.getElementById("override-target-" + sectionId);
+      var detail = document.getElementById("override-detail-" + sectionId);
+      var ui = document.getElementById("override-ui-" + sectionId);
+      var min = document.getElementById("override-min-images-" + sectionId);
+      if (!target || !detail || !ui || !min) return;
+      var existed = Object.prototype.hasOwnProperty.call(overrides, sectionId);
+      var blank = !target.value && detail.value === "auto" && ui.value === "inherit" && !min.value;
+      if (!existed && blank) return;
+      var current = clone(overrides[sectionId] || {}) || {};
+      current.target_words = target.value ? Number(target.value) : null;
+      current.detail_level = detail.value || "auto";
+      current.ui_required = ui.value === "inherit" ? null : ui.value === "true";
+      if (min.value) current.min_ui_images = Number(min.value);
+      else delete current.min_ui_images;
+      overrides[sectionId] = current;
+    });
+    return overrides;
+  }
+
   function saveSettings(event) {
     event.preventDefault();
     var target = document.getElementById("target-words-setting").value;
-    var request = { tone: document.getElementById("tone-setting").value,
-      target_words: target ? Number(target) : null,
-      execution_mode: document.getElementById("execution-mode-setting").value,
-      max_parallel: Number(document.getElementById("max-parallel-setting").value),
-      visuals: { enabled: document.getElementById("visuals-enabled-setting").checked,
-        diagram_engine: document.getElementById("diagram-engine-setting").value,
-        diagram_theme: document.getElementById("diagram-theme-setting").value,
-        diagram_format: document.getElementById("diagram-format-setting").value,
-        layout_template: document.getElementById("layout-template-setting").value,
-        architecture_layers: document.getElementById("architecture-layers-setting").value
-          ? Number(document.getElementById("architecture-layers-setting").value) : null,
-        image_mode: document.getElementById("image-mode-setting").value,
-        tool: document.getElementById("visual-tool-setting").value,
-        model: document.getElementById("visual-model-setting").value,
-        style: document.getElementById("visual-style-setting").value,
-        aspect_ratio: document.getElementById("visual-aspect-ratio-setting").value,
-        max_images: Number(document.getElementById("visual-max-images-setting").value) },
+    var request = clone(state && state.settings || {}) || {};
+    delete request.revision;
+    delete request.sha256;
+    request.tone = document.getElementById("tone-setting").value;
+    request.target_words = target ? Number(target) : null;
+    request.length_mode = document.getElementById("length-mode-setting").value;
+    request.length_tolerance = Number(document.getElementById("length-tolerance-setting").value || 0.2);
+    request.execution_mode = document.getElementById("execution-mode-setting").value;
+    request.max_parallel = Number(document.getElementById("max-parallel-setting").value);
+    request.chapter_overrides = collectChapterOverrides(request.chapter_overrides);
+    request.visuals = Object.assign({}, request.visuals || {}, { enabled: document.getElementById("visuals-enabled-setting").checked,
+      diagram_engine: document.getElementById("diagram-engine-setting").value,
+      diagram_theme: document.getElementById("diagram-theme-setting").value,
+      diagram_format: document.getElementById("diagram-format-setting").value,
+      layout_template: document.getElementById("layout-template-setting").value,
+      architecture_layers: document.getElementById("architecture-layers-setting").value
+        ? Number(document.getElementById("architecture-layers-setting").value) : null,
+      image_mode: document.getElementById("image-mode-setting").value,
+      system_ui_policy: document.getElementById("system-ui-policy-setting").value,
+      min_ui_images: Number(document.getElementById("min-ui-images-setting").value || 1),
+      tool: document.getElementById("visual-tool-setting").value,
+      model: document.getElementById("visual-model-setting").value,
+      style: document.getElementById("visual-style-setting").value,
+      aspect_ratio: document.getElementById("visual-aspect-ratio-setting").value,
+      max_images: Number(document.getElementById("visual-max-images-setting").value) });
+    Object.assign(request, {
       expected_revision: state && state.settings ? state.settings.revision : 0,
-      expected_sha256: state && state.settings ? state.settings.sha256 : "" };
+      expected_sha256: state && state.settings ? state.settings.sha256 : ""
+    });
     setBusy(true);
     fetch("/api/settings", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(request) })
       .then(function (response) { return response.json().then(function (data) { if (!response.ok) { var error = new Error(data.error && data.error.message || "设置保存失败"); error.code = data.error && data.error.code; throw error; } return data; }); })
@@ -436,12 +719,24 @@
       .finally(function () { setBusy(false); updateVisualFieldState(); });
   }
 
-  bodyEditor.addEventListener("input", function () { unsavedBuffers[selectedId] = bodyEditor.value; dirty = true; discardButton.disabled = false; document.getElementById("word-count").textContent = bodyEditor.value.length + " 字"; setStatus("有未保存修改", "warning"); });
+  bodyEditor.addEventListener("input", function () {
+    unsavedBuffers[selectedId] = bodyEditor.value;
+    dirty = true;
+    discardButton.disabled = false;
+    document.getElementById("word-count").textContent = visibleWordCount(bodyEditor.value) + " 可见字";
+    renderChapterPolicy();
+    setStatus("有未保存修改", "warning");
+  });
   saveButton.addEventListener("click", save);
   discardButton.addEventListener("click", discardCurrent);
   reloadButton.addEventListener("click", function () { if (!dirty || window.confirm("重载会丢弃当前未保存内容，继续吗？")) { delete unsavedBuffers[selectedId]; dirty = false; load(selectedId); } });
   document.getElementById("visuals-enabled-setting").addEventListener("change", updateVisualFieldState);
   document.getElementById("diagram-engine-setting").addEventListener("change", updateVisualFieldState);
+  document.getElementById("length-mode-setting").addEventListener("change", function () {
+    document.getElementById("target-words-hint").textContent = this.value === "fixed"
+      ? "所有未覆盖章节使用此基准"
+      : "自动模式按评分复杂度缩放";
+  });
   settingsForm.addEventListener("submit", saveSettings);
   document.getElementById("theme-button").addEventListener("click", function () { document.documentElement.setAttribute("data-theme", document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"); });
   window.addEventListener("beforeunload", function (event) { if (dirty || saveInFlight) { event.preventDefault(); event.returnValue = ""; } });

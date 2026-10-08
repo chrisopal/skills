@@ -21,13 +21,15 @@ DISTRIBUTED_SCRIPTS = {
     'bid-source-intake': ('extract_sources.py', 'paddle_ocr.py'),
     'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'review_checks.py', 'extract_sources.py', 'paddle_ocr.py'),
     'bid-project-profile': ('tender_router.py',),
-    'bid-outline-planning': ('writing_checks.py', 'outline_view.py'),
-    'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py'),
+    'bid-outline-planning': ('writing_checks.py', 'writing_policy.py', 'outline_view.py'),
+    'bid-technical-writing': ('writing_checks.py', 'writing_policy.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py'),
     'bid-document-layout': ('build_docx.py', 'convert_pdf.py'),
-    'bid-review-remediation': ('bidkit.py', 'review_checks.py'),
+    'bid-review-remediation': ('bidkit.py', 'review_checks.py', 'writing_policy.py'),
     'bid-export-acceptance': ('bidkit.py', 'review_checks.py', 'build_docx.py', 'convert_pdf.py', 'inspect_artifact.py', 'bundle_delivery.py'),
     'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'review_checks.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py', 'inspect_artifact.py', 'bundle_delivery.py', 'diagram_tools.py', 'diagram_svg.py'),
 }
+for _skill in ('bid-evidence-matching', 'bid-export-acceptance', 'bid-orchestrator'):
+    DISTRIBUTED_SCRIPTS[_skill] += ('writing_policy.py',)
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-project-profile': ('TENDER_ROUTING.md',),
@@ -45,6 +47,9 @@ DISTRIBUTED_DOCS = {
     'bid-export-acceptance': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md', 'CORE_REVIEW.md', 'EXPORT_LAYOUT.md'),
     'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md', 'DIAGRAM_TOOLS.md', 'ENTERPRISE_DIAGRAMS.md', 'PARALLEL_WRITING.md', 'CORE_REVIEW.md', 'EXPORT_LAYOUT.md'),
 }
+for _skill in ('bid-outline-planning', 'bid-technical-writing', 'bid-visuals',
+               'bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
+    DISTRIBUTED_DOCS[_skill] += ('CHAPTER_WRITING_POLICY.md',)
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
     'bid-technical-writing': ('ui',),

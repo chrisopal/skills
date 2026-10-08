@@ -109,11 +109,23 @@ h2 { font-size: 20px; }
 .settings-form select:disabled, .settings-form input:disabled { color: var(--ui-disabled-text); background: var(--ui-disabled-bg); cursor: not-allowed; }
 .settings-form select:focus-visible, .settings-form input:focus-visible { outline: 2px solid var(--ui-action-text); outline-offset: 2px; }
 .settings-form input::placeholder { color: var(--ui-text-tertiary); opacity: 1; }
+.settings-inline-field { min-width: 0; display: flex; align-items: center; gap: 8px; }
+.settings-inline-field input { flex: 1 1 auto; min-width: 0; }
+.field-hint { color: var(--ui-text-tertiary); font-size: 12px; white-space: nowrap; }
 .settings-section { grid-column: 1 / -1; margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--ui-border-subtle); font-size: 14px; }
+.settings-section h3 { margin: 0; font-size: 14px; }
 .checkbox-label { display: inline-flex; gap: 6px; align-items: center; }
 .checkbox-label input { width: 16px; height: 16px; accent-color: var(--ui-action-solid); }
 .settings-form button { grid-column: 2; justify-self: start; }
 .settings-guidance { grid-column: 1 / -1; margin: 0; color: var(--ui-text-tertiary); font-size: 12px; }
+.chapter-overrides { display: grid; gap: 8px; margin-top: 8px; }
+.chapter-override { min-width: 0; margin: 0; padding: 10px 12px; border: 1px solid var(--ui-border-subtle); border-radius: 4px; }
+.chapter-override legend { max-width: 100%; padding: 0 4px; color: var(--ui-text-secondary); font-size: 12px; overflow-wrap: anywhere; }
+.chapter-override-fields { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.chapter-override-fields label { min-width: 0; display: grid; gap: 4px; font-size: 12px; }
+.chapter-override-fields input, .chapter-override-fields select { width: 100%; min-width: 0; min-height: 30px; padding: 4px 6px; border: 1px solid var(--ui-border-control); border-radius: 4px; color: var(--ui-text); background: var(--ui-surface); font-size: 12px; }
+.chapter-override-fields input:focus-visible, .chapter-override-fields select:focus-visible { outline: 2px solid var(--ui-action-text); outline-offset: 2px; }
+.chapter-override-fields input:disabled, .chapter-override-fields select:disabled { color: var(--ui-disabled-text); background: var(--ui-disabled-bg); cursor: not-allowed; }
 .status { display: inline-flex; align-items: center; gap: 5px; padding: 2px 7px; border: 1px solid var(--ui-border-subtle); border-radius: 3px; font-size: 12px; white-space: nowrap; }
 .status::before { width: 6px; height: 6px; display: inline-block; border-radius: 50%; background: currentColor; content: ""; }
 .status-neutral { color: var(--ui-text-tertiary); }
@@ -125,6 +137,13 @@ h2 { font-size: 20px; }
 .body-editor { width: 100%; min-height: min(64vh, 720px); padding: 16px; resize: vertical; border: 1px solid var(--ui-border-control); border-radius: 4px; color: var(--ui-text); background: var(--ui-surface); font-family: var(--ui-font-mono); line-height: 1.7; }
 .body-editor:disabled { color: var(--ui-disabled-text); background: var(--ui-disabled-bg); cursor: wait; }
 .editor-footer { justify-content: space-between; gap: 8px; margin-top: 10px; }
+.chapter-policy { display: grid; gap: 8px; margin-top: 16px; padding: 12px; border: 1px solid var(--ui-border-subtle); border-radius: 4px; background: var(--ui-surface-muted); }
+.chapter-policy h3 { margin: 0; font-size: 14px; }
+.policy-summary { color: var(--ui-text-secondary); font-size: 13px; }
+.policy-list { margin: 0; padding-left: 18px; color: var(--ui-text-secondary); font-size: 12px; }
+.policy-list li { margin: 3px 0; }
+.policy-issues { margin: 0; padding: 8px 10px; font-size: 12px; }
+.policy-ok { color: var(--ui-success); }
 .reference-content { display: grid; gap: 16px; }
 .coverage-content { display: grid; gap: 8px; margin-top: 24px; }
 .coverage-content h3 { margin: 0; font-size: 13px; }
@@ -156,5 +175,8 @@ h2 { font-size: 20px; }
   .chapter-nav { max-height: 270px; overflow: auto; }
   .body-editor { min-height: 55vh; }
   .reference-content { grid-template-columns: 1fr; }
+  .settings-inline-field { align-items: stretch; flex-direction: column; gap: 3px; }
+  .field-hint { white-space: normal; }
+  .chapter-override-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (prefers-reduced-motion: reduce) { .button { transition: none; } }

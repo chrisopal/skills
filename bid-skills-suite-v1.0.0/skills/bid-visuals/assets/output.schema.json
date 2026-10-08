@@ -100,7 +100,8 @@
                   "data_chart",
                   "concept",
                   "sequence",
-                  "swimlane"
+                  "swimlane",
+                  "interface"
                 ]
               },
               "specification": {

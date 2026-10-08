@@ -17,17 +17,20 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from outline_view import ordered_sections
+from writing_policy import POLICY_DEFAULTS, VISUAL_POLICY_DEFAULTS, normalize_settings, resolve_policy
 
 
 SUITE_ROOT = Path(__file__).resolve().parents[1]
 UI_ROOT = SUITE_ROOT / "assets" / "ui"
 DEFAULT_SETTINGS = {
+    **POLICY_DEFAULTS,
     "tone": "plain_chinese",
     "target_words": None,
     "execution_mode": "sequential",
     "max_parallel": 1,
     "guidance": "由宿主总控读取后按章节启动子Agent并汇总；保存设置本身不启动任务。",
     "visuals": {
+        **VISUAL_POLICY_DEFAULTS,
         "enabled": True,
         "diagram_engine": "auto",
         "diagram_theme": "reference",
@@ -248,6 +251,10 @@ class WritingWorkspace:
         value = _read_json(path)
         candidate, migrated = self._migrate_legacy_settings(value)
         result = self._validate_settings(candidate)
+        try:
+            normalize_settings(result, {s['id'] for s in self._load_artifact(self.outline_path)['data']['sections']})
+        except ValueError as exc:
+            raise WorkspaceError(str(exc), "invalid_input") from exc
         result["revision"] = value.get("revision", 0)
         if migrated and migrate:
             if locked:
@@ -331,7 +338,10 @@ class WritingWorkspace:
                 or not 1 <= max_images <= 8):
             raise WorkspaceError("visuals.max_images 必须是 1 到 8 的整数", "invalid_input")
         result["guidance"] = DEFAULT_SETTINGS["guidance"]
-        return result
+        try:
+            return normalize_settings(result)
+        except ValueError as exc:
+            raise WorkspaceError(str(exc), "invalid_input") from exc
 
     @staticmethod
     def _reject_secret_fields(value: object) -> None:
@@ -370,6 +380,10 @@ class WritingWorkspace:
             if expected_sha != current["sha256"]:
                 raise WorkspaceError("写作设置哈希已变化，请重载后重试。", "stale_settings", 409)
             result = self._validate_settings(value)
+            try:
+                normalize_settings(result, {s['id'] for s in self._load_artifact(self.outline_path)['data']['sections']})
+            except ValueError as exc:
+                raise WorkspaceError(str(exc), "invalid_input") from exc
             result["revision"] = current["revision"] + 1
             _write_atomic(self._settings_path(), result)
         return self.settings()
@@ -574,12 +588,19 @@ class WritingWorkspace:
         outline_view["sha256"] = _digest(self.outline_path)
         writing_view = dict(writing)
         writing_view["sha256"] = _digest(self.writing_path)
+        settings = self.settings()
+        selected_section = next((s for s in outline['data']['sections']
+                                 if s['id'] == (selected_row or {}).get('section_id')), None)
+        chapter_policy = (resolve_policy(selected_section, outline['data']['sections'],
+                                         scoring['data']['items'], requirements['data']['requirements'], settings)
+                          if selected_section else None)
         return {"project": project_view, "outline": outline_view, "writing": writing_view,
                 "chapters": rows, "chapter": chapter, "requirements": requirements,
                 "score": scoring, "scoring": scoring, "evidence": evidence,
                 "visuals": visuals,
                 "references": self._references(chapter, requirements, scoring, evidence),
-                "upstream": upstream, "coverage": self._coverage(), "settings": self.settings(),
+                "upstream": upstream, "coverage": self._coverage(), "settings": settings,
+                "chapter_policy": chapter_policy,
                 "ui": {"semantic_acceptance": "NOT_TESTED", "writable_state": "proposed/draft only"}}
 
     def _validate_save_request(self, request: dict) -> tuple[int, str, str, str]:

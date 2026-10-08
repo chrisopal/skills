@@ -89,6 +89,10 @@ def scan_content(project):
             if path.is_symlink():raise ValueError('内容快照不接收符号链接：'+str(path))
             if path.is_file():
                 files.append({'relative_path':path.relative_to(project).as_posix(),'sha256':digest(path),'bytes':path.stat().st_size})
+    settings=safe(project,'work/writing-settings.json')
+    if settings.is_file():
+        if settings.is_symlink():raise ValueError('写作设置快照不接收符号链接')
+        files.append({'relative_path':'work/writing-settings.json','sha256':digest(settings),'bytes':settings.stat().st_size})
     return files
 
 def snapshot(project,out):

@@ -15,6 +15,11 @@
     "style": "企业概念示意",
     "aspect_ratio": "16:9",
     "max_images": 2,
-    "diagram_theme": "reference"
-  }
+    "diagram_theme": "reference",
+    "system_ui_policy": "auto",
+    "min_ui_images": 1
+  },
+  "length_mode": "auto_scoring",
+  "length_tolerance": 0.2,
+  "chapter_overrides": {}
 }

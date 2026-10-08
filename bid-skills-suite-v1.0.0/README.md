@@ -1,6 +1,6 @@
 # 投标编制 Skill 套件
 
-**版本 1.13.0 · 2026-10-08 · 中文 · 16个业务技能 + 1个总控技能**
+**版本 1.14.0 · 2026-10-08 · 中文 · 16个业务技能 + 1个总控技能**
 
 新增[核心逐项评审](docs/CORE_REVIEW.md)和[导出配置](docs/EXPORT_LAYOUT.md)：评分叶子、合规条款与材料组逐项核验，正式门禁拒绝漏审、证据漂移和关键未知；封面、多级目录、字体、缩进、行距、页边距与页眉页脚可配置。目录域仍须实际引擎刷新及逐页验收。
 
@@ -89,3 +89,5 @@ python -m unittest discover -s tests -v
 ## 技术图工具与模板
 
 13新增可选择的[enterprise-diagrams](../enterprise-diagrams/SKILL.md)独立 Skill：八类结构、六套主题、JSON可编辑源和SVG矢量输出；配置diagram_engine=blueprint，PNG使用宿主已有CairoSVG。保留Draw.io/PlantUML/Mermaid与auto路由，SVG/PNG独立选择；系统界面仍默认使用宿主生图Skill。工具发现、版本化导出、对话修改与布局模板见[DIAGRAM_TOOLS.md](docs/DIAGRAM_TOOLS.md)。本地运行工具不是新增Python依赖；安装与宿主能力需实际核验。
+
+章节设置与自动建议：[按评分条件推荐篇幅、逐章覆盖和系统界面图](docs/CHAPTER_WRITING_POLICY.md)。

@@ -56,3 +56,5 @@ python scripts/writing_batch.py claim --project "$PROJECT" --batch-id chapter-ru
 ## 验证边界
 
 脚本验证输入身份、并发槽位、提案契约、文件完整性和保存版本；不能证明全文语义满足。总控还需检查遗漏、技术承诺、跨章一致性与知识依据。实际启动两个Agent及两稿保存证据与单元测试分开记录。WorkBuddy等宿主的能力需要在那里实测，不以Codex测试代替。
+
+章节篇幅、详细程度与界面必配要求见[章节策略](CHAPTER_WRITING_POLICY.md)。明确字数/缺图由当前配置检查，设置变化使旧内容快照过期；推荐或结构检查不认证评分满足。

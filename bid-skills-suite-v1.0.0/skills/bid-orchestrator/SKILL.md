@@ -2,7 +2,7 @@
 name: bid-orchestrator
 description: 按任务范围调度16个业务技能，传递确切上下文、组织人工确认、识别变更和阻塞。 适用于：完整投标流程、启动编标、继续上次任务、安排技能、仅理解／仅评审、补遗影响分析。
 metadata:
-  version: "1.12.0"
+  version: "1.14.0"
   language: zh-CN
   sequence: '17'
   suite: bid-skills-suite
@@ -53,6 +53,8 @@ metadata:
 类别/组合/标包有重大歧义时请用户决定；范围清楚可继续候选理解提取，正式采纳范围与承诺前落实理解确认。具体时点及记录见同一说明，不以脚本通过冒充批准。
 
 ## 执行步骤
+
+按[章节篇幅与界面图](references/CHAPTER_WRITING_POLICY.md)保存自动推荐/逐章覆盖，把resolved_policy传给章节Agent。宿主对话定位稳定ID，设置变化重新冻结评审；按每次上限分批生图，缺字数/缺图保持整改项。
 
 1. **明确模式**
 

@@ -36,8 +36,12 @@
           <form id="settings-form" class="settings-form">
             <label for="tone-setting">语气</label>
             <select id="tone-setting"><option value="plain_chinese">平实中文</option><option value="formal_chinese">正式中文</option></select>
-            <label for="target-words-setting">目标字数（可选）</label>
-            <input id="target-words-setting" type="number" min="1" step="1" inputmode="numeric">
+            <label for="length-mode-setting">篇幅策略</label>
+            <select id="length-mode-setting"><option value="auto_scoring">按评分自动推荐</option><option value="fixed">固定基准字数</option></select>
+            <label for="target-words-setting">基准字数（可选）</label>
+            <div class="settings-inline-field"><input id="target-words-setting" type="number" min="1" step="1" inputmode="numeric"><span id="target-words-hint" class="field-hint">自动模式按评分复杂度缩放</span></div>
+            <label for="length-tolerance-setting">篇幅容差</label>
+            <div class="settings-inline-field"><input id="length-tolerance-setting" type="number" min="0" max="0.5" step="0.05" inputmode="decimal"><span class="field-hint">±比例</span></div>
             <label for="execution-mode-setting">章节执行模式</label>
             <select id="execution-mode-setting"><option value="sequential">顺序</option><option value="parallel">并行</option></select>
             <label for="max-parallel-setting">最大并行数</label>
@@ -57,6 +61,10 @@
             <input id="architecture-layers-setting" type="number" min="1" max="12" step="1" placeholder="自动" inputmode="numeric">
             <label for="image-mode-setting">界面示意与概念配图</label>
             <select id="image-mode-setting"><option value="host">Agent 自带生图 Skill（默认）</option><option value="disabled">关闭生成式配图</option></select>
+            <label for="system-ui-policy-setting">系统功能章配图</label>
+            <select id="system-ui-policy-setting"><option value="auto">按任务卡要求</option><option value="all_system_sections">所有系统功能章</option><option value="off">关闭</option></select>
+            <label for="min-ui-images-setting">每章最低界面图数</label>
+            <input id="min-ui-images-setting" type="number" min="1" max="8" step="1" value="1" inputmode="numeric">
             <label for="visual-tool-setting">生图工具偏好</label>
             <input id="visual-tool-setting" type="text" maxlength="200" value="auto" placeholder="自动或实际工具名称" autocomplete="off">
             <label for="visual-model-setting">模型偏好（可选）</label>
@@ -65,9 +73,14 @@
             <input id="visual-style-setting" type="text" maxlength="200" value="企业概念示意" autocomplete="off">
             <label for="visual-aspect-ratio-setting">画幅比例</label>
             <select id="visual-aspect-ratio-setting"><option value="16:9">16:9</option><option value="4:3">4:3</option><option value="1:1">1:1</option></select>
-            <label for="visual-max-images-setting">每次最多生图数</label>
+            <label for="visual-max-images-setting">每批最多生图数</label>
             <input id="visual-max-images-setting" type="number" min="1" max="8" step="1" value="2" inputmode="numeric">
-            <p class="settings-guidance">总控读取执行设置后按章派发，子Agent各自保存草稿，由总控统一合并；保存设置本身不启动写作。可选择 Enterprise Diagrams 生成参考版式并选择颜色主题，或保留 Draw.io 等引擎。技术图默认自动选择引擎并输出 SVG：分层架构/网络/复杂流程优先 Draw.io，时序优先 PlantUML、泳道优先 Draw.io，简单流程优先 Mermaid。界面示意默认调用当前宿主实际生图能力；配置保存后仍需按图任务执行并记录结果。</p>
+            <section class="settings-section chapter-overrides-section" aria-labelledby="chapter-overrides-heading">
+              <h3 id="chapter-overrides-heading">当前章节覆盖</h3>
+              <p class="settings-guidance">留空或选择继承时使用总控推荐；界面图数量按章生效，生图上限只约束每一批任务。</p>
+              <div id="chapter-overrides" class="chapter-overrides"></div>
+            </section>
+            <p class="settings-guidance">总控读取执行设置后按章派发，子Agent各自保存草稿，由总控统一合并；保存设置本身不启动写作。可选择 Enterprise Diagrams 生成参考版式并选择颜色主题，或保留 Draw.io 等引擎。技术图默认自动选择引擎并输出 SVG：分层架构/网络/复杂流程优先 Draw.io，时序优先 PlantUML、泳道优先 Draw.io，简单流程优先 Mermaid。系统界面配图显示为“界面示意图”，默认调用当前宿主实际生图能力；配置保存后仍需按图任务执行并记录结果。</p>
             <button id="settings-save-button" class="button button-secondary" type="submit">保存并重载设置</button>
           </form>
         </details>
@@ -75,6 +88,7 @@
         <label class="field-label" for="body-editor">Markdown 草稿</label>
         <textarea id="body-editor" class="body-editor" spellcheck="false" disabled></textarea>
         <div class="editor-footer"><span id="word-count" class="meta-text">0 字</span><span class="status status-warning">正文满足性待复核</span></div>
+        <section id="chapter-policy" class="chapter-policy" aria-labelledby="chapter-policy-heading"></section>
         <section id="chapter-figures" class="chapter-figures" aria-label="章节配图"></section>
       </section>
       <aside class="reference-panel" aria-labelledby="reference-heading">

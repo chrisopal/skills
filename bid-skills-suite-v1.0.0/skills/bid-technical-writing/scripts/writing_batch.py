@@ -241,6 +241,7 @@ class WritingBatch:
                 "existing_chapter": {"title": chapter.get("title", section.get("title", "")),
                                      "body_markdown": chapter.get("body_markdown", "")},
                 "settings": _copy_json(state["snapshot"]["settings"]),
+                "resolved_policy": _copy_json(current_state.get("chapter_policy")),
                 "proposal_relative_path": proposal_path, "context_relative_path": context_path,
                 "instructions": "仅写入 proposal_relative_path；不得修改项目正文或其它文件。"}
 

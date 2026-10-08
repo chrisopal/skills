@@ -35,6 +35,8 @@ metadata:
 
 ## 执行步骤
 
+按[章节篇幅与界面图](references/CHAPTER_WRITING_POLICY.md)复核明确目标和必配图缺口，以及实际Word/PDF入图；设置变化使旧快照失效，不以数量达标自动接受整标。
+
 1. **步骤1**
 
    按[核心逐项评审](references/CORE_REVIEW.md)执行本技能`scripts/review_checks.py check`，覆盖评分叶子、05全部条款及09材料组选用；存在漏审、关键材料未知或废标阻塞禁止正式交付。重新计算15所绑定输入文件的真实哈希；任何变化先返回15复核，不用“只是排版”跳过验证。

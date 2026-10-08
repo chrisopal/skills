@@ -7,6 +7,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from writing_policy import assess_chapters
 
 
 def digest(path):
@@ -304,7 +305,16 @@ def check_project(project, outline_path, writing_path, visuals_path=None):
             score_context.update(node.get('scoring_ids', []))
             node = section_by.get(node.get('parent_id'))
     scoring_started = score_leaves & score_context
+    settings_path = inside(project, 'work/writing-settings.json')
+    settings = json.loads(settings_path.read_text(encoding='utf-8')) if settings_path.is_file() else {}
+    try:
+        policy = assess_chapters(project, sections, chapters, scoring, requirements,
+                                 visuals['data'].get('figures', []), settings)
+    except (ValueError, TypeError) as exc:
+        policy = {'passed': False, 'chapters': [], 'blocking_issues': [str(exc)],
+                  'recommendation_issues': [], 'semantic_acceptance': 'NOT_TESTED'}
     return {'project_id': identity, 'writing_sha256': digest(writing_path),
+            'writing_policy': policy, 'writing_policy_valid': policy['passed'],
             'structural_valid': not errors, 'errors': errors, 'warnings': warnings,
             'requirement_count': len(req_ids), 'outline_mapped_count': len(req_ids & mapped['requirement_ids']),
             'written_requirement_count': len(req_ids & written), 'response_count': len(set(response_ids)),
@@ -335,7 +345,7 @@ def main():
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_text(text + '\n', encoding='utf-8')
         print(text)
-        return 0 if result['structural_valid'] else 1
+        return 0 if result['structural_valid'] and result['writing_policy_valid'] else 1
     except (OSError, ValueError, KeyError) as exc:
         print(json.dumps({'error': str(exc)}, ensure_ascii=False))
         return 2

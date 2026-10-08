@@ -15,9 +15,11 @@
   unit/contract tests, Ruff, docs/site/selector checks, Python compilation and
   Codex Skill validation. Save-button order, unchanged covers and unrelated
   upload markers have explicit browser regressions.
-- Delivery: this adaptation is prepared on `codex/xiaohongshu-publish-efficiency`
-  for a fast-forward update to `origin/main`; installed Codex skill is synchronized
-  from committed source after push, preserving its environment and login data.
+- Delivery: implementation `0c358c6f` was fast-forward pushed to `origin/main`
+  and verified with `git ls-remote`. All 109 tracked skill files were synchronized
+  to the installed Codex skill and verified byte-for-byte; its existing runtime
+  environment and external login data were preserved. Installed CLI exposes all
+  seven new workflow options. Root GitHub CI was triggered; local gates passed.
 - Limits: no real-account public submission or published-video playback test;
   user already published the current video manually. No measured speed claim.
 

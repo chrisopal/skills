@@ -12,13 +12,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Keep standalone installations executable without referring to the suite checkout.
 DISTRIBUTED_SCRIPTS = {
+    'bid-visuals': ('diagram_tools.py',),
     'bid-source-intake': ('extract_sources.py', 'paddle_ocr.py'),
     'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
     'bid-project-profile': ('tender_router.py',),
     'bid-outline-planning': ('writing_checks.py', 'outline_view.py'),
     'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py', 'outline_view.py', 'render_writing_report.py'),
     'bid-document-layout': ('build_docx.py', 'convert_pdf.py'),
-    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py'),
+    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py', 'diagram_tools.py'),
 }
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
@@ -31,17 +32,18 @@ DISTRIBUTED_DOCS = {
     'bid-commercial-documents': ('SIMULATION_TESTING.md',),
     'bid-outline-planning': ('WRITING_WORKFLOW.md',),
     'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md'),
-    'bid-visuals': ('WRITING_WORKFLOW.md',),
+    'bid-visuals': ('WRITING_WORKFLOW.md', 'DIAGRAM_TOOLS.md'),
     'bid-document-layout': ('WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md'),
     'bid-review-remediation': ('WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md'),
     'bid-export-acceptance': ('WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md'),
-    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md'),
+    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md', 'DIAGRAM_TOOLS.md'),
 }
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
     'bid-technical-writing': ('ui',),
+    'bid-visuals': ('diagram-templates',),
     'bid-document-layout': ('layout-templates',),
-    'bid-orchestrator': ('tender-routing', 'ui', 'layout-templates'),
+    'bid-orchestrator': ('tender-routing', 'ui', 'layout-templates', 'diagram-templates'),
 }
 
 

@@ -45,8 +45,14 @@
             <h3 class="settings-section">配图与生图</h3>
             <label for="visuals-enabled-setting">配图</label>
             <label class="checkbox-label"><input id="visuals-enabled-setting" type="checkbox" checked> 启用</label>
-            <label for="diagram-renderer-setting">架构与流程图</label>
-            <select id="diagram-renderer-setting"><option value="svg">SVG（默认，可编辑）</option><option value="mermaid">Mermaid</option><option value="auto">自动（优先 SVG）</option></select>
+            <label for="diagram-engine-setting">图表引擎</label>
+            <select id="diagram-engine-setting"><option value="auto">自动路由（默认）</option><option value="drawio">Draw.io（分层架构/网络/复杂流程）</option><option value="plantuml">PlantUML（时序）</option><option value="mermaid">Mermaid（简单流程）</option></select>
+            <label for="diagram-format-setting">输出格式</label>
+            <select id="diagram-format-setting"><option value="svg">SVG（默认，矢量）</option><option value="png">PNG</option></select>
+            <label for="layout-template-setting">布局模板</label>
+            <select id="layout-template-setting"><option value="auto">自动</option><option value="layered">分层</option><option value="swimlane">泳道</option><option value="sequence">时序</option><option value="flow">流程</option></select>
+            <label for="architecture-layers-setting">架构层数（可选）</label>
+            <input id="architecture-layers-setting" type="number" min="3" max="6" step="1" placeholder="自动" inputmode="numeric">
             <label for="image-mode-setting">界面示意与概念配图</label>
             <select id="image-mode-setting"><option value="host">Agent 自带生图 Skill（默认）</option><option value="disabled">关闭生成式配图</option></select>
             <label for="visual-tool-setting">生图工具偏好</label>
@@ -59,7 +65,7 @@
             <select id="visual-aspect-ratio-setting"><option value="16:9">16:9</option><option value="4:3">4:3</option><option value="1:1">1:1</option></select>
             <label for="visual-max-images-setting">每次最多生图数</label>
             <input id="visual-max-images-setting" type="number" min="1" max="8" step="1" value="2" inputmode="numeric">
-            <p class="settings-guidance">可选择配图方式；架构图默认 SVG，界面示意默认调用 Agent 自带生图 Skill。逐图要求优先；配置保存后由 Skill 执行生成。</p>
+            <p class="settings-guidance">技术图默认自动选择引擎并输出 SVG：分层架构/网络/复杂流程优先 Draw.io，时序优先 PlantUML、泳道优先 Draw.io，简单流程优先 Mermaid。界面示意默认调用当前宿主实际生图能力；配置保存后仍需按图任务执行并记录结果。</p>
             <button id="settings-save-button" class="button button-secondary" type="submit">保存并重载设置</button>
           </form>
         </details>

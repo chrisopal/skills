@@ -33,7 +33,7 @@ metadata:
 
 - 读取本次宿主实际开放的工具。原文先原生解析；扫描件按 [OCR 配置](references/OCR_SETUP.md) 使用已配置的 PaddleOCR 服务，Key 只从环境读取。缺配置保留待补读页，不把脚本成功退出当完整识别。
 - 企业材料支持本地文件与宿主知识库检索。按 [知识接入](references/KNOWLEDGE.md) 运行 `scripts/knowledge.py add-local` 或保存实际宿主结果后 `import-host`，生成项目索引和 Wiki。继续任务先 `validate`；09选材、10方案、11写作读取确切快照，不凭聊天记忆重建企业事实。
-- 不假定宿主有某个固定知识库 API 或生图模型。工具不可用时明确缺口。架构图／流程图默认 SVG，可由用户改选；界面示意与概念图默认由当前Agent自带生图Skill调用实际工具，并保存图文件与来源说明。
+- 不假定宿主有某个固定知识库 API 或生图模型。工具不可用时明确缺口。技术图按`visuals.diagram_engine=auto`路由：分层架构、网络和复杂流程优先Draw.io，时序／泳道优先PlantUML，简单流程优先Mermaid，默认SVG输出；界面示意与概念图默认由当前Agent自带生图Skill调用实际工具，并保存图文件与来源说明。
 - 调度13前读取`work/writing-settings.json`的`visuals`配图配置，按[写作流程](references/WRITING_WORKFLOW.md)核对工具可用性和实际参数。配置偏好不替代调用记录；关闭配图不能无声遗漏招标强制图表。目录展示按父子关系排序与展开，不更改原始强制格式。
 - 项目知识是候选资料，真实证照／业绩仍需完整原件。新的知识快照进入既有评审快照范围；输入变化后更新受影响阶段状态，不能沿用旧评审结论。
 
@@ -83,7 +83,7 @@ metadata:
 
    结束时汇报本次实际完成、阻塞、待确认、下一步和文件清单；失败与未执行分开。程序校验通过不能替代真实业务验收。
 
-配图方式优先逐图明确指令和已保存偏好，架构图默认SVG、系统界面示意默认Agent自带生图Skill。生成配图时由11明确本章界面/技术图任务，13按[写作流程](references/WRITING_WORKFLOW.md)发现并调用当前Agent实际生图能力或生成SVG。核对实际文件、章节预览与工作稿，不将工具配置或提示词当作图片生成成功。
+配图方式优先逐图明确指令和已保存偏好，技术图按auto路由并默认SVG输出，系统界面示意默认Agent自带生图Skill。生成配图时由11明确本章界面/技术图任务，13按[写作流程](references/WRITING_WORKFLOW.md)调用`scripts/diagram_tools.py`的doctor、plan、render流程或当前Agent实际生图能力；具体参数以将提供的`DIAGRAM_TOOLS.md`为准。核对实际文件、章节预览与工作稿，不将工具配置或提示词当作图片生成成功。
 
 ## 产物与交接
 

@@ -2,7 +2,7 @@
 name: bid-visuals
 description: 制作说明方案的准确图表，确保每张图有任务、数据依据、正文对应和可编辑源。 适用于：架构图、流程图、网络图、实施计划图、配置示意、标书配图、数据图表。
 metadata:
-  version: 1.5.0
+  version: 1.6.0
   language: zh-CN
   sequence: '13'
   suite: bid-skills-suite
@@ -25,7 +25,7 @@ metadata:
 
 输入：08图表任务、10确认方案、11正文、06格式与暗标限制、已授权图片或数据。
 
-先读取`work/writing-settings.json`中的`visuals`，缺省按[配置示例](assets/writing-settings.example.json)与当前用户指令。`enabled`决定可选配图，`diagram_renderer`决定SVG（默认）/Mermaid/auto，`image_mode`决定宿主界面示意、概念生图或关闭；`tool/model`是可用工具和模型偏好，`style/aspect_ratio/max_images`是风格、比例与本次最多概念图数。仅保存偏好不算已生成；实际参数映射和不可用项按[写作流程](references/WRITING_WORKFLOW.md)记录。必要图表与关闭配置冲突时保留待处理项，不能省略后宣称符合要求。
+先读取`work/writing-settings.json`中的`visuals`，缺省按[配置示例](assets/writing-settings.example.json)与当前用户指令。`enabled`决定可选配图，`diagram_engine`决定技术图引擎（默认auto按图型路由Draw.io、PlantUML或Mermaid），`diagram_format`决定SVG（默认）或PNG输出，`layout_template`决定auto、layered、swimlane、sequence或flow布局，`architecture_layers`可指定3—6层；`image_mode`决定宿主界面示意、概念生图或关闭；`tool/model`是可用工具和模型偏好，`style/aspect_ratio/max_images`是风格、比例与本次最多概念图数。仅保存偏好不算已生成；实际参数映射和不可用项按[写作流程](references/WRITING_WORKFLOW.md)记录。旧`diagram_renderer`仅在读写已保存设置时一次性迁移，新保存不接受该字段。必要图表与关闭配置冲突时保留待处理项，不能省略后宣称符合要求。
 
 上游技能：`bid-format-extraction, bid-outline-planning, bid-solution-design, bid-technical-writing`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 
@@ -35,19 +35,19 @@ metadata:
 
 宿主Agent可通过自然对话接收图表修改；必须保留受影响章节/需求/`FIG-ID`、`base_revision`和hash CAS结果，并在目录或正文变化后重做受影响图表与入稿核对。界面概念图始终标示为示意，不得当作真实系统截图；遵循既有visuals配置。
 
-本技能负责驱动实际生图：先区分界面设计示意、技术结构图与真实证据图片，再发现当前宿主已开放的工具并执行。Codex有Imagegen时加载其技能并调用实际工具；WorkBuddy等宿主使用该Agent实际提供的生图技能/插件/工具，不写死Codex接口或模型。软件核心操作需要界面示意时，不用流程图替代；生成画面标注“界面设计示意，非实际系统截图”。允许用户选择配图方式，优先级为逐图明确指令、已保存的项目偏好、默认规则。架构图、流程图默认SVG；系统界面示意默认使用当前Agent自带生图Skill。宿主能力、调用、实际文件、章节预览与入稿都要核验，只有偏好/提示词不能标已生成。
+本技能负责驱动实际生图：先区分界面设计示意、技术结构图与真实证据图片，再发现当前宿主已开放的工具并执行。Codex有Imagegen时加载其技能并调用实际工具；WorkBuddy等宿主使用该Agent实际提供的生图技能/插件/工具，不写死Codex接口或模型。软件核心操作需要界面示意时，不用流程图替代；生成画面标注“界面设计示意，非实际系统截图”。允许用户选择配图方式，优先级为逐图明确指令、已保存的项目偏好、默认规则。技术图默认auto路由：分层架构、网络和复杂流程优先Draw.io，时序和泳道优先PlantUML，简单流程优先Mermaid，输出默认SVG；系统界面示意默认使用当前宿主实际生图能力。宿主能力、调用、实际文件、章节预览与入稿都要核验，只有偏好/提示词不能标已生成。
 
 1. **步骤1**
 
-   为每个FIG-ID明确要回答的问题、目标章节、图型、信息来源和是否必须；没有解释作用的配图不生成。
+   为每个FIG-ID明确要回答的问题、目标章节、图型、信息来源和是否必须；没有解释作用的配图不生成。每张图规格保留source/evidence、输入revision、`base_revision`、源文件哈希和CAS结果。
 
 2. **步骤2**
 
-   从10冻结方案提取节点、边、阶段或数值，形成结构化图表规格；未知接口、设备或参数不能靠美观补上。
+   从10冻结方案提取节点、边、阶段或数值，形成结构化图表规格；未知接口、设备或参数不能靠美观补上。工具不可用、provider unavailable、超时或渲染失败时保留明确gap和复跑条件。
 
 3. **步骤3**
 
-   架构图、流程图、网络图默认 SVG；用户选择 Mermaid 时遵从选择。auto 也优先 SVG；显式选用方式不可用时记录缺口，不擅自更换用户选择。保留 `.mmd`／`.svg` 可编辑源，使用宿主已安装的渲染工具生成插图并检查文字与连线。只有源码时状态为 specified，实际渲染后才可标 rendered；数据图表由给定数据生成并保留计算来源。
+   技术图由`scripts/diagram_tools.py`驱动，使用[DIAGRAM_TOOLS.md](references/DIAGRAM_TOOLS.md)中的doctor、plan、render流程；不要在本技能中臆造命令行参数。auto按图型选择Draw.io、PlantUML或Mermaid，默认SVG输出；显式选用方式不可用时记录provider unavailable缺口，不擅自更换用户选择。保留引擎源和输出文件，并检查文字与连线。只有源码时状态为specified，实际渲染后才可标rendered；数据图表由给定数据生成并保留计算来源。
 
 4. **步骤4**
 

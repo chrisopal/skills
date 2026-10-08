@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 
@@ -18,6 +19,76 @@ def inside(project, path):
     if not target.is_relative_to(project) or target == project:
         raise ValueError('文件路径超出项目范围')
     return target
+
+
+_RENDER_ENGINES = {'drawio': '.drawio', 'plantuml': '.puml', 'mermaid': '.mmd'}
+_RENDER_RECORD_FIELDS = {
+    'engine', 'source_sha256', 'output_sha256', 'receipt_path', 'receipt_sha256',
+    'base_source_sha256', 'cas_result',
+}
+_SHA256 = re.compile(r'^[a-f0-9]{64}$')
+
+
+def _relative(project, path):
+    return path.resolve().relative_to(project).as_posix()
+
+
+def _check_render_record(project, figure, source, rendered, errors):
+    figure_id = figure['id']
+    record = figure.get('render_record')
+    if not isinstance(record, dict) or set(record) != _RENDER_RECORD_FIELDS:
+        errors.append(figure_id + ': render_record 字段不完整或包含未知字段')
+        return
+    source_rel = _relative(project, source)
+    rendered_rel = _relative(project, rendered)
+    engine = record['engine']
+    if engine not in _RENDER_ENGINES:
+        errors.append(figure_id + ': render_record.engine 无效')
+    expected_suffix = _RENDER_ENGINES.get(engine)
+    if expected_suffix and source.suffix.lower() != expected_suffix:
+        errors.append(figure_id + ': render_record.engine 与图源扩展名不一致')
+    for field in ('source_sha256', 'output_sha256', 'receipt_sha256', 'base_source_sha256'):
+        if not isinstance(record[field], str) or not _SHA256.fullmatch(record[field]):
+            errors.append(figure_id + ': render_record.' + field + ' 无效')
+    if record['cas_result'] != 'matched':
+        errors.append(figure_id + ': render_record.cas_result 必须为 matched')
+    try:
+        receipt = inside(project, record['receipt_path'])
+    except (TypeError, ValueError):
+        errors.append(figure_id + ': render_record.receipt_path 越出项目范围')
+        return
+    if not receipt.is_file():
+        errors.append(figure_id + ': render receipt 缺失 ' + str(record['receipt_path']))
+        return
+    actual_source_sha = digest(source)
+    actual_output_sha = digest(rendered)
+    actual_receipt_sha = digest(receipt)
+    if record['source_sha256'] != actual_source_sha:
+        errors.append(figure_id + ': 图源哈希与 render_record 不一致')
+    if record['output_sha256'] != actual_output_sha:
+        errors.append(figure_id + ': 成图哈希与 render_record 不一致')
+    if record['receipt_sha256'] != actual_receipt_sha:
+        errors.append(figure_id + ': receipt 哈希与 render_record 不一致')
+    try:
+        receipt_value = json.loads(receipt.read_text(encoding='utf-8'))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+        errors.append(figure_id + ': render receipt 不是有效 JSON')
+        return
+    if not isinstance(receipt_value, dict):
+        errors.append(figure_id + ': render receipt 顶层必须是对象')
+        return
+    expected = {
+        'engine': engine,
+        'source_path': source_rel,
+        'output_path': rendered_rel,
+        'source_sha256': record['source_sha256'],
+        'output_sha256': record['output_sha256'],
+        'base_source_sha256': record['base_source_sha256'],
+        'cas_result': record['cas_result'],
+    }
+    for field, value in expected.items():
+        if receipt_value.get(field) != value:
+            errors.append(figure_id + ': render receipt 的 ' + field + ' 与记录不一致')
 
 
 def check_project(project, outline_path, writing_path, visuals_path=None):
@@ -142,12 +213,30 @@ def check_project(project, outline_path, writing_path, visuals_path=None):
     for figure in visuals['data'].get('figures', []):
         if figure['section_id'] not in section_by:
             errors.append(figure['id'] + ': 图表章节不存在')
+        paths = {}
         for key in ['source_path', 'rendered_path']:
             value = figure.get(key)
-            if value and not inside(project, value).is_file():
-                errors.append(figure['id'] + ': 图表文件缺失 ' + value)
+            if value:
+                try:
+                    paths[key] = inside(project, value)
+                except (TypeError, ValueError):
+                    errors.append(figure['id'] + ': 图表路径越出项目范围 ' + str(value))
+                else:
+                    if not paths[key].is_file():
+                        errors.append(figure['id'] + ': 图表文件缺失 ' + value)
         if figure['state'] in {'rendered', 'reviewed'} and not figure['rendered_path']:
             errors.append(figure['id'] + ': 图表没有渲染文件')
+        source = paths.get('source_path')
+        rendered = paths.get('rendered_path')
+        native_source = source and source.suffix.lower() in {'.drawio', '.puml'}
+        if (figure['state'] in {'rendered', 'reviewed'} and native_source
+                and not figure.get('render_record')):
+            errors.append(figure['id'] + ': rendered/reviewed 的原生图源缺少 render_record')
+        elif (figure['state'] in {'rendered', 'reviewed'} and source
+              and not figure.get('render_record')):
+            warnings.append(figure['id'] + ': 历史图源没有CLI render_record，不能声称通过CLI审计')
+        if figure.get('render_record') and source and rendered and source.is_file() and rendered.is_file():
+            _check_render_record(project, figure, source, rendered, errors)
     trace_path = project / 'artifacts/11-writing-trace.json'
     trace_state, traced = 'missing', set()
     response_text = {r['requirement_id']: ''.join(r['response'].split()) for r in responses}

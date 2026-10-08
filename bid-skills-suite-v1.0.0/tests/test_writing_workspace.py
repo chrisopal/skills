@@ -170,7 +170,10 @@ class WritingWorkspaceTest(unittest.TestCase):
                                              "revision": 3}), encoding="utf-8")
         initial = workspace.settings()
         self.assertTrue(initial["visuals"]["enabled"])
-        self.assertEqual(initial["visuals"]["diagram_renderer"], "svg")
+        self.assertEqual(initial["visuals"]["diagram_engine"], "auto")
+        self.assertEqual(initial["visuals"]["diagram_format"], "svg")
+        self.assertEqual(initial["visuals"]["layout_template"], "auto")
+        self.assertIsNone(initial["visuals"]["architecture_layers"])
         self.assertEqual(initial["visuals"]["image_mode"], "host")
         self.assertEqual(initial["visuals"]["max_images"], 2)
         with self.assertRaises(WorkspaceError) as missing_guard:
@@ -178,7 +181,9 @@ class WritingWorkspaceTest(unittest.TestCase):
         self.assertEqual(missing_guard.exception.code, "invalid_input")
         settings = workspace.save_settings({"tone": "formal_chinese", "target_words": 1200,
                                              "execution_mode": "parallel", "max_parallel": 2,
-                                             "visuals": {"enabled": False, "diagram_renderer": "mermaid",
+                                             "visuals": {"enabled": False, "diagram_engine": "plantuml",
+                                                         "diagram_format": "png", "layout_template": "sequence",
+                                                         "architecture_layers": 4,
                                                          "image_mode": "disabled", "tool": "local",
                                                          "model": "preferred-model", "style": "clean",
                                                          "aspect_ratio": "4:3", "max_images": 4},
@@ -187,11 +192,17 @@ class WritingWorkspaceTest(unittest.TestCase):
         self.assertEqual(self._workspace().settings(), settings)
         self.assertTrue((self.project / "work/writing-settings.json").exists())
         self.assertEqual(settings["visuals"]["model"], "preferred-model")
-        self.assertEqual(settings["visuals"]["diagram_renderer"], "mermaid")
+        self.assertEqual(settings["visuals"]["diagram_engine"], "plantuml")
+        self.assertEqual(settings["visuals"]["diagram_format"], "png")
+        self.assertEqual(settings["visuals"]["layout_template"], "sequence")
+        self.assertEqual(settings["visuals"]["architecture_layers"], 4)
         self.assertFalse(settings["visuals"]["enabled"])
         for invalid in (
             {"visuals": {"max_images": True}},
-            {"visuals": {"diagram_renderer": "raster"}},
+            {"visuals": {"diagram_engine": "raster"}},
+            {"visuals": {"diagram_format": "jpeg"}},
+            {"visuals": {"layout_template": "grid"}},
+            {"visuals": {"architecture_layers": 2}},
             {"visuals": {"style": "x" * 201}},
             {"visuals": {"api_key": "should-never-be-stored"}},
         ):
@@ -205,10 +216,69 @@ class WritingWorkspaceTest(unittest.TestCase):
                                      "expected_sha256": ""})
         self.assertEqual(caught.exception.code, "stale_settings")
 
+    def test_legacy_diagram_renderer_is_migrated_once_on_read(self) -> None:
+        workspace = self._workspace()
+        settings_path = self.project / "work/writing-settings.json"
+        for old_value, expected_engine in (("svg", "auto"), ("mermaid", "mermaid"), ("auto", "auto")):
+            settings_path.write_text(json.dumps({
+                "tone": "plain_chinese", "revision": 7,
+                "visuals": {"enabled": True, "diagram_renderer": old_value},
+            }), encoding="utf-8")
+            migrated = workspace.settings()
+            self.assertEqual(migrated["visuals"]["diagram_engine"], expected_engine)
+            self.assertEqual(migrated["visuals"]["diagram_format"], "svg")
+            persisted = json.loads(settings_path.read_text(encoding="utf-8"))
+            self.assertNotIn("diagram_renderer", persisted["visuals"])
+            self.assertEqual(persisted["visuals"]["diagram_engine"], expected_engine)
+            self.assertEqual(persisted["revision"], 7)
+            stable_hash = migrated["sha256"]
+            self.assertEqual(workspace.settings()["sha256"], stable_hash)
+
+    def test_new_saves_reject_retired_diagram_renderer_field(self) -> None:
+        workspace = self._workspace()
+        current = workspace.settings()
+        with self.assertRaises(WorkspaceError):
+            workspace.save_settings({
+                "visuals": {"diagram_renderer": "mermaid"},
+                "expected_revision": current["revision"],
+                "expected_sha256": current["sha256"],
+            })
+
+    def test_save_settings_creates_missing_settings_file(self) -> None:
+        workspace = self._workspace()
+        current = workspace.settings()
+        self.assertFalse((self.project / "work/writing-settings.json").exists())
+        saved = workspace.save_settings({
+            "visuals": {"diagram_engine": "drawio"},
+            "expected_revision": current["revision"],
+            "expected_sha256": current["sha256"],
+        })
+        self.assertEqual(saved["revision"], 1)
+        self.assertEqual(saved["visuals"]["diagram_engine"], "drawio")
+        self.assertTrue((self.project / "work/writing-settings.json").is_file())
+
+    def test_stale_hash_from_before_legacy_migration_is_rejected(self) -> None:
+        workspace = self._workspace()
+        settings_path = self.project / "work/writing-settings.json"
+        settings_path.write_text(json.dumps({
+            "tone": "plain_chinese", "revision": 4,
+            "visuals": {"enabled": True, "diagram_renderer": "svg"},
+        }), encoding="utf-8")
+        stale_hash = self._digest("work/writing-settings.json")
+        current = workspace.settings()
+        with self.assertRaises(WorkspaceError) as caught:
+            workspace.save_settings({
+                "visuals": {"diagram_engine": "drawio"},
+                "expected_revision": current["revision"],
+                "expected_sha256": stale_hash,
+            })
+        self.assertEqual(caught.exception.code, "stale_settings")
+        self.assertEqual(workspace.settings()["visuals"]["diagram_engine"], "auto")
+
     def test_settings_reject_unknown_fields_without_persisting_credentials(self) -> None:
         workspace = self._workspace()
         before = workspace.settings()
-        for field in ("private_key", "bearer", "cookie", "unknown_preference"):
+        for field in ("private_key", "bearer", "cookie", "unknown_preference", "diagram_renderer"):
             for payload in ({field: "do-not-store"}, {"visuals": {field: "do-not-store"}}):
                 payload.update({"expected_revision": before["revision"],
                                 "expected_sha256": before["sha256"]})
@@ -254,10 +324,16 @@ class WritingWorkspaceTest(unittest.TestCase):
         self.assertIn("放弃当前编辑", script)
         page = (SUITE_ROOT / "assets/ui/writing-editor.html").read_text(encoding="utf-8")
         self.assertIn("settings-form", page)
-        for field in ("visuals-enabled-setting", "diagram-renderer-setting", "image-mode-setting",
+        for field in ("visuals-enabled-setting", "diagram-engine-setting", "diagram-format-setting",
+                      "layout-template-setting", "architecture-layers-setting", "image-mode-setting",
                       "visual-tool-setting", "visual-model-setting", "visual-style-setting",
                       "visual-aspect-ratio-setting", "visual-max-images-setting"):
             self.assertIn(field, page)
+        self.assertNotIn("diagram-renderer-setting", page)
+        self.assertIn("图表引擎", page)
+        self.assertIn("输出格式", page)
+        self.assertIn("布局模板", page)
+        self.assertIn("架构层数", page)
 
     def test_outline_state_has_parent_order_and_display_number(self) -> None:
         path = self.project / 'artifacts/08-outline.json'

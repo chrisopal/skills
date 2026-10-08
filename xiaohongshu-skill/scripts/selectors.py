@@ -210,6 +210,7 @@ SELECTOR_CONTRACTS: tuple[SelectorContract, ...] = (
         owner="publish",
         purpose="Verify the expected account in the Creator Center header",
         selectors=(
+            '.d-topbar .user-info .name-box',
             'header [data-testid*="account"]',
             'header [class*="account"]',
             'header [class*="user"]',

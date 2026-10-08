@@ -47,6 +47,7 @@ class TestClickPublishTab:
         mock_tab = MagicMock()
         mock_tab.count.return_value = 1
         mock_tab.text_content.return_value = "上传图文"
+        mock_tab.is_visible.return_value = True
         mock_tab.evaluate.return_value = False  # is_element_blocked 返回 False
         mock_tabs = MagicMock()
         mock_tabs.count.return_value = 1
@@ -62,6 +63,7 @@ class TestClickPublishTab:
         mock_tab = MagicMock()
         mock_tab.count.return_value = 1
         mock_tab.text_content.return_value = "上传视频"
+        mock_tab.is_visible.return_value = True
         mock_tab.evaluate.return_value = False  # is_element_blocked 返回 False
         mock_tabs = MagicMock()
         mock_tabs.count.return_value = 1

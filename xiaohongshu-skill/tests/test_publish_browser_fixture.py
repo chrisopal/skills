@@ -106,6 +106,35 @@ def test_local_fixture_requires_terminal_video_evidence(local_page):
     assert busy_state["busy"] is True
 
 
+def test_account_binding_waits_for_current_creator_topbar(local_page):
+    local_page.set_content(
+        """
+        <main>目标账号</main>
+        <script>setTimeout(() => {
+          const topbar = document.createElement('div');
+          topbar.className = 'd-topbar';
+          topbar.innerHTML = '<div class="user-info"><span class="name-box">实际账号</span></div>';
+          document.body.appendChild(topbar);
+        }, 150);</script>
+        """
+    )
+    action = _action(local_page)
+    assert action._check_account_binding("实际账号")["account_ok"] is True
+    assert action._check_account_binding("目标账号")["account_ok"] is False
+
+
+def test_publish_tab_skips_hidden_duplicate(local_page):
+    local_page.set_content(
+        """
+        <div class="creator-tab" style="display:none">上传视频</div>
+        <div class="creator-tab" onclick="window.selectedTab='video'">上传视频</div>
+        <button>上传视频</button>
+        """
+    )
+    _action(local_page)._click_publish_tab("上传视频")
+    assert local_page.evaluate("window.selectedTab") == "video"
+
+
 def test_local_fixture_reads_tiptap_body_and_rendered_cover(local_page):
     local_page.set_content(
         """

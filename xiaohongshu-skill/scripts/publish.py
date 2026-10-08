@@ -330,6 +330,9 @@ class PublishAction:
         page = self.client.page
         observed: list[str] = []
         try:
+            page.locator(", ".join(ACCOUNT_HEADER_SELECTORS)).first.wait_for(
+                state="visible", timeout=15000,
+            )
             for selector in ACCOUNT_HEADER_SELECTORS:
                 loc = page.locator(selector)
                 for index in range(loc.count()):
@@ -382,6 +385,8 @@ class PublishAction:
                 tabs = page.locator('div.creator-tab')
                 for i in range(tabs.count()):
                     tab = tabs.nth(i)
+                    if tab.is_visible() is not True:
+                        continue
                     text = tab.text_content().strip()
                     if text != tab_name:
                         continue

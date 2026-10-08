@@ -6,6 +6,16 @@ version source of truth in `pyproject.toml`.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Fixed
+
+- Read the current Creator Center account from its `d-topbar` profile area,
+  waiting for the header to appear before verifying the exact account name.
+  Account names in note content remain ineligible as identity evidence.
+- Skip hidden duplicate publish tabs so the visible upload control can be
+  selected without repeated overlay retries.
+
 ## [1.5.1] - 2026-08-24
 
 ### Changed

@@ -19,12 +19,14 @@ COMPANION_RESOURCES = {
 DISTRIBUTED_SCRIPTS = {
     'bid-visuals': ('diagram_tools.py', 'diagram_svg.py'),
     'bid-source-intake': ('extract_sources.py', 'paddle_ocr.py'),
-    'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py'),
+    'bid-evidence-matching': ('knowledge.py', 'bidkit.py', 'review_checks.py', 'extract_sources.py', 'paddle_ocr.py'),
     'bid-project-profile': ('tender_router.py',),
     'bid-outline-planning': ('writing_checks.py', 'outline_view.py'),
     'bid-technical-writing': ('writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py'),
     'bid-document-layout': ('build_docx.py', 'convert_pdf.py'),
-    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py', 'diagram_tools.py', 'diagram_svg.py'),
+    'bid-review-remediation': ('bidkit.py', 'review_checks.py'),
+    'bid-export-acceptance': ('bidkit.py', 'review_checks.py', 'build_docx.py', 'convert_pdf.py', 'inspect_artifact.py', 'bundle_delivery.py'),
+    'bid-orchestrator': ('knowledge.py', 'bidkit.py', 'review_checks.py', 'extract_sources.py', 'paddle_ocr.py', 'tender_router.py', 'render_report.py', 'writing_checks.py', 'writing_workspace.py', 'writing_batch.py', 'outline_view.py', 'render_writing_report.py', 'build_docx.py', 'convert_pdf.py', 'inspect_artifact.py', 'bundle_delivery.py', 'diagram_tools.py', 'diagram_svg.py'),
 }
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
@@ -38,18 +40,22 @@ DISTRIBUTED_DOCS = {
     'bid-outline-planning': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md',),
     'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md', 'PARALLEL_WRITING.md'),
     'bid-visuals': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'DIAGRAM_TOOLS.md', 'ENTERPRISE_DIAGRAMS.md'),
-    'bid-document-layout': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'BID_LAYOUT_TEMPLATES.md'),
-    'bid-review-remediation': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md'),
-    'bid-export-acceptance': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md'),
-    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md', 'DIAGRAM_TOOLS.md', 'ENTERPRISE_DIAGRAMS.md', 'PARALLEL_WRITING.md'),
+    'bid-document-layout': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'BID_LAYOUT_TEMPLATES.md', 'EXPORT_LAYOUT.md'),
+    'bid-review-remediation': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md', 'CORE_REVIEW.md'),
+    'bid-export-acceptance': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md', 'CORE_REVIEW.md', 'EXPORT_LAYOUT.md'),
+    'bid-orchestrator': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md', 'REPORTS.md', 'WRITING_WORKFLOW.md', 'BID_LAYOUT_TEMPLATES.md', 'SIMULATION_TESTING.md', 'DIAGRAM_TOOLS.md', 'ENTERPRISE_DIAGRAMS.md', 'PARALLEL_WRITING.md', 'CORE_REVIEW.md', 'EXPORT_LAYOUT.md'),
 }
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
     'bid-technical-writing': ('ui',),
     'bid-visuals': ('diagram-templates',),
     'bid-document-layout': ('layout-templates',),
+    'bid-export-acceptance': ('layout-templates',),
     'bid-orchestrator': ('tender-routing', 'ui', 'layout-templates', 'diagram-templates'),
 }
+REVIEW_SCHEMA_SKILLS = ('bid-evidence-matching', 'bid-review-remediation',
+                       'bid-export-acceptance', 'bid-orchestrator')
+DELIVERY_SCHEMA_SKILLS = ('bid-export-acceptance', 'bid-orchestrator')
 
 
 def sync_standalone_resources(root=ROOT):
@@ -70,6 +76,12 @@ def sync_standalone_resources(root=ROOT):
             shutil.copytree(root / 'assets' / directory,
                             root / 'skills' / skill_id / 'assets' / directory, dirs_exist_ok=True)
     writing_schema = root / 'skills/bid-technical-writing/assets/output.schema.json'
+    for skill_id in REVIEW_SCHEMA_SKILLS:
+        shutil.copyfile(root / 'skills/bid-review-remediation/assets/output.schema.json',
+                        root / 'skills' / skill_id / 'assets/review.schema.json')
+    for skill_id in DELIVERY_SCHEMA_SKILLS:
+        shutil.copyfile(root / 'skills/bid-export-acceptance/assets/output.schema.json',
+                        root / 'skills' / skill_id / 'assets/delivery.schema.json')
     for skill_id in ('bid-technical-writing', 'bid-orchestrator'):
         shutil.copyfile(writing_schema, root / 'skills' / skill_id / 'assets/writing-output.schema.json')
     for skill_id in ('bid-technical-writing', 'bid-visuals', 'bid-orchestrator'):

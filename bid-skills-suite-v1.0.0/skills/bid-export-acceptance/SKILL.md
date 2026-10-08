@@ -2,7 +2,7 @@
 name: bid-export-acceptance
 description: 生成并核验实际Word／PDF交付文件，确保成稿对应已审核版本且没有漏页、乱码或内部信息泄漏。 适用于：导出标书、Word/PDF成稿、交付打包、检查目录页码、实际文件验收。
 metadata:
-  version: 1.1.0
+  version: 1.2.0
   language: zh-CN
   sequence: '16'
   suite: bid-skills-suite
@@ -37,9 +37,11 @@ metadata:
 
 1. **步骤1**
 
-   重新计算15所绑定输入文件的真实哈希；任何变化先返回15复核，不用“只是排版”跳过验证。
+   按[核心逐项评审](references/CORE_REVIEW.md)执行本技能`scripts/review_checks.py check`，覆盖评分叶子、05全部条款及09材料组选用；存在漏审、关键材料未知或废标阻塞禁止正式交付。重新计算15所绑定输入文件的真实哈希；任何变化先返回15复核，不用“只是排版”跳过验证。
 
    `last-review` hash不匹配时禁止ready。完整编标可导出明确标注阻塞的`draft_only`候选，但eligible/正式交付门禁和人工授权不变；复杂固定表、真实TOC/页码及逐页QA未由宿主工具完成时不得标passed。
+
+   导出偏好配置见 [导出配置](references/EXPORT_LAYOUT.md) 和 `assets/layout-templates/export-settings.example.json`。在用户项目 `profiles/export-settings.json` 固定配置版本后再导出；顶层 `style` 复用 document-spec 的现有样式校验并按字段覆盖；封面、TOC 层级/字体、页眉页脚和 `PAGE` 字段只能补齐招标文件未规定的部分。招标文件、有效补遗和06强制格式优先，配置变化会使依赖旧配置的审核/导出快照失效，必须按当前字节重新评审。
 
 2. **步骤2**
 
@@ -57,13 +59,15 @@ metadata:
 
    渲染并逐页核对页眉页脚、目录跳转、分页、长表、图片和插页。核对“页”等字符的实际编码，不能用自定义替换掩盖错误。
 
+   `build_docx.py` 开启 TOC 时只写入可更新的 Word TOC 字段与标题书签，并保留“待更新”状态；必须在实际 Word/LibreOffice 交付引擎更新、保存并读回，不能把字段存在或 XML 文本当作目录已刷新。脚本返回 `draft_only` 和 `visual_qa=NOT_RUN`，通过结构检查不等于正式交付、签署或递交授权。
+
 6. **步骤6**
 
    暗标按06检查显性与元数据身份；文件名、修订记录、批注、隐藏内容和外链也进入检查，不自动删改合法证据。
 
 7. **步骤7**
 
-   导出完成后再次核对评审输入未变，并生成文件名、SHA256、字节数、格式、检查状态与待办的清单；缺实际核验不得标passed。
+   导出完成后再次执行核心逐项评审检查，核对评审输入未变，并生成文件名、SHA256、字节数、格式、检查状态与待办的清单；缺实际核验不得标passed。
 
 8. **步骤8**
 

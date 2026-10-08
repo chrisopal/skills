@@ -89,6 +89,10 @@ metadata:
 
 配图方式优先逐图明确指令和已保存偏好，技术图按auto路由并默认SVG输出，系统界面示意默认Agent自带生图Skill。生成配图时由11明确本章界面/技术图任务，13按[写作流程](references/WRITING_WORKFLOW.md)调用`scripts/diagram_tools.py`的doctor、plan、render流程或当前Agent实际生图能力；具体参数以将提供的`DIAGRAM_TOOLS.md`为准。核对实际文件、章节预览与工作稿，不将工具配置或提示词当作图片生成成功。
 
+## 评审与导出配置
+
+15按[核心逐项评审](references/CORE_REVIEW.md)维护评分、关键材料和全部合规条款三张表；先prepare未知计划，再独立读取原件和候选正文，执行check及正式release_gate。旧总表通过不能继承为逐项通过。14/16按[导出配置](references/EXPORT_LAYOUT.md)保存profiles/export-settings.json，支持封面、多级目录、正文样式和页眉页脚；强制格式优先，配置改动作废旧快照。目录域必须由实际文档引擎刷新，检查导出附件实际存在。
+
 ## 产物与交接
 
 保存 `17-workflow-state.json`（机器可读）和同名 `.md`（可读报告），使用 [JSON模板](assets/output.template.json) 与 [报告模板](assets/report.template.md)。字段必须符合 [JSON Schema](assets/output.schema.json)。不要把模板空值直接当结果；详细演示见 [合成示例](assets/example.output.json)。

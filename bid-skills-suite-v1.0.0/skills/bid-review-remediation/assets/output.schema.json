@@ -214,6 +214,35 @@
           "items": {
             "type": "string"
           }
+        },
+        "core_matrix": {
+          "type": "object",
+          "properties": {
+            "compliance": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/core_item"
+              }
+            },
+            "materials": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/core_item"
+              }
+            },
+            "scoring": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/core_item"
+              }
+            }
+          },
+          "required": [
+            "compliance",
+            "materials",
+            "scoring"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -223,7 +252,8 @@
         "checks",
         "human_approval_ref",
         "release_recommendation",
-        "limitations"
+        "limitations",
+        "core_matrix"
       ],
       "additionalProperties": false
     },
@@ -297,6 +327,141 @@
         "location",
         "quote",
         "kind"
+      ],
+      "additionalProperties": false
+    },
+    "bid_reference": {
+      "type": "object",
+      "properties": {
+        "relative_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "relative_path",
+        "sha256",
+        "location",
+        "quote"
+      ],
+      "additionalProperties": false
+    },
+    "core_item": {
+      "type": "object",
+      "properties": {
+        "target_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conclusion": {
+          "enum": [
+            "satisfied",
+            "partial",
+            "missing",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        },
+        "bid_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/bid_reference"
+          }
+        },
+        "material_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": [
+              "passed",
+              "failed",
+              "unknown",
+              "not_applicable"
+            ]
+          }
+        },
+        "score_estimate": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "finding_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "dimension_exemptions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "relative_path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "reason",
+              "relative_path",
+              "sha256"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "target_id",
+        "conclusion",
+        "rationale",
+        "sources",
+        "bid_refs",
+        "material_ids",
+        "dimensions",
+        "score_estimate",
+        "finding_ids",
+        "dimension_exemptions"
       ],
       "additionalProperties": false
     }

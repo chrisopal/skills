@@ -6,7 +6,8 @@ from pathlib import Path
 import yaml
 from validate_output import validate
 from refresh_distribution import (DISTRIBUTED_SCRIPTS, DISTRIBUTED_DOCS,
-                                  DISTRIBUTED_ASSET_DIRS, COMPANION_RESOURCES)
+                                  DISTRIBUTED_ASSET_DIRS, COMPANION_RESOURCES,
+                                  REVIEW_SCHEMA_SKILLS, DELIVERY_SCHEMA_SKILLS)
 ROOT=Path(__file__).resolve().parents[1]
 
 def check_installable_zips(root, registry):
@@ -76,6 +77,15 @@ def check(root=ROOT):
             local_files={p.relative_to(local):p.read_bytes() for p in local.rglob('*') if p.is_file()}
             if source_files!=local_files:errors.append(skill_id+': 独立安装资源与套件资源不一致 '+directory)
     writing_schema = root/'skills/bid-technical-writing/assets/output.schema.json'
+    for filename, source, skill_ids in (
+        ('review.schema.json', 'bid-review-remediation', REVIEW_SCHEMA_SKILLS),
+        ('delivery.schema.json', 'bid-export-acceptance', DELIVERY_SCHEMA_SKILLS),
+    ):
+        canonical = root/'skills'/source/'assets/output.schema.json'
+        for skill_id in skill_ids:
+            local = root/'skills'/skill_id/'assets'/filename
+            if not local.is_file() or local.read_bytes() != canonical.read_bytes():
+                errors.append(skill_id+': 独立评审/交付校验契约缺失或不一致 '+filename)
     for skill_id in ('bid-technical-writing', 'bid-orchestrator'):
         local = root/'skills'/skill_id/'assets/writing-output.schema.json'
         if not local.is_file() or local.read_bytes()!=writing_schema.read_bytes():

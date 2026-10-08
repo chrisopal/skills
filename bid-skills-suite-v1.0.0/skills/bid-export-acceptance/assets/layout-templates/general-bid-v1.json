@@ -1,0 +1,97 @@
+{
+  "template_id": "general-bid-v1",
+  "version": "1.0.0",
+  "title": "通用技术投标文件版式候选模板",
+  "status": "proposal",
+  "authority": "house_default",
+  "applicability": "仅补齐招标文件未规定的样式；固定格式和暗标要求优先。不是全国统一投标强制标准。",
+  "style": {
+    "body_size_pt": 12,
+    "body_line_spacing": 1.5,
+    "body_east_asia_font": "SimSun",
+    "body_latin_font": "Times New Roman",
+    "body_first_line_indent_chars": 2,
+    "body_space_before_pt": 0,
+    "body_space_after_pt": 0,
+    "heading_sizes_pt": [
+      16,
+      14,
+      12
+    ],
+    "heading_east_asia_font": "SimHei",
+    "title_size_pt": 22,
+    "subtitle_size_pt": 12,
+    "table_size_pt": 10.5,
+    "caption_size_pt": 10.5,
+    "page_margins_cm": {
+      "top": 2.5,
+      "bottom": 2.5,
+      "left": 2.5,
+      "right": 2.5
+    },
+    "body_alignment": "justify",
+    "heading_space_before_pt": 12,
+    "heading_space_after_pt": 6
+  },
+  "layout_rules": {
+    "blank_paragraphs_between_body": 0,
+    "heading_first_line_indent_chars": 0,
+    "table_first_line_indent_chars": 0,
+    "caption_first_line_indent_chars": 0,
+    "page_break_method": "分页符或段落控制，不使用空行",
+    "numbering": "按08目录保持层级，1、1.1、1.1.1；客户编号优先",
+    "fixed_forms": "原表保留，不能套用通用样式改变结构",
+    "header_footer": "正式交付前按06及暗标检查；基础工具保留工作稿标记",
+    "source_override_record": "每项记录06规则ID、原文页码、适用范围、覆盖前后值和最终样式哈希"
+  },
+  "validation": [
+    "实际DOCX读回字体、字号、缩进、行距、段前后距、页边距",
+    "逐页渲染检查孤标题、空白页、跨页表头、图片和图注",
+    "字体替换、目录域和正式签章不能由模板自动认证"
+  ],
+  "subtitle": "候选版式模板｜应用前按招标文件核对",
+  "sections": [
+    {
+      "title": "1 项目理解与响应",
+      "paragraphs": [
+        "此处填入已经核验的项目理解和响应正文。叙述段使用两字符首行缩进；不要用空行或空格制造间距。",
+        "此处填入第二个自然段。招标文件有明确格式时，先覆盖本模板再生成。"
+      ]
+    },
+    {
+      "title": "1.1 技术方案",
+      "level": 2,
+      "paragraphs": [
+        "此处按已确认方案填写机制、边界及验证方法，插图和图注应与正文对应。"
+      ]
+    },
+    {
+      "title": "1.1.1 功能与验收",
+      "level": 3,
+      "paragraphs": [
+        "此处填入可追溯的功能与验收内容。表格与图注不套用正文首行缩进。"
+      ],
+      "tables": [
+        {
+          "headers": [
+            "招标要求",
+            "拟议响应",
+            "证据与状态"
+          ],
+          "rows": [
+            [
+              "待填写原文要求",
+              "待填写逐项响应",
+              "待提供真实材料"
+            ]
+          ],
+          "widths_cm": [
+            4,
+            9,
+            3
+          ]
+        }
+      ]
+    }
+  ]
+}

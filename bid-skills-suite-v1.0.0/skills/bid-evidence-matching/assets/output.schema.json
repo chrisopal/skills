@@ -111,6 +111,10 @@
                   "string",
                   "null"
                 ]
+              },
+              "independent_evidence_id": {
+                "type": "string",
+                "minLength": 1
               }
             },
             "required": [

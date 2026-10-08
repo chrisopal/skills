@@ -55,6 +55,16 @@ def validate(payload: dict, schema: dict) -> list[str]:
         if any(x['severity']=='blocking' and x['state']!='resolved' for x in data['findings']):errors.append('尚有阻塞项未解决')
         if any(x['state']=='open' for x in data['findings']):errors.append('交付建议仍存在未处置发现')
         if not data['checks'] or any(x['state'] not in {'passed','not_applicable'} for x in data['checks']):errors.append('评审检查未完成')
+    if skill=='bid-review-remediation':
+        for area,rows in data['core_matrix'].items():
+            ids=[x['target_id'] for x in rows]
+            if len(ids)!=len(set(ids)):errors.append(area+': 逐项结论ID重复')
+            for row in rows:
+                if row['conclusion'] in {'satisfied','partial'} and not row['bid_refs']:
+                    errors.append(row['target_id']+': 已响应结论缺少正文定位')
+                if row['conclusion']=='satisfied' and any(
+                    v not in {'passed','not_applicable'} for v in row['dimensions'].values()
+                ):errors.append(row['target_id']+': 满足结论与检查结果冲突')
     return errors
 
 def main() -> int:

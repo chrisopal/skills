@@ -40,3 +40,7 @@ sources中每条引用使用source_id、revision、sha256、location、quote、k
 ## 示例的限制
 
 `assets/example.output.json`只演示字段和关系。它使用合成原文，故保持needs_review或blocked，不伪造真实审批与交付。独立使用本技能时，可用用户给定材料替代上游产物，但inputs必须记录实际读取的材料。
+
+## 核心评审矩阵
+
+`data.core_matrix`必须包含compliance/materials/scoring三张逐项表；字段与运行检查见[CORE_REVIEW](CORE_REVIEW.md)。结构校验只验证单行形状；全集、版本、原件引文和正文回读由review_checks.check验证。空表模板不是完整评审结果。

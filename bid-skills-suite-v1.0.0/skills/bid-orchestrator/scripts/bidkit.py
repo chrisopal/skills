@@ -180,6 +180,10 @@ def release_gate(project,review_path,snapshot_path,approval_path):
     if review.get('status')!='ready' or review.get('blockers'):raise ValueError('评审尚未ready')
     if d.get('review_scope')!='full' or d.get('release_recommendation')!='eligible_for_user_release':raise ValueError('不具备完整交付建议')
     if d.get('reviewed_inputs_sha256')!=current['fingerprint']:raise ValueError('评审未绑定此快照')
+    from review_checks import check as check_core_review
+    core=check_core_review(project,review,snapshot_path)
+    if core['errors'] or core['release_blockers']:
+        raise ValueError('核心业务评审未通过：'+'; '.join(core['errors']+core['release_blockers']))
     if not d.get('human_approval_ref'):raise ValueError('缺人工评审确认引用')
     if any(x.get('state')=='open' or (x.get('severity')=='blocking' and x.get('state')!='resolved') for x in d.get('findings',[])):raise ValueError('尚有未解决或未处置发现')
     checks=d.get('checks',[])

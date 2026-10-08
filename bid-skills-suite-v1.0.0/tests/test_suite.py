@@ -130,7 +130,9 @@ class MatrixTests(unittest.TestCase):
 class ReleaseTests(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.root=Path(self.tmp.name);self.p=self.root/'project';bidkit.init_project(self.p,'TEST-ONLY');(self.p/'artifacts/a.md').write_text('synthetic')
-        self.snap=self.p/'reviews/snapshot.json';snap=bidkit.snapshot(self.p,'reviews/snapshot.json');self.review=self.p/'reviews/review.json';x=sample(15);x.update(project_id='TEST-ONLY',status='ready',blockers=[]);x['data'].update(review_scope='full',reviewed_inputs_sha256=snap['fingerprint'],findings=[],checks=[{'area':'TEST-ONLY','state':'passed','note':'Synthetic test fixture.'}],human_approval_ref='TEST-ONLY',release_recommendation='eligible_for_user_release');bidkit.atomic(self.review,x)
+        from tests.core_review_fixture import populate, review
+        matrix=populate(self.p)
+        self.snap=self.p/'reviews/snapshot.json';snap=bidkit.snapshot(self.p,'reviews/snapshot.json');self.review=self.p/'reviews/review.json';x=review(self.p,matrix,snap);bidkit.atomic(self.review,x)
         self.approval=self.p/'confirmations/release.json';bidkit.atomic(self.approval,{'project_id':'TEST-ONLY','decision':'approved','actor':'TEST-ONLY','decided_at':'2026-09-27T00:00:00Z','authorization_ref':'TEST-ONLY','review_sha256':bidkit.digest(self.review),'snapshot_fingerprint':snap['fingerprint']})
     def tearDown(self):self.tmp.cleanup()
     def test_mechanical_gate(self):self.assertEqual(bidkit.release_gate(self.p,self.review,self.snap,self.approval)['mechanical_gate'],'passed')

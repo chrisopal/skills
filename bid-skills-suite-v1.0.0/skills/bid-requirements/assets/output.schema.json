@@ -139,6 +139,9 @@
                   "type": "string",
                   "minLength": 1
                 }
+              },
+              "material_required": {
+                "type": "boolean"
               }
             },
             "required": [

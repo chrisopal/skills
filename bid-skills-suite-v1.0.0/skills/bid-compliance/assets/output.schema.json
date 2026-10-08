@@ -124,6 +124,9 @@
                 "items": {
                   "$ref": "#/$defs/source"
                 }
+              },
+              "material_required": {
+                "type": "boolean"
               }
             },
             "required": [

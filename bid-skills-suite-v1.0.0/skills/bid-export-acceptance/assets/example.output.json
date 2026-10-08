@@ -17,7 +17,7 @@
       "artifact_id": "ART-DEMO-15",
       "revision": 1,
       "relative_path": "reviews/15-review.json",
-      "sha256": "57729f933605664e00348b9a81da3a79065b8d466ac5aa3dafb7398ead0a7577"
+      "sha256": "8db077c642a210dbcf5d5528d1205eeb42a561dcd2e922e4b533e73c258e3312"
     }
   ],
   "summary": "合成示例：演示字段与交接，不代表实际业务验收。",

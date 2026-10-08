@@ -111,3 +111,5 @@ python scripts/validate_output.py /absolute/path/to/09-evidence-selection.json
 ## 失败与恢复
 
 先保存已完成的产物、失败范围和下一步；原件变更或输入哈希变化时重核受影响内容。不要自动覆盖人工新版本，不代签批，不上传资料，不声称已在后台继续运行。测试建议见 `tests/cases.json`；这些是待执行的业务评测用例，不是已通过记录。
+
+多份独立证明须在material记录`independent_evidence_id`，取原件中的合同号／证书身份；同一合同的多页或不同扫描沿用同一个身份。评审按独立身份与完整证明核验数量，不能按文件数加分。

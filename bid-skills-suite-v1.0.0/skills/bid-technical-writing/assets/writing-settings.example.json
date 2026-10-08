@@ -5,7 +5,10 @@
   "max_parallel": 1,
   "visuals": {
     "enabled": true,
-    "diagram_renderer": "svg",
+    "diagram_engine": "auto",
+    "diagram_format": "svg",
+    "layout_template": "auto",
+    "architecture_layers": null,
     "image_mode": "host",
     "tool": "auto",
     "model": "",

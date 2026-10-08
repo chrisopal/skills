@@ -17,6 +17,7 @@ class WritingChecksTests(unittest.TestCase):
         self.addCleanup(self.tmp.cleanup)
         self.project = Path(self.tmp.name)
         (self.project / 'artifacts').mkdir()
+        (self.project / 'assets').mkdir()
         self.demo = ROOT / 'examples/smart-factory-demo/artifacts'
         self.files = {}
         for number in [3, 4, 5, 6, 8, 9, 10, 11, 13]:
@@ -37,6 +38,33 @@ class WritingChecksTests(unittest.TestCase):
         payload = json.loads(self.files[number].read_text())
         mutate(payload['data'])
         self.files[number].write_text(json.dumps(payload))
+
+    def add_audited_native_figure(self):
+        source = self.project / 'assets' / 'architecture.drawio'
+        rendered = self.project / 'assets' / 'architecture.svg'
+        receipt = self.project / 'assets' / 'architecture.svg.receipt.json'
+        source.write_text('<mxfile><diagram>source</diagram></mxfile>')
+        rendered.write_text('<svg>rendered</svg>')
+        source_sha = writing_checks.digest(source)
+        output_sha = writing_checks.digest(rendered)
+        receipt_value = {
+            'state': 'rendered', 'engine': 'drawio',
+            'source_path': 'assets/architecture.drawio',
+            'output_path': 'assets/architecture.svg',
+            'source_sha256': source_sha, 'output_sha256': output_sha,
+            'base_source_sha256': source_sha, 'cas_result': 'matched',
+        }
+        receipt.write_text(json.dumps(receipt_value))
+        record = dict(
+            engine='drawio', source_sha256=source_sha, output_sha256=output_sha,
+            receipt_path='assets/architecture.svg.receipt.json',
+            receipt_sha256=writing_checks.digest(receipt),
+            base_source_sha256=source_sha, cas_result='matched',
+        )
+        self.change(13, lambda d: d['figures'][0].update(
+            source_path='assets/architecture.drawio', rendered_path='assets/architecture.svg',
+            state='reviewed', render_record=record))
+        return source, rendered, receipt
 
     def test_semantic_acceptance_is_not_implied(self):
         result = self.check()
@@ -142,6 +170,51 @@ class WritingChecksTests(unittest.TestCase):
         self.change(13, lambda d: d['figures'][0].update(state='rendered',
                      rendered_path='assets/missing.png'))
         self.assertFalse(self.check()['structural_valid'])
+
+    def test_native_render_record_binds_source_output_and_receipt(self):
+        self.add_audited_native_figure()
+        result = self.check()
+        self.assertTrue(result['structural_valid'], result['errors'])
+
+    def test_native_source_tampering_invalidates_render_record(self):
+        source, _, _ = self.add_audited_native_figure()
+        source.write_text('<mxfile><diagram>tampered</diagram></mxfile>')
+        result = self.check()
+        self.assertFalse(result['structural_valid'])
+        self.assertTrue(any('图源哈希' in error for error in result['errors']))
+
+    def test_native_rendered_output_tampering_invalidates_render_record(self):
+        _, rendered, _ = self.add_audited_native_figure()
+        rendered.write_text('<svg>tampered</svg>')
+        result = self.check()
+        self.assertFalse(result['structural_valid'])
+        self.assertTrue(any('成图哈希' in error for error in result['errors']))
+
+    def test_native_receipt_tampering_invalidates_render_record(self):
+        _, _, receipt = self.add_audited_native_figure()
+        receipt.write_text(json.dumps({'engine': 'plantuml'}))
+        result = self.check()
+        self.assertFalse(result['structural_valid'])
+        self.assertTrue(any('receipt 哈希' in error for error in result['errors']))
+
+    def test_native_rendered_figure_requires_render_record(self):
+        self.change(13, lambda d: d['figures'][0].update(
+            source_path='assets/architecture.drawio', rendered_path='assets/architecture.svg',
+            state='reviewed'))
+        (self.project / 'assets/architecture.drawio').write_text('<mxfile/>')
+        (self.project / 'assets/architecture.svg').write_text('<svg/>')
+        result = self.check()
+        self.assertFalse(result['structural_valid'])
+        self.assertTrue(any('缺少 render_record' in error for error in result['errors']))
+
+    def test_legacy_mermaid_figure_without_record_is_not_claimed_audited(self):
+        self.change(13, lambda d: d['figures'][0].update(
+            source_path='assets/legacy.mmd', rendered_path='assets/legacy.svg', state='reviewed'))
+        (self.project / 'assets/legacy.mmd').write_text('flowchart LR\nA-->B')
+        (self.project / 'assets/legacy.svg').write_text('<svg/>')
+        result = self.check()
+        self.assertTrue(result['structural_valid'], result['errors'])
+        self.assertTrue(any('不能声称通过CLI审计' in warning for warning in result['warnings']))
 
     def test_duplicate_response_is_error(self):
         self.change(11, lambda d: d['responses'].append(copy.deepcopy(d['responses'][0])))

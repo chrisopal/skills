@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "style": {
+    "background": "#ffffff",
+    "text": "#0f172a",
+    "border": "#cbd5e1",
+    "accent": "#2563eb",
+    "font": "Arial, PingFang SC, Microsoft YaHei",
+    "node_font_px": 22,
+    "layer_font_px": 24,
+    "node_gap_px": 24,
+    "layer_gap_px": 36,
+    "edge": "orthogonal",
+    "shadows": false,
+    "gradients": false
+  },
+  "templates": [
+    {
+      "id": "layered-3",
+      "kind": "architecture",
+      "layers": 3,
+      "engine": "drawio",
+      "layout": "none",
+      "guidance": "三层职责分组，必要安全运维旁置；每层组件来自确认方案",
+      "optional_routing": "libavoid，仅在实际版本支持时启用"
+    },
+    {
+      "id": "layered-4",
+      "kind": "architecture",
+      "layers": 4,
+      "engine": "drawio",
+      "layout": "none",
+      "guidance": "四层职责分组，跨层关系标注数据或控制含义",
+      "optional_routing": "libavoid，仅在实际版本支持时启用"
+    },
+    {
+      "id": "layered-5",
+      "kind": "architecture",
+      "layers": 5,
+      "engine": "drawio",
+      "layout": "none",
+      "guidance": "五层职责分组，密集关系拆到局部图；不为填层发明接口",
+      "optional_routing": "libavoid，仅在实际版本支持时启用"
+    },
+    {
+      "id": "layered-6",
+      "kind": "architecture",
+      "layers": 6,
+      "engine": "drawio",
+      "layout": "none",
+      "guidance": "六层仅用于存在明确职责的复杂方案，缩到A4不清晰时拆图",
+      "optional_routing": "libavoid，仅在实际版本支持时启用"
+    },
+    {
+      "id": "swimlane",
+      "kind": "swimlane",
+      "engine": "drawio",
+      "layout": "none",
+      "guidance": "责任人或系统为泳道，保留退回、超时、升级与关闭条件",
+      "optional_routing": "libavoid，仅在实际版本支持时启用"
+    },
+    {
+      "id": "sequence",
+      "kind": "sequence",
+      "engine": "plantuml",
+      "guidance": "参与者、消息编号、正常/异常alt、返回与重试；长图分段"
+    },
+    {
+      "id": "flow",
+      "kind": "flow",
+      "engine": "mermaid",
+      "guidance": "开始结束明确、条件出口有标签、异常路径完整；复杂多角色流程选泳道"
+    }
+  ]
+}

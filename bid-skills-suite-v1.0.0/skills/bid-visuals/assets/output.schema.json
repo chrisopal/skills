@@ -98,7 +98,9 @@
                   "schedule",
                   "configuration",
                   "data_chart",
-                  "concept"
+                  "concept",
+                  "sequence",
+                  "swimlane"
                 ]
               },
               "specification": {
@@ -147,6 +149,9 @@
                   "authorized",
                   "unknown"
                 ]
+              },
+              "render_record": {
+                "$ref": "#/$defs/render_record"
               }
             },
             "required": [
@@ -161,9 +166,36 @@
               "alt_text",
               "evidence_ids",
               "state",
-              "rights"
+            "rights"
             ],
-            "additionalProperties": false
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "state": {
+                      "enum": [
+                        "rendered",
+                        "reviewed"
+                      ]
+                    },
+                    "source_path": {
+                      "type": "string",
+                      "pattern": "\\.(drawio|puml)$"
+                    }
+                  },
+                  "required": [
+                    "state",
+                    "source_path"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "render_record"
+                  ]
+                }
+              }
+            ]
           }
         },
         "unknowns": {
@@ -208,6 +240,52 @@
   ],
   "additionalProperties": false,
   "$defs": {
+    "render_record": {
+      "type": "object",
+      "properties": {
+        "engine": {
+          "type": "string",
+          "enum": [
+            "drawio",
+            "plantuml",
+            "mermaid"
+          ]
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "output_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "receipt_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "receipt_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "base_source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "cas_result": {
+          "const": "matched"
+        }
+      },
+      "required": [
+        "engine",
+        "source_sha256",
+        "output_sha256",
+        "receipt_path",
+        "receipt_sha256",
+        "base_source_sha256",
+        "cas_result"
+      ],
+      "additionalProperties": false
+    },
     "source": {
       "type": "object",
       "properties": {

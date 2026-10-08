@@ -29,7 +29,10 @@ DEFAULT_SETTINGS = {
     "guidance": "仅作为写作偏好记录，不代表自动任务池或已执行的生成任务。",
     "visuals": {
         "enabled": True,
-        "diagram_renderer": "svg",
+        "diagram_engine": "auto",
+        "diagram_format": "svg",
+        "layout_template": "auto",
+        "architecture_layers": None,
         "image_mode": "host",
         "tool": "auto",
         "model": "",
@@ -222,16 +225,56 @@ class WritingWorkspace:
     def _settings_path(self) -> Path:
         return _safe_path(self.project, "work/writing-settings.json", "写作设置")
 
+    @staticmethod
+    def _migrate_legacy_settings(value: dict) -> tuple[dict, bool]:
+        """Translate the retired diagram_renderer field once for persisted settings."""
+        candidate = _copy_json(value)
+        visuals = candidate.get("visuals")
+        if not isinstance(visuals, dict) or "diagram_renderer" not in visuals:
+            return candidate, False
+        old_value = visuals.pop("diagram_renderer")
+        legacy_engine = {"svg": "auto", "mermaid": "mermaid", "auto": "auto"}.get(old_value)
+        if legacy_engine is None:
+            raise WorkspaceError("visuals.diagram_renderer 无效", "invalid_input")
+        if "diagram_engine" in visuals or "diagram_format" in visuals:
+            raise WorkspaceError("旧 diagram_renderer 不能与新图表设置同时存在", "invalid_input")
+        visuals["diagram_engine"] = legacy_engine
+        visuals["diagram_format"] = "svg"
+        return candidate, True
+
+    def _settings_snapshot(self, *, migrate: bool, locked: bool = False) -> dict:
+        path = self._settings_path()
+        value = _read_json(path)
+        candidate, migrated = self._migrate_legacy_settings(value)
+        result = self._validate_settings(candidate)
+        result["revision"] = value.get("revision", 0)
+        if migrated and migrate:
+            if locked:
+                _write_atomic(path, result)
+            else:
+                with _file_lock(self.project):
+                    current = _read_json(path)
+                    current_candidate, current_migrated = self._migrate_legacy_settings(current)
+                    if current_migrated:
+                        current_result = self._validate_settings(current_candidate)
+                        current_result["revision"] = current.get("revision", 0)
+                        _write_atomic(path, current_result)
+                        result = current_result
+                    else:
+                        result = self._validate_settings(current)
+                        result["revision"] = current.get("revision", 0)
+            result["sha256"] = _digest(path)
+        else:
+            result["sha256"] = _digest(path)
+        return result
+
     def settings(self) -> dict:
         path = self._settings_path()
         if not path.is_file():
             result = _copy_json(DEFAULT_SETTINGS)
             result.update({"revision": 0, "sha256": ""})
             return result
-        value = _read_json(path)
-        result = self._validate_settings(value)
-        result.update({"revision": value.get("revision", 0), "sha256": _digest(path)})
-        return result
+        return self._settings_snapshot(migrate=True)
 
     @staticmethod
     def _validate_settings(value: dict) -> dict:
@@ -262,8 +305,16 @@ class WritingWorkspace:
         visuals = result["visuals"]
         if not isinstance(visuals.get("enabled"), bool):
             raise WorkspaceError("visuals.enabled 必须是布尔值", "invalid_input")
-        if visuals.get("diagram_renderer") not in {"auto", "mermaid", "svg"}:
-            raise WorkspaceError("visuals.diagram_renderer 无效", "invalid_input")
+        if visuals.get("diagram_engine") not in {"auto", "drawio", "plantuml", "mermaid"}:
+            raise WorkspaceError("visuals.diagram_engine 无效", "invalid_input")
+        if visuals.get("diagram_format") not in {"svg", "png"}:
+            raise WorkspaceError("visuals.diagram_format 无效", "invalid_input")
+        if visuals.get("layout_template") not in {"auto", "layered", "swimlane", "sequence", "flow"}:
+            raise WorkspaceError("visuals.layout_template 无效", "invalid_input")
+        layers = visuals.get("architecture_layers")
+        if (layers is not None and (isinstance(layers, bool) or not isinstance(layers, int)
+                                    or not 3 <= layers <= 6)):
+            raise WorkspaceError("visuals.architecture_layers 必须为空或 3 到 6 的整数", "invalid_input")
         if visuals.get("image_mode") not in {"host", "disabled"}:
             raise WorkspaceError("visuals.image_mode 无效", "invalid_input")
         for field in ("tool", "model", "style"):
@@ -304,7 +355,8 @@ class WritingWorkspace:
         expected_revision = value.pop("expected_revision", None)
         expected_sha = value.pop("expected_sha256", None)
         with _file_lock(self.project):
-            current = self.settings()
+            current = (self._settings_snapshot(migrate=True, locked=True)
+                       if self._settings_path().is_file() else self.settings())
             if (isinstance(expected_revision, bool) or not isinstance(expected_revision, int)
                     or expected_revision < 0):
                 raise WorkspaceError("expected_revision 必须是非负整数", "invalid_input")

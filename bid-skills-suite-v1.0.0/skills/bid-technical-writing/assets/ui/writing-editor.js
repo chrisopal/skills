@@ -16,7 +16,8 @@
   var settingsSaveButton = document.getElementById("settings-save-button");
   var errorBanner = document.getElementById("error-banner");
   var saveState = document.getElementById("save-state");
-  var visualFieldIds = ["diagram-renderer-setting", "image-mode-setting", "visual-tool-setting",
+  var visualFieldIds = ["diagram-engine-setting", "diagram-format-setting", "layout-template-setting",
+    "architecture-layers-setting", "image-mode-setting", "visual-tool-setting",
     "visual-model-setting", "visual-style-setting", "visual-aspect-ratio-setting",
     "visual-max-images-setting"];
 
@@ -331,7 +332,10 @@
     document.getElementById("execution-mode-setting").value = text(settings.execution_mode || "sequential");
     document.getElementById("max-parallel-setting").value = text(settings.max_parallel || 1);
     document.getElementById("visuals-enabled-setting").checked = visuals.enabled !== false;
-    document.getElementById("diagram-renderer-setting").value = text(visuals.diagram_renderer || "svg");
+    document.getElementById("diagram-engine-setting").value = text(visuals.diagram_engine || "auto");
+    document.getElementById("diagram-format-setting").value = text(visuals.diagram_format || "svg");
+    document.getElementById("layout-template-setting").value = text(visuals.layout_template || "auto");
+    document.getElementById("architecture-layers-setting").value = visuals.architecture_layers == null ? "" : text(visuals.architecture_layers);
     document.getElementById("image-mode-setting").value = text(visuals.image_mode || "host");
     document.getElementById("visual-tool-setting").value = text(visuals.tool || "auto");
     document.getElementById("visual-model-setting").value = text(visuals.model || "");
@@ -405,7 +409,11 @@
       execution_mode: document.getElementById("execution-mode-setting").value,
       max_parallel: Number(document.getElementById("max-parallel-setting").value),
       visuals: { enabled: document.getElementById("visuals-enabled-setting").checked,
-        diagram_renderer: document.getElementById("diagram-renderer-setting").value,
+        diagram_engine: document.getElementById("diagram-engine-setting").value,
+        diagram_format: document.getElementById("diagram-format-setting").value,
+        layout_template: document.getElementById("layout-template-setting").value,
+        architecture_layers: document.getElementById("architecture-layers-setting").value
+          ? Number(document.getElementById("architecture-layers-setting").value) : null,
         image_mode: document.getElementById("image-mode-setting").value,
         tool: document.getElementById("visual-tool-setting").value,
         model: document.getElementById("visual-model-setting").value,

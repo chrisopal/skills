@@ -151,3 +151,16 @@ python -m unittest discover -s tests -v
 - 工程：174项unittest通过（新增2正式门禁与2追溯自证回归），17 Skill/34 Schema及17ZIP源码一致性、17 quick_validate、4改动脚本编译、HTML node --check和diff检查通过。无新增依赖、应用API、数据库、应用前端或部署变化；静态报告无npm lint/typecheck/build任务。
 - 修复与规程：复制项目须重跑当前来源身份路由，真实中文字形/图题/宽高/分页空段/相邻表保存完整性/跨引擎页码域/追溯自证/ZIP命名均写入规程或实际整改记录。DOCX f2cdce659a5b435616b5e63a0ec64933d6bc220ef289f3897b3ee8471b803445，PDF 574b487924ad387fa84e85ae00be8d35b9d9a7dfc8432d1520a23bf8f34b08d3。所有客户文件、模拟材料、媒体、报告、导出、ZIP和一次性脚本仅留本地bid-agent/output/tender-analysis/qingcaosha-simulation-20261008。
 - 未测：Windows Word、WorkBuddy真实生图/私有知识库、本轮OCR模型；真实主体资格/签署/上传/付款/提交、接口容量/性能及正式客户验收。源码按Skills仓库约定提交推送功能分支，不合并dev/main。
+
+
+## 2026-10-08：1.10.0 图表引擎与真实入稿验证
+
+- 行为：配图 Skill 按图型选择 Draw.io（分层架构/网络/复杂泳道）、PlantUML（时序）和 Mermaid（简单流程）；输出格式与引擎分离，默认 SVG。用户可选引擎、SVG/PNG、模板及3至6层架构。系统界面默认当前宿主实际生图 Skill；Codex 为 Imagegen，WorkBuddy 须发现实际可用工具，不硬编码模型或假定已调用。
+- 变更：scripts/diagram_tools.py、writing_workspace.py、writing_checks.py、render_writing_report.py、编辑器及设置样例、13 Schema、bid-visuals/总控/写作规程、图型模板目录和 DIAGRAM_TOOLS.md；refresh_distribution.py 将所需脚本/模板/引用复制到独立 Skill。旧 diagram_renderer 设置读取时迁移，新保存采用四个明确字段并保留版本/哈希校验。
+- 生成与审核：渲染必须提供当前源 SHA256，渲染器读取不可变快照；渲染/校验/记录发布间发生源变动时拒绝并回撤本次输出。空 SVG、截断或 CRC 错误 PNG、越界路径、覆盖已有文件、缺源哈希均拒绝。Draw.io/PlantUML 已成图记录必须含来源、成图、收据和基线哈希及版本匹配状态；writing_checks 重新读实际文件，拒绝篡改或记录不一致。工具运行成功仍不是视觉审核或业务采纳。
+- 工程：/opt/homebrew/bin/python3.13 -m unittest discover -s tests -q，192项通过；独立审核45项定向回归、真实收据及结构检查通过。17 Skill/34 Schema及17 ZIP 同源检查、17 quick_validate、脚本编译、编辑器 JavaScript 语法和 diff 检查通过。没有新增 Python/npm 项目依赖、应用 API、数据库或应用前端变化；本次独立编辑器没有 npm lint/typecheck/build 任务。
+- 实际工具：本机官方 Draw.io 32.3.0、PlantUML 1.2026.8（已有 Java 21）、Mermaid 11.12.0（已有 Chrome）实际生成。Draw.io 官方 Codex 插件已安装；没有部署内嵌 iframe 或 MCP 服务。doctor 定位到可执行文件只说明 located_only，实际渲染证据另外保存。当前 Draw.io libavoid 不支持，记录实际失败后采用固定模板原生正交线；ELK verticalFlow 实际探针通过。
+- 青草沙：独立 diagram-upgrade 候选保存五层架构、四泳道闭环和16步条件时序的可编辑源、SVG/PNG及实际收据；原输入10/11不变，13保持 needs_review。Draw.io 实际打开并另存，29节点及文字保持一致；候选 writing_checks 为0错误/0警告，145响应追溯当前。界面图复用此前实际 Imagegen 输出，本轮没有再次生图。
+- 导出：新建五页图表样稿，四张实际媒体与PNG SHA一致；DOCX ZIP/XML/关系及段落到PDF回读通过。Microsoft Word for Mac实际打开并本机原生导出五页PDF，正文/四图/页眉页脚逐页复核通过；本机宋体-简映射正常。原167页完整模拟投标文件及15/16审核签署状态未覆盖或提升。
+- 展示：enterprise-ui-design报告实际浏览器1440/1920/390无页面横向溢出；全部图片加载、工单导航、设置保存刷新回读、9.3章节配图、无JS错误通过。实际Word下载SHA与核验文件一致。图表与文档视觉复核92/100；是本机功能验证，不是客户验收。
+- 未运行：WorkBuddy真实宿主生图/私有知识库、Windows Word/SimSun、新一轮OCR/真实接口容量性能及真实投标业务验收。跨宿主规程已补充，不能声称实际跨宿主通过。客户原件、图源、生成媒体、收据、HTML、导出、截图、ZIP及一次性脚本留在本机项目目录，不提交Git。

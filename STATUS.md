@@ -1375,3 +1375,10 @@
 - 验证：174项unittest、17 Skill/34 Schema、17ZIP一致性、17 quick_validate、编译/HTML语法/diff检查通过；实际知识检索及Wiki、独立145语义/167页视觉、Word原生与兼容保存回读、扫描/ZIP、七负向及当前审核/导出哈希通过。HTML三尺寸浅深主题、检索/图预览与Word下载哈希通过。
 - 提交状态：仅可复用Skill源码/规程/测试及验证说明提交并推送codex/enterprise-dtx-skill-suite-runtime；不合并dev/main。客户原件与全部模拟产物、一次性执行证据留本地。
 - 风险/后续：仅SIMULATION_REVIEW_PASSED；正式发布真实拒绝，所有签署为模拟标记。真实资格/履约/竞争评分/接口容量/签署/上传/提交、Windows、WorkBuddy实际能力及本轮OCR未测；无应用API、数据库、依赖或部署变化。
+
+
+## 2026-10-08 — 投标图表按图型选工具并保持可编辑源
+
+- 完成内容：bid-skills-suite-v1.0.0升级1.10.0；Draw.io/PlantUML/Mermaid图型路由和实际CLI、引擎/格式/模板/层数设置、旧设置迁移、源哈希并发校验、成图收据及13审计门禁，独立分发规程/脚本/模板同源。系统界面默认宿主生图Skill。
+- 验证：192项unittest，17 Skill/34 Schema与17独立ZIP、17 quick_validate、脚本编译、JS语法及diff检查通过；青草沙三类实际成图、Draw.io另存29节点、五页Word/PDF四图完整、三视口HTML与真实下载哈希通过。
+- 风险/后续：原167页完整模拟投标未覆盖；WorkBuddy、Windows SimSun与真实业务验收未运行，本轮复用此前Imagegen界面图。无新增项目依赖/API/数据库/部署；官方可选本机工具已安装，未部署嵌入式编辑器。客户文件、生成媒体与运行证据仅本地保存。

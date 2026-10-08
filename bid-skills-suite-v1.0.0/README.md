@@ -1,6 +1,6 @@
 # 投标编制 Skill 套件
 
-**版本 1.9.0 · 2026-10-08 · 中文 · 16个业务技能 + 1个总控技能**
+**版本 1.10.0 · 2026-10-08 · 中文 · 16个业务技能 + 1个总控技能**
 
 新增完整候选编标与宿主对话修订流程：固定表单、全部章节及逐项响应继续推进，缺失企业事实和报价留空。修改后作废旧审核/导出，重新核对当前版本、页码及实际文件；正式采纳与递交门禁保留。
 
@@ -81,3 +81,7 @@ python -m unittest discover -s tests -v
 理解报告：[JSON/Markdown与HTML展示](docs/REPORTS.md)。运行质量：[执行复核](docs/EXECUTION_QUALITY.md)、[已发现问题与修复状态](docs/KNOWN_ISSUES.md)。
 
 明确授权的模拟企业材料端到端测试参见 [SIMULATION_TESTING](docs/SIMULATION_TESTING.md)，模拟评审通过与正式发布授权保持分开。
+
+## 技术图工具与模板
+
+13按图型选择Draw.io、PlantUML或Mermaid，SVG/PNG独立选择；系统界面仍默认使用宿主生图Skill。工具发现、版本化导出、对话修改与布局模板见[DIAGRAM_TOOLS.md](docs/DIAGRAM_TOOLS.md)。本地运行工具不是新增Python依赖；安装与宿主能力需实际核验。

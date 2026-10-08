@@ -150,6 +150,39 @@ h2 { font-size: 20px; }
 .coverage-group { padding-top: 8px; border-top: 1px solid var(--ui-border-subtle); color: var(--ui-text-secondary); font-size: 12px; }
 .coverage-group ul { margin: 4px 0 0; padding-left: 18px; }
 .coverage-trace { color: var(--ui-text-tertiary); font-size: 12px; line-height: 1.5; }
+.coverage-error { color: var(--ui-danger); }
+.writing-policy-coverage, .coverage-audit { font-size: 13px; }
+.writing-policy-coverage h3, .coverage-audit h3 { font-size: 14px; }
+.writing-policy-coverage .policy-scope { margin: 8px 0 12px; line-height: 1.6; }
+.policy-bucket { border-top: 1px solid var(--ui-border-subtle); }
+.policy-bucket > summary { padding: 12px 0; cursor: pointer; color: var(--ui-text); }
+.policy-bucket > summary strong { font-size: 14px; }
+.policy-bucket-error > summary strong { color: var(--ui-danger); }
+.policy-bucket-warning > summary strong { color: var(--ui-warning); }
+.policy-bucket-count { margin-left: 8px; color: var(--ui-text-secondary); font-size: 12px; font-variant-numeric: tabular-nums; }
+.writing-policy-coverage .policy-chapter-list { padding: 0; margin: 0; list-style: none; }
+.policy-chapter { padding: 12px 0 16px; border-top: 1px solid var(--ui-border-subtle); }
+.policy-chapter-link { display: block; width: 100%; padding: 0; border: 0; color: var(--ui-action-text); background: transparent; text-align: left; font-weight: 600; font-size: 14px; line-height: 1.6; cursor: pointer; overflow-wrap: anywhere; }
+.policy-chapter-link:hover:not(:disabled) { color: var(--ui-action-text-hover); text-decoration: underline; }
+.policy-chapter-link:disabled { color: var(--ui-disabled-text); cursor: not-allowed; }
+.policy-chapter-link:focus-visible, .policy-bucket summary:focus-visible, .coverage-audit summary:focus-visible, .coverage-audit a:focus-visible { outline: 2px solid var(--ui-action-text); outline-offset: 3px; }
+.policy-metrics { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 12px; margin: 10px 0 6px; font-variant-numeric: tabular-nums; }
+.policy-metrics dt { color: var(--ui-text-tertiary); font-size: 12px; }
+.policy-metrics dd { margin: 2px 0 0; color: var(--ui-text); font-size: 13px; overflow-wrap: anywhere; }
+.policy-metrics > div:first-child dd { font-size: 16px; font-weight: 600; }
+.policy-result { margin: 2px 0; line-height: 1.6; }
+.policy-result-error { color: var(--ui-danger); }
+.policy-result-warning { color: var(--ui-warning); }
+.policy-basis { margin-top: 8px; color: var(--ui-text-tertiary); font-size: 12px; overflow-wrap: anywhere; }
+.policy-basis > summary, .coverage-audit summary { cursor: pointer; }
+.policy-basis p { margin: 6px 0; line-height: 1.6; }
+.coverage-audit { margin-top: 8px; }
+.coverage-audit .audit-notice { margin: 8px 0; line-height: 1.6; }
+.coverage-audit .audit-item { padding: 12px 0; border-top: 1px solid var(--ui-border-subtle); overflow-wrap: anywhere; }
+.coverage-audit .audit-item > strong { display: block; color: var(--ui-text); font-weight: 600; }
+.coverage-audit .audit-status { color: var(--ui-warning); margin: 4px 0; }
+.coverage-audit a { color: var(--ui-action-text); display: inline-block; margin: 2px 0 6px; }
+.coverage-audit .audit-original { margin: 8px 0 0; color: var(--ui-text-secondary); line-height: 1.6; }
 .reference-group h3 { margin: 0 0 6px; font-size: 13px; }
 .reference-group ul { margin: 0; padding-left: 18px; color: var(--ui-text-secondary); }
 .reference-group li { margin: 4px 0; overflow-wrap: anywhere; }

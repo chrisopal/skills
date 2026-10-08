@@ -43,7 +43,7 @@
     document.getElementById("diagram-theme-setting").disabled = busy ||
       !document.getElementById("visuals-enabled-setting").checked ||
       document.getElementById("diagram-engine-setting").value !== "blueprint";
-    Array.prototype.forEach.call(document.querySelectorAll(".chapter-link, .chapter-toggle"), function (button) {
+    Array.prototype.forEach.call(document.querySelectorAll(".chapter-link, .chapter-toggle, .policy-chapter-link"), function (button) {
       button.disabled = busy;
     });
   }
@@ -442,6 +442,193 @@
     root.appendChild(group);
   }
 
+  function renderPolicyChapter(chapter) {
+    var item = document.createElement("li");
+    item.className = "policy-chapter";
+    item.dataset.sectionId = chapter.section_id;
+    var navChapter = (state.chapters || []).find(function (row) { return row.section_id === chapter.section_id; });
+    var title = document.createElement(navChapter ? "button" : "strong");
+    title.textContent = navChapter ? navChapter.display_number + " " + navChapter.title : text(chapter.section_id);
+    if (navChapter) {
+      title.type = "button";
+      title.className = "policy-chapter-link";
+      title.setAttribute("aria-label", "打开章节：" + title.textContent);
+      title.addEventListener("click", function () { selectChapter(navChapter.id); });
+    }
+    item.appendChild(title);
+    var metrics = document.createElement("dl");
+    metrics.className = "policy-metrics";
+    [["实际字数", chapter.actual_words == null ? "未检查" : chapter.actual_words + " 字"],
+      ["目标范围", chapter.min_words == null || chapter.max_words == null ? "未设目标" : chapter.min_words + "–" + chapter.max_words + " 字"]].forEach(function (metric) {
+      var cell = document.createElement("div");
+      var label = document.createElement("dt");
+      label.textContent = metric[0];
+      var value = document.createElement("dd");
+      value.textContent = metric[1];
+      cell.appendChild(label);
+      cell.appendChild(value);
+      metrics.appendChild(cell);
+    });
+    item.appendChild(metrics);
+    var lengthLabels = { not_set: "未设篇幅目标", too_short: "篇幅不足", too_long: "超出篇幅", in_range: "篇幅符合" };
+    var length = document.createElement("p");
+    length.className = "policy-result";
+    length.textContent = chapter.actual_words == null ? "字数未检查" : lengthLabels[chapter.length_status] || "篇幅待复核";
+    if (chapter.actual_words != null && chapter.length_status === "too_short" && chapter.min_words != null) {
+      length.textContent = (chapter.length_required ? "需补 " : "建议补 ") + Math.max(0, chapter.min_words - chapter.actual_words) + " 字";
+    } else if (chapter.actual_words != null && chapter.length_status === "too_long" && chapter.max_words != null) {
+      length.textContent = "超出 " + Math.max(0, chapter.actual_words - chapter.max_words) + " 字" + (chapter.length_required ? "" : " · 建议精简");
+    }
+    if (chapter.length_status === "too_short" || chapter.length_status === "too_long") {
+      length.classList.add(chapter.length_required ? "policy-result-error" : "policy-result-warning");
+    }
+    item.appendChild(length);
+    var ui = document.createElement("p");
+    ui.className = "policy-result";
+    if (chapter.ui_status === "not_required") ui.textContent = "无需界面图";
+    else if (chapter.ui_status === "missing" || chapter.ui_status === "complete") {
+      ui.textContent = "界面图 " + text(chapter.ui_image_count) + "/" + text(chapter.min_ui_images) + " 张";
+      if (chapter.ui_status === "missing") {
+        ui.textContent += " · 缺 " + Math.max(0, chapter.min_ui_images - chapter.ui_image_count) + " 张";
+        ui.classList.add("policy-result-error");
+      } else ui.textContent += " · 已核验";
+    } else ui.textContent = "界面图待复核";
+    item.appendChild(ui);
+    var details = document.createElement("details");
+    details.className = "policy-basis";
+    var summary = document.createElement("summary");
+    summary.textContent = "检查依据";
+    details.appendChild(summary);
+    var identity = document.createElement("p");
+    identity.textContent = "章节标识：" + text(chapter.section_id);
+    details.appendChild(identity);
+    var sources = { chapter: "逐章指定", recommendation: "自动推荐", global: "全局指定" };
+    var basis = document.createElement("p");
+    basis.textContent = "篇幅依据：" + (sources[chapter.source] || "未确认")
+      + (chapter.scoring_ids && chapter.scoring_ids.length ? "；评分项：" + chapter.scoring_ids.join("、") : "");
+    details.appendChild(basis);
+    (chapter.issues || []).forEach(function (issue) {
+      var original = document.createElement("p");
+      original.textContent = text(issue);
+      details.appendChild(original);
+    });
+    item.appendChild(details);
+    return item;
+  }
+
+  function renderWritingPolicy(root, chapters) {
+    if (!chapters.length) return;
+    var group = document.createElement("section");
+    group.className = "coverage-group writing-policy-coverage";
+    var title = document.createElement("h3");
+    title.textContent = "篇幅与界面图检查（" + chapters.length + "章）";
+    group.appendChild(title);
+    var note = document.createElement("p");
+    note.className = "policy-scope";
+    note.textContent = "仅检查篇幅与配图；正文、评分和证据另行复核。未设目标的章节不判断篇幅。";
+    group.appendChild(note);
+    var buckets = [
+      { title: "需整改", kind: "error", chapters: [], count: 0 },
+      { title: "建议调整", kind: "warning", chapters: [], count: 0 },
+      { title: "无缺口", kind: "neutral", chapters: [], count: 0 }
+    ];
+    chapters.forEach(function (chapter) {
+      var blocking = chapter.blocking_issues || [];
+      var issues = chapter.issues || [];
+      var unchecked = chapter.actual_words == null || !chapter.length_status || !chapter.ui_status;
+      var bucket = buckets[blocking.length ? 0 : issues.length || unchecked ? 1 : 2];
+      bucket.chapters.push(chapter);
+      bucket.count += blocking.length ? blocking.length : issues.length;
+    });
+    buckets.forEach(function (bucket) {
+      var details = document.createElement("details");
+      details.className = "policy-bucket policy-bucket-" + bucket.kind;
+      details.open = bucket.kind === "error" && bucket.chapters.length > 0;
+      var summary = document.createElement("summary");
+      var label = document.createElement("strong");
+      label.textContent = bucket.title;
+      summary.appendChild(label);
+      var count = document.createElement("span");
+      count.className = "policy-bucket-count";
+      count.textContent = bucket.chapters.length + "章" + (bucket.count ? " · " + bucket.count + (bucket.kind === "error" ? "项必改" : "项建议") : "");
+      summary.appendChild(count);
+      details.appendChild(summary);
+      if (bucket.chapters.length) {
+        var list = document.createElement("ul");
+        list.className = "policy-chapter-list";
+        bucket.chapters.forEach(function (chapter) { list.appendChild(renderPolicyChapter(chapter)); });
+        details.appendChild(list);
+      } else {
+        var empty = document.createElement("p");
+        empty.className = "policy-scope";
+        empty.textContent = "暂无此类章节";
+        details.appendChild(empty);
+      }
+      group.appendChild(details);
+    });
+    root.appendChild(group);
+  }
+
+  function renderCoverageMessages(root, coverage) {
+    var auditWarnings = [];
+    [["错误", coverage.errors || []], ["提示", coverage.warnings || []]].forEach(function (entry) {
+      entry[1].forEach(function (value) {
+        var original = text(value);
+        var match = original.match(/^([^:]+): 历史图源没有CLI render_record，不能声称通过CLI审计$/);
+        if (entry[0] === "提示" && match) {
+          auditWarnings.push({ id: match[1], original: original });
+          return;
+        }
+        var message = document.createElement("p");
+        message.className = "coverage-trace" + (entry[0] === "错误" ? " coverage-error" : "");
+        message.textContent = entry[0] + "：" + original;
+        root.appendChild(message);
+      });
+    });
+    if (!auditWarnings.length) return;
+    var group = document.createElement("section");
+    group.className = "coverage-group coverage-audit";
+    var title = document.createElement("h3");
+    title.textContent = "图源审计（" + auditWarnings.length + "）";
+    group.appendChild(title);
+    var notice = document.createElement("p");
+    notice.className = "audit-notice";
+    notice.textContent = "历史图源缺少渲染记录，暂不能确认工具执行审计。";
+    group.appendChild(notice);
+    var figures = state.visuals && state.visuals.data && state.visuals.data.figures || [];
+    auditWarnings.forEach(function (warning) {
+      var figure = figures.find(function (row) { return row.id === warning.id; });
+      var item = document.createElement("div");
+      item.className = "audit-item";
+      var name = document.createElement("strong");
+      name.textContent = figure ? text(figure.title || figure.id) : warning.id;
+      item.appendChild(name);
+      var status = document.createElement("p");
+      status.className = "audit-status";
+      status.textContent = "记录待补";
+      item.appendChild(status);
+      if (figure && figure.source_path) {
+        var link = document.createElement("a");
+        link.href = "/api/file?path=" + encodeURIComponent(figure.source_path);
+        link.target = "_blank";
+        link.rel = "noopener";
+        link.textContent = "查看图源";
+        item.appendChild(link);
+      }
+      var details = document.createElement("details");
+      var summary = document.createElement("summary");
+      summary.textContent = "查看原始提示";
+      details.appendChild(summary);
+      var original = document.createElement("p");
+      original.className = "audit-original";
+      original.textContent = warning.original;
+      details.appendChild(original);
+      item.appendChild(details);
+      group.appendChild(item);
+    });
+    root.appendChild(group);
+  }
+
   function renderCoverage() {
     var root = document.getElementById("coverage-content");
     while (root.firstChild) root.removeChild(root.firstChild);
@@ -461,28 +648,7 @@
         + "；评分满足性待复核" + ((coverage.scoring_pending_review || []).length ? "（存在待复核项）" : "");
       root.appendChild(scoringStatus);
     }
-    var writingPolicy = coverage.writing_policy && coverage.writing_policy.chapters || [];
-    if (writingPolicy.length) {
-      var policyGroup = document.createElement("div");
-      policyGroup.className = "coverage-group writing-policy-coverage";
-      var policyTitle = document.createElement("strong");
-      policyTitle.textContent = "篇幅与界面图检查（" + writingPolicy.length + "）";
-      policyGroup.appendChild(policyTitle);
-      var policyList = document.createElement("ul");
-      writingPolicy.forEach(function (chapter) {
-        var item = document.createElement("li");
-        var lengthLabels = {not_set:"未设目标",too_short:"篇幅不足",too_long:"超出篇幅",in_range:"篇幅符合"};
-        var uiLabels = {not_required:"无需界面图",missing:"界面图缺失",complete:"界面图已核验"};
-        var lengthLabel = chapter.actual_words == null ? "字数未检查" : text(chapter.actual_words) + " 字 · " + (lengthLabels[chapter.length_status] || "待复核");
-        var uiLabel = chapter.ui_status ? " · " + (uiLabels[chapter.ui_status] || "配图待复核") : "";
-        var navChapter = (state.chapters || []).find(function (row) {return row.section_id === chapter.section_id;});
-        item.textContent = text(navChapter ? (navChapter.display_number + " " + navChapter.title) : chapter.section_id) + "：" + lengthLabel + uiLabel;
-        if (chapter.issues && chapter.issues.length) item.textContent += " · " + chapter.issues.join("；");
-        policyList.appendChild(item);
-      });
-      policyGroup.appendChild(policyList);
-      root.appendChild(policyGroup);
-    }
+    renderWritingPolicy(root, coverage.writing_policy && coverage.writing_policy.chapters || []);
     var labels = [["planned_not_written", "目录已规划但尚未写作"], ["missing_responses", "尚未形成响应"],
       ["unwritten_scoring", "尚未写作的评分项"], ["evidence_gaps", "证据缺口"]];
     labels.forEach(function (entry) {
@@ -510,12 +676,7 @@
       trace.textContent = "追溯状态：" + (traceLabels[coverage.trace_state] || "未确认");
       root.appendChild(trace);
     }
-    (coverage.errors || []).concat(coverage.warnings || []).forEach(function (value) {
-      var message = document.createElement("div");
-      message.className = "coverage-trace";
-      message.textContent = text(value);
-      root.appendChild(message);
-    });
+    renderCoverageMessages(root, coverage);
     if (state.upstream && state.upstream.errors && state.upstream.errors.length) {
       var upstream = document.createElement("div");
       upstream.className = "message message-error";

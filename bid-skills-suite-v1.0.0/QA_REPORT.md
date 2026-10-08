@@ -204,3 +204,10 @@ python -m unittest discover -s tests -v
 - `python3.13 -m unittest discover -s tests -q` 269项通过（新增19策略测试）；check_suite为17 Skill/34 Schema、独立分发同源通过；17 quick_validate、7变更运行脚本编译、编辑器node --check及diff检查通过。独立50项定向验证和评分/UI反例通过。
 - 本地青草沙37章读回；浏览器500/1000/2000保存重开、跨章覆盖保留、正文缓冲保存与切章保护、1366/1440/1920/390浅色及桌面/手机深色无页面横向溢出。视觉93/100；临时撤销确认框阻塞自动化后通过文档接口关闭测试页并重开完成验证。关键原件/正文/图元数据未修改。
 - 新设置不自动改写旧正文或重导出。隔离项目6项实际缺口与23项推荐提示保留；已有Word外部插图不等于Markdown已经插图。新模型写作/Imagegen、整标再导出、WorkBuddy实机、专业性/评分与真实投标验收NOT_RUN；应用源码/API/数据库/依赖/部署未改。工程证据在本地bid-agent/output/tender-analysis/qingcaosha-policy-settings-20261008与qingcaosha-policy-forward-20261008，未提交原件、媒体或生成物。
+
+## 2026-10-08：篇幅与界面图检查可读性
+
+- 仅调整编辑器展示：按5章需整改（6项必改）、19章建议调整、13章无缺口分组，默认展开整改组；实际字数/目标/建议与必改/界面图数分行，原始依据与图源警告保留在原生details。图源使用真实图名及现有文件入口，不改写审计结论。UI源同源进入总控与技术写作独立包。
+- `node --check assets/ui/writing-editor.js`、`python3.13 -m unittest discover -s tests -q`（269项）、`python3.13 scripts/check_suite.py`（17 Skill/34 Schema、独立ZIP一致、0错误）、`git diff --check`通过。使用已安装Python3.13与既有依赖；系统Python无jsonschema时改用此解释器，无安装新依赖。
+- 本地8778真实编辑器验证：37章全部指标、29条原始检查说明逐项与writing-policy.json相等，9.3为1244字/1600–2400字/需补356字/界面图0/1张；9.2篇幅为建议，缺图为必改。键盘展开/收起及可见焦点、9.3跳转通过；两条原始图源诊断可展开且两个图源HTTP200。1366/1440/1920/390浅色和1440/390深色无溢出；抽查六类文字对比度浅色最低4.61:1、深色最低6.78:1。截图自审94/100。
+- 项目artifacts/work原有1062个文件哈希无变化。正文、设置、解析、评分、配图和导出数据未变；既有6阻塞/23推荐提示继续有效。新模型写作、生图、整标重导出、WorkBuddy及正式投标审核未运行，本次展示修改不要求这些路径。应用前后端、接口、权限、数据库与部署未改，应用lint/build不适用。截图与DOM/哈希证据只留本地项目reports，不纳入Git。

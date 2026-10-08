@@ -1,0 +1,1471 @@
+"""
+小红书发布模块（图文 + 视频）
+
+Reference: xiaohongshu-mcp/publish.go + publish_video.go (Apache-2.0). See THIRD_PARTY_NOTICES.md.
+安全发布校验（人工确认 checkpoint）
+"""
+
+import os
+import random
+import re
+import sys
+import time
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+from urllib.parse import urlsplit
+
+from ._utils import is_element_blocked
+from .client import CAPTCHA_URL_PATTERNS, DEFAULT_COOKIE_PATH, XiaohongshuClient
+
+PUBLISH_URL = "https://creator.xiaohongshu.com/publish/publish?source=official"
+PUBLISH_TIMEZONE = timezone(timedelta(hours=8), name="Asia/Shanghai")
+PUBLISH_STATUS_CONFIRMED = "confirmed"
+PUBLISH_STATUS_SUBMITTED_UNCONFIRMED = "submitted_unconfirmed"
+PUBLISH_STATUS_FAILED = "failed"
+TITLE_LENGTH_WARNING_THRESHOLD = 20
+SCHEDULE_FORMAT = "%Y-%m-%d %H:%M"
+MIN_SCHEDULE_DELAY = timedelta(hours=1)
+MAX_SCHEDULE_DELAY = timedelta(days=14)
+LOGIN_URL_MARKERS = ("/login", "passport", "signin")
+TRUSTED_CONFIRMATION_HOSTS = ("creator.xiaohongshu.com",)
+FAILED_DESTINATION_MARKERS = ("/error", "/404", "/500", "/maintenance")
+
+
+@dataclass(frozen=True)
+class PublishConfirmation:
+    """Result of clicking publish and observing the browser afterwards."""
+
+    status: str
+    message: str
+    signal: str
+    url: str = ""
+
+    @property
+    def success(self) -> bool:
+        """Only an observed confirmation signal counts as success."""
+        return self.status == PUBLISH_STATUS_CONFIRMED
+
+
+@dataclass(frozen=True)
+class PublishValidation:
+    """Validated local inputs and non-blocking platform-limit warnings."""
+
+    schedule_at: Optional[datetime]
+    warnings: tuple[str, ...]
+    media_paths: tuple[str, ...] = ()
+
+
+def _normalize_now(now: Optional[datetime]) -> datetime:
+    """Return ``now`` in the platform scheduling timezone."""
+    if now is None:
+        return datetime.now(PUBLISH_TIMEZONE)
+    if now.tzinfo is None:
+        return now.replace(tzinfo=PUBLISH_TIMEZONE)
+    return now.astimezone(PUBLISH_TIMEZONE)
+
+
+def validate_schedule_time(
+    schedule_time: Optional[str],
+    *,
+    now: Optional[datetime] = None,
+) -> Optional[datetime]:
+    """Validate a scheduled publish time in Asia/Shanghai.
+
+    Scheduled publishing accepts the local format ``YYYY-MM-DD HH:MM`` and
+    must be between one hour and fourteen days from ``now``, inclusively.
+    """
+    if schedule_time is None:
+        return None
+    if (
+        not isinstance(schedule_time, str)
+        or re.fullmatch(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}", schedule_time) is None
+    ):
+        raise ValueError(f"定时发布时间格式应为 {SCHEDULE_FORMAT}")
+
+    try:
+        parsed = datetime.strptime(schedule_time, SCHEDULE_FORMAT).replace(
+            tzinfo=PUBLISH_TIMEZONE,
+        )
+    except ValueError as exc:
+        raise ValueError(f"定时发布时间格式应为 {SCHEDULE_FORMAT}") from exc
+
+    delta = parsed - _normalize_now(now)
+    if delta < MIN_SCHEDULE_DELAY or delta > MAX_SCHEDULE_DELAY:
+        raise ValueError("定时发布时间必须在当前时间 1 小时至 14 天之间（Asia/Shanghai）")
+    return parsed
+
+
+def validate_media_paths(media_paths: List[str]) -> tuple[str, ...]:
+    """Require every local media path to be a readable regular file."""
+    if not media_paths:
+        raise ValueError("至少需要一个媒体文件")
+
+    validated = []
+    for raw_path in media_paths:
+        path = Path(raw_path).expanduser()
+        if not path.is_file():
+            raise ValueError(f"媒体文件不存在或不是普通文件: {raw_path}")
+        try:
+            with path.open("rb"):
+                pass
+        except OSError as exc:
+            raise ValueError(f"媒体文件不可读: {raw_path}") from exc
+        validated.append(str(path.resolve()))
+    return tuple(validated)
+
+
+def validate_publish_request(
+    *,
+    title: str,
+    media_paths: Optional[List[str]] = None,
+    schedule_time: Optional[str] = None,
+    now: Optional[datetime] = None,
+) -> PublishValidation:
+    """Validate stable local requirements before opening the publish page."""
+    if not isinstance(title, str) or not title.strip():
+        raise ValueError("标题不能为空")
+    validated_media = validate_media_paths(media_paths) if media_paths is not None else ()
+
+    warnings = []
+    if len(title) > TITLE_LENGTH_WARNING_THRESHOLD:
+        warnings.append(
+            f"标题长度为 {len(title)}，超过当前建议的 {TITLE_LENGTH_WARNING_THRESHOLD} 字；"
+            "平台限制可能变化，请在发布页复核"
+        )
+
+    schedule_at = validate_schedule_time(schedule_time, now=now)
+    return PublishValidation(
+        schedule_at=schedule_at,
+        warnings=tuple(warnings),
+        media_paths=validated_media,
+    )
+
+
+@dataclass
+class PublishImageContent:
+    """发布图文内容数据类（对应 Go publish.go PublishImageContent struct）"""
+    title: str = ""
+    content: str = ""
+    image_paths: List[str] = field(default_factory=list)
+    tags: Optional[List[str]] = None
+    schedule_time: Optional[str] = None
+    is_original: bool = False       # 是否声明原创
+    visibility: str = "公开可见"     # 可见范围: 公开可见/仅自己可见/仅互关好友可见
+    video_path: Optional[str] = None  # 视频发布时使用
+
+
+class PublishAction:
+    """发布动作"""
+
+    def __init__(self, client: XiaohongshuClient):
+        self.client = client
+
+    def _navigate_to_publish(self):
+        """导航到创作者中心发布页"""
+        print("打开创作者中心发布页...", file=sys.stderr)
+        self.client.navigate(PUBLISH_URL)
+        time.sleep(3)
+
+    def _click_publish_tab(self, tab_name: str):
+        """点击发布类型 TAB（上传图文 / 上传视频）
+
+        Go 参考: publish.go:119-153 mustClickPublishTab + getTabElement
+        增加遮挡检测（isElementBlocked），被遮挡时 removePopCover + clickEmptyPosition。
+        """
+        page = self.client.page
+
+        # 等待上传区域出现
+        try:
+            page.wait_for_selector('div.upload-content, div.creator-tab', timeout=15000)
+        except Exception:
+            print("等待发布页加载超时，继续尝试", file=sys.stderr)
+
+        time.sleep(1)
+
+        # 移除可能的弹窗遮挡
+        page.evaluate("""() => {
+            var popover = document.querySelector('div.d-popover');
+            if (popover) popover.remove();
+        }""")
+
+        # 带遮挡检测和重试的 TAB 点击
+        deadline = time.time() + 15
+        while time.time() < deadline:
+            try:
+                tabs = page.locator('div.creator-tab')
+                for i in range(tabs.count()):
+                    tab = tabs.nth(i)
+                    text = tab.text_content().strip()
+                    if text != tab_name:
+                        continue
+
+                    # 检测遮挡
+                    try:
+                        blocked = is_element_blocked(page, tab)
+                    except Exception:
+                        blocked = False
+
+                    if blocked:
+                        print("发布 TAB 被遮挡，移除弹窗后重试", file=sys.stderr)
+                        # removePopCover: 移除弹窗
+                        page.evaluate("""() => {
+                            var popover = document.querySelector('div.d-popover');
+                            if (popover) popover.remove();
+                        }""")
+                        # clickEmptyPosition: 点击空位置消除焦点
+                        x = 380 + random.randint(0, 100)
+                        y = 20 + random.randint(0, 60)
+                        page.mouse.click(x, y)
+                        time.sleep(0.3)
+                        break  # 重新扫描
+
+                    tab.click()
+                    time.sleep(1)
+                    print(f"已切换到「{tab_name}」", file=sys.stderr)
+                    return
+            except Exception as e:
+                print(f"查找 TAB 出错: {e}", file=sys.stderr)
+
+            time.sleep(0.2)
+
+        # 回退：使用文本定位
+        try:
+            page.get_by_text(tab_name, exact=True).click()
+            time.sleep(1)
+            print(f"已切换到「{tab_name}」(回退)", file=sys.stderr)
+        except Exception as e:
+            print(f"切换 TAB「{tab_name}」失败: {e}", file=sys.stderr)
+
+    def _upload_images(self, image_paths: List[str]):
+        """逐张上传图片"""
+        page = self.client.page
+        valid_paths = [p for p in image_paths if os.path.exists(p)]
+
+        if not valid_paths:
+            raise ValueError("没有有效的图片文件")
+
+        for i, path in enumerate(valid_paths):
+            abs_path = os.path.abspath(path)
+            print(f"上传图片 ({i+1}/{len(valid_paths)}): {abs_path}", file=sys.stderr)
+
+            # 第一张用 .upload-input，后续用 input[type=file]
+            selector = '.upload-input' if i == 0 else 'input[type="file"]'
+            try:
+                upload_input = page.locator(selector)
+                upload_input.set_input_files(abs_path)
+            except Exception:
+                # 回退
+                upload_input = page.locator('input[type="file"]')
+                upload_input.set_input_files(abs_path)
+
+            # 等待图片上传完成（预览元素出现）
+            expected = i + 1
+            for _ in range(120):  # 最多等 60 秒
+                try:
+                    previews = page.locator('.img-preview-area .pr, .upload-preview-item')
+                    if previews.count() >= expected:
+                        break
+                except Exception:
+                    pass
+                time.sleep(0.5)
+
+            time.sleep(1)
+
+        print(f"全部 {len(valid_paths)} 张图片上传完成", file=sys.stderr)
+
+    def _upload_video(self, video_path: str):
+        """上传视频文件"""
+        page = self.client.page
+
+        if not os.path.exists(video_path):
+            raise ValueError(f"视频文件不存在: {video_path}")
+
+        abs_path = os.path.abspath(video_path)
+        print(f"上传视频: {abs_path}", file=sys.stderr)
+
+        try:
+            upload_input = page.locator('.upload-input')
+            upload_input.set_input_files(abs_path)
+        except Exception:
+            upload_input = page.locator('input[type="file"]')
+            upload_input.set_input_files(abs_path)
+
+        # 等待发布按钮可点击（视频处理完成标志），最多等 10 分钟
+        print("等待视频处理完成...", file=sys.stderr)
+        btn_selector = '.publish-page-publish-btn button.bg-red'
+        for attempt in range(600):
+            try:
+                btn = page.locator(btn_selector)
+                if btn.count() > 0 and btn.is_visible():
+                    disabled = btn.get_attribute('disabled')
+                    if disabled is None:
+                        print("视频处理完成", file=sys.stderr)
+                        return
+            except Exception:
+                pass
+            time.sleep(1)
+
+        print("警告: 等待视频处理超时", file=sys.stderr)
+
+    def _fill_title(self, title: str):
+        """填写标题"""
+        page = self.client.page
+        try:
+            title_input = page.locator('div.d-input input')
+            title_input.first.fill(title)
+            time.sleep(random.uniform(0.5, 1.5))
+
+            # 检查标题是否超长
+            max_suffix = page.locator('div.title-container div.max_suffix')
+            if max_suffix.count() > 0 and max_suffix.is_visible():
+                length_text = max_suffix.text_content()
+                print(f"警告: 标题超长 ({length_text})", file=sys.stderr)
+
+            print(f"标题已填写: {title}", file=sys.stderr)
+        except Exception as e:
+            print(f"填写标题失败: {e}", file=sys.stderr)
+
+    def _fill_content(self, content: str):
+        """填写正文"""
+        page = self.client.page
+
+        # 尝试两种编辑器：Quill 或 contenteditable
+        content_el = None
+        try:
+            ql = page.locator('div.ql-editor')
+            if ql.count() > 0:
+                content_el = ql.first
+        except Exception:
+            pass
+
+        if content_el is None:
+            try:
+                # 通过 placeholder 查找
+                content_el = page.locator('p[data-placeholder*="输入正文描述"]').first
+                # 向上找 textbox 父元素
+                parent = page.locator('[role="textbox"]')
+                if parent.count() > 0:
+                    content_el = parent.first
+            except Exception:
+                pass
+
+        if content_el is None:
+            print("未找到正文输入框", file=sys.stderr)
+            return
+
+        try:
+            content_el.click()
+            time.sleep(0.3)
+            page.keyboard.type(content, delay=random.randint(20, 60))
+            time.sleep(random.uniform(0.5, 1.5))
+
+            # 检查正文是否超长
+            length_error = page.locator('div.edit-container div.length-error')
+            if length_error.count() > 0 and length_error.is_visible():
+                err_text = length_error.text_content()
+                print(f"警告: 正文超长 ({err_text})", file=sys.stderr)
+
+            print("正文已填写", file=sys.stderr)
+        except Exception as e:
+            print(f"填写正文失败: {e}", file=sys.stderr)
+
+    def _input_tags(self, tags: List[str]):
+        """输入话题标签（通过 # 触发联想）"""
+        if not tags:
+            return
+
+        page = self.client.page
+
+        # 先移动光标到正文末尾
+        content_el = None
+        try:
+            ql = page.locator('div.ql-editor')
+            if ql.count() > 0:
+                content_el = ql.first
+            else:
+                content_el = page.locator('[role="textbox"]').first
+        except Exception:
+            return
+
+        if content_el is None:
+            return
+
+        try:
+            content_el.click()
+            time.sleep(0.3)
+            # 按 End 键移动到末尾
+            page.keyboard.press('End')
+            page.keyboard.press('Enter')
+            page.keyboard.press('Enter')
+            time.sleep(0.5)
+        except Exception:
+            pass
+
+        # 限制最多 10 个标签
+        tags = tags[:10]
+
+        for tag in tags:
+            tag = tag.lstrip('#')
+            try:
+                # 输入 #
+                page.keyboard.type('#', delay=100)
+                time.sleep(0.3)
+
+                # 逐字输入标签文字
+                page.keyboard.type(tag, delay=50)
+                time.sleep(1)
+
+                # 尝试点击联想下拉框的第一个选项
+                topic_item = page.locator('#creator-editor-topic-container .item')
+                if topic_item.count() > 0:
+                    topic_item.first.click()
+                    print(f"标签「{tag}」已通过联想选择", file=sys.stderr)
+                else:
+                    # 没有联想，输入空格结束
+                    page.keyboard.type(' ', delay=50)
+                    print(f"标签「{tag}」已直接输入", file=sys.stderr)
+
+                time.sleep(0.5)
+            except Exception as e:
+                print(f"输入标签「{tag}」失败: {e}", file=sys.stderr)
+
+    def _set_visibility(self, page, visibility: str):
+        """设置可见范围
+
+        Go 参考: publish.go:792-836 setVisibility
+        支持: "公开可见"(默认), "仅自己可见", "仅互关好友可见"
+        """
+        if not visibility or visibility == "公开可见":
+            print("可见范围使用默认：公开可见", file=sys.stderr)
+            return
+
+        supported = {"仅自己可见", "仅互关好友可见"}
+        if visibility not in supported:
+            raise ValueError(
+                f"不支持的可见范围: {visibility}，支持: 公开可见、仅自己可见、仅互关好友可见"
+            )
+
+        # 点击可见范围下拉框
+        dropdown = page.locator("div.permission-card-wrapper div.d-select-content")
+        dropdown.click()
+        time.sleep(0.5)
+
+        # 在下拉选项中查找并点击目标
+        opts = page.locator("div.d-options-wrapper div.d-grid-item div.custom-option")
+        for i in range(opts.count()):
+            opt = opts.nth(i)
+            text = opt.text_content()
+            if visibility in text:
+                opt.click()
+                print(f"已设置可见范围: {visibility}", file=sys.stderr)
+                time.sleep(0.2)
+                return
+
+        raise ValueError(f"未找到可见范围选项: {visibility}")
+
+    def _confirm_original_declaration(self, page):
+        """处理原创声明确认弹窗
+
+        Go 参考: publish.go:952-1034 confirmOriginalDeclaration
+        使用 JS 查找 footer 中的 checkbox 和声明原创按钮。
+        """
+        time.sleep(0.8)
+
+        # 查找弹窗 footer 并勾选 checkbox
+        result = page.evaluate("""
+            () => {
+                const footers = document.querySelectorAll('div.footer');
+                for (const footer of footers) {
+                    if (!footer.textContent.includes('原创声明须知')) {
+                        continue;
+                    }
+                    const checkbox = footer.querySelector('div.d-checkbox input[type="checkbox"]');
+                    if (checkbox && !checkbox.checked) {
+                        checkbox.click();
+                        console.log('已勾选原创声明须知 checkbox');
+                    }
+                    return 'found_footer';
+                }
+                return 'footer_not_found';
+            }
+        """)
+        if result == "footer_not_found":
+            print("警告: 未找到原创声明确认弹窗的 footer", file=sys.stderr)
+
+        time.sleep(0.5)
+
+        # 点击「声明原创」按钮
+        result2 = page.evaluate("""
+            () => {
+                const footers = document.querySelectorAll('div.footer');
+                for (const footer of footers) {
+                    if (!footer.textContent.includes('声明原创')) {
+                        continue;
+                    }
+                    const btn = footer.querySelector('button.custom-button');
+                    if (btn) {
+                        if (btn.classList.contains('disabled') || btn.disabled) {
+                            const checkbox = footer.querySelector('div.d-checkbox input[type="checkbox"]');
+                            if (checkbox && !checkbox.checked) {
+                                checkbox.click();
+                            }
+                            return 'button_disabled';
+                        }
+                        btn.click();
+                        return 'clicked';
+                    }
+                }
+                return 'button_not_found';
+            }
+        """)
+
+        status = result2
+        print(f"原创声明确认结果: {status}", file=sys.stderr)
+
+        if status == "button_not_found":
+            print("警告: 未找到声明原创按钮", file=sys.stderr)
+        elif status == "button_disabled":
+            print("警告: 声明原创按钮仍处于禁用状态", file=sys.stderr)
+        else:
+            print("已成功点击声明原创按钮", file=sys.stderr)
+
+        time.sleep(0.3)
+
+    def _set_original(self, page):
+        """设置原创声明
+
+        Go 参考: publish.go:889-949 setOriginal
+        在 div.custom-switch-card 中查找包含"原创声明"文本的卡片，
+        检查 d-switch 开关状态，未勾选则点击并处理确认弹窗。
+        """
+        # 查找包含"原创声明"文本的 custom-switch-card
+        switch_cards = page.locator("div.custom-switch-card")
+        for i in range(switch_cards.count()):
+            card = switch_cards.nth(i)
+            text = card.text_content()
+
+            if "原创声明" not in text:
+                continue
+
+            # 找到其中 d-switch
+            switch_elem = card.locator("div.d-switch")
+            if switch_elem.count() == 0:
+                continue
+
+            # 检查是否已勾选
+            checked = switch_elem.evaluate("""(el) => {
+                const input = el.querySelector('input[type="checkbox"]');
+                return input ? input.checked : false;
+            }""")
+            if checked:
+                print("原创声明已开启，跳过", file=sys.stderr)
+                return
+
+            # 点击开关
+            switch_elem.click()
+            time.sleep(0.5)
+
+            # 处理确认弹窗
+            self._confirm_original_declaration(page)
+            print("已开启原创声明", file=sys.stderr)
+            return
+
+        print("提示: 未找到原创声明选项（可能账号不支持）", file=sys.stderr)
+
+    def _set_schedule(self, schedule_time: str):
+        """设置定时发布（格式: 2025-01-01 12:00）"""
+        page = self.client.page
+        try:
+            # 点击定时发布开关
+            switch = page.locator('.post-time-wrapper .d-switch')
+            switch.click()
+            time.sleep(0.8)
+
+            # 设置日期时间
+            date_input = page.locator('.date-picker-container input')
+            date_input.fill('')
+            date_input.fill(schedule_time)
+            time.sleep(0.5)
+
+            print(f"定时发布设置: {schedule_time}", file=sys.stderr)
+        except Exception as e:
+            print(f"设置定时发布失败: {e}", file=sys.stderr)
+            raise RuntimeError("设置定时发布失败，已阻止继续发布") from e
+
+    def _click_publish_button(self) -> bool:
+        """点击发布按钮
+
+        Go 参考: publish.go:401-463 findPublishButton + publish.go:465-508 clickPublishWidget
+        优先检测新版 xhs-publish-btn Web Component，回退到旧版 button.bg-red。
+        新版 widget 通过 bounding_box 坐标 + mouse.click 点击。
+        """
+        page = self.client.page
+
+        # 1. 优先检测新版 xhs-publish-btn Web Component
+        try:
+            widgets = page.locator("xhs-publish-btn")
+            for i in range(widgets.count()):
+                widget = widgets.nth(i)
+
+                # 检查 is-publish 属性
+                is_publish = widget.get_attribute("is-publish")
+                if is_publish == "false":
+                    continue
+
+                # 检查 submit-disabled 属性
+                submit_disabled = widget.get_attribute("submit-disabled")
+                if submit_disabled == "true":
+                    print("新版发布按钮不可点击 (submit-disabled=true)", file=sys.stderr)
+                    time.sleep(1)
+                    continue
+
+                # 通过坐标点击 widget
+                widget.scroll_into_view_if_needed()
+                time.sleep(0.2)
+
+                box = widget.bounding_box()
+                if box:
+                    # 点击位置: x 在 65% 宽处, y 在中间
+                    x = box['x'] + box['width'] * 0.65
+                    y = box['y'] + box['height'] / 2
+                    page.mouse.click(x, y)
+                    time.sleep(3)
+                    print("已点击新版发布按钮 (xhs-publish-btn)", file=sys.stderr)
+                    return True
+                else:
+                    print("新版发布按钮无 bounding box", file=sys.stderr)
+
+            # 如果找到了新版 widget 但都无法点击，视为已处理
+            if widgets.count() > 0:
+                print("所有新版发布按钮均不可用", file=sys.stderr)
+                return False
+        except Exception as e:
+            print(f"检测新版发布按钮出错: {e}", file=sys.stderr)
+
+        # 2. 回退到旧版 button.bg-red
+        try:
+            btn = page.locator('.publish-page-publish-btn button.bg-red')
+            if btn.count() > 0:
+                btn.first.click()
+                time.sleep(3)
+                print("已点击发布按钮 (旧版)", file=sys.stderr)
+                return True
+            else:
+                print("未找到发布按钮", file=sys.stderr)
+                return False
+        except Exception as e:
+            print(f"点击发布按钮失败: {e}", file=sys.stderr)
+            return False
+
+    @staticmethod
+    def _safe_page_url(page) -> str:
+        """Read the current page URL without trusting mock or browser errors."""
+        try:
+            current_url = page.url
+            return current_url if isinstance(current_url, str) else ""
+        except Exception:
+            return ""
+
+    @staticmethod
+    def _url_location(url: str) -> tuple[str, str]:
+        """Return a query-independent URL location for transition checks."""
+        try:
+            parsed = urlsplit(url)
+            return parsed.netloc.lower(), parsed.path.rstrip("/").lower()
+        except ValueError:
+            return "", ""
+
+    @staticmethod
+    def _is_publish_workflow_url(url: str) -> bool:
+        """Return whether a URL still belongs to the creator publish flow."""
+        host, path = PublishAction._url_location(url)
+        return host == "creator.xiaohongshu.com" and "/publish" in path
+
+    @staticmethod
+    def _redirect_failure_signal(url: str) -> Optional[str]:
+        """Classify login and security-verification redirects."""
+        lowered = url.lower()
+        if any(pattern.lower() in lowered for pattern in CAPTCHA_URL_PATTERNS):
+            return "captcha_redirect"
+        if any(marker in lowered for marker in LOGIN_URL_MARKERS):
+            return "login_redirect"
+        return None
+
+    def _publish_success_feedback_count(self) -> int:
+        """Count visible success feedback nodes for pre/post-click comparison."""
+        try:
+            feedback = self.client.page.get_by_text("发布成功", exact=False)
+            return sum(
+                1
+                for index in range(feedback.count())
+                if feedback.nth(index).is_visible()
+            )
+        except Exception:
+            return 0
+
+    def _has_security_challenge(self) -> bool:
+        """Reuse the client URL/title checks without accepting mock truthiness."""
+        try:
+            return self.client._check_captcha() is True
+        except Exception:
+            return False
+
+    @staticmethod
+    def _is_trusted_post_publish_url(url: str) -> bool:
+        """Accept only known creator-host destinations as a URL success signal."""
+        host, path = PublishAction._url_location(url)
+        if host not in TRUSTED_CONFIRMATION_HOSTS:
+            return False
+        if any(marker in path for marker in FAILED_DESTINATION_MARKERS):
+            return False
+        return "/publish" not in path
+
+    def _wait_for_publish_confirmation(
+        self,
+        *,
+        initial_url: Optional[str] = None,
+        initial_success_feedback_count: int = 0,
+        timeout: float = 15.0,
+        poll_interval: float = 0.5,
+        monotonic=None,
+        sleep=None,
+    ) -> PublishConfirmation:
+        """Observe post-click signals and never infer success from the click alone."""
+        monotonic = monotonic or time.monotonic
+        sleep = sleep or time.sleep
+        deadline = monotonic() + timeout
+        initial_url = initial_url or self._safe_page_url(self.client.page)
+        initial_location = self._url_location(initial_url)
+        initial_was_publish = self._is_publish_workflow_url(initial_url)
+        last_url = initial_url
+
+        while monotonic() < deadline:
+            current_url = self._safe_page_url(self.client.page)
+            if current_url:
+                last_url = current_url
+                failure_signal = self._redirect_failure_signal(current_url)
+                if failure_signal:
+                    message = (
+                        "发布后进入安全验证页面"
+                        if failure_signal == "captcha_redirect"
+                        else "发布后进入登录页面"
+                    )
+                    return PublishConfirmation(
+                        status=PUBLISH_STATUS_FAILED,
+                        message=message,
+                        signal=failure_signal,
+                        url=current_url,
+                    )
+
+            if self._has_security_challenge():
+                return PublishConfirmation(
+                    status=PUBLISH_STATUS_FAILED,
+                    message="发布后进入安全验证页面",
+                    signal="captcha_detected",
+                    url=current_url,
+                )
+
+            if self._publish_success_feedback_count() > initial_success_feedback_count:
+                return PublishConfirmation(
+                    status=PUBLISH_STATUS_CONFIRMED,
+                    message="已观察到发布成功提示",
+                    signal="success_feedback",
+                    url=current_url,
+                )
+
+            current_location = self._url_location(current_url)
+            if (
+                initial_was_publish
+                and current_location != initial_location
+                and self._is_trusted_post_publish_url(current_url)
+            ):
+                return PublishConfirmation(
+                    status=PUBLISH_STATUS_CONFIRMED,
+                    message="发布后已离开发布页面",
+                    signal="url_left_publish_flow",
+                    url=current_url,
+                )
+
+            sleep(poll_interval)
+
+        return PublishConfirmation(
+            status=PUBLISH_STATUS_SUBMITTED_UNCONFIRMED,
+            message="已点击发布，但未观察到成功信号，请人工复核",
+            signal="confirmation_timeout",
+            url=last_url,
+        )
+
+    def _publish_and_confirm(
+        self,
+        *,
+        timeout: float = 15.0,
+        poll_interval: float = 0.5,
+        monotonic=None,
+        sleep=None,
+    ) -> PublishConfirmation:
+        """Click publish and return a trustworthy confirmation state."""
+        initial_url = self._safe_page_url(self.client.page)
+        initial_success_feedback_count = self._publish_success_feedback_count()
+        if not self._click_publish_button():
+            return PublishConfirmation(
+                status=PUBLISH_STATUS_FAILED,
+                message="未能点击发布按钮",
+                signal="click_failed",
+                url=self._safe_page_url(self.client.page),
+            )
+        return self._wait_for_publish_confirmation(
+            initial_url=initial_url,
+            initial_success_feedback_count=initial_success_feedback_count,
+            timeout=timeout,
+            poll_interval=poll_interval,
+            monotonic=monotonic,
+            sleep=sleep,
+        )
+
+    @staticmethod
+    def _confirmation_fields(confirmation: PublishConfirmation) -> Dict[str, Any]:
+        """Expose stable compatibility fields for CLI and Python callers."""
+        return {
+            "status": confirmation.status,
+            "success": confirmation.success,
+            "published": confirmation.success,
+            "message": confirmation.message,
+            "confirmation_signal": confirmation.signal,
+            "confirmation_url": confirmation.url,
+        }
+
+    @staticmethod
+    def _emit_validation_warnings(validation: PublishValidation) -> None:
+        for warning in validation.warnings:
+            print(f"警告: {warning}", file=sys.stderr)
+
+    def _check_publish_ready(self) -> Dict[str, Any]:
+        """检查发布前的状态（三要素校验）"""
+        page = self.client.page
+        status = {}
+
+        # 检查标题
+        try:
+            title_input = page.locator('div.d-input input')
+            status["title"] = title_input.input_value() if title_input.count() > 0 else ""
+        except Exception:
+            status["title"] = ""
+
+        # 检查发布按钮可见性
+        try:
+            btn = page.locator('.publish-page-publish-btn button.bg-red')
+            status["publish_button_visible"] = btn.count() > 0 and btn.is_visible()
+        except Exception:
+            status["publish_button_visible"] = False
+
+        status["title_ok"] = bool(status["title"])
+        return status
+
+    def publish_image(
+        self,
+        title: str,
+        content: str,
+        image_paths: List[str],
+        tags: Optional[List[str]] = None,
+        schedule_time: Optional[str] = None,
+        auto_publish: bool = False,
+        is_original: bool = False,
+        visibility: str = "公开可见",
+    ) -> Dict[str, Any]:
+        """
+        发布图文笔记
+
+        Args:
+            title: 标题（建议 <=20 字）
+            content: 正文
+            image_paths: 图片文件路径列表
+            tags: 话题标签列表
+            schedule_time: 定时发布时间（格式 2025-01-01 12:00），None 为立即
+            auto_publish: 是否自动点击发布（默认 False，停在发布按钮处）
+            is_original: 是否声明原创（默认 False）
+            visibility: 可见范围，公开可见/仅自己可见/仅互关好友可见
+
+        Returns:
+            操作结果
+        """
+        validation = validate_publish_request(
+            title=title,
+            media_paths=image_paths,
+            schedule_time=schedule_time,
+        )
+        self._emit_validation_warnings(validation)
+        validated_image_paths = list(validation.media_paths or tuple(image_paths))
+
+        self._navigate_to_publish()
+        self._click_publish_tab("上传图文")
+
+        # 1. 上传图片
+        self._upload_images(validated_image_paths)
+        time.sleep(random.uniform(1.5, 3.0))
+
+        # 2. 填写标题
+        self._fill_title(title)
+        time.sleep(random.uniform(1.0, 2.0))
+
+        # 3. 填写正文
+        self._fill_content(content)
+        time.sleep(random.uniform(1.0, 2.5))
+
+        # 4. 添加标签
+        if tags:
+            self._input_tags(tags)
+            time.sleep(random.uniform(1.0, 2.0))
+
+        # 5. 设置可见范围
+        self._set_visibility(self.client.page, visibility)
+        time.sleep(random.uniform(0.5, 1.0))
+
+        # 6. 原创声明
+        if is_original:
+            self._set_original(self.client.page)
+            time.sleep(random.uniform(0.5, 1.0))
+
+        # 7. 定时发布
+        if schedule_time:
+            self._set_schedule(schedule_time)
+            time.sleep(random.uniform(0.5, 1.5))
+
+        # 8. 校验三要素
+        ready = self._check_publish_ready()
+        print(f"发布前校验: {ready}", file=sys.stderr)
+
+        # 9. 是否自动发布
+        if auto_publish:
+            confirmation = self._publish_and_confirm()
+            result = {
+                "action": "publish_image",
+                "title": title,
+                "image_count": len(validated_image_paths),
+                "tags": tags or [],
+                "schedule_time": schedule_time,
+                "is_original": is_original,
+                "visibility": visibility,
+                "warnings": list(validation.warnings),
+            }
+            result.update(self._confirmation_fields(confirmation))
+            return result
+        else:
+            return {
+                "status": "ready",
+                "action": "publish_image",
+                "title": title,
+                "image_count": len(validated_image_paths),
+                "tags": tags or [],
+                "schedule_time": schedule_time,
+                "is_original": is_original,
+                "visibility": visibility,
+                "success": False,
+                "published": False,
+                "ready_check": ready,
+                "warnings": list(validation.warnings),
+                "message": "已填写完毕，停在发布按钮处。请确认后使用 --auto-publish 发布。",
+            }
+
+    def publish_video(
+        self,
+        title: str,
+        content: str,
+        video_path: str,
+        tags: Optional[List[str]] = None,
+        schedule_time: Optional[str] = None,
+        auto_publish: bool = False,
+        is_original: bool = False,
+        visibility: str = "公开可见",
+    ) -> Dict[str, Any]:
+        """
+        发布视频笔记
+
+        Args:
+            title: 标题
+            content: 正文
+            video_path: 视频文件路径
+            tags: 话题标签
+            schedule_time: 定时发布时间
+            auto_publish: 是否自动发布（默认 False）
+            is_original: 是否声明原创（默认 False）
+            visibility: 可见范围，公开可见/仅自己可见/仅互关好友可见
+
+        Returns:
+            操作结果
+        """
+        validation = validate_publish_request(
+            title=title,
+            media_paths=[video_path],
+            schedule_time=schedule_time,
+        )
+        self._emit_validation_warnings(validation)
+        validated_video_path = (validation.media_paths or (video_path,))[0]
+
+        self._navigate_to_publish()
+        self._click_publish_tab("上传视频")
+
+        # 1. 上传视频
+        self._upload_video(validated_video_path)
+        time.sleep(random.uniform(1.5, 3.0))
+
+        # 2. 填写标题
+        self._fill_title(title)
+        time.sleep(random.uniform(1.0, 2.0))
+
+        # 3. 填写正文
+        self._fill_content(content)
+        time.sleep(random.uniform(1.0, 2.5))
+
+        # 4. 添加标签
+        if tags:
+            self._input_tags(tags)
+            time.sleep(random.uniform(1.0, 2.0))
+
+        # 5. 设置可见范围
+        self._set_visibility(self.client.page, visibility)
+        time.sleep(random.uniform(0.5, 1.0))
+
+        # 6. 原创声明
+        if is_original:
+            self._set_original(self.client.page)
+            time.sleep(random.uniform(0.5, 1.0))
+
+        # 7. 定时发布
+        if schedule_time:
+            self._set_schedule(schedule_time)
+            time.sleep(random.uniform(0.5, 1.5))
+
+        # 8. 校验
+        ready = self._check_publish_ready()
+        print(f"发布前校验: {ready}", file=sys.stderr)
+
+        if auto_publish:
+            confirmation = self._publish_and_confirm()
+            result = {
+                "action": "publish_video",
+                "title": title,
+                "video_path": video_path,
+                "schedule_time": schedule_time,
+                "is_original": is_original,
+                "visibility": visibility,
+                "warnings": list(validation.warnings),
+            }
+            result.update(self._confirmation_fields(confirmation))
+            return result
+        else:
+            return {
+                "status": "ready",
+                "action": "publish_video",
+                "title": title,
+                "video_path": video_path,
+                "schedule_time": schedule_time,
+                "is_original": is_original,
+                "visibility": visibility,
+                "success": False,
+                "published": False,
+                "ready_check": ready,
+                "warnings": list(validation.warnings),
+                "message": "已填写完毕，停在发布按钮处。请确认后使用 --auto-publish 发布。",
+            }
+
+
+    def publish_longform(
+        self,
+        title: str,
+        content: str,
+        auto_publish: bool = False,
+    ) -> Dict[str, Any]:
+        """
+        发布长文笔记（通过创作者中心"写长文"功能）
+
+        流程：导航到创作者中心 → 点击「写长文」→「新的创作」→ 输入标题正文
+              → 一键排版 → 选择模板 → 下一步 → （可选）发布
+
+        Args:
+            title: 标题
+            content: 正文内容
+            auto_publish: 是否自动发布（默认 False，停在发布页）
+
+        Returns:
+            操作结果
+        """
+        validation = validate_publish_request(title=title)
+        self._emit_validation_warnings(validation)
+        page = self.client.page
+
+        # 1. 导航到创作者中心发布页
+        self._navigate_to_publish()
+        time.sleep(random.uniform(1.0, 2.0))
+
+        # 2. 点击侧边栏「写长文」
+        try:
+            longform_btn = page.get_by_text("写长文", exact=True)
+            if longform_btn.count() > 0:
+                longform_btn.first.click()
+            else:
+                # 回退：用选择器查找
+                page.locator('div.creator-tab:has-text("写长文")').click()
+            time.sleep(random.uniform(1.5, 3.0))
+            print("已点击「写长文」", file=sys.stderr)
+        except Exception as e:
+            print(f"点击「写长文」失败: {e}", file=sys.stderr)
+            return {"status": "error", "action": "publish_longform", "message": f"点击写长文失败: {e}"}
+
+        # 3. 点击「新的创作」
+        try:
+            new_btn = page.get_by_text("新的创作", exact=False)
+            if new_btn.count() > 0:
+                new_btn.first.click()
+                time.sleep(random.uniform(2.0, 3.5))
+                print("已点击「新的创作」", file=sys.stderr)
+        except Exception as e:
+            print(f"点击「新的创作」失败（可能已在编辑页）: {e}", file=sys.stderr)
+
+        # 4. 输入标题
+        try:
+            title_input = page.locator('input[placeholder*="标题"], div.title-input input, div.d-input input')
+            if title_input.count() > 0:
+                title_input.first.fill(title)
+                time.sleep(random.uniform(0.5, 1.5))
+                print(f"长文标题已填写: {title}", file=sys.stderr)
+            else:
+                print("未找到长文标题输入框", file=sys.stderr)
+        except Exception as e:
+            print(f"填写长文标题失败: {e}", file=sys.stderr)
+
+        # 5. 输入正文
+        time.sleep(random.uniform(0.5, 1.0))
+        try:
+            # 长文编辑器可能是 Quill 或 contenteditable
+            editor = None
+            for selector in ['div.ql-editor', '[role="textbox"]', 'div[contenteditable="true"]']:
+                loc = page.locator(selector)
+                if loc.count() > 0:
+                    editor = loc.first
+                    break
+
+            if editor:
+                editor.click()
+                time.sleep(random.uniform(0.3, 0.8))
+                page.keyboard.type(content, delay=random.randint(15, 40))
+                time.sleep(random.uniform(0.5, 1.5))
+                print("长文正文已填写", file=sys.stderr)
+            else:
+                print("未找到长文正文编辑器", file=sys.stderr)
+        except Exception as e:
+            print(f"填写长文正文失败: {e}", file=sys.stderr)
+
+        # 6. 点击「一键排版」
+        time.sleep(random.uniform(1.0, 2.0))
+        try:
+            format_btn = page.get_by_text("一键排版", exact=False)
+            if format_btn.count() > 0:
+                format_btn.first.click()
+                time.sleep(random.uniform(2.0, 3.5))
+                print("已点击「一键排版」", file=sys.stderr)
+            else:
+                print("未找到「一键排版」按钮，跳过", file=sys.stderr)
+        except Exception as e:
+            print(f"点击一键排版失败: {e}", file=sys.stderr)
+
+        # 7. 选择模板（第一个「简约基础」）
+        try:
+            template_items = page.locator('.template-item, .style-item')
+            if template_items.count() > 0:
+                template_items.first.click()
+                time.sleep(random.uniform(1.0, 2.0))
+                print("已选择排版模板", file=sys.stderr)
+        except Exception as e:
+            print(f"选择模板失败: {e}", file=sys.stderr)
+
+        # 8. 点击「下一步」
+        try:
+            next_btn = page.get_by_text("下一步", exact=True)
+            if next_btn.count() > 0:
+                next_btn.first.click()
+                time.sleep(random.uniform(2.0, 3.5))
+                print("已点击「下一步」", file=sys.stderr)
+        except Exception as e:
+            print(f"点击下一步失败: {e}", file=sys.stderr)
+
+        # 9. 是否自动发布
+        if auto_publish:
+            confirmation = self._publish_and_confirm()
+            result = {
+                "action": "publish_longform",
+                "title": title,
+                "warnings": list(validation.warnings),
+            }
+            result.update(self._confirmation_fields(confirmation))
+            return result
+        else:
+            return {
+                "status": "ready",
+                "action": "publish_longform",
+                "title": title,
+                "success": False,
+                "published": False,
+                "warnings": list(validation.warnings),
+                "message": "长文已填写完毕，停在发布页。请确认后使用 --auto-publish 发布。",
+            }
+
+
+def md_to_images(
+    markdown_text: str,
+    output_dir: str = ".",
+    width: int = 1080,
+    css: str = "",
+) -> List[str]:
+    """
+    将 Markdown 文本渲染为长文图片（利用 Playwright 截图）
+
+    Args:
+        markdown_text: Markdown 文本
+        output_dir: 输出目录
+        width: 图片宽度（像素）
+        css: 自定义 CSS 样式
+
+    Returns:
+        生成的图片路径列表
+    """
+    try:
+        import markdown
+    except ImportError:
+        print("需要安装 markdown 库: pip install markdown", file=sys.stderr)
+        raise
+
+    # 将 Markdown 转为 HTML
+    html_content = markdown.markdown(
+        markdown_text,
+        extensions=['tables', 'fenced_code', 'codehilite', 'nl2br'],
+    )
+
+    default_css = """
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                     "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        padding: 40px 50px;
+        line-height: 1.8;
+        color: #333;
+        background: #fff;
+        max-width: 100%;
+        margin: 0 auto;
+        font-size: 16px;
+    }
+    h1 { font-size: 24px; font-weight: bold; margin: 20px 0 10px; color: #222; }
+    h2 { font-size: 20px; font-weight: bold; margin: 18px 0 8px; color: #333; }
+    h3 { font-size: 18px; font-weight: bold; margin: 15px 0 6px; color: #444; }
+    p { margin: 8px 0; }
+    ul, ol { padding-left: 20px; }
+    li { margin: 4px 0; }
+    blockquote {
+        border-left: 4px solid #ff2442;
+        padding: 8px 16px;
+        margin: 12px 0;
+        background: #fff5f5;
+        color: #555;
+    }
+    code {
+        background: #f5f5f5;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 14px;
+    }
+    pre {
+        background: #f5f5f5;
+        padding: 16px;
+        border-radius: 6px;
+        overflow-x: auto;
+    }
+    img { max-width: 100%; border-radius: 8px; }
+    hr { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background: #f5f5f5; }
+    """
+
+    full_css = default_css + "\n" + css
+    full_html = f"""<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width={width}">
+<style>{full_css}</style>
+</head><body>{html_content}</body></html>"""
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch(headless=True)
+        page = browser.new_page(viewport={"width": width, "height": 800})
+        page.set_content(full_html)
+        page.wait_for_load_state("networkidle")
+        time.sleep(0.5)
+
+        # 获取实际内容高度
+        total_height = page.evaluate("document.body.scrollHeight")
+
+        # 如果内容不太长（<=4000px），直接截一张
+        # 否则分页截图（每张最多 3000px）
+        image_paths = []
+        max_page_height = 3000
+
+        if total_height <= max_page_height + 500:
+            # 单张截图
+            page.set_viewport_size({"width": width, "height": total_height + 40})
+            time.sleep(0.3)
+            img_path = os.path.join(output_dir, "md_page_1.png")
+            page.screenshot(path=img_path, full_page=True)
+            image_paths.append(img_path)
+        else:
+            # 分页截图
+            page_num = 1
+            y_offset = 0
+            while y_offset < total_height:
+                chunk_height = min(max_page_height, total_height - y_offset)
+                img_path = os.path.join(output_dir, f"md_page_{page_num}.png")
+                page.screenshot(
+                    path=img_path,
+                    clip={"x": 0, "y": y_offset, "width": width, "height": chunk_height},
+                )
+                image_paths.append(img_path)
+                y_offset += chunk_height
+                page_num += 1
+
+        browser.close()
+
+    print(f"Markdown 已渲染为 {len(image_paths)} 张图片", file=sys.stderr)
+    return image_paths
+
+
+# ============================================================
+# 便捷函数
+# ============================================================
+
+def publish_image(
+    title: str,
+    content: str,
+    image_paths: List[str],
+    tags: Optional[List[str]] = None,
+    schedule_time: Optional[str] = None,
+    auto_publish: bool = False,
+    is_original: bool = False,
+    visibility: str = "公开可见",
+    headless: bool = True,
+    cookie_path: str = DEFAULT_COOKIE_PATH,
+) -> Dict[str, Any]:
+    """发布图文笔记"""
+    client = XiaohongshuClient(headless=headless, cookie_path=cookie_path)
+    try:
+        client.start()
+        action = PublishAction(client)
+        return action.publish_image(
+            title=title, content=content, image_paths=image_paths,
+            tags=tags, schedule_time=schedule_time, auto_publish=auto_publish,
+            is_original=is_original, visibility=visibility,
+        )
+    finally:
+        client.close()
+
+
+def publish_video(
+    title: str,
+    content: str,
+    video_path: str,
+    tags: Optional[List[str]] = None,
+    schedule_time: Optional[str] = None,
+    auto_publish: bool = False,
+    is_original: bool = False,
+    visibility: str = "公开可见",
+    headless: bool = True,
+    cookie_path: str = DEFAULT_COOKIE_PATH,
+) -> Dict[str, Any]:
+    """发布视频笔记"""
+    client = XiaohongshuClient(headless=headless, cookie_path=cookie_path)
+    try:
+        client.start()
+        action = PublishAction(client)
+        return action.publish_video(
+            title=title, content=content, video_path=video_path,
+            tags=tags, schedule_time=schedule_time, auto_publish=auto_publish,
+            is_original=is_original, visibility=visibility,
+        )
+    finally:
+        client.close()
+
+
+def publish_longform(
+    title: str,
+    content: str,
+    auto_publish: bool = False,
+    headless: bool = True,
+    cookie_path: str = DEFAULT_COOKIE_PATH,
+) -> Dict[str, Any]:
+    """发布长文笔记"""
+    client = XiaohongshuClient(headless=headless, cookie_path=cookie_path)
+    try:
+        client.start()
+        action = PublishAction(client)
+        return action.publish_longform(
+            title=title, content=content, auto_publish=auto_publish,
+        )
+    finally:
+        client.close()
+
+
+def publish_markdown(
+    title: str,
+    markdown_text: str,
+    extra_content: str = "",
+    tags: Optional[List[str]] = None,
+    schedule_time: Optional[str] = None,
+    auto_publish: bool = False,
+    image_width: int = 1080,
+    output_dir: str = "",
+    headless: bool = True,
+    cookie_path: str = DEFAULT_COOKIE_PATH,
+) -> Dict[str, Any]:
+    """
+    将 Markdown 渲染为图片后发布图文笔记
+
+    Args:
+        title: 标题
+        markdown_text: Markdown 内容
+        extra_content: 正文区的额外文字说明
+        tags: 话题标签
+        schedule_time: 定时发布
+        auto_publish: 是否自动发布
+        image_width: 图片宽度
+        output_dir: 图片输出目录（默认临时目录）
+        headless: 无头模式
+        cookie_path: Cookie 路径
+
+    Returns:
+        操作结果
+    """
+    validation = validate_publish_request(
+        title=title,
+        schedule_time=schedule_time,
+    )
+    for warning in validation.warnings:
+        print(f"警告: {warning}", file=sys.stderr)
+
+    import tempfile
+    if not output_dir:
+        output_dir = tempfile.mkdtemp(prefix="xhs_md_")
+
+    # 1. Markdown → 图片
+    image_paths = md_to_images(markdown_text, output_dir=output_dir, width=image_width)
+
+    if not image_paths:
+        return {"status": "error", "message": "Markdown 渲染失败，未生成图片"}
+
+    # 2. 发布图文
+    body = extra_content or f"本文由 Markdown 渲染生成，共 {len(image_paths)} 页"
+    return publish_image(
+        title=title, content=body, image_paths=image_paths,
+        tags=tags, schedule_time=schedule_time, auto_publish=auto_publish,
+        headless=headless, cookie_path=cookie_path,
+    )

@@ -1,0 +1,14 @@
+services:
+  xiaohongshu:
+    build: .
+    image: xiaohongshu-skill:local
+
+    volumes:
+      - ~/.xiaohongshu/:/home/app/.xiaohongshu/
+      - ./data/:/app/data/
+
+    environment:
+      XHS_PROXY: ${XHS_PROXY:-}
+      XHS_HEADLESS: ${XHS_HEADLESS:-true}
+
+    command: ["check-login"]

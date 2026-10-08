@@ -1,0 +1,851 @@
+#!/usr/bin/env python
+"""
+小红书 CLI 入口
+
+Reference: xiaohongshu-mcp (Apache-2.0). See THIRD_PARTY_NOTICES.md.
+"""
+
+import argparse
+import json
+import logging
+import os
+import sys
+
+# Windows GBK 终端兼容性修复：强制 stdout 使用 UTF-8
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+from . import (
+    __version__,
+    comment,
+    explore,
+    feed,
+    interact,
+    login,
+    publish,
+    search,
+    sop,
+    strategy,
+    templates,
+    user,
+)
+from .client import CaptchaError, XiaohongshuClient
+from .output_contracts import get_output_contracts
+from .profiles import ProfileNameError, list_profiles, profile_paths
+from .selectors import get_selector_contracts
+
+
+def format_output(data) -> str:
+    """格式化输出为 JSON"""
+    if data is None:
+        return json.dumps({"error": "No data"}, ensure_ascii=False, indent=2)
+    return json.dumps(data, ensure_ascii=False, indent=2)
+
+
+def _headless(args) -> bool:
+    """从 args 解析 headless 值"""
+    val = getattr(args, 'headless', 'true')
+    if isinstance(val, bool):
+        return val
+    return val.lower() != 'false'
+
+
+def _profile(args) -> str | None:
+    profile = getattr(args, "profile", None)
+    return profile.strip() if isinstance(profile, str) and profile.strip() else None
+
+
+def _cookie_path(args) -> str:
+    profile = _profile(args)
+    paths = profile_paths(profile)
+    if profile:
+        os.environ["XHS_PROFILE"] = profile
+    if getattr(args, "cookie", None):
+        return args.cookie
+    return str(paths.cookie_path)
+
+
+def _user_data_dir(args) -> str:
+    profile = _profile(args)
+    paths = profile_paths(profile)
+    if profile:
+        os.environ["XHS_PROFILE"] = profile
+    return str(paths.user_data_dir)
+
+
+# ============================================================
+# 命令处理函数
+# ============================================================
+
+def cmd_login(args):
+    """登录命令 — 生成二维码并等待扫码"""
+    result = login.login(
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+        timeout=args.timeout,
+    )
+    print(format_output(result))
+    if result.get("status") == "logged_in":
+        return 0
+    elif result.get("status") == "qrcode_ready":
+        return 2
+    return 1
+
+
+def cmd_qrcode(args):
+    """
+    获取二维码并等待扫码。
+    如果已登录，直接返回。
+    """
+    cookie_path = _cookie_path(args)
+    headless = _headless(args)
+
+    # 1) 先快速检查是否已登录
+    is_logged_in, username = login.check_login(cookie_path=cookie_path)
+    if is_logged_in:
+        result = {
+            "status": "logged_in",
+            "qrcode_path": None,
+            "username": username,
+            "message": "已登录",
+        }
+        print(format_output(result))
+        return 0
+
+    # 2) 未登录 → 启动可见浏览器，获取二维码并等待扫码
+    client = XiaohongshuClient(headless=headless, cookie_path=cookie_path)
+    try:
+        client.start()
+        action = login.LoginAction(client)
+
+        qrcode_path, already_logged_in = action.get_wechat_qrcode()
+        if already_logged_in:
+            print(format_output({"status": "logged_in", "message": "已登录"}))
+            return 0
+
+        if qrcode_path:
+            print(format_output({
+                "status": "qrcode_ready",
+                "qrcode_path": qrcode_path,
+                "message": f"请扫码登录，二维码路径: {qrcode_path}",
+            }))
+
+            # 等待用户扫码（最多 120 秒）
+            print("等待用户扫码…（最多 120 秒）", file=sys.stderr)
+            success = action.wait_for_login(timeout=120)
+
+            if success:
+                print(format_output({"status": "logged_in", "message": "登录成功！"}))
+                return 0
+            else:
+                print(format_output({"status": "timeout", "message": "扫码超时"}))
+                return 2
+        else:
+            print(format_output({"status": "error", "message": "获取二维码失败"}))
+            return 1
+    finally:
+        client.close()
+
+
+def cmd_check_login(args):
+    """检查登录状态"""
+    is_logged_in, username = login.check_login(
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output({
+        "is_logged_in": is_logged_in,
+        "username": username,
+    }))
+    return 0
+
+
+def cmd_creator_login(args):
+    """登录创作者中心（发布前需要）。"""
+    result = login.creator_login(
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+        timeout=args.timeout,
+    )
+    print(format_output(result))
+    return 0 if result.get("status") == "logged_in" else 1
+
+
+def cmd_check_creator_login(args):
+    """检查创作者中心登录状态。"""
+    is_logged_in = login.check_creator_login(
+        cookie_path=_cookie_path(args),
+        headless=_headless(args),
+    )
+    print(format_output({"is_logged_in": is_logged_in}))
+    return 0
+
+
+def cmd_logout(args):
+    """删除登录状态"""
+    result = login.logout(cookie_path=_cookie_path(args), user_data_dir=_user_data_dir(args))
+    print(format_output(result))
+    return 0
+
+
+def cmd_profiles(args):
+    """列出本地账号 profile"""
+    profiles = list_profiles()
+    print(format_output({
+        "count": len(profiles),
+        "profiles": profiles,
+    }))
+    return 0
+
+
+def cmd_selectors(args):
+    """列出浏览器选择器契约"""
+    contracts = [
+        {
+            "name": contract.name,
+            "owner": contract.owner,
+            "purpose": contract.purpose,
+            "selectors": list(contract.selectors),
+            "required": contract.required,
+        }
+        for contract in get_selector_contracts(owner=args.owner)
+    ]
+    print(format_output({
+        "count": len(contracts),
+        "contracts": contracts,
+    }))
+    return 0
+
+
+def cmd_contracts(args):
+    """列出 CLI JSON 输出契约"""
+    contracts = [
+        {
+            "name": contract.name,
+            "command": contract.command,
+            "purpose": contract.purpose,
+            "required_fields": list(contract.required_fields),
+            "item_fields": list(contract.item_fields),
+            "notes": contract.notes,
+        }
+        for contract in get_output_contracts(command=args.command_name)
+    ]
+    print(format_output({
+        "count": len(contracts),
+        "contracts": contracts,
+    }))
+    return 0
+
+
+def cmd_search(args):
+    """搜索命令"""
+    results = search.search(
+        keyword=args.keyword,
+        sort_by=args.sort_by,
+        note_type=args.note_type,
+        publish_time=args.publish_time,
+        search_scope=args.search_scope,
+        location=args.location,
+        limit=args.limit,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output({
+        "count": len(results),
+        "results": results,
+    }))
+    return 0
+
+
+def cmd_feed(args):
+    """笔记详情命令"""
+    detail = feed.feed_detail(
+        feed_id=args.feed_id,
+        xsec_token=args.xsec_token or "",
+        load_comments=args.load_comments,
+        max_comments=args.max_comments,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(detail))
+    return 0 if detail else 1
+
+
+def cmd_user(args):
+    """用户主页命令"""
+    profile = user.user_profile(
+        user_id=args.user_id,
+        xsec_token=args.xsec_token or "",
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(profile))
+    return 0 if profile else 1
+
+
+def cmd_me(args):
+    """获取自己的个人主页"""
+    profile = user.my_profile(
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(profile))
+    return 0 if profile else 1
+
+
+def cmd_comment(args):
+    """发表评论"""
+    result = comment.post_comment(
+        feed_id=args.feed_id,
+        xsec_token=args.xsec_token or "",
+        content=args.content,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return 0 if result.get("status") == "success" else 1
+
+
+def cmd_reply(args):
+    """回复评论"""
+    result = comment.reply_to_comment(
+        feed_id=args.feed_id,
+        xsec_token=args.xsec_token or "",
+        comment_id=args.comment_id,
+        reply_user_id=args.reply_user_id,
+        content=args.content,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return 0 if result.get("status") == "success" else 1
+
+
+def cmd_like(args):
+    """点赞"""
+    result = interact.like(
+        feed_id=args.feed_id,
+        xsec_token=args.xsec_token or "",
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return 0 if result.get("status") == "success" else 1
+
+
+def cmd_unlike(args):
+    """取消点赞"""
+    result = interact.unlike(
+        feed_id=args.feed_id,
+        xsec_token=args.xsec_token or "",
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return 0 if result.get("status") == "success" else 1
+
+
+def cmd_collect(args):
+    """收藏"""
+    result = interact.collect(
+        feed_id=args.feed_id,
+        xsec_token=args.xsec_token or "",
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return 0 if result.get("status") == "success" else 1
+
+
+def cmd_uncollect(args):
+    """取消收藏"""
+    result = interact.uncollect(
+        feed_id=args.feed_id,
+        xsec_token=args.xsec_token or "",
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return 0 if result.get("status") == "success" else 1
+
+
+def cmd_explore(args):
+    """首页推荐流"""
+    result = explore.explore(
+        limit=args.limit,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return 0
+
+
+def _publish_exit_code(result):
+    """Map publish confirmation states to stable CLI exit codes."""
+    status = result.get("status")
+    if status in {"confirmed", "ready"}:
+        return 0
+    if status == "submitted_unconfirmed":
+        return 2
+    return 1
+
+
+def cmd_publish(args):
+    """发布图文笔记"""
+    image_paths = [p.strip() for p in args.images.split(",") if p.strip()]
+    tags = [t.strip() for t in args.tags.split(",")] if args.tags else None
+    result = publish.publish_image(
+        title=args.title,
+        content=args.content,
+        image_paths=image_paths,
+        tags=tags,
+        schedule_time=args.schedule_time,
+        auto_publish=args.auto_publish,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return _publish_exit_code(result)
+
+
+def cmd_publish_video(args):
+    """发布视频笔记"""
+    tags = [t.strip() for t in args.tags.split(",")] if args.tags else None
+    result = publish.publish_video(
+        title=args.title,
+        content=args.content,
+        video_path=args.video,
+        tags=tags,
+        schedule_time=args.schedule_time,
+        auto_publish=args.auto_publish,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return _publish_exit_code(result)
+
+
+def cmd_publish_md(args):
+    """将 Markdown 渲染为图片后发布图文笔记"""
+    tags = [t.strip() for t in args.tags.split(",")] if args.tags else None
+
+    # 从文件或直接文本读取 Markdown
+    if args.file:
+        with open(args.file, "r", encoding="utf-8") as f:
+            markdown_text = f.read()
+    else:
+        markdown_text = args.text
+
+    if not markdown_text:
+        print(format_output({"status": "error", "message": "需要提供 --file 或 --text"}))
+        return 1
+
+    result = publish.publish_markdown(
+        title=args.title,
+        markdown_text=markdown_text,
+        extra_content=args.content or "",
+        tags=tags,
+        schedule_time=args.schedule_time,
+        auto_publish=args.auto_publish,
+        image_width=args.width,
+        output_dir=args.output_dir or "",
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return _publish_exit_code(result)
+
+
+def cmd_publish_longform(args):
+    """发布长文笔记"""
+    result = publish.publish_longform(
+        title=args.title,
+        content=args.content,
+        auto_publish=args.auto_publish,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return _publish_exit_code(result)
+
+
+def cmd_reply_notification(args):
+    """通过通知页回复评论"""
+    result = comment.reply_via_notification(
+        content=args.content,
+        notification_index=args.index,
+        headless=_headless(args),
+        cookie_path=_cookie_path(args),
+    )
+    print(format_output(result))
+    return 0 if result.get("status") == "success" else 1
+
+
+def cmd_template(args):
+    """生成写作模板"""
+    result = templates.generate_template(
+        topic=args.topic,
+        note_type=args.type,
+    )
+    print(format_output(result))
+    return 0
+
+
+def cmd_strategy_init(args):
+    """初始化运营策略"""
+    directions = [d.strip() for d in args.direction.split(",")] if args.direction else None
+    result = strategy.init_strategy(
+        persona=args.persona,
+        target_audience=args.audience or "",
+        content_direction=directions,
+    )
+    print(format_output(result))
+    return 0
+
+
+def cmd_strategy_show(args):
+    """显示运营策略"""
+    result = strategy.show_strategy()
+    print(format_output(result))
+    return 0
+
+
+def cmd_strategy_add_post(args):
+    """添加内容计划"""
+    result = strategy.add_scheduled_post(
+        date=args.date,
+        topic=args.topic,
+        note_type=args.type,
+        notes=args.notes or "",
+    )
+    print(format_output(result))
+    return 0
+
+
+def cmd_strategy_check_limit(args):
+    """检查每日配额"""
+    result = strategy.check_daily_limit(args.limit_type)
+    print(format_output(result))
+    return 0
+
+
+def cmd_sop(args):
+    """执行 SOP"""
+    if args.sop_type == "publish":
+        result = sop.run_publish_sop(
+            topic=args.topic or "未指定主题",
+            note_type=args.note_type or "图文",
+            auto_publish=args.auto_publish,
+        )
+    elif args.sop_type == "comment":
+        # comment SOP 需要 JSON 格式的回复列表
+        try:
+            replies = json.loads(args.replies) if args.replies else []
+        except json.JSONDecodeError:
+            print(format_output({"status": "error", "message": "replies 参数格式错误，需要 JSON 数组"}))
+            return 1
+        result = sop.run_comment_sop(replies=replies)
+    elif args.sop_type == "explore":
+        result = sop.run_explore_sop(
+            feed_count=args.feed_count,
+            like_probability=args.like_prob,
+            collect_probability=args.collect_prob,
+            comment_probability=args.comment_prob,
+        )
+    else:
+        print(format_output({"status": "error", "message": f"未知 SOP 类型: {args.sop_type}"}))
+        return 1
+
+    print(format_output(result))
+    return 0 if result.get("status") in ("ready", "success") else 1
+
+
+# ============================================================
+# 入口
+# ============================================================
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="小红书 CLI 工具",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+
+    # 全局参数
+    parser.add_argument("--version", "-V", action="version", version=f"xiaohongshu-skill {__version__}")
+    parser.add_argument("--verbose", "-v", action="store_true", help="详细输出")
+    parser.add_argument("--quiet", "-q", action="store_true", help="仅输出 JSON 结果")
+    parser.add_argument("--cookie", "-c", help="Cookie 文件路径", default=None)
+    parser.add_argument("--profile", help="账号 profile 名称（默认沿用旧路径）", default=None)
+    parser.add_argument("--headless", help="无头模式: true/false（默认 true）", default='true')
+
+    subparsers = parser.add_subparsers(dest="command", help="可用命令")
+
+    # login
+    login_p = subparsers.add_parser("login", help="扫码登录（等待登录或超时）")
+    login_p.add_argument("--timeout", "-t", type=int, default=120, help="登录超时秒数")
+    login_p.add_argument("--headless", default='false', help="默认 false 以显示浏览器")
+    login_p.set_defaults(func=cmd_login)
+
+    # qrcode
+    qr_p = subparsers.add_parser("qrcode", help="获取登录二维码并等待扫码")
+    qr_p.add_argument("--headless", default='false', help="默认 false 以显示浏览器")
+    qr_p.set_defaults(func=cmd_qrcode)
+
+    # check-login
+    chk_p = subparsers.add_parser("check-login", help="检查登录状态")
+    chk_p.add_argument("--headless", default='true')
+    chk_p.set_defaults(func=cmd_check_login)
+
+    # creator-login
+    creator_login_p = subparsers.add_parser(
+        "creator-login",
+        help="登录创作者中心（发布前需要）",
+    )
+    creator_login_p.add_argument("--timeout", "-t", type=int, default=240, help="登录超时秒数")
+    creator_login_p.add_argument("--headless", default='false', help="默认 false 以显示浏览器")
+    creator_login_p.set_defaults(func=cmd_creator_login)
+
+    # check-creator-login
+    creator_check_p = subparsers.add_parser(
+        "check-creator-login",
+        help="检查创作者中心登录状态",
+    )
+    creator_check_p.add_argument("--headless", default='true', help="无头模式: true/false（默认 true）")
+    creator_check_p.set_defaults(func=cmd_check_creator_login)
+
+    # logout
+    logout_p = subparsers.add_parser("logout", help="删除登录状态（Cookie 和浏览器数据）")
+    logout_p.set_defaults(func=cmd_logout)
+
+    # profiles
+    profiles_p = subparsers.add_parser("profiles", help="列出本地账号 profile")
+    profiles_p.set_defaults(func=cmd_profiles)
+
+    # selectors
+    selectors_p = subparsers.add_parser("selectors", help="列出浏览器选择器契约")
+    selectors_p.add_argument("--owner", help="按模块过滤，如 search/publish/comment")
+    selectors_p.set_defaults(func=cmd_selectors)
+
+    # contracts
+    contracts_p = subparsers.add_parser("contracts", help="列出 CLI JSON 输出契约")
+    contracts_p.add_argument("--command", dest="command_name", help="按命令过滤，如 search/publish")
+    contracts_p.set_defaults(func=cmd_contracts)
+
+    # search
+    s_p = subparsers.add_parser("search", help="搜索内容")
+    s_p.add_argument("keyword", help="搜索关键词")
+    s_p.add_argument("--sort-by", help="排序方式")
+    s_p.add_argument("--note-type", help="笔记类型")
+    s_p.add_argument("--publish-time", help="发布时间")
+    s_p.add_argument("--search-scope", help="搜索范围")
+    s_p.add_argument("--location", help="位置距离")
+    s_p.add_argument("--limit", "-n", type=int, default=10, help="返回数量")
+    s_p.add_argument("--headless", default='true')
+    s_p.set_defaults(func=cmd_search)
+
+    # feed
+    f_p = subparsers.add_parser("feed", help="获取笔记详情")
+    f_p.add_argument("feed_id", help="笔记 ID")
+    f_p.add_argument("xsec_token", nargs="?", help="xsec_token")
+    f_p.add_argument("--load-comments", "-l", action="store_true", help="加载评论")
+    f_p.add_argument("--max-comments", "-m", type=int, default=0, help="最大评论数")
+    f_p.add_argument("--headless", default='true')
+    f_p.set_defaults(func=cmd_feed)
+
+    # user
+    u_p = subparsers.add_parser("user", help="获取用户主页")
+    u_p.add_argument("user_id", help="用户 ID")
+    u_p.add_argument("xsec_token", nargs="?", help="xsec_token")
+    u_p.add_argument("--headless", default='true')
+    u_p.set_defaults(func=cmd_user)
+
+    # me (获取自己的主页)
+    me_p = subparsers.add_parser("me", help="获取自己的个人主页")
+    me_p.add_argument("--headless", default='true')
+    me_p.set_defaults(func=cmd_me)
+
+    # comment (发表评论)
+    cmt_p = subparsers.add_parser("comment", help="发表评论")
+    cmt_p.add_argument("feed_id", help="笔记 ID")
+    cmt_p.add_argument("xsec_token", nargs="?", help="xsec_token")
+    cmt_p.add_argument("--content", required=True, help="评论内容")
+    cmt_p.add_argument("--headless", default='true')
+    cmt_p.set_defaults(func=cmd_comment)
+
+    # reply (回复评论)
+    rpl_p = subparsers.add_parser("reply", help="回复评论")
+    rpl_p.add_argument("feed_id", help="笔记 ID")
+    rpl_p.add_argument("xsec_token", nargs="?", help="xsec_token")
+    rpl_p.add_argument("--comment-id", required=True, help="目标评论 ID")
+    rpl_p.add_argument("--reply-user-id", required=True, help="被回复用户 ID")
+    rpl_p.add_argument("--content", required=True, help="回复内容")
+    rpl_p.add_argument("--headless", default='true')
+    rpl_p.set_defaults(func=cmd_reply)
+
+    # like (点赞)
+    like_p = subparsers.add_parser("like", help="点赞笔记")
+    like_p.add_argument("feed_id", help="笔记 ID")
+    like_p.add_argument("xsec_token", nargs="?", help="xsec_token")
+    like_p.add_argument("--headless", default='true')
+    like_p.set_defaults(func=cmd_like)
+
+    # unlike (取消点赞)
+    unlike_p = subparsers.add_parser("unlike", help="取消点赞")
+    unlike_p.add_argument("feed_id", help="笔记 ID")
+    unlike_p.add_argument("xsec_token", nargs="?", help="xsec_token")
+    unlike_p.add_argument("--headless", default='true')
+    unlike_p.set_defaults(func=cmd_unlike)
+
+    # collect (收藏)
+    col_p = subparsers.add_parser("collect", help="收藏笔记")
+    col_p.add_argument("feed_id", help="笔记 ID")
+    col_p.add_argument("xsec_token", nargs="?", help="xsec_token")
+    col_p.add_argument("--headless", default='true')
+    col_p.set_defaults(func=cmd_collect)
+
+    # uncollect (取消收藏)
+    ucol_p = subparsers.add_parser("uncollect", help="取消收藏")
+    ucol_p.add_argument("feed_id", help="笔记 ID")
+    ucol_p.add_argument("xsec_token", nargs="?", help="xsec_token")
+    ucol_p.add_argument("--headless", default='true')
+    ucol_p.set_defaults(func=cmd_uncollect)
+
+    # explore (首页推荐流)
+    exp_p = subparsers.add_parser("explore", help="获取首页推荐流")
+    exp_p.add_argument("--limit", "-n", type=int, default=20, help="返回数量")
+    exp_p.add_argument("--headless", default='true')
+    exp_p.set_defaults(func=cmd_explore)
+
+    # publish (发布图文笔记)
+    pub_p = subparsers.add_parser("publish", help="发布图文笔记")
+    pub_p.add_argument("--title", required=True, help="标题（建议 <=20 字）")
+    pub_p.add_argument("--content", required=True, help="正文内容")
+    pub_p.add_argument("--images", required=True, help="图片路径，逗号分隔")
+    pub_p.add_argument("--tags", help="话题标签，逗号分隔")
+    pub_p.add_argument("--schedule-time", help="定时发布（格式: 2025-01-01 12:00）")
+    pub_p.add_argument("--auto-publish", action="store_true", help="自动点击发布（默认停在发布按钮处）")
+    pub_p.add_argument("--headless", default='true')
+    pub_p.set_defaults(func=cmd_publish)
+
+    # publish-video (发布视频笔记)
+    pubv_p = subparsers.add_parser("publish-video", help="发布视频笔记")
+    pubv_p.add_argument("--title", required=True, help="标题")
+    pubv_p.add_argument("--content", required=True, help="正文内容")
+    pubv_p.add_argument("--video", required=True, help="视频文件路径")
+    pubv_p.add_argument("--tags", help="话题标签，逗号分隔")
+    pubv_p.add_argument("--schedule-time", help="定时发布（格式: 2025-01-01 12:00）")
+    pubv_p.add_argument("--auto-publish", action="store_true", help="自动点击发布")
+    pubv_p.add_argument("--headless", default='true')
+    pubv_p.set_defaults(func=cmd_publish_video)
+
+    # publish-md (Markdown 转图片后发布)
+    pubmd_p = subparsers.add_parser("publish-md", help="Markdown 渲染为图片后发布")
+    pubmd_p.add_argument("--title", required=True, help="标题")
+    pubmd_p.add_argument("--file", help="Markdown 文件路径")
+    pubmd_p.add_argument("--text", help="Markdown 文本（与 --file 二选一）")
+    pubmd_p.add_argument("--content", help="正文区额外文字说明")
+    pubmd_p.add_argument("--tags", help="话题标签，逗号分隔")
+    pubmd_p.add_argument("--schedule-time", help="定时发布")
+    pubmd_p.add_argument("--auto-publish", action="store_true", help="自动点击发布")
+    pubmd_p.add_argument("--width", type=int, default=1080, help="图片宽度（默认 1080）")
+    pubmd_p.add_argument("--output-dir", help="图片输出目录（默认临时目录）")
+    pubmd_p.add_argument("--headless", default='true')
+    pubmd_p.set_defaults(func=cmd_publish_md)
+
+    # publish-longform (发布长文笔记)
+    publf_p = subparsers.add_parser("publish-longform", help="发布长文笔记（创作者中心写长文）")
+    publf_p.add_argument("--title", required=True, help="标题")
+    publf_p.add_argument("--content", required=True, help="正文内容")
+    publf_p.add_argument("--auto-publish", action="store_true", help="自动点击发布")
+    publf_p.add_argument("--headless", default='true')
+    publf_p.set_defaults(func=cmd_publish_longform)
+
+    # reply-notification (通过通知页回复)
+    rpln_p = subparsers.add_parser("reply-notification", help="通过通知页回复评论")
+    rpln_p.add_argument("--content", required=True, help="回复内容")
+    rpln_p.add_argument("--index", type=int, default=0, help="通知索引（默认第一条）")
+    rpln_p.add_argument("--headless", default='true')
+    rpln_p.set_defaults(func=cmd_reply_notification)
+
+    # template (写作模板)
+    tmpl_p = subparsers.add_parser("template", help="生成写作模板")
+    tmpl_p.add_argument("--topic", required=True, help="主题关键词")
+    tmpl_p.add_argument("--type", default="图文", help="笔记类型（图文/视频/长文）")
+    tmpl_p.set_defaults(func=cmd_template)
+
+    # strategy init (初始化运营策略)
+    stri_p = subparsers.add_parser("strategy-init", help="初始化运营策略")
+    stri_p.add_argument("--persona", required=True, help="账号人设（如\"旅行博主\"）")
+    stri_p.add_argument("--audience", help="目标受众")
+    stri_p.add_argument("--direction", help="内容方向，逗号分隔")
+    stri_p.set_defaults(func=cmd_strategy_init)
+
+    # strategy show (显示运营策略)
+    strs_p = subparsers.add_parser("strategy-show", help="显示当前运营策略")
+    strs_p.set_defaults(func=cmd_strategy_show)
+
+    # strategy add-post (添加内容计划)
+    strap_p = subparsers.add_parser("strategy-add-post", help="添加内容日历条目")
+    strap_p.add_argument("--date", required=True, help="日期（YYYY-MM-DD）")
+    strap_p.add_argument("--topic", required=True, help="选题")
+    strap_p.add_argument("--type", default="图文", help="笔记类型")
+    strap_p.add_argument("--notes", help="备注")
+    strap_p.set_defaults(func=cmd_strategy_add_post)
+
+    # strategy check-limit (检查配额)
+    strcl_p = subparsers.add_parser("strategy-check-limit", help="检查每日互动配额")
+    strcl_p.add_argument("--limit-type", required=True, help="操作类型（likes/comments/replies/collects/publishes）")
+    strcl_p.set_defaults(func=cmd_strategy_check_limit)
+
+    # sop (SOP 编排)
+    sop_p = subparsers.add_parser("sop", help="执行 SOP 编排")
+    sop_p.add_argument("--type", dest="sop_type", required=True, help="SOP 类型（publish/comment/explore）")
+    sop_p.add_argument("--topic", help="选题（publish SOP 用）")
+    sop_p.add_argument("--note-type", help="笔记类型（publish SOP 用）")
+    sop_p.add_argument("--auto-publish", action="store_true", help="自动发布（publish SOP 用）")
+    sop_p.add_argument("--replies", help="回复列表 JSON（comment SOP 用）")
+    sop_p.add_argument("--feed-count", type=int, default=10, help="浏览笔记数（explore SOP 用）")
+    sop_p.add_argument("--like-prob", type=float, default=0.3, help="点赞概率（explore SOP 用）")
+    sop_p.add_argument("--collect-prob", type=float, default=0.1, help="收藏概率（explore SOP 用）")
+    sop_p.add_argument("--comment-prob", type=float, default=0.05, help="评论概率（explore SOP 用）")
+    sop_p.set_defaults(func=cmd_sop)
+
+    args = parser.parse_args()
+
+    # 根据 --verbose / --quiet 设置日志级别
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+    elif args.quiet:
+        logging.getLogger().setLevel(logging.ERROR)
+
+    if not args.command:
+        parser.print_help()
+        return 0
+
+    try:
+        return args.func(args)
+    except CaptchaError as e:
+        print(format_output({
+            "status": "error",
+            "error_type": "CaptchaError",
+            "message": str(e),
+            "captcha_url": e.captcha_url,
+        }))
+        return 1
+    except ProfileNameError as e:
+        print(format_output({
+            "status": "error",
+            "error_type": "ProfileNameError",
+            "message": str(e),
+        }))
+        return 1
+    except Exception as e:
+        print(format_output({
+            "status": "error",
+            "error_type": type(e).__name__,
+            "message": str(e),
+        }))
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

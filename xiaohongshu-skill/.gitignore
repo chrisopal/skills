@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Runtime data
+data/qrcode.png
+data/debug.json
+data/search_result.json
+
+# Cookies (sensitive)
+cookies.json
+
+# Secrets
+.secret
+.env
+*.log
+
+# Testing
+.pytest_cache/
+
+# Tooling and worktrees
+.ruff_cache/
+.coverage
+htmlcov/
+.worktrees/

@@ -15,6 +15,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Account names in note content remain ineligible as identity evidence.
 - Skip hidden duplicate publish tabs so the visible upload control can be
   selected without repeated overlay retries.
+- Recognize the exact `暂存离开` draft action in the closed publish widget and
+  verify the saved title and body by reopening the draft.
 
 ## [1.5.1] - 2026-08-24
 

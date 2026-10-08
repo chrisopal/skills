@@ -197,7 +197,7 @@ SELECTOR_CONTRACTS: tuple[SelectorContract, ...] = (
         name="publish.draft_save_control",
         owner="publish",
         purpose="Identify the semantic save control inside the closed publish widget",
-        selectors=("保存", "存草稿", "保存草稿", "暂存"),
+        selectors=("保存", "存草稿", "保存草稿", "暂存", "暂存离开"),
     ),
     SelectorContract(
         name="publish.draft_box",

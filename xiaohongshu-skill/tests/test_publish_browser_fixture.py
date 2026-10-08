@@ -180,7 +180,8 @@ def test_local_fixture_reads_tiptap_body_and_rendered_cover(local_page):
     assert ready["publish_button_ready"] is True
 
 
-def test_local_fixture_reopens_exact_draft_card_after_widget_save(local_page):
+@pytest.mark.parametrize("save_label", ["保存", "暂存离开"])
+def test_local_fixture_reopens_exact_draft_card_after_widget_save(local_page, save_label):
     local_page.set_content(
         """
         <div id="draft-nav">草稿箱(1)</div>
@@ -215,7 +216,7 @@ def test_local_fixture_reopens_exact_draft_card_after_widget_save(local_page):
             document.querySelector('[contenteditable]').innerText = '正文\\n\\n#历史';
           });
         </script>
-        """
+        """.replace("保存", save_label)
     )
     action = _action(local_page)
     result = action._save_draft(
@@ -225,7 +226,7 @@ def test_local_fixture_reopens_exact_draft_card_after_widget_save(local_page):
     assert result["draft_title_exact"] is True
     assert result["body_ok"] is True
     assert result["cover_readback"]["cover_ok"] is True
-    assert local_page.evaluate("window.__clickedLabel") == "保存"
+    assert local_page.evaluate("window.__clickedLabel") == save_label
 
 
 def test_local_fixture_fails_when_shadow_widget_has_no_save_control(local_page):

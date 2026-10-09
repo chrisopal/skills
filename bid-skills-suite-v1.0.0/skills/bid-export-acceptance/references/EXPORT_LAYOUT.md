@@ -36,9 +36,17 @@ python scripts/build_docx.py \
 
 `header` 和 `footer` 支持 `text`、`alignment`、`page_field`、`page_prefix`、`page_suffix`。footer 默认写入 `PAGE` 字段，默认显示为“第 PAGE 页”；将 `page_field` 设为 `false` 可关闭。header/footer 的默认内部工作稿提示仍然存在，除非配置明确覆盖。
 
-正文的 `style` 字段支持继续放在 document-spec，也支持放在导出配置顶层。两者使用同一套严格校验；导出配置的 `style` 按字段覆盖 document-spec 的 `style`，未提供的字段沿用 document-spec 或基础默认值。支持正文/标题字体、字号、行距、首行缩进、段前后距、对齐、表格/图注字号和四边页边距。导出配置不会绕过已有 style 校验，也不会接受未知字段、重复 JSON 键、重复 metadata label、越界路径或超出版心的图片尺寸。
+## 基础视觉基线
+
+基础生成器会将表格作为可编辑的 Word 表格保留，并显式写入浅灰色外边框与内网格、浅蓝表头、交替浅色数据行、统一的单元格内边距和紧凑的单元格段落行距。表格正文与表头都使用当前 `style` 的正文字体和 `table_size_pt`，不会依赖宿主主题字体；客户指定的字体和字号仍优先由 `style` 覆盖。
+
+正文插图段落默认居中，图注使用当前正文字体和 `caption_size_pt`，与图片保持在同一排版组内，并保留图注前后的明确间距。页眉、页脚和页码字段也显式写入当前正文字体。上述规则只改善基础候选工作稿的可读性，不替代客户模板、复杂固定表或最终 Word/PDF 逐页检查。
+
+正文的 `style` 字段支持继续放在 document-spec，也支持放在导出配置顶层。两者使用同一套严格校验；导出配置的 `style` 按字段覆盖 document-spec 的 `style`，未提供的字段沿用 document-spec 或基础默认值。支持正文/标题字体、字号、行距、首行缩进、段前后距、对齐、表格/图注字号和四边页边距。表格与图注行距默认继承 `body_line_spacing`，也可分别用 `table_line_spacing` 和 `caption_line_spacing` 覆盖。`table_border_color`、`table_header_fill`、`table_alternate_fill` 接受六位十六进制颜色或 `null`（关闭对应显式样式）；`table_cell_padding` 接受 `top/start/bottom/end` 四个 twips 数值或 `null`（不写入显式内边距）。导出配置不会绕过已有 style 校验，也不会接受未知字段、重复 JSON 键、重复 metadata label、越界路径或超出版心的图片尺寸。
 
 ## 规则优先级与验收边界
+
+插图按实际宽高比检查缩放后高度，并给图注及与图相连的标题/末段预留空间；接近整页的图需要减小或单独编排。文字换行高度是保守估算，最终分页仍以实际Word/PDF渲染为准。
 
 招标文件、有效补遗和 06 格式提取中的强制封面、目录、字体、页眉页脚、分页及固定表要求优先于这份偏好配置。配置只补齐原文未规定的部分；发生冲突时记录覆盖理由，不能用通用样例替代客户强制格式。macOS 预览可使用示例中的 `Songti SC` 和 `Heiti SC`，其他宿主必须确认实际可用字体，不能把字体名称写入 DOCX 当作字体嵌入或正式符合证明。
 

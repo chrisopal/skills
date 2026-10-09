@@ -2,14 +2,28 @@
 import importlib.util
 import base64
 import json
+import struct
 import sys
 import tempfile
 import unittest
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
 import build_docx
+
+
+def _solid_png(width, height):
+    def chunk(kind, payload):
+        return (struct.pack('>I', len(payload)) + kind + payload
+                + struct.pack('>I', zlib.crc32(kind + payload) & 0xffffffff))
+
+    rows = b''.join(b'\x00' + b'\x22\x88\xaa' * width for _ in range(height))
+    return (b'\x89PNG\r\n\x1a\n'
+            + chunk(b'IHDR', struct.pack('>IIBBBBB', width, height, 8, 2, 0, 0, 0))
+            + chunk(b'IDAT', zlib.compress(rows))
+            + chunk(b'IEND', b''))
 
 
 @unittest.skipUnless(importlib.util.find_spec('docx'), 'Declared optional python-docx not installed')
@@ -45,12 +59,85 @@ class WorkingDocxTests(unittest.TestCase):
             cell = doc.tables[0].cell(1, 0).paragraphs[0]
             self.assertEqual(cell.paragraph_format.first_line_indent.pt, 0)
             self.assertEqual(cell.runs[0].font.size.pt, style['table_size_pt'])
+            self.assertEqual(cell.paragraph_format.space_before.pt, 0)
+            self.assertEqual(cell.paragraph_format.space_after.pt, 0)
+            self.assertAlmostEqual(cell.paragraph_format.line_spacing,
+                                   style.get('table_line_spacing', style['body_line_spacing']), places=2)
+            self.assertEqual(cell.runs[0]._r.rPr.rFonts.get(qn('w:eastAsia')), style['body_east_asia_font'])
+            table_xml = doc.tables[0]._tbl.xml
+            self.assertIn('w:tblBorders', table_xml)
+            self.assertIn('w:fill="D9EAF7"', table_xml)
             caption = next(p for p in doc.paragraphs if p.text == '方案示意图')
             self.assertEqual(caption.paragraph_format.first_line_indent.pt, 0)
             self.assertEqual(caption.runs[0].font.size.pt, style['caption_size_pt'])
+            self.assertEqual(caption.alignment, WD_ALIGN_PARAGRAPH.CENTER)
+            self.assertTrue(caption.paragraph_format.keep_together)
+            image_paragraph = next(p for p in doc.paragraphs
+                                   if p._p.findall('.//' + qn('w:drawing')))
+            self.assertEqual(image_paragraph.alignment, WD_ALIGN_PARAGRAPH.CENTER)
+            self.assertTrue(image_paragraph.paragraph_format.keep_with_next)
             self.assertAlmostEqual(doc.sections[0].left_margin.cm, 2.5, places=2)
             self.assertFalse([p for p in doc.paragraphs if not p.text.strip()
                               and not p._p.findall('.//' + qn('w:drawing'))])
+
+    def test_customer_table_visual_overrides_and_spacing(self):
+        from docx import Document
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'figure.png').write_bytes(_solid_png(2, 2))
+            style = {'body_size_pt': 11, 'body_line_spacing': 1.5,
+                     'table_line_spacing': 1.2, 'caption_line_spacing': 1.3,
+                     'table_border_color': None, 'table_header_fill': None,
+                     'table_alternate_fill': None, 'table_cell_padding': None}
+            spec = {'title': '自定义表格', 'style': style, 'sections': [{
+                'title': '表格', 'tables': [{'headers': ['字段'], 'rows': [['内容']]}],
+                'images': [{'path': 'figure.png', 'width_cm': 2, 'caption': '图注'}]}]}
+            (root/'spec.json').write_text(json.dumps(spec))
+            build_docx.build(root/'spec.json', root/'draft.docx', root)
+            doc = Document(root/'draft.docx')
+            cell_paragraph = doc.tables[0].cell(1, 0).paragraphs[0]
+            self.assertAlmostEqual(cell_paragraph.paragraph_format.line_spacing, 1.2, places=2)
+            caption = next(p for p in doc.paragraphs if p.text == '图注')
+            self.assertAlmostEqual(caption.paragraph_format.line_spacing, 1.3, places=2)
+            table_xml = doc.tables[0]._tbl.xml
+            self.assertNotIn('w:tblBorders', table_xml)
+            self.assertNotIn('w:shd', table_xml)
+            self.assertNotIn('w:tcMar', table_xml)
+
+    def test_inline_image_group_rejects_tall_portrait(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'portrait.png').write_bytes(_solid_png(2, 100))
+            spec = {'title': '高图', 'sections': [{'title': '图',
+                    'images': [{'path': 'portrait.png', 'width_cm': 4, 'caption': '图注'}]}]}
+            (root/'spec.json').write_text(json.dumps(spec))
+            with self.assertRaises(ValueError):
+                build_docx.build(root/'spec.json', root/'draft.docx', root)
+            self.assertFalse((root/'draft.docx').exists())
+
+    def test_inline_image_group_rejects_oversize_explicit_height(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'figure.png').write_bytes(_solid_png(10, 10))
+            spec = {'title': '高图', 'sections': [{'title': '图',
+                    'images': [{'path': 'figure.png', 'width_cm': 4, 'height_cm': 26.2,
+                                'caption': '图注'}]}]}
+            (root/'spec.json').write_text(json.dumps(spec))
+            with self.assertRaises(ValueError):
+                build_docx.build(root/'spec.json', root/'draft.docx', root)
+            self.assertFalse((root/'draft.docx').exists())
+
+    def test_near_full_page_image_reserves_heading_height(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root/'figure.png').write_bytes(_solid_png(10, 10))
+            spec = {'title': '图示', 'sections': [{'title': '本节架构图',
+                    'images': [{'path': 'figure.png', 'width_cm': 4,
+                                'height_cm': 24, 'caption': '图注'}]}]}
+            (root/'spec.json').write_text(json.dumps(spec))
+            with self.assertRaisesRegex(ValueError, '标题'):
+                build_docx.build(root/'spec.json', root/'draft.docx', root)
+            self.assertFalse((root/'draft.docx').exists())
 
     def test_tender_can_override_all_text_font_sizes(self):
         from docx import Document
@@ -75,6 +162,8 @@ class WorkingDocxTests(unittest.TestCase):
     def test_invalid_template_fields_rejected_without_output(self):
         invalid = [{'body_first_line_indent_chars': True}, {'body_space_after_pt': float('nan')},
                    {'heading_sizes_pt': [16, 14]}, {'table_size_pt': -1},
+                   {'table_line_spacing': 0}, {'table_header_fill': 'blue'},
+                   {'table_cell_padding': {'top': 1, 'start': 1, 'bottom': -1, 'end': 1}},
                    {'page_margins_cm': {'top': 2.5, 'bottom': 2.5, 'left': 2.5, 'right': 2.5, 'extra': 1}},
                    {'page_margins_cm': {'top': 2.5, 'bottom': 2.5, 'left': True, 'right': 2.5}}]
         with tempfile.TemporaryDirectory() as directory:

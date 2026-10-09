@@ -15,7 +15,9 @@ _STYLE_FIELDS = {
     'body_space_before_pt', 'body_space_after_pt', 'body_alignment',
     'heading_sizes_pt', 'heading_east_asia_font', 'title_size_pt',
     'subtitle_size_pt', 'heading_space_before_pt', 'heading_space_after_pt',
-    'table_size_pt', 'caption_size_pt', 'page_margins_cm',
+    'table_size_pt', 'caption_size_pt', 'table_line_spacing',
+    'caption_line_spacing', 'table_border_color', 'table_header_fill',
+    'table_alternate_fill', 'table_cell_padding', 'page_margins_cm',
 }
 _COVER_FIELDS = {'enabled', 'title', 'subtitle', 'metadata_rows', 'alignment', 'own_page', 'image', 'typography'}
 _COVER_TYPOGRAPHY_FIELDS = {
@@ -102,6 +104,58 @@ def _validate_cover_image(image, asset_root: Path, content_width: float, usable_
     height = image.get('height_cm')
     if height is not None:
         _check_number(height, 'cover.image.height_cm', usable_height)
+    return path, width, height
+
+
+def _validate_inline_image(image, asset_root: Path, content_width: float,
+                           usable_height: float, caption: str, caption_size: float,
+                           caption_line_spacing: float, leading_space_cm: float = 0):
+    """Validate an inline figure using its intrinsic aspect ratio and caption group."""
+    from docx.image.image import Image
+    from docx.image.exceptions import UnrecognizedImageError
+
+    _check_fields(image, {'path', 'width_cm', 'height_cm'}, 'image')
+    path_value = image.get('path')
+    if not isinstance(path_value, str) or not path_value.strip():
+        raise ValueError('image.path必须是非空相对路径')
+    relative = Path(path_value)
+    root = asset_root.resolve()
+    path = (root / relative).resolve()
+    if relative.is_absolute() or '..' in relative.parts or not path.is_relative_to(root):
+        raise ValueError('image路径越界')
+    if not path.is_file():
+        raise ValueError('图片缺失：' + str(relative))
+    if path.suffix.lower() not in {'.png', '.jpg', '.jpeg'}:
+        raise ValueError('此基础生成器仅直接插入PNG/JPEG，SVG须先受控渲染')
+    try:
+        source = Image.from_file(str(path))
+    except (OSError, UnrecognizedImageError, ValueError) as exc:
+        raise ValueError('图片无法读取：' + str(relative)) from exc
+    if not source.px_width or not source.px_height:
+        raise ValueError('图片尺寸无效：' + str(relative))
+    ratio = source.px_height / source.px_width
+    has_width = 'width_cm' in image
+    has_height = 'height_cm' in image
+    width = image.get('width_cm')
+    height = image.get('height_cm')
+    if has_width:
+        width = _check_number(width, 'image.width_cm', content_width)
+    else:
+        width = content_width if not has_height else None
+    if has_height:
+        height = _check_number(height, 'image.height_cm', usable_height)
+    if width is None:
+        width = height / ratio
+    if height is None:
+        height = width * ratio
+    if width > content_width:
+        raise ValueError('图片宽度超过当前页面正文宽度')
+    spacing_cm = (6 + 3 + (8 if caption.strip() else 0)) * 2.54 / 72
+    caption_lines = max(1, math.ceil(len(caption.strip()) * caption_size * 0.5
+                                     / (content_width * 72 / 2.54))) if caption.strip() else 0
+    caption_cm = caption_lines * caption_size * caption_line_spacing * 2.54 / 72
+    if height + spacing_cm + caption_cm + leading_space_cm > usable_height:
+        raise ValueError('标题、图片与图注排版组超过页面可用高度')
     return path, width, height
 
 
@@ -280,6 +334,17 @@ def _validate_style(raw):
     subtitle_size = size(raw.get('subtitle_size_pt', 13), 72)
     table_size = size(raw.get('table_size_pt', body_size), 72)
     caption_size = size(raw.get('caption_size_pt', body_size), 72)
+    table_line_spacing = size(raw.get('table_line_spacing', spacing), 5)
+    caption_line_spacing = size(raw.get('caption_line_spacing', spacing), 5)
+    table_border_color = _color(raw.get('table_border_color', 'D9D9D9'),
+                                'table_border_color')
+    table_header_fill = _color(raw.get('table_header_fill', 'D9EAF7'),
+                               'table_header_fill')
+    table_alternate_fill = _color(raw.get('table_alternate_fill', 'F7FAFC'),
+                                  'table_alternate_fill')
+    table_cell_padding = _table_padding(
+        raw.get('table_cell_padding', {'top': 90, 'start': 120, 'bottom': 90, 'end': 120}),
+        'table_cell_padding')
     margins = raw.get('page_margins_cm', {'top': 2.3, 'bottom': 2.3, 'left': 2.5, 'right': 2.5})
     if not isinstance(margins, dict) or set(margins) != {'top', 'bottom', 'left', 'right'}:
         raise ValueError('page_margins_cm须含且仅含top/bottom/left/right')
@@ -300,7 +365,11 @@ def _validate_style(raw):
         'title_size_pt': title_size, 'subtitle_size_pt': subtitle_size,
         'heading_space_before_pt': heading_before,
         'heading_space_after_pt': heading_after, 'table_size_pt': table_size,
-        'caption_size_pt': caption_size, 'page_margins_cm': margins,
+        'caption_size_pt': caption_size, 'table_line_spacing': table_line_spacing,
+        'caption_line_spacing': caption_line_spacing,
+        'table_border_color': table_border_color, 'table_header_fill': table_header_fill,
+        'table_alternate_fill': table_alternate_fill,
+        'table_cell_padding': table_cell_padding, 'page_margins_cm': margins,
     }, content_width
 
 
@@ -347,6 +416,105 @@ def _set_paragraph_alignment(paragraph, value):
         'right': WD_ALIGN_PARAGRAPH.RIGHT,
         'justify': WD_ALIGN_PARAGRAPH.JUSTIFY,
     }[value]
+
+
+def _color(value, label):
+    if value is None:
+        return None
+    if (not isinstance(value, str) or len(value) != 6
+            or any(char not in '0123456789abcdefABCDEF' for char in value)):
+        raise ValueError(f'{label}须为6位十六进制颜色或null')
+    return value.upper()
+
+
+def _table_padding(value, label):
+    if value is None:
+        return None
+    if not isinstance(value, dict) or set(value) != {'top', 'start', 'bottom', 'end'}:
+        raise ValueError(f'{label}须含且仅含top/start/bottom/end，或为null')
+    result = {}
+    for key, raw_value in value.items():
+        checked = _check_number(raw_value, f'{label}.{key}', 720, allow_zero=True)
+        result[key] = int(checked)
+    return result
+
+
+def _set_table_borders(table, color='D9D9D9', size='6'):
+    """Give editable tables an explicit, renderer-independent border treatment."""
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+
+    tbl_pr = table._tbl.tblPr
+    borders = tbl_pr.find(qn('w:tblBorders'))
+    if borders is None:
+        borders = OxmlElement('w:tblBorders')
+        tbl_pr.append(borders)
+    for edge in ('top', 'left', 'bottom', 'right', 'insideH', 'insideV'):
+        border = borders.find(qn(f'w:{edge}'))
+        if border is None:
+            border = OxmlElement(f'w:{edge}')
+            borders.append(border)
+        border.set(qn('w:val'), 'single')
+        border.set(qn('w:sz'), size)
+        border.set(qn('w:space'), '0')
+        border.set(qn('w:color'), color)
+
+
+def _set_cell_shading(cell, fill):
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+
+    tc_pr = cell._tc.get_or_add_tcPr()
+    shading = tc_pr.find(qn('w:shd'))
+    if shading is None:
+        shading = OxmlElement('w:shd')
+        tc_pr.append(shading)
+    shading.set(qn('w:val'), 'clear')
+    shading.set(qn('w:color'), 'auto')
+    shading.set(qn('w:fill'), fill)
+
+
+def _set_cell_padding(cell, *, top=90, start=120, bottom=90, end=120):
+    """Set compact but readable cell padding in twips."""
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+
+    tc_pr = cell._tc.get_or_add_tcPr()
+    margins = tc_pr.find(qn('w:tcMar'))
+    if margins is None:
+        margins = OxmlElement('w:tcMar')
+        tc_pr.append(margins)
+    for edge, value in (('top', top), ('start', start), ('bottom', bottom), ('end', end)):
+        margin = margins.find(qn(f'w:{edge}'))
+        if margin is None:
+            margin = OxmlElement(f'w:{edge}')
+            margins.append(margin)
+        margin.set(qn('w:w'), str(value))
+        margin.set(qn('w:type'), 'dxa')
+
+
+def _set_field_font(field, *, east_asia_font, latin_font, size_pt):
+    """Keep PAGE fields on the same explicit font as their surrounding runs."""
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+
+    run = OxmlElement('w:r')
+    rpr = OxmlElement('w:rPr')
+    rfonts = OxmlElement('w:rFonts')
+    rfonts.set(qn('w:ascii'), latin_font)
+    rfonts.set(qn('w:hAnsi'), latin_font)
+    rfonts.set(qn('w:cs'), latin_font)
+    rfonts.set(qn('w:eastAsia'), east_asia_font)
+    rpr.append(rfonts)
+    size = OxmlElement('w:sz')
+    size.set(qn('w:val'), str(round(size_pt * 2)))
+    rpr.append(size)
+    complex_size = OxmlElement('w:szCs')
+    complex_size.set(qn('w:val'), str(round(size_pt * 2)))
+    rpr.append(complex_size)
+    _set_black_rpr(rpr)
+    run.append(rpr)
+    field.append(run)
 
 
 def _insert_bookmark(paragraph, bookmark_id, name):
@@ -464,6 +632,9 @@ def _configure_header_footer(section, export_settings, style):
                           size_pt=style.get('body_size_pt', 11))
             field = OxmlElement('w:fldSimple')
             field.set(qn('w:instr'), 'PAGE')
+            _set_field_font(field, east_asia_font=style.get('body_east_asia_font', 'SimSun'),
+                            latin_font=style.get('body_latin_font', 'Arial'),
+                            size_pt=style.get('body_size_pt', 11))
             paragraph._p.append(field)
             suffix = paragraph.add_run(settings['page_suffix'])
             _set_run_font(suffix, east_asia_font=style.get('body_east_asia_font', 'SimSun'),
@@ -472,6 +643,7 @@ def _configure_header_footer(section, export_settings, style):
 
 def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_path: Path | None = None):
     from docx import Document
+    from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
     from docx.shared import Cm, Pt
     from docx.enum.text import WD_ALIGN_PARAGRAPH
     from docx.oxml import OxmlElement
@@ -503,6 +675,12 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
     subtitle_size = typography['subtitle_size_pt']
     table_size = typography['table_size_pt']
     caption_size = typography['caption_size_pt']
+    table_line_spacing = typography['table_line_spacing']
+    caption_line_spacing = typography['caption_line_spacing']
+    table_border_color = typography['table_border_color']
+    table_header_fill = typography['table_header_fill']
+    table_alternate_fill = typography['table_alternate_fill']
+    table_cell_padding = typography['table_cell_padding']
     margins = typography['page_margins_cm']
     usable_height = 29.7 - margins['top'] - margins['bottom']
     asset_root = Path(asset_root)
@@ -562,16 +740,27 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
             metadata_table = document.add_table(rows=0, cols=2)
             metadata_table.style = 'Table Grid'
             metadata_table.autofit = False
+            metadata_table.alignment = WD_TABLE_ALIGNMENT.CENTER
+            if table_border_color:
+                _set_table_borders(metadata_table, table_border_color)
             metadata_table.columns[0].width = Cm(min(4, content_width / 3))
             metadata_table.columns[1].width = Cm(content_width - min(4, content_width / 3))
-            for label, value in cover['metadata']:
+            for row_index, (label, value) in enumerate(cover['metadata']):
                 cells = metadata_table.add_row().cells
                 cells[0].text = label
                 cells[1].text = value
                 for cell in cells:
+                    if table_cell_padding:
+                        _set_cell_padding(cell, **table_cell_padding)
+                    cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+                    if row_index % 2 and table_alternate_fill:
+                        _set_cell_shading(cell, table_alternate_fill)
                     cell.width = metadata_table.columns[0].width if cell is cells[0] else metadata_table.columns[1].width
                     for paragraph in cell.paragraphs:
                         paragraph.paragraph_format.first_line_indent = Pt(0)
+                        paragraph.paragraph_format.space_before = Pt(0)
+                        paragraph.paragraph_format.space_after = Pt(0)
+                        paragraph.paragraph_format.line_spacing = table_line_spacing
                         _set_paragraph_alignment(paragraph, cover['alignment'])
                         for run in paragraph.runs:
                             _set_run_font(run, east_asia_font=cover['typography']['metadata_east_asia_font'],
@@ -585,6 +774,9 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
             document.add_picture(str(image_path), **kwargs)
             image_paragraph = document.paragraphs[-1]
             _set_paragraph_alignment(image_paragraph, cover['alignment'])
+            image_paragraph.paragraph_format.keep_with_next = True
+            image_paragraph.paragraph_format.space_before = Pt(6)
+            image_paragraph.paragraph_format.space_after = Pt(3)
         notice = document.add_paragraph('本文件由基础排版脚本生成，不代表真实投标通过审核。客户指定版式、目录域与签署要求需在正式交付前另行落实。')
         notice.paragraph_format.first_line_indent = Pt(0)
         _set_paragraph_alignment(notice, cover['alignment'])
@@ -602,15 +794,20 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
     for item in spec['sections']:
         level=max(1,min(int(item.get('level',1)),3))
         heading = document.add_heading(item['title'], level=level)
+        heading.paragraph_format.keep_with_next = True
         if export_settings['toc']['enabled']:
             _insert_bookmark(heading, bookmark_id, f'_Toc{bookmark_id}')
             bookmark_id += 1
+        last_item_paragraph = None
         for text in item.get('paragraphs',[]):
             if not str(text).strip():continue
             paragraph=document.add_paragraph(str(text))
             paragraph.paragraph_format.first_line_indent=Pt(body_size*indent)
             paragraph.paragraph_format.alignment=(WD_ALIGN_PARAGRAPH.JUSTIFY
                 if alignment=='justify' else WD_ALIGN_PARAGRAPH.LEFT)
+            last_item_paragraph = paragraph
+        if item.get('images') and last_item_paragraph is not None:
+            last_item_paragraph.paragraph_format.keep_with_next = True
         for table_spec in item.get('tables',[]):
             headers=table_spec['headers'];rows=table_spec['rows']
             if not headers or any(len(row)!=len(headers) for row in rows):raise ValueError('表格列数不一致')
@@ -622,6 +819,9 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
                         or sum(widths) > content_width):
                     raise ValueError('表格列宽必须为正数，与列数一致且不超过当前页面正文宽度')
             table=document.add_table(rows=1,cols=len(headers));table.style='Table Grid'
+            table.alignment = WD_TABLE_ALIGNMENT.CENTER
+            if table_border_color:
+                _set_table_borders(table, table_border_color)
             if widths is not None:
                 table.autofit = False
                 for column, width in zip(table.columns, widths):column.width = Cm(width)
@@ -640,25 +840,65 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
             if widths is not None:
                 for row in table.rows:
                     for cell, width in zip(row.cells, widths):cell.width = Cm(width)
-            for row in table.rows:
+            for row_index, row in enumerate(table.rows):
                 for cell in row.cells:
+                    cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+                    if table_cell_padding:
+                        _set_cell_padding(cell, **table_cell_padding)
+                    if row_index == 0 and table_header_fill:
+                        _set_cell_shading(cell, table_header_fill)
+                    elif row_index % 2 == 0 and table_alternate_fill:
+                        _set_cell_shading(cell, table_alternate_fill)
                     for paragraph in cell.paragraphs:
                         paragraph.paragraph_format.first_line_indent=Pt(0)
-                        for run in paragraph.runs:run.font.size=Pt(table_size)
-        for image in item.get('images',[]):
+                        paragraph.paragraph_format.space_before = Pt(0)
+                        paragraph.paragraph_format.space_after = Pt(0)
+                        paragraph.paragraph_format.line_spacing = table_line_spacing
+                        paragraph.paragraph_format.keep_together = True
+                        for run in paragraph.runs:
+                            _set_run_font(run, east_asia_font=font, latin_font=latin_font,
+                                          size_pt=table_size)
+        for image_index, image in enumerate(item.get('images',[])):
             if not isinstance(image, dict):
                 raise ValueError('图片配置必须是对象')
             rel=Path(image.get('path', ''))
-            image_path, image_width, image_height = _validate_cover_image(
+            caption_text = str(image.get('caption', ''))
+            leading_space_cm = 0
+            if image_index == 0 and not item.get('tables'):
+                texts = [str(t) for t in item.get('paragraphs', []) if str(t).strip()]
+                # Estimate only the preceding paragraphs kept with this figure.
+                # Actual font wrapping and pagination still require rendered QA.
+                width_pt = content_width * 72 / 2.54
+                if len(texts) <= 1:
+                    title_lines = max(1, math.ceil(len(item['title']) * heading_sizes[level - 1] / width_pt))
+                    leading_space_cm += (title_lines * heading_sizes[level - 1] * spacing + heading_before + heading_after) * 2.54 / 72
+                if texts:
+                    lines = max(1, math.ceil(len(texts[-1]) * body_size / width_pt))
+                    leading_space_cm += (lines * body_size * spacing + before + after) * 2.54 / 72
+            image_path, image_width, image_height = _validate_inline_image(
                 {'path': str(rel), **{key: image[key] for key in ('width_cm', 'height_cm') if key in image}},
-                asset_root, content_width, usable_height)
+                asset_root, content_width, usable_height, caption_text, caption_size,
+                caption_line_spacing, leading_space_cm)
             kwargs = {'width': Cm(image_width)}
             if image_height is not None:
                 kwargs['height'] = Cm(image_height)
             document.add_picture(str(image_path), **kwargs)
-            caption=document.add_paragraph(image.get('caption',''))
+            image_paragraph=document.paragraphs[-1]
+            _set_paragraph_alignment(image_paragraph, 'center')
+            image_paragraph.paragraph_format.first_line_indent = Pt(0)
+            image_paragraph.paragraph_format.space_before = Pt(6)
+            image_paragraph.paragraph_format.space_after = Pt(3)
+            caption=document.add_paragraph(caption_text)
             caption.paragraph_format.first_line_indent=Pt(0)
-            for run in caption.runs:run.font.size=Pt(caption_size)
+            caption.paragraph_format.space_before = Pt(0)
+            caption.paragraph_format.space_after = Pt(8)
+            caption.paragraph_format.line_spacing = caption_line_spacing
+            caption.paragraph_format.keep_together = True
+            _set_paragraph_alignment(caption, 'center')
+            image_paragraph.paragraph_format.keep_with_next = bool(caption.text.strip())
+            for run in caption.runs:
+                _set_run_font(run, east_asia_font=font, latin_font=latin_font,
+                              size_pt=caption_size)
     out_path.parent.mkdir(parents=True,exist_ok=True);document.save(out_path)
     return {'output':str(out_path),'status':'draft_only','visual_qa':'NOT_RUN','notes':['字体文件未随包分发，请在运行环境配置合法字体。','不自动更新目录，不代替复杂原始模板填报和证明材料插页。']}
 

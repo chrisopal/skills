@@ -2,7 +2,7 @@
 name: bid-review-remediation
 description: 逐项审核评分条件、关键材料完整性和资格／否决条件，记录原文、正文与证明材料，复核整改后再形成当前版本的交付建议。
 metadata:
-  version: 1.2.0
+  version: 1.3.0
   language: zh-CN
   sequence: '15'
   suite: bid-skills-suite
@@ -48,6 +48,8 @@ python scripts/review_checks.py check --project /project \
 `prepare`只建立全部待核验行，不生成通过结论。`check`验证当前集合、文件哈希、具体引文、检查结果和正式阻塞；不判断全部语义，不认证真实性或审批人。正文引用用JSON Pointer或实际行号，不能引用整个JSON或评审报告自证。缺OCR、图片证据回读或专业判断能力时保留unknown并说明范围。
 
 本技能可独立安装，包含快照与核心检查脚本。来源只读放inputs，正文与分析放artifacts，正式图和排版配置放assets/profiles，试验记录放work；评审放reviews以免自引用。旧报告缺核心矩阵时须重新评审，不继承历史ready。
+
+需要可读界面、截图或PDF时，按[评审展示与打印](references/REVIEW_PRESENTATION.md)使用`render_review_report.py`生成当前JSON的HTML：概览、逐项理由、证据、整改及范围分区，正文和标签字号统一。长引文可展开，打印全部保留；不做一个新的手写卡片页面替代真实评审数据。导出PDF后逐页查看。
 
 ## 验收
 

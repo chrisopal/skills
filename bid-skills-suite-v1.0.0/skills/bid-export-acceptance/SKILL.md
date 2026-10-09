@@ -2,7 +2,7 @@
 name: bid-export-acceptance
 description: 生成并核验实际Word／PDF交付文件，确保成稿对应已审核版本且没有漏页、乱码或内部信息泄漏。 适用于：导出标书、Word/PDF成稿、交付打包、检查目录页码、实际文件验收。
 metadata:
-  version: 1.2.0
+  version: 1.2.1
   language: zh-CN
   sequence: '16'
   suite: bid-skills-suite
@@ -61,6 +61,8 @@ metadata:
 
    渲染并逐页核对页眉页脚、目录跳转、分页、长表、图片和插页。核对“页”等字符的实际编码，不能用自定义替换掩盖错误。
 
+   基础生成器的表格会保留可编辑结构，并按 `style` 设置或关闭边框、表头底色、交替数据行、单元格内边距和统一字体；表格/图注行距未单独指定时继承正文行距。插图居中且图注与图片保持在同一排版组，内嵌图片会按原始纵横比检查排版组高度。实际导出仍需以渲染结果检查表格断页、标题间距、图片比例和字体替换。
+
    `build_docx.py` 开启 TOC 时只写入可更新的 Word TOC 字段与标题书签，并保留“待更新”状态；必须在实际 Word/LibreOffice 交付引擎更新、保存并读回，不能把字段存在或 XML 文本当作目录已刷新。脚本返回 `draft_only` 和 `visual_qa=NOT_RUN`，通过结构检查不等于正式交付、签署或递交授权。
 
 6. **步骤6**
@@ -100,6 +102,8 @@ python scripts/validate_output.py /absolute/path/to/16-delivery-manifest.json
 - [ ] 交付包不混入内部敏感资料。
 
 ## 人工确认点
+
+评审报告需要HTML/PDF展示时，采用[评审展示与打印](references/REVIEW_PRESENTATION.md)及随包`render_review_report.py`。长引文打印时全部展开，检查实际PDF分页，不把报告页面截图当成整本投标文件验收。
 
 逐页视觉与文本核验、签署待办及对外发布由真实用户确认；没有授权只产内部草稿。
 

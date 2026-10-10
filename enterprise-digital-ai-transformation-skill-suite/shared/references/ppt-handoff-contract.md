@@ -6,6 +6,8 @@
 
 默认推荐渲染器为 `ppt-master-plus` 的 `Generate PPTX` 路线。它是可替换实现，不属于咨询方法论本体；更换渲染器不得改变本契约。
 
+用户指定`consulting-ppt-image`时使用图片PPT路线，不套用对象级可编辑承诺。制作前按[文档与HTML审阅契约](document-and-html-review-contract.md)用enterprise-ui-design展示完整逐页内容及样式提案，读取渲染器自身Skill并取得实际内容/样式确认。候选HTML只是审阅视图，不代表G8通过或最终图片生成。最终图片的中文、数字、布局仍逐页检查。
+
 ## Slide Content Pack 最小字段
 
 - `deck_id`, `version`, `purpose`, `audience`, `decisions_required`；
@@ -34,6 +36,7 @@
 - 布局、留白、图形、图标、字体、颜色、动画、页码和母版；
 - 文字压缩，但不得改变含义；
 - 将 diagram/chart spec 转成可编辑图形。
+- 图片型渲染器可将已确认规格转成图片，但必须标明不可对象级编辑，并保留结构化原稿及图源。
 
 ## PPT Skill 禁止修改
 
@@ -47,6 +50,7 @@
 - 生成前：`slide-content-pack` 已通过 G8 内容审查；
 - 生成后：PPTX 可复开，页数与页序符合 Content Pack，关键标题与数字回读一致；
 - 视觉层：检查溢出、遮挡、空白页、字体替换和不可编辑的关键图；
+- 图片型路线不以对象可编辑作为门槛，但仍检查可读性、内容一致性及图源留存；HTML样式预览不能替代最终图像审校。
 - 状态层：PPTX 文件存在只代表渲染完成，不代表内容已获业务批准。
 
 ## 华为 4A 页面交接规则

@@ -1,5 +1,5 @@
 name: dtx-consulting-orchestrator
-version: 1.3.0
+version: 1.4.0
 description: 管理项目状态、依赖、华为4A完整性、任务卡、人工门禁与子Skill调用顺序。
 entrypoint: SKILL.md
 category: enterprise-transformation-consulting

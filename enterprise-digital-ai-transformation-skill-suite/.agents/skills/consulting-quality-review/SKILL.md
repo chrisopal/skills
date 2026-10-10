@@ -1,7 +1,7 @@
 # 独立质量、4A 追溯与一致性审查
 
 - **Skill name**: `consulting-quality-review`
-- **Version**: `1.3.0`
+- **Version**: `1.4.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -40,6 +40,8 @@
 9. 根据 Gate 规则给出 pass、conditional-pass 或 fail，并生成修订任务。
 
 ## 质量规则
+
+- 涉及报告、HTML或PPT内容确认时读取 `shared/references/document-and-html-review-contract.md`，独立核对源版本与哈希、节点/关系/数字/状态未漂移、阶段候选阅读不越Gate、审阅意见不等同批准。浏览器交互、视觉可读性、文档渲染和业务审批分别记录；未检查的表现层不得写通过。
 
 - `enterprise-planning` 读取 `shared/references/phase-one-planning.md`，检查范围内L1-L4流程目录、组织绩效、IA/AA/TA深度、投资复算和波次依赖；G7不适用而非通过。
 - 启动阶段允许候选project-charter和architecture-framework-profile共同接受G0审查，不要求被审查对象已批准。

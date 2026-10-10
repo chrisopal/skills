@@ -30,6 +30,11 @@ constraints:
 - 关键系统必须平滑演进
 - 预算需分年度并区分软件、实施、基础设施和内部投入
 presentation_profile:
+  html_review_skill: enterprise-ui-design
+  document_writer: resolve-available-document-skill
+  candidate_html_allowed: true
+  source_version_and_hash_required: true
+  review_notes_are_approval: false
   audience:
   - 董事会
   - CEO

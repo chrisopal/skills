@@ -1,6 +1,6 @@
 # 数字化与 AI 转型咨询 Skill Suite 总体规格
 
-> Version 1.3 — Enterprise planning delivery profile
+> Version 1.4 — Enterprise planning and readable review delivery
 
 ## 1. 定位
 
@@ -20,6 +20,8 @@
 它不是替代咨询顾问，而是把可标准化部分沉淀为 SOP、数据契约、分析步骤、模板、质量规则和知识包，让顾问把精力集中在关键判断、客户共识与取舍上。
 
 ## 2. 方法论总框架
+
+过程交付增加独立表现层：专业成果 → 文档写作（按需）→ enterprise-ui-design HTML候选审阅 → 独立QA → 人工Gate。17个业务Skill数量不变，HTML不创造新分析。报告、四级流程、4A关系、组织绩效、投资路线图及PPT内容确认遵循 `shared/references/document-and-html-review-contract.md`；用户指定`consulting-ppt-image`时使用图片PPT，最终生成仍需该Skill的实际内容/样式确认。
 
 本套件将不同方法放在清晰层级中，而不是混合成一个概念：
 

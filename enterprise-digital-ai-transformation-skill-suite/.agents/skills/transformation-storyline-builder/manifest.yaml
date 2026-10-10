@@ -1,5 +1,5 @@
 name: transformation-storyline-builder
-version: 1.3.0
+version: 1.4.0
 description: 将已审批成果编排为故事线、4A蓝图页面和Slide Content Pack。
 entrypoint: SKILL.md
 category: enterprise-transformation-consulting

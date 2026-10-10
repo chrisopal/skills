@@ -1,7 +1,22 @@
 name: enterprise-planning
-version: 1.3.0
+version: 1.4.0
 purpose: 第一阶段企业级诊断、四级流程与4A蓝图、组织绩效、投资及路线图规划
 planning_reference: shared/references/phase-one-planning.md
+presentation_reference: shared/references/document-and-html-review-contract.md
+stage_review_sequence:
+  - professional-artifact
+  - document-writing-if-needed
+  - html-candidate-review
+  - independent-quality-review
+  - human-gate
+presentation_policy:
+  html_skill: enterprise-ui-design
+  allow_candidate_draft_for_review: true
+  external_skill_resolution_required: true
+  one_primary_skill_per_task: true
+  review_notes_never_grant_approval: true
+  ppt_renderer: project-selected
+  ppt_content_and_style_confirmation_required: true
 process_levels:
   L1: 业务域
   L2: 流程组

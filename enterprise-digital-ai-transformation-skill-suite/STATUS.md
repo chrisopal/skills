@@ -1,5 +1,14 @@
 # Status
 
+## 2026-10-10 — Readable review surfaces 1.4
+
+- Scope: preserve 17 business skills; route stage document writing, Enterprise UI Design HTML review and project-selected PPT confirmation through separate tasks. Draft review does not grant a Gate.
+- Source: three skill/manifest pairs, enterprise-planning workflow, document/HTML handoff contract, reusable stdlib HTML renderer and scoped CSS/JS; no framework or package dependency added.
+- Implemented: report, L1—L4 tree, 4A focused relationship diagram and full traceability, organization/KPI, investment/roadmap, per-slide content preview, source downloads and version/hash-bound local review-note export.
+- Verification: 19 Python tests; JS syntax; suite validator; actual six-view browser navigation at 1366/1440/1920/390 widths in both themes (48 checks, no page overflow); process expand/collapse and keyboard, notes persistence/export and byte-identical source downloads. Screenshots and scenario results remain local.
+- Runtime: local WorkBuddy expert UI skill mounted; expert package validator passes. No WorkBuddy end-to-end run, Word export, final image PPT, customer approval or public deployment is claimed.
+- Artifacts: local `SMART-FACTORY-PLANNING-20261010/review-v1/index.html`; all synthetic facts remain draft/assumed. Source commit/push is performed after final verification; generated files are excluded.
+
 ## 2026-10-10 — Enterprise planning profile 1.3
 
 - Scope: retain 17 skills; add enterprise-planning (G0—G6/G8), L1—L4 process hierarchy, organization/KPI, IA/AA/TA, investment and roadmap deliverable depths; no G7 implementation design.

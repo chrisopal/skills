@@ -1,7 +1,7 @@
 # 数字化与 AI 转型咨询主编排
 
 - **Skill name**: `dtx-consulting-orchestrator`
-- **Version**: `1.3.0`
+- **Version**: `1.4.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -38,6 +38,8 @@
 G4 只检查当期4A与候选过渡状态；G5补举措，G6补波次。依 phase-one-planning 的影响规则创建重审任务，锁定受影响下游，保留旧批准版并生成新版，不得静默传播变更。模拟模式只能推演显式标注的草案，不授予 Gate 或 Artifact 批准状态。
 
 ## 标准输出
+
+过程报告和可視化审阅按 `shared/references/document-and-html-review-contract.md` 下发独立任务卡：专业成果完成后按需调用文档写作Skill，再调用enterprise-ui-design生成候选HTML，独立复核后请求人工Gate。HTML可展示draft，不授予批准；外部Skill须在宿主解析、读取、记录版本后实际执行。总控不直接写报告或绘图。PPT确认页先于正式出图，遵守项目指定渲染器的实际确认门槛。
 
 - `run-plan`
 - `task-cards`

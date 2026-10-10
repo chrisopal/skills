@@ -1,5 +1,14 @@
 # Validation Report
 
+## 2026-10-10 revision 1.4
+
+- `python3 -m unittest discover -s scripts -p 'test_*.py'`: 19 passed (11 renderer, 8 planning pack). Renderer covers unsafe source/CSS, duplicate IDs, process hierarchy, source byte/hash retention, missing optional files and preservation of prior output on error.
+- `node --check shared/assets/review-workbench/workbench.js`: passed. No TypeScript or application framework build exists; the renderer itself is the static build.
+- Suite validator: 17 skills, 11 schemas, 4 workflows, zero errors. Three modified skills retain manifest I/O parity.
+- Independent contract scenarios: real G4 candidate review, simulation preview, stale source-hash comments, unavailable Word skill. Correct task boundaries, no approval fabrication; detailed review kept with local outputs.
+- Browser: six views × four widths × two themes = 48 navigation/overflow checks, zero page-level overflow; desktop/narrow screenshots read back. Native tree controls expand 56 nodes and collapse to zero; Enter toggles focused summary with visible outline. Review notes persist after reload and export 14 not-approved pages with approval_effect none. Three original downloads match bytes; drawio export parses as eight pages. Partial-stage build with neither report nor slides works and exposes missing-state text.
+- Local WorkBuddy package passes its installed validator. This proves mounting/config structure only, not WorkBuddy runtime execution. Word, final image PPT, full accessibility certification, customer facts and business approval remain outside this turn's verified surface.
+
 ## 2026-10-10 revision 1.3
 
 - `uv run --no-project --with-requirements requirements-dev.txt python scripts/validate_suite.py`: passed; 17 skills, 11 schemas, 4 workflows.

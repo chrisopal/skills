@@ -1,7 +1,7 @@
 # 咨询故事线、4A 蓝图与 PPT 内容包
 
 - **Skill name**: `transformation-storyline-builder`
-- **Version**: `1.3.0`
+- **Version**: `1.4.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -55,6 +55,8 @@
 - 页面中的每个关键架构对象必须引用已批准 4A Artifact
 
 ## 质量规则
+
+- 过程报告、HTML与PPT审阅交接遵循 `shared/references/document-and-html-review-contract.md`：内容编排与文档写作/Word排版/HTML表现各为独立任务，不将图表美化混入专业分析。本Skill输出锁定版本的内容包，由enterprise-ui-design表现为可阅读的逐页草稿；审阅意见不可自动批准。无正式批准的真实项目候选成果仅供当期审阅，不借此进入正式S8交付。
 
 - 第一阶段依 `shared/references/phase-one-planning.md` 编排诊断、四级流程、4A、组织绩效、投资、路线图及管理决策；不以PPT代替底稿。G7为不适用，不阻塞企业规划汇报。
 - 正式交付仍仅消费已批准成果。模拟验证的独立入口为 `simulation-draft-artifacts`：必须明确项目为simulation，逐项登记draft源版本，首页和关键数字标模拟，输出状态只能draft，列出待审核事项；不得把它装入approved-artifacts或称为正式咨询验收。

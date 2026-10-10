@@ -32,6 +32,19 @@ class OutlineViewTests(unittest.TestCase):
         ])
         self.assertEqual([r['display_number'] for r in rows], ['9', '9.3', '（一）'])
 
+    def test_numbered_siblings_follow_natural_order_without_mutating_outline(self):
+        sections = [{'id': 'root', 'number': '7'},
+                    {'id': '8', 'parent_id': 'root', 'number': '7.8'},
+                    {'id': '10', 'parent_id': 'root', 'number': '7.10'},
+                    {'id': '1', 'parent_id': 'root', 'number': '7.1'}]
+        before = copy.deepcopy(sections)
+        self.assertEqual([r['id'] for r in ordered_sections(sections)],
+                         ['root', '1', '8', '10'])
+        self.assertEqual(sections, before)
+        sections[-1]['number'] = '附件A'
+        self.assertEqual([r['id'] for r in ordered_sections(sections)],
+                         ['root', '8', '10', '1'])
+
     def test_child_before_parent_and_empty_outline(self):
         rows = ordered_sections([{'id': 'b', 'parent_id': 'a', 'number': '一.2'},
                                  {'id': 'a', 'parent_id': None, 'number': '一'}])

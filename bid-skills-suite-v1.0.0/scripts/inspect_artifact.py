@@ -12,7 +12,9 @@ def inspect(path):
             texts=[]
             for name in z.namelist():
                 if name.startswith('word/') and name.endswith('.xml'):
-                    root=ElementTree.fromstring(z.read(name));texts.extend(n.text or '' for n in root.iter() if n.tag.endswith('}t'))
+                    root=ElementTree.fromstring(z.read(name))
+                    texts.extend(''.join(n.text or '' for n in p.iter() if n.tag.endswith('}t'))
+                                 for p in root.iter() if p.tag.endswith('}p'))
                     if name.endswith('comments.xml'):notes.append('仍包含批注部件，需审查')
                     if any(n.tag.endswith('}del') or n.tag.endswith('}ins') for n in root.iter()):notes.append('仍有修订记录，需审查')
             text='\n'.join(texts);pages=None
@@ -24,6 +26,11 @@ def inspect(path):
     else:raise ValueError('仅支持DOCX/PDF')
     for token in ('REPLACE_ME','[[TODO','【内部','\ue200','\ufffd','\u2eda'):
         if token in text:notes.append('检测到需复核的内部占位或异常字符：'+repr(token))
+    compact = re.sub(r'\s+', '', text)
+    if (re.search(r'confirmation_ref|reviewed_inputs_sha256|body_markdown', compact)
+            or re.search(r'(?<![A-Za-z0-9_/])(?:work|reviews|artifacts|profiles)/\s*'
+                         r'[A-Za-z0-9_./\-\u4e00-\u9fff]+', text)):
+        notes.append('检测到内部执行信息，须改为对外文案并保留独立审计记录')
     if re.search(r'§[A-Za-z0-9][A-Za-z0-9_.:-]*§',text):notes.append('疑似内部页码探针泄漏')
     return {'file':path.name,'sha256':hashlib.sha256(content).hexdigest(),'bytes':len(content),'pages':pages,'extracted_chars':len(text),'mechanical_check':'passed' if not notes else 'needs_review','visual_qa':'NOT_RUN','findings':sorted(set(notes))}
 

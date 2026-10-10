@@ -1,7 +1,7 @@
 {
   "suite": "bid-skills-suite",
-  "version": "1.15.0",
-  "date": "2026-10-09",
+  "version": "1.16.0",
+  "date": "2026-10-10",
   "authoring_language": "zh-CN",
   "business_validation": "NOT_RUN",
   "skills": [

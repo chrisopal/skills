@@ -73,3 +73,5 @@ python scripts/knowledge.py build-wiki --project ./my-bid
 - Wiki 页面由脚本重建，人工判断与接受记录写入素材选用结果，避免重建时丢失人工决定。项目目录不自动跨平台同步，也不把内部 Wiki 打包成对外标书。
 
 `add-local`、`import-host` 与 Wiki 重建使用知识写入锁；不构成整个项目的多智能体事务。先完成一个写入者的操作再交接其他技能。
+
+本地连续中文查询在精确短语无命中时使用至少50%的双字片段重合，返回matched_terms和query_terms供复核。仍是透明的词面检索，不是语义或适用性判断；优先使用宿主实际语义检索并核验选材版本。

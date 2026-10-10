@@ -61,6 +61,23 @@ class WritingPolicyTest(unittest.TestCase):
             self.assertTrue(p['length_required'])
         self.assertEqual(self.policy({'length_mode': 'fixed', 'target_words': 750})['target_words'], 750)
 
+    def test_inherited_score_does_not_give_each_child_full_parent_budget(self):
+        parent = dict(id='P', parent_id=None, title='服务方案', scoring_ids=['S-1'])
+        simple = dict(self.section, id='A', parent_id='P', scoring_ids=[], requirement_ids=['R-1'])
+        complex_section = dict(simple, id='B', requirement_ids=[f'R-{i}' for i in range(10)])
+        sections = [parent, simple, complex_section]
+        small = resolve_policy(simple, sections, self.scoring, self.requirements, {})
+        large = resolve_policy(complex_section, sections, self.scoring, self.requirements, {})
+        self.assertEqual(small['target_words'], 1000)
+        self.assertEqual(large['target_words'], 2000)
+        self.assertEqual(small['scoring_contribution'], 'inherited')
+
+    def test_checklist_is_checked_for_completeness_not_filler_length(self):
+        self.section.update(title='制作、签署及递交核对清单',
+                            requirement_ids=[f'R-{i}' for i in range(20)])
+        self.assertIsNone(self.policy()['target_words'])
+        self.assertEqual(self.policy({'chapter_overrides': {'SEC-1': {'target_words': 500}}})['target_words'], 500)
+
     def test_fixed_form_has_no_automatic_filler_target(self):
         self.section['title'] = '投标函'
         self.assertIsNone(self.policy()['target_words'])

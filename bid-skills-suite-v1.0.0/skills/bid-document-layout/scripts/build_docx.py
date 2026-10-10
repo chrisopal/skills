@@ -159,6 +159,23 @@ def _validate_inline_image(image, asset_root: Path, content_width: float,
     return path, width, height
 
 
+def header_footer_settings(value_raw, name):
+    """Resolve the same defaults for generation and actual-file acceptance."""
+    if name not in ('header', 'footer'):
+        raise ValueError('仅支持header/footer配置')
+    _check_fields(value_raw, _HEADER_FOOTER_FIELDS, f'export_settings.{name}')
+    value = dict(value_raw)
+    default = '内部工作稿｜需人工复核与签署' if name == 'header' else ''
+    text = _check_text(value.get('text', default), f'{name}.text')
+    alignment = _alignment(value.get('alignment', 'left' if name == 'header' else 'right'), f'{name}.alignment')
+    page_field = value.get('page_field', name == 'footer')
+    _check_bool(page_field, f'{name}.page_field')
+    prefix = _check_text(value.get('page_prefix', '第 '), f'{name}.page_prefix')
+    suffix = _check_text(value.get('page_suffix', ' 页'), f'{name}.page_suffix')
+    return {'text': text, 'alignment': alignment, 'page_field': page_field,
+            'page_prefix': prefix, 'page_suffix': suffix}
+
+
 def _validate_export_settings(raw, *, spec_title, spec_subtitle, style, asset_root, content_width):
     """Normalize and validate the optional export-only configuration."""
     _check_fields(raw, _EXPORT_FIELDS, 'export_settings')
@@ -250,18 +267,6 @@ def _validate_export_settings(raw, *, spec_title, spec_subtitle, style, asset_ro
     _check_number(toc_font['space_after_pt'], 'toc.typography.space_after_pt', 72, allow_zero=True)
     _alignment(toc_font['alignment'], 'toc.typography.alignment')
 
-    def validate_header_footer(name, default):
-        value_raw = raw.get(name, {})
-        _check_fields(value_raw, _HEADER_FOOTER_FIELDS, f'export_settings.{name}')
-        value = dict(value_raw)
-        text = _check_text(value.get('text', default), f'{name}.text')
-        alignment = _alignment(value.get('alignment', 'left' if name == 'header' else 'right'), f'{name}.alignment')
-        page_field = value.get('page_field', name == 'footer')
-        _check_bool(page_field, f'{name}.page_field')
-        prefix = _check_text(value.get('page_prefix', '第 '), f'{name}.page_prefix')
-        suffix = _check_text(value.get('page_suffix', ' 页'), f'{name}.page_suffix')
-        return {'text': text, 'alignment': alignment, 'page_field': page_field,
-                'page_prefix': prefix, 'page_suffix': suffix}
 
     return {
         'cover': {'enabled': enabled, 'title': cover_title, 'subtitle': cover_subtitle,
@@ -269,8 +274,8 @@ def _validate_export_settings(raw, *, spec_title, spec_subtitle, style, asset_ro
                   'image': cover_image, 'typography': cover_font},
         'toc': {'enabled': toc_enabled, 'title': toc_title, 'levels': levels,
                 'typography': toc_font},
-        'header': validate_header_footer('header', '内部工作稿｜需人工复核与签署'),
-        'footer': validate_header_footer('footer', ''),
+        'header': header_footer_settings(raw.get('header', {}), 'header'),
+        'footer': header_footer_settings(raw.get('footer', {}), 'footer'),
     }
 
 
@@ -808,7 +813,14 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
             last_item_paragraph = paragraph
         if item.get('images') and last_item_paragraph is not None:
             last_item_paragraph.paragraph_format.keep_with_next = True
-        for table_spec in item.get('tables',[]):
+        for table_index, table_spec in enumerate(item.get('tables',[])):
+            if table_index:
+                # An explicit separator prevents adjacent grids being merged on save.
+                separator = document.add_paragraph()
+                separator.paragraph_format.space_before = Pt(0)
+                separator.paragraph_format.space_after = Pt(0)
+                separator.paragraph_format.line_spacing = Pt(1)
+                separator.paragraph_format.first_line_indent = Pt(0)
             headers=table_spec['headers'];rows=table_spec['rows']
             if not headers or any(len(row)!=len(headers) for row in rows):raise ValueError('表格列数不一致')
             widths = table_spec.get('widths_cm')

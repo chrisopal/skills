@@ -28,6 +28,21 @@ def bundle(project,review,snapshot,approval,manifest,out):
         if digest(path)!=entry['sha256'] or path.stat().st_size!=entry['bytes']:raise ValueError('成稿身份变化')
         if path.name in names:raise ValueError('交付文件名重复')
         names.add(path.name);targets.append((path,entry))
+    if (project/'profiles/quality-plan.json').is_file():
+        binding=data.get('export_acceptance_ref')
+        if not binding:raise ValueError('质量工作流缺少实际导出验收收据')
+        receipt_path=safe(project,binding['relative_path'])
+        if digest(receipt_path)!=binding['sha256']:raise ValueError('导出验收收据已漂移')
+        receipt=read(receipt_path)
+        import export_checks
+        actual=receipt.get('artifacts',{})
+        if set(actual)!={'docx','pdf'}:raise ValueError('导出验收收据必须包含Word和PDF')
+        expected_paths={entry['relative_path'] for _,entry in targets}
+        if expected_paths!={actual[key]['path'] for key in ('docx','pdf')}:
+            raise ValueError('收据成稿与交付文件不一致')
+        export_checks.verify_receipt(receipt,safe(project,receipt['input_spec_path']),
+                                    safe(project,actual['docx']['path']),
+                                    safe(project,actual['pdf']['path']),project)
     out=Path(out)
     if out.exists():raise ValueError('交付包已存在，拒绝覆盖')
     out.parent.mkdir(parents=True,exist_ok=True)

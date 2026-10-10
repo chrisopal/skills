@@ -1,5 +1,7 @@
 # Quality Gates
 
+阶段规则：G0可共同审查候选章程/方法配置，不要求事先批准。G4的Transition为候选状态与演进约束，不要求已批准G5举措/G6波次；G5补齐Gap/Initiative/Benefit，G6固化Wave并验证全链。`enterprise-planning` 按 `phase-one-planning.md` 覆盖L1-L4与组织绩效，跳过G7且记不适用。模拟项目可逐阶段推演草案，但所有人工Gate保持未批准；检查通过不是客户核验或审批。真实审批记录必须有审批人、时间和候选版本；变更按该参考的影响规则重审。
+
 | Gate | 必须产物 | 退出条件 | 典型审批人 |
 |---|---|---|---|
 | G0 Scope | Charter、Scope、Stakeholder、Deliverables、Method Profile | 边界、目标、决策、成功标准、审批人和 4A 裁剪范围明确 | Sponsor / PM |

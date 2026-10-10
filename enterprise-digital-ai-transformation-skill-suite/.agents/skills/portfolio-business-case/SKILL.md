@@ -1,7 +1,7 @@
 # 组合优先级、4A 投资与商业论证
 
 - **Skill name**: `portfolio-business-case`
-- **Version**: `1.1.0`
+- **Version**: `1.3.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -51,6 +51,9 @@
 8. 输出按 BA/IA/AA/TA/cross-cutting 分类的投资构成，支持管理层理解“钱投到哪里”
 
 ## 质量规则
+
+- 第一阶段依 `shared/references/phase-one-planning.md`；制造业调用 `shared/references/manufacturing-planning-toolkit.md` 的可复算底稿，逐项保留参数、公式、证据/假设、年度现金流及三情景。工时节省未有现金兑现机制时为产能收益，不直接当利润。
+- G5消费G4候选过渡架构评估迁移/双轨成本，不要求G6正式波次作为前置。资源或投资改变目标范围时发起G4变更重审，禁止仅在预算表删架构组件。
 
 - 所有数字必须注明来源、口径、假设、置信区间和税/币种口径
 - 不得把重复收益在多个 Initiative 中累计

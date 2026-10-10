@@ -1,7 +1,7 @@
 # 外部标杆、成熟度与 4A 能力评估
 
 - **Skill name**: `external-benchmark-maturity`
-- **Version**: `1.1.0`
+- **Version**: `1.3.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -45,6 +45,9 @@
 6. 输出热力图和重点能力提升主题
 
 ## 质量规则
+
+- 制造业读取 `shared/references/manufacturing-planning-toolkit.md`，按明确等级判据评分；工具包是本套件的方法参考，不是咨询机构专有模型或企业已验证事实。第一阶段按 `shared/references/phase-one-planning.md` 范围评估。
+- 逐维记录范围、等级判据、证据、冲突/缺失、置信度、评估人和目标理由；集团不同工厂不能未经权重与可比性说明直接平均。缺证据写not-assessed，外部案例不能替代客户评分证据。
 
 - 评分必须有行为或产物判据，不能凭主观印象
 - 不得把“已购买系统”直接视为 AA 成熟

@@ -1,0 +1,56 @@
+name: enterprise-planning
+version: 1.3.0
+purpose: 第一阶段企业级诊断、四级流程与4A蓝图、组织绩效、投资及路线图规划
+planning_reference: shared/references/phase-one-planning.md
+process_levels:
+  L1: 业务域
+  L2: 流程组
+  L3: 流程
+  L4: 子流程
+excluded_scope: [L5操作设计, 招标技术规格, 详细接口设计, 实施验收]
+review_policy:
+  after_each_stage: consulting-quality-review
+  reviewer_must_be_independent: true
+  gate_requires_report: true
+  human_approval_required: true
+  simulation_never_grants_approval: true
+architecture_framework:
+  canonical_model: huawei-4a
+  domains: [BA, IA, AA, TA]
+  cross_cutting: [integration, security-and-trust, ai-and-knowledge, nfr-and-resilience, architecture-governance]
+  information_architecture_aliases: [data-architecture]
+stages:
+  - id: S0
+    name: initiate
+    skills: [engagement-scoping]
+    gate: G0
+  - id: S1
+    name: evidence-and-strategy
+    skills: [evidence-factbase, strategy-value-agenda, external-benchmark-maturity]
+    gate: G1
+  - id: S2
+    name: as-is-operating-model-and-4a
+    skills: [as-is-operating-model, as-is-enterprise-architecture]
+    required_architecture_outputs: [as-is-business-architecture, as-is-information-architecture, as-is-application-architecture, as-is-technology-architecture, as-is-4a-architecture-package, as-is-4a-traceability-matrix]
+    gate: G2
+  - id: S3
+    name: diagnose
+    skills: [issue-root-cause-opportunity]
+    gate: G3
+  - id: S4
+    name: target-operating-model-and-4a
+    skills: [to-be-operating-model, to-be-enterprise-architecture, ai-transformation-overlay]
+    required_architecture_outputs: [target-business-architecture, target-information-architecture, target-application-architecture, target-technology-architecture, target-4a-architecture-package, target-4a-traceability-matrix, transition-architectures]
+    gate: G4
+  - id: S5
+    name: gaps-and-portfolio
+    skills: [gap-initiative-design, portfolio-business-case]
+    gate: G5
+  - id: S6
+    name: roadmap-and-governance
+    skills: [roadmap-governance-change]
+    gate: G6
+  - id: S8
+    name: planning-report-and-deck-content
+    skills: [transformation-storyline-builder]
+    gate: G8

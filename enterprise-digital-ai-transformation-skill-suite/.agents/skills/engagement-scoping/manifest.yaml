@@ -1,5 +1,5 @@
 name: engagement-scoping
-version: 1.1.0
+version: 1.3.0
 description: 将客户诉求、合同边界和管理层预期转化为项目章程，并确定华为4A架构范围与裁剪规则。
 entrypoint: SKILL.md
 category: enterprise-transformation-consulting

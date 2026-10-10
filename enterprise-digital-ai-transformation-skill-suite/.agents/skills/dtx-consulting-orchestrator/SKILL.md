@@ -1,7 +1,7 @@
 # 数字化与 AI 转型咨询主编排
 
 - **Skill name**: `dtx-consulting-orchestrator`
-- **Version**: `1.2.0`
+- **Version**: `1.3.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -20,9 +20,22 @@
 - `project-context`
 - `artifact-register`
 - `workflow-profile`
-- `architecture-framework-profile`
 - `gate-decisions`
 - `open-issues`
+
+`architecture-framework-profile` 是 G0 范围任务的输出；启动时可缺省，G0 审查使用候选版，真实项目通过 G0 后必须存在批准版。登记册、Gate记录和问题列表可从空集合启动，不能将此例外用于补造范围任务所需的客户输入。
+
+## 可选输入
+
+- `architecture-framework-profile`
+
+仅启动时可选；G0候选审查和G0批准后必需。
+
+## 第一阶段与变更控制
+
+选择 `enterprise-planning` 时必须读取 `shared/references/phase-one-planning.md`，按 L1业务域/L2流程组/L3流程/L4子流程组织任务，执行 G0—G6、G8；G7 为不适用，不得记录为已通过。总控仍不做专业分析。制造业任务引用 `shared/references/manufacturing-planning-toolkit.md`。
+
+G4 只检查当期4A与候选过渡状态；G5补举措，G6补波次。依 phase-one-planning 的影响规则创建重审任务，锁定受影响下游，保留旧批准版并生成新版，不得静默传播变更。模拟模式只能推演显式标注的草案，不授予 Gate 或 Artifact 批准状态。
 
 ## 标准输出
 

@@ -1,5 +1,5 @@
 name: transformation-storyline-builder
-version: 1.1.0
+version: 1.3.0
 description: 将已审批成果编排为故事线、4A蓝图页面和Slide Content Pack。
 entrypoint: SKILL.md
 category: enterprise-transformation-consulting
@@ -20,6 +20,9 @@ outputs:
 - appendix-plan
 - executive-messages
 - citation-appendix
+simulation_inputs:
+- simulation-draft-artifacts
+simulation_policy: 仅在显式simulation项目替代approved输入；输出draft，不授予批准状态
 dependencies:
 - to-be-enterprise-architecture
 - consulting-quality-review

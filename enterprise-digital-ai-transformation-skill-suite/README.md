@@ -1,6 +1,6 @@
 # Enterprise Digital & AI Transformation Skill Suite
 
-> Version 1.2 — Huawei 4A aligned, runtime contracts hardened
+> Version 1.3 — Enterprise planning with four-level processes and manufacturing workpapers
 
 一个面向企业数字化转型与 AI 转型咨询的多 Skill 操作系统骨架。
 
@@ -20,12 +20,18 @@
 - 16 个专业子 Skill
 - 华为 4A 企业架构统一模型
 - 统一咨询本体与 Artifact 数据契约
-- Full、Rapid、AI-First 三种工作流
+- Enterprise Planning、Full、Rapid、AI-First 四种工作流
 - 阶段 Gate、质量审查与验收测试
 - 面向外部 PPT 生成 Skill 的 `slide-content-pack` 交接协议
 - 可机器校验的 Task Card、独立 Quality Review Report 与 WorkBuddy 运行配置
 
 ## 推荐入口
+
+第一阶段企业规划选择 `shared/workflows/enterprise-planning.yaml`，先读
+[规划交付约定](shared/references/phase-one-planning.md)和
+[制造业工作底稿](shared/references/manufacturing-planning-toolkit.md)。
+交付诊断、L1—L4流程、组织绩效、完整4A、投资和路线图，不包含G7实施级详细设计。
+公开案例和模拟数据不能替代客户事实与人工审批。
 
 1. 先阅读根目录 `AGENTS.md`。
 2. 阅读 `shared/references/huawei-4a-enterprise-architecture.md`，确认 4A 的边界、对象和输出规范。
@@ -55,3 +61,12 @@ python scripts/validate_suite.py
 ```
 
 校验覆盖 JSON/YAML 语法、JSON Schema、4A 示例、Skill/Manifest 契约以及 Workflow 引用。
+
+规划底稿另行运行：
+
+```bash
+python scripts/validate_planning_pack.py /path/to/planning-pack.json
+python -m unittest discover -s scripts -p 'test_*.py'
+```
+
+底稿约定见 [planning-pack-contract.md](shared/references/planning-pack-contract.md)。校验只证明引用和算术一致，不能证明现场事实、设计可行性或客户验收。

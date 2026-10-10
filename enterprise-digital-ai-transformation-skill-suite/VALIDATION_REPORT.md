@@ -1,5 +1,14 @@
 # Validation Report
 
+## 2026-10-10 revision 1.3
+
+- `uv run --no-project --with-requirements requirements-dev.txt python scripts/validate_suite.py`: passed; 17 skills, 11 schemas, 4 workflows.
+- `python3 -m unittest discover -s scripts -p 'test_*.py'`: 8 passed. Tests exercise dangling architecture references, process hierarchy, sequencing, duplicate benefit-years, cash-flow reconciliation, missing data and simulated approval misuse. Seven negative cases were observed failing against the pre-implementation no-op checker.
+- Independent source review confirmed G0 can initiate without its own output, G4 does not require future G5/G6 artifacts, and simulation never grants human approval.
+- The script does not interpret business formulas, verify actual customer facts, prove completeness of every domain process or replace professional review. The local simulation and independent review are separate generated artifacts and are not committed.
+
+The following 1.2 report is retained as historical evidence.
+
 - **Package**: Enterprise Digital & AI Transformation Skill Suite
 - **Version**: 1.2.0 — runtime contracts hardened
 - **Validation date**: 2026-09-01

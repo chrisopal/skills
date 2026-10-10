@@ -1,7 +1,7 @@
 # To-Be Operating Model 设计
 
 - **Skill name**: `to-be-operating-model`
-- **Version**: `1.1.0`
+- **Version**: `1.3.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -11,7 +11,7 @@
 ## 与 4A 的边界
 
 - 本 Skill 决定未来业务如何运行。
-- `to-be-enterprise-architecture` 将已批准 Operating Model 节点正式化为 Target BA，并继续设计 IA、AA、TA。
+- `to-be-enterprise-architecture` 将已经业务评审的候选 Operating Model 节点正式化为 Target BA，并继续设计 IA、AA、TA；同属G4的成果可以一并提交批准，不要求G4尚未执行就先获得G4批准。
 - 不得在 EA Skill 中重新发明另一套能力、流程、组织和 KPI。
 
 ## 适用场景
@@ -58,6 +58,10 @@
 9. 给出关键设计选择、备选方案和取舍。
 
 ## 质量规则
+
+- 第一阶段读取 `shared/references/phase-one-planning.md`；制造业同时读取 `shared/references/manufacturing-planning-toolkit.md`。输出范围内L1业务域/L2流程组/L3流程/L4子流程目录，每个L4有输入输出、Owner、KPI、信息需求及应用需求，不制作L5操作规程。
+- 组织设计必须区分集团、分公司、工厂的共享与属地责任；关键决策只有一个最终负责角色，写明例外升级和跨层级冲突机制。
+- 每个KPI记录公式/单位/粒度/周期/来源/基线/目标/Owner/汇总方式/反向约束指标和激励条件；基线未知标缺口，目标标设计建议。明确谁能影响指标，避免将系统采用率当作最终经营收益。
 
 - 每项设计必须回溯到价值议程或现状根因。
 - Operating Model 不等于组织架构图。

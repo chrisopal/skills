@@ -1,7 +1,7 @@
 # 咨询项目范围与章程定义
 
 - **Skill name**: `engagement-scoping`
-- **Version**: `1.1.0`
+- **Version**: `1.3.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -40,6 +40,9 @@
 6. 登记关键假设、约束、风险和待决问题
 
 ## 质量规则
+
+- 第一阶段读取 `shared/references/phase-one-planning.md`，选择 `enterprise-planning`，在章程明确四级流程定义、组织范围、全部4A交付深度和不含实施详细设计；制造业按 `shared/references/manufacturing-planning-toolkit.md` 裁剪调研。
+- 启动允许方法配置不存在，由本技能生成候选版供 G0 一并审查。真实客户输入缺失必须登记；模拟项目明确合成背景，不得伪称存在合同或客户批准。
 
 - 范围必须同时定义包含项和排除项
 - 每项交付物必须有用途、受众、审批人和完成标准

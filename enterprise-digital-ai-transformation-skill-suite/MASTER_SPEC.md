@@ -1,6 +1,6 @@
 # 数字化与 AI 转型咨询 Skill Suite 总体规格
 
-> Version 1.2 — Huawei 4A Enterprise Architecture aligned, runtime contracts hardened
+> Version 1.3 — Enterprise planning delivery profile
 
 ## 1. 定位
 
@@ -235,6 +235,8 @@ Gap 不能只按“系统缺失”识别，必须覆盖：
 - 模型、数据、Prompt、Tool 和供应链安全。
 
 ## 10. 流程层级
+
+以下是原工作流的兼容编号。新 `enterprise-planning` 明确采用 L1业务域、L2流程组、L3业务流程、L4子流程；范围内覆盖四级，L5不在第一阶段。旧项目迁移必须登记层级映射，不得把旧L0-L3与新L1-L4机械换号。详见 `shared/references/phase-one-planning.md`。
 
 - L0：企业价值链；
 - L1：价值流/业务域；

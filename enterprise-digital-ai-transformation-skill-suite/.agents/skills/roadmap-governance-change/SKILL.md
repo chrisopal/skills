@@ -1,7 +1,7 @@
 # 三年路线图、Transition Architecture、治理与变革计划
 
 - **Skill name**: `roadmap-governance-change`
-- **Version**: `1.1.0`
+- **Version**: `1.3.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -51,6 +51,10 @@
 9. 把 KPI 基线、收益验证和纠偏机制嵌入路线图
 
 ## 质量规则
+
+- 第一阶段读取 `shared/references/phase-one-planning.md`，制造业读取 `shared/references/manufacturing-planning-toolkit.md`；用价值、代表性、数据/设备准备度、Owner与停产窗口选择试点工厂，给出推广准入、共性模板与差异适配，不把试点效果直接外推全集团。
+- G6固化G4候选过渡状态与G5举措的Wave关系；复核年度预算/人力/依赖一致。收益复核须给出基线、目标、口径、核验角色、日期和纠偏动作。
+- 上游证据、KPI、架构、成本或资源变化按phase-one-planning影响表重审；保留旧批准版并把相关路线图和汇报标待重审。
 
 - 路线图必须由依赖、容量和 Transition Architecture 驱动，不能只是按年份均匀分配
 - 每个 Wave 要有可验证业务结果和明确 4A 状态

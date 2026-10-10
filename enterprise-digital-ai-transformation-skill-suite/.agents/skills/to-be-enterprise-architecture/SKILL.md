@@ -1,7 +1,7 @@
 # To-Be 华为 4A 企业架构与过渡架构
 
 - **Skill name**: `to-be-enterprise-architecture`
-- **Version**: `1.1.0`
+- **Version**: `1.3.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -81,9 +81,11 @@
 5. **设计横向架构**：形成 Integration、Security & Trust、AI & Knowledge、NFR、Governance 视图。
 6. **记录架构决策**：对重大边界、选型和模式保留备选方案、权衡和 Decision Record。
 7. **形成 4A 追溯**：确保每个关键 AA/TA 组件回溯到业务价值和信息需求。
-8. **设计过渡架构**：按 Wave 定义 BA/IA/AA/TA 的阶段状态以及利旧、改造、新建、整合、迁移和退役动作。
+8. **设计过渡架构**：G4给出候选阶段状态、迁移依赖与演进动作；G5投资组合确认后由G6固化Wave、时间和资源。不把候选波次当作已批准路线图。
 
 ## 质量规则
+
+- 第一阶段读取 `shared/references/phase-one-planning.md`，制造业读取 `shared/references/manufacturing-planning-toolkit.md`；目标BA复用L1-L4流程，IA不可省略。AA明确L4/信息对象映射、服务边界、CRUD权威源、集成及异常处理；TA明确云边端逻辑部署、IT/OT分区、断网降级、NFR、恢复、运维责任和成本假设，避免提前输出设备或接口实施规格。
 
 - 每个目标组件必须支持明确的能力、流程、业务服务、信息对象或 NFR。
 - 先定义能力、服务和架构模式，再选择产品。
@@ -109,13 +111,13 @@
 
 ## 失败与降级
 
-- 目标 Operating Model 未批准时，不得将 Target BA 标为 approved。
+- G4前可消费经业务评审的候选Operating Model并保留其实际状态；G4对OM和4A共同审批，二者均获批准才将Target BA标为approved，不因同阶段未审批而禁止设计草案。
 - 关键 IA/AA/TA 选择存在重大争议时，输出备选架构和决策请求。
 - Rapid 工作流可以降低对象粒度，但 BA、IA、AA、TA、关键追溯和过渡原则不得缺失。
 
 ## 最小验收
 
 - Target BA/IA/AA/TA 四域完整。
-- 随机抽样目标 Application Service 可追溯到 BA、IA、TA、Gap 和 Initiative 候选。
+- G4抽样目标Application Service可追溯到BA、IA、TA、Owner、KPI/证据；Gap/Initiative正式关系在G5补齐，Wave在G6补齐，不因缺后续成果阻断G4。
 - 至少形成一个可供 Roadmap 使用的 Transition Architecture。
 - 通过 `consulting-quality-review` 的 G4 4A 检查。

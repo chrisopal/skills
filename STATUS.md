@@ -1,3 +1,34 @@
+## 2026-10-11: Live visual-to-editable PPT validation
+
+- Scope: exercised the purple consulting theme with three actual Codex ImageGen
+  pages (cover, three-column content, layered architecture), then native page
+  workers, source-faithful ribbon separation, record/finalize and final audit.
+- Result: 30 editable text objects, 13 native structural objects and one
+  independent ribbon image; no full-slide raster backgrounds. Exact content,
+  order and all three Chinese speaker notes passed read-back checks. The final
+  deck was rendered with LibreOffice and all pages inspected in PowerPoint.
+- Actual application test: PowerPoint opened the final deck without repair;
+  a separate copy's title and architecture panel position were edited through
+  the GUI, saved, closed and reopened. Both changes and all notes persisted.
+  The original delivery file stayed unchanged (SHA-256 starts `76142e060bb9`).
+- Fixes: live PowerPoint opening exposed an invalid wide-size enum and theme
+  style lists below DrawingML minimum counts. Corrected the shared exporter
+  and added package regressions. Font fallback was corrected in test manifests;
+  quality guidance now distinguishes Pillow previews from real Office rendering.
+- Verification: converter 90, bridge 23 and consulting 32 tests passed (145 total),
+  with Python compilation and whitespace checks. Source changes are limited to
+  the exporter, layout tests, changelog, quality guidance and this status record.
+  Reuses the existing exporter and runtime; no new dependencies or repair pass.
+- Delivery: this follow-up belongs to `codex/visual-to-editable-ppt` and existing
+  PR https://github.com/chrisopal/skills/pull/6; commit/push the verified source
+  and read back the remote SHA. Main is unchanged. Generated PPTX/PDF/images,
+  local preview fonts and evidence stay under ignored
+  `output/visual-to-editable-ppt-live-20261011/` and are not published.
+- Limits: the ribbon remains a movable/replacable raster, with minor font,
+  shadow and gradient differences from source. The other six themes,
+  WorkBuddy/Claude live hosts, Windows PowerPoint and native chart-data editing
+  were not tested. This is generic demo validation, not user business acceptance.
+
 ## 2026-10-10: Visual-first editable PPT skill
 
 - Scope: `visual-to-editable-ppt/` adds a content-to-design-to-editable workflow,

@@ -1265,3 +1265,10 @@
 - 验证：336项pytest与132项subtests通过（5项既有PyMuPDF/SWIG弃用提示）；17项新增动作回归，17Skill/34Schema与17 quick_validate、4独立ZIP对双项目共8次实际状态回读通过，Python编译、JS语法与diff检查通过。独立Sol复审修复版本引用、非目标修改、重试绕过、锁冲突及未保存缓冲保护后APPROVE。东台数据方案实际修复、青草沙9.3实际提升，经编辑器保存及独立语义重评后均completed_with_remaining；东台6个相关条件由0满足/4部分/2缺失变为3满足/3部分/0缺失。界面1366/1440/1920/390浅色、桌面/手机深色无横向溢出，浏览器无错误，视觉94/100。
 - 决策与简化：复用当前评审、质量规程及宿主Skill，不新增后台调度器。网页无Codex／WorkBuddy通用唤醒API，因此明确显示待宿主执行、可复制交接；不能将创建任务当作实际修改。按仓库规则仅提交可复用源码、同源副本、规程、测试和本记录，并推送当前配置分支，不合并dev/main。原件、模拟材料、导出与一次性证据留bid-agent/output/tender-analysis/review-actions-20261010。
 - 风险/后续：两份仍formal_release_ready=false；东台72项评分条件、青草沙3项评分条件仍需处理，合成材料不认证真实资格。局部正文变化后旧段落追溯和旧Word/PDF仍需全稿复核／再导出；本轮未运行整章重写模型实测、Word/PDF再导出、Windows锁与Word、WorkBuddy宿主或自动唤醒。应用API/数据库/部署未改，应用lint/build不适用；无关WIP保持。
+
+
+## 2026-10-10 — 投标Skill 1.17.0合入main
+
+- 完成内容：按用户要求，从codex/enterprise-dtx-skill-suite-runtime移植d4c447df至7789cbb7的19个投标相关提交到最新main，包含bid-skills-suite-v1.0.0与配套enterprise-diagrams。保留主分支已有QA与STATUS历史，未合入其他Skill分支历史；工作源目录的无关WIP保持。
+- 验证：合入后投标套件336项pytest／132项subtests、图表22项pytest／8项subtests通过；17Skill/34Schema和重建17ZIP一致性、18个Skill quick_validate、29个主脚本编译、JS语法与diff检查通过。代码与源分支对应目录一致，仅QA_REPORT保留main独有历史及本轮复测记录；390个变更路径限于两技能目录与STATUS。
+- 风险/后续：本次为源码集成复测，未重跑真实标书生成、业务评审、Word/PDF导出或跨宿主验收；既有正式交付阻塞和手动宿主交接边界不变。源码与本记录推送origin/main，生成ZIP、缓存和一次性产物不提交；源分支保留，无新增依赖或部署变更。

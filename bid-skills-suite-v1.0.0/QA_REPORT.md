@@ -219,3 +219,11 @@ python -m unittest discover -s tests -v
 - `node --check assets/ui/writing-editor.js`、`python3.13 -m unittest discover -s tests -q`（269项）、`python3.13 scripts/check_suite.py`（17 Skill/34 Schema、独立ZIP一致、0错误）、`git diff --check`通过。使用已安装Python3.13与既有依赖；系统Python无jsonschema时改用此解释器，无安装新依赖。
 - 本地8778真实编辑器验证：37章全部指标、29条原始检查说明逐项与writing-policy.json相等，9.3为1244字/1600–2400字/需补356字/界面图0/1张；9.2篇幅为建议，缺图为必改。键盘展开/收起及可见焦点、9.3跳转通过；两条原始图源诊断可展开且两个图源HTTP200。1366/1440/1920/390浅色和1440/390深色无溢出；抽查六类文字对比度浅色最低4.61:1、深色最低6.78:1。截图自审94/100。
 - 项目artifacts/work原有1062个文件哈希无变化。正文、设置、解析、评分、配图和导出数据未变；既有6阻塞/23推荐提示继续有效。新模型写作、生图、整标重导出、WorkBuddy及正式投标审核未运行，本次展示修改不要求这些路径。应用前后端、接口、权限、数据库与部署未改，应用lint/build不适用。截图与DOM/哈希证据只留本地项目reports，不纳入Git。
+
+
+## 2026-10-10：main 1.17.0 集成复测
+
+- 合入来源：codex/enterprise-dtx-skill-suite-runtime的19个投标相关提交，最新源提交7789cbb7；保留main独有的2026-09-28安装与行为复测历史，不导入其他Skill历史。
+- 当前main代码测试：投标套件336 passed／132 subtests，Enterprise Diagrams 22 passed／8 subtests；5条既有PyMuPDF/SWIG弃用提示，无失败。
+- 分发与静态检查：重新生成17个本地ZIP后，check_suite为17Skill／34Schema／0错误；18个quick_validate、29个主脚本py_compile、编辑器node --check及git diff --check通过。
+- 本轮只验证源码集成；真实标书模型写作、业务评审、Word/PDF重新导出、自动宿主唤醒及WorkBuddy兼容未重跑，不追加正式业务通过结论。

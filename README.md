@@ -8,6 +8,7 @@
 
 - [`industrial-ai-architect`](./industrial-ai-architect/README.md)：工业数字化、智能工厂、AI 战略架构、方案蓝图、路线图和业务落地设计。
 - [`ppt-maker-with-image`](./ppt-maker-with-image/README.md)：图片优先的 PPT 生成流程，包含需求确认、大纲、逐页提示词、图片生成和 PPTX 组装。
+- [`visual-to-editable-ppt`](./visual-to-editable-ppt/README.md)：视觉优先可编辑 PPT；接收大纲、逐页内容和风格，使用宿主生图工具设计页面，再重建为可编辑 PPTX，内置七套主题。
 - [`consulting-ppt-image`](./consulting-ppt-image/README.md)：咨询型图片 PPT 制作，包含内容交接、故事线与固定样式、逐页独立生成、版本审校和确认原图组装。公共版不含客户资料或参考图片；[验证与状态](./consulting-ppt-image/STATUS.md)。
 - [`ppt-maker-direct-pptx`](./ppt-maker-direct-pptx/README.md)：七道闸确认式 PPT 生成，输出可编辑 PowerPoint 原生对象。12 个 layout pattern + 5 内置预设 + 自然语言/参考图自定义风格 + 自动 lint + 状态机断点续做，兼容任意 OpenAI 协议 LLM（OpenAI / OpenRouter / Azure / Groq / Together / DeepSeek / vLLM / Ollama / LiteLLM）。
 - [`wechat-official-account-skills`](./wechat-official-account-skills/)：微信公众号「智能体架构笔记」运营技能包，覆盖选题、写作、排版配图、审稿、运营复盘和每日端到端草稿生成。

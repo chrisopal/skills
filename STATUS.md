@@ -1,3 +1,28 @@
+## 2026-10-10: Visual-first editable PPT skill
+
+- Scope: `visual-to-editable-ppt/` adds a content-to-design-to-editable workflow,
+  seven theme profiles, 12 page recipes, draft example, host/conversion/quality
+  guidance, and a small bridge reusing consulting production state.
+- Integration: selected image versions, authoritative page content/data, original
+  notes and stable IDs are copied into an immutable handoff. Changed content,
+  order, image bytes or selections invalidate old handoffs. Partial scopes are
+  explicit. Input-only PPTX carriers preserve notes; final PPTX audits check
+  native text, source-raster reuse, page count and notes.
+- Simplification: no second rendering engine or state machine; the original
+  consulting skill is unchanged. The existing image-to-editable-ppt CLI gains
+  an explicit discovered host-tool contract and provenance checks, preserving
+  Codex/CLI defaults. No dependency added; no generated images/decks committed.
+- Validation: bridge 23 tests and consulting 32 tests passed; converter 88 tests
+  passed (82 existing plus six host-tool tests). Skill metadata, Python AST,
+  JSON/YAML, local links and Git whitespace checks passed. Independent local
+  forward testing exercised actual prepare, revised page order, partial scopes,
+  stale-input rejection and exact Chinese speaker notes with synthetic fixtures.
+- Delivery: source prepared on `codex/visual-to-editable-ppt` for commit, normal
+  push and a reviewable PR against main; main is not changed by this delivery.
+- Limits: no live image generation/editing, WorkBuddy/Claude Code installation,
+  model-specific visual quality, or real final-deck edit/reopen acceptance.
+  Theme files are reusable design specifications, not visually approved samples.
+
 ## 2026-10-10: Integrate consulting-ppt-image into main
 
 - Scope: merge `feat/consulting-ppt-image-20261007` at `9f52a4cf`, adding

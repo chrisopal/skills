@@ -94,6 +94,8 @@
 
 ## 이미지 Backend 및 타사 API 구성
 
+사용자가 구성한 호스트 이미지 도구도 명시적인 `host-tool` 계약으로 선택할 수 있습니다(예: WorkBuddy 또는 Claude Code에서 제공하는 도구). Agent는 먼저 실제 도구 이름과 매개변수를 확인해야 합니다. 이 모드는 호스트 도구를 직접 호출하고 명시적으로 반환된 로컬 이미지만 가져오며 Codex OAuth나 API로 자동 전환하지 않습니다. 아래 내용은 기본 Codex/CLI 경로에 해당합니다.
+
 전체 backend 우선순위는 Codex 내장 `image_gen.imagegen` → Codex OAuth → OpenAI-compatible API입니다. 내장 도구는 agent가 직접 호출하며 Python/`editppt` CLI에서는 호출하거나 감지할 수 없습니다. 내장 도구를 사용할 수 없거나 호출할 수 없거나, 호출 오류가 발생하거나, 편집 입력을 읽을 수 없거나, 유효한 로컬 이미지를 반환하지 않은 경우에만 `editppt image` CLI 폴백으로 전환합니다. CLI는 먼저 로컬 Codex OAuth를 사용하고, 사용할 수 없으면 `~/.editppt/config.yaml` 또는 환경 변수의 OpenAI-compatible API 설정을 읽습니다.
 
 내장 이미지 생성에는 `prompt`만 필요합니다. 내장 이미지 편집에는 `prompt`와 로컬 절대 경로인 `referenced_image_paths`만 필요하며 편집 전에 입력 이미지를 먼저 확인해야 합니다. 내장 도구에는 `mask`, `model`, `size`, `quality`, `out` 등의 매개변수가 없으며, 이러한 매개변수가 없다는 이유로 폴백하지 않습니다. 성공 후에는 도구가 명시적으로 반환한 로컬 경로(`output_hint` 포함)만 받아 파일 유효성을 확인한 뒤 가져옵니다. “최신 파일”을 추측하기 위해 디렉터리를 검색하지 않습니다.

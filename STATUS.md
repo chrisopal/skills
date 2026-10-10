@@ -1,3 +1,11 @@
+## 2026-10-11 — Presales rehearsal with local ppt-master-plus
+
+- Scope: Run the designed mixed-input → requirements → clarification → storyline → solution → page pack → local PPT → review flow on a synthetic service-workorder case; add the validation report and link it from the design.
+- Evidence: Five source files read back, three independent-review findings corrected, content pack revision 2 rechecked. Eight SVG pages pass with no errors/warnings; native PPTX postflight passes; PowerPoint opens eight slides and exports a readable PDF; all SVG text and notes survive readback; one native-text edit/save/reopen smoke test passes.
+- Simplification: Reuse installed ppt-master-plus 4.5.0, existing Python and PowerPoint; no new dependencies, rendering engine or presales runtime. Generated files remain local under `output/presales-validation-2026-10-11/`.
+- Limits: Synthetic design rehearsal, not implemented-Skill integration or customer acceptance. LibreOffice has font/wrap differences; stable preview is the PowerPoint-native PDF. OCR, automatic invalidation and real projects remain untested.
+- Commit/push: This entry accompanies the scoped documentation commit; configured-remote synchronization is verified after push.
+
 ## 2026-10-10 — Presales solution workflow design
 
 - Scope: Add `docs/plans/2026-10-10-presales-solution-skills-design.md`: general B2B presales with optional industry materials, one orchestrator and nine business skills, clarification loops, mind map/page outline separation, product capability matching, external PPT handoff, and independent solution review.

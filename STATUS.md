@@ -1,3 +1,11 @@
+## 2026-10-10 — Presales solution workflow design
+
+- Scope: Add `docs/plans/2026-10-10-presales-solution-skills-design.md`: general B2B presales with optional industry materials, one orchestrator and nine business skills, clarification loops, mind map/page outline separation, product capability matching, external PPT handoff, and independent solution review.
+- Simplification: Reuse bid-suite evidence practices and the consulting Slide Content Pack boundary; no new runtime, dependency, PPT engine, or installed skills.
+- Validation: All ten skill designs contain trigger/input/process/output/completion/exception definitions; names and numbering are unique, Markdown fences are balanced, and scoped whitespace checks pass. Read source contracts and verified two key reference files against GitHub object hashes.
+- Commit/push: This entry accompanies the scoped design commit on the configured branch; remote synchronization is checked and reported after pushing.
+- Limits: Design proposal only. The mixed-input/PPT/behavioral acceptance scenarios are specified but not executed; no customer acceptance claimed. Unrelated concurrent edits and generated artifacts are excluded.
+
 ## 2026-09-28 — AI practical book editor v1.2.0
 
 - Scope: Publish `ai-practical-book-editor/` rules, references, reusable templates, evaluation definitions and deterministic tests.

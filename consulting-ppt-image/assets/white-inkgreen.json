@@ -1,0 +1,93 @@
+{
+  "id": "consulting-white-inkgreen",
+  "version": "1.0.0",
+  "canvas": {
+    "aspect_ratio": [
+      16,
+      9
+    ],
+    "preferred_pixels": [
+      2560,
+      1440
+    ],
+    "minimum_width": 1600,
+    "aspect_tolerance": 0.005,
+    "background": "#FFFFFF",
+    "native_resolution_note": "使用工具实际支持的横版尺寸；不把后期放大说成原生高清"
+  },
+  "palette": {
+    "title": "#0B4F4A",
+    "primary": "#0B4F4A",
+    "accent": "#18A983",
+    "text": "#4B5563",
+    "muted": "#7A8985",
+    "panel": "#EFF7F4",
+    "line": "#D5E6DF",
+    "exception": "照片保留自然色；真实风险/关键日期才可少量红色，不以蓝紫金区分章节"
+  },
+  "typography": {
+    "family": "Microsoft YaHei / Noto Sans CJK SC / 同类中文无衬线；全稿选一种",
+    "at_1920px": {
+      "title_px": [
+        48,
+        60
+      ],
+      "subtitle_px": [
+        26,
+        32
+      ],
+      "body_px": [
+        24,
+        30
+      ],
+      "minimum_label_px": 22,
+      "footer_px": [
+        18,
+        22
+      ]
+    },
+    "rule": "不缩小正文塞满页面；文案压缩不得改结论和数字。超密内容提出拆页申请，不自行改总页数"
+  },
+  "geometry": {
+    "outer_margin_percent": 3.2,
+    "title_alignment": "left",
+    "title_y_percent": 8.5,
+    "chapter_navigation": "左上只保留简短章节名和细线，不加营销角标",
+    "footer": "右下实际order/总页数；可选短项目名",
+    "card": "小圆角、浅绿/白底、细线；并列时统一大小",
+    "diagram": "层级、方向、边界可读；不画装饰性蜘蛛网"
+  },
+  "layout_policy": {
+    "consistent": "标题区、颜色、字体、页码、线条和图标语言",
+    "variable": "按关系选流程/架构/价值树/泳道/案例/场景/甘特图，不全用卡片",
+    "density": "中高但可读，一页一个核心判断，主体2-4组信息；复杂架构经审核可增加"
+  },
+  "image_policy": {
+    "one_slide_per_image": true,
+    "forbid_contact_sheet_as_delivery": true,
+    "reference_scope": "借鉴视觉，不借用客户事实",
+    "concept_label": "概念示意，非实景/审定设计",
+    "screenshot_policy": "保持原始官方截图，不让生成模型重画成伪截图"
+  },
+  "forbidden": [
+    "山水底纹",
+    "页面背景花纹",
+    "角落口号",
+    "未经授权Logo",
+    "整页渐变底",
+    "蓝绿紫多套主题轮换",
+    "无意义3D圆球",
+    "随机页码",
+    "虚构量化效果"
+  ],
+  "assembly": {
+    "mode": "approved_images_only",
+    "one_picture_shape_per_slide": true,
+    "preserve_original_bytes": true,
+    "fit": "contain",
+    "crop": false,
+    "stretch": false,
+    "repaint": false,
+    "add_visible_elements": false
+  }
+}

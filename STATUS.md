@@ -1,3 +1,18 @@
+## 2026-10-10: Integrate consulting-ppt-image into main
+
+- Scope: merge `feat/consulting-ppt-image-20261007` at `9f52a4cf`, adding
+  `consulting-ppt-image/` v1.0.1 and its root README discovery/install entries.
+- Preservation: the skill is byte-identical to the source branch; no refactor,
+  generated decks/images, client materials, or unrelated local changes included.
+- Verification: 32 regression tests passed on Python 3.13.13 in an isolated
+  environment with the declared requirements; 23 manifest hashes, exact package
+  inventory, six JSON files, Python AST, 15 local Markdown links, and Git
+  whitespace checks passed. Default macOS Python 3.9 lacked jsonschema and was
+  replaced for verification because this skill requires Python 3.10+.
+- Delivery: prepared as a merge commit on the current `origin/main` lineage;
+  publish with a normal push to main and confirm the resulting remote SHA.
+- Limits: no live image generation or multi-host installation acceptance run.
+
 ## 2026-10-08: Xiaohongshu video publishing adaptation
 
 - Scope: vendor `DeliciousBuding/xiaohongshu-skill` 1.5.1 at

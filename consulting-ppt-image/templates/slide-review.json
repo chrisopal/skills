@@ -1,0 +1,16 @@
+{
+  "slide_id": "S001",
+  "version": 1,
+  "artifact_sha256": "填register返回的实际哈希，不使用示例值",
+  "reviewer": "实际审阅人或视觉审校Agent",
+  "checks": {
+    "single_page": false,
+    "text_fidelity": false,
+    "visual_style": false,
+    "layout_readable": false,
+    "evidence_and_labels": false,
+    "page_number": false,
+    "no_invented_facts": false
+  },
+  "notes": "逐项看过原图后填写；False并不是待自动勾选的默认True"
+}

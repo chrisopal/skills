@@ -28,6 +28,20 @@ def _solid_png(width, height):
 
 @unittest.skipUnless(importlib.util.find_spec('docx'), 'Declared optional python-docx not installed')
 class WorkingDocxTests(unittest.TestCase):
+    def test_adjacent_tables_have_a_separator_for_office_roundtrip(self):
+        from docx import Document
+        from docx.oxml.ns import qn
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            table = {'headers': ['Field'], 'rows': [['Value']]}
+            spec = {'title': 'Two tables', 'sections': [{'title': 'Section', 'tables': [table, table]}]}
+            (root/'spec.json').write_text(json.dumps(spec))
+            build_docx.build(root/'spec.json', root/'draft.docx', root)
+            document = Document(root/'draft.docx')
+            self.assertEqual(len(document.tables), 2)
+            self.assertEqual(document.tables[0]._tbl.getnext().tag, qn('w:p'))
+            self.assertEqual(document.tables[0]._tbl.getnext().getnext().tag, qn('w:tbl'))
+
     def test_layout_template_survives_real_document(self):
         from docx import Document
         from docx.oxml.ns import qn

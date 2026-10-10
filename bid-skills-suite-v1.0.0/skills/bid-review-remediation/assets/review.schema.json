@@ -85,6 +85,27 @@
             "null"
           ]
         },
+        "quality_review_ref": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "relative_path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "relative_path",
+            "sha256"
+          ],
+          "additionalProperties": false
+        },
         "findings": {
           "type": "array",
           "items": {

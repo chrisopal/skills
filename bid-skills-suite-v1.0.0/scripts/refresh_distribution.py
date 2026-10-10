@@ -32,6 +32,15 @@ for _skill in ('bid-evidence-matching', 'bid-export-acceptance', 'bid-orchestrat
     DISTRIBUTED_SCRIPTS[_skill] += ('writing_policy.py',)
 for _skill in ('bid-export-acceptance', 'bid-orchestrator'):
     DISTRIBUTED_SCRIPTS[_skill] += ('render_review_report.py',)
+for _skill in ('bid-evidence-matching', 'bid-review-remediation', 'bid-export-acceptance',
+               'bid-orchestrator'):
+    DISTRIBUTED_SCRIPTS[_skill] += ('quality_checks.py',)
+for _skill in ('bid-technical-writing', 'bid-review-remediation', 'bid-export-acceptance',
+               'bid-orchestrator'):
+    DISTRIBUTED_SCRIPTS[_skill] += ('workflow_quality.py', 'bidkit.py', 'review_checks.py', 'quality_checks.py')
+    DISTRIBUTED_SCRIPTS[_skill] = tuple(dict.fromkeys(DISTRIBUTED_SCRIPTS[_skill]))
+for _skill in ('bid-export-acceptance', 'bid-orchestrator'):
+    DISTRIBUTED_SCRIPTS[_skill] += ('export_checks.py', 'outline_view.py')
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-project-profile': ('TENDER_ROUTING.md',),
@@ -54,6 +63,9 @@ for _skill in ('bid-outline-planning', 'bid-technical-writing', 'bid-visuals',
     DISTRIBUTED_DOCS[_skill] += ('CHAPTER_WRITING_POLICY.md',)
 for _skill in ('bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
     DISTRIBUTED_DOCS[_skill] += ('REVIEW_PRESENTATION.md',)
+for _skill in ('bid-scoring', 'bid-outline-planning', 'bid-technical-writing',
+               'bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
+    DISTRIBUTED_DOCS[_skill] += ('QUALITY_WORKFLOW.md', 'QUALITY_REVIEW.md', 'EXPORT_ACCEPTANCE_CHECKS.md')
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
     'bid-technical-writing': ('ui',),

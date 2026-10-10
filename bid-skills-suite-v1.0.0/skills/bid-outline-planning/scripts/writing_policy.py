@@ -114,8 +114,11 @@ def resolve_policy(section, sections, scoring, requirements, settings):
         peak = max(scheme_scores, default=0)
         high = any(isinstance(s['max_score'], (int, float)) and
                    (s['max_score'] >= 20 or (peak > 0 and s['max_score'] >= peak * 0.8)) for s in scheme)
-        detail = 'detailed' if high else 'standard'
+        direct_scheme = any(not item['inherited'] for item in scheme)
+        detail = 'detailed' if high and direct_scheme else 'standard'
         reasons.append('方案评分条件需要展开机制、步骤、异常处理及验收；高分项优先。')
+        if not direct_scheme:
+            reasons.append('本章继承父章评分；按本章实际需求负担分配篇幅，不重复承担父章完整分值。')
     elif types and types <= {'evidence', 'price'}:
         detail = 'brief'
         reasons.append('按证明材料或价格规则计分，增加文字不能替代有效证据或计算。')
@@ -127,12 +130,18 @@ def resolve_policy(section, sections, scoring, requirements, settings):
     if override.get('detail_level', 'auto') != 'auto':
         detail = override['detail_level']; reasons.append('采用用户逐章指定的详细程度。')
     target = round(base * {'brief': 0.5, 'standard': 1, 'detailed': 2}[detail])
-    if scheme and detail == 'standard' and override.get('detail_level', 'auto') == 'auto':
+    if (scheme and detail == 'standard' and override.get('detail_level', 'auto') == 'auto'
+            and (any(not item['inherited'] for item in scheme)
+                 or len(section.get('requirement_ids', [])) >= 4)):
         target = round(base * 1.5)
     source, required_length = 'recommendation', False
     fixed_form = bool(re.search(r'投标函|授权委托书|法定代表人.*身份证明|承诺函|报价表|开标一览表|偏离表|评分索引表|逐项响应.*表|证照复印件', section.get('title', '')))
     if fixed_form:
         target = None; reasons.append('固定表单按原格式填写，不为推荐字数填充内容。')
+    checklist = bool(re.search(r'核对清单|检查清单|索引表|汇总表', section.get('title', '')))
+    if checklist:
+        target = None
+        reasons.append('清单和索引按条目完整性检查，不按绑定需求数量扩写。')
     if settings['length_mode'] == 'fixed':
         target = settings.get('target_words'); source = 'global'; required_length = target is not None
     if override.get('target_words') is not None:
@@ -158,6 +167,9 @@ def resolve_policy(section, sections, scoring, requirements, settings):
     minimum = override.get('min_ui_images', settings['visuals']['min_ui_images']) if ui_required else 0
     tolerance = settings['length_tolerance']
     return {'section_id': section['id'], 'target_words': target,
+            'requirement_count': len(req_ids),
+            'scoring_contribution': ('direct' if any(not s['inherited'] for s in basis)
+                                     else 'inherited' if basis else 'none'),
             'min_words': math.ceil(target * (1 - tolerance)) if target is not None else None,
             'max_words': math.floor(target * (1 + tolerance)) if target is not None else None,
             'detail_level': detail, 'source': source, 'length_required': required_length,

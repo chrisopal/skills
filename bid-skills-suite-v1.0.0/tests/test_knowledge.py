@@ -42,6 +42,20 @@ class KnowledgeTests(unittest.TestCase):
         source.write_text(json.dumps(value or self.host_result(), ensure_ascii=False))
         return knowledge.import_host(self.project, source)
 
+    def test_continuous_chinese_query_recovers_separated_relevant_terms(self):
+        source = self.root / 'supplier.md'
+        source.write_text('支持工单管理，提供事件闭环处理。', encoding='utf-8')
+        knowledge.add_local(self.project, source, title='平台功能说明')
+        result = knowledge.search(self.project, '工单管理事件闭环')
+        self.assertEqual(result['total_matches'], 1)
+        self.assertIn('工单', result['matches'][0]['matched_terms'])
+        self.assertEqual(result['mode'], 'local_keyword')
+        self.assertEqual(knowledge.search(self.project, '财务税务核算报表')['total_matches'], 0)
+
+    def test_punctuation_only_query_cannot_claim_retrieval(self):
+        with self.assertRaises(ValueError):
+            knowledge.search(self.project, '。。。！？')
+
     def test_local_file_is_preserved_and_wiki_keeps_location(self):
         source = self.root / 'supplier.md'
         source.write_text('# 产品资料\n设备运维支持巡检。\n', encoding='utf-8')

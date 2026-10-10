@@ -169,6 +169,24 @@
           "items": {
             "type": "string"
           }
+        },
+        "export_acceptance_ref": {
+          "type": "object",
+          "properties": {
+            "relative_path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "required": [
+            "relative_path",
+            "sha256"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [

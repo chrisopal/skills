@@ -282,6 +282,8 @@ def search(project, query, limit=10):
     validate_index(project, index)
     # Transparent local lexical search; host semantic search remains a host tool operation.
     terms = set(re.findall(r'[a-z0-9_]+|[\u4e00-\u9fff]+', query.casefold()))
+    if not terms:
+        raise ValueError('查询需要包含中文、字母或数字')
     matches = []
     for entry in index['entries']:
         if entry['status'] == 'blocked':
@@ -289,9 +291,21 @@ def search(project, query, limit=10):
         content = bidkit.read(bidkit.safe(project, entry['content']['relative_path']))
         for block in content['blocks']:
             haystack = (entry['title'] + '\n' + block['text']).casefold()
-            score = sum(haystack.count(term) for term in terms)
+            matched_terms, score = [], 0
+            for term in sorted(terms):
+                if term in haystack:
+                    score += 4 * haystack.count(term)
+                    matched_terms.append(term)
+                elif re.fullmatch(r'[\u4e00-\u9fff]{3,}', term):
+                    grams = {term[i:i + 2] for i in range(len(term) - 1)}
+                    matched = sorted(gram for gram in grams if gram in haystack)
+                    # Transparent lexical fallback, not a semantic-search claim.
+                    if len(matched) / len(grams) >= 0.5:
+                        score += len(matched) / len(grams)
+                        matched_terms.extend(matched)
             if score:
                 matches.append({'id': entry['id'], 'title': entry['title'], 'score': score,
+                                'matched_terms': sorted(set(matched_terms)),
                                 'status': entry['status'], 'location': block['location'],
                                 'excerpt': block['text'][:1200],
                                 'excerpt_truncated': len(block['text']) > 1200,
@@ -300,6 +314,7 @@ def search(project, query, limit=10):
     matches.sort(key=lambda item: (-item['score'], item['id'], item['location']))
     return {'project_id': index['project_id'], 'matches': matches[:limit],
             'total_matches': len(matches), 'mode': 'local_keyword',
+            'query_terms': sorted(terms), 'chinese_fallback': 'bigram_overlap_min_0.5',
             'notice': '匹配仅供选材；真实性、适用性及正式承诺仍需核验。'}
 
 

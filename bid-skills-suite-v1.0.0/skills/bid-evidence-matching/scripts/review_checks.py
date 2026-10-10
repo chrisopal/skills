@@ -332,13 +332,41 @@ def check(project, review, snapshot_path):
         writing_policy = {'passed': False, 'blocking_issues': ['写作策略无法检查：' + str(exc)]}
     blockers.extend(writing_policy['blocking_issues'])
     warnings.extend(writing_policy.get('recommendation_issues', []))
+    quality_gate = {'quality_gate': 'NOT_RUN', 'errors': [], 'blockers': [],
+                    'warnings': [], 'semantic_acceptance': 'NOT_RUN',
+                    'binding_ready': False,
+                    'notice': '未发现profiles/quality-plan.json；质量闭环未运行。'}
+    quality_plan = project / 'profiles/quality-plan.json'
+    if quality_plan.is_file():
+        quality_ref = data.get('quality_review_ref')
+        try:
+            if not isinstance(quality_ref, dict):
+                raise ValueError('存在质量计划但15评审缺少data.quality_review_ref')
+            quality_path = bidkit.safe(project, quality_ref['relative_path'])
+            if (not str(quality_ref['relative_path']).startswith('reviews/')
+                    or quality_path.name != 'quality-review.json'):
+                raise ValueError('质量评审必须是reviews/quality-review.json')
+            if not quality_path.is_file() or bidkit.digest(quality_path) != quality_ref['sha256']:
+                raise ValueError('15质量评审引用不存在或哈希过期')
+            import quality_checks
+            quality_gate = quality_checks.check(project, quality_path, quality_plan)
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            quality_gate = {'quality_gate': 'BLOCKED', 'errors': [str(exc)],
+                            'blockers': [], 'warnings': [],
+                            'semantic_acceptance': 'NOT_RUN',
+                            'binding_ready': False}
+        errors.extend(quality_gate.get('errors', []))
+        blockers.extend(quality_gate.get('blockers', []))
+        warnings.extend(quality_gate.get('warnings', []))
     return {'current': current['current'], 'matrix_complete': not errors,
             'writing_policy': writing_policy,
             'errors': errors, 'release_blockers': list(dict.fromkeys(blockers)),
             'warnings': list(dict.fromkeys(warnings)),
             'counts': {a: len(stages[a]) for a in STAGES},
             'semantic_acceptance': 'REVIEWER_SUPPLIED_NOT_CERTIFIED_BY_SCRIPT',
-            'formal_release_ready': not errors and not blockers}
+            'formal_release_ready': not errors and not blockers,
+            'quality_gate': quality_gate.get('quality_gate', 'NOT_RUN'),
+            'quality_check': quality_gate}
 
 
 def main():

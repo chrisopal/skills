@@ -34,6 +34,20 @@ def ordered_sections(sections):
     if any(parent is not None and parent not in nodes for parent in children):
         raise ValueError('目录存在缺失父级')
 
+    # Numbered siblings may have been appended in separate writing batches.
+    # Keep custom/unnumbered format order, but display explicit numeric paths naturally.
+    for siblings in children.values():
+        keys = {}
+        for node_id in siblings:
+            raw = str(nodes[node_id].get('number') or '').strip()
+            mixed = re.fullmatch(f'([{CHINESE}]+)\\.(\\d+(?:\\.\\d+)*)', raw)
+            if mixed:
+                raw = f'{_chinese_integer(mixed[1])}.{mixed[2]}'
+            if re.fullmatch(r'\d+(?:\.\d+)*', raw):
+                keys[node_id] = tuple(map(int, raw.split('.')))
+        if len(keys) == len(siblings) and len(set(keys.values())) == len(siblings):
+            siblings.sort(key=keys.__getitem__)
+
     roots = children[None]
     stack = [(node, 0, (index + 1,)) for index, node in reversed(list(enumerate(roots)))]
     rows, visited = [], set()

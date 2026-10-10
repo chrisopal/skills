@@ -19,9 +19,10 @@
   with Python compilation and whitespace checks. Source changes are limited to
   the exporter, layout tests, changelog, quality guidance and this status record.
   Reuses the existing exporter and runtime; no new dependencies or repair pass.
-- Delivery: this follow-up belongs to `codex/visual-to-editable-ppt` and existing
-  PR https://github.com/chrisopal/skills/pull/6; commit/push the verified source
-  and read back the remote SHA. Main is unchanged. Generated PPTX/PDF/images,
+- Delivery: implementation `f42905c3` was committed and pushed to
+  `origin/codex/visual-to-editable-ppt`; remote SHA read-back matched. Existing
+  PR https://github.com/chrisopal/skills/pull/6 now records the live test and fixes.
+  Main is unchanged. Generated PPTX/PDF/images,
   local preview fonts and evidence stay under ignored
   `output/visual-to-editable-ppt-live-20261011/` and are not published.
 - Limits: the ribbon remains a movable/replacable raster, with minor font,

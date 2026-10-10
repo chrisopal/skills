@@ -58,6 +58,17 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; }
+.review-actions { border: 1px solid var(--ui-border); border-radius: 6px; padding: 12px; margin-bottom: 16px; background: var(--ui-surface-muted); }
+.review-actions-heading, .review-action-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.review-actions-heading { justify-content: space-between; }
+.review-actions-heading h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.review-action-toolbar { margin-top: 12px; }
+.review-action-toolbar select { max-width: 100%; min-height: 34px; border: 1px solid var(--ui-border-control); border-radius: 4px; padding: 4px 8px; font: inherit; color: var(--ui-text); background: var(--ui-surface); }
+.review-actions p { margin: 8px 0; overflow-wrap: anywhere; }
+.review-action-help { color: var(--ui-text-secondary); }
+.review-actions summary { cursor: pointer; color: var(--ui-action-text); }
+.review-action-prompt { display: block; width: 100%; height: 144px; margin: 8px 0; resize: vertical; padding: 8px; border: 1px solid var(--ui-border-control); border-radius: 4px; background: var(--ui-surface); color: var(--ui-text); font: inherit; }
+.review-action-toolbar select:focus-visible, .review-actions summary:focus-visible { outline: 2px solid var(--ui-action-text); outline-offset: 2px; }
 button, textarea { font: inherit; }
 .topbar { min-height: 56px; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; background: var(--ui-surface); border-bottom: 1px solid var(--ui-border); }
 .brand-block, .toolbar, .editor-heading, .editor-footer, .panel-heading { display: flex; align-items: center; }

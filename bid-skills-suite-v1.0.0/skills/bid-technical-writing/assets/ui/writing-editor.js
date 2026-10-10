@@ -5,6 +5,9 @@
   var selectedId = null;
   var collapsedSections = Object.create(null);
   var dirty = false;
+  var reviewActionBusy = false;
+  var workspaceBusy = false;
+  var reviewActionRetry = null;
   var unsavedBuffers = Object.create(null);
   var loadSequence = 0;
   var saveInFlight = false;
@@ -32,6 +35,7 @@
   }
 
   function setBusy(busy) {
+    workspaceBusy = busy;
     saveButton.disabled = busy || !state;
     reloadButton.disabled = busy;
     discardButton.disabled = busy || !dirty;
@@ -46,6 +50,91 @@
     Array.prototype.forEach.call(document.querySelectorAll(".chapter-link, .chapter-toggle, .policy-chapter-link"), function (button) {
       button.disabled = busy;
     });
+    renderReviewActions();
+  }
+
+  function renderReviewActions() {
+    var view = state && state.review_actions || {};
+    var request = view.latest_request;
+    var hasUnsaved = dirty || Object.keys(unsavedBuffers).length > 0;
+    var noTargets = document.getElementById("review-action-scope").value === "failed" && !(view.findings || []).length;
+    var disabled = workspaceBusy || reviewActionBusy || hasUnsaved || !view.available || noTargets ||
+      request && request.status === "claimed";
+    document.querySelectorAll("[data-review-action]").forEach(function (button) { button.disabled = disabled; });
+    document.getElementById("review-action-scope").disabled = workspaceBusy || reviewActionBusy;
+    var labels = { awaiting_host: "待宿主执行", needs_input: "待补材料／确认", running: "宿主执行中",
+      awaiting_rereview: "修改完成，待重新评审", completed_with_remaining: "已重评，仍有待处理项",
+      checks_clear_needs_semantic_acceptance: "检查已完成，待语义验收", stale: "任务版本已过期", attempts_exhausted: "已达整改轮次上限" };
+    var status = document.getElementById("review-action-status");
+    labels.claimed = "宿主执行中";
+    status.textContent = reviewActionBusy ? "正在创建任务" : request ? labels[request.status] || "任务待核验" : view.available ? "可创建任务" : "评审待准备";
+    status.className = "status status-" + (view.available ? "neutral" : "warning");
+    document.getElementById("review-action-notice").textContent = hasUnsaved ? "请先保存或放弃所有章节的未保存修改。" :
+      view.error ? text(typeof view.error === "object" ? view.error.message : view.error) : noTargets ? "本轮没有待修复项；可选择当前章节重写或提升。" :
+      "任务交由当前 Agent 执行；此编辑器尚未连接自动唤醒接口。修改后需要重新评审。";
+    var findings = document.getElementById("review-action-findings");
+    findings.replaceChildren();
+    (view.findings || []).forEach(function (row) {
+      var item = document.createElement("li");
+      item.textContent = (row.route === "requires_input" ? "需补材料／确认 · " : "待处理 · ") + text(row.reason || row.message || row.id);
+      findings.appendChild(item);
+    });
+    var result = document.getElementById("review-action-result");
+    result.replaceChildren();
+    if (request) {
+      var line = document.createElement("p");
+      var actionNames = {repair: "修复", rewrite: "重写", improve: "提升"};
+      line.textContent = (actionNames[request.action] || "整改") + " · " +
+        (request.scope === "chapter" ? "当前章节" : "本轮未通过项") + " · " + (labels[request.status] || "待核验");
+      result.appendChild(line);
+      var prompt = request.prompt || request.host_prompt;
+      if (prompt) {
+        var handoff = document.createElement("details");
+        var summary = document.createElement("summary");
+        summary.textContent = "交给当前 Agent 执行";
+        handoff.appendChild(summary);
+        var input = document.createElement("textarea");
+        input.readOnly = true;
+        input.className = "review-action-prompt";
+        input.setAttribute("aria-label", "整改交接指令");
+        input.value = prompt;
+        handoff.appendChild(input);
+        var copy = document.createElement("button");
+        copy.type = "button"; copy.className = "button button-secondary"; copy.textContent = "复制交接指令";
+        copy.addEventListener("click", function () {
+          if (!navigator.clipboard) { input.focus(); input.select(); copy.textContent = "请复制已选中的指令"; return; }
+          navigator.clipboard.writeText(prompt).then(function () { copy.textContent = "已复制"; })
+            .catch(function () { input.focus(); input.select(); copy.textContent = "请复制已选中的指令"; });
+        });
+        handoff.appendChild(copy);
+        result.appendChild(handoff);
+      }
+    }
+  }
+
+  function requestReviewAction(action) {
+    if (!state || workspaceBusy || reviewActionBusy) return;
+    if (dirty || Object.keys(unsavedBuffers).length) { showError("请先保存或放弃未保存的章节，再创建整改任务。"); return; }
+    var scope = document.getElementById("review-action-scope").value;
+    var intent = [action, scope, selectedSectionId(), state.writing.sha256].join(":");
+    if (!reviewActionRetry || reviewActionRetry.intent !== intent) {
+      reviewActionRetry = { intent: intent, id: crypto.randomUUID() };
+    }
+    var payload = {action: action, scope: scope, section_id: scope === "chapter" ? selectedSectionId() : null,
+      expected_revision: state.writing.revision, expected_sha256: state.writing.sha256, request_id: reviewActionRetry.id};
+    reviewActionBusy = true; showError(""); renderReviewActions();
+    fetch("/api/review-actions", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload)})
+      .then(function (response) { return response.json().then(function (data) {
+        if (!response.ok) throw new Error(data.error && data.error.message || "整改任务创建失败");
+        return data;
+      }); })
+      .then(function (data) {
+        state.review_actions = data;
+        if (data.request) state.review_actions.latest_request = data.request;
+        reviewActionRetry = null;
+      })
+      .catch(function (error) { showError(error.message); })
+      .finally(function () { reviewActionBusy = false; renderReviewActions(); });
   }
 
   function updateVisualFieldState() {
@@ -729,6 +818,7 @@
     document.getElementById("word-count").textContent = visibleWordCount(bodyEditor.value) + " 可见字";
     renderChapterPolicy();
     renderReferences();
+    renderReviewActions();
   }
 
   function applySettings(settings) {
@@ -887,8 +977,13 @@
     document.getElementById("word-count").textContent = visibleWordCount(bodyEditor.value) + " 可见字";
     renderChapterPolicy();
     setStatus("有未保存修改", "warning");
+    renderReviewActions();
   });
   saveButton.addEventListener("click", save);
+  document.getElementById("review-action-scope").addEventListener("change", renderReviewActions);
+  document.querySelectorAll("[data-review-action]").forEach(function (button) {
+    button.addEventListener("click", function () { requestReviewAction(button.dataset.reviewAction); });
+  });
   discardButton.addEventListener("click", discardCurrent);
   reloadButton.addEventListener("click", function () { if (!dirty || window.confirm("重载会丢弃当前未保存内容，继续吗？")) { delete unsavedBuffers[selectedId]; dirty = false; load(selectedId); } });
   document.getElementById("visuals-enabled-setting").addEventListener("change", updateVisualFieldState);
@@ -900,6 +995,6 @@
   });
   settingsForm.addEventListener("submit", saveSettings);
   document.getElementById("theme-button").addEventListener("click", function () { document.documentElement.setAttribute("data-theme", document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"); });
-  window.addEventListener("beforeunload", function (event) { if (dirty || saveInFlight) { event.preventDefault(); event.returnValue = ""; } });
+  window.addEventListener("beforeunload", function (event) { if (dirty || saveInFlight || Object.keys(unsavedBuffers).length) { event.preventDefault(); event.returnValue = ""; } });
   load(null);
 }());

@@ -17,8 +17,10 @@
   JSON/YAML, local links and Git whitespace checks passed. Independent local
   forward testing exercised actual prepare, revised page order, partial scopes,
   stale-input rejection and exact Chinese speaker notes with synthetic fixtures.
-- Delivery: source prepared on `codex/visual-to-editable-ppt` for commit, normal
-  push and a reviewable PR against main; main is not changed by this delivery.
+- Delivery: implementation `d2d9c400` was committed and pushed to
+  `origin/codex/visual-to-editable-ppt`; the remote SHA was read back and matched.
+  Review PR: https://github.com/chrisopal/skills/pull/6. Main remains unchanged;
+  this status-only follow-up records the verified publication.
 - Limits: no live image generation/editing, WorkBuddy/Claude Code installation,
   model-specific visual quality, or real final-deck edit/reopen acceptance.
   Theme files are reusable design specifications, not visually approved samples.

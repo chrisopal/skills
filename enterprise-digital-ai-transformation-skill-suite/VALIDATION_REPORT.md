@@ -1,5 +1,12 @@
 # Validation Report
 
+## 2026-10-10 process diagram increment
+
+- 26 Python tests pass, including seven diagram tests: containment semantics, explicit edge direction, upstream-only declarations, contradictory/dangling references, cross-parent endpoints, missing engine and safe isolated SVG/source outputs.
+- Suite validator: 98 files, 11 schemas, 17 skills, four workflows, zero errors. New diagram manifest header passes the artifact-header JSON schema. JavaScript syntax passes.
+- Actual review-v3 build contains seven domain hierarchy diagrams and fourteen L3 execution diagrams, all engine edges safe. Browser checks at 1366/1440/1920/390 widths in light/dark themes load all 21 images with no page overflow. Narrow diagrams intentionally scroll inside their canvas. Desktop hierarchy/execution and narrow dark screenshots inspected; badge overflow found in v2 was corrected in v3.
+- Browser JSON/SVG downloads compared with local diagram files. Prior source bytes/hashes and review-v1 remain unchanged. Generated outputs stay local. A4 small-text warnings remain in the manifest: HTML review is verified, printed diagram readability is not.
+
 ## 2026-10-10 revision 1.4
 
 - `python3 -m unittest discover -s scripts -p 'test_*.py'`: 19 passed (11 renderer, 8 planning pack). Renderer covers unsafe source/CSS, duplicate IDs, process hierarchy, source byte/hash retention, missing optional files and preservation of prior output on error.

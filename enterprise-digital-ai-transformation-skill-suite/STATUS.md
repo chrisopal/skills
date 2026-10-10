@@ -1,5 +1,13 @@
 # Status
 
+## 2026-10-10 — Diagram-first process review
+
+- Reuse: sibling Enterprise Diagrams engine without copying or modifying it; a small projection adapter separates parent containment from explicit upstream/downstream execution relationships.
+- Changed: renderer, process adapter/tests, review CSS/JS, design and runtime contracts. Existing node details remain available; JSON/SVG sources are downloadable.
+- Verified: 26 Python tests, JS syntax, suite validator (98 files, 17 skills, zero errors), diagram header schema, 21 loaded SVGs at four widths in two themes without page overflow; downloaded JSON/SVG match local artifacts.
+- Local result: `SMART-FACTORY-PLANNING-20261010/review-v3/index.html`, seven hierarchy diagrams and fourteen execution diagrams. Earlier versions preserved. Draft/assumed status unchanged; no WorkBuddy end-to-end or A4 print acceptance claimed.
+- Commit/push: source only, after verification; generated diagrams and screenshots excluded. Remote result reported in task response.
+
 ## 2026-10-10 — Readable review surfaces 1.4
 
 - Scope: preserve 17 business skills; route stage document writing, Enterprise UI Design HTML review and project-selected PPT confirmation through separate tasks. Draft review does not grant a Gate.

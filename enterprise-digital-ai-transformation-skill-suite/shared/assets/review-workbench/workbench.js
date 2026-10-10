@@ -52,6 +52,10 @@
     status.textContent = '审阅意见已导出；未批准 Gate';
   });
   document.getElementById('download-diagram').addEventListener('click', () => download('4a-traceability.drawio', data.diagram, 'application/xml'));
+  document.querySelectorAll('[data-process-download]').forEach(el => el.addEventListener('click', () => {
+    const name = el.dataset.processDownload;
+    download(name, data.process_diagram_files[name], name.endsWith('.svg') ? 'image/svg+xml' : 'application/json');
+  }));
   const sourceNames = {report:'report.md', pack:'planning-pack.json', slides:'slide-content-pack.json'};
   document.querySelectorAll('[data-download-source]').forEach(el => el.addEventListener('click', () => {
     const label = el.dataset.downloadSource;

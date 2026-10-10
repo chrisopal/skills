@@ -13,6 +13,7 @@
 - 独立质量审查：`consulting-quality-review`；
 - PPT 渲染器：`ppt-master-plus`，仅消费通过 G8 的 `slide-content-pack`。
 - 过程报告/HTML：依`document-and-html-review-contract.md`解析文档写作Skill及`enterprise-ui-design`，逐阶段单独任务卡；项目可指定`consulting-ppt-image`，不要强制默认PPT渲染器。模拟入口遵守草案边界和渲染器确认要求。
+- 流程图：本项目复用`enterprise-diagrams`生成JSON/SVG并直接嵌入HTML；挂载时同时确保其脚本和主题资源可用。层级包含关系与业务执行关系分图表达。
 
 HTML允许候选版本阅读，不代表正式PPT批准。外部Skill的可用性、挂载检查、工具执行和WorkBuddy实际运行分别记录；当前宿主缺文档工具时仅阻塞Word产物，不阻塞已有底稿的HTML阅读，不自动换用云端服务。打包时必须携带表现层模板/脚本与锁定的主题Token。
 

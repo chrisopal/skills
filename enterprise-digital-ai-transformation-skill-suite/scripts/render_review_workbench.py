@@ -8,6 +8,7 @@ import re
 import tempfile
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from process_diagrams import diagram_files, diagrams_html, render_process_diagrams
 
 ASSETS = Path(__file__).resolve().parents[1] / "shared/assets/review-workbench"
 LABELS = dict(zip(
@@ -205,8 +206,9 @@ def token_css(tokens):
     return '\n'.join(blocks)
 
 
-def render(pack, report, slides, tokens, sources, originals=None):
+def render(pack, report, slides, tokens, sources, originals=None, process_diagrams=None):
     validate(pack, slides)
+    process_diagrams = render_process_diagrams(pack.get('processes', [])) if process_diagrams is None else process_diagrams
     header = pack.get('artifact_header', {})
     title = next((line[2:] for line in report.splitlines() if line.startswith('# ')), '企业转型规划审阅')
     report_header = {}
@@ -222,7 +224,7 @@ def render(pack, report, slides, tokens, sources, originals=None):
     originals = originals or {}
     downloads = '<div class="toolbar">' + ''.join(f'<button class="btn" data-download-source="{key}">{label}</button>' for key, label in [('report', '下载原始报告 Markdown'), ('pack', '下载原始规划底稿 JSON'), ('slides', '下载原始PPT内容包 JSON')] if key in originals) + '</div>'
     views = {'report': downloads + f'<article class="report">{markdown(report) if report else empty("报告")}</article>' + disclosure('来源与版本', metadata) + disclosure('人工 Gate 原始状态', pack.get('gates', {}))}
-    views['process'] = f'<h1>四级流程 <span class="tag">{len(pack.get("processes", []))} 个节点</span></h1><div class="toolbar"><button class="btn" id="expand-tree">展开全部层级</button><button class="btn" id="collapse-tree">收起全部层级</button></div>' + process_tree(pack.get('processes', []))
+    views['process'] = f'<h1>四级流程 <span class="tag">{len(pack.get("processes", []))} 个节点</span></h1>' + (diagrams_html(process_diagrams) if process_diagrams else empty('流程图')) + '<details class="source process-details"><summary>全部流程字段与层级明细</summary><div class="toolbar"><button class="btn" id="expand-tree">展开全部层级</button><button class="btn" id="collapse-tree">收起全部层级</button></div>' + process_tree(pack.get('processes', [])) + '</details>'
     views['architecture'] = '<h1>4A 架构</h1><button class="btn" id="download-diagram">下载可编辑关系图 .drawio</button>' + architecture(pack)
     views['organization'] = '<h1>组织与绩效</h1><h2>决策责任矩阵</h2>' + table(pack.get('organization_decisions', []), [('decision', '决策'), ('A', '最终负责 A'), ('R', '执行负责 R'), ('boundary', '授权边界')]) + collection('完整 RACI 与升级路径', pack.get('organization_decisions', [])) + '<h2>KPI 基线与目标</h2>' + table(pack.get('kpis', []), [('name', '指标'), ('baseline', '基线'), ('target', '目标'), ('unit', '单位'), ('owner', '负责人'), ('status', '状态')]) + collection('KPI 计算口径、数据来源与约束', pack.get('kpis', []))
     financials = pack.get('financials', {})
@@ -232,12 +234,12 @@ def render(pack, report, slides, tokens, sources, originals=None):
         sid = slide['slide_id']
         previews.append(f'<article class="slide-review" data-slide-id="{esc(sid)}"><div class="slide-canvas"><p class="slide-meta">{esc(sid)} · {esc(slide.get("section", ""))} · {esc(slide.get("review_status", "未提供状态"))}</p><h2>{esc(slide.get("title", ""))}</h2><p class="key-message">{esc(slide.get("key_message", ""))}</p><ul class="slide-points">' + ''.join(f'<li>{esc(p)}</li>' for p in slide.get('supporting_points', [])) + f'</ul><p class="qualifier">{esc(slide.get("visible_qualifier", ""))}</p></div>' + disclosure('页面全部字段与来源', slide) + f'<label class="note-label">{esc(sid)} 审阅意见<textarea class="review-note" data-note-id="{esc(sid)}" rows="3" placeholder="记录修改意见；不会批准内容或启动图片生成"></textarea></label></article>')
     views['slides'] = '<h1>PPT 逐页审阅</h1><p class="notice">HTML 内容排版示意，使用企业蓝灰审阅主题。此视图不生成或批准最终图片PPT；审阅意见不构成人工 Gate 批准。</p><div class="toolbar"><label>审阅人 <input id="reviewer" autocomplete="name"></label><button class="btn primary" id="export-notes">导出审阅意见 JSON</button><span id="save-status" role="status"></span></div>' + (''.join(previews) or empty('PPT 内容包')) + disclosure('演示文稿版本、来源与审批原始状态', {k: v for k, v in slides.items() if k != 'slides'})
-    data = {'metadata': metadata, 'slide_ids': [s['slide_id'] for s in slides.get('slides', [])], 'diagram': drawio(pack), 'originals': originals}
+    data = {'metadata': metadata, 'slide_ids': [s['slide_id'] for s in slides.get('slides', [])], 'diagram': drawio(pack), 'originals': originals, 'process_diagram_files': diagram_files(process_diagrams, header)}
     notice = f'来源状态：{header.get("mode", "未提供模式")} / {header.get("data_status", "未提供数据状态")} / {header.get("status", "未提供版本状态")} · 人工 Gate：{header.get("human_gate", "未提供")}'
     return '<!doctype html><html lang="zh-CN" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; script-src \'unsafe-inline\'; connect-src \'none\'; img-src data:; base-uri \'none\'; form-action \'none\'"><title>' + esc(title) + '</title><style>' + token_css(tokens) + ASSETS.joinpath('workbench.css').read_text() + '</style></head><body><a class="skip" href="#main">跳到内容</a><header class="topbar"><span>咨询过程审阅</span><button class="btn" id="theme-toggle" aria-pressed="false">切换深色</button></header><div class="shell"><nav aria-label="阅读视图">' + ''.join(f'<a href="#{key}" data-view="{key}">{label}</a>' for key, label in nav) + '</nav><main id="main" tabindex="-1"><p class="provenance">' + esc(notice) + '</p>' + ''.join(f'<section id="{key}" class="view" aria-label="{label}" {"" if key == "report" else "hidden"}>{views[key]}</section>' for key, label in nav) + '</main></div><script id="review-data" type="application/json">' + safe_json(data) + '</script><script>' + ASSETS.joinpath('workbench.js').read_text() + '</script></body></html>'
 
 
-def build(pack_path, report_path, slides_path, tokens_path, out):
+def build(pack_path, report_path, slides_path, tokens_path, out, diagram_engine=None):
     sources = {}
     originals = {}
     def load(path, label, optional=False, json_format=True):
@@ -255,11 +257,26 @@ def build(pack_path, report_path, slides_path, tokens_path, out):
     report = load(report_path, 'report', True, False)
     slides = load(slides_path, 'slides', True)
     tokens = load(tokens_path, 'tokens')
-    output = render(pack, report, slides, tokens, sources, originals)
+    validate(pack, slides)
+    process_diagrams = render_process_diagrams(pack.get('processes', []), diagram_engine)
+    output = render(pack, report, slides, tokens, sources, originals, process_diagrams)
     out = Path(out)
     if out.resolve() in {Path(p).resolve() for p in (pack_path, report_path, slides_path, tokens_path) if p}:
         raise ValueError('Output must not overwrite an input')
     out.parent.mkdir(parents=True, exist_ok=True)
+    if process_diagrams:
+        files = diagram_files(process_diagrams, pack.get('artifact_header', {}))
+        diagrams_dir = out.parent / 'diagrams'
+        # Refuse to overwrite edited or previously approved diagram artifacts.
+        for name, content in files.items():
+            target = diagrams_dir / name
+            if target.exists() and target.read_text(encoding='utf-8') != content:
+                raise ValueError(f'Diagram output exists with different content: {target}; use a new output directory')
+        diagrams_dir.mkdir(exist_ok=True)
+        for name, content in files.items():
+            target = diagrams_dir / name
+            if not target.exists():
+                target.write_text(content, encoding='utf-8')
     with tempfile.NamedTemporaryFile('w', encoding='utf-8', dir=out.parent, delete=False) as tmp:
         tmp.write(output)
         temporary = Path(tmp.name)
@@ -274,9 +291,10 @@ def main():
     parser.add_argument('--slides', type=Path)
     parser.add_argument('--tokens', required=True, type=Path)
     parser.add_argument('--out', required=True, type=Path)
+    parser.add_argument('--diagram-engine', type=Path, help='Explicit enterprise-diagrams skill directory or diagram_svg.py path')
     args = parser.parse_args()
     try:
-        print(build(args.pack, args.report, args.slides, args.tokens, args.out))
+        print(build(args.pack, args.report, args.slides, args.tokens, args.out, args.diagram_engine))
     except (ValueError, OSError, KeyError, TypeError) as exc:
         parser.exit(1, f'Render failed: {exc}\n')
 

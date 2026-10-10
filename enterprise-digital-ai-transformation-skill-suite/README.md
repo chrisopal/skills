@@ -57,6 +57,8 @@ WorkBuddy 本地专家挂载与发布边界见 `shared/references/workbuddy-runt
 
 过程报告、L1—L4流程、4A、组织绩效、投资路线图和逐页PPT草稿的HTML阅读，见[文档与HTML审阅契约](shared/references/document-and-html-review-contract.md)。用户指定图片PPT时采用`consulting-ppt-image`；审阅UI采用`enterprise-ui-design`，内容/样式实际确认前不生成正式图片PPT。
 
+流程图复用同仓库的`enterprise-diagrams`：层级图展示L1—L4包含关系，执行图只绘制底稿显式关系；HTML内直接显示SVG并保留JSON/SVG图源。独立安装可通过`--diagram-engine`指定该Skill的`diagram_svg.py`路径。
+
 ## 本地校验
 
 ```bash

@@ -37,7 +37,7 @@ for _skill in ('bid-evidence-matching', 'bid-review-remediation', 'bid-export-ac
     DISTRIBUTED_SCRIPTS[_skill] += ('quality_checks.py',)
 for _skill in ('bid-technical-writing', 'bid-review-remediation', 'bid-export-acceptance',
                'bid-orchestrator'):
-    DISTRIBUTED_SCRIPTS[_skill] += ('workflow_quality.py', 'bidkit.py', 'review_checks.py', 'quality_checks.py')
+    DISTRIBUTED_SCRIPTS[_skill] += ('workflow_quality.py', 'review_actions.py', 'bidkit.py', 'review_checks.py', 'quality_checks.py')
     DISTRIBUTED_SCRIPTS[_skill] = tuple(dict.fromkeys(DISTRIBUTED_SCRIPTS[_skill]))
 for _skill in ('bid-export-acceptance', 'bid-orchestrator'):
     DISTRIBUTED_SCRIPTS[_skill] += ('export_checks.py', 'outline_view.py')
@@ -65,7 +65,7 @@ for _skill in ('bid-review-remediation', 'bid-export-acceptance', 'bid-orchestra
     DISTRIBUTED_DOCS[_skill] += ('REVIEW_PRESENTATION.md',)
 for _skill in ('bid-scoring', 'bid-outline-planning', 'bid-technical-writing',
                'bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
-    DISTRIBUTED_DOCS[_skill] += ('QUALITY_WORKFLOW.md', 'QUALITY_REVIEW.md', 'EXPORT_ACCEPTANCE_CHECKS.md')
+    DISTRIBUTED_DOCS[_skill] += ('QUALITY_WORKFLOW.md', 'QUALITY_REVIEW.md', 'EXPORT_ACCEPTANCE_CHECKS.md', 'REVIEW_ACTIONS.md')
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
     'bid-technical-writing': ('ui',),

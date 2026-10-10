@@ -594,6 +594,12 @@ class WritingWorkspace:
         chapter_policy = (resolve_policy(selected_section, outline['data']['sections'],
                                          scoring['data']['items'], requirements['data']['requirements'], settings)
                           if selected_section else None)
+        try:
+            from review_actions import ReviewActionService
+            review_actions = ReviewActionService(self.project).view()
+        except Exception as exc:  # review actions are advisory and must not hide editor state.
+            review_actions = {"available": False, "error": str(exc), "findings": [],
+                              "latest_request": None, "host_execution": "manual_handoff"}
         return {"project": project_view, "outline": outline_view, "writing": writing_view,
                 "chapters": rows, "chapter": chapter, "requirements": requirements,
                 "score": scoring, "scoring": scoring, "evidence": evidence,
@@ -601,7 +607,19 @@ class WritingWorkspace:
                 "references": self._references(chapter, requirements, scoring, evidence),
                 "upstream": upstream, "coverage": self._coverage(), "settings": settings,
                 "chapter_policy": chapter_policy,
+                "review_actions": review_actions,
                 "ui": {"semantic_acceptance": "NOT_TESTED", "writable_state": "proposed/draft only"}}
+
+    def review_action_request(self, request: dict) -> dict:
+        """Create a host handoff and return the refreshed state view plus request."""
+        from review_actions import ReviewActionError, ReviewActionService
+        try:
+            created = ReviewActionService(self.project).request(request)
+        except ReviewActionError as exc:
+            raise WorkspaceError(str(exc), exc.code, exc.status) from exc
+        view = ReviewActionService(self.project).view()
+        view["request"] = created
+        return view
 
     def _validate_save_request(self, request: dict) -> tuple[int, str, str, str]:
         if not isinstance(request, dict):
@@ -878,6 +896,9 @@ class _RequestHandler(BaseHTTPRequestHandler):
                 return
             if self.path == "/api/settings":
                 self._send_json(200, self.workspace.save_settings(self._json_body()))
+                return
+            if self.path == "/api/review-actions":
+                self._send_json(200, self.workspace.review_action_request(self._json_body()))
                 return
             self._send_json(404, {"error": {"code": "not_found", "message": "路径不存在"}})
         except Exception as exc:

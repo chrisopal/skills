@@ -85,6 +85,19 @@
           </form>
         </details>
         <div id="error-banner" class="message message-error" role="alert" hidden></div>
+        <section class="review-actions" aria-labelledby="review-actions-heading">
+          <div class="review-actions-heading"><h3 id="review-actions-heading">评审整改</h3><span id="review-action-status" class="status" role="status">读取评审中</span></div>
+          <div class="review-action-toolbar">
+            <label for="review-action-scope">范围</label>
+            <select id="review-action-scope"><option value="failed">本轮未通过项</option><option value="chapter">当前章节</option></select>
+            <button type="button" class="button button-primary" data-review-action="repair" disabled>一键修复</button>
+            <button type="button" class="button button-secondary" data-review-action="rewrite" disabled>一键重写</button>
+            <button type="button" class="button button-secondary" data-review-action="improve" disabled>一键提升</button>
+          </div>
+          <p id="review-action-notice" class="meta-text">读取当前评审后可创建整改任务。</p>
+          <div id="review-action-result" aria-live="polite"></div>
+          <details class="review-action-help"><summary>动作说明与待处理项</summary><p>修复：补齐具体缺项。重写：重构所选范围的章节。提升：强化评分响应、实施机制和验收方法。缺失原件、签章及真实演示需另行补充。</p><ul id="review-action-findings"></ul></details>
+        </section>
         <label class="field-label" for="body-editor">Markdown 草稿</label>
         <textarea id="body-editor" class="body-editor" spellcheck="false" disabled></textarea>
         <div class="editor-footer"><span id="word-count" class="meta-text">0 字</span><span class="status status-warning">正文满足性待复核</span></div>

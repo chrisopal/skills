@@ -60,6 +60,8 @@ The skill also works without a Token by falling back to its built-in offline det
 
 ## Image Backend and Third-Party API Configuration
 
+A user-configured native host image tool can also be selected through an explicit `host-tool` contract (for example a tool exposed by WorkBuddy or Claude Code). The agent must first discover the actual tool names and parameters; this mode calls the host tool directly and imports its explicit local output, without automatic Codex OAuth or API fallback. The following describes the default Codex/CLI path.
+
 Image generation and editing prefer the current agent's built-in `image_gen.imagegen` tool. Only when a defined fallback condition is met does the workflow invoke the `editppt image` CLI, which prefers local Codex OAuth (`~/.codex/auth.json`) and, if that is unavailable, reads OpenAI-compatible API configuration from `~/.editppt/config.yaml` or environment variables.
 
 You normally do not need to configure anything yourself. Ask the AI to configure an API fallback only when:

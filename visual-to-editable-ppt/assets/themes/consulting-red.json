@@ -1,0 +1,95 @@
+{
+  "id": "consulting-red",
+  "version": "1.0.0",
+  "name": "白底朱红咨询",
+  "intent": "鲜明、简练，适合变革决策与经营复盘",
+  "canvas": {
+    "aspect_ratio": [
+      16,
+      9
+    ],
+    "preferred_pixels": [
+      2560,
+      1440
+    ],
+    "minimum_width": 1600,
+    "aspect_tolerance": 0.005,
+    "background": "#FFFFFF",
+    "native_resolution_note": "按实际生图能力选横向画布；非16:9原图先确认适配方案，不拉伸或放大冒称原生高清"
+  },
+  "palette": {
+    "primary": "#B52632",
+    "title": "#B52632",
+    "accent": "#E85544",
+    "text": "#302B2C",
+    "panel": "#FAEEEE",
+    "background": "#FFFFFF"
+  },
+  "typography": {
+    "family": "优先选择已安装且可嵌入/替换的中文无衬线字体，如 Noto Sans CJK SC、微软雅黑；整套保持一致",
+    "reference_canvas_px": [
+      1920,
+      1080
+    ],
+    "title_px": [
+      52,
+      64
+    ],
+    "body_px": [
+      28,
+      34
+    ],
+    "label_min_px": 24,
+    "footer_px": [
+      18,
+      22
+    ],
+    "rule": "正文超密时压缩排版草案或申请拆页；不自动改已批准文案或靠微字塞入。重建时结合实际画布换算字号"
+  },
+  "geometry": {
+    "outer_margin_percent": 5,
+    "grid_columns": 12,
+    "gutter_percent": 1.5,
+    "alignment": "同一页的文字块有统一基线；连接线端点贴合对象",
+    "footer": "右下实际页序/全稿总页数；部分稿保留原页码并在交付说明标明范围"
+  },
+  "art_direction": {
+    "surface": "白底、朱红关键判断，深灰正文；红色只强调主观点，风险另用标签/形状区分",
+    "composition": "顶部左对齐结论；单一红色数字锚点或左侧问题与右侧路径；封面留白配细红框",
+    "chart_language": "主数据朱红，基准浅灰；不能让所有负数/风险和品牌强调混为一谈",
+    "material": "高质量照片/插画可保留为独立位图；常规文字与结构图形重建为原生对象"
+  },
+  "layout_policy": {
+    "density": "每页一个主结论，主体通常2—4组支撑；内容决定布局而非固定卡片数",
+    "variety": "封面、观点、数据、架构、流程、案例、对比与路线图按需组合"
+  },
+  "image_policy": {
+    "one_slide_per_image": true,
+    "reference_scope": "只借鉴风格，不借用咨询公司Logo、客户事实或未经授权的照片",
+    "concept_label": "生成概念场景显著标为概念示意"
+  },
+  "editable_target": {
+    "native": [
+      "正文",
+      "标题",
+      "数据标签",
+      "表格结构",
+      "流程框",
+      "连接线"
+    ],
+    "independent_images": [
+      "照片",
+      "插画",
+      "复杂装饰",
+      "品牌标记"
+    ],
+    "charts": "保持原始数据，按转换运行时真实能力构造可编辑结构；未生成原生数据图表时明确说明"
+  },
+  "forbidden": [
+    "未经授权公司Logo",
+    "虚构数据或实景",
+    "装饰遮挡正文",
+    "整页图片加重复文本框冒充可编辑",
+    "跨页随机更换主题"
+  ]
+}

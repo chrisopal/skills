@@ -1,5 +1,7 @@
 import sys
 import tempfile
+import zipfile
+from xml.etree import ElementTree as ET
 import unittest
 from pathlib import Path
 
@@ -18,6 +20,7 @@ from build_pptx_from_manifest import (  # noqa: E402
     render_preview,
     slide_size_type,
     text_box_xml,
+    write_pptx,
 )
 from prepare_deck_run import fit_content_box, slide_for_source  # noqa: E402
 
@@ -96,7 +99,37 @@ class SlideLayoutTest(unittest.TestCase):
 
     def test_non_wide_presentation_size_is_custom(self):
         self.assertEqual("custom", slide_size_type(emu(16), emu(10.6666667)))
-        self.assertEqual("wide", slide_size_type(emu(13.333), emu(7.5)))
+        self.assertEqual("screen16x9", slide_size_type(emu(13.333), emu(7.5)))
+
+    def test_wide_package_uses_valid_ooxml_size_and_keeps_widescreen_label(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = root / "wide.pptx"
+            write_pptx({"slide": {"width": 13.333, "height": 7.5}}, out, root / "manifest.json")
+            with zipfile.ZipFile(out) as package:
+                presentation = ET.fromstring(package.read("ppt/presentation.xml"))
+                size = presentation.find("{http://schemas.openxmlformats.org/presentationml/2006/main}sldSz")
+                self.assertEqual("screen16x9", size.get("type"))
+                self.assertEqual(str(emu(13.333)), size.get("cx"))
+                self.assertEqual(str(emu(7.5)), size.get("cy"))
+                app = ET.fromstring(package.read("docProps/app.xml"))
+                self.assertEqual("Widescreen", app.find("{http://schemas.openxmlformats.org/officeDocument/2006/extended-properties}PresentationFormat").text)
+
+    def test_theme_style_lists_meet_drawingml_minimum_count(self):
+        # CT_FillStyleList, CT_LineStyleList, CT_EffectStyleList and
+        # CT_BackgroundFillStyleList each require at least three entries.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            out = root / "theme.pptx"
+            write_pptx({}, out, root / "manifest.json")
+            with zipfile.ZipFile(out) as package:
+                theme = ET.fromstring(package.read("ppt/theme/theme1.xml"))
+            ns = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
+            for name in ("fillStyleLst", "lnStyleLst", "effectStyleLst", "bgFillStyleLst"):
+                with self.subTest(style_list=name):
+                    styles = theme.find(f"a:themeElements/a:fmtScheme/a:{name}", ns)
+                    self.assertIsNotNone(styles)
+                    self.assertGreaterEqual(len(styles), 3)
 
     def test_text_font_size_is_clamped_to_source_box(self):
         manifest = {

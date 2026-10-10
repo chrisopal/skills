@@ -1,0 +1,95 @@
+{
+  "id": "annual-gala",
+  "version": "1.0.0",
+  "name": "年会与盛典",
+  "intent": "庄重、温暖、舞台感，适合年会、表彰与周年庆",
+  "canvas": {
+    "aspect_ratio": [
+      16,
+      9
+    ],
+    "preferred_pixels": [
+      2560,
+      1440
+    ],
+    "minimum_width": 1600,
+    "aspect_tolerance": 0.005,
+    "background": "#171223",
+    "native_resolution_note": "按实际生图能力选横向画布；非16:9原图先确认适配方案，不拉伸或放大冒称原生高清"
+  },
+  "palette": {
+    "primary": "#F8D88B",
+    "title": "#F8D88B",
+    "accent": "#BB75E8",
+    "text": "#FFF7E8",
+    "panel": "#30243D",
+    "background": "#171223"
+  },
+  "typography": {
+    "family": "优先选择已安装且可嵌入/替换的中文无衬线字体，如 Noto Sans CJK SC、微软雅黑；整套保持一致",
+    "reference_canvas_px": [
+      1920,
+      1080
+    ],
+    "title_px": [
+      52,
+      64
+    ],
+    "body_px": [
+      28,
+      34
+    ],
+    "label_min_px": 24,
+    "footer_px": [
+      18,
+      22
+    ],
+    "rule": "正文超密时压缩排版草案或申请拆页；不自动改已批准文案或靠微字塞入。重建时结合实际画布换算字号"
+  },
+  "geometry": {
+    "outer_margin_percent": 5,
+    "grid_columns": 12,
+    "gutter_percent": 1.5,
+    "alignment": "同一页的文字块有统一基线；连接线端点贴合对象",
+    "footer": "右下实际页序/全稿总页数；部分稿保留原页码并在交付说明标明范围"
+  },
+  "art_direction": {
+    "surface": "深紫黑底、香槟金标题、柔和紫光；装饰集中边缘，正文区保持高对比",
+    "composition": "封面居中大主题配背景光弧；人物/奖项页清晰肖像与原生姓名；日程用宽松时间轴",
+    "chart_language": "统计页保留清晰数值与单位；金色只高亮关键数字，避免全页金字降低层级",
+    "material": "高质量照片/插画可保留为独立位图；常规文字与结构图形重建为原生对象"
+  },
+  "layout_policy": {
+    "density": "每页一个主结论，主体通常2—4组支撑；内容决定布局而非固定卡片数",
+    "variety": "封面、观点、数据、架构、流程、案例、对比与路线图按需组合"
+  },
+  "image_policy": {
+    "one_slide_per_image": true,
+    "reference_scope": "只借鉴风格，不借用咨询公司Logo、客户事实或未经授权的照片",
+    "concept_label": "生成概念场景显著标为概念示意"
+  },
+  "editable_target": {
+    "native": [
+      "正文",
+      "标题",
+      "数据标签",
+      "表格结构",
+      "流程框",
+      "连接线"
+    ],
+    "independent_images": [
+      "照片",
+      "插画",
+      "复杂装饰",
+      "品牌标记"
+    ],
+    "charts": "保持原始数据，按转换运行时真实能力构造可编辑结构；未生成原生数据图表时明确说明"
+  },
+  "forbidden": [
+    "未经授权公司Logo",
+    "虚构数据或实景",
+    "装饰遮挡正文",
+    "整页图片加重复文本框冒充可编辑",
+    "跨页随机更换主题"
+  ]
+}

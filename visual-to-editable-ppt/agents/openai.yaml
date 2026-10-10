@@ -1,0 +1,4 @@
+interface:
+  display_name: "视觉优先可编辑 PPT"
+  short_description: "用宿主生图工具设计漂亮页面，再重建为可编辑 PPT，支持咨询、方案、营销和年会主题"
+  default_prompt: "使用 $visual-to-editable-ppt，依据已确认的逐页内容和风格，先验证代表页，再生成可编辑 PPTX。"

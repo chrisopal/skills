@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "deck_id": "visual-editable-demo",
+  "version": "0.1.0",
+  "purpose": "统一客户对数字化规划范围与近期决策的认识",
+  "audience": "客户管理层",
+  "decisions_required": [
+    "确认范围",
+    "确认调研负责人"
+  ],
+  "page_budget": 3,
+  "language": "zh-CN",
+  "theme_profile": "consulting-purple",
+  "output_formats": [
+    "png",
+    "pptx"
+  ],
+  "story_arc": [
+    "项目理解",
+    "总体蓝图",
+    "下一步"
+  ],
+  "approval_ref": "",
+  "sections": [
+    {
+      "id": "context",
+      "title": "项目理解"
+    },
+    {
+      "id": "blueprint",
+      "title": "总体蓝图"
+    },
+    {
+      "id": "next",
+      "title": "下一步"
+    }
+  ],
+  "slides": [
+    {
+      "slide_id": "S001",
+      "order": 1,
+      "section": "context",
+      "purpose_id": "establish-scope",
+      "title": "先明确业务目标，再确定数字化规划范围",
+      "key_message": "本轮先建立目标、范围与责任的共同认识。",
+      "supporting_points": [
+        "管理层确认业务目标",
+        "业务部门说明关键流程",
+        "项目组建立问题与资料清单"
+      ],
+      "artifact_ids": [],
+      "evidence_ids": [],
+      "visual_type": "analysis",
+      "layout_hint": "左侧目标与范围，右侧三类参与方，底部一句结论",
+      "review_status": "draft",
+      "content_kind": "proposal",
+      "visible_qualifier": "演示内容，待项目确认"
+    },
+    {
+      "slide_id": "S002",
+      "order": 2,
+      "section": "blueprint",
+      "purpose_id": "show-shared-foundation",
+      "title": "统一底座承接业务协同，而不是替代专业系统",
+      "key_message": "共用数据、集成和权限服务，业务应用按职责分层。",
+      "supporting_points": [
+        "上层为业务应用",
+        "中层为共享服务",
+        "底层为专业设备与系统"
+      ],
+      "artifact_ids": [],
+      "evidence_ids": [],
+      "visual_type": "architecture",
+      "layout_hint": "三层架构，右侧说明职责边界",
+      "diagram_spec": {
+        "nodes": [
+          {
+            "id": "app",
+            "label": "业务应用"
+          },
+          {
+            "id": "shared",
+            "label": "共享服务"
+          },
+          {
+            "id": "systems",
+            "label": "专业系统"
+          }
+        ],
+        "edges": [
+          {
+            "from": "systems",
+            "to": "shared",
+            "label": "数据与事件"
+          },
+          {
+            "from": "shared",
+            "to": "app",
+            "label": "能力支撑"
+          }
+        ]
+      },
+      "review_status": "draft",
+      "content_kind": "proposal",
+      "visible_qualifier": "演示蓝图，待项目确认"
+    },
+    {
+      "slide_id": "S003",
+      "order": 3,
+      "section": "next",
+      "purpose_id": "request-next-decision",
+      "title": "以联合调研形成首轮规划输入",
+      "key_message": "下一步确认参与人、资料清单和评审节点。",
+      "supporting_points": [
+        "确认业务代表",
+        "归集当前资料",
+        "组织范围与目标评审"
+      ],
+      "artifact_ids": [],
+      "evidence_ids": [],
+      "visual_type": "action-plan",
+      "layout_hint": "工作、参与人、输出三列；不虚构日期",
+      "review_status": "draft",
+      "content_kind": "proposal",
+      "visible_qualifier": "行动建议",
+      "story_role": "closing"
+    }
+  ],
+  "appendix": [],
+  "citation_index": []
+}

@@ -4,6 +4,14 @@ Release notes are generated from this file. Keep changelog entries in English.
 
 ## Unreleased
 
+### Features
+
+- Add an explicit native host image-tool contract with observed-schema validation, per-page prompt propagation, and actual tool provenance; keep existing Codex and CLI defaults.
+
+### Fixes
+
+- Prevent PowerPoint repair prompts by writing the valid `screen16x9` slide-size enum and the required minimum of three entries in each DrawingML theme style list. Preserve explicit dimensions, object styling, and the Widescreen application label; add package-level regression checks. ([skills#6](https://github.com/chrisopal/skills/pull/6))
+
 ### Documentation
 
 - Add complete Korean README and English and Korean versions of the Docsify usage documentation, with synchronized language navigation, search, and pagination. (#26)

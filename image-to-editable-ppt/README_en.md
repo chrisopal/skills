@@ -94,6 +94,8 @@ It is useful when screenshot-like or image-based slides need to become easier to
 
 ## Image Backend And Third-Party API Configuration
 
+A user-configured native host image tool can also be selected through an explicit `host-tool` contract (for example a tool exposed by WorkBuddy or Claude Code). The agent must first discover the actual tool names and parameters; this mode calls the host tool directly and imports its explicit local output, without automatic Codex OAuth or API fallback. The following describes the default Codex/CLI path.
+
 The complete backend order is Codex's built-in `image_gen.imagegen` -> Codex OAuth -> OpenAI-compatible API. The agent calls the built-in tool directly; Python and the `editppt` CLI cannot call or detect it. The workflow enters the `editppt image` CLI fallback only when the built-in tool is unavailable/not callable, its call errors, an edit input is unreadable, or it returns no valid local image. Inside the CLI fallback, local Codex OAuth is selected first, followed by OpenAI-compatible API settings from `~/.editppt/config.yaml` or environment variables.
 
 Built-in generation requires only `prompt`. Built-in editing requires only `prompt` and absolute local paths in `referenced_image_paths`, and every input must be viewed first. The built-in tool has no `mask`, `model`, `size`, `quality`, or `out` parameters; their absence never triggers fallback. After success, the workflow accepts only the explicit local path returned by the tool (including `output_hint`), verifies it, and imports it without scanning a directory for a "newest" file.

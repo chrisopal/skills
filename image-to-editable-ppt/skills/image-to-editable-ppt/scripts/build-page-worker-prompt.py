@@ -93,6 +93,9 @@ def build_prompt(run_dir: Path, page: dict, page_dir: Path) -> str:
     missing = [p for p in replacements if p in prompt]
     if missing:
         raise SystemExit(f"Unfilled placeholders in worker prompt: {missing}")
+    if request.get("image_backend", {}).get("backend_id") == "host-tool":
+        prompt += "\n\nRecorded host-tool contract (execute via native tools; see manifest-schema.md):\n"
+        prompt += json.dumps(request["image_backend"], ensure_ascii=False, indent=2) + "\n"
     return prompt
 
 

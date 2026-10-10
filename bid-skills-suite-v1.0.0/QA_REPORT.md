@@ -227,3 +227,12 @@ python -m unittest discover -s tests -v
 - 当前main代码测试：投标套件336 passed／132 subtests，Enterprise Diagrams 22 passed／8 subtests；5条既有PyMuPDF/SWIG弃用提示，无失败。
 - 分发与静态检查：重新生成17个本地ZIP后，check_suite为17Skill／34Schema／0错误；18个quick_validate、29个主脚本py_compile、编辑器node --check及git diff --check通过。
 - 本轮只验证源码集成；真实标书模型写作、业务评审、Word/PDF重新导出、自动宿主唤醒及WorkBuddy兼容未重跑，不追加正式业务通过结论。
+
+## 2026-10-11：安装指南与 WorkBuddy 桌面有限实测
+
+- 文档：重写套件 README 为完整目录安装、依赖准备、首次调用、写作/评审/导出与续写指南；更新 START_HERE 和仓库索引。新增独立 enterprise-diagrams README 与 docs/WORKBUDDY.md，区分 Skill、绘图渲染器、宿主原生生图和实际截图；保留 Draw.io。
+- 工程：Python 3.13 执行 `scripts/refresh_distribution.py`、`scripts/check_suite.py`，17 Skill/34 Schema/同源分发无错误；`python -m unittest discover -s tests -q` 为 336 项通过。README Mac/Linux 复制块在临时目录实际执行，18 个完整目录逐文件一致，二次执行拒绝覆盖；独立绘图 ZIP 根目录及 README 绘图 CLI 验证通过。Markdown 本地链接和 diff 检查通过。仅文档修改，无运行逻辑、接口、依赖或部署变化。
+- 真实宿主：WorkBuddy 5.6.2、Deepseek-V4.1-Flash，默认权限下安装发现 18 个目录，实际加载总控/相关 Skill 并运行。合成 DOCX 原生读取 23 块，单包软件集成+服务组合、12 条需求、9 个评分叶项合计 100 分；4.1 候选 933 可见字符符合 800 字目标容差。teal 六状态流程实际输出 JSON/SVG/PNG 和哈希收据；HTML 在原生产物面板打开。
+- 原生生图与整改：实际调用 WorkBuddy ImageGen，首轮连接失败后重试成功；后续原生编辑保存新修订并保留旧图。回读发现界面状态名、字段及退回连线问题，宿主对话整改后仍保留语义待整改；图片数量检查通过不等于视觉或业务语义通过。生成图明确标为设计示意，不能称真实系统截图，也不能称全程离线。
+- 评审：9 项计分、5 项合规、3 组材料进入矩阵，缺资质/签署/业绩证明保留阻塞，正式交付条件未通过。DOCX 原生解析成功，但核心自动引文检查首轮保留 19 条不支持错误；宿主另存逐条来源和正文回读，整改后重新执行，不替换自动门禁。详见 [WorkBuddy 实测](docs/WORKBUDDY.md)。
+- 未测：整本标书、Word/PDF/目录刷新、多章并行、OCR、私有知识库、ZIP 界面安装、Windows/PowerShell、真实材料真实性及签署递交/客户验收。未修改 Skill 运行代码；兼容缺陷明确记录，未声称全流程通过。原件、图像、截图、收据及一次性脚本仅留本地测试项目，不进 Git。

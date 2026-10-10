@@ -4,6 +4,8 @@
 
 把技能安装到支持读取技能目录的通用智能体，或先用“手动读取SKILL.md”的方式验证工作流。项目原件、企业素材和每步结果保存到一个你能控制的项目文件夹。
 
+完整安装、Windows/WorkBuddy步骤及首次指令见 [README](README.md)。独立配图技能见 [enterprise-diagrams](../enterprise-diagrams/README.md)；保留 Draw.io，系统界面图使用当前宿主实际生图工具。
+
 ## 方式一：整套本地目录
 
 解压后保留`skills/`、`profiles/`、`scripts/`和`registry.json`。按宿主文档配置技能发现目录，使其发现`skills/`下的17个子目录；不要把套件根README误当SKILL.md。
@@ -29,7 +31,7 @@ done
 
 ## 方式二：逐个导入
 
-进入`installable-zips/`，按宿主支持的文件夹或ZIP导入功能逐个导入。每个ZIP只含一个技能目录，名称与SKILL.md的name一致。不承诺所有宿主使用同样的菜单或能够一次批量导入。
+先从完整源码仓库运行 `python scripts/refresh_distribution.py` 生成本地分发包，再进入`installable-zips/`，按宿主支持的文件夹或ZIP导入功能逐个导入。GitHub 不预置这些生成的 ZIP。每个ZIP只含一个技能目录，名称与SKILL.md的name一致。不承诺所有宿主使用同样的菜单或能够一次批量导入。
 
 源码有修改后，先运行 `python scripts/refresh_distribution.py` 重建本地ZIP和校验清单，再运行 `python scripts/check_suite.py` 确认ZIP与源码一致。
 
@@ -59,7 +61,7 @@ done
 
 ## 验证状况
 
-本包的文件结构、输出样例和辅助脚本在生成环境做了工程测试，详见QA_REPORT.md。WorkBuddy、Codex或其他具体宿主的导入／工具权限，以及真实项目全流程尚未实测；不要把可携带格式理解成所有平台自动完全兼容。
+本包的工程检查与 Codex 安装/执行记录见 [QA_REPORT.md](QA_REPORT.md)。2026-10-11 增加 WorkBuddy 桌面实测，实际范围、结果及未运行项见 [WorkBuddy 安装与验证](docs/WORKBUDDY.md)。安装发现、模型执行、成图与实际业务验收分别记录，不把有限样本推广为所有平台完全兼容。
 
 ## 限定目录与写作测试
 

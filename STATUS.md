@@ -1272,3 +1272,9 @@
 - 完成内容：按用户要求，从codex/enterprise-dtx-skill-suite-runtime移植d4c447df至7789cbb7的19个投标相关提交到最新main，包含bid-skills-suite-v1.0.0与配套enterprise-diagrams。保留主分支已有QA与STATUS历史，未合入其他Skill分支历史；工作源目录的无关WIP保持。
 - 验证：合入后投标套件336项pytest／132项subtests、图表22项pytest／8项subtests通过；17Skill/34Schema和重建17ZIP一致性、18个Skill quick_validate、29个主脚本编译、JS语法与diff检查通过。代码与源分支对应目录一致，仅QA_REPORT保留main独有历史及本轮复测记录；390个变更路径限于两技能目录与STATUS。
 - 风险/后续：本次为源码集成复测，未重跑真实标书生成、业务评审、Word/PDF导出或跨宿主验收；既有正式交付阻塞和手动宿主交接边界不变。源码与本记录推送origin/main，生成ZIP、缓存和一次性产物不提交；源分支保留，无新增依赖或部署变更。
+
+## 2026-10-11 — 投标 Skill 通用安装说明与 WorkBuddy 实测
+
+- 完成内容：更新根 README、投标套件 README 和 START_HERE，新增 enterprise-diagrams README、WorkBuddy 安装/调用/结果说明，追加 QA_REPORT。覆盖完整目录/单包安装、Codex/WorkBuddy/其他宿主、Python 依赖、首次指令、篇幅与配图、续写、评审及导出；保留 Draw.io，明确独立绘图与原生生图的区别。仅文档变更，不新增运行抽象、项目依赖、API 或部署。
+- 验证：17 Skill/34 Schema 与分发同源检查、336 项 unittest 通过；实际执行 README 复制块验证 18 个完整目录及拒绝覆盖，绘图 CLI、独立 ZIP 结构、本地 Markdown 链接和 diff 检查通过。WorkBuddy 5.6.2 实际安装发现、DOCX 23 块、组合分类、12 需求/100 分评分、933 字候选、teal SVG/PNG、原生 ImageGen 调用与编辑修订、HTML 预览均保存回读证据。缺资质/签署/业绩仍阻塞，未提升为正式可交付。
+- 风险/后续：DOCX 自动引文核验仍受限，界面图状态/退回连线语义仍待整改，已公开记录；本次未改运行代码或把人工回读算成自动门禁通过。未运行整标、Word/PDF/目录刷新、多章并行、OCR/私有知识库、Windows/PowerShell、ZIP 界面导入及真实投标验收。生成物仅留本地，无关 WIP 保持；验证后按仓库约定提交并推送 main。

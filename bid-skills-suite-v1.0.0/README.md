@@ -1,46 +1,148 @@
 # 投标编制 Skill 套件
 
-**版本 1.17.0 · 2026-10-10 · 中文 · 16个业务技能 + 1个总控技能**
+**版本 1.17.0 · 16 个业务 Skill + 1 个总控 Skill**
 
-新增[评审整改动作](docs/REVIEW_ACTIONS.md)：修复、重写、提升按当前评审与指定章节生成任务，宿主实际修改后重新评审；版本冲突、材料缺口和执行记录独立保存。网页尚无自动唤醒宿主接口时明确显示待交接，不将创建任务当成已执行。
+把招标文件解析、项目分类、需求与评分提取、目录、证据匹配、写作、配图、评审和 Word/PDF 导出串成一条可追溯的编标流程。安装到支持 `SKILL.md` 的宿主 Agent 后，由宿主模型和实际工具执行；不需要部署 Bid Agent 应用。
 
-新增[质量闭环](docs/QUALITY_WORKFLOW.md)：逐条评分条件与共同事实、实际导出内容收据、能力预检和限次整改；优化继承评分篇幅及连续中文检索。所有语义和视觉结论仍须实际宿主核验。
+源码位于 [chrisopal/skills](https://github.com/chrisopal/skills) 的 `main` 分支。目录名 `bid-skills-suite-v1.0.0` 为兼容已有安装链接而保留，实际版本看本页与 `registry.json`。
 
-新增[评审报告展示与打印](docs/REVIEW_PRESENTATION.md)：直接读取当前评审矩阵，统一概览、评分项、证据及整改版式；基础Word工作稿统一表格、图片、图注与页码字体。展示与排版不改变业务结论，正式交付门禁仍独立执行。
+## 安装：先拿到完整目录
 
-新增[核心逐项评审](docs/CORE_REVIEW.md)和[导出配置](docs/EXPORT_LAYOUT.md)：评分叶子、合规条款与材料组逐项核验，正式门禁拒绝漏审、证据漂移和关键未知；封面、多级目录、字体、缩进、行距、页边距与页眉页脚可配置。目录域仍须实际引擎刷新及逐页验收。
+```bash
+git clone --branch main https://github.com/chrisopal/skills.git
+cd skills/bid-skills-suite-v1.0.0
+```
 
-新增宿主子Agent按章节并行编写、独立提案、限次重试、恢复与协调者版本合并；任务状态与实际Agent身份落盘，不能以配置保存冒充已并行执行。详见[并行章节写作](docs/PARALLEL_WRITING.md)。
+也可在 GitHub 下载 `main` 的源码 ZIP 并解压。**每个 `skills/bid-*` 文件夹才是一个 Skill**；不要把套件根目录当成单个 Skill，也不要只复制 `SKILL.md`。安装时保留该 Skill 的 `references/`、`assets/`、`scripts/` 等配套文件。
 
-新增完整候选编标与宿主对话修订流程：固定表单、全部章节及逐项响应继续推进，缺失企业事实和报价留空。修改后作废旧审核/导出，重新核对当前版本、页码及实际文件；正式采纳与递交门禁保留。
+| 宿主 | 安装方式 | 安装后验证 |
+|---|---|---|
+| Codex 本地 | 完整复制或软链接 17 个 `bid-*` 到 `~/.codex/skills/`（自定义时为 `$CODEX_HOME/skills/`） | 新建会话，选择 `bid-orchestrator` |
+| WorkBuddy 桌面端 | “专家·技能·连接器 → 技能 → 添加技能 → 上传技能”逐个导入本地包；技术用户也可复制完整目录 | “我安装的”中确认技能已启用，再新建本地任务 |
+| 其他支持 Skills 的 Agent | 按宿主文档，将每个完整 Skill 目录放到其发现目录或导入单 Skill 包 | 核对名称、资源读取、脚本执行和实际输出 |
+| 仅能聊天的宿主 | 提供目标 `SKILL.md` 及所需参考文件，按规程执行 | 不能据此宣称已原生安装，文件保存和导出能力需另核验 |
 
-新增有官方来源边界的可执行投标版式候选模板、项目覆盖记录及字号/缩进/段间距读回验证。配图方式可由用户选择，架构图默认SVG、系统界面示意默认Agent自带生图Skill。本次明确由配图Skill调用当前宿主实际生图能力，区分界面设计示意、SVG功能架构与真实系统截图；编辑器新增按章节展示实际图的预览和图源入口。保留可落盘配图配置、父子目录展开及同源HTML报告。保留目录到写作、覆盖检查、编辑保存、冲突历史、段落追溯及图文工作稿；配置不代表工具已可用或图片已生成。正式采纳仍需真实确认。HTML采用enterprise-ui-design规范。保留四类模板、公开语料、PaddleOCR、本地／宿主知识与项目Wiki。为保留已有安装链接，源码目录名称继续使用 `bid-skills-suite-v1.0.0`；实际版本以此处与registry为准。
+完整流程建议一次安装 17 个；单项使用也可以，但必须提供其必要上游结果。独立绘图 Skill [enterprise-diagrams](../enterprise-diagrams/README.md) 可作为第 18 个安装到同一发现目录，不替代 `bid-visuals`。
 
-将招标文件理解、响应策划、证据准备、编写、配图、排版、评审与导出整理为可复用技能。面向投标人侧，不包含招标人组织评标，也不是独立应用或后台服务。
+以上本地路径不会自动同步到云端、容器或远程 Agent。使用这些环境时，按宿主的安装方式提供完整 Skill，并让实际执行环境能读取项目目录、运行脚本及保存结果；不要把桌面端已发现当成云端已安装。
 
-排版来源与模板：[投标版式模板指南](docs/BID_LAYOUT_TEMPLATES.md)。以招标文件及有效补遗为权威，通用模板补齐未规定项；正式成稿仍需原有审核与交付门禁。
+Mac/Linux 复制安装示例：从本套件根目录执行。默认目标为 Codex；安装到 WorkBuddy 时，将第一行改为 `BID_SKILL_DEST="${WORKBUDDY_CONFIG_DIR:-$HOME/.workbuddy}/skills"`。先检查所有同名目标，发现已有安装就停止，不覆盖。
 
-## 从哪里开始
+```bash
+BID_SKILL_DEST="${CODEX_HOME:-$HOME/.codex}/skills"
+mkdir -p "$BID_SKILL_DEST"
+for skill in skills/bid-* ../enterprise-diagrams; do
+  target="$BID_SKILL_DEST/${skill##*/}"
+  if [ -e "$target" ] || [ -L "$target" ]; then
+    echo "已存在，请先核对并备份：$target" >&2
+    exit 1
+  fi
+done
+for skill in skills/bid-* ../enterprise-diagrams; do
+  cp -R "$skill" "$BID_SKILL_DEST/${skill##*/}"
+done
+```
 
-1. 先读 `START_HERE_先读我.md`，按你的宿主选择整套目录或单技能ZIP。
-2. 打开 `skills/bid-orchestrator/SKILL.md`，向智能体提供真实项目原件与工作目录。
-3. 先做理解确认，再准备证据、设计方案与编写；不要将合成示例或模板当成实际投标结果。
+Windows 可用文件管理器复制完整目录，或用 PowerShell：从本套件根目录执行，先将 `$bidSkillDest` 改成实际宿主目录。WorkBuddy 默认示例为 `$env:USERPROFILE\.workbuddy\skills`；自定义配置目录时以实际位置为准。
 
-## 包内内容
+```powershell
+$bidSkillDest = Join-Path $env:USERPROFILE '.workbuddy/skills'
+$bidSources = @(Get-ChildItem './skills/bid-*' -Directory) + @(Get-Item '../enterprise-diagrams')
+New-Item -ItemType Directory -Force $bidSkillDest | Out-Null
+foreach ($item in $bidSources) {
+    if (Test-Path (Join-Path $bidSkillDest $item.Name)) { throw "已存在：$($item.Name)，请先备份" }
+}
+foreach ($item in $bidSources) { Copy-Item $item.FullName (Join-Path $bidSkillDest $item.Name) -Recurse }
+```
 
-| 目录/文件 | 用途 |
-|---|---|
-| `skills/` | 17个标准目录，每个含SKILL.md、专项手册、契约、Schema、模板、示例、测试场景和本地校验器 |
-| `installable-zips/` | 本地分发时生成的17个单独技能压缩包；运行`scripts/refresh_distribution.py`后与skills目录内容一致 |
-| `registry.json` | 技能编号、依赖、输入说明、输出位置和人工确认点 |
-| `profiles/` | 2个招采检查种子、5个行业领域种子、2个版式检查种子 |
-| `assets/` | 四类提取模板与分类契约、人工确认空模板、基础文档生成输入示例 |
-| `benchmarks/public-tenders/` | 公开原件来源清单、AI候选标注、可复跑验证说明；原件本地保存 |
-| `scripts/` | 项目初始化、原件登记、原生／可选OCR解析、项目知识与Wiki、结构校验、评分与覆盖检查、快照、草稿DOCX/PDF、交付打包和本地分发包刷新 |
-| `examples/` | 智能工厂17产物合成链 + 设备采购缺资料反例 |
-| `docs/` | 安装、契约、场景组合、人工门禁、测试和工具限制说明 |
-| `tests/` | 可在本地运行的工程检查，不调用真实模型 |
-| `QA_REPORT.md` | 本次实际执行结果、通过范围和未验证部分 |
+需要上传包时，先在本套件目录运行：
+
+```bash
+python scripts/refresh_distribution.py
+python scripts/check_suite.py
+```
+
+这会在本地生成 `installable-zips/` 下 17 个单 Skill ZIP。ZIP 是生成物，**GitHub 源码中不预置这些包**；刷新分发需要保留同一仓库相邻的 `enterprise-diagrams/`。独立绘图 Skill 的打包方法见其 [README](../enterprise-diagrams/README.md)。更详细的安装与更新步骤见 [先读我](START_HERE_先读我.md)。
+
+## 准备运行能力
+
+Skill 不附带模型、API Key、OCR 服务或办公软件。阅读规程不要求 Python；运行辅助脚本需要 **Python 3.10+**，建议在套件目录创建虚拟环境：
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python scripts/check_suite.py
+```
+
+Windows 对应解释器为 `.venv\Scripts\python.exe`。告诉宿主使用该解释器的绝对路径；安装依赖并不保证宿主默认 `python` 指向它。仅结构校验可安装 `requirements-core.txt`；`requirements.txt` 另含 DOCX/PDF 原生处理依赖。
+
+| 能力 | 额外准备 | 不可用时 |
+|---|---|---|
+| 原生 DOCX/PDF 解析 | `python-docx`、PyMuPDF，已列入 `requirements.txt` | 保留未读范围；不能声称完整解析 |
+| 扫描件 OCR | 显式配置已部署的 PaddleOCR 服务，Key 只放环境 | 记录待补读页，见 [OCR 配置](docs/OCR_SETUP.md) |
+| 企业知识 | 本地资料或宿主实际开放的知识检索工具 | 记录资料缺口；见 [知识接入](docs/KNOWLEDGE.md) |
+| 技术图 | 下节列出的引擎 | 显式引擎缺失时保持 blocked |
+| 系统界面示意 | 宿主原生生图 Skill/工具及授权 | 缺图保持整改项，不拿提示词当图片 |
+| Word/PDF 与目录刷新 | 宿主文档工具，或本地 LibreOffice/Word | 只交付已验证的格式；目录域未刷新单列未完成 |
+| 分章并行 | 宿主实际支持子 Agent | 记录串行执行及原因，不伪造并行记录 |
+
+## 第一次使用
+
+先建一个**独立项目目录**并作为宿主工作空间。把招标原件和补遗放到 `inputs/`，企业方案、证照等作为明确授权的资料输入。原件只读，不把项目结果写回 Skill 安装目录。
+
+第一条指令可直接复制，替换项目路径：
+
+> 请调用 bid-orchestrator，项目目录为【项目绝对路径】。先按 understand 模式读取 inputs 中的招标文件和补遗，识别标包、采购类型及组合模板，提取基础信息、需求、评分、资格否决与强制格式。保存带原文位置和输入哈希的 JSON/Markdown，并生成 HTML 报告。缺页、缺附件或分类歧义保留待确认。先不要编写整本标书。
+
+理解无误后继续：
+
+> 基于当前理解结果，继续响应策略、目录和证据匹配，生成章节任务卡。只使用已提供的企业资料，资质、业绩、人员、报价缺失时保留缺口。给出需要确认的方案和关键承诺。技术图使用 blueprint、teal 主题、SVG 输出；系统界面示意使用本宿主实际生图 Skill。
+
+确认方案后写作：
+
+> 按已确认目录编写所有章节。评分重点自动推荐篇幅，章节【稳定ID】覆盖为2000字、至少1张界面示意。若宿主支持子 Agent，按任务卡独立写章，由一个协调者合并；否则串行。实际保存并回读，保留未满足项。
+
+评审与导出：
+
+> 调用 bid-review-remediation 审核当前版本的评分条件、关键材料完整性和资格/否决条件。可修复的内容定向整改并复评，缺证照或签署不能靠改写通过。再调用 bid-export-acceptance，按招标强制格式及项目导出配置生成实际Word/PDF，核对目录、页码、附件、图表及真实渲染页面。不要代签、盖章或递交。
+
+对话可随时调整目录、章节、篇幅和配图；宿主须保存新修订并使受影响评审/导出重新核验。网页上的“修复/重写/提升”生成版本绑定的任务；没有宿主唤醒接口时须把交接指令送回宿主执行，不能把按钮点击当作已修复。
+
+## 画图：Skill 和渲染工具分别准备
+
+`bid-visuals` 管理图的用途、章节关联、来源与审核；独立 `enterprise-diagrams` 提供可复用版式。配置写入项目 `work/writing-settings.json` 的 `visuals`，不要只在聊天里说“已配置”。建议让总控读取已有设置再保存；不要用片段覆盖整份文件。
+
+| 选择 | 适用图 | 安装/依赖与输出 |
+|---|---|---|
+| `blueprint` + enterprise-diagrams | 分层架构、流程、泳道、网络、并行、简单时序、矩阵 | Python 标准库生成 SVG；保留 `.diagram.json`。8 类布局、6 套主题；PNG 另需宿主已有 CairoSVG |
+| `drawio` | 复杂架构、部署、网络和需图形编辑的流程 | 保留现有 Draw.io 路径；需实际 Draw.io Desktop/CLI。原生 `.drawio` + SVG/PNG；加载 Skill 不等于安装桌面渲染器 |
+| `plantuml` | 时序、异常分支与较复杂交互 | 实际 PlantUML 命令，或 Java + `PLANTUML_JAR`；保留 `.puml` |
+| `mermaid` | 简单流程 | 已有 Mermaid CLI 与可用浏览器；保留 `.mmd` |
+| 宿主生图 | 系统界面示意、概念效果图 | Codex 使用实际 Imagegen；WorkBuddy 使用本次开放的生图能力，不复制 Codex 的工具名冒充兼容 |
+
+主题：`reference`、`blue`、`teal`、`green`、`slate`、`monochrome`。例如“这张架构图改用 blueprint、blue 主题、四层、SVG”；层数服从实际设计，不为模板发明组件。未显式选择时 `auto` 按图型及已安装工具路由，默认 SVG，保留 Draw.io。配置优先级为逐图指令 → 项目偏好 → 默认规则。
+
+先运行 `python scripts/diagram_tools.py doctor` 检查工具发现，再实际渲染。安装包、命令、原生源与渲染收据说明见 [技术图工具](docs/DIAGRAM_TOOLS.md)。独立 Skill 安装后可直接说：
+
+> 调用 enterprise-diagrams，把以下已确认组件和关系画成四层架构，主题teal，保存可编辑JSON源和SVG，检查文字、连线与A4可读性。
+
+系统界面生成图须标 **“界面设计示意，非实际系统截图”**。真实截图必须来自实际系统；两者不能互作证明。图必须实际生成、插入正文并在导出中核验，工具退出码不代替视觉与语义验收。
+
+## 项目如何保存与续写
+
+```text
+项目目录/
+├── inputs/        原件与补遗（只读）
+├── profiles/      分类、导出等显式项目配置
+├── work/          project.json、总控状态、写作设置和任务记录
+├── artifacts/     01—14结构化结果及可读报告
+├── assets/        图源、成图与调用收据
+├── reviews/       15评审、缺口与整改结果
+├── deliverables/  16实际交付文件与清单
+└── reports/       同版本HTML展示
+```
+
+跨 Skill 通过项目文件、稳定 ID、修订号和实际输入哈希交接，不依赖聊天记忆。更换 Agent 后提供同一项目目录并要求读状态再继续；本地文件需显式迁移到另一个设备。宿主知识库结果需导入项目快照/Wiki；安装 Skill 不会自动同步不同宿主的知识库、密钥和模型。
 
 ## 技能目录
 
@@ -64,36 +166,19 @@
 | 16 | 导出与成稿验收 | `bid-export-acceptance` |
 | 17 | 投标编制总控 | `bid-orchestrator` |
 
-## 使用边界
+## 配置与进阶说明
 
-这是完整编写的技能规程与辅助工具初版，不是“已在全部智能体平台和真实招标项目中验收通过”的产品。所有行业配置为待项目核验的种子。没有内置法定资格门槛、费用比例或最新法规结论；实际规则适用需按项目核验。
+- 分类：四类采购内容（工程、硬件供货、软件集成、服务外包）可组合，智慧园区/智能工厂是场景标签；见 [分类与模板](docs/TENDER_ROUTING.md)。
+- 写作：[目录、编辑与保存](docs/WRITING_WORKFLOW.md)、[评分篇幅与界面图策略](docs/CHAPTER_WRITING_POLICY.md)、[实际子 Agent 并行](docs/PARALLEL_WRITING.md)。
+- 成稿：[版式模板](docs/BID_LAYOUT_TEMPLATES.md)、[封面/目录/字体/缩进/行距配置](docs/EXPORT_LAYOUT.md)。招标文件和有效补遗优先于通用模板。
+- 质量：[核心逐项评审](docs/CORE_REVIEW.md)、[质量闭环](docs/QUALITY_WORKFLOW.md)、[修复/重写/提升](docs/REVIEW_ACTIONS.md)、[评审展示](docs/REVIEW_PRESENTATION.md)。
+- 报告：[HTML展示](docs/REPORTS.md)、[执行复核](docs/EXECUTION_QUALITY.md)、[已知问题](docs/KNOWN_ISSUES.md)。
+- 测试：[工程记录](QA_REPORT.md)、[WorkBuddy实测](docs/WORKBUDDY.md)、[模拟材料闭环](docs/SIMULATION_TESTING.md)、[公开招标语料](benchmarks/public-tenders/README.md)。
 
-包内不含API密钥、真实客户原件、真实证照、字体文件或任何第三方模型。原生解析和项目知识脚本默认离线；仅显式启用 OCR 时请求已配置服务。宿主知识库由 Agent 调用本次实际开放的检索工具，再保存结果快照。本套件不自动安装推理环境、不发邮件、不签署、不递交标书。合成示例故意保留阻塞，不能拿示例通过结构测试当成业务通过。
+## 更新与验证边界
 
-分类与模板：[跨类别首次识别](docs/TENDER_ROUTING.md)。目录与写作：[执行、编辑保存及测试边界](docs/WRITING_WORKFLOW.md)。
+源码副本用 `git pull --ff-only` 更新；复制安装需先把同名旧 Skill 备份到宿主发现目录**以外**，再安装完整新目录。软链接安装保留源码路径，新会话核对实际加载版本。不要删除其他 Skill 或把旧、新目录同时留在发现目录造成重复加载。现有项目不因更新自动重跑，继续前核对版本及受影响产物。
 
-配置与使用：[OCR 服务](docs/OCR_SETUP.md)、[本地／宿主知识与 Wiki](docs/KNOWLEDGE.md)。技术图默认SVG，可由用户改选；界面示意和概念图默认由宿主自带生图Skill执行。真实 OCR 模型质量与各宿主知识库连通情况必须分别验证。
+工程检查可在已安装依赖的环境运行 `python scripts/check_suite.py` 和 `python -m unittest discover -s tests -v`。需要完整 pytest 回归时另使用已有 pytest 环境。结构、分发一致性、模型执行、视觉检查和真实业务验收是不同证据。当前 DOCX 原生解析可执行，但核心评审自动引文核验仍需宿主补充回读，并保留脚本限制；见 [WorkBuddy实测边界](docs/WORKBUDDY.md#docx-评审的当前限制)。
 
-本地确认JSON只是交接记录，无法认证批准人；真实授权需宿主审计或实际用户证据。正式投标文件仍需专业与授权人员审核。
-
-## 可选工程测试
-
-在有Python 3.10+的环境中，从本套件根目录执行：
-
-```bash
-python -m pip install -r requirements-core.txt
-python scripts/check_suite.py
-python -m unittest discover -s tests -v
-```
-
-文档脚本额外依赖见`requirements.txt`。PDF转换还需要系统已安装LibreOffice；没有时使用宿主导出工具，不会自动安装。
-
-理解报告：[JSON/Markdown与HTML展示](docs/REPORTS.md)。运行质量：[执行复核](docs/EXECUTION_QUALITY.md)、[已发现问题与修复状态](docs/KNOWN_ISSUES.md)。
-
-明确授权的模拟企业材料端到端测试参见 [SIMULATION_TESTING](docs/SIMULATION_TESTING.md)，模拟评审通过与正式发布授权保持分开。
-
-## 技术图工具与模板
-
-13新增可选择的[enterprise-diagrams](../enterprise-diagrams/SKILL.md)独立 Skill：八类结构、六套主题、JSON可编辑源和SVG矢量输出；配置diagram_engine=blueprint，PNG使用宿主已有CairoSVG。保留Draw.io/PlantUML/Mermaid与auto路由，SVG/PNG独立选择；系统界面仍默认使用宿主生图Skill。工具发现、版本化导出、对话修改与布局模板见[DIAGRAM_TOOLS.md](docs/DIAGRAM_TOOLS.md)。本地运行工具不是新增Python依赖；安装与宿主能力需实际核验。
-
-章节设置与自动建议：[按评分条件推荐篇幅、逐章覆盖和系统界面图](docs/CHAPTER_WRITING_POLICY.md)。
+本套件不附真实客户原件、证照或法定行业结论，不代签、不递交。种子模板和合成材料用于验证；模拟评审通过不能替代真实材料与授权。宿主/模型/工具组合的实际覆盖以测试记录为准，不承诺所有平台自动兼容。

@@ -4,6 +4,9 @@
 
 ## 当前收录
 
+- [`bid-skills-suite-v1.0.0`](./bid-skills-suite-v1.0.0/README.md)：17 个投标编制 Skills，总控串联解析、分类、目录、写作、配图、评审与 Word/PDF 导出；含通用安装及 WorkBuddy 使用说明。
+- [`enterprise-diagrams`](./enterprise-diagrams/README.md)：独立企业技术图 Skill，8 类布局、6 套主题、可编辑 JSON + SVG；可接入投标套件，保留 Draw.io。
+
 - [`xiaohongshu-skill`](./xiaohongshu-skill/SKILL.md)：小红书内容读取与发布；针对成片发布增加清单预检、封面设置、草稿恢复和重复提交保护，保留上游来源与许可。
 
 - [`industrial-ai-architect`](./industrial-ai-architect/README.md)：工业数字化、智能工厂、AI 战略架构、方案蓝图、路线图和业务落地设计。

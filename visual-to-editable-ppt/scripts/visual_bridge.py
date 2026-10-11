@@ -32,6 +32,11 @@ def plan(p, project: Path, span: str | None = None, draft: bool = False, output_
     slides = p.picked(pack, span)
     p.require(p.check_pack(pack, 'structure' if draft else 'render', {s['slide_id'] for s in slides}))
     recipes = p.load_json(ROOT / 'assets/layouts.json')
+    typography = style.get('typography', {})
+    type_targets = '；'.join(f'{role} {size}pt' for role, size in typography.get('defaults_pt', {}).items())
+    type_instruction = (f"本项目字体：{typography.get('family', '以批准主题为准')}；"
+                        f"字重：{typography.get('default_weight', 'regular')}。显式字号目标：{type_targets}。"
+                        if typography.get('unit') == 'pt' else '字体和字号按批准主题明确设置。')
     items = []
     for slide in slides:
         sid = slide['slide_id']
@@ -52,7 +57,12 @@ def plan(p, project: Path, span: str | None = None, draft: bool = False, output_
 实际第 {slide['order']} / {pack['page_budget']} 页；版本 {version}；内容签名 {signature}。
 仅生成这一页，不生成拼图、联系表或下一页。读取当前宿主工具声明后调用真实生图能力。
 按 theme 的配色、字体层级、材质和留白设计；布局优先服从 slide.layout_hint 与内容关系。
-若 theme.typography.unit 为 pt，按 roles_pt/defaults_pt 区分正文、标签与封面；普通正文不因空白多而放大到标题级。
+{type_instruction}
+按 theme.typography 的 roles_pt/defaults_pt 区分正文、图内节点、图表/表格标签、模块短标题与封面；用户明确的品牌/大屏覆盖以当前主题为准。
+常规字重为主；短标签不放大填空间，过满先扩框/换行，不自动缩字或删除确认原文。
+14pt也须实际渲染，避免孤字行或拆散术语；保留语义手动断行，不因缩小字号删除全部手动断行。
+默认14pt是中文密集商务稿偏好，低于18pt无障碍建议，不宣称符合该建议。
+重建和实际渲染前核实主题字体安装及应用解析；批准主题使用Microsoft YaHei（微软雅黑）而未安装时报告缺口，不得静默替换；用户明确授权的字体覆盖须记录。
 字号参考换算：em像素 = pt × 实际图片宽px / (reference_slide_inches[0] × 72)，不是CSS的96dpi，也不是OCR墨迹高度。
 原文、数字、单位、专有名词和连线以 slide 为准；不虚构数据、企业标志或案例实景。
 {composition}
@@ -74,7 +84,8 @@ def plan(p, project: Path, span: str | None = None, draft: bool = False, output_
         items.append({'slide_id': sid, 'order': slide['order'], 'version': version,
                       'prompt': str(path), 'render_signature': signature,
                       'status': 'draft_only' if draft else 'ready_for_host_image_tool'})
-    result = {'output_mode': output_mode, 'scope': 'full_deck' if span is None else 'explicit_partial:' + span, 'items': items}
+    result = {'output_mode': output_mode, 'typography': typography,
+              'scope': 'full_deck' if span is None else 'explicit_partial:' + span, 'items': items}
     p.save_json(project / 'output/visual-work-queue.json', result)
     return result
 

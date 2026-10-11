@@ -1,6 +1,6 @@
 {
   "id": "consulting-blue",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "白底深蓝咨询",
   "intent": "冷静、观点先行，适合管理层战略与经营汇报",
   "canvas": {
@@ -26,7 +26,7 @@
     "background": "#FFFFFF"
   },
   "typography": {
-    "family": "优先选择已安装且可嵌入/替换的中文无衬线字体，如 Noto Sans CJK SC、微软雅黑；整套保持一致",
+    "family": "Microsoft YaHei",
     "unit": "pt",
     "reference_slide_inches": [
       13.333333,
@@ -34,24 +34,24 @@
     ],
     "roles_pt": {
       "content_title": [
-        30,
-        34
+        28,
+        28
       ],
       "subtitle": [
-        20,
-        24
+        16,
+        16
       ],
       "body": [
-        18,
-        22
+        14,
+        14
       ],
       "module_label": [
-        22,
-        24
+        18,
+        18
       ],
       "data_label": [
-        18,
-        20
+        14,
+        14
       ],
       "cover_title": [
         40,
@@ -59,19 +59,31 @@
       ],
       "nonessential_footer": [
         12,
+        12
+      ],
+      "node_label": [
+        14,
+        14
+      ],
+      "table_label": [
+        14,
         14
       ]
     },
     "defaults_pt": {
-      "content_title": 32,
-      "subtitle": 22,
-      "body": 20,
-      "module_label": 24,
-      "data_label": 18,
+      "content_title": 28,
+      "subtitle": 16,
+      "body": 14,
+      "module_label": 18,
+      "data_label": 14,
       "cover_title": 44,
-      "nonessential_footer": 12
+      "nonessential_footer": 12,
+      "node_label": 14,
+      "table_label": 14
     },
-    "rule": "以最终PPTX的pt为准；普通正文默认20pt，空白多也不扩大到标题级。封面大标题仅限封面。重要来源/限定语至少18pt，12–14pt仅用于非关键信息，不宣称无障碍达标。生图按画布比例换算em像素；重建回读实际字号并检查真实渲染。细则见references/typography.md。"
+    "rule": "中文密集商务稿的用户偏好：普通正文、图内节点、图表/表格标签14pt（四号），副标题16pt，模块短标题18pt，内容标题28pt，页脚12pt；封面单独设定。所有字号显式使用pt，以常规字重为主，短标签不放大填空间，文本过满先扩框/换行，不自动缩字或删原文。保留语义手动断行，14pt也须实际渲染并避免孤字行/拆散术语。用户品牌/大屏规范优先；14pt低于18pt无障碍建议，不宣称符合该建议。生图按画布比例换算em像素；重建回读实际字体/字号并检查真实渲染。细则见references/typography.md。",
+    "default_weight": "regular",
+    "font_policy": "默认微软雅黑（Microsoft YaHei）；生图前核实字体要求，可编辑重建和实际渲染前核实安装及应用解析。未安装时报告缺口，不得静默替换；用户明确的品牌/大屏规范可覆盖本默认并记录。"
   },
   "geometry": {
     "outer_margin_percent": 5,

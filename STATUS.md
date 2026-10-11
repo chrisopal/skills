@@ -1,3 +1,27 @@
+## 2026-10-11: Dense Chinese business typography preference
+
+- Scope: visual-to-editable-ppt entry, references, seven theme profiles (v1.2.0),
+  real plan prompts/queue and regression tests now specify Microsoft YaHei;
+  body/node/chart/table labels14pt, subtitle16pt, module short titles18pt,
+  content titles28pt and footer12pt. Cover defaults remain unchanged.
+- Rules: explicit pt, mainly regular weight, no enlarging short labels to fill
+  space, preserve semantic line breaks and inspect actual renders for orphan
+  characters/split terms. Missing YaHei must be reported without silent fallback;
+  explicit user brand/large-screen requirements override the defaults.
+- Evidence: full visual suite36 tests and consulting dependency suite32 tests
+  passed; skill-creator quick_validate, Python compilation, local Markdown links
+  and scoped whitespace checks passed. No new dependencies or schema changes.
+- Deck evidence: six-page smart-factory v003 locally rendered with LibreOffice;
+  PDF uses Microsoft YaHei/YaHei-Bold without substitution. All177 visible native
+  text boxes normalized; authoritative text/notes and290 structural shapes retained.
+  Disposable copy passed text/font/node/line edit-save-reopen and actual rendering.
+- Limits:14pt is a dense Chinese business preference, not18pt accessibility
+  compliance. Historical20pt records retained and labeled. PowerPoint GUI/Windows
+  rendering and automatic host-font detection remain untested.
+- Git: verified source included in this branch's commit/push; generated decks,
+  previews and validation reports remain local under
+  `output/smart-factory-codex-native-20261011/revision-yahei-14pt/` and are excluded.
+
 ## 2026-10-11: Main merge and live WorkBuddy validation
 
 - Publication: PR #6 merged into main as `10fa80e7`; fetched remote main and

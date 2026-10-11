@@ -3,6 +3,8 @@ import copy
 import importlib.util
 import json
 import tempfile
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 from PIL import Image
@@ -253,5 +255,154 @@ class BridgeTests(unittest.TestCase):
         with self.assertRaisesRegex(self.p.PipelineError, 'aspect ratio'):
             b.handoff(self.p, self.project, out, '1,3')
         self.assertFalse(out.exists())
+
+    def test_output_mode_defaults_and_validation(self):
+        default = b.plan(self.p, self.project, '1')
+        image = b.plan(self.p, self.project, '1', output_mode='image')
+        self.assertEqual(default['output_mode'], 'editable')
+        self.assertEqual(image['output_mode'], 'image')
+        self.assertNotEqual(default['items'][0]['prompt'], image['items'][0]['prompt'])
+        prompt = Path(image['items'][0]['prompt']).read_text()
+        self.assertIn('export-images', prompt)
+        self.assertNotIn('最终需重建并检查可编辑', prompt)
+        with self.assertRaisesRegex(ValueError, 'output_mode'):
+            b.plan(self.p, self.project, output_mode='invalid')
+
+    def image_fixture(self, span='1,3'):
+        self.pack['slides'][0]['speaker_notes'] = '图片型成稿备注；精确保留。'
+        self.pack['version'] = '0.2.0'
+        self.p.save_json(self.pack_path, self.pack)
+        self.p.sync_pack(self.project, self.pack_path, 'SYNTHETIC notes')
+        for slide in self.p.picked(self.pack, span):
+            self.ready(slide['slide_id'])
+        out = self.base / 'handoff'
+        h = b.handoff(self.p, self.project, out, span)
+        return out, h, self.base / 'image-deck.pptx'
+
+    def test_image_export_full_and_partial_are_distinct_finished_decks(self):
+        from pptx import Presentation
+        out, h, deck = self.image_fixture()
+        before = {path: path.read_bytes() for path in out.rglob('*') if path.is_file()}
+        report = b.export_images(self.p, self.project, out, deck)
+        self.assertTrue(report['passed'])
+        self.assertEqual(report['output_mode'], 'image')
+        self.assertEqual(report['scope'], 'explicit_partial:1,3')
+        self.assertFalse(report['visual_acceptance'])
+        prs = Presentation(deck)
+        self.assertEqual(prs.core_properties.title, '[PARTIAL IMAGE DECK] ' + h['deck_id'])
+        self.assertEqual(prs.slides[0].notes_slide.notes_text_frame.text, self.pack['slides'][0]['speaker_notes'])
+        for entry, slide in zip(h['pages'], prs.slides):
+            self.assertEqual(slide.shapes[0].image.blob, (out / entry['image']).read_bytes())
+        self.assertEqual(before, {path: path.read_bytes() for path in out.rglob('*') if path.is_file()})
+        self.assertFalse(b.audit_pptx(self.p, self.project, out, deck)['passed'])
+        for slide in self.pack['slides']:
+            if slide['slide_id'] not in ('S001', 'S003'): self.ready(slide['slide_id'])
+        full = self.base / 'full-handoff'
+        b.handoff(self.p, self.project, full)
+        full_deck = self.project / 'output/full.pptx'
+        report = b.export_images(self.p, self.project, full, full_deck)
+        self.assertEqual(report['scope'], 'full_deck')
+        self.assertEqual(report['pages'], len(self.pack['slides']))
+        self.assertTrue(report['passed'])
+        self.assertTrue(Presentation(full_deck).core_properties.title.startswith('[IMAGE DECK]'))
+
+    def test_image_audit_rejects_swapped_images(self):
+        from pptx import Presentation
+        out, h, deck = self.image_fixture()
+        b.export_images(self.p, self.project, out, deck)
+        prs = Presentation(deck)
+        slides = prs.slides._sldIdLst
+        slides.insert(0, slides[-1])
+        prs.save(deck)
+        report = b.audit_images(self.p, self.project, out, deck)
+        self.assertFalse(report['passed'])
+        self.assertTrue(any('image changed' in e for e in report['errors']))
+
+    def test_image_audit_rejects_notes_canvas_geometry_crop_and_extra_shapes(self):
+        from pptx import Presentation
+        out, _, deck = self.image_fixture()
+        b.export_images(self.p, self.project, out, deck)
+        original = deck.read_bytes()
+        for mutation, message in (
+                (lambda prs: setattr(prs.slides[0].notes_slide.notes_text_frame, 'text', 'changed'), 'notes changed'),
+                (lambda prs: setattr(prs, 'slide_width', prs.slide_width + 100), 'canvas changed'),
+                (lambda prs: setattr(prs.slides[0].shapes[0], 'left', 100), 'geometry changed'),
+                (lambda prs: setattr(prs.slides[0].shapes[0], 'crop_left', 0.1), 'geometry changed'),
+                (lambda prs: prs.slides[0].shapes[0]._element.spPr.xfrm.set('flipH', '1'), 'geometry changed'),
+                (lambda prs: prs.slides[0].shapes.add_textbox(0, 0, 100, 100), 'exactly one picture'),
+                (lambda prs: prs.slides._sldIdLst.remove(prs.slides._sldIdLst[-1]), 'page count changed')):
+            with self.subTest(message=message):
+                deck.write_bytes(original)
+                prs = Presentation(deck); mutation(prs); prs.save(deck)
+                report = b.audit_images(self.p, self.project, out, deck)
+                self.assertFalse(report['passed'])
+                self.assertTrue(any(message in e for e in report['errors']), report)
+
+    def test_conversion_input_cannot_pass_image_deliverable_audit(self):
+        out, h, _ = self.image_fixture()
+        report = b.audit_images(self.p, self.project, out, out / h['input_pptx'])
+        self.assertFalse(report['passed'])
+        self.assertTrue(any('title' in e for e in report['errors']))
+
+    def test_image_export_never_overwrites_or_writes_protected_paths(self):
+        out, _, deck = self.image_fixture()
+        b.export_images(self.p, self.project, out, deck)
+        before = deck.read_bytes()
+        with self.assertRaisesRegex(self.p.PipelineError, 'already exists'):
+            b.export_images(self.p, self.project, out, deck)
+        self.assertEqual(deck.read_bytes(), before)
+        for target in (out / 'deliverable.pptx', self.project / 'images/new.pptx',
+                       self.project / 'source/new.pptx', self.project / 'deck-manifest.json', self.base / 'bad.pdf'):
+            with self.subTest(target=target), self.assertRaises(self.p.PipelineError):
+                b.export_images(self.p, self.project, out, target)
+        alias = self.base / 'alias'
+        alias.symlink_to(out, target_is_directory=True)
+        with self.assertRaisesRegex(self.p.PipelineError, 'protected'):
+            b.export_images(self.p, self.project, out, alias / 'new.pptx')
+        dangling = self.base / 'dangling.pptx'
+        dangling.symlink_to(self.base / 'missing.pptx')
+        with self.assertRaisesRegex(self.p.PipelineError, 'already exists'):
+            b.export_images(self.p, self.project, out, dangling)
+
+    def test_image_export_and_audit_reject_changed_selection(self):
+        out, _, deck = self.image_fixture()
+        b.export_images(self.p, self.project, out, deck)
+        self.ready('S001', 2)
+        with self.assertRaises(self.p.PipelineError):
+            b.export_images(self.p, self.project, out, self.base / 'new.pptx')
+        with self.assertRaises(self.p.PipelineError):
+            b.audit_images(self.p, self.project, out, deck)
+        self.assertFalse((self.base / 'new.pptx').exists())
+
+    def test_image_export_rejects_stale_content_and_invalid_carrier(self):
+        from pptx import Presentation
+        out, h, deck = self.image_fixture()
+        carrier = out / h['input_pptx']
+        before = carrier.read_bytes()
+        prs = Presentation(carrier); prs.slides[0].shapes[0].width //= 2; prs.save(carrier)
+        with self.assertRaises(self.p.PipelineError): b.export_images(self.p, self.project, out, deck)
+        carrier.write_bytes(before)
+        self.pack['version'] = '0.3.0'; self.pack['slides'][0]['title'] = '内容已改变'
+        self.p.save_json(self.pack_path, self.pack)
+        self.p.sync_pack(self.project, self.pack_path, 'SYNTHETIC change')
+        with self.assertRaises(self.p.PipelineError): b.export_images(self.p, self.project, out, deck)
+        self.assertFalse(deck.exists())
+
+    def test_image_cli_plan_export_audit_and_invalid_mode(self):
+        out, _, deck = self.image_fixture()
+        cli = [sys.executable, str(ROOT / 'scripts/visual_bridge.py')]
+        planned = subprocess.run(cli + ['plan', '--project', str(self.project), '--range', '1',
+                                       '--output-mode', 'image'], capture_output=True, text=True)
+        self.assertEqual(planned.returncode, 0, planned.stderr)
+        self.assertEqual(json.loads(planned.stdout)['output_mode'], 'image')
+        for command in ('export-images', 'audit-images'):
+            result = subprocess.run(cli + [command, '--project', str(self.project), '--output', str(out),
+                                           '--pptx', str(deck)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(json.loads(result.stdout)['passed'])
+        bad = subprocess.run(cli + ['plan', '--project', str(self.project), '--output-mode', 'flattened'],
+                             capture_output=True, text=True)
+        self.assertEqual(bad.returncode, 2)
+        self.assertIn('invalid choice', bad.stderr)
 
 if __name__ == '__main__': unittest.main()

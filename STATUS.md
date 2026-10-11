@@ -1,3 +1,31 @@
+## 2026-10-11: Explicit image or editable PPT delivery
+
+- Scope: `visual_bridge.py` adds `plan --output-mode image|editable` (editable
+  default), `export-images` and `audit-images`; skill, README, metadata and
+  host/handoff/quality/theme references describe both routes. Root README
+  discovery text is updated. Image output does not require the conversion CLI.
+- Simplification: reuse the notes-carrier writer and image integrity checks;
+  no new rendering engine, production state machine or dependency. Image decks
+  have a distinct deliverable title and cannot silently replace editable output.
+  Export refuses overwrites and protected paths; audit checks one original image
+  per slide, order, notes, canvas, crop/flip/position and full/partial scope.
+- Verification: 32 bridge + 32 consulting + 90 converter tests passed (154 total),
+  skill validation, Python compilation, documentation links/CLI arguments and
+  whitespace checks passed. Existing editable-path regressions still pass.
+- Live themes: Codex ImageGen generated one 1672x941 page for each remaining
+  theme: blue, red, green consulting, product solution, marketing and gala.
+  Every source was visually inspected, selected, handed off and exported through
+  the new image route. All six final PPTX files passed image audits and actual
+  LibreOffice PDF rendering/visual inspection. A six-page gallery is also local.
+  Previous purple-theme editable testing remains recorded below.
+- Limits: six-theme testing covers image delivery, not six editable rebuilds.
+  Mac lock prevented a fresh PowerPoint GUI check this round; no new native-open
+  claim is made. WorkBuddy/Claude, Windows and customer business acceptance
+  remain outside the tested scope. Generated files and evidence stay in ignored
+  `output/visual-ppt-theme-tests-20261011/`; no generated artifacts are staged.
+- Publication: verified source is ready for commit/push to the existing
+  `codex/visual-to-editable-ppt` branch and PR #6; main remains unchanged.
+
 ## 2026-10-11: Live visual-to-editable PPT validation
 
 - Scope: exercised the purple consulting theme with three actual Codex ImageGen

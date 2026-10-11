@@ -1,3 +1,34 @@
+## 2026-10-11 — Integrate presales suite into main
+
+- Scope: Integrate only presales work from 4128395a, 4211508e and 8ac5710a; preserve existing main README entries and status history. Other shared-branch changes are excluded.
+- Validation: Run all 47 presales tests, suite validation, source-tree equivalence and documentation-link checks on the main-based integration tree before pushing.
+- Source and artifacts: Skill sources match 8ac5710a exactly; local generated decks and project outputs are excluded. Existing rendering/customer-acceptance limits below remain unchanged.
+- Commit/push: This entry accompanies the scoped main integration commit; remote HEAD is checked after the non-force push.
+
+## 2026-10-11 — Executable presales Skill suite v0.1.0
+
+- Scope: Publish and locally install 10 presales skills, stdlib extraction/version/review/PPT-handoff tools, non-overwriting installer, tests and integration documentation.
+- Evidence: 47 tests pass; suite and all 10 skill-entry validators pass; installed hashes match. Fresh five-source → 14 requirements → six-page content → local ppt-master-plus → actual PPTX/PDF review completed. 18 registered objects validate; source and rendered-page mutations invalidate downstream reviews in disposable copies.
+- Simplification: Agent semantic work and deterministic file checks remain separate; reuse external PPT skill and existing renderers, no new dependencies or rendering engine. Generated files stay in output/presales-suite-e2e-2026-10-11/.
+- Limits: Internal synthetic-case integration only. PDF is readable with substituted fonts; PowerPoint native checks blocked by locked Mac, exact typeface fidelity unverified. OCR, real customer/product acceptance and concurrent writers remain unproven.
+- Commit/push: This entry accompanies the scoped source/documentation commit; configured remote HEAD is verified after push. Unrelated work is excluded.
+
+## 2026-10-11 — Presales rehearsal with local ppt-master-plus
+
+- Scope: Run the designed mixed-input → requirements → clarification → storyline → solution → page pack → local PPT → review flow on a synthetic service-workorder case; add the validation report and link it from the design.
+- Evidence: Five source files read back, three independent-review findings corrected, content pack revision 2 rechecked. Eight SVG pages pass with no errors/warnings; native PPTX postflight passes; PowerPoint opens eight slides and exports a readable PDF; all SVG text and notes survive readback; one native-text edit/save/reopen smoke test passes.
+- Simplification: Reuse installed ppt-master-plus 4.5.0, existing Python and PowerPoint; no new dependencies, rendering engine or presales runtime. Generated files remain local under `output/presales-validation-2026-10-11/`.
+- Limits: Synthetic design rehearsal, not implemented-Skill integration or customer acceptance. LibreOffice has font/wrap differences; stable preview is the PowerPoint-native PDF. OCR, automatic invalidation and real projects remain untested.
+- Commit/push: This entry accompanies the scoped documentation commit; configured-remote synchronization is verified after push.
+
+## 2026-10-10 — Presales solution workflow design
+
+- Scope: Add `docs/plans/2026-10-10-presales-solution-skills-design.md`: general B2B presales with optional industry materials, one orchestrator and nine business skills, clarification loops, mind map/page outline separation, product capability matching, external PPT handoff, and independent solution review.
+- Simplification: Reuse bid-suite evidence practices and the consulting Slide Content Pack boundary; no new runtime, dependency, PPT engine, or installed skills.
+- Validation: All ten skill designs contain trigger/input/process/output/completion/exception definitions; names and numbering are unique, Markdown fences are balanced, and scoped whitespace checks pass. Read source contracts and verified two key reference files against GitHub object hashes.
+- Commit/push: This entry accompanies the scoped design commit on the configured branch; remote synchronization is checked and reported after pushing.
+- Limits: Design proposal only. The mixed-input/PPT/behavioral acceptance scenarios are specified but not executed; no customer acceptance claimed. Unrelated concurrent edits and generated artifacts are excluded.
+
 ## 2026-10-11: Six editable themes and measured typography
 
 - Scope: seven theme profiles now express authoritative point sizes (v1.1.0),

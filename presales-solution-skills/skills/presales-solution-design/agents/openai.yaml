@@ -1,0 +1,4 @@
+interface:
+  display_name: "售前方案设计"
+  short_description: "售前方案设计，保留来源、版本、适用条件和实际审核边界"
+  default_prompt: "请使用 $presales-solution-design 处理当前售前任务，读取已有材料并交付可回查的结果。"

@@ -4,6 +4,8 @@
 
 ## 当前收录
 
+- [`presales-solution-skills`](./presales-solution-skills/README.md)：通用 B 端售前10技能，从混合资料、需求脑图、方案与逐页内容到本地PPT制作和实际文件审核，含版本失效工具与测试。
+
 - [`bid-skills-suite-v1.0.0`](./bid-skills-suite-v1.0.0/README.md)：17 个投标编制 Skills，总控串联解析、分类、目录、写作、配图、评审与 Word/PDF 导出；含通用安装及 WorkBuddy 使用说明。
 - [`enterprise-diagrams`](./enterprise-diagrams/README.md)：独立企业技术图 Skill，8 类布局、6 套主题、可编辑 JSON + SVG；可接入投标套件，保留 Draw.io。
 
@@ -20,6 +22,8 @@
 - [`book2video`](./book2video/README.md)：Book2Video 独立 Node 工程，提供 CLI、三段工具、Provider 占位、Remotion 模板占位和测试，用于把书籍方法论生成短视频生产包。
 
 ## 推荐安装方式
+
+售前套件需将10个技能安装为兄弟目录，请运行 `python3 presales-solution-skills/scripts/install.py --dest "$HOME/.codex/skills"`，不要只链接套件根目录。详见其README。
 
 **投标编制套件：** [查看完整 README、12 张过程截图和模拟 Word/PDF 样稿](./bid-skills-suite-v1.0.0/README.md)。Codex 可用通用 `npx` 命令一次安装 17 个投标 Skill：
 

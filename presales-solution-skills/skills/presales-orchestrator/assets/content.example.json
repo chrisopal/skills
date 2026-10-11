@@ -1,0 +1,56 @@
+{
+  "project_id": "EXAMPLE-ONLY",
+  "artifact_id": "CONTENT",
+  "kind": "content",
+  "revision": 1,
+  "inputs": [],
+  "status": "draft",
+  "data": {
+    "deck_id": "EXAMPLE-DECK",
+    "purpose": "说明待核验的试点建议",
+    "audience": "内部售前与交付",
+    "language": "zh-CN",
+    "page_budget": 1,
+    "duration_minutes": 3,
+    "theme_profile": "沿用用户提供模板；无模板时由PPT技能选择",
+    "output_formats": [
+      "pptx",
+      "pdf"
+    ],
+    "story_arc": "建议与下一步核验",
+    "review_status": "not_checked",
+    "business_approval": "unconfirmed",
+    "example_only": true,
+    "citation_index": [],
+    "appendix": [],
+    "slides": [
+      {
+        "slide_id": "SLIDE-01",
+        "section": "试点建议",
+        "title": "先核验业务边界，再决定试点范围",
+        "key_message": "当前是无客户来源的结构示例，不能作为客户方案使用。",
+        "supporting_points": [
+          "收集业务样本、权限矩阵与接口说明。",
+          "核验产品适用能力后，再提出可验证的试点范围。"
+        ],
+        "speaker_notes": "本页只演示内容包形状，没有客户事实、实际产品能力或收益数据。",
+        "requirement_ids": [],
+        "solution_ids": [],
+        "evidence_ids": [],
+        "material_ids": [],
+        "artifact_ids": [],
+        "reference_empty_reason": "示例未提供原件，不编造引用。实际任务应绑定真实成果和证据。",
+        "visual_type": "decision-sequence",
+        "diagram_spec": "三个顺序节点：补充材料 → 核验能力 → 讨论试点；均为建议动作。",
+        "layout_hint": "主结论上方，动作序列居中，限定在底部可见。",
+        "visible_caveats": [
+          "仅为结构示例，客户与产品情况均未知。"
+        ],
+        "locked_claims": [
+          "不得增加真实客户、产品能力、工期、价格或收益承诺。"
+        ],
+        "review_status": "not_checked"
+      }
+    ]
+  }
+}

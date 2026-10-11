@@ -23,8 +23,10 @@
   claim is made. WorkBuddy/Claude, Windows and customer business acceptance
   remain outside the tested scope. Generated files and evidence stay in ignored
   `output/visual-ppt-theme-tests-20261011/`; no generated artifacts are staged.
-- Publication: verified source is ready for commit/push to the existing
-  `codex/visual-to-editable-ppt` branch and PR #6; main remains unchanged.
+- Publication: implementation `6a49cb6e` was committed and pushed to
+  `origin/codex/visual-to-editable-ppt`; remote SHA read-back matched. PR #6
+  describes both output modes and the precise live-test scope. Main remains
+  unchanged; this status-only follow-up records the verified publication.
 
 ## 2026-10-11: Live visual-to-editable PPT validation
 

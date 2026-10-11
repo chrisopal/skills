@@ -253,3 +253,11 @@ python -m unittest discover -s tests -v
 - 原生Word本地打印PDF存在75个康熙部首映射，保留失败文件，未归一化掩盖。最终PDF由LibreOffice26.2.3.2转换相同已保存DOCX且未修改Word；6页实际查看、正文映射、9链接目的页与图注同页复测通过。
 - 当前DOCX SHA256=2494815343674162f14827861432c58b0bed7ddf659e0716adb46ae63ec91d56；PDF SHA256=3d5ce555ae6ffa59134d85bd25e3c348abe711fc94ca2884f460ebefe44c4906。新收据关联当前13/15/17，当前快照有效、矩阵完整、0自动错误、19项正式交付阻塞，正式门禁继续拒绝。
 - 本轮改动为导出版式规程及验证文档，同步三个独立技能引用；未改应用代码或新增依赖。Windows、整标及真实材料/签署/业务验收未运行；前次353项工程回归为前次记录，本轮不冒充重跑。
+
+## 2026-10-11：分享版 README、过程截图与 npx 安装
+
+- 按用户明确授权发布模拟案例：12 张浏览器实际截图，覆盖输入、基础信息、类别模板、需求、评分、资格否决、强制格式、目录任务卡、单章候选正文、SVG/原生 ImageGen 配图、限定评审和 Word/PDF。更新根/套件/独立绘图 README；示例附原文、JSON、HTML、图源及六页样稿，不发布真实招标或企业材料。
+- Skills CLI 1.7.2：从 GitHub main 在隔离项目实际安装 17 个投标 Skill + enterprise-diagrams，18/18；投标 452 文件与绘图 9 文件逐文件一致，`--copy` 无符号链接。默认 clone 曾超时，HTTP/1.1 与 600 秒时限路径完成远程安装，排错命令已写入 README。CLI 的 WorkBuddy 参数实际不支持，保留界面/目录导入方式，不混同 CodeBuddy。
+- `python3.13 examples/readme-demo/render_demo.py` 重建五个文档展示页；`py_compile` 与 `git diff --check` 通过。182 个本地链接、12 张 JPEG、模拟数据统计、文件 SHA、DOCX/XML 隐私扫描通过；公开 Word 仅移除修改者元数据，文档 XML/媒体逐字节不变，PDF 与已验版本相同。PDF 再查 6 页、9 个目录目的页及标题、2 个唯一图片；未仅凭链接存储顺序判断目录错页。
+- 浏览器：README 12/12 图片加载，安装入口跳转正常；五页 390px 无横向溢出，导出展示 1440/1920px 正常。流程图、界面图、目录与图注展示已看图；展示页只读，不伪装 Agent 执行按钮。
+- `refresh_distribution.py` 重建 17 ZIP，`check_suite.py` 通过 17 Skill/34 Schema 及独立包同源检查。未改 Skill 运行代码，未重跑前次 353 项回归或重新调用模型生成整标；应用 lint/build 不适用。保留本例未采纳、原文覆盖 partial、材料缺失与正式交付拒绝，不把公开样稿等同整本业务验收。

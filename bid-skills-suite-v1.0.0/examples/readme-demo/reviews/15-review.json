@@ -1,0 +1,902 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-review-remediation",
+  "project_id": "SIM-WB-20261011",
+  "artifact_id": "ART-15-REVIEW",
+  "revision": 3,
+  "created_at": "2026-10-11T01:07:34.728942+00:00",
+  "status": "blocked",
+  "inputs": [
+    {
+      "artifact_id": "ART-01-NATIVE",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "e54a67dd19063b1f9e1345fa55cad3525f62891b1fc03b5645dc644b7852f464"
+    },
+    {
+      "artifact_id": "ART-02-PROFILE",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "c582f714138c6e59a7dff7e98523831a326fbd513d724d62e853ae7791fdeb5b"
+    },
+    {
+      "artifact_id": "ART-03-REQUIREMENTS",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "9e7338f7f98b927e501f9aa72db99408f09b7590946fe222ead05ddd87955968"
+    },
+    {
+      "artifact_id": "ART-04-SCORING",
+      "revision": 1,
+      "relative_path": "artifacts/04-scoring.json",
+      "sha256": "d78062a4204b820b3b0a4dd3f77181ea383855043e0fe00e92aebcce81367e49"
+    },
+    {
+      "artifact_id": "ART-05-COMPLIANCE",
+      "revision": 1,
+      "relative_path": "artifacts/05-compliance.json",
+      "sha256": "2e41b9a7e8d821f093149ffbc5801ecc65e21c1fcac9440f2dc7316535534990"
+    },
+    {
+      "artifact_id": "ART-06-FORMAT-EXTRACTION",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-extraction.json",
+      "sha256": "1fc772a117da065dedf93ea1f5f93111515e3d1f8781bf2a6abaa3cd44fbab1d"
+    },
+    {
+      "artifact_id": "ART-08-OUTLINE",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "41bfe4fd41bcca4a8de2275fd18bc732c0e5207c501a0a355aa0281a65d1a3cd"
+    },
+    {
+      "artifact_id": "ART-09-EVIDENCE-SELECTION",
+      "revision": 1,
+      "relative_path": "artifacts/09-evidence-selection.json",
+      "sha256": "831e84d96766126ef32223b8339f081631f5029e65832d85aa0295dba94c3c16"
+    },
+    {
+      "artifact_id": "ART-11-TECHNICAL-CONTENT",
+      "revision": 2,
+      "relative_path": "artifacts/11-technical-content.json",
+      "sha256": "7ac4a88d96c94fbbee689aee626253563cfa68444522ecd7e22235845bf36a46"
+    },
+    {
+      "artifact_id": "ART-13-VISUALS",
+      "revision": 3,
+      "relative_path": "artifacts/13-visuals.json",
+      "sha256": "4462f346888efe3a606a8b5b3ac71e383113e3782cb555628515bd382c9abd34"
+    },
+    {
+      "artifact_id": "SRC-001",
+      "revision": 1,
+      "relative_path": "inputs/SRC-001-模拟招标文件.docx",
+      "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8"
+    },
+    {
+      "artifact_id": "ART-WORD-PDF-REPAIR",
+      "revision": 2,
+      "relative_path": "reviews/word-pdf-repair-final.json",
+      "sha256": "ac9efda8ecf9710e0c26d18f953fc4484d2264e23909bfe62401bde2b1c88fc6"
+    },
+    {
+      "artifact_id": "ART-FIG41-CONTENT-QA",
+      "revision": 1,
+      "relative_path": "reviews/fig41-r3-content-review.json",
+      "sha256": "cfde5a4908657fa559bd29713e39ced8a4cbb141a9eeedc9b0772e1be9d13989"
+    },
+    {
+      "artifact_id": "ART-SIM-WORD-FINAL",
+      "revision": 2,
+      "relative_path": "deliverables/4.1-事件闭环管理-模拟修复稿.docx",
+      "sha256": "2494815343674162f14827861432c58b0bed7ddf659e0716adb46ae63ec91d56"
+    },
+    {
+      "artifact_id": "ART-SIM-PDF-FINAL",
+      "revision": 2,
+      "relative_path": "deliverables/4.1-事件闭环管理-模拟修复稿.pdf",
+      "sha256": "3d5ce555ae6ffa59134d85bd25e3c348abe711fc94ca2884f460ebefe44c4906"
+    }
+  ],
+  "summary": "1.17.1限定修复复测：19条DOCX来源引文精确核验通过；r3界面和六状态SVG实际语义回读通过，六页模拟Word/PDF目录、正文、图片与图注完整。9项计分、5项合规、3组材料矩阵完整；缺资质、签署、业绩与日志实现证据的19项正式交付阻塞保留。仅4.1未采纳候选，不是整标通过。 补验：最终版Mac原生Word目录保存重开与跨页跳转通过；实际六页PDF已重新生成核对。",
+  "data": {
+    "review_scope": "limited",
+    "reviewed_inputs_sha256": "2b79bbb209f5884676fe07bfd44b9ec6aaabc4b53aab3f1fe5d36d8bd4cf64e4",
+    "findings": [
+      {
+        "id": "FIND-CERT-01",
+        "severity": "blocking",
+        "category": "qualification",
+        "related_ids": [
+          "C-Q1",
+          "REQ-CERT-1",
+          "SEL-CERT"
+        ],
+        "description": "本次未提供营业执照复印件，资格审查条件无法核验，按原文缺失即不通过，保留阻塞。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[19]/paragraph",
+            "quote": "Q1须提供有效营业执照复印件；缺失则资格审查不通过",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "由投标人提供有效营业执照原件复印件并完成适用性复核后重新评审。",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-SIGN-01",
+        "severity": "blocking",
+        "category": "rejection",
+        "related_ids": [
+          "C-Q2",
+          "REQ-SIGN-1",
+          "SEL-SIGN"
+        ],
+        "description": "投标函未见签署与盖章，属明确否决情形，当前无任何签署材料可核验。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[19]/paragraph",
+            "quote": "Q2投标函须有签署及盖章；缺失则否决",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "取得已签署并盖章的投标函原件后再行核验，未取得前不得递交。",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-PERF-01",
+        "severity": "blocking",
+        "category": "scoring",
+        "related_ids": [
+          "S5",
+          "REQ-PERF-1",
+          "SEL-PERF"
+        ],
+        "description": "未提供软件平台集成合同复印件及验收证明，S5 类似业绩缺少必备证明材料。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[17]/paragraph",
+            "quote": "S5类似业绩10分：提供一份软件平台集成合同复印件及验收证明，两者齐备计10分，否则0分",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "收集至少一份真实集成合同复印件与对应验收证明，登记独立证明身份后重算得分。",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-R3-01",
+        "severity": "blocking",
+        "category": "rejection",
+        "related_ids": [
+          "C-R3",
+          "REQ-R3"
+        ],
+        "description": "候选正文声明审计日志保留不少于180天，但无实际系统与留存记录证据；该条属实质性不响应即否决，故保留阻塞。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[19]/paragraph",
+            "quote": "未满足R3日志180天要求属于实质性不响应，否决",
+            "kind": "tender"
+          },
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[8]/paragraph",
+            "quote": "R3：实现管理员、调度员、处置人员三类角色和最小权限控制；操作审计日志保留不少于180天。",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "以真实系统配置、日志留存策略与抽样记录证明180天保留能力，并纳入验收证据。",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-Q3-01",
+        "severity": "warning",
+        "category": "evidence",
+        "related_ids": [
+          "C-Q3"
+        ],
+        "description": "本次未提供任何证明材料，无法核验是否存在虚假证明，该项保持未核实。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[19]/paragraph",
+            "quote": "Q3不得提供虚假证明。",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "材料补齐后逐份溯源核验真实性，并留存核对记录。",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-FMT-01",
+        "severity": "warning",
+        "category": "layout",
+        "related_ids": [
+          "C-FMT1"
+        ],
+        "description": "尚未编制成稿，六个必备附件（投标函、报价表、资格证明、技术服务方案、逐项响应表、业绩附件）无法核验完整性。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[21]/paragraph",
+            "quote": "必须包括：1投标函、2报价表、3资格证明、4技术服务方案、5逐项响应表、6业绩附件。",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "完成成稿后按必备清单逐项核对并出具完整性检查记录。",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-PRICE-01",
+        "severity": "warning",
+        "category": "scoring",
+        "related_ids": [
+          "S1"
+        ],
+        "description": "未提供任何报价，S1 价格分缺少计算基础，无法按公式计分。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[13]/paragraph",
+            "quote": "S1价格30分：满足条件的最低报价/本供应商报价×30",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "由投标人确认报价后按原公式计算，并保留计算过程记录。",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-CH41-01",
+        "severity": "warning",
+        "category": "coverage",
+        "related_ids": [
+          "S2-1",
+          "S2-2",
+          "S2-3"
+        ],
+        "description": "4.1 候选章节覆盖状态设计、退回机制、权限与日志三项评分点，但正文 state=proposed 且无供应商能力证据，只能计为部分响应。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[14]/paragraph",
+            "quote": "S2事件闭环设计25分：状态设计10分；异常及退回机制8分；权限及日志7分，逐项描述并配流程图。",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "取得真实实现材料并完成人类采纳确认后，方可作为得分正文；当前不主张得分。",
+        "state": "open",
+        "confirmation_ref": null
+      },
+      {
+        "id": "FIND-FIG41-01",
+        "severity": "warning",
+        "category": "consistency",
+        "related_ids": [
+          "S2-1",
+          "FIG-4.1-UI"
+        ],
+        "description": "旧r2界面术语与连线问题已修复。r3聚焦复核操作，六状态与退回关系由准确SVG表达，实际图文及A4候选均已检查。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[14]/paragraph",
+            "quote": "状态设计10分",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "保留历史修订；后续需求或图片改变时重新逐项复核，不据此主张实际系统能力或评分满足。",
+        "state": "resolved",
+        "confirmation_ref": "reviews/fig41-r3-content-review.json"
+      },
+      {
+        "id": "FIND-NOWRITE-01",
+        "severity": "advisory",
+        "category": "coverage",
+        "related_ids": [
+          "S3-1",
+          "S3-2",
+          "S4-1",
+          "S4-2"
+        ],
+        "description": "接口映射、四类测试与验收证据、响应机制、人员排班和培训四项评分点尚无候选正文，属未编写缺口。",
+        "evidence": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[15]/paragraph",
+            "quote": "S3集成及验收20分：接口映射10分；四类测试及验收证据10分。",
+            "kind": "tender"
+          },
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[16]/paragraph",
+            "quote": "S4服务方案15分：响应机制8分；人员排班和培训7分。",
+            "kind": "tender"
+          }
+        ],
+        "remediation": "按任务卡补齐 SEC-4-2、SEC-4-3 及服务方案章节后再纳入评审。",
+        "state": "open",
+        "confirmation_ref": null
+      }
+    ],
+    "checks": [
+      {
+        "area": "资格与否决条件",
+        "state": "failed",
+        "note": "Q1 营业执照、Q2 签署盖章、R3 日志180天三项均无材料或证据，保留阻塞；Q3 虚假证明未核实。"
+      },
+      {
+        "area": "评分覆盖",
+        "state": "failed",
+        "note": "9 个评分点：S2-1/S2-2/S2-3 部分响应（仅有 proposed 候选正文），S1/S3-1/S3-2/S4-1/S4-2/S5 缺失。"
+      },
+      {
+        "area": "证明材料完整性",
+        "state": "failed",
+        "note": "SEL-CERT/SEL-SIGN/SEL-PERF 全部 missing，8 个材料维度均为 unknown，独立证明数量 0。"
+      },
+      {
+        "area": "强制格式与递交",
+        "state": "unknown",
+        "note": "尚未编制成稿，六个必备附件完整性无法核验。"
+      },
+      {
+        "area": "候选正文结构",
+        "state": "passed",
+        "note": "4.1仍为未采纳候选，关联当前r3界面与六状态SVG；范围未扩大。"
+      },
+      {
+        "area": "配图术语与连线一致性",
+        "state": "passed",
+        "note": "实际r3复核界面文字正确，无错误流程箭头；独立SVG复核→处置返回关系及方向正确。见fig41-r3-content-review。"
+      },
+      {
+        "area": "原文回读（DOCX）",
+        "state": "passed",
+        "note": "19条矩阵来源引用从注册DOCX的精确段落位置直接回读通过，身份/版本/真实哈希已核对，不依赖历史缓存。"
+      },
+      {
+        "area": "视觉验收",
+        "state": "passed",
+        "note": "仅本次六页模拟候选：原生Word最终版更新保存、关闭重开、9条已保存目录及跨页跳转通过；2图/图注同页；最终PDF9个跳转、正文及逐页画面通过。见word-pdf-repair-final.json。"
+      },
+      {
+        "area": "质量闭环",
+        "state": "unknown",
+        "note": "未建立 profiles/quality-plan.json，质量闭环未运行。"
+      }
+    ],
+    "human_approval_ref": null,
+    "release_recommendation": "blocked",
+    "limitations": [
+      "limited范围：仅4.1候选章节，其余技术与商务章节未编写。",
+      "未提供营业执照、真实签署、合同/验收证明及人员资料，材料真实性与资格不能通过。",
+      "候选正文state=proposed、无人类采纳确认；配图是设计示意，不证明系统已实现。",
+      "Word/PDF只验证本次六页候选，未覆盖整本标书、复杂附件及固定表。",
+      "最终Word已在Mac原生Word更新目录、保存关闭重开及实测跳转；对应PDF另经LibreOffice实际转换和六页回读。Windows及整本未验证。",
+      "脚本验证矩阵及绑定完整，不认证评审人的评分语义或企业材料真实性。"
+    ],
+    "core_matrix": {
+      "compliance": [
+        {
+          "target_id": "C-Q1",
+          "conclusion": "missing",
+          "rationale": "营业执照复印件未提供，资格审查条件缺失即不通过，保留阻塞。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[19]/paragraph",
+              "quote": "Q1须提供有效营业执照复印件；缺失则资格审查不通过",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-CERT-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "C-Q2",
+          "conclusion": "missing",
+          "rationale": "投标函签署与盖章材料未提供，属明确否决情形，保留阻塞。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[19]/paragraph",
+              "quote": "Q2投标函须有签署及盖章；缺失则否决",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-SIGN-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "C-Q3",
+          "conclusion": "unknown",
+          "rationale": "本次未提供任何证明材料，既无法确认也无从排除虚假证明，保持未核实状态，不推定通过。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[19]/paragraph",
+              "quote": "Q3不得提供虚假证明。",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-Q3-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "C-R3",
+          "conclusion": "partial",
+          "rationale": "候选正文声明日志保留不少于180天，方向上响应 R3；但该条属实质性不响应即否决，无真实留存证据，仍待核验，保留阻塞。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[19]/paragraph",
+              "quote": "未满足R3日志180天要求属于实质性不响应，否决",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [
+            {
+              "relative_path": "artifacts/11-technical-content.json",
+              "sha256": "7ac4a88d96c94fbbee689aee626253563cfa68444522ecd7e22235845bf36a46",
+              "location": "/data/chapters/0/body_markdown",
+              "quote": "保留期不少于180天，以满足 R3 与实质性响应要求"
+            }
+          ],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-R3-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "C-FMT1",
+          "conclusion": "unknown",
+          "rationale": "尚未编制成稿，六个必备附件的完整性无法核验，保持未核实。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[21]/paragraph",
+              "quote": "必须包括：1投标函、2报价表、3资格证明、4技术服务方案、5逐项响应表、6业绩附件。",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-FMT-01"
+          ],
+          "dimension_exemptions": {}
+        }
+      ],
+      "materials": [
+        {
+          "target_id": "SEL-CERT",
+          "conclusion": "missing",
+          "rationale": "本次未提供任何供应商材料，该选用组无可用材料；sources 仅引用招标文件中确立该材料义务的原文，不代表已取得证明材料。材料原件缺失，1份独立证明要求无法满足。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[19]/paragraph",
+              "quote": "Q1须提供有效营业执照复印件；缺失则资格审查不通过",
+              "kind": "tender"
+            },
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[19]/paragraph",
+              "quote": "Q1须提供有效营业执照复印件；缺失则资格审查不通过",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {
+            "subject": "unknown",
+            "validity": "unknown",
+            "scope": "unknown",
+            "independent_count": "unknown",
+            "required_pages": "unknown",
+            "signature": "unknown",
+            "inclusion": "unknown",
+            "authenticity": "unknown"
+          },
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-CERT-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "SEL-SIGN",
+          "conclusion": "missing",
+          "rationale": "本次未提供任何供应商材料，该选用组无可用材料；sources 仅引用招标文件中确立该材料义务的原文，不代表已取得证明材料。材料原件缺失，1份独立证明要求无法满足。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[19]/paragraph",
+              "quote": "Q2投标函须有签署及盖章；缺失则否决",
+              "kind": "tender"
+            },
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[19]/paragraph",
+              "quote": "Q2投标函须有签署及盖章；缺失则否决",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {
+            "subject": "unknown",
+            "validity": "unknown",
+            "scope": "unknown",
+            "independent_count": "unknown",
+            "required_pages": "unknown",
+            "signature": "unknown",
+            "inclusion": "unknown",
+            "authenticity": "unknown"
+          },
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-SIGN-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "SEL-PERF",
+          "conclusion": "missing",
+          "rationale": "本次未提供任何供应商材料，该选用组无可用材料；sources 仅引用招标文件中确立该材料义务的原文，不代表已取得证明材料。材料原件缺失，2份独立证明要求无法满足。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[17]/paragraph",
+              "quote": "S5类似业绩10分：提供一份软件平台集成合同复印件及验收证明，两者齐备计10分，否则0分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {
+            "subject": "unknown",
+            "validity": "unknown",
+            "scope": "unknown",
+            "independent_count": "unknown",
+            "required_pages": "unknown",
+            "signature": "unknown",
+            "inclusion": "unknown",
+            "authenticity": "unknown"
+          },
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-PERF-01"
+          ],
+          "dimension_exemptions": {}
+        }
+      ],
+      "scoring": [
+        {
+          "target_id": "S1",
+          "conclusion": "missing",
+          "rationale": "未提供报价，价格分缺少计算基础；本次仅理解与限定候选测试，未编制报价内容。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[13]/paragraph",
+              "quote": "S1价格30分：满足条件的最低报价/本供应商报价×30",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-PRICE-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "S2-1",
+          "conclusion": "partial",
+          "rationale": "4.1.2 已给出登记/派发/接单/处置/复核/归档六状态流转描述，属候选正文；但未采纳且无供应商实现证据，只构成部分响应。配套界面示意 revision r2 仍有状态命名与复核退回连线未整改项，不能作为该评分点已满足的证据。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[14]/paragraph",
+              "quote": "状态设计10分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [
+            {
+              "relative_path": "artifacts/11-technical-content.json",
+              "sha256": "7ac4a88d96c94fbbee689aee626253563cfa68444522ecd7e22235845bf36a46",
+              "location": "/data/chapters/0/body_markdown",
+              "quote": "覆盖登记到归档的完整闭环"
+            }
+          ],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-CH41-01",
+            "FIND-FIG41-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "S2-2",
+          "conclusion": "partial",
+          "rationale": "4.1.3 描述了复核不通过退回处置并保留日志的机制，属候选正文；仍无实现与采纳证据。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[14]/paragraph",
+              "quote": "异常及退回机制8分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [
+            {
+              "relative_path": "artifacts/11-technical-content.json",
+              "sha256": "7ac4a88d96c94fbbee689aee626253563cfa68444522ecd7e22235845bf36a46",
+              "location": "/data/chapters/0/body_markdown",
+              "quote": "复核不通过时，事件由复核状态退回处置状态"
+            }
+          ],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-CH41-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "S2-3",
+          "conclusion": "partial",
+          "rationale": "4.1.4 描述了管理员/调度员/处置人员三类角色、最小权限与不少于180天审计日志，属候选正文；无实际权限与日志留存证据。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[14]/paragraph",
+              "quote": "权限及日志7分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [
+            {
+              "relative_path": "artifacts/11-technical-content.json",
+              "sha256": "7ac4a88d96c94fbbee689aee626253563cfa68444522ecd7e22235845bf36a46",
+              "location": "/data/chapters/0/body_markdown",
+              "quote": "操作审计日志覆盖登录、派发、接单、处置、复核、退回与导出等动作，保留期不少于180天"
+            }
+          ],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-CH41-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "S3-1",
+          "conclusion": "missing",
+          "rationale": "尚未编写接口映射候选正文，本次限定范围只覆盖 4.1 事件闭环管理。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[15]/paragraph",
+              "quote": "接口映射10分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-NOWRITE-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "S3-2",
+          "conclusion": "missing",
+          "rationale": "尚未编写四类测试与验收证据候选正文，无相关证据材料。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[15]/paragraph",
+              "quote": "四类测试及验收证据10分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-NOWRITE-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "S4-1",
+          "conclusion": "missing",
+          "rationale": "尚未编写服务响应机制候选正文，也无人员与排班依据。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[16]/paragraph",
+              "quote": "响应机制8分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-NOWRITE-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "S4-2",
+          "conclusion": "missing",
+          "rationale": "尚未编写人员排班与培训候选正文，无人员资料。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[16]/paragraph",
+              "quote": "人员排班和培训7分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-NOWRITE-01"
+          ],
+          "dimension_exemptions": {}
+        },
+        {
+          "target_id": "S5",
+          "conclusion": "missing",
+          "rationale": "未提供集成合同复印件与验收证明，类似业绩不得分且缺必备证明材料。",
+          "sources": [
+            {
+              "source_id": "SRC-001",
+              "revision": 1,
+              "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+              "location": "body[17]/paragraph",
+              "quote": "S5类似业绩10分：提供一份软件平台集成合同复印件及验收证明，两者齐备计10分，否则0分",
+              "kind": "tender"
+            }
+          ],
+          "bid_refs": [],
+          "material_ids": [],
+          "dimensions": {},
+          "score_estimate": null,
+          "finding_ids": [
+            "FIND-PERF-01"
+          ],
+          "dimension_exemptions": {}
+        }
+      ]
+    }
+  },
+  "warnings": [
+    "limited范围：仅4.1候选章节，其余技术与商务章节未编写。",
+    "未提供营业执照、真实签署、合同/验收证明及人员资料，材料真实性与资格不能通过。",
+    "候选正文state=proposed、无人类采纳确认；配图是设计示意，不证明系统已实现。",
+    "Word/PDF只验证本次六页候选，未覆盖整本标书、复杂附件及固定表。",
+    "最终Word已在Mac原生Word更新目录、保存关闭重开及实测跳转；对应PDF另经LibreOffice实际转换和六页回读。Windows及整本未验证。",
+    "脚本验证矩阵及绑定完整，不认证评审人的评分语义或企业材料真实性。",
+    "质量闭环未配置，本次只修复并验证限定候选，不代表整标质量验收。"
+  ],
+  "blockers": [
+    "缺营业执照复印件：资格审查条件未满足（C-Q1 / SEL-CERT）。",
+    "缺投标函签署与盖章：属明确否决情形（C-Q2 / SEL-SIGN）。",
+    "缺集成合同复印件与验收证明：S5 类似业绩缺必备材料（S5 / SEL-PERF）。",
+    "R3 日志180天属实质性响应，仅有正文声明无留存证据，仍待核验（C-R3）。",
+    "无人类批准记录（human_approval_ref=null），不得正式递交。",
+    "未编制成稿，强制必备附件完整性未核验（C-FMT1）。"
+  ]
+}

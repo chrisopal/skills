@@ -1,0 +1,225 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-source-intake",
+  "project_id": "SIM-WB-20261011",
+  "artifact_id": "ART-01-NATIVE",
+  "revision": 1,
+  "created_at": "2026-10-10T23:11:53.665600+00:00",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "SRC-001",
+      "revision": 1,
+      "relative_path": "inputs/SRC-001-模拟招标文件.docx",
+      "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8"
+    }
+  ],
+  "summary": "原生抽取结果；人工未核验，尚不是业务验收通过。",
+  "data": {
+    "documents": [
+      {
+        "source_id": "SRC-001",
+        "filename": "SRC-001-模拟招标文件.docx",
+        "relative_path": "inputs/SRC-001-模拟招标文件.docx",
+        "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+        "bytes": 38035,
+        "role": "main",
+        "revision": 1,
+        "duplicate_group": null,
+        "status": "needs_review"
+      }
+    ],
+    "blocks": [
+      {
+        "block_id": "SRC-001-B00001",
+        "source_id": "SRC-001",
+        "location": "body[1]/paragraph",
+        "page": null,
+        "text": "模拟测试招标文件：青禾园区事件闭环平台",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00002",
+        "source_id": "SRC-001",
+        "location": "body[2]/paragraph",
+        "page": null,
+        "text": "本文件完全为功能测试编制，不对应真实采购或真实企业。项目编号：SIM-WB-20261011。单一标包，内容为软件集成及一年运维服务，不含硬件供货和土建。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00003",
+        "source_id": "SRC-001",
+        "location": "body[3]/paragraph",
+        "page": null,
+        "text": "一、基本信息",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00004",
+        "source_id": "SRC-001",
+        "location": "body[4]/paragraph",
+        "page": null,
+        "text": "采购预算：100万元（模拟）。实施期：合同签订后60个日历日。质保及运维：验收后12个月。所有金额和日期仅用于测试。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00005",
+        "source_id": "SRC-001",
+        "location": "body[5]/paragraph",
+        "page": null,
+        "text": "二、采购需求",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00006",
+        "source_id": "SRC-001",
+        "location": "body[6]/paragraph",
+        "page": null,
+        "text": "R1：接入既有告警平台，支持HTTPS JSON接口、告警去重与来源追溯。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00007",
+        "source_id": "SRC-001",
+        "location": "body[7]/paragraph",
+        "page": null,
+        "text": "R2：提供事件登记、工单派发、接单、处置、复核、归档六个状态；复核不通过须退回处置并保留日志。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00008",
+        "source_id": "SRC-001",
+        "location": "body[8]/paragraph",
+        "page": null,
+        "text": "R3：实现管理员、调度员、处置人员三类角色和最小权限控制；操作审计日志保留不少于180天。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00009",
+        "source_id": "SRC-001",
+        "location": "body[9]/paragraph",
+        "page": null,
+        "text": "R4：提供事件列表、超时预警、闭环率统计和按时间导出功能。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00010",
+        "source_id": "SRC-001",
+        "location": "body[10]/paragraph",
+        "page": null,
+        "text": "R5：验收至少包含接口联调、状态流转、权限隔离、异常恢复四类测试，提供用例与结果。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00011",
+        "source_id": "SRC-001",
+        "location": "body[11]/paragraph",
+        "page": null,
+        "text": "R6：工作日服务，故障2小时内响应，24小时内提供处置计划；该时限须在响应文件承诺并有资源依据。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00012",
+        "source_id": "SRC-001",
+        "location": "body[12]/paragraph",
+        "page": null,
+        "text": "三、评分标准（总分100分）",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00013",
+        "source_id": "SRC-001",
+        "location": "body[13]/paragraph",
+        "page": null,
+        "text": "S1价格30分：满足条件的最低报价/本供应商报价×30。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00014",
+        "source_id": "SRC-001",
+        "location": "body[14]/paragraph",
+        "page": null,
+        "text": "S2事件闭环设计25分：状态设计10分；异常及退回机制8分；权限及日志7分，逐项描述并配流程图。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00015",
+        "source_id": "SRC-001",
+        "location": "body[15]/paragraph",
+        "page": null,
+        "text": "S3集成及验收20分：接口映射10分；四类测试及验收证据10分。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00016",
+        "source_id": "SRC-001",
+        "location": "body[16]/paragraph",
+        "page": null,
+        "text": "S4服务方案15分：响应机制8分；人员排班和培训7分。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00017",
+        "source_id": "SRC-001",
+        "location": "body[17]/paragraph",
+        "page": null,
+        "text": "S5类似业绩10分：提供一份软件平台集成合同复印件及验收证明，两者齐备计10分，否则0分。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00018",
+        "source_id": "SRC-001",
+        "location": "body[18]/paragraph",
+        "page": null,
+        "text": "四、资格与否决",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00019",
+        "source_id": "SRC-001",
+        "location": "body[19]/paragraph",
+        "page": null,
+        "text": "Q1须提供有效营业执照复印件；缺失则资格审查不通过。Q2投标函须有签署及盖章；缺失则否决。Q3不得提供虚假证明。未满足R3日志180天要求属于实质性不响应，否决。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00020",
+        "source_id": "SRC-001",
+        "location": "body[20]/paragraph",
+        "page": null,
+        "text": "五、强制格式",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00021",
+        "source_id": "SRC-001",
+        "location": "body[21]/paragraph",
+        "page": null,
+        "text": "必须包括：1投标函、2报价表、3资格证明、4技术服务方案、5逐项响应表、6业绩附件。4.1事件闭环管理、4.2集成与验收、4.3服务保障。",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00022",
+        "source_id": "SRC-001",
+        "location": "body[22]/paragraph",
+        "page": null,
+        "text": "六、测试输入状态",
+        "method": "native"
+      },
+      {
+        "block_id": "SRC-001-B00023",
+        "source_id": "SRC-001",
+        "location": "body[23]/paragraph",
+        "page": null,
+        "text": "本次没有提供供应商营业执照、合同、验收证明、人员资料或有效签署，不得把描述文字或生成图片当作这些材料。",
+        "method": "native"
+      }
+    ],
+    "page_audit": [],
+    "coverage": "partial"
+  },
+  "warnings": [
+    "SRC-001: DOCX页码依赖渲染，原生提取不保证文本框、修订、批注及复杂合并表完整，需复核。"
+  ],
+  "blockers": []
+}

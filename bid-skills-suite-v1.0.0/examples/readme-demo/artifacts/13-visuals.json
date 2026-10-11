@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-visuals",
+  "project_id": "SIM-WB-20261011",
+  "artifact_id": "ART-13-VISUALS",
+  "revision": 3,
+  "created_at": "2026-10-11T01:07:34.728942+00:00",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-02-TENDER-ROUTING",
+      "revision": 1,
+      "relative_path": "artifacts/02-tender-routing.json",
+      "sha256": "43009f353aa6b48ab2b7b9f5c59a5fe95257e82d2c09310f65dcba066adada67"
+    },
+    {
+      "artifact_id": "ART-08-OUTLINE",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "41bfe4fd41bcca4a8de2275fd18bc732c0e5207c501a0a355aa0281a65d1a3cd"
+    },
+    {
+      "artifact_id": "ART-11-TECHNICAL-CONTENT",
+      "revision": 2,
+      "relative_path": "artifacts/11-technical-content.json",
+      "sha256": "7ac4a88d96c94fbbee689aee626253563cfa68444522ecd7e22235845bf36a46"
+    }
+  ],
+  "summary": "保留准确六状态流程；界面r3由WorkBuddy原生ImageGen生成并经实际文字核对，修复旧状态与连线问题。",
+  "data": {
+    "figures": [
+      {
+        "id": "FIG-4.1-FLOW",
+        "section_id": "SEC-4-1",
+        "title": "事件闭环管理六状态流转与复核退回",
+        "kind": "flow",
+        "specification": "按 R2 绘制六状态（登记→派发→接单→处置→复核→归档）的竖向正交流程；复核节点为决策菱形，复核不通过以虚线反馈边退回处置并保留日志。引擎 enterprise-diagrams(blueprint)，主题 teal，布局 flow，宽度640。图中文字与关系来自本项目 03/04 的 R2、S2 与 05 的 C-R3，未添加原文以外的状态。",
+        "source_path": "assets/fig-4.1-event-flow.diagram.json",
+        "rendered_path": "assets/fig-4.1-event-flow.svg",
+        "caption": "图1 事件闭环管理六状态流转与复核退回（依据 R2 绘制的响应设计示意）",
+        "alt_text": "六个状态自事件登记起，经工单派发、接单、处置、复核到归档的竖向流程；复核节点以菱形表示，复核不通过的一条虚线反馈边退回处置。",
+        "evidence_ids": [],
+        "state": "rendered",
+        "rights": "original",
+        "render_record": {
+          "engine": "blueprint",
+          "source_sha256": "af66e872f0a2a98e9d07430d0a0312916ea4a402ab889d93394b438aefcaedca",
+          "output_sha256": "81dc1cd1d15e0a86445978e45fa3d4c0e6319ff2ede17c9b132329f59555ae49",
+          "receipt_path": "assets/fig-4.1-event-flow.svg.receipt.json",
+          "receipt_sha256": "b1da32721e1d72212f4d0e3afc1debe93c8997b44e2147b2f22dbe2e2725e6cb",
+          "base_source_sha256": "af66e872f0a2a98e9d07430d0a0312916ea4a402ab889d93394b438aefcaedca",
+          "cas_result": "matched"
+        }
+      },
+      {
+        "id": "FIG-4.1-UI",
+        "section_id": "SEC-4-1",
+        "title": "事件复核操作界面设计示意",
+        "kind": "interface",
+        "specification": "WorkBuddy原生ImageGen编辑r3，采用图SHA256=037cefc93aa6d64f37997d0280b724a843e8784928df5104866facfd36cbc015；调用记录 evidence/fig-4.1-ui.r3.imagegen.json；实际内容复核 reviews/fig41-r3-content-review.json。移除有误KPI和流程箭头，聚焦事件复核操作；六状态及复核不通过回到处置由配套图1准确表达。旧版全部保留。内容回读通过，六页模拟候选Word/PDF排版已另验，见reviews/word-pdf-repair-final.json；不代表正式交付。",
+        "source_path": null,
+        "rendered_path": "assets/fig-4.1-ui.r3.png",
+        "caption": "图2 事件复核界面设计示意，非实际系统截图",
+        "alt_text": "模拟事件EVT-2026-004处于复核状态，责任人赵敏；填写退回原因，选择复核通过或退回处置。界面无流程箭头，六状态及退回关系由图1表达。",
+        "evidence_ids": [],
+        "state": "rendered",
+        "rights": "original"
+      }
+    ],
+    "unknowns": [
+      "两图仅为设计示意，不证明实际实现；当前为候选正文，缺真实企业材料。",
+      "本次Mac原生Word与最终PDF复测通过；Windows、整本及客户固定表尚未验证。"
+    ]
+  },
+  "warnings": [
+    "内容回读与生成成功不等于企业能力或正式评分满足。"
+  ],
+  "blockers": []
+}

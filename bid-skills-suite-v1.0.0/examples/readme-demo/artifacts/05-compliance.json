@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-compliance",
+  "project_id": "SIM-WB-20261011",
+  "artifact_id": "ART-05-COMPLIANCE",
+  "revision": 1,
+  "created_at": "2026-10-10T23:15:21.925232+00:00",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-01-NATIVE",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "e54a67dd19063b1f9e1345fa55cad3525f62891b1fc03b5645dc644b7852f464"
+    },
+    {
+      "artifact_id": "ART-02-TENDER-ROUTING",
+      "revision": 1,
+      "relative_path": "artifacts/02-tender-routing.json",
+      "sha256": "43009f353aa6b48ab2b7b9f5c59a5fe95257e82d2c09310f65dcba066adada67"
+    }
+  ],
+  "summary": "从原文提取 5 条合规条款：2 条资格/否决门槛（营业执照、签署盖章）+1 条实质性否决（180 天日志），并单列虚假证明与强制文件组成；未对未明示后果的条款推导否决。",
+  "data": {
+    "rules": [
+      {
+        "id": "C-Q1",
+        "kind": "qualification",
+        "condition": "须提供有效营业执照复印件",
+        "consequence": "资格审查不通过",
+        "fatal": true,
+        "required_action": "在资格证明部分提交有效营业执照复印件",
+        "responsible_role": "投标人",
+        "due_text": "随投标文件提交",
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[19]/paragraph",
+            "quote": "Q1须提供有效营业执照复印件；缺失则资格审查不通过",
+            "kind": "tender"
+          }
+        ],
+        "material_required": true
+      },
+      {
+        "id": "C-Q2",
+        "kind": "rejection",
+        "condition": "投标函须有签署及盖章",
+        "consequence": "否决",
+        "fatal": true,
+        "required_action": "投标函按原文完成签署及盖章",
+        "responsible_role": "投标人",
+        "due_text": "随投标文件提交",
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[19]/paragraph",
+            "quote": "Q2投标函须有签署及盖章；缺失则否决",
+            "kind": "tender"
+          }
+        ],
+        "material_required": true
+      },
+      {
+        "id": "C-Q3",
+        "kind": "submission",
+        "condition": "不得提供虚假证明",
+        "consequence": null,
+        "fatal": null,
+        "required_action": "确保所提交证明材料真实有效，保留可核验来源",
+        "responsible_role": "投标人",
+        "due_text": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[19]/paragraph",
+            "quote": "Q3不得提供虚假证明。",
+            "kind": "tender"
+          }
+        ],
+        "material_required": false
+      },
+      {
+        "id": "C-R3",
+        "kind": "rejection",
+        "condition": "未满足 R3 日志 180 天要求属于实质性不响应",
+        "consequence": "否决",
+        "fatal": true,
+        "required_action": "审计日志保留不少于 180 天并在响应文件中说明",
+        "responsible_role": "投标人",
+        "due_text": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[19]/paragraph",
+            "quote": "未满足R3日志180天要求属于实质性不响应，否决",
+            "kind": "tender"
+          }
+        ],
+        "material_required": false
+      },
+      {
+        "id": "C-FMT1",
+        "kind": "submission",
+        "condition": "投标文件必须包括投标函、报价表、资格证明、技术服务方案、逐项响应表、业绩附件六部分",
+        "consequence": null,
+        "fatal": null,
+        "required_action": "按强制格式组织并提交上述六部分文件",
+        "responsible_role": "投标人",
+        "due_text": null,
+        "sources": [
+          {
+            "source_id": "SRC-001",
+            "revision": 1,
+            "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+            "location": "body[21]/paragraph",
+            "quote": "必须包括：1投标函、2报价表、3资格证明、4技术服务方案、5逐项响应表、6业绩附件。",
+            "kind": "tender"
+          }
+        ],
+        "material_required": false
+      }
+    ],
+    "unknowns": [
+      "Q3 未在原文写明具体后果，因此未登记为明确否决（consequence=null）。",
+      "原文未提供投标截止时间、保证金、递交方式与递交地点。",
+      "第六条为测试输入状态说明（本次未提供供应商材料），不构成对投标人的要求。"
+    ]
+  },
+  "warnings": [],
+  "blockers": [
+    "本次测试未提供营业执照、签署与业绩证明等关键材料，资格与业绩类条件无法满足或核验，保留阻塞。"
+  ]
+}

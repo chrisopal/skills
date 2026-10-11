@@ -20,7 +20,21 @@
 
 ## 推荐安装方式
 
-建议先克隆整个仓库，再把需要的 skill 软链接到客户端扫描目录。这样后续 `git pull` 即可统一更新。
+**投标编制套件：** [查看完整 README、12 张过程截图和模拟 Word/PDF 样稿](./bid-skills-suite-v1.0.0/README.md)。Codex 可用通用 `npx` 命令一次安装 17 个投标 Skill：
+
+```bash
+npx --yes skills@1.7.2 add \
+  'https://github.com/chrisopal/skills/tree/main/bid-skills-suite-v1.0.0/skills' \
+  --skill '*' --global --agent codex --copy --yes
+
+npx --yes skills@1.7.2 add \
+  'https://github.com/chrisopal/skills/tree/main/enterprise-diagrams' \
+  --global --agent codex --copy --yes
+```
+
+第二条安装独立绘图 Skill，共 18 个。WorkBuddy 的本地导入、其他 Agent 的选择、运行依赖及下载超时排错见[套件安装说明](./bid-skills-suite-v1.0.0/README.md#通用-npx-安装)。
+
+其他 Skill 也可以选择克隆整个仓库，再把需要的目录软链接到客户端扫描目录。这样后续 `git pull` 即可统一更新。
 
 ```bash
 mkdir -p ~/.codex/skills

@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "title": "事件闭环管理流程（六状态）",
+  "subtitle": "青禾园区事件闭环平台 · 4.1 事件闭环管理（响应设计示意）",
+  "footer": "依据：模拟招标文件 R2（提供事件登记、工单派发、接单、处置、复核、归档六个状态；复核不通过须退回处置并保留日志）。本图为投标响应设计示意。",
+  "layout": "flow",
+  "theme": "teal",
+  "width": 640,
+  "nodes": [
+    {"id": "N1", "title": "事件登记", "description": "来源：既有告警平台推送或人工登记（R1）", "row": 0, "col": 0, "role": "primary", "badge": "1"},
+    {"id": "N2", "title": "工单派发", "description": "调度员按派发规则生成工单（R3 调度员）", "row": 1, "col": 0, "role": "process", "badge": "2"},
+    {"id": "N3", "title": "接单", "description": "处置人员接单并确认（R3 处置人员）", "row": 2, "col": 0, "role": "process", "badge": "3"},
+    {"id": "N4", "title": "处置", "description": "现场处置并记录过程与结果", "row": 3, "col": 0, "role": "process", "badge": "4"},
+    {"id": "N5", "title": "复核", "description": "管理员复核处置结果与操作日志（R3 管理员）", "row": 4, "col": 0, "role": "decision", "shape": "diamond", "badge": "5"},
+    {"id": "N6", "title": "归档", "description": "闭环归档，支撑闭环率与导出统计（R4）", "row": 5, "col": 0, "role": "success", "badge": "6"}
+  ],
+  "edges": [
+    {"from": "N1", "to": "N2", "label": "提交事件"},
+    {"from": "N2", "to": "N3", "label": "派发"},
+    {"from": "N3", "to": "N4", "label": "接单"},
+    {"from": "N4", "to": "N5", "label": "提交复核"},
+    {"from": "N5", "to": "N6", "label": "复核通过"},
+    {"from": "N5", "to": "N4", "label": "复核不通过：退回处置并保留日志", "kind": "feedback", "route": "right"}
+  ]
+}

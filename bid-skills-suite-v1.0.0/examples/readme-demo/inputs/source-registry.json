@@ -1,0 +1,13 @@
+{
+  "sources": [
+    {
+      "source_id": "SRC-001",
+      "revision": 1,
+      "relative_path": "inputs/SRC-001-模拟招标文件.docx",
+      "sha256": "06e94c48e988157848908ff2e209df8f74a0b38c52cc60fd0331eaa3ff1018b8",
+      "bytes": 38035,
+      "role": "main",
+      "registered_at": "2026-10-10T23:11:47.968521+00:00"
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-technical-writing",
+  "project_id": "SIM-WB-20261011",
+  "artifact_id": "ART-11-TECHNICAL-CONTENT",
+  "revision": 2,
+  "created_at": "2026-10-11T00:14:26.443480+00:00",
+  "status": "draft",
+  "inputs": [
+    {
+      "artifact_id": "ART-02-TENDER-ROUTING",
+      "revision": 1,
+      "relative_path": "artifacts/02-tender-routing.json",
+      "sha256": "43009f353aa6b48ab2b7b9f5c59a5fe95257e82d2c09310f65dcba066adada67"
+    },
+    {
+      "artifact_id": "ART-08-OUTLINE",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "41bfe4fd41bcca4a8de2275fd18bc732c0e5207c501a0a355aa0281a65d1a3cd"
+    },
+    {
+      "artifact_id": "ART-09-EVIDENCE-SELECTION",
+      "revision": 1,
+      "relative_path": "artifacts/09-evidence-selection.json",
+      "sha256": "831e84d96766126ef32223b8339f081631f5029e65832d85aa0295dba94c3c16"
+    }
+  ],
+  "summary": "4.1限定候选正文；关联r3事件复核界面与准确六状态流程，缺材料及未采纳边界保留。",
+  "data": {
+    "chapters": [
+      {
+        "id": "11-CH-4.1",
+        "section_id": "SEC-4-1",
+        "title": "4.1 事件闭环管理",
+        "body_markdown": "### 说明：本章状态\n\n本章为限定候选测试产出的候选正文（state=proposed），**尚未采纳**。本次未提供任何供应商能力证据：无营业执照、无集成合同、无验收证明、无人员资料与有效签署。文中机制均为响应设计描述，不代表已实现能力，取得真实材料与授权前不得作为对外承诺。\n\n### 4.1.1 响应概述\n\n平台以事件为主对象，覆盖登记到归档的完整闭环，并以可审计的状态流转支撑统计与导出，设计对齐 R2 的六个状态、R3 的三类角色与最小权限及不少于180天的审计日志。\n\n### 4.1.2 六状态流转\n\n1. 事件登记：接收既有告警平台经 HTTPS JSON 接口推送或人工登记的事件，登记前完成告警去重与来源追溯。\n2. 工单派发：调度员按分类规则生成工单并指派处置人员，派发动作与指派对象写入操作日志。\n3. 接单：处置人员确认接单，状态由派发转为接单；超时未接单触发预警。\n4. 处置：处置人员记录处置过程与结果，必要时关联佐证材料。\n5. 复核：管理员对处置结果与操作日志进行复核，形成通过或不通过的结论。\n6. 归档：复核通过后归档，事件计入闭环率统计，并可按时间范围导出。\n\n### 4.1.3 复核退回与日志保留\n\n复核不通过时，事件由复核状态退回处置状态，退回原因、操作人、时间与前后状态一并写入日志且不可删除；处置人员据此重新处置并再次提交复核，直至复核通过后归档。该机制直接对应 R2 中“复核不通过须退回处置并保留日志”的要求。\n\n### 4.1.4 角色、权限与审计\n\n系统设置管理员、调度员、处置人员三类角色，并按最小权限分配功能与数据范围：处置人员仅见本人工单，调度员负责派发与超时跟踪，管理员负责复核与配置。操作审计日志覆盖登录、派发、接单、处置、复核、退回与导出等动作，保留期不少于180天，以满足 R3 与实质性响应要求。\n\n### 4.1.5 统计与导出\n\n提供事件列表、超时预警、闭环率统计与按时间导出四类功能；闭环率按归档数与登记数之比计算，导出按登记时间过滤并记录日志。\n\n### 4.1.6 配图\n\n![事件闭环六状态流转与复核退回（响应设计示意）](assets/fig-4.1-event-flow.svg)\n\n图1依据 R2 绘制，六个状态与复核退回路径一致；图2为界面设计示意，非实际系统截图。\n\n![事件复核界面设计示意，非实际系统截图](assets/fig-4.1-ui.r3.png)\n\n### 4.1.7 依据与边界\n\n本章依据模拟招标文件 R2、R3、R4 编写。平台实际实现、性能指标与人员安排须由投标人提供真实材料后确认；本章尚未采纳，取得授权与证据前不得对外承诺，也不替代 SEC-4-2、SEC-4-3 的独立响应。\n\n",
+        "base_revision": 0,
+        "requirement_ids": [
+          "REQ-R2",
+          "REQ-R3",
+          "REQ-R4"
+        ],
+        "design_ids": [],
+        "evidence_ids": [],
+        "state": "proposed",
+        "confirmation_ref": null
+      }
+    ],
+    "responses": [
+      {
+        "requirement_id": "REQ-R1",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      },
+      {
+        "requirement_id": "REQ-R2",
+        "response": "已在候选章节 4.1 中作设计层面响应。",
+        "fulfillment": "partial",
+        "deviation": null,
+        "chapter_ids": [
+          "11-CH-4.1"
+        ]
+      },
+      {
+        "requirement_id": "REQ-R3",
+        "response": "已在候选章节 4.1 中作设计层面响应。",
+        "fulfillment": "partial",
+        "deviation": null,
+        "chapter_ids": [
+          "11-CH-4.1"
+        ]
+      },
+      {
+        "requirement_id": "REQ-R4",
+        "response": "已在候选章节 4.1 中作设计层面响应。",
+        "fulfillment": "partial",
+        "deviation": null,
+        "chapter_ids": [
+          "11-CH-4.1"
+        ]
+      },
+      {
+        "requirement_id": "REQ-R5",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      },
+      {
+        "requirement_id": "REQ-R6",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      },
+      {
+        "requirement_id": "REQ-SCOPE-1",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      },
+      {
+        "requirement_id": "REQ-PERIOD-1",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      },
+      {
+        "requirement_id": "REQ-WARRANTY-1",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      },
+      {
+        "requirement_id": "REQ-CERT-1",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      },
+      {
+        "requirement_id": "REQ-SIGN-1",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      },
+      {
+        "requirement_id": "REQ-PERF-1",
+        "response": "尚未编写对应正文；等待授权与真实材料。",
+        "fulfillment": "missing",
+        "deviation": null,
+        "chapter_ids": []
+      }
+    ],
+    "unresolved_claims": [
+      "未提供营业执照、集成合同与验收证明，企业能力未验证。",
+      "平台实际实现方式、性能指标与人员排班未验证，本章为候选正文。",
+      "图2 为宿主生图技能实际生成的界面设计示意（revision r2），非实际系统截图；其表格状态列与指标卡标题仍有未整改项（visual_check=partial），不得据以宣称视觉或语义通过。",
+      "章节尚未采纳（state=proposed，无 confirmation_ref），不得作为已确认承诺。"
+    ]
+  },
+  "warnings": [
+    "候选正文；缺真实材料与授权人采纳记录。"
+  ],
+  "blockers": [
+    "关键资格/业绩材料与签署缺失，SEC-1/SEC-3/SEC-6 无法形成可交付内容。"
+  ]
+}

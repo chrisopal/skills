@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.0",
+  "skill_id": "bid-orchestrator",
+  "project_id": "SIM-WB-20261011",
+  "artifact_id": "ART-17-WORKFLOW-STATE",
+  "revision": 3,
+  "created_at": "2026-10-11T01:07:34.728942+00:00",
+  "status": "needs_review",
+  "inputs": [
+    {
+      "artifact_id": "ART-01-NATIVE",
+      "revision": 1,
+      "relative_path": "artifacts/01-source-intake.json",
+      "sha256": "e54a67dd19063b1f9e1345fa55cad3525f62891b1fc03b5645dc644b7852f464"
+    },
+    {
+      "artifact_id": "ART-02-PROFILE",
+      "revision": 1,
+      "relative_path": "artifacts/02-project-profile.json",
+      "sha256": "c582f714138c6e59a7dff7e98523831a326fbd513d724d62e853ae7791fdeb5b"
+    },
+    {
+      "artifact_id": "ART-02-TENDER-ROUTING",
+      "revision": 1,
+      "relative_path": "artifacts/02-tender-routing.json",
+      "sha256": "43009f353aa6b48ab2b7b9f5c59a5fe95257e82d2c09310f65dcba066adada67"
+    },
+    {
+      "artifact_id": "ART-03-REQUIREMENTS",
+      "revision": 1,
+      "relative_path": "artifacts/03-requirements.json",
+      "sha256": "9e7338f7f98b927e501f9aa72db99408f09b7590946fe222ead05ddd87955968"
+    },
+    {
+      "artifact_id": "ART-04-SCORING",
+      "revision": 1,
+      "relative_path": "artifacts/04-scoring.json",
+      "sha256": "d78062a4204b820b3b0a4dd3f77181ea383855043e0fe00e92aebcce81367e49"
+    },
+    {
+      "artifact_id": "ART-05-COMPLIANCE",
+      "revision": 1,
+      "relative_path": "artifacts/05-compliance.json",
+      "sha256": "2e41b9a7e8d821f093149ffbc5801ecc65e21c1fcac9440f2dc7316535534990"
+    },
+    {
+      "artifact_id": "ART-06-FORMAT-EXTRACTION",
+      "revision": 1,
+      "relative_path": "artifacts/06-format-extraction.json",
+      "sha256": "1fc772a117da065dedf93ea1f5f93111515e3d1f8781bf2a6abaa3cd44fbab1d"
+    },
+    {
+      "artifact_id": "ART-08-OUTLINE",
+      "revision": 1,
+      "relative_path": "artifacts/08-outline.json",
+      "sha256": "41bfe4fd41bcca4a8de2275fd18bc732c0e5207c501a0a355aa0281a65d1a3cd"
+    },
+    {
+      "artifact_id": "ART-09-EVIDENCE-SELECTION",
+      "revision": 1,
+      "relative_path": "artifacts/09-evidence-selection.json",
+      "sha256": "831e84d96766126ef32223b8339f081631f5029e65832d85aa0295dba94c3c16"
+    },
+    {
+      "artifact_id": "ART-11-TECHNICAL-CONTENT",
+      "revision": 2,
+      "relative_path": "artifacts/11-technical-content.json",
+      "sha256": "7ac4a88d96c94fbbee689aee626253563cfa68444522ecd7e22235845bf36a46"
+    },
+    {
+      "artifact_id": "ART-13-VISUALS",
+      "revision": 3,
+      "relative_path": "artifacts/13-visuals.json",
+      "sha256": "4462f346888efe3a606a8b5b3ac71e383113e3782cb555628515bd382c9abd34"
+    },
+    {
+      "artifact_id": "ART-15-REVIEW",
+      "revision": 3,
+      "relative_path": "reviews/15-review.json",
+      "sha256": "3af4c7413553353727bffd70e94c4e4682891f9dbdd9c357bae04954aff619af"
+    }
+  ],
+  "summary": "WorkBuddy有限测试及1.17.1整改复测：DOCX核验、r3图文与六页Word/PDF候选检查通过；19项真实材料阻塞及未采纳单章范围保留。 最终版Mac原生Word目录保存重开与跨页跳转已补验。",
+  "data": {
+    "mode": "understand",
+    "stages": [
+      {
+        "skill_id": "bid-source-intake",
+        "state": "needs_review",
+        "artifact_path": "artifacts/01-source-intake.json",
+        "next_action": "原件已登记并原生解析（coverage=partial，未读范围待确认）；补充附件时重跑并提示下游失效。"
+      },
+      {
+        "skill_id": "bid-project-profile",
+        "state": "needs_review",
+        "artifact_path": "artifacts/02-project-profile.json",
+        "next_action": "单一标包、混合类别（软件集成+服务外包）已分类；场景标签与模板由人类复核。"
+      },
+      {
+        "skill_id": "bid-requirements",
+        "state": "needs_review",
+        "artifact_path": "artifacts/03-requirements.json",
+        "next_action": "12 条原子需求已提取；确认条件与验收依据后再进入编写。"
+      },
+      {
+        "skill_id": "bid-scoring",
+        "state": "needs_review",
+        "artifact_path": "artifacts/04-scoring.json",
+        "next_action": "S1—S5 与 9 个计分叶子已还原，算术校验通过；价格分待报价。"
+      },
+      {
+        "skill_id": "bid-compliance",
+        "state": "needs_review",
+        "artifact_path": "artifacts/05-compliance.json",
+        "next_action": "5 条资格/否决/提交条款已提取；Q1、Q2、R3 缺材料，保留阻塞。"
+      },
+      {
+        "skill_id": "bid-format-extraction",
+        "state": "needs_review",
+        "artifact_path": "artifacts/06-format-extraction.json",
+        "next_action": "强制格式与必备附件清单已提取；成稿后逐项核验。"
+      },
+      {
+        "skill_id": "bid-outline-planning",
+        "state": "needs_review",
+        "artifact_path": "artifacts/08-outline.json",
+        "next_action": "提纲已建立，覆盖强制需求与计分叶子。"
+      },
+      {
+        "skill_id": "bid-evidence-matching",
+        "state": "needs_review",
+        "artifact_path": "artifacts/09-evidence-selection.json",
+        "next_action": "三个材料选用组均为 missing，等待真实材料；未取得前不得主张资格满足。"
+      },
+      {
+        "skill_id": "bid-technical-writing",
+        "state": "needs_review",
+        "artifact_path": "artifacts/11-technical-content.json",
+        "next_action": "仅 4.1 事件闭环管理候选正文（state=proposed，未采纳）；其余章节待写。"
+      },
+      {
+        "skill_id": "bid-visuals",
+        "state": "needs_review",
+        "artifact_path": "artifacts/13-visuals.json",
+        "next_action": "r3原生ImageGen界面与SVG流程语义、六页候选配图检查通过；设计示意不证明实际系统。"
+      },
+      {
+        "skill_id": "bid-review-remediation",
+        "state": "blocked",
+        "artifact_path": "reviews/15-review.json",
+        "next_action": "当前快照有效，三矩阵完整、0机械错误；19项材料/资格阻塞保留，正式交付拒绝。"
+      },
+      {
+        "skill_id": "bid-orchestrator",
+        "state": "needs_review",
+        "artifact_path": null,
+        "next_action": "本次Word与配图修复已复测；未采纳正文、缺材料、其余章节仍待各自范围处理。"
+      }
+    ],
+    "pending_decisions": [
+      "是否采纳 4.1 事件闭环管理候选正文（当前 state=proposed）。",
+      "是否扩大编写范围到 SEC-4-2、SEC-4-3 及其余章节。",
+      "是否由投标人补齐营业执照、签署与业绩证明等真实材料。",
+      "是否确认原件未读范围与场景标签（smart_park）。"
+    ],
+    "next_skill_ids": [
+      "bid-response-strategy",
+      "bid-solution-design"
+    ],
+    "completed_this_run": [
+      "bid-source-intake",
+      "bid-project-profile",
+      "bid-requirements",
+      "bid-scoring",
+      "bid-compliance",
+      "bid-format-extraction",
+      "bid-outline-planning",
+      "bid-evidence-matching",
+      "bid-technical-writing",
+      "bid-visuals",
+      "bid-review-remediation",
+      "bid-orchestrator"
+    ]
+  },
+  "warnings": [
+    "limited范围：仅4.1候选章节，其余技术与商务章节未编写。",
+    "未提供营业执照、真实签署、合同/验收证明及人员资料，材料真实性与资格不能通过。",
+    "候选正文state=proposed、无人类采纳确认；配图是设计示意，不证明系统已实现。",
+    "Word/PDF只验证本次六页候选，未覆盖整本标书、复杂附件及固定表。",
+    "最终Word已在Mac原生Word更新目录、保存关闭重开及实测跳转；对应PDF另经LibreOffice实际转换和六页回读。Windows及整本未验证。",
+    "脚本验证矩阵及绑定完整，不认证评审人的评分语义或企业材料真实性。",
+    "原生ImageGen使用宿主云端服务；未签署、递交、上传客户数据或购买积分。"
+  ],
+  "blockers": [
+    "缺营业执照复印件（C-Q1 / SEL-CERT）：资格审查条件未满足，保留阻塞。",
+    "缺投标函签署与盖章（C-Q2 / SEL-SIGN）：属明确否决情形，保留阻塞。",
+    "缺集成合同复印件与验收证明（S5 / SEL-PERF）：类似业绩缺必备材料，保留阻塞。",
+    "R3 日志 180 天属实质性响应，仅有正文声明无留存证据，保留阻塞。",
+    "无人类批准记录（human_approval_ref=null），不得正式递交。",
+    "未编制成稿，强制必备附件完整性未核验（C-FMT1）。"
+  ]
+}

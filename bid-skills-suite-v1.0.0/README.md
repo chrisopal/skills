@@ -6,7 +6,65 @@
 
 源码位于 [chrisopal/skills](https://github.com/chrisopal/skills) 的 `main` 分支。目录名 `bid-skills-suite-v1.0.0` 为兼容已有安装链接而保留，实际版本看本页与 `registry.json`。
 
-## 安装：先拿到完整目录
+## 先看实际效果
+
+下面用“**青禾园区事件闭环平台**”模拟招标展示实际输出：12 条原子需求、100 分评分规则、强制目录、章节草稿、SVG 流程图、宿主生成的界面示意，以及可下载的 Word/PDF。所有采购内容均为模拟，**本例只编写 4.1 单章；缺企业材料时评审保持阻塞**。
+
+![解析后的项目基础信息与分类概览](docs/images/walkthrough/02-profile.jpg)
+
+[安装](#通用-npx-安装) · [逐步截图](#模拟案例从招标原文到-wordpdf) · [使用指令](#第一次使用) · [绘图配置](#画图skill-和渲染工具分别准备) · [模拟原文与样稿](examples/readme-demo/README.md)
+
+## 通用 npx 安装
+
+电脑需先有 Node.js/npm。使用开放生态的 [Skills CLI](https://github.com/vercel-labs/skills#readme) 安装完整目录，保留每个 Skill 的脚本、模板和参考文件。以下固定到本次验证的安装器版本 `1.7.2`，从本仓库 `main` 获取 Skill。
+
+**Codex：安装 17 个投标 Skill，再安装独立绘图 Skill。**
+
+```bash
+npx --yes skills@1.7.2 add \
+  'https://github.com/chrisopal/skills/tree/main/bid-skills-suite-v1.0.0/skills' \
+  --skill '*' --global --agent codex --copy --yes
+
+npx --yes skills@1.7.2 add \
+  'https://github.com/chrisopal/skills/tree/main/enterprise-diagrams' \
+  --global --agent codex --copy --yes
+
+npx --yes skills@1.7.2 list --global --agent codex
+```
+
+完整安装应列出 **18 个名称：17 个 `bid-*` + `enterprise-diagrams`**。刷新宿主并新建会话，选择 `bid-orchestrator`。安装器会下载仓库，首次安装的耗时受网络影响；`--copy` 使用独立副本，同名安装会更新，已有自定义内容请先备份。
+
+只装到当前项目时去掉 `--global`。Claude Code、Cursor 等宿主可把 `codex` 换成安装器实际支持的 Agent 名称；也可去掉 `--agent codex` 交互选择。**CLI 1.7.2 尚不接受 `--agent workbuddy`**，WorkBuddy 使用下方的完整目录复制或界面导入方式，不用 `codebuddy` 代替。
+
+只想查看、不安装：
+
+```bash
+npx --yes skills@1.7.2 add \
+  'https://github.com/chrisopal/skills/tree/main/bid-skills-suite-v1.0.0/skills' --list
+```
+
+安装 Skill 不会自动安装 Python 依赖、OCR 服务或办公软件；实际运行前看[准备运行能力](#准备运行能力)。
+
+<details>
+<summary>安装时 clone 超时、early EOF 或 partial file 怎么处理？</summary>
+
+安装器会克隆完整仓库。本次在隔离项目实测远程安装 18 个 Skill 成功，脚本、资源和参考文件逐文件比对一致。若默认网络路径失败，Mac/Linux 可只对本次命令增加下载时限并使用 HTTP/1.1，不修改全局 Git 配置：
+
+```bash
+SKILLS_CLONE_TIMEOUT_MS=600000 \
+GIT_CONFIG_COUNT=1 \
+GIT_CONFIG_KEY_0=http.version \
+GIT_CONFIG_VALUE_0=HTTP/1.1 \
+npx --yes skills@1.7.2 add \
+  'https://github.com/chrisopal/skills/tree/main/bid-skills-suite-v1.0.0/skills' \
+  --skill '*' --global --agent codex --copy --yes
+```
+
+独立绘图 Skill 的下载若遇到同样问题，也可在其命令前加这四行。仍失败时按下方手动方式下载完整目录，不要只下载 `SKILL.md`。
+
+</details>
+
+## 手动安装与 WorkBuddy
 
 ```bash
 git clone --branch main https://github.com/chrisopal/skills.git
@@ -85,6 +143,79 @@ Windows 对应解释器为 `.venv\Scripts\python.exe`。告诉宿主使用该解
 | 系统界面示意 | 宿主原生生图 Skill/工具及授权 | 缺图保持整改项，不拿提示词当图片 |
 | Word/PDF 与目录刷新 | 宿主文档工具，或本地 LibreOffice/Word | 只交付已验证的格式；目录域未刷新单列未完成 |
 | 分章并行 | 宿主实际支持子 Agent | 记录串行执行及原因，不伪造并行记录 |
+
+## 模拟案例：从招标原文到 Word/PDF
+
+以下均为实际保存的模拟案例产物或其文档展示页的浏览器截图，未把未执行的阶段画成完成状态。示例截图采用本套件的企业报告风格；这不是需要部署的标书 Web 应用。
+
+### 1. 输入：一份软件集成与服务组合的模拟招标文件
+
+预算 100 万元，实施期 60 个日历日，一年运维；原文列出六状态事件闭环、三类角色、180 天审计日志及评分条件。可下载 [Markdown 原文](examples/readme-demo/inputs/tender.md) 或 [DOCX 原件](examples/readme-demo/inputs/SRC-001-模拟招标文件.docx)。
+
+![模拟招标输入与本例处理范围](docs/images/walkthrough/01-input.jpg)
+
+### 2. 分类：识别标包，匹配模板
+
+识别为单一标包，匹配“软件开发与系统集成 + 服务与外包”。预算、期限、采购范围有据可查；原文没提供的采购人、截止时间等不补造。类别与标包范围进入响应前需要确认。
+
+![采购类别与组合模板识别](docs/images/walkthrough/03-classification.jpg)
+
+### 3. 解析：需求、评分、否决与格式分别保存
+
+需求矩阵保留原文、条件、验收依据和位置。本例从原文中提取 **12 条原子需求**；评分保留 **13 个层级节点、9 个计分叶子，合计 100 分**，规则满分与实际得分分开。
+
+![需求矩阵及原文追溯入口](docs/images/walkthrough/04-requirements.jpg)
+
+<details>
+<summary>评分规则、资格否决与强制格式的实际截图</summary>
+
+**评分规则**：价格公式、各项分值、正文和证明材料要求分别记录。
+
+![评分层级、分值和原文依据](docs/images/walkthrough/05-scoring.jpg)
+
+**资格与否决**：营业执照、签署盖章、日志保留期等要求保留后果、行动和原文依据。
+
+![资格、明确否决与合规行动](docs/images/walkthrough/06-compliance.jpg)
+
+**强制格式**：保留招标要求的六部分结构和技术服务方案的三个子章节，避免套用通用目录覆盖原文。
+
+![强制目录与必交文件格式](docs/images/walkthrough/07-formats.jpg)
+
+</details>
+
+### 4. 规划：目录节点带有写作任务卡
+
+每个章节映射需求、评分、材料与配图。本例的 **4.1 事件闭环管理**关联三个评分叶子，原文最高分共 25 分；其他章节仍显示“未写”，目录覆盖不代表内容已完成。
+
+![分层目录、写作状态和4.1章节任务卡](docs/images/walkthrough/08-outline.jpg)
+
+### 5. 写作：先输出可修改、可追溯的候选稿
+
+本章逐项展开六状态、复核退回、权限和审计机制。用户可在宿主对话中调整目录、篇幅、内容和配图，再由总控更新当前版本。下载 [Markdown 草稿](examples/readme-demo/artifacts/11-chapter-4.1.md)；篇幅、评分驱动详写和界面图数量见[章节写作配置](docs/CHAPTER_WRITING_POLICY.md)。
+
+![关联需求的单章候选正文](docs/images/walkthrough/09-writing.jpg)
+
+### 6. 配图：可编辑技术图 + 宿主生成的界面示意
+
+左侧为 `enterprise-diagrams` 输出的 SVG 六状态流程，含复核不通过退回处置；右侧为 **WorkBuddy 原生 ImageGen 实际生成**的事件复核界面。Codex 中由其实际可用的 ImageGen 工具生成，工具选择由 Skill 驱动。界面图明确标注为设计示意。
+
+![SVG流程图与宿主ImageGen生成的界面设计示意](docs/images/walkthrough/10-visuals.jpg)
+
+[查看 SVG 原图](examples/readme-demo/assets/fig-4.1-event-flow.svg) · [可编辑 JSON 图源](examples/readme-demo/assets/fig-4.1-event-flow.diagram.json) · [查看界面图原图](examples/readme-demo/assets/fig-4.1-ui.r3.png) · [独立绘图 Skill 与 8 类图布局](../enterprise-diagrams/README.md)
+
+### 7. 评审：逐项检查评分、关键材料与资格否决
+
+实际报告给出 **17 项逐项结论、9 项未关闭问题、4 项阻塞问题**。本例没有营业执照、签署及业绩证明，因此保持“暂不能建议正式交付”；排版修好、图片生成成功不会把缺材料变成通过。问题中保留整改建议，宿主可继续执行修复、重写或提升，再重新评审。
+
+![评分、关键材料与资格否决的实际评审报告](docs/images/walkthrough/11-review.jpg)
+
+### 8. 导出：打开实际 Word/PDF 检查结构
+
+本例交付 **六页单章样稿**，包括封面、目录、正文和两张配图。目录的九条链接已检查，Word 已保存重开，PDF 已逐页检查。可直接下载 [可编辑 Word](examples/readme-demo/deliverables/chapter-4.1-sample.docx) 和 [PDF](examples/readme-demo/deliverables/chapter-4.1-sample.pdf)；封面、目录和排版配置见[导出配置](docs/EXPORT_LAYOUT.md)。
+
+![实际PDF目录页与界面图页面的展示](docs/images/walkthrough/12-export.jpg)
+
+这是用于理解输出形式的**限定范围演示**，不是整本标书验收或真实投标材料。[示例目录](examples/readme-demo/README.md)包含原文、JSON 产物、HTML 报告、图源和样稿，可离线打开检查。
 
 ## 第一次使用
 

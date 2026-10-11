@@ -45,6 +45,8 @@ STAGES = {
     "evidence": "证据",
     "solution": "S4 实施设计", "ui_design": "S4 页面字段权限", "integration": "S5 接口与迁移",
     "work_package": "S5 工程工作包", "testing": "S6 测试与UAT", "release": "S7 上线回滚", "handover": "S7 培训运维移交",
+    "closure": "S9 收尾与质保", "profile": "贯穿全程 · 计费与交付配置",
+    "template_mapping": "客户模板映射", "exchange": "外部系统交换",
 }
 PRIVATE_KEYS = frozenset(
     {
@@ -78,6 +80,14 @@ PRIVATE_KEYS = frozenset(
 PRIVATE_KEYS |= runtime.CUSTOMER_FORBIDDEN_KEYS if runtime is not None else frozenset()
 
 LABELS = {
+    "closure": "收尾与质保", "profile": "计费与交付配置", "template_mapping": "客户模板映射", "exchange": "外部系统交换",
+    "administrative_closed": "行政收尾完成", "warranty_transferred": "质保已移交", "warranty_ended": "质保已结束", "fully_discharged": "全部义务已解除",
+    "warranty": "质保安排", "administration": "行政收尾", "settlement": "结算核对", "resources": "资源释放", "archive": "归档目录", "lessons": "复盘改进",
+    "start_date": "开始日期", "end_date": "结束日期", "due_date": "截止日期", "retention_until": "保留至", "classification": "归档类别", "artifact_ref": "产物版本",
+    "recipient": "接收人", "receipt_refs": "接收依据", "terms_refs": "条款依据", "transfer_refs": "移交依据", "observation": "复盘发现",
+    "billing_mode": "计费模式", "delivery_mode": "交付模式", "streams": "计费分段", "scope_ids": "计费范围", "cap": "金额上限",
+    "form_ref": "目标字段定义", "source_ref": "来源版本", "source_pointer": "来源字段路径", "audience": "可见范围", "omissions": "未使用字段",
+    "operation_id": "操作编号", "system": "外部系统", "entity": "对象类型", "record_id": "内部编号", "external_id": "外部编号", "receipt_ref": "执行回执", "conflicts": "冲突事项",
     "internal": "内部", "customer": "客户", "simulation": "模拟", "ready": "已就绪", "draft": "草稿", "blocked": "受阻",
     "contract": "合同交接", "kickoff": "项目启动", "discovery": "调研计划", "minutes": "会议纪要", "requirements": "需求基线",
     "blueprint": "实施蓝图", "plan": "项目总计划", "weekly": "项目周报", "milestone": "里程碑", "costs": "成本费用",

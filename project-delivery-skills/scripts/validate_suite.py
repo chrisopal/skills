@@ -43,11 +43,11 @@ EXPECTED = [
     "delivery-quality-testing",
     "delivery-go-live-transition",
     "delivery-training-handover",
+    "delivery-closure-warranty",
 ]
 
 FUTURE_SKILLS = {
     "delivery-progress-control-v2",
-    "delivery-closure-warranty",
 }
 
 REQUIRED_META = ("template_id", "template_version", "visibility")
@@ -127,8 +127,8 @@ def validate_index(errors: list[str]) -> None:
     except json.JSONDecodeError as exc:
         fail(errors, f"index JSON invalid: {exc}")
         return
-    if index.get("version") != "0.2.0":
-        fail(errors, "index version must be 0.2.0")
+    if index.get("version") != "0.3.0":
+        fail(errors, "index version must be 0.3.0")
     entries = index.get("templates")
     if not isinstance(entries, list) or len(entries) < 20:
         fail(errors, "index must contain the registered template set")

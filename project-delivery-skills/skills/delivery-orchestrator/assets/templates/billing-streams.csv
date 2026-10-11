@@ -1,0 +1,2 @@
+template_id,template_version,visibility,billing_stream_id,project_id,delivery_profile_id,billing_mode,stream_kind,contract_basis,currency,cap_amount,acceptance_condition,payment_condition,estimated_amount,recognized_amount,invoiced_amount,paid_amount,state,source_refs,revision
+,,,,,,,,,,,,,,,,,,,

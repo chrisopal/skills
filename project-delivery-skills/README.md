@@ -1,6 +1,6 @@
 # 软件项目交付 Skills
 
-版本 0.2.0。24 个可独立调用的技能，覆盖软件定制开发与系统集成项目的交接、启动、调研、需求蓝图、实施设计、接口迁移、工程工作包、测试/UAT、上线回滚、培训运维移交，以及贯穿全程的计划、进度、资源工时/成本差旅、风险质量/变更和里程碑确认。
+版本 0.3.0。25 个可独立调用的技能，覆盖软件定制开发与系统集成项目的交接、启动、调研、需求蓝图、实施设计、接口迁移、工程工作包、测试/UAT、上线回滚、培训运维移交，收尾质保，以及贯穿全程的计划、进度、资源工时/成本差旅、风险质量/变更和里程碑确认。
 
 Agent 负责读取、分析和编写；运行工具负责可复现的登记、版本依赖、基线、金额和交付包检查。工具本身不生成业务结论、不转录录音、不认证客户身份、不发送文件、不开发业务系统、不执行生产上线。
 
@@ -58,7 +58,21 @@ python3 project-delivery-skills/scripts/install.py --dest "$HOME/.codex/skills"
 | [delivery-go-live-transition](skills/delivery-go-live-transition/SKILL.md) | 就绪核验、切换、回滚与恢复记录 |
 | [delivery-training-handover](skills/delivery-training-handover/SKILL.md) | 角色培训、能力验证、资产与运维接收 |
 
-第二批同步细化资源负荷、逐项剩余工作、采购部分发生和付款条件。技能组织工程工作与证据，代码/制品仍由工程工具维护，生产动作需实际环境和既有授权。质保收尾、跨项目与外部系统对接保留第三批。
+第二批同步细化资源负荷、逐项剩余工作、采购部分发生和付款条件。技能组织工程工作与证据，代码/制品仍由工程工具维护，生产动作需实际环境和既有授权。第一、二批能力与原有契约继续保留。
+
+## 第三批：收尾与复用
+
+新增 1 个 Skill、11 套模板，总计 25 个 Skill、58 套模板。
+
+| 技能/总控能力 | 用途 |
+|---|---|
+| [delivery-closure-warranty](skills/delivery-closure-warranty/SKILL.md) | 行政结项、质保移交/结束、剩余义务、资源交还与归档 |
+| delivery-orchestrator：项目配置 | 固定总价、工时、混合计费与分阶段/迭代交付；金额分币种估计 |
+| delivery-orchestrator：客户模板映射 | 绑定实际 JSON 字段规格，以 JSON Pointer 取值和受控转换准备本地 JSON 草稿 |
+| delivery-orchestrator：组合审查 | 当前 UTC 提取日的当前项目快照、分币种成本预测、显式共享人员身份与容量 |
+| delivery-orchestrator：系统交换 | 本地 inbound/outbound 候选文件、稳定操作身份、载荷哈希与执行收据核对 |
+
+字段、可运行示例和 CLI 见[收尾与复用契约](skills/delivery-orchestrator/references/reuse-closure.md)。映射不自动生成客户专用 Word 版式；交换不发送网络请求、不自动回写业务主账。模拟收据不能证明真实执行；行政结项、质保移交、质保结束与全部义务解除分别核验。
 
 ## 项目工具
 
@@ -80,7 +94,7 @@ python3 "$RUNTIME" apply-change "$PROJECT" CHANGE-001
 
 ## 模板与审阅
 
-47 套模板是可编辑 Markdown 文档与 CSV 台账，位于[公共模板目录](skills/delivery-orchestrator/assets/templates/)，由 `index.json` 登记。客户已有模板优先，通过字段映射适配。
+58 套模板是可编辑 Markdown 文档与 CSV 台账，位于[公共模板目录](skills/delivery-orchestrator/assets/templates/)，由 `index.json` 登记。客户已有模板优先；当前运行适配器消费 JSON 字段规格，输出本地 JSON 草稿，客户原生版式仍需另行排版与回读。
 
 ```bash
 # 使用已具备 python-docx/openpyxl 的 Python（Codex 可读取内置运行环境）。
@@ -108,6 +122,8 @@ python3 project-delivery-skills/scripts/verify_phase_two.py --out /absolute/path
 
 该脚本实际运行本机 HTTP/SQLite 工程夹具并保存原始日志和迁移恢复记录；其 UAT、培训和接收均为显式模拟。输出目录已有内容时拒绝覆盖。每段对象和门槛见生成的 `report.json`，不能据此判断真实项目已完成。
 
-测试覆盖来源/产物篡改、版本依赖、候选与基线分离、变更失败不混用、确认/审核精确绑定、工时缺口、差旅/外包去重、客户过滤和非覆盖安装。Office 文件回读、浏览器和 Agent 业务复核见[第一批验证记录](docs/VALIDATION.md)及[第二批验证记录](docs/VALIDATION_PHASE_TWO.md)。Word/XLSX 使用 Arial Unicode MS；跨机器打开时检查字体替换和分页。模板台账由 Agent 映射到共享 JSON 契约，首版没有自动双向同步。
+第三批文件流演练使用 `python3 project-delivery-skills/scripts/verify_phase_three.py --out /absolute/path/to/new-case`，覆盖计费配置、实际字段映射、交换候选与模拟回执、行政收尾及持续质保。
+
+测试覆盖来源/产物篡改、版本依赖、候选与基线分离、变更失败不混用、确认/审核精确绑定、工时缺口、差旅/外包去重、客户过滤和非覆盖安装。Office 文件回读、浏览器和 Agent 业务复核见[第一批验证记录](docs/VALIDATION.md)、[第二批验证记录](docs/VALIDATION_PHASE_TWO.md)及[第三批验证记录](docs/VALIDATION_PHASE_THREE.md)。Word/XLSX 使用 Arial Unicode MS；跨机器打开时检查字体替换和分页。模板台账由 Agent 映射到共享 JSON 契约；系统交换仅准备候选文件与核对收据，没有自动双向同步。
 
 模拟案例使用 purpose=simulation，模拟确认不能进入真实项目。JSON 校验、语义审查、实际文件可读、客户接受是不同证据，不互相替代。没有真实合同、客户回答或工程测试证据时保留草稿与明确缺口。

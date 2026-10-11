@@ -23,15 +23,19 @@ def support_module(name):
 
 software = support_module('software')
 economics = support_module('economics')
+closure_rules = support_module('closure')
+reuse = support_module('reuse')
 KINDS = {'source', 'evidence', 'contract', 'kickoff', 'discovery', 'minutes',
          'requirements', 'blueprint', 'plan', 'timesheets', 'costs', 'risks',
          'change', 'weekly', 'milestone', 'confirmation', 'review'}
 KINDS |= software.KINDS
+KINDS |= closure_rules.KINDS | reuse.KINDS
 PUBLIC_KINDS = {'kickoff', 'discovery', 'minutes', 'requirements', 'blueprint',
                 'plan', 'weekly', 'milestone'}
 PUBLIC_KINDS |= software.PUBLIC_KINDS
 CUSTOMER_FORBIDDEN_KEYS = frozenset({'internal_rate', 'salary', 'margin', 'internal_notes', 'secret', 'access_token', 'password'})
 SINGLETON = {'requirements', 'blueprint', 'plan', 'timesheets', 'costs', 'risks'}
+SINGLETON |= {'closure', 'profile'}
 PROJECT_DIRECTORIES = (
     '01-contract-handover', '02-initiation', '03-plan', '04-discovery',
     '05-requirements-blueprint', '06-design', '07-development-integration',
@@ -42,6 +46,7 @@ PROJECT_DIRECTORIES = (
 REFERENCE_KEYS = {'target', 'targets', 'deliverable_refs', 'baseline_refs',
                   'replacements', 'decision_refs', 'evidence_refs', 'source_refs'}
 REFERENCE_KEYS |= software.REFERENCE_KEYS
+REFERENCE_KEYS |= closure_rules.REFERENCE_KEYS | reuse.REFERENCE_KEYS
 REQUIRED = {
     'evidence': ('items', 'unread_scope'),
     'contract': ('obligations', 'scope_in', 'scope_out', 'customer_dependencies'),
@@ -61,6 +66,8 @@ REQUIRED = {
     'review': ('targets', 'verdict', 'reviewer', 'method', 'findings', 'unchecked', 'scope'),
 }
 REQUIRED.update(software.REQUIRED)
+REQUIRED.update(closure_rules.REQUIRED)
+REQUIRED.update(reuse.REQUIRED)
 
 
 def now():
@@ -451,9 +458,28 @@ def validate_payload(project, value, registry):
             raise ValueError('Invalid change state')
         if data['state'] == 'approved' and not data['decision_refs']:
             raise ValueError('Approved change needs decision evidence')
-    if kind in software.KINDS:
+    if kind in software.KINDS | closure_rules.KINDS | reuse.KINDS:
         upstream = [load_artifact(project, dict(zip(('artifact_id', 'revision', 'sha256'), key))) for key in closure]
-        software.validate(value, upstream, rows, number, read_project(project)['purpose'])
+        purpose = read_project(project)['purpose']
+        if kind in software.KINDS:
+            software.validate(value, upstream, rows, number, purpose)
+        elif kind in closure_rules.KINDS:
+            closure_rules.validate(value, upstream, rows, number, purpose)
+            if purpose != 'simulation' and data['as_of'] > now()[:10]:
+                raise ValueError('Actual closure as_of cannot be in the future')
+        else:
+            reuse.validate(value, upstream, rows, number, purpose, lambda obj: read_source_json(project, obj), forbidden_customer_key)
+        if kind in closure_rules.KINDS | reuse.KINDS:
+            prior = registry['artifacts'].get(value['artifact_id'])
+            if prior and value['revision'] > prior['revision']:
+                previous = load_artifact(project, latest_ref(project, value['artifact_id']))
+                (closure_rules if kind in closure_rules.KINDS else reuse).check_revision(previous, value)
+        if kind == 'exchange':
+            for aid, entry in registry['artifacts'].items():
+                if aid != value['artifact_id'] and entry['kind'] == 'exchange':
+                    other = load_artifact(project, latest_ref(project, aid))['data']
+                    if (other['system'], other['operation_id']) == (data['system'], data['operation_id']):
+                        raise ValueError('Exchange operation already belongs to another stable artifact ID')
     if kind in {'timesheets', 'costs'}:
         economics.validate(kind, data, number, rows)
 
@@ -781,6 +807,16 @@ def snapshot(project):
                         gate['reasons'].append('Bound testing/UAT gate did not pass')
                 # Several module-scoped records may share a kind; never overwrite one gate.
                 gates[aid] = dict(gate, kind=obj['kind'])
+            elif obj['kind'] in closure_rules.KINDS:
+                upstream = input_objects(project, obj)
+                gate = closure_rules.gate(obj, upstream, health, obj['data']['as_of'])
+                gates[aid] = dict(gate, kind=obj['kind'])
+            elif obj['kind'] in reuse.KINDS:
+                gate = reuse.gate(obj)
+                if health != 'current':
+                    gate['ready'] = False
+                    gate['reasons'].append('Artifact dependencies are stale')
+                gates[aid] = dict(gate, kind=obj['kind'])
         except (ValueError, OSError, KeyError, TypeError) as exc:
             alerts.append(f'{aid}: {exc}')
     for kind in ('blueprint', 'milestone'):
@@ -842,6 +878,59 @@ def prepare_customer(project, artifact_ids, out, mode='discussion'):
     return dict(manifest, output=str(destination))
 
 
+def read_source_json(project, obj):
+    if obj['kind'] != 'source':
+        raise ValueError('JSON source required')
+    path = confined(project, obj['data']['path'])
+    if digest(path) != obj['data']['sha256']:
+        raise ValueError('Source content changed')
+    return json.loads(path.read_text(encoding='utf-8'))
+
+
+def input_objects(project, obj):
+    objects = {}
+    def visit(ref):
+        key = ref_key(ref)
+        if key in objects:
+            return
+        value = load_artifact(project, ref)
+        objects[key] = value
+        for child in value['inputs']:
+            visit(child)
+    for ref in obj['inputs']:
+        visit(ref)
+    return list(objects.values())
+
+
+def prepare_mapped(project, artifact_id, out):
+    ref = latest_ref(project, artifact_id)
+    obj = check_ref(project, ref, selection_for(project, read_registry(project)))
+    if obj['kind'] not in {'template_mapping', 'exchange'} or obj['status'] != 'ready':
+        raise ValueError('Select a ready mapping or exchange')
+    upstream = input_objects(project, obj)
+    mapping = obj if obj['kind'] == 'template_mapping' else reuse.find(upstream, obj['data']['mapping_ref'])
+    payload = reuse.mapped_values(mapping, upstream, lambda x: read_source_json(project, x), forbidden_customer_key)
+    if obj['kind'] == 'exchange':
+        reuse.check_exchange_fields(mapping, upstream, lambda x: read_source_json(project, x), forbidden_customer_key)
+    destination = Path(out).expanduser().absolute()
+    for part in (destination, *destination.parents):
+        if part.is_symlink():
+            raise ValueError('Mapped output cannot use symlink paths')
+    if destination.resolve().is_relative_to(root_path(project) / '00-control'):
+        raise ValueError('Mapped output cannot overwrite control records')
+    result = dict(project_id=obj['project_id'], purpose=read_project(project)['purpose'], source_ref=ref,
+                  payload=payload, payload_sha256=reuse.payload_hash(payload), sent=False, applied=False,
+                  customer_package_eligible=False, status='local_mapping_draft')
+    if obj['kind'] == 'exchange':
+        result['exchange'] = {k: obj['data'][k] for k in ('operation_id', 'system', 'entity', 'direction', 'record_id', 'external_id')}
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open('xb') as handle:
+        handle.write(encoded(result))
+    if json.loads(destination.read_text(encoding='utf-8')) != result:
+        raise ValueError('Mapped output readback mismatch')
+    return dict(output=str(destination), sha256=digest(destination), sent=False, applied=False)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
@@ -870,6 +959,14 @@ def main():
     pack.add_argument('--ids', nargs='+', required=True)
     pack.add_argument('--out', type=Path, required=True)
     pack.add_argument('--mode', choices=['discussion', 'confirmed'], default='discussion')
+    mapped = sub.add_parser('prepare-mapped')
+    mapped.add_argument('project', type=Path)
+    mapped.add_argument('artifact_id')
+    mapped.add_argument('--out', type=Path, required=True)
+    group = sub.add_parser('portfolio')
+    group.add_argument('projects', type=Path, nargs='+')
+    group.add_argument('--as-of', required=True, help='Current UTC extraction date; historical replay unsupported')
+    group.add_argument('--resources', type=Path, help='JSON with identity_map and shared capacities')
     args = parser.parse_args()
     try:
         if args.command == 'init':
@@ -886,6 +983,11 @@ def main():
             result = activate(args.project, args.ids)
         elif args.command == 'apply-change':
             result = apply_change(args.project, args.change_id)
+        elif args.command == 'prepare-mapped':
+            result = prepare_mapped(args.project, args.artifact_id, args.out)
+        elif args.command == 'portfolio':
+            resources = json.loads(args.resources.read_text()) if args.resources else {}
+            result = reuse.portfolio(args.projects, args.as_of, sys.modules[__name__], **resources)
         else:
             result = prepare_customer(args.project, args.ids, args.out, args.mode)
         print(json.dumps(result, ensure_ascii=False, indent=2))

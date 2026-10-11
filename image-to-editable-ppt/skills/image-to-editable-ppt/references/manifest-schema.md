@@ -75,7 +75,22 @@ For `backend_id: "builtin-imagegen"`, these fields are required and have fixed m
 - `fallback_policy.on`: the only events that permit leaving the built-in tool: it is unavailable/not callable, its call errors, an edit input is unreadable, or it returns no valid local image.
 - `fallback_policy.missing_optional_parameters`: always `false`; absent optional controls never authorize fallback.
 
-Other backend metadata may describe model labels, runtime homes, or handoff text, but it does not change this order. Parent-level tool selection and user-interaction policy live in `SKILL.md` subsection "Image Backend Selection"; page reconstructors execute the copied contract above.
+Other built-in backend metadata may describe model labels, runtime homes, or handoff text, but it does not change this order. Parent-level tool selection and user-interaction policy live in `SKILL.md` subsection "Image Backend Selection"; page reconstructors execute the copied contract above.
+
+### Native host-tool contract
+
+`backend_id: "host-tool"` is an explicit alternative for a user-configured image tool exposed by the host agent. The host must discover the actual tool names and parameter schemas in the current session before writing the JSON contract. The CLI validates the declared schema and consistency; it cannot prove the host tool exists or call it. Do not infer availability from a platform name or paste example tool identifiers as real ones.
+
+The input JSON contains exactly these fields:
+
+- `schema_version`: `1`.
+- `discovery_evidence`: nonempty description of the current tool discovery result, without credentials.
+- `observed_tools`: map from exact observed native tool names to `{ "parameters": [names], "required_parameters": [names] }`. Required names must occur in the observed parameter list.
+- `operations`: exactly `generate` and `edit`; each supplies `tool_name`, `required_parameters`, and `prompt_parameter`. `edit` also supplies a distinct `image_parameter`. Tool names must occur in `observed_tools`; operation parameters must cover every observed required parameter without inventing unsupported ones. The prompt/image mappings must occur in the operation's required list, even when the provider marks those parameters optional.
+- `input_context_policy`: how the discovered tool receives inspected edit inputs and task-local references. Describe its actual local-path, attachment, or context requirements.
+- `save_path_policy`: where the tool returns the selected local output path and how the host saves it. A remote URL alone is not importable; any required download/save capability must itself be available and return an explicit local path.
+
+The runtime copies this contract into every page request and generated worker prompt, adding a fixed `handoff_rule`, empty `fallback_order`, and empty `fallback_policy.on`. Each page reconstructor must recheck callable tools in its own session, follow the observed schema, inspect edit inputs first, and call the selected native tool serially. These identifiers are never shell commands. Accept only an explicit local output path returned by the tool or its documented save operation; verify it exists and import that selected file. Never scan for a newest file. Missing tools, unreadable inputs, or missing valid local output fail the page; the host contract never enters Codex OAuth or API fallback. Changes to another backend require an explicit run-level selection.
 
 ## `page_jobs.json`
 
@@ -353,7 +368,7 @@ Each imported job records at least the selected output and the backend that actu
 }
 ```
 
-`backend` is the actual producer: `builtin-imagegen`, `codex-oauth`, or `openai-compatible-api`; `unknown` is reserved for legacy page directories that have no `image_backend` contract. `editppt image import` requires an explicit producer, rejects files that are not readable images, and checks `backend`/`fallback_reason` against the page contract. `fallback_reason` is `null` when the preferred backend succeeded or the run selected a CLI contract directly; when a built-in contract enters its CLI fallback, it records the matching event from `image_backend.fallback_policy.on`.
+`backend` is the actual producer: `builtin-imagegen`, `codex-oauth`, `openai-compatible-api`, or `host-tool`; `unknown` is reserved for legacy page directories that have no `image_backend` contract. Host-tool imports additionally record `tool_name`, which must match one of the contract's selected operation tools. `editppt image import` requires an explicit producer, rejects files that are not readable images, and checks `backend`/`fallback_reason` against the page contract. `fallback_reason` is `null` when the preferred backend succeeded or the run selected a CLI contract directly; when a built-in contract enters its CLI fallback, it records the matching event from `image_backend.fallback_policy.on`.
 
 State and provenance record rules are described in the State Principles section of `SKILL.md` and in the asset processing examples in `cli-helper.md`.
 

@@ -111,6 +111,7 @@ editppt config --paddle-ocr-token "<token>"
 editppt prepare input.png
 editppt prepare input.pdf
 editppt prepare input.png --image-backend builtin-imagegen
+editppt prepare input.png --image-backend host-tool --image-backend-contract host-image.json
 ```
 
 Purpose: normalize a single image, multiple images, a PDF, or an image-based PPTX into a run directory and generate `deck_manifest.json`, `page_jobs.json`, `notes_manifest.json`, plus per-page `pages/page_NNN/source.png`, `page_request.json`, and text hints. `--image-backend` records the requested run/page contract; selection policy lives in `SKILL.md` subsection "Image Backend Selection".
@@ -196,6 +197,17 @@ editppt page hints pages/page_001
 ```
 
 Purpose: detect the text lines on one page's `source.png` and write `text_hints.json` (each line's source-pixel `box_px`, measured glyph height, and derived font sizes) plus `text_hints.png`, the source image with every detected line framed and labeled. `editppt prepare` already runs this for every page (PDF inputs are OCR'd in one batch job when a PaddleOCR token is available via the `PADDLE_OCR_TOKEN` environment variable or `~/.editppt/config.yaml`; otherwise the built-in offline detector runs). Use this command only to regenerate hints for a page. How to consume the hints is defined in `page-decision-tree.md` section 3.1.
+
+## Native Host Backend
+
+```bash
+editppt run backend <run> --mode host-tool --contract host-image.json
+editppt image import pages/page_001 --job-id asset-1 \
+  --source-image /absolute/returned-image.png --dest assets/asset.png \
+  --backend host-tool --tool-name EXACT_DISCOVERED_TOOL
+```
+
+Purpose: select the discovered host tool contract and import its explicitly returned local image; JSON fields and execution rules are owned by `manifest-schema.md` under "Native host-tool contract". The CLI does not invoke native host tools.
 
 ## Image Backend Commands
 

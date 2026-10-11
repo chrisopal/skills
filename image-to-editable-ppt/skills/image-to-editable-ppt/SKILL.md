@@ -39,7 +39,7 @@ These parent-level rules are stated once here; page-level rules live in the refe
 
 ### Image Backend Selection
 
-This subsection is the authoritative execution policy for every page-local image job. Before prepare, check whether the current agent runtime can call `image_gen.imagegen`; if so, pass `--image-backend builtin-imagegen` to `editppt prepare`, otherwise keep the default CLI contract. Run image jobs serially within a page, in this order:
+This subsection is the authoritative execution policy for every page-local image job. Before prepare, if the user has selected a configured native host image tool (for example through WorkBuddy or Claude Code), discover its actual tool names and schemas and select the explicit `host-tool` contract described in `references/manifest-schema.md`; use the commands in `references/cli-helper.md`. The host contract takes precedence for this run. Otherwise, check whether the current agent runtime can call `image_gen.imagegen`; if so, pass `--image-backend builtin-imagegen` to `editppt prepare`, otherwise keep the default CLI contract. For the default Codex/CLI path, run image jobs serially within a page, in this order:
 
 1. Use the built-in agent tool `image_gen.imagegen` whenever it is callable in the current agent runtime.
 2. Only when the run's recorded built-in fallback policy applies, call `editppt image generate/edit`. That CLI fallback selects Codex OAuth first and a configured OpenAI-compatible API second.

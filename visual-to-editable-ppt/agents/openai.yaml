@@ -1,0 +1,4 @@
+interface:
+  display_name: "视觉优先 PPT"
+  short_description: "按内容和主题逐页生图，默认重建可编辑 PPT，也可明确选择每页整图的图片型 PPT"
+  default_prompt: "使用 $visual-to-editable-ppt，依据已确认内容和风格先验证代表页；默认生成可编辑 PPTX，如我明确选择图片版则按每页整图导出。"

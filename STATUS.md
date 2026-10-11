@@ -1,3 +1,130 @@
+## 2026-10-11: Six editable themes and measured typography
+
+- Scope: seven theme profiles now express authoritative point sizes (v1.1.0),
+  defaulting to 20pt body, 32pt content titles and separate cover/label roles.
+  `references/typography.md` records Microsoft/Manchester guidance, viewing
+  context, small-footer exceptions and PPT-point/image-em conversion. Bridge
+  prompts and skill/quality/conversion guidance use the same font contract.
+- Verification tool: `scripts/inspect_fonts.py` reads actual text runs, including
+  groups and table cells; paragraph defaults are resolved and unknown master or
+  theme inheritance is explicit. It reports evidence, never automatic visual
+  acceptance. Two regression tests cover profiles and mixed/inherited font data.
+- Live result: blue, red, green, product, marketing and gala each have one real
+  editable sample, plus a six-page gallery. All six passed page record/finalize,
+  exact content/notes audit and font read-back (44 native text boxes, all bodies
+  20pt). All seven delivered files rendered in LibreOffice; the final contact
+  sheet and page renders were inspected. Titles are32/32/32/44/48/44pt.
+- Native application: macOS PowerPoint opened the gallery copy without repair.
+  All six body sizes showed20pt, then were changed to21pt in the test copy;
+  a red structural container was moved. Save/close/reopen and package read-back
+  confirmed all six font changes, container position and all notes persisted.
+  The original delivery gallery is unchanged (SHA-256 starts653b8275d66f).
+- Checks: 34 bridge +32 consulting +90 converter tests passed (156 total),
+  skill validation, Python compilation, local documentation links and whitespace
+  checks. No new dependencies; reuse existing generation/reconstruction runtime.
+- Limits: complex artwork remains independently movable/replacable raster;
+  the gala clean background retains stage imagery with native editable text.
+  Authorized typography changes and minor font/gradient/shadow differences are
+  recorded. PaddleOCR connection reset twice; builtin ink hints plus exact
+  approved source text were used. Windows, other live hosts and dense customer
+  decks were not tested. Footers12pt are nonessential, not accessibility proof.
+- Artifacts: samples, renders, actual-font inventories and native edit evidence
+  remain local under ignored `output/visual-ppt-theme-tests-20261011/`.
+  Only reusable source/spec/docs/tests are included in the publication.
+- Publication: implementation `a789737c` was committed and pushed to
+  `origin/codex/visual-to-editable-ppt`; remote SHA read-back matched. PR #6
+  now documents both output modes, measured typography and all seven themes.
+  Main remains unchanged; this status-only follow-up records verified publication.
+
+## 2026-10-11: Explicit image or editable PPT delivery
+
+- Scope: `visual_bridge.py` adds `plan --output-mode image|editable` (editable
+  default), `export-images` and `audit-images`; skill, README, metadata and
+  host/handoff/quality/theme references describe both routes. Root README
+  discovery text is updated. Image output does not require the conversion CLI.
+- Simplification: reuse the notes-carrier writer and image integrity checks;
+  no new rendering engine, production state machine or dependency. Image decks
+  have a distinct deliverable title and cannot silently replace editable output.
+  Export refuses overwrites and protected paths; audit checks one original image
+  per slide, order, notes, canvas, crop/flip/position and full/partial scope.
+- Verification: 32 bridge + 32 consulting + 90 converter tests passed (154 total),
+  skill validation, Python compilation, documentation links/CLI arguments and
+  whitespace checks passed. Existing editable-path regressions still pass.
+- Live themes: Codex ImageGen generated one 1672x941 page for each remaining
+  theme: blue, red, green consulting, product solution, marketing and gala.
+  Every source was visually inspected, selected, handed off and exported through
+  the new image route. All six final PPTX files passed image audits and actual
+  LibreOffice PDF rendering/visual inspection. A six-page gallery is also local.
+  Previous purple-theme editable testing remains recorded below.
+- Limits: six-theme testing covers image delivery, not six editable rebuilds.
+  Mac lock prevented a fresh PowerPoint GUI check this round; no new native-open
+  claim is made. WorkBuddy/Claude, Windows and customer business acceptance
+  remain outside the tested scope. Generated files and evidence stay in ignored
+  `output/visual-ppt-theme-tests-20261011/`; no generated artifacts are staged.
+- Publication: implementation `6a49cb6e` was committed and pushed to
+  `origin/codex/visual-to-editable-ppt`; remote SHA read-back matched. PR #6
+  describes both output modes and the precise live-test scope. Main remains
+  unchanged; this status-only follow-up records the verified publication.
+
+## 2026-10-11: Live visual-to-editable PPT validation
+
+- Scope: exercised the purple consulting theme with three actual Codex ImageGen
+  pages (cover, three-column content, layered architecture), then native page
+  workers, source-faithful ribbon separation, record/finalize and final audit.
+- Result: 30 editable text objects, 13 native structural objects and one
+  independent ribbon image; no full-slide raster backgrounds. Exact content,
+  order and all three Chinese speaker notes passed read-back checks. The final
+  deck was rendered with LibreOffice and all pages inspected in PowerPoint.
+- Actual application test: PowerPoint opened the final deck without repair;
+  a separate copy's title and architecture panel position were edited through
+  the GUI, saved, closed and reopened. Both changes and all notes persisted.
+  The original delivery file stayed unchanged (SHA-256 starts `76142e060bb9`).
+- Fixes: live PowerPoint opening exposed an invalid wide-size enum and theme
+  style lists below DrawingML minimum counts. Corrected the shared exporter
+  and added package regressions. Font fallback was corrected in test manifests;
+  quality guidance now distinguishes Pillow previews from real Office rendering.
+- Verification: converter 90, bridge 23 and consulting 32 tests passed (145 total),
+  with Python compilation and whitespace checks. Source changes are limited to
+  the exporter, layout tests, changelog, quality guidance and this status record.
+  Reuses the existing exporter and runtime; no new dependencies or repair pass.
+- Delivery: implementation `f42905c3` was committed and pushed to
+  `origin/codex/visual-to-editable-ppt`; remote SHA read-back matched. Existing
+  PR https://github.com/chrisopal/skills/pull/6 now records the live test and fixes.
+  Main is unchanged. Generated PPTX/PDF/images,
+  local preview fonts and evidence stay under ignored
+  `output/visual-to-editable-ppt-live-20261011/` and are not published.
+- Limits: the ribbon remains a movable/replacable raster, with minor font,
+  shadow and gradient differences from source. The other six themes,
+  WorkBuddy/Claude live hosts, Windows PowerPoint and native chart-data editing
+  were not tested. This is generic demo validation, not user business acceptance.
+
+## 2026-10-10: Visual-first editable PPT skill
+
+- Scope: `visual-to-editable-ppt/` adds a content-to-design-to-editable workflow,
+  seven theme profiles, 12 page recipes, draft example, host/conversion/quality
+  guidance, and a small bridge reusing consulting production state.
+- Integration: selected image versions, authoritative page content/data, original
+  notes and stable IDs are copied into an immutable handoff. Changed content,
+  order, image bytes or selections invalidate old handoffs. Partial scopes are
+  explicit. Input-only PPTX carriers preserve notes; final PPTX audits check
+  native text, source-raster reuse, page count and notes.
+- Simplification: no second rendering engine or state machine; the original
+  consulting skill is unchanged. The existing image-to-editable-ppt CLI gains
+  an explicit discovered host-tool contract and provenance checks, preserving
+  Codex/CLI defaults. No dependency added; no generated images/decks committed.
+- Validation: bridge 23 tests and consulting 32 tests passed; converter 88 tests
+  passed (82 existing plus six host-tool tests). Skill metadata, Python AST,
+  JSON/YAML, local links and Git whitespace checks passed. Independent local
+  forward testing exercised actual prepare, revised page order, partial scopes,
+  stale-input rejection and exact Chinese speaker notes with synthetic fixtures.
+- Delivery: implementation `d2d9c400` was committed and pushed to
+  `origin/codex/visual-to-editable-ppt`; the remote SHA was read back and matched.
+  Review PR: https://github.com/chrisopal/skills/pull/6. Main remains unchanged;
+  this status-only follow-up records the verified publication.
+- Limits: no live image generation/editing, WorkBuddy/Claude Code installation,
+  model-specific visual quality, or real final-deck edit/reopen acceptance.
+  Theme files are reusable design specifications, not visually approved samples.
+
 ## 2026-10-10: Integrate consulting-ppt-image into main
 
 - Scope: merge `feat/consulting-ppt-image-20261007` at `9f52a4cf`, adding

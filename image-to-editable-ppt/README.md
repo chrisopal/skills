@@ -94,6 +94,8 @@
 
 ## 图片 Backend 与第三方 API 配置
 
+用户已配置的宿主图片工具也可通过显式 `host-tool` 契约接入（如 WorkBuddy 或 Claude Code 暴露的工具）。Agent 必须先发现真实工具名和参数；此模式由宿主直接调用并导入明确返回的本地图片，不自动回退到 Codex OAuth 或 API。下面介绍的是默认 Codex/CLI 路径。
+
 完整后端优先级是：Codex 内置 `image_gen.imagegen` → Codex OAuth → OpenAI-compatible API。内置工具由 agent 直接调用，Python/`editppt` CLI 不能调用或探测它；只有内置工具不可用/不可调用、调用报错、编辑输入不可读或没有返回有效本地图片时，才进入 `editppt image` CLI fallback。CLI 内部优先使用本机 Codex OAuth；如果不可用，再读取 `~/.editppt/config.yaml` 或环境变量里的 OpenAI-compatible API 配置。
 
 内置生图只需要 `prompt`；内置编辑图只需要 `prompt` 和本地绝对路径 `referenced_image_paths`，并且编辑前必须先查看输入图。内置工具没有 `mask`、`model`、`size`、`quality`、`out` 等参数，缺少这些参数绝不触发 fallback。成功后只接收工具明确返回的本地路径（包括 `output_hint`），验证文件有效再导入；不会扫描目录猜测“最新文件”。

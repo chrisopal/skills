@@ -60,6 +60,8 @@ ln -s /path/to/image-to-editable-ppt-skill/skills/image-to-editable-ppt ~/.codex
 
 ## 图片 Backend 与第三方 API 配置
 
+用户已配置的宿主图片工具也可通过显式 `host-tool` 契约接入（如 WorkBuddy 或 Claude Code 暴露的工具）。Agent 必须先发现真实工具名和参数；此模式由宿主直接调用并导入明确返回的本地图片，不自动回退到 Codex OAuth 或 API。下面介绍的是默认 Codex/CLI 路径。
+
 图片生成和编辑优先调用当前 agent 的内置 `image_gen.imagegen`。只有满足约定的降级条件时才进入 `editppt image` CLI；CLI 会优先使用本机 Codex OAuth（`~/.codex/auth.json`），如果不可用，再读取 `~/.editppt/config.yaml` 或环境变量里的 OpenAI-compatible API 配置。
 
 通常不需要你自己配置。只有这些情况才需要让 AI 帮你配置 API fallback：

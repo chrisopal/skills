@@ -60,6 +60,8 @@ Token 없이도 실행할 수 있습니다. 이 경우 skill은 내장 오프라
 
 ## 이미지 Backend 및 타사 API 구성
 
+사용자가 구성한 호스트 이미지 도구도 명시적인 `host-tool` 계약으로 선택할 수 있습니다(예: WorkBuddy 또는 Claude Code에서 제공하는 도구). Agent는 먼저 실제 도구 이름과 매개변수를 확인해야 합니다. 이 모드는 호스트 도구를 직접 호출하고 명시적으로 반환된 로컬 이미지만 가져오며 Codex OAuth나 API로 자동 전환하지 않습니다. 아래 내용은 기본 Codex/CLI 경로에 해당합니다.
+
 이미지 생성과 편집은 현재 agent의 내장 `image_gen.imagegen` 도구를 우선 사용합니다. 정해진 폴백 조건을 충족할 때만 `editppt image` CLI로 전환하며, CLI는 로컬 Codex OAuth(`~/.codex/auth.json`)를 우선 사용하고 사용할 수 없으면 `~/.editppt/config.yaml` 또는 환경 변수의 OpenAI-compatible API 설정을 읽습니다.
 
 일반적으로 직접 구성할 필요는 없습니다. 다음 경우에만 AI에게 API 폴백 구성을 요청하세요.

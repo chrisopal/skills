@@ -5,6 +5,8 @@ from pathlib import Path
 
 from PIL import Image, UnidentifiedImageError
 
+from configure_image_backend import validate_host_contract
+
 from deck_run_state import now_iso, read_json, resolve_inside, sha256_file, write_json
 
 
@@ -26,7 +28,7 @@ def main():
     parser.add_argument("--prompt-file", help="Optional prompt file path used to create the selected image.")
     parser.add_argument(
         "--backend",
-        choices=["builtin-imagegen", "codex-oauth", "openai-compatible-api", "unknown"],
+        choices=["builtin-imagegen", "codex-oauth", "openai-compatible-api", "host-tool", "unknown"],
         required=True,
         help="Actual image backend that produced the selected image.",
     )
@@ -35,6 +37,7 @@ def main():
         choices=["tool-unavailable", "tool-error", "input-unreadable", "no-valid-local-output"],
         help="Optional fallback event explaining why the preferred image backend was not used.",
     )
+    parser.add_argument("--tool-name", help="Exact producing native tool name; required for host-tool.")
     parser.add_argument("--note", help="Short provenance or approval note recorded with the job.")
     args = parser.parse_args()
 
@@ -57,7 +60,19 @@ def main():
     request = read_json(page_dir / "page_request.json", default={})
     contract = request.get("image_backend") or {}
     preferred_backend = contract.get("backend_id")
-    if preferred_backend == "builtin-imagegen":
+    if args.backend == "host-tool" and preferred_backend != "host-tool":
+        raise SystemExit("--backend host-tool requires a host-tool page contract")
+    if args.tool_name and args.backend != "host-tool":
+        raise SystemExit("--tool-name requires --backend host-tool")
+    if preferred_backend == "host-tool":
+        try:
+            validate_host_contract(contract)
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
+        allowed_tools = {operation["tool_name"] for operation in contract["operations"].values()}
+        if args.backend != "host-tool" or args.tool_name not in allowed_tools:
+            raise SystemExit("A host-tool page contract requires --backend host-tool and an observed --tool-name")
+    elif preferred_backend == "builtin-imagegen":
         if args.backend == "unknown":
             raise SystemExit("A builtin-imagegen page contract requires a known producing backend")
         if args.backend in cli_backends and not args.fallback_reason:
@@ -109,6 +124,10 @@ def main():
             "recorded_at": now_iso(),
         }
     )
+    if args.backend == "host-tool":
+        existing["tool_name"] = args.tool_name
+    else:
+        existing.pop("tool_name", None)
     jobs["updated_at"] = now_iso()
     write_json(jobs_path, jobs)
     print(dest)

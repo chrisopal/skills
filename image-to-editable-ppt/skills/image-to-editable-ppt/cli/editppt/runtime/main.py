@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from configure_image_backend import load_host_contract
+
 from deck_run_state import (
     dispatch_slots_available,
     dispatchable_pages,
@@ -109,6 +111,15 @@ def cmd_setup(args: argparse.Namespace) -> int:
 
 
 def cmd_prepare(args: argparse.Namespace) -> int:
+    if args.image_backend == "host-tool":
+        try:
+            load_host_contract(args.image_backend_contract)
+        except ValueError as exc:
+            print(str(exc), file=sys.stderr)
+            return 2
+    elif args.image_backend_contract:
+        print("--image-backend-contract requires --image-backend host-tool", file=sys.stderr)
+        return 2
     argv = []
     if args.out_root:
         argv.extend(["--out-root", args.out_root])
@@ -144,6 +155,7 @@ def cmd_prepare(args: argparse.Namespace) -> int:
         argparse.Namespace(
             run=str(deck_path.parent),
             mode=args.image_backend,
+            contract=args.image_backend_contract,
             tool_name=None,
             tool_call=None,
             model=None,
@@ -156,6 +168,8 @@ def cmd_prepare(args: argparse.Namespace) -> int:
 
 def cmd_backend(args: argparse.Namespace) -> int:
     argv = [args.run]
+    if getattr(args, "contract", None):
+        argv.extend(["--contract", args.contract])
     if args.mode:
         argv.extend(["--backend-id", args.mode])
     if args.tool_name:
@@ -500,10 +514,11 @@ contract. The standalone CLI default is editppt-image-cli.
     prepare.add_argument("--max-concurrent-pages", type=int, metavar="N", help="Maximum concurrent page dispatch slots. Default: 6.")
     prepare.add_argument(
         "--image-backend",
-        choices=["builtin-imagegen", "editppt-image-cli"],
+        choices=["builtin-imagegen", "editppt-image-cli", "host-tool"],
         default="editppt-image-cli",
         help="Run-level image backend contract. Defaults to editppt-image-cli; parent agents can select builtin-imagegen.",
     )
+    prepare.add_argument("--image-backend-contract", metavar="FILE", help="Discovered native host tool JSON contract; requires --image-backend host-tool.")
     prepare.add_argument("--no-text-hints", action="store_true", help="Skip per-page text hint generation after preparing pages.")
     prepare.set_defaults(func=cmd_prepare)
 
@@ -557,10 +572,11 @@ Use this when a parent Agent selects image_gen.imagegen or when forcing other ba
     backend.add_argument("run", metavar="RUN", help="Run directory or deck_manifest.json path.")
     backend.add_argument(
         "--mode",
-        choices=["builtin-imagegen", "editppt-image-cli", "openai-compatible-api"],
+        choices=["builtin-imagegen", "editppt-image-cli", "openai-compatible-api", "host-tool"],
         default="editppt-image-cli",
         help="Image backend mode. Defaults to the unified editppt image CLI contract.",
     )
+    backend.add_argument("--contract", metavar="FILE", help="Discovered native host tool JSON contract; requires --mode host-tool.")
     backend.add_argument("--tool-name", metavar="NAME", help="Override the tool name for non-builtin contracts.")
     backend.add_argument("--tool-call", metavar="CALL", help="Override the tool call for non-builtin contracts.")
     backend.add_argument("--model", metavar="MODEL", help="Image model label for API/CLI fallback.")

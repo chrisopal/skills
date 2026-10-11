@@ -103,12 +103,14 @@ def direct_operations(test_module) -> dict:
         approved = orders.approve("O1", "supervisor")
 
         before_migration = orders.reconcile()
+        before_backup_row = orders.read('O1')
         backup_path = case.base / "backup.db"
         orders.backup(backup_path)
         orders.migrate([{"id": "O2", "title": "Imported order", "asset_id": "A1", "state": "draft"}])
         after_migration = orders.reconcile()
         orders.restore(backup_path)
         after_restore = orders.reconcile()
+        after_restore_row = orders.read('O1')
 
         return {
             "fixture": "tests/fixtures/work_order_service.py",
@@ -123,8 +125,10 @@ def direct_operations(test_module) -> dict:
             "before_migration": before_migration,
             "after_migration": after_migration,
             "after_restore": after_restore,
+            "before_backup_row": before_backup_row,
+            "after_restore_row": after_restore_row,
             "backup_file_sha256": digest(backup_path),
-            "rollback_restored": after_restore == before_migration,
+            "rollback_restored": after_restore == before_migration and after_restore_row == before_backup_row,
         }
     finally:
         case.doCleanups()

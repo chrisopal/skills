@@ -81,12 +81,15 @@ class LocalEngineeringTests(unittest.TestCase):
 
     def test_migration_counts_keys_and_restored_rollback(self):
         self.orders.create('O1', 'Inspect pump', 'A1', 'dispatcher')
+        before = self.orders.approve('O1', 'supervisor')
         self.orders.backup(self.base / 'backup.db')
         self.orders.migrate([{'id': 'O2', 'title': 'Imported order', 'asset_id': 'A1', 'state': 'draft'}])
         self.assertEqual(self.orders.reconcile(), {'count': 2, 'business_keys': ['O1', 'O2']})
         self.orders.restore(self.base / 'backup.db')
         self.assertEqual(self.orders.reconcile(), {'count': 1, 'business_keys': ['O1']})
         self.assertEqual(self.orders.read('O1')['title'], 'Inspect pump')
+        self.assertEqual(self.orders.read('O1'), before)
+        self.assertEqual(self.orders.read('O1')['state'], 'approved')
 
     def test_failed_migration_is_atomic(self):
         rows = [{'id': 'O2', 'title': 'First', 'asset_id': 'A1', 'state': 'draft'},

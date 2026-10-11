@@ -124,6 +124,16 @@ python3 project-delivery-skills/scripts/verify_phase_two.py --out /absolute/path
 
 第三批文件流演练使用 `python3 project-delivery-skills/scripts/verify_phase_three.py --out /absolute/path/to/new-case`，覆盖计费配置、实际字段映射、交换候选与模拟回执、行政收尾及持续质保。
 
+完整项目演练将 25 个 Skill 串成同一个软件定制与系统集成案例。使用有 `python-docx`、`openpyxl` 的 Python，以及 Codex 工作区内置 Node 和 `@oai/artifact-tool` 运行（后两者用于 Excel 生成；`openpyxl` 仅用于回读审核）：
+
+```bash
+python3 project-delivery-skills/scripts/verify_full_delivery.py --out /absolute/path/to/fresh-full-case
+python3 project-delivery-skills/scripts/render_full_delivery.py --case /absolute/path/to/fresh-full-case --out /absolute/path/to/fresh-full-case/deliverables
+python3 project-delivery-skills/scripts/audit_full_delivery.py --case /absolute/path/to/fresh-full-case --deliverables /absolute/path/to/fresh-full-case/deliverables --out /absolute/path/to/fresh-full-case/audit.json
+```
+
+生成器保留合同、访谈、WBS 分线、设计、工程证据、变更前后基线、成本差旅、风险、里程碑和持续质保；展示工具生成填有案例数据的 Word、Excel、任务卡和蓝色管理审阅页。审核工具重新读取当前登记、各 Skill 输入输出、需求覆盖、代码哈希和实际 Office 文件，并在临时副本验证篡改拒绝。实际渲染与浏览器检查需要另行执行；未提供对应记录时结果保留为 conditional，不能用文件能打开代替视觉验收。完整验证方法和已知边界见[端到端验证记录](docs/VALIDATION_FULL_DELIVERY.md)。
+
 测试覆盖来源/产物篡改、版本依赖、候选与基线分离、变更失败不混用、确认/审核精确绑定、工时缺口、差旅/外包去重、客户过滤和非覆盖安装。Office 文件回读、浏览器和 Agent 业务复核见[第一批验证记录](docs/VALIDATION.md)、[第二批验证记录](docs/VALIDATION_PHASE_TWO.md)及[第三批验证记录](docs/VALIDATION_PHASE_THREE.md)。Word/XLSX 使用 Arial Unicode MS；跨机器打开时检查字体替换和分页。模板台账由 Agent 映射到共享 JSON 契约；系统交换仅准备候选文件与核对收据，没有自动双向同步。
 
 模拟案例使用 purpose=simulation，模拟确认不能进入真实项目。JSON 校验、语义审查、实际文件可读、客户接受是不同证据，不互相替代。没有真实合同、客户回答或工程测试证据时保留草稿与明确缺口。

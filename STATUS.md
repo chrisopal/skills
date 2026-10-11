@@ -1,3 +1,11 @@
+## 2026-10-11 — Complete project-delivery simulation
+
+- Scope: Rehearse all25 delivery Skills on FULL-SIM-001 from synthetic contract through WBS/discovery/blueprint/design, 5 streams/milestones, actual local engineering, acceptance/administrative closure and continuing warranty. Add reusable case/render/workbook/audit scripts, blue review HTML, regression tests and validation guide.
+- Verification: 204 tests pass; final renderer adjustment 7 tests pass; delivered engineering copy 13 tests pass. Runtime57 artifacts valid. Independent semantic review51 checks/247 exact refs approve, 5 findings closed. Final file audit147 checks pass; 13DOCX/52 rendered pages and17-sheet XLSX read back; 4 light widths plus desktop/mobile dark, navigation/filter/empty/clear/details/theme/focus/downloads pass, console clean.
+- Fixes/simplification: Serialize fixture idempotency read/insert; compare full approved row on restore; check copied-source hashes; preserve design-vs-implementation and implementation-vs-warranty cost scope. Reuse existing runtime/templates/styles; no new dependencies or installed Skill changes.
+- Commit/push: Scoped reusable sources/tests/docs and this entry committed and pushed on the configured branch; remote SHA verified after push. Generated Office/PDF/ZIP/screenshots and one-off audits stay local under output/full-delivery-validation-20261011; unrelated WIP preserved.
+- Limits: Contract/interviews/client UAT/acceptance/training/finance are simulation. No actual ERP, production rollout, business browser frontend, production identity/security/load,503/timeout-trigger test or Windows Word approval. Warranty transferred, not ended; ongoing warranty cost unknown. See project-delivery-skills/docs/VALIDATION_FULL_DELIVERY.md.
+
 ## 2026-10-11 — Opportunity full lifecycle worked case
 
 - Scope: Add one continuous fictional account case with 12 chronological evidence batches, nine real runtime stage transitions, V1/customer-return/V2 review loop, competitor price feedback, reauthorized Q2 and simulated contract/closeout. Each timepoint has five management work surfaces, real 18-dimension radars, Skill I/O, evidence and document links in enterprise light/dark pages.

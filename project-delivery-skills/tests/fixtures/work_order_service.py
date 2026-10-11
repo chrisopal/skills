@@ -23,6 +23,9 @@ class WorkOrders:
         if asset['asset_id'] != asset_id:
             raise ValueError('asset business key mismatch')
         with sqlite3.connect(self.database) as db:
+            # Serialize the read/insert decision so identical concurrent replays
+            # observe the committed order instead of racing on the primary key.
+            db.execute('BEGIN IMMEDIATE')
             prior = db.execute('SELECT title, asset FROM orders WHERE id=?', (order_id,)).fetchone()
             if prior:
                 if prior != (title.strip(), asset_id):

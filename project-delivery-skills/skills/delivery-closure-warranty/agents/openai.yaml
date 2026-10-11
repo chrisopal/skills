@@ -1,0 +1,6 @@
+interface:
+  display_name: "项目收尾与质保"
+  short_description: "管理行政结项、质保移交与结束，核对义务、结算、资产归还、复盘和归档证据"
+  default_prompt: "使用 $delivery-closure-warranty 核对项目收尾、质保移交或质保结束的证据与未决事项。"
+policy:
+  allow_implicit_invocation: true

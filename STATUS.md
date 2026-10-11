@@ -1,3 +1,11 @@
+## 2026-10-11 — Project-delivery Skills phase three v0.3.0
+
+- Scope: Add closure/warranty Skill and 11 templates; total 25 Skills/58 templates. Reuse the orchestrator for contract-bound billing profiles, actual JSON field mapping, current portfolio views and local system-exchange files/receipts.
+- Evidence: 176 tests pass without skips; 25 Skill Creator/YAML checks and suite validation pass. Independent review APPROVE after fixing rejected receipt acceptance and deletion of retained resources; fresh-context usage rehearsal preserves open defects, settlement gaps and continuing warranty. File-flow simulation has ten valid pinned objects and separate closure results.
+- Files/install: 29 editable DOCX and 29-sheet XLSX read back; new five documents rendered across ten pages, six new worksheets rendered. Enterprise blue review checked at desktop/390px with real search/navigation. Original 24 installations backed up; all 25 upgraded Skill directories hash-match and installed CLI validates the case.
+- Simplification/limits: No new dependency or duplicate business ledgers; no live network exchange, automatic external ledger update, custom Word-layout filling, historical portfolio reconstruction, production/customer acceptance or genuine finance reconciliation. Generated outputs remain local; see project-delivery-skills/docs/VALIDATION_PHASE_THREE.md.
+- Commit/push: This entry accompanies the scoped source/template/documentation commit; configured remote SHA is verified after push. Unrelated concurrent edits and generated artifacts are excluded.
+
 ## 2026-10-11 — Project-delivery Skills phase two v0.2.0
 
 - Scope: Add seven implementation Skills (solution, UI/fields/permissions, integration/migration, work packages, testing/UAT, release/rollback, training/handover) and 18 templates; total 24 Skills/47 templates. Extend resource load/remaining-work estimates, partial procurement and payment conditions; include reusable local engineering rehearsal and validation record.

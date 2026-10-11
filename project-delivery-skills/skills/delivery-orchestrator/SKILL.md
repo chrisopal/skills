@@ -13,7 +13,18 @@ description: 统筹软件定制与系统集成交付项目，恢复有效版本�
 
 ## 路由
 
-本阶段只路由以下已安装技能：`delivery-source-intake`、`delivery-contract-handover`、`delivery-initiation-kickoff`、`delivery-master-planning`、`delivery-discovery-planning`、`delivery-meeting-records`、`delivery-requirements-baseline`、`delivery-business-blueprint`、`delivery-progress-control`、`delivery-resource-timesheets`、`delivery-cost-expenses`、`delivery-risk-issue`、`delivery-change-control`、`delivery-reporting`、`delivery-milestone-acceptance`、`delivery-artifact-review`、`delivery-solution-design`、`delivery-ui-field-design`、`delivery-integration-data`、`delivery-work-package`、`delivery-quality-testing`、`delivery-go-live-transition`、`delivery-training-handover`。质保收尾和外部系统适配仍属后续批次。专项技能组织设计与工程证据，实际开发/部署需调用已有专业工具并遵守本次任务授权。
+路由以下已安装技能：`delivery-source-intake`、`delivery-contract-handover`、`delivery-initiation-kickoff`、`delivery-master-planning`、`delivery-discovery-planning`、`delivery-meeting-records`、`delivery-requirements-baseline`、`delivery-business-blueprint`、`delivery-progress-control`、`delivery-resource-timesheets`、`delivery-cost-expenses`、`delivery-risk-issue`、`delivery-change-control`、`delivery-reporting`、`delivery-milestone-acceptance`、`delivery-artifact-review`、`delivery-solution-design`、`delivery-ui-field-design`、`delivery-integration-data`、`delivery-work-package`、`delivery-quality-testing`、`delivery-go-live-transition`、`delivery-training-handover`、`delivery-closure-warranty`。专项技能组织设计与工程证据，实际开发/部署需调用已有专业工具并遵守本次任务授权。
+
+| 本次任务 | 路由与契约 |
+|---|---|
+| 合同到培训运维移交 | 上述第一、二批专项技能；[实施契约](references/software-delivery.md) |
+| 行政结项、质保与剩余义务 | `delivery-closure-warranty`；[收尾与复用契约](references/reuse-closure.md) |
+| 固定/工时/混合计费配置 | 总控登记 `profile`，金额按币种保留；配置估计不代表收入或开票 |
+| 客户模板适配 | 总控登记 `template_mapping`；绑定实际 JSON 字段规格，准备本地 JSON 草稿 |
+| 多项目审查 | 总控 `portfolio`；只读当前 UTC 提取日的当前快照，显式人员身份映射和共享容量 |
+| 任务/代码/财务/文档交换 | 总控登记 `exchange`；本地候选与收据核对，不发送、不自动应用业务主账 |
+
+第三批任务先读[收尾与复用契约](references/reuse-closure.md)。保留行政结项、质保移交、质保结束和全部义务解除四个独立结果；真实收尾不得用未来截止日提前满足义务。组合视图不是历史重建，禁止合计不同币种或把同名人员自动视为同一人；模拟项目与真实项目不混汇。
 
 按共享契约的项目阶段目录归档可阅读成果，内部财务单独保存；不能把仅登记 JSON 当成已生成 Word/Excel。
 

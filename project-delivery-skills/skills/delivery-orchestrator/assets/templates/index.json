@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "templates": [
     {"id": "delivery-contract-handover-v1", "title": "合同与售前交接", "format": "markdown", "path": "contract-handover.md", "visibility": "internal", "skill": "delivery-contract-handover"},
     {"id": "delivery-initiation-kickoff-v1", "title": "项目启动会", "format": "markdown", "path": "initiation-kickoff.md", "visibility": "customer", "skill": "delivery-initiation-kickoff"},
@@ -47,6 +47,17 @@
     {"id": "delivery-training-handover-v0.2.0", "title": "培训与运维移交记录", "format": "markdown", "path": "training-handover.md", "visibility": "internal", "skill": "delivery-training-handover"},
     {"id": "delivery-training-handover-ledger-v0.2.0", "title": "培训能力与移交资产台账", "format": "csv", "path": "training-handover.csv", "visibility": "internal", "skill": "delivery-training-handover"},
     {"id": "delivery-resources-capacity-v0.2.0", "title": "资源容量分配与剩余工作台账", "format": "csv", "path": "resources-capacity.csv", "visibility": "internal", "skill": "delivery-resource-timesheets"},
-    {"id": "delivery-payment-conditions-v0.2.0", "title": "采购外包付款条件台账", "format": "csv", "path": "payment-conditions.csv", "visibility": "internal", "skill": "delivery-cost-expenses"}
+    {"id": "delivery-payment-conditions-v0.2.0", "title": "采购外包付款条件台账", "format": "csv", "path": "payment-conditions.csv", "visibility": "internal", "skill": "delivery-cost-expenses"},
+    {"id": "delivery-closure-warranty-v0.3.0", "title": "项目收尾与质保", "format": "markdown", "path": "closure-warranty.md", "visibility": "internal", "skill": "delivery-closure-warranty"},
+    {"id": "delivery-customer-template-mapping-v0.3.0", "title": "客户模板字段映射", "format": "markdown", "path": "customer-template-mapping.md", "visibility": "internal", "skill": "delivery-orchestrator"},
+    {"id": "delivery-profile-v0.3.0", "title": "交付与计费配置", "format": "markdown", "path": "delivery-profile.md", "visibility": "internal", "skill": "delivery-orchestrator"},
+    {"id": "delivery-portfolio-review-v0.3.0", "title": "多项目组合审查", "format": "markdown", "path": "portfolio-review.md", "visibility": "internal", "skill": "delivery-orchestrator"},
+    {"id": "delivery-system-exchange-v0.3.0", "title": "外部系统交换", "format": "markdown", "path": "system-exchange.md", "visibility": "internal", "skill": "delivery-orchestrator"},
+    {"id": "delivery-closure-obligations-v0.3.0", "title": "收尾剩余义务台账", "format": "csv", "path": "closure-obligations.csv", "visibility": "internal", "skill": "delivery-closure-warranty"},
+    {"id": "delivery-warranty-items-v0.3.0", "title": "质保事项台账", "format": "csv", "path": "warranty-items.csv", "visibility": "internal", "skill": "delivery-closure-warranty"},
+    {"id": "delivery-archive-index-v0.3.0", "title": "项目归档索引", "format": "csv", "path": "archive-index.csv", "visibility": "internal", "skill": "delivery-closure-warranty"},
+    {"id": "delivery-customer-template-fields-v0.3.0", "title": "客户模板字段台账", "format": "csv", "path": "customer-template-fields.csv", "visibility": "internal", "skill": "delivery-orchestrator"},
+    {"id": "delivery-billing-streams-v0.3.0", "title": "计费流台账", "format": "csv", "path": "billing-streams.csv", "visibility": "internal", "skill": "delivery-orchestrator"},
+    {"id": "delivery-system-exchanges-v0.3.0", "title": "外部系统交换台账", "format": "csv", "path": "system-exchanges.csv", "visibility": "internal", "skill": "delivery-orchestrator"}
   ]
 }

@@ -36,9 +36,9 @@ class ExportTemplateTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             result = self.exporter.export_templates(directory)
-            self.assertEqual(result["template_count"], 47)
-            self.assertEqual(len(result["docx"]), 24)
-            self.assertEqual(len(result["outputs"]), 47)
+            self.assertEqual(result["template_count"], 58)
+            self.assertEqual(len(result["docx"]), 29)
+            self.assertEqual(len(result["outputs"]), 58)
             self.assertTrue(all(item["template_id"] and item["output_path"] and len(item["sha256"]) == 64 for item in result["outputs"]))
             self.assertTrue(Path(result["xlsx"]).is_file())
 
@@ -48,14 +48,14 @@ class ExportTemplateTests(unittest.TestCase):
             from docx.oxml.ns import qn
             self.assertEqual(list(document.styles['Title'].element.iter(qn('w:pBdr'))), [])
             for output in result['docx']:
-                if 'v0.2.0' in output:
+                if 'v0.2.0' in output or 'v0.3.0' in output:
                     self.assertTrue(all(len(table.columns) <= 4 for table in Document(output).tables), output)
             self.assertIn("模板 ID", text)
             self.assertIn("{{project_id}}", text)
             self.assertTrue(any(paragraph.style.name.startswith("Heading") for paragraph in document.paragraphs))
 
             workbook = load_workbook(result["xlsx"])
-            self.assertEqual(len(workbook.sheetnames), 23)
+            self.assertEqual(len(workbook.sheetnames), 29)
             sheet = workbook[workbook.sheetnames[0]]
             self.assertEqual(sheet.freeze_panes, "A2")
             self.assertTrue(sheet.auto_filter.ref)

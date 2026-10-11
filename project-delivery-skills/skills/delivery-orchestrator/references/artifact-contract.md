@@ -1,12 +1,12 @@
 # 项目产物与工具契约
 
-版本 0.2.0。项目单写；Agent 负责业务语义，工具负责来源/版本/引用和计算检查。
+版本 0.3.0。项目单写；Agent 负责业务语义，工具负责来源/版本/引用和计算检查。
 
 ## 运行入口
 
 所有技能作为兄弟目录安装。运行工具与公共模板位于 `delivery-orchestrator`，其他技能通过 `../delivery-orchestrator/` 引用。CLI 为 `scripts/runtime.py`，各命令用 `--help` 查精确参数。
 
-`init PROJECT --project-id ID --purpose internal|simulation`；`source PROJECT FILE --id ID`；`register PROJECT ARTIFACT_JSON`；`status PROJECT`；`validate PROJECT`；`activate PROJECT ARTIFACT_ID...`；`apply-change PROJECT CHANGE_ID`；`prepare-customer PROJECT --ids ID... --out DIR --mode discussion|confirmed`。
+`init PROJECT --project-id ID --purpose internal|simulation`；`source PROJECT FILE --id ID`；`register PROJECT ARTIFACT_JSON`；`status PROJECT`；`validate PROJECT`；`activate PROJECT ARTIFACT_ID...`；`apply-change PROJECT CHANGE_ID`；`prepare-customer PROJECT --ids ID... --out DIR --mode discussion|confirmed`；`prepare-mapped PROJECT ARTIFACT_ID --out FILE`；`portfolio PROJECT... --as-of YYYY-MM-DD [--resources FILE]`。
 
 init 不覆盖已有项目。原件保存快照，source 创建 kind=source 的产物。register 保存不可覆写的修订；inputs 引用精确版本和 register 返回的 SHA-256。status/validate 都回读实际内容。
 
@@ -83,7 +83,7 @@ Office 模板导出入口 `scripts/export_templates.py --out DIR`；只读审阅
 
 ## 项目归档目录
 
-init 生成设计约定的阶段目录：01-contract-handover、02-initiation、03-plan、04-discovery、05-requirements-blueprint、06-design、07-development-integration、08-quality-uat、09-go-live-handover、10-project-control、11-milestone-acceptance、12-closure-warranty，以及 internal-finance、customer-deliverables、archive。后续阶段仅预留目录，不能据此宣称技能或工作完成。
+init 生成设计约定的阶段目录：01-contract-handover、02-initiation、03-plan、04-discovery、05-requirements-blueprint、06-design、07-development-integration、08-quality-uat、09-go-live-handover、10-project-control、11-milestone-acceptance、12-closure-warranty，以及 internal-finance、customer-deliverables、archive。阶段目录本身不证明相应工作已经完成。
 
 Agent 将当前任务的 Markdown/Word/Excel、原型与已审核成果放入相应阶段目录，登记真实文件来源/位置和版本；大代码库/制品保留专业仓库引用。不可变原件快照只存 00-control/sources，各阶段引用同一版本。internal-finance 包含人员费率/成本，目录名不替代真实访问控制；对客交付从明确白名单另行准备，禁止压缩整个根目录。
 
@@ -100,3 +100,17 @@ timesheets 可增 capacities（id/person/period/available_hours）、allocations
 costs 可增 payment_conditions（id/cost_item_id/amount/due_date/condition/state/evidence_refs），state=pending/due/paid；due/paid 必须有条件、日期及实际证据。付款条件按稳定 ID 更新，同成本事项各付款金额不超总额；未知不冒充已核实。payment_summary 是现金安排视图，不叠加到成本、不代表财务审批或收入。现有预算基线、逻辑事项 ID 和去重规则保持不变。
 
 已登记付款条件在后续修订中必须保留，不能删除或改挂其他 cost_item_id；已付记录的状态或金额更正必须提供 correction_reason 与 evidence_refs。更正保留历史，不构造退款或付款执行事实。
+
+## 第三批收尾与复用产物
+
+详细字段、精确 JSON 示例与命令见[收尾与复用契约](reuse-closure.md)。
+
+| kind/视图 | 关键字段与边界 |
+|---|---|
+| closure | origin、as_of、obligations、warranty、administration、settlement、resources、archive、lessons；单一收尾主账，四个独立关闭结果 |
+| profile | billing_mode、delivery_mode、streams、terms_refs、open_items；单一配置主账，计费流范围不重叠、按币种估计 |
+| template_mapping | form_ref、mappings、omissions、audience；目标来自实际 JSON 字段规格 source，JSON Pointer 与 identity/string/number 转换 |
+| exchange | operation_id、system、entity、direction、record_id、external_id、mapping_ref、state、receipt_ref、conflicts；稳定身份与载荷哈希绑定收据 |
+| portfolio（非登记 kind） | 当前 UTC 提取日的当前项目快照；显式共享身份/容量，分币种 forecast_by_currency，保留缺口 |
+
+四种新 kind 继承 Envelope、精确 inputs、不可变修订和依赖有效性规则。prepare-mapped 输出 local_mapping_draft JSON，标明 sent=false、applied=false、customer_package_eligible=false；不能当作审核后的客户包或客户原生 Word 排版。exchange 的 reconciled 仅表示绑定收据通过核对；运行工具不执行网络发送、任务创建、财务动作或业务台账自动回写。

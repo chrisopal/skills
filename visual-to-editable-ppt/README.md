@@ -9,7 +9,7 @@
 
 七套主题：白底深蓝、白底朱红、紫色科技咨询、白底墨绿、产品解决方案、市场营销、年会盛典；另有12类页面配方。输出模式与主题独立。不得因可编辑转换失败擅自降级成图片版。
 
-正文默认20pt、内容标题32pt，封面与短标签分别设定；[字号依据及验收规则](references/typography.md)说明适用场景和pt/像素换算。
+默认字体为微软雅黑（`Microsoft YaHei`），普通正文、图内节点和图表/表格标签14pt（四号），副标题16pt、模块短标题18pt、内容标题28pt、页脚12pt；封面保留单独字号。以常规字重为主，短标签不放大填空间。此为中文密集商务稿的用户偏好，14pt低于18pt无障碍建议，不宣称符合该建议。用户明确的品牌/大屏规范可覆盖；微软雅黑未安装或目标应用不能解析时报告缺口，不得静默替换。[字号依据及验收规则](references/typography.md)说明适用场景和pt/像素换算。
 
 ## 安装
 
@@ -64,7 +64,7 @@ python visual-to-editable-ppt/scripts/visual_bridge.py plan \
   --project /你的项目目录 --draft --output-mode image
 ```
 
-省略 `--output-mode` 时默认 editable；草稿队列禁止生图。根据实际确认更新 pack 的版本、review_status、approval_ref，再用依赖 `sync` 写入。正式 `plan` 去掉 `--draft`，由 Agent 调用宿主生图并执行 register/review/select，不伪造确认记录。
+省略 `--output-mode` 时默认 editable；草稿队列禁止生图。根据实际确认更新 pack 的版本、review_status、approval_ref，再用依赖 `sync` 写入。正式 `plan` 去掉 `--draft`，由 Agent 调用宿主生图并执行 register/review/select，不伪造确认记录。计划队列的 `typography` 与提示词均携带锁定主题的字体和显式pt目标；品牌/大屏覆盖先写入新的主题 profile，再初始化项目。
 
 两条路径共用不可覆盖的 handoff：
 

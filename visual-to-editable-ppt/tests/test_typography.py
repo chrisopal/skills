@@ -5,6 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from pptx import Presentation
+from pptx.oxml.xmlchemy import OxmlElement
 from pptx.util import Inches, Pt
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,8 +22,17 @@ class TypographyTests(unittest.TestCase):
             with self.subTest(theme=path.stem):
                 typography = json.loads(path.read_text())['typography']
                 self.assertEqual(typography['unit'], 'pt')
-                self.assertEqual(typography['defaults_pt']['body'], 20)
-                self.assertEqual(typography['roles_pt']['body'], [18, 22])
+                self.assertEqual(typography['family'], 'Microsoft YaHei')
+                self.assertEqual(typography['default_weight'], 'regular')
+                expected = {'content_title': 28, 'subtitle': 16, 'body': 14,
+                            'module_label': 18, 'data_label': 14, 'node_label': 14,
+                            'table_label': 14, 'nonessential_footer': 12}
+                for role, size in expected.items():
+                    self.assertEqual(typography['defaults_pt'][role], size)
+                    self.assertEqual(typography['roles_pt'][role], [size, size])
+                self.assertEqual(typography['defaults_pt']['cover_title'], 44)
+                self.assertIn('不得静默替换', typography['font_policy'])
+                self.assertIn('14pt低于18pt无障碍建议', typography['rule'])
                 self.assertLess(typography['roles_pt']['body'][1], typography['roles_pt']['content_title'][0])
                 for role, target in typography['defaults_pt'].items():
                     low, high = typography['roles_pt'][role]
@@ -35,8 +45,11 @@ class TypographyTests(unittest.TestCase):
             path = Path(tmp) / 'mixed.pptx'
             p = Presentation(); slide = p.slides.add_slide(p.slide_layouts[6])
             tf = slide.shapes.add_textbox(0, 0, Inches(5), Inches(2)).text_frame
-            paragraph = tf.paragraphs[0]; paragraph.font.size = Pt(20)
-            a = paragraph.add_run(); a.text = '正文'; a.font.name = 'Arial'
+            paragraph = tf.paragraphs[0]; paragraph.font.size = Pt(14)
+            a = paragraph.add_run(); a.text = '正文'; a.font.name = 'Microsoft YaHei'
+            a.font.bold = False
+            east_asian = OxmlElement('a:ea'); east_asian.set('typeface', 'Microsoft YaHei')
+            a._r.get_or_add_rPr().append(east_asian)
             b = paragraph.add_run(); b.text = '局部强调'; b.font.size = Pt(24)
             paragraph = tf.add_paragraph(); paragraph.add_run().text = '继承未知'
             table = slide.shapes.add_table(1, 1, 0, Inches(3), Inches(5), Inches(1)).table
@@ -46,8 +59,11 @@ class TypographyTests(unittest.TestCase):
             run.text = '分组标签'; run.font.size = Pt(22)
             p.save(path)
             report = m.inspect_fonts(path); by_text = {r['text']: r for r in report['text_runs']}
-            self.assertEqual(by_text['正文']['size_pt'], 20)
+            self.assertEqual(by_text['正文']['size_pt'], 14)
             self.assertEqual(by_text['正文']['size_source'], 'paragraph')
+            self.assertEqual(by_text['正文']['latin_font'], 'Microsoft YaHei')
+            self.assertEqual(by_text['正文']['east_asian_font'], 'Microsoft YaHei')
+            self.assertFalse(Presentation(path).slides[0].shapes[0].text_frame.paragraphs[0].runs[0].font.bold)
             self.assertEqual(by_text['局部强调']['size_pt'], 24)
             self.assertIsNone(by_text['继承未知']['size_pt'])
             self.assertEqual(report['unknown_size_runs'], 1)

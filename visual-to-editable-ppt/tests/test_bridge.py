@@ -55,6 +55,37 @@ class BridgeTests(unittest.TestCase):
         self.assertNotIn('墨绿色标题', prompt)
         self.assertEqual(q['items'][0]['slide_id'], 'S001')
 
+    def test_typography_targets_reach_both_prompt_modes_and_queue(self):
+        for mode in ('editable', 'image'):
+            with self.subTest(mode=mode):
+                queue = b.plan(self.p, self.project, '1', output_mode=mode)
+                prompt = Path(queue['items'][0]['prompt']).read_text()
+                saved = self.p.load_json(self.project / 'output/visual-work-queue.json')
+                self.assertEqual(queue['typography'], self.style['typography'])
+                self.assertEqual(saved['typography'], queue['typography'])
+                self.assertIn('本项目字体：Microsoft YaHei', prompt)
+                for role, size in self.style['typography']['defaults_pt'].items():
+                    self.assertIn(f'{role} {size}pt', prompt)
+                self.assertIn('常规字重为主', prompt)
+                self.assertIn('短标签不放大填空间', prompt)
+                self.assertIn('不得静默替换', prompt)
+                self.assertIn('保留语义手动断行', prompt)
+                self.assertIn('低于18pt无障碍建议', prompt)
+
+    def test_explicit_brand_typography_is_not_overwritten_by_defaults(self):
+        style = copy.deepcopy(self.style)
+        style['typography']['family'] = 'Approved Brand Font'
+        style['typography']['defaults_pt']['body'] = 24
+        style['typography']['roles_pt']['body'] = [24, 24]
+        self.p.save_json(self.style_path, style)
+        project = self.base / 'brand project'
+        self.p.init_project(self.pack_path, project, self.style_path)
+        queue = b.plan(self.p, project, '1')
+        prompt = Path(queue['items'][0]['prompt']).read_text()
+        self.assertEqual(queue['typography'], style['typography'])
+        self.assertIn('本项目字体：Approved Brand Font', prompt)
+        self.assertIn('body 24pt', prompt)
+
     def test_draft_cannot_generate(self):
         self.pack['version'] = '0.2.0'
         self.pack['slides'][0]['review_status'] = 'draft'

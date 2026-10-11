@@ -31,8 +31,10 @@
 - Artifacts: samples, renders, actual-font inventories and native edit evidence
   remain local under ignored `output/visual-ppt-theme-tests-20261011/`.
   Only reusable source/spec/docs/tests are included in the publication.
-- Publication: prepared on `codex/visual-to-editable-ppt` for existing PR #6;
-  verified push state is recorded in the publication follow-up below.
+- Publication: implementation `a789737c` was committed and pushed to
+  `origin/codex/visual-to-editable-ppt`; remote SHA read-back matched. PR #6
+  now documents both output modes, measured typography and all seven themes.
+  Main remains unchanged; this status-only follow-up records verified publication.
 
 ## 2026-10-11: Explicit image or editable PPT delivery
 

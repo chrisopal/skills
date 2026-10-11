@@ -1,0 +1,6 @@
+interface:
+  display_name: "业务蓝图"
+  short_description: "定义流程边界和模块确认范围"
+  default_prompt: "使用 $delivery-business-blueprint 组织端到端业务流程并准备模块化确认包。"
+policy:
+  allow_implicit_invocation: true

@@ -1,3 +1,13 @@
+
+## 2026-10-11 — Project-delivery Skills phase one v0.1.0
+
+- Scope: `project-delivery-skills/` delivers 17 installed sibling Skills, 29 reusable Markdown/CSV templates, stdlib version/baseline/change/cost/package checks, native Office export and Enterprise UI Design blue review HTML; implementation plan and validation report included.
+- Simplification: Reuse existing Agent/engineering/Office capabilities, local single-writer files and one owner per ledger; no new dependency, transcription engine, finance system or project platform.
+- Evidence: 70 tests pass with existing Office libraries; suite and 17 Skill Creator/YAML checks pass. Installed copies hash-match. Synthetic project has 24 registered objects/five effective baselines, five actual local-module tests, independent exact-version business rereview, and two hash-verified local preparation packs. 17 DOCX/12-sheet XLSX read back; existing native LibreOffice renders 25 readable pages; browser search/navigation/customer filtering/narrow layout checked.
+- Remediation: Fixed customer credential filtering, candidate/effective labeling, cost lifecycle/lineage deduplication, dangling output symlinks, search localization and table pagination. Preserve initial conditional review and simulation/cost-evidence gaps.
+- Limits: Local asset stub and simulated customer/cost evidence; no real customer acceptance, production integration, audio transcription or native Word/Excel interaction claim. Generated files stay in `output/project-delivery-validation-20261011/`; see `project-delivery-skills/docs/VALIDATION.md`.
+- Commit/push: This entry accompanies the scoped source/documentation commit; configured remote HEAD is verified after push. Unrelated concurrent files and generated artifacts are excluded.
+
 ## 2026-10-11 — Opportunity lifecycle Skill suite v0.4.0
 
 - Scope: Upgrade the existing analysis skill with enterprise light/dark reports; add one orchestrator and five task skills, sharing SQLite/runtime through signed closeout and handoff.

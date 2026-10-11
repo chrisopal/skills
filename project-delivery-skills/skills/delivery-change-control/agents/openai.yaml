@@ -1,0 +1,6 @@
+interface:
+  display_name: "变更控制"
+  short_description: "评估并完整应用已批准变更"
+  default_prompt: "使用 $delivery-change-control 评估变更并协调完整应用和有效版本更新。"
+policy:
+  allow_implicit_invocation: true

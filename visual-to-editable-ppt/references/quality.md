@@ -22,7 +22,16 @@
 
 代表页必须验证重建后的效果。最终整稿查看全稿缩略图，再逐页放大读文字；密集架构、表格、图表和人物图片页重点检查。不能用单个全稿相似度阈值掩盖重要错字或缺失箭头。
 
-`editppt page build` 的 `preview.png` 使用 Pillow 近似绘制，适合快速检查对象位置，不能证明 Office 中的字体和换行正确。至少用 PowerPoint 或 LibreOffice 实际打开／导出最终 PPTX，并检查实际渲染。字体必须使用当前宿主可解析的字体名称；发现替代字体、换行或字形异常时，回到页 manifest 修正后重新 build、record、finalize。不要仅调整预览字体来掩盖 PPTX 的字体问题；记录实际使用的应用和未测试的平台。
+`editppt page build` 的 `preview.png` 使用 Pillow 近似绘制，适合快速检查对象位置；部分预设形状（例如 rightArrow）可能显示为矩形，不能据此判断实际箭头丢失，也不能证明 Office 中的字体和换行正确。至少用 PowerPoint 或 LibreOffice 实际打开／导出最终 PPTX，并检查实际渲染。字体必须使用当前宿主可解析的字体名称；发现替代字体、换行或字形异常时，回到页 manifest 修正后重新 build、record、finalize。不要仅调整预览字体来掩盖 PPTX 的字体问题；记录实际使用的应用和未测试的平台。
+
+LibreOffice 命令行渲染建议使用本次任务独立的配置目录和新的输出目录，避免占用用户正在运行的实例或触发全局配置文件保护。例如：
+
+```bash
+soffice -env:UserInstallation=file:///绝对路径/本次任务/lo-profile \
+  --headless --norestore --convert-to pdf --outdir /绝对路径/本次任务/render-v001 成稿.pptx
+```
+
+使用实际可执行文件路径；配置参数是绝对 `file://` URI，路径有空格时正确编码。不要为重新渲染先删除用户配置、已有交付或全局放宽权限。若宿主拦截调用，先检查具体作用路径，再改为任务内隔离配置。程序化编辑后通过LibreOffice重新打开/渲染，与PowerPoint界面编辑是不同证据，报告实际执行方式。
 
 阻断交付：内容错误、缺页、不可读、重复底图、要求可编辑的结构被整块截图、明显素材变形、尚未完成必需素材分离。允许记录的差异：轻微字体替代/阴影差异，前提是不损害可读性、意义和用户明确的视觉要求。
 

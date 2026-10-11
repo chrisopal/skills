@@ -1,6 +1,6 @@
-# 第一批项目产物与工具契约
+# 项目产物与工具契约
 
-版本 0.1.0。项目单写；Agent 负责业务语义，工具负责来源/版本/引用和计算检查。
+版本 0.2.0。项目单写；Agent 负责业务语义，工具负责来源/版本/引用和计算检查。
 
 ## 运行入口
 
@@ -67,7 +67,7 @@ apply-change 仅接受 approved、实际决策来源完整且与候选修订有�
 
 内部人工按工时×内部费率估计；未审核工时计暂估并提示，未知费率/工时保留缺口。外包工时用于进度/结算核验，不自动加入内部人工。外包暂估或实际以 costs 中同一 id 的一个当前记录表达，暂估转结算修订原事项，禁止另起 ID 重复增加。
 
-costs 中 estimate/committed 属于剩余预计，incurred 属于已发生；payment_status 不改变发生金额。同一逻辑事项保留稳定 id，修订同一行。travel_or_expense_ref、procurement_ref、external_ref 是同一个逻辑成本关联号的别名；同一行多个别名须一致，不同事项不得复用同一关联号，跨版本也不能换 id 重记、改变/删除关联号或移除已有行；作废/纠错保留原行，以有依据的零金额修订表达。第一批暂不支持同一采购的部分发生拆账，须使用一个汇总事项并明确状态/估计依据，避免重叠。remaining_labor 与 other_remaining 仅填不在已有事项里的剩余估计。
+costs 中 estimate/committed 属于剩余预计，incurred 属于已发生；payment_status 不改变发生金额。同一逻辑事项保留稳定 id，修订同一行。travel_or_expense_ref、procurement_ref、external_ref 是同一个逻辑成本关联号的别名；同一行多个别名须一致，不同事项不得复用同一关联号，跨版本也不能换 id 重记、改变/删除关联号或移除已有行；作废/纠错保留原行，以有依据的零金额修订表达。第二批支持同一采购事项 state=partial：amount 必须等于 incurred_amount+remaining_amount，前者计已发生，后者计承诺余额；保持同一 ID 和逻辑关联号，不另建汇总/明细重复行。remaining_labor 与 other_remaining 仅填不在已有事项里的剩余估计。
 
 完工预测=内部人工发生估计+其他已发生+剩余预计；差异=完工预测−预算。币种、税和成本范围需统一；未知项存在时结果标注 incomplete，不冒充完整财务数据。显式 evidence_status=incomplete_business_evidence 会令 complete=false；外包工时没有同工作包的外包估计/结算项也保留缺口。complete 仅表示可检测字段与已声明缺口状态，不能认证发票、工时或审批真实性，仍需独立业务审核。
 
@@ -86,3 +86,17 @@ Office 模板导出入口 `scripts/export_templates.py --out DIR`；只读审阅
 init 生成设计约定的阶段目录：01-contract-handover、02-initiation、03-plan、04-discovery、05-requirements-blueprint、06-design、07-development-integration、08-quality-uat、09-go-live-handover、10-project-control、11-milestone-acceptance、12-closure-warranty，以及 internal-finance、customer-deliverables、archive。后续阶段仅预留目录，不能据此宣称技能或工作完成。
 
 Agent 将当前任务的 Markdown/Word/Excel、原型与已审核成果放入相应阶段目录，登记真实文件来源/位置和版本；大代码库/制品保留专业仓库引用。不可变原件快照只存 00-control/sources，各阶段引用同一版本。internal-finance 包含人员费率/成本，目录名不替代真实访问控制；对客交付从明确白名单另行准备，禁止压缩整个根目录。
+
+## 第二批专项产物
+
+详细字段与实际示例见 [软件实施契约](software-delivery.md)。新增 kind：solution、ui_design、integration、work_package、testing、release、handover。所有对象继承本契约的版本、inputs、审核与客户包规则。多个模块允许不同 artifact_id；snapshot.gates 按 artifact_id 返回专项门槛，不能用另一个模块的通过覆盖本模块失败。
+
+详细设计消费需求/蓝图，工作包消费计划/详细设计，质量消费工程构建和实际记录，上线消费同构建质量记录。保持单向依赖；通过独立覆盖索引或 review 汇总设计引用，避免蓝图与详细设计相互引用产生循环。ready、内部有效基线、专项门槛和客户确认分别表达。
+
+## 第二批经营字段
+
+timesheets 可增 capacities（id/person/period/available_hours）、allocations（id/person/period/work_package_id/planned_hours）、remaining_work（id/person/work_package_id/remaining_hours/rate/resource_type/basis）。同人同周期只有一个容量记录、同工作包分配/剩余工作不能重复；跨项目容量由人工提供本项目可用额，首版不是跨项目资源系统。remaining_work 存在时 remaining_labor 必须为 null，按内部剩余工时×费率推导，不叠加旧汇总；外包剩余工时必须对应 costs 外包事项。未知保留缺口。resource_summary 单独报告容量、分配与超负荷，不把工时占用推断为工期或完成度。
+
+costs 可增 payment_conditions（id/cost_item_id/amount/due_date/condition/state/evidence_refs），state=pending/due/paid；due/paid 必须有条件、日期及实际证据。付款条件按稳定 ID 更新，同成本事项各付款金额不超总额；未知不冒充已核实。payment_summary 是现金安排视图，不叠加到成本、不代表财务审批或收入。现有预算基线、逻辑事项 ID 和去重规则保持不变。
+
+已登记付款条件在后续修订中必须保留，不能删除或改挂其他 cost_item_id；已付记录的状态或金额更正必须提供 correction_reason 与 evidence_refs。更正保留历史，不构造退款或付款执行事实。

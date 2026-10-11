@@ -1,0 +1,6 @@
+interface:
+  display_name: "上线与切换"
+  short_description: "准备并记录上线准入、切换、迁移、监测和值守，明确实际执行结果和可触发的回滚路径"
+  default_prompt: "使用 $delivery-go-live-transition 准备上线检查、切换记录和回滚路径。"
+policy:
+  allow_implicit_invocation: true

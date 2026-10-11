@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.2.0",
   "templates": [
     {"id": "delivery-contract-handover-v1", "title": "合同与售前交接", "format": "markdown", "path": "contract-handover.md", "visibility": "internal", "skill": "delivery-contract-handover"},
     {"id": "delivery-initiation-kickoff-v1", "title": "项目启动会", "format": "markdown", "path": "initiation-kickoff.md", "visibility": "customer", "skill": "delivery-initiation-kickoff"},
@@ -29,6 +29,24 @@
     {"id": "delivery-actions-ledger-v1", "title": "行动项与决策台账", "format": "csv", "path": "actions.csv", "visibility": "internal", "skill": "delivery-meeting-records"},
     {"id": "delivery-changes-ledger-v1", "title": "变更台账", "format": "csv", "path": "changes.csv", "visibility": "internal", "skill": "delivery-change-control"},
     {"id": "delivery-deliverables-ledger-v1", "title": "交付物台账", "format": "csv", "path": "deliverables.csv", "visibility": "internal", "skill": "delivery-milestone-acceptance"},
-    {"id": "delivery-milestones-ledger-v1", "title": "里程碑台账", "format": "csv", "path": "milestones.csv", "visibility": "internal", "skill": "delivery-master-planning"}
+    {"id": "delivery-milestones-ledger-v1", "title": "里程碑台账", "format": "csv", "path": "milestones.csv", "visibility": "internal", "skill": "delivery-master-planning"},
+    {"id": "delivery-solution-design-v0.2.0", "title": "实施方案与设计决策", "format": "markdown", "path": "solution-design.md", "visibility": "internal", "skill": "delivery-solution-design"},
+    {"id": "delivery-solution-decisions-v0.2.0", "title": "方案组件与设计决策台账", "format": "csv", "path": "solution-decisions.csv", "visibility": "internal", "skill": "delivery-solution-design"},
+    {"id": "delivery-ui-field-design-v0.2.0", "title": "页面字段权限与状态设计", "format": "markdown", "path": "ui-field-design.md", "visibility": "internal", "skill": "delivery-ui-field-design"},
+    {"id": "delivery-ui-pages-fields-v0.2.0", "title": "页面与字段设计台账", "format": "csv", "path": "ui-pages-fields.csv", "visibility": "internal", "skill": "delivery-ui-field-design"},
+    {"id": "delivery-ui-permissions-states-v0.2.0", "title": "权限与业务状态台账", "format": "csv", "path": "ui-permissions-states.csv", "visibility": "internal", "skill": "delivery-ui-field-design"},
+    {"id": "delivery-integration-data-v0.2.0", "title": "接口数据迁移与核对设计", "format": "markdown", "path": "integration-data.md", "visibility": "internal", "skill": "delivery-integration-data"},
+    {"id": "delivery-integration-mappings-v0.2.0", "title": "接口字段映射与联调台账", "format": "csv", "path": "integration-mappings.csv", "visibility": "internal", "skill": "delivery-integration-data"},
+    {"id": "delivery-integration-migrations-v0.2.0", "title": "数据迁移与一致性核对台账", "format": "csv", "path": "integration-migrations.csv", "visibility": "internal", "skill": "delivery-integration-data"},
+    {"id": "delivery-work-package-v0.2.0", "title": "实施工作包与交付记录", "format": "markdown", "path": "work-package.md", "visibility": "internal", "skill": "delivery-work-package"},
+    {"id": "delivery-work-packages-v0.2.0", "title": "实施工作包台账", "format": "csv", "path": "work-packages.csv", "visibility": "internal", "skill": "delivery-work-package"},
+    {"id": "delivery-quality-testing-v0.2.0", "title": "测试缺陷与客户验证记录", "format": "markdown", "path": "quality-testing.md", "visibility": "internal", "skill": "delivery-quality-testing"},
+    {"id": "delivery-test-cases-defects-uat-v0.2.0", "title": "测试缺陷与UAT台账", "format": "csv", "path": "test-cases-defects-uat.csv", "visibility": "internal", "skill": "delivery-quality-testing"},
+    {"id": "delivery-go-live-transition-v0.2.0", "title": "上线准备切换与回滚记录", "format": "markdown", "path": "go-live-transition.md", "visibility": "internal", "skill": "delivery-go-live-transition"},
+    {"id": "delivery-release-readiness-v0.2.0", "title": "上线准入执行与回滚台账", "format": "csv", "path": "release-readiness.csv", "visibility": "internal", "skill": "delivery-go-live-transition"},
+    {"id": "delivery-training-handover-v0.2.0", "title": "培训与运维移交记录", "format": "markdown", "path": "training-handover.md", "visibility": "internal", "skill": "delivery-training-handover"},
+    {"id": "delivery-training-handover-ledger-v0.2.0", "title": "培训能力与移交资产台账", "format": "csv", "path": "training-handover.csv", "visibility": "internal", "skill": "delivery-training-handover"},
+    {"id": "delivery-resources-capacity-v0.2.0", "title": "资源容量分配与剩余工作台账", "format": "csv", "path": "resources-capacity.csv", "visibility": "internal", "skill": "delivery-resource-timesheets"},
+    {"id": "delivery-payment-conditions-v0.2.0", "title": "采购外包付款条件台账", "format": "csv", "path": "payment-conditions.csv", "visibility": "internal", "skill": "delivery-cost-expenses"}
   ]
 }

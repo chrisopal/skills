@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the first-batch project-delivery skill and template suite.
+"""Validate the project-delivery skill and template suite.
 
 Stdlib only. This checks packaging metadata and source/template coverage; it does
 not claim that a project artifact is semantically correct or customer-approved.
@@ -36,9 +36,6 @@ EXPECTED = [
     "delivery-reporting",
     "delivery-milestone-acceptance",
     "delivery-artifact-review",
-]
-
-FUTURE_SKILLS = {
     "delivery-solution-design",
     "delivery-ui-field-design",
     "delivery-integration-data",
@@ -46,6 +43,9 @@ FUTURE_SKILLS = {
     "delivery-quality-testing",
     "delivery-go-live-transition",
     "delivery-training-handover",
+]
+
+FUTURE_SKILLS = {
     "delivery-progress-control-v2",
     "delivery-closure-warranty",
 }
@@ -103,6 +103,9 @@ def validate_skills(errors: list[str]) -> None:
             for key in ("display_name:", "short_description:", "default_prompt:", "allow_implicit_invocation:"):
                 if key not in yaml:
                     fail(errors, f"{yaml_path}: missing {key}")
+            short = re.search(r'^\s*short_description: "([^"\n]+)"', yaml, re.MULTILINE)
+            if not short or not 25 <= len(short.group(1)) <= 64:
+                fail(errors, f"{yaml_path}: short_description must be 25-64 characters")
             if f"${name}" not in yaml:
                 fail(errors, f"{yaml_path}: default_prompt must invoke ${name}")
 
@@ -124,11 +127,11 @@ def validate_index(errors: list[str]) -> None:
     except json.JSONDecodeError as exc:
         fail(errors, f"index JSON invalid: {exc}")
         return
-    if index.get("version") != "0.1.0":
-        fail(errors, "index version must be 0.1.0")
+    if index.get("version") != "0.2.0":
+        fail(errors, "index version must be 0.2.0")
     entries = index.get("templates")
     if not isinstance(entries, list) or len(entries) < 20:
-        fail(errors, "index must contain the first-batch template set")
+        fail(errors, "index must contain the registered template set")
         return
     seen: set[str] = set()
     for entry in entries:

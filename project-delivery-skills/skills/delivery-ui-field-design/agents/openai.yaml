@@ -1,0 +1,6 @@
+interface:
+  display_name: "页面字段权限设计"
+  short_description: "设计页面、字段约束、权限、业务状态、异常反馈和验收场景，保证界面规格可实施且不把原型当成已实现软件"
+  default_prompt: "使用 $delivery-ui-field-design 形成页面、字段、权限和状态设计台账。"
+policy:
+  allow_implicit_invocation: true

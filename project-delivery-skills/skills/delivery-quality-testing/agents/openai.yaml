@@ -1,0 +1,6 @@
+interface:
+  display_name: "测试与客户验证"
+  short_description: "组织实际测试、缺陷、复测和客户 UAT，按需求、环境和构建版本保留结果与残留风险"
+  default_prompt: "使用 $delivery-quality-testing 按需求和构建版本组织测试、缺陷复测与 UAT。"
+policy:
+  allow_implicit_invocation: true

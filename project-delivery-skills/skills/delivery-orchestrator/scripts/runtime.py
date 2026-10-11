@@ -4,6 +4,7 @@ import argparse
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -12,11 +13,23 @@ import shutil
 import sys
 import tempfile
 
+
+def support_module(name):
+    spec = importlib.util.spec_from_file_location('delivery_' + name, Path(__file__).with_name(name + '.py'))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+software = support_module('software')
+economics = support_module('economics')
 KINDS = {'source', 'evidence', 'contract', 'kickoff', 'discovery', 'minutes',
          'requirements', 'blueprint', 'plan', 'timesheets', 'costs', 'risks',
          'change', 'weekly', 'milestone', 'confirmation', 'review'}
+KINDS |= software.KINDS
 PUBLIC_KINDS = {'kickoff', 'discovery', 'minutes', 'requirements', 'blueprint',
                 'plan', 'weekly', 'milestone'}
+PUBLIC_KINDS |= software.PUBLIC_KINDS
 CUSTOMER_FORBIDDEN_KEYS = frozenset({'internal_rate', 'salary', 'margin', 'internal_notes', 'secret', 'access_token', 'password'})
 SINGLETON = {'requirements', 'blueprint', 'plan', 'timesheets', 'costs', 'risks'}
 PROJECT_DIRECTORIES = (
@@ -28,6 +41,7 @@ PROJECT_DIRECTORIES = (
 )
 REFERENCE_KEYS = {'target', 'targets', 'deliverable_refs', 'baseline_refs',
                   'replacements', 'decision_refs', 'evidence_refs', 'source_refs'}
+REFERENCE_KEYS |= software.REFERENCE_KEYS
 REQUIRED = {
     'evidence': ('items', 'unread_scope'),
     'contract': ('obligations', 'scope_in', 'scope_out', 'customer_dependencies'),
@@ -46,19 +60,28 @@ REQUIRED = {
     'confirmation': ('target', 'state', 'actor', 'role', 'date', 'scope', 'evidence_refs', 'origin', 'open_items'),
     'review': ('targets', 'verdict', 'reviewer', 'method', 'findings', 'unchecked', 'scope'),
 }
+REQUIRED.update(software.REQUIRED)
 
 
 def now():
     return datetime.now(timezone.utc).isoformat()
 
 
+def forbidden_customer_key(key):
+    normalized = re.sub(r'[^a-z0-9]', '', str(key).lower())
+    exact = {re.sub(r'[^a-z0-9]', '', item) for item in CUSTOMER_FORBIDDEN_KEYS}
+    return (normalized in exact or normalized in {'authorization', 'authheader', 'authorizationheader'}
+            or any(part in normalized for part in ('password', 'passwd', 'secret', 'privatekey',
+                                                    'apikey', 'accesskey', 'credential', 'bearer', 'token')))
+
+
 def customer_fields(value, reject=False):
     """Shared recursive credential/internal field boundary; prose still needs review."""
     if isinstance(value, dict):
-        if reject and CUSTOMER_FORBIDDEN_KEYS & {str(k).lower() for k in value}:
+        if reject and any(forbidden_customer_key(k) for k in value):
             raise ValueError('Internal/credential field in customer content')
         return {k: customer_fields(v, reject) for k, v in value.items()
-                if str(k).lower() not in CUSTOMER_FORBIDDEN_KEYS}
+                if not forbidden_customer_key(k)}
     if isinstance(value, list):
         return [customer_fields(v, reject) for v in value]
     return value
@@ -377,12 +400,23 @@ def validate_payload(project, value, registry):
         prior_items = load_artifact(project, prior_ref)['data']['items'] if prior_ref else []
         prior_owners = {cost_reference(item): item['id'] for item in prior_items}
         prior_by_id = {item['id']: item for item in prior_items}
+        if prior_ref:
+            prior_data = load_artifact(project, prior_ref)['data']
+            current_payments = {item['id']: item for item in rows(data, 'payment_conditions',
+                ('cost_item_id', 'amount', 'state', 'evidence_refs'))} if 'payment_conditions' in data else {}
+            for old_payment in prior_data.get('payment_conditions', []):
+                payment = current_payments.get(old_payment['id'])
+                if payment is None or payment['cost_item_id'] != old_payment['cost_item_id']:
+                    raise ValueError('Payment conditions cannot disappear or change stable cost mapping')
+                if old_payment['state'] == 'paid' and (payment['state'] != 'paid' or payment['amount'] != old_payment['amount']):
+                    if not payment.get('correction_reason') or not payment['evidence_refs']:
+                        raise ValueError('Changing paid condition requires evidenced correction')
         if not set(prior_by_id) <= {item['id'] for item in data['items']}:
             raise ValueError('Cost ledger cannot remove stable items; record an evidenced zero correction instead')
         for item in rows(data, 'items', ('category', 'work_package_id', 'state', 'amount', 'basis', 'payment_status')):
             number(item['amount'], 'amount', True)
-            if item['category'] not in {'travel', 'purchase', 'outsourcing', 'other'} or item['state'] not in {'estimate', 'committed', 'incurred'}:
-                raise ValueError('Costs use non-labor categories and estimate/committed/incurred states')
+            if item['category'] not in {'travel', 'purchase', 'outsourcing', 'other'} or item['state'] not in {'estimate', 'committed', 'incurred', 'partial'}:
+                raise ValueError('Costs use non-labor categories and estimate/committed/incurred/partial states')
             ref = cost_reference(item)
             if item['id'] in prior_by_id and cost_reference(prior_by_id[item['id']]) != ref:
                 raise ValueError('Stable cost item logical reference cannot change or be removed')
@@ -417,6 +451,11 @@ def validate_payload(project, value, registry):
             raise ValueError('Invalid change state')
         if data['state'] == 'approved' and not data['decision_refs']:
             raise ValueError('Approved change needs decision evidence')
+    if kind in software.KINDS:
+        upstream = [load_artifact(project, dict(zip(('artifact_id', 'revision', 'sha256'), key))) for key in closure]
+        software.validate(value, upstream, rows, number, read_project(project)['purpose'])
+    if kind in {'timesheets', 'costs'}:
+        economics.validate(kind, data, number, rows)
 
 
 def register(project, value):
@@ -610,11 +649,21 @@ def cost_summary(project):
             if item['status'] != 'approved':
                 provisional += amount
                 gaps.append(f'{item["id"]}: unapproved hours included provisionally')
-        remaining = number(hours['remaining_labor'], 'remaining_labor', True)
-        if remaining is None:
-            gaps.append('Remaining labor estimate unknown')
-        else:
+        detailed = economics.remaining_labor(hours, number)
+        if detailed is not None:
+            remaining, remaining_gaps = detailed
             estimates += remaining
+            gaps.extend(remaining_gaps)
+            for item in hours['remaining_work']:
+                if item['resource_type'] == 'outsourced' and (not expenses or not any(
+                    cost['category'] == 'outsourcing' and cost['work_package_id'] == item['work_package_id'] for cost in expenses['items'])):
+                    gaps.append(f'{item["id"]}: outsourced remaining work has no cost estimate/settlement item')
+        else:
+            remaining = number(hours['remaining_labor'], 'remaining_labor', True)
+            if remaining is None:
+                gaps.append('Remaining labor estimate unknown')
+            else:
+                estimates += remaining
     budget = None
     if not expenses:
         gaps.append('Cost ledger missing')
@@ -633,15 +682,11 @@ def cost_summary(project):
         if budget is None:
             gaps.append('Budget unknown')
         for item in expenses['items']:
-            amount = number(item['amount'], 'amount', True)
-            if amount is None:
-                gaps.append(f'{item["id"]}: expense amount unknown')
-            elif item['state'] == 'incurred':
-                actual += amount
-            elif item['state'] == 'committed':
-                committed += amount
-            else:
-                estimates += amount
+            item_actual, item_committed, item_estimates, item_gaps = economics.cost_parts(item, number)
+            actual += item_actual
+            committed += item_committed
+            estimates += item_estimates
+            gaps.extend(item_gaps)
         remaining = number(expenses['other_remaining'], 'other_remaining', True)
         if remaining is None:
             gaps.append('Other remaining estimate unknown')
@@ -653,7 +698,9 @@ def cost_summary(project):
                 provisional_labor=money(provisional), other_incurred=money(actual),
                 committed_remaining=money(committed), estimated_remaining=money(estimates),
                 forecast=money(forecast), budget=money(budget), variance=money(forecast-budget) if budget is not None else None,
-                complete=not gaps, gaps=gaps)
+                complete=not gaps, gaps=gaps,
+                resource_summary=economics.resource_summary(hours, number) if hours else None,
+                payment_summary=economics.payment_summary(expenses, number) if expenses else None)
 
 
 def matching_records(project, target, kind):
@@ -717,6 +764,23 @@ def snapshot(project):
                 if health != 'current' or obj['status'] != 'ready':
                     gate = {'ready': False, 'reasons': gate['reasons'] + ['Artifact is stale or not ready']}
                 gates[obj['kind']] = gate
+            elif obj['kind'] in software.KINDS:
+                gate = software.gate(obj)
+                if health != 'current':
+                    gate['ready'] = False
+                    gate['reasons'].append('Artifact dependencies are stale')
+                if obj['kind'] == 'release':
+                    tested = load_artifact(project, obj['data']['testing_ref'])
+                    quality = software.gate(tested)
+                    gate['ready_to_execute'] = (health == 'current' and obj['status'] == 'ready'
+                        and quality['ready'] and software.readiness_passed(obj['data'])
+                        and obj['data']['execution']['state'] == 'planned'
+                        and obj['data']['rollback']['state'] == 'planned')
+                    if not quality['ready']:
+                        gate['ready'] = False
+                        gate['reasons'].append('Bound testing/UAT gate did not pass')
+                # Several module-scoped records may share a kind; never overwrite one gate.
+                gates[aid] = dict(gate, kind=obj['kind'])
         except (ValueError, OSError, KeyError, TypeError) as exc:
             alerts.append(f'{aid}: {exc}')
     for kind in ('blueprint', 'milestone'):

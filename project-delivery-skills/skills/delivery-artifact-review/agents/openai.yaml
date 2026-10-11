@@ -1,6 +1,6 @@
 interface:
   display_name: "交付物审查"
-  short_description: "复核追溯一致性和实际文件"
+  short_description: "在关键成果交付前复核范围、追溯、跨文档一致性、敏感信息、版本有效性和实际文件回读，形成整改与交付建议"
   default_prompt: "使用 $delivery-artifact-review 审查指定版本并形成有证据的交付建议。"
 policy:
   allow_implicit_invocation: true

@@ -9,7 +9,9 @@ description: 归集预算、人工、采购、外包、差旅和其他成本，�
 
 ## 核算规则
 
-区分 `estimate`/`committed`（剩余预计）和 `incurred`（已发生），记录币种、税口径、工作包、类别、金额、依据和 payment_status。申请、发生、报销、付款是同一成本事项的状态/证据，不得重复计成本；第一批采购使用单一汇总事项，不支持部分发生拆账；外包暂估转结算修订原 ID。travel_or_expense_ref、procurement_ref、external_ref 是同一逻辑成本号的别名，别名必须一致，同一关联号不得重复建行或跨版本换 ID。内部人工按审核工时×内部费率估计，未知费率/工时保留缺口；外包工时不自动加入内部人工。
+区分 `estimate`/`committed`（剩余预计）和 `incurred`（已发生），记录币种、税口径、工作包、类别、金额、依据和 payment_status。申请、发生、报销、付款是同一成本事项的状态/证据，不得重复计成本；采购部分发生使用同一 ID 的 partial 事项，amount=incurred_amount+remaining_amount；分别计已发生与承诺余额，不另建汇总/明细重复行；外包暂估转结算修订原 ID。travel_or_expense_ref、procurement_ref、external_ref 是同一逻辑成本号的别名，别名必须一致，同一关联号不得重复建行或跨版本换 ID。内部人工按审核工时×内部费率估计，未知费率/工时保留缺口；外包工时不自动加入内部人工。
+
+付款条件使用 payment_conditions 关联稳定成本 ID，pending/due/paid 分开，满足条件与付款必须有来源；现金安排不增加成本，也不能推断收入。
 
 完工预测=内部人工发生估计+其他已发生+剩余预计；差异=完工预测−预算。没有完整来源时标 `incomplete`，不能用零填平未知，也不能把付款状态推断为发生金额或收入。
 
@@ -19,4 +21,4 @@ description: 归集预算、人工、采购、外包、差旅和其他成本，�
 
 ## 模板
 
-使用 `../delivery-orchestrator/assets/templates/cost-expenses.md`、`costs.csv`、`timesheets.csv` 和 `template-field-guide.md`。个人费率和内部毛利不进入客户版。
+使用 `../delivery-orchestrator/assets/templates/cost-expenses.md`、`costs.csv`、`timesheets.csv`、`payment-conditions.csv` 和 `template-field-guide.md`。个人费率和内部毛利不进入客户版。

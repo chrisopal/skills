@@ -36,26 +36,40 @@ class ExportTemplateTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             result = self.exporter.export_templates(directory)
-            self.assertEqual(result["template_count"], 29)
-            self.assertEqual(len(result["docx"]), 17)
-            self.assertEqual(len(result["outputs"]), 29)
+            self.assertEqual(result["template_count"], 47)
+            self.assertEqual(len(result["docx"]), 24)
+            self.assertEqual(len(result["outputs"]), 47)
             self.assertTrue(all(item["template_id"] and item["output_path"] and len(item["sha256"]) == 64 for item in result["outputs"]))
             self.assertTrue(Path(result["xlsx"]).is_file())
 
             document = Document(result["docx"][0])
             text = "\n".join(paragraph.text for paragraph in document.paragraphs)
             text += "\n" + "\n".join(cell.text for table in document.tables for row in table.rows for cell in row.cells)
+            from docx.oxml.ns import qn
+            self.assertEqual(list(document.styles['Title'].element.iter(qn('w:pBdr'))), [])
+            for output in result['docx']:
+                if 'v0.2.0' in output:
+                    self.assertTrue(all(len(table.columns) <= 4 for table in Document(output).tables), output)
             self.assertIn("模板 ID", text)
             self.assertIn("{{project_id}}", text)
             self.assertTrue(any(paragraph.style.name.startswith("Heading") for paragraph in document.paragraphs))
 
             workbook = load_workbook(result["xlsx"])
-            self.assertEqual(len(workbook.sheetnames), 12)
+            self.assertEqual(len(workbook.sheetnames), 23)
             sheet = workbook[workbook.sheetnames[0]]
             self.assertEqual(sheet.freeze_panes, "A2")
             self.assertTrue(sheet.auto_filter.ref)
             self.assertIsNotNone(sheet["A1"].value)
             self.assertTrue(sheet["A1"].fill.fgColor.rgb.endswith("0966D9"))
+            used = set()
+            for entry in self.exporter._load_entries(self.exporter.DEFAULT_INDEX):
+                if entry.fmt != 'csv':
+                    continue
+                sheet = workbook[self.exporter._sheet_name(entry, used)]
+                rows = self.exporter._read_csv(entry.path)
+                self.assertEqual([cell.value for cell in sheet[1]], rows[0], entry.template_id)
+                self.assertEqual(sheet.freeze_panes, 'A2', entry.template_id)
+                self.assertTrue(all(cell.value is None for cell in sheet[2]), entry.template_id)
 
     def test_export_refuses_to_overwrite_existing_output(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -1,0 +1,2 @@
+template_id,template_version,visibility,migration_id,requirement_ids,source_system,target_system,data_scope,extraction_rule,cleansing_rule,mapping_ref,sample_validation,rehearsal_ref,volume,full_or_incremental,freeze_window,count_reconciliation,amount_reconciliation,key_record_reconciliation,backup_ref,rollback_rule,data_owner,status,revision
+,,,,,,,,,,,,,,,,,,,,,,,

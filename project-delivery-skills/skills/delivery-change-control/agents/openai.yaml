@@ -1,6 +1,6 @@
 interface:
   display_name: "变更控制"
-  short_description: "评估并完整应用已批准变更"
+  short_description: "评估范围、设计、进度、成本与验收变化，登记授权决策，并协调各主账完整应用后更新有效版本集合"
   default_prompt: "使用 $delivery-change-control 评估变更并协调完整应用和有效版本更新。"
 policy:
   allow_implicit_invocation: true

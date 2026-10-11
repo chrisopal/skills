@@ -1,3 +1,11 @@
+## 2026-10-11 — Project-delivery Skills phase two v0.2.0
+
+- Scope: Add seven implementation Skills (solution, UI/fields/permissions, integration/migration, work packages, testing/UAT, release/rollback, training/handover) and 18 templates; total 24 Skills/47 templates. Extend resource load/remaining-work estimates, partial procurement and payment conditions; include reusable local engineering rehearsal and validation record.
+- Evidence: 126 tests pass with Office libraries, no skips; 24 Skill Creator/YAML checks, suite validation, Python compilation and diff checks pass. Independent review APPROVE after four reproducible fixes. Local HTTP/SQLite case has six actual engineering tests and 15 hash-verified objects; simulated release remains undelivered after restored rollback. Installed 24 directories hash-match after preserving the original 17.
+- Files/readback: 24 editable DOCX plus 23-sheet XLSX; native LibreOffice renders 37 readable pages, seven new documents checked across 14 pages. All sheet headers/blank input rows/freeze/filter/blue styles read back, all 23 sheets rendered. Enterprise blue review HTML search/navigation and 1280/390 layouts checked with no page overflow or browser errors.
+- Simplification/remediation: Reuse existing version/source/baseline/export/review tools and stdlib calculations, no new dependencies. Keep one owner per ledger and one-way design references. Fix credential-name variants, mixed-build failed reconciliation, per-page design gaps and cross-revision payment lineage; regroup wide Word tables into Chinese columns and reduce orphan pagination.
+- Limits: Fixture-only HTTP/SQLite; UAT, training and handover are explicitly simulated. No production execution, real customer acceptance, external authentication/integration, native Word/Excel interaction or warranty completion. Generated evidence and old-install backup stay in output/project-delivery-phase-two-validation-20261011/; see project-delivery-skills/docs/VALIDATION_PHASE_TWO.md.
+- Commit/push: This entry accompanies the scoped source/documentation commit; configured remote HEAD is verified after push. Unrelated concurrent files and generated outputs are excluded.
 
 ## 2026-10-11 — Project-delivery Skills phase one v0.1.0
 

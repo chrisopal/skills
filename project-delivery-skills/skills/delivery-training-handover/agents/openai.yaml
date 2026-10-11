@@ -1,0 +1,6 @@
+interface:
+  display_name: "培训与运维移交"
+  short_description: "按受众组织培训、能力验证、用户与运维资料及资产移交，记录接收范围和未决运营事项"
+  default_prompt: "使用 $delivery-training-handover 组织分角色培训、能力检查和运维资产移交。"
+policy:
+  allow_implicit_invocation: true

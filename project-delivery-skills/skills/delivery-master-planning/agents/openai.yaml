@@ -1,6 +1,6 @@
 interface:
   display_name: "Master Plan"
-  short_description: "建立基线预测和里程碑计划"
+  short_description: "将合同范围、需求、资源和依赖分解为可追踪的 WBS、Master Plan、里程碑与近期滚动计划"
   default_prompt: "使用 $delivery-master-planning 生成带基线、预测和依赖的 Master Plan。"
 policy:
   allow_implicit_invocation: true

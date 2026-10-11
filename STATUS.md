@@ -1,3 +1,33 @@
+## 2026-10-11: Main merge and live WorkBuddy validation
+
+- Publication: PR #6 merged into main as `10fa80e7`; fetched remote main and
+  verified it contains the tested `d5a15f32` head. Unrelated local work preserved.
+- Installation: copied tracked main files for visual-to-editable-ppt and both
+  dependencies into WorkBuddy's local skills directory, checked byte equality,
+  and verified the enabled skill appears in WorkBuddy's installed-skills UI.
+- Live host: WorkBuddy5.6.2 / Deepseek-V4.1-Flash discovered and invoked its
+  configured ImageGen tool, producing a fresh2560x1440 blue consulting slide.
+  Initial ECONNRESET recovered on one retry. No Codex-generated sample reused.
+- Result: WorkBuddy completed both image and editable paths. The editable slide
+  contains7 native text boxes and5 structural objects, with no raster underlay;
+  body20pt, title32pt and labels24pt. Independent parent read-back passed
+  handoff, image and editable audits, exact text/notes checks and font checks.
+- Application evidence: actual LibreOffice renders of both deliveries and the
+  edited copy were inspected. WorkBuddy used python-pptx to edit text/21pt size
+  and move3 panels; save/read-back and LibreOffice reopen succeeded, notes intact.
+  This test did not drive PowerPoint GUI. Delivery body remains20pt.
+- Compatibility notes: PaddleOCR returned500, so offline ink positions plus
+  approved content were used. A global LibreOffice-profile file-protection
+  prompt was declined; task-local UserInstallation rendered successfully.
+  Added isolated-render guidance and the Pillow rightArrow preview limitation.
+- Scope: one basic blue single-page flow only. Image-edit/complex-asset separation,
+  multipage WorkBuddy dispatch, other WorkBuddy themes and Windows are untested.
+  Keep using live tool discovery; the observed ImageGen name is not hardcoded.
+- Changes: README and host/quality/theme references record actual evidence and
+  its limits; no production code or dependencies changed. Documentation links,
+  skill metadata and whitespace checks passed. Artifacts remain local under
+  ignored `output/workbuddy-visual-ppt-20261011/`, not in Git.
+
 ## 2026-10-11 — Integrate presales suite into main
 
 - Scope: Integrate only presales work from 4128395a, 4211508e and 8ac5710a; preserve existing main README entries and status history. Other shared-branch changes are excluded.

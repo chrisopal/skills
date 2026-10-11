@@ -40,6 +40,8 @@ editppt prepare "$PROJECT/handoff-v001/conversion-input.pptx" \
 任务说明是父 Agent 派发的消息，不直接改 page_request.json 或状态文件。
 有备注时使用上述 conversion-input.pptx；prepare 会按原有路径提取备注，finalize 保留 notes_manifest 的备注。不要手写或修改 notes_manifest 来绕过状态契约。
 
+给页 Agent 同时传[字号规则](typography.md)和本次批准的目标字号。最终运行 `scripts/inspect_fonts.py` 回读；模板/主题目标值与实际文件值分别记录。原图文字偏大且用户要求改进时，允许在保持原文、层级与图形语义的前提下调整字号和文本框，并写入修订记录。
+
 ## 3. 对象层级与数据
 
 - 正文、标题、标签：原生文本框；布局框、线、简单箭头、表格：原生结构。

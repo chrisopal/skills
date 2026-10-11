@@ -52,6 +52,8 @@ def plan(p, project: Path, span: str | None = None, draft: bool = False, output_
 实际第 {slide['order']} / {pack['page_budget']} 页；版本 {version}；内容签名 {signature}。
 仅生成这一页，不生成拼图、联系表或下一页。读取当前宿主工具声明后调用真实生图能力。
 按 theme 的配色、字体层级、材质和留白设计；布局优先服从 slide.layout_hint 与内容关系。
+若 theme.typography.unit 为 pt，按 roles_pt/defaults_pt 区分正文、标签与封面；普通正文不因空白多而放大到标题级。
+字号参考换算：em像素 = pt × 实际图片宽px / (reference_slide_inches[0] × 72)，不是CSS的96dpi，也不是OCR墨迹高度。
 原文、数字、单位、专有名词和连线以 slide 为准；不虚构数据、企业标志或案例实景。
 {composition}
 照片/插画保持视觉质量，避免装饰穿过正文；不用微小文字补充未提供的信息。

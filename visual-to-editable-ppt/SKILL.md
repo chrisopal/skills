@@ -18,7 +18,7 @@ description: Use when a user provides a presentation outline, per-slide content 
 ## 制作流程
 
 1. **内容锁定。** 采用依赖的 `slide-content-pack` schema，保留原文、单位、图表数据、节点/连线和来源。`review_status` 与 `approval_ref` 记录真实已有确认，不重复索取已给出的确认。[内容交接](references/content-handoff.md) 定义显示文字、备注和逐页映射。
-2. **主题与代表页。** 按 [主题目录](references/themes.md) 选择主题，已有参考优先。通常先做封面、密集内容、图解三类代表页；短稿按实际页面选择。代表页须走完所选输出路径并查看实际 PPTX 渲染：editable 检查重建，image 检查整图导出。之后再扩大批次。范围由实际 `order` 决定，稳定 ID 不变。
+2. **主题与代表页。** 按 [主题目录](references/themes.md) 选择主题，已有参考优先。按[字号规则](references/typography.md)区分正文、标签和封面，以最终PPTX的pt为准，正文默认20pt。通常先做封面、密集内容、图解三类代表页；短稿按实际页面选择。代表页须走完所选输出路径并查看实际 PPTX 渲染：editable 检查重建，image 检查整图导出。之后再扩大批次。范围由实际 `order` 决定，稳定 ID 不变。
 3. **初始化与提示词。** 用依赖 `init --style` 锁定主题，再用 `scripts/visual_bridge.py plan --output-mode editable` 或 `--output-mode image` 生成任务；省略时默认 editable。队列记录 `output_mode`，不修改图像选版。草稿仅用 `--draft` 查结构，禁止执行生图。不调用带固定墨绿要求的旧 plan；主题字段决定风格审校。
 4. **宿主逐页生图。** 读取当前工具声明，一次一页。每次返回立即保存、register；调用成功不等于图片通过审阅。Codex 用内置 Image Gen，其他宿主使用已发现的生成能力；仅可编辑转换需要 `host-tool` 编辑契约，细节见宿主参考。
 5. **检查并选版。** 逐页查看真实图片，核对内容、关系、主题、页码、阅读性和来源，填写依赖七项 review。按用户确认或明确代审授权 select，已有批次授权无需每页重复询问。图片里有错字/错数先修复设计图；图片版直接保留这些像素，可编辑重建也仍以原稿为准。

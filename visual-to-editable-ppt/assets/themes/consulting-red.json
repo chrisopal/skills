@@ -1,6 +1,6 @@
 {
   "id": "consulting-red",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "白底朱红咨询",
   "intent": "鲜明、简练，适合变革决策与经营复盘",
   "canvas": {
@@ -27,24 +27,51 @@
   },
   "typography": {
     "family": "优先选择已安装且可嵌入/替换的中文无衬线字体，如 Noto Sans CJK SC、微软雅黑；整套保持一致",
-    "reference_canvas_px": [
-      1920,
-      1080
+    "unit": "pt",
+    "reference_slide_inches": [
+      13.333333,
+      7.5
     ],
-    "title_px": [
-      52,
-      64
-    ],
-    "body_px": [
-      28,
-      34
-    ],
-    "label_min_px": 24,
-    "footer_px": [
-      18,
-      22
-    ],
-    "rule": "正文超密时压缩排版草案或申请拆页；不自动改已批准文案或靠微字塞入。重建时结合实际画布换算字号"
+    "roles_pt": {
+      "content_title": [
+        30,
+        34
+      ],
+      "subtitle": [
+        20,
+        24
+      ],
+      "body": [
+        18,
+        22
+      ],
+      "module_label": [
+        22,
+        24
+      ],
+      "data_label": [
+        18,
+        20
+      ],
+      "cover_title": [
+        40,
+        48
+      ],
+      "nonessential_footer": [
+        12,
+        14
+      ]
+    },
+    "defaults_pt": {
+      "content_title": 32,
+      "subtitle": 22,
+      "body": 20,
+      "module_label": 24,
+      "data_label": 18,
+      "cover_title": 44,
+      "nonessential_footer": 12
+    },
+    "rule": "以最终PPTX的pt为准；普通正文默认20pt，空白多也不扩大到标题级。封面大标题仅限封面。重要来源/限定语至少18pt，12–14pt仅用于非关键信息，不宣称无障碍达标。生图按画布比例换算em像素；重建回读实际字号并检查真实渲染。细则见references/typography.md。"
   },
   "geometry": {
     "outer_margin_percent": 5,

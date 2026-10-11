@@ -25,7 +25,9 @@
 | 主题 | 已完成的真实样稿验证 |
 |---|---|
 | consulting-purple | 三页生图、可编辑重建、LibreOffice 渲染、macOS PowerPoint 编辑保存重开 |
-| consulting-blue / consulting-red / consulting-green | 各一页生图、图片型 PPTX 导出、原图/顺序/备注审计及 LibreOffice 渲染 |
-| product-solution / marketing-editorial / annual-gala | 各一页生图、图片型 PPTX 导出、原图/顺序/备注审计及 LibreOffice 渲染 |
+| consulting-blue / consulting-red / consulting-green | 各一页生图、图片版及可编辑版；正文20pt、标题32pt、模块标签24pt；最终文件内容/备注审计、LibreOffice渲染、PowerPoint副本编辑保存重开 |
+| product-solution / marketing-editorial / annual-gala | 各一页生图、图片版及可编辑版；正文20pt、封面标题44/48/44pt；最终文件内容/备注审计、LibreOffice渲染、PowerPoint副本编辑保存重开 |
 
-本轮六套图片版每页保留一张原图；不能据此认定这六套主题的可编辑重建已通过。该轮 macOS 锁屏，未补做六套图片版的 PowerPoint 原生打开测试。测试只覆盖 Codex 和上述通用样稿；不代表所有内容、宿主或客户品牌都已验收。生成物留在本地，不随技能发布。新增主题或密集内容仍需按所选模式完成代表页验证。
+六套可编辑样稿包含44个原生文本框；复杂视觉保留独立位图，年会使用去字后的舞台背景，未用原始带字整图覆盖。最终六页合集和六个单页文件均已实际渲染。PowerPoint测试副本的六页正文从20pt改为21pt、红色页容器移动后，保存重开并回读，修改和全部备注均保留；交付原稿仍为20pt。字号缩小是用户授权修订，图形渐变、阴影和素材边缘仍有轻微差异。
+
+本次只覆盖Codex和上述通用样稿，不代表所有内容、宿主或客户品牌均已验收；Windows及WorkBuddy/Claude实际运行未测。跨平台字体替代仍需检查。生成物留在本地，不随技能发布。新增主题或密集内容仍需按所选模式完成代表页验证；详细字号依据见[字号规则](typography.md)。

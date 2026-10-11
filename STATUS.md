@@ -1,3 +1,39 @@
+## 2026-10-11: Six editable themes and measured typography
+
+- Scope: seven theme profiles now express authoritative point sizes (v1.1.0),
+  defaulting to 20pt body, 32pt content titles and separate cover/label roles.
+  `references/typography.md` records Microsoft/Manchester guidance, viewing
+  context, small-footer exceptions and PPT-point/image-em conversion. Bridge
+  prompts and skill/quality/conversion guidance use the same font contract.
+- Verification tool: `scripts/inspect_fonts.py` reads actual text runs, including
+  groups and table cells; paragraph defaults are resolved and unknown master or
+  theme inheritance is explicit. It reports evidence, never automatic visual
+  acceptance. Two regression tests cover profiles and mixed/inherited font data.
+- Live result: blue, red, green, product, marketing and gala each have one real
+  editable sample, plus a six-page gallery. All six passed page record/finalize,
+  exact content/notes audit and font read-back (44 native text boxes, all bodies
+  20pt). All seven delivered files rendered in LibreOffice; the final contact
+  sheet and page renders were inspected. Titles are32/32/32/44/48/44pt.
+- Native application: macOS PowerPoint opened the gallery copy without repair.
+  All six body sizes showed20pt, then were changed to21pt in the test copy;
+  a red structural container was moved. Save/close/reopen and package read-back
+  confirmed all six font changes, container position and all notes persisted.
+  The original delivery gallery is unchanged (SHA-256 starts653b8275d66f).
+- Checks: 34 bridge +32 consulting +90 converter tests passed (156 total),
+  skill validation, Python compilation, local documentation links and whitespace
+  checks. No new dependencies; reuse existing generation/reconstruction runtime.
+- Limits: complex artwork remains independently movable/replacable raster;
+  the gala clean background retains stage imagery with native editable text.
+  Authorized typography changes and minor font/gradient/shadow differences are
+  recorded. PaddleOCR connection reset twice; builtin ink hints plus exact
+  approved source text were used. Windows, other live hosts and dense customer
+  decks were not tested. Footers12pt are nonessential, not accessibility proof.
+- Artifacts: samples, renders, actual-font inventories and native edit evidence
+  remain local under ignored `output/visual-ppt-theme-tests-20261011/`.
+  Only reusable source/spec/docs/tests are included in the publication.
+- Publication: prepared on `codex/visual-to-editable-ppt` for existing PR #6;
+  verified push state is recorded in the publication follow-up below.
+
 ## 2026-10-11: Explicit image or editable PPT delivery
 
 - Scope: `visual_bridge.py` adds `plan --output-mode image|editable` (editable

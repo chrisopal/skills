@@ -1,3 +1,12 @@
+## 2026-10-11 — Opportunity full lifecycle worked case
+
+- Scope: Add one continuous fictional account case with 12 chronological evidence batches, nine real runtime stage transitions, V1/customer-return/V2 review loop, competitor price feedback, reauthorized Q2 and simulated contract/closeout. Each timepoint has five management work surfaces, real 18-dimension radars, Skill I/O, evidence and document links in enterprise light/dark pages.
+- Files: opportunity-orchestrator examples/full_lifecycle.py, scripts/case_study.py, assets/case.css, tests/test_case_study.py, references/full-lifecycle-case.md and entrypoint; blueprint and validation under docs/plans/2026-10-11-opportunity-case-*.md.
+- Evidence: 42 analysis/runtime plus 10 orchestration/distribution/case tests pass; portable validator, seven-entry/link check, modified Skill Creator check and installed-copy full case pass. Browser checks cover 120 tab selections, 24 responsive/theme cases, keyboard focus, actual V2 readback and 12 contrast pairs (minimum4.85:1).
+- Simplification/remediation: Reuse existing CLI/SQLite/scoring/radars, no new dependency or write-control layer. Preserve each timepoint's actual readback, avoid future-data leakage and mechanical score increases; correct RV-03 wording and the returned-V1 summary after independent/business UI review.
+- Limits: All customer, competitor, approval, demo and signature inputs are simulated. Static local case workbench and authored proposal workpapers; no actual PPT/POC, legal signature, CRM write integration, customer acceptance, payment or revenue claim. Output/screenshots/DB and export-install test remain local in output/opportunity-full-lifecycle-case-20261011/ and output/opportunity-full-case-portability-20261011/.
+- Commit/push: This scoped source/documentation entry is committed and pushed after verification; remote branch SHA is checked. Unrelated concurrent work and generated artifacts are excluded.
+
 ## 2026-10-11 — Opportunity lifecycle Skill suite v0.4.0
 
 - Scope: Upgrade the existing analysis skill with enterprise light/dark reports; add one orchestrator and five task skills, sharing SQLite/runtime through signed closeout and handoff.

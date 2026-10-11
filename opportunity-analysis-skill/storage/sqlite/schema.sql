@@ -269,3 +269,16 @@ CREATE INDEX IF NOT EXISTS idx_sales_questions_opp ON sales_confirmation_questio
 CREATE INDEX IF NOT EXISTS idx_sales_answers_opp ON sales_confirmation_answers(opportunity_id);
 CREATE INDEX IF NOT EXISTS idx_next_actions_opp ON next_actions(opportunity_id);
 CREATE INDEX IF NOT EXISTS idx_risks_opp ON risks(opportunity_id);
+
+-- Confirmed lifecycle is separate from legacy analysis stage suggestions.
+CREATE TABLE IF NOT EXISTS opportunity_lifecycle (
+  opportunity_id TEXT PRIMARY KEY REFERENCES opportunities(id),
+  revision INTEGER NOT NULL,
+  state_json TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS lifecycle_requests (
+  request_id TEXT PRIMARY KEY,
+  payload_sha256 TEXT NOT NULL,
+  response_json TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);

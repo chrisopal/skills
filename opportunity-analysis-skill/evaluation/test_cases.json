@@ -2,7 +2,7 @@
   {
     "name": "visit_note_basic",
     "input": "examples/input_visit_note.json",
-    "expected_stage": "投标/报价",
+    "expected_stage": "方案共创",
     "expected_min_score": 60
   },
   {

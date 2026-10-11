@@ -31,8 +31,9 @@ STAGE_DEFINITIONS: list[StageDefinition] = [
     ),
     StageDefinition("proposal_bidding", "报价/投标", 7, "进入报价、招投标、比选、询价或 RFP 阶段。", ("报价", "投标", "招标", "比选", "询价", "RFP"), is_opportunity_confirmed=True),
     StageDefinition("commercial_negotiation", "商务谈判", 8, "正在围绕价格、合同、付款、交付边界或法务条款谈判。", ("合同条款", "价格谈判", "付款方式", "交付边界", "法务", "采购谈判", "商务谈判"), is_opportunity_confirmed=True),
-    StageDefinition("won", "赢单", 9, "商机已经中标、签约、下 PO 或成交。", ("中标", "已签约", "合同已签", "成交", "赢单", "PO"), is_terminal=True, is_opportunity_confirmed=True),
-    StageDefinition("lost", "丢单", 10, "商机已失败、暂停、取消或客户选择其他供应商。", ("未中标", "选择其他供应商", "项目暂停", "项目取消", "预算取消", "丢单"), is_terminal=True, is_opportunity_confirmed=True),
+    StageDefinition("contract_signing", "合同签署", 9, "合同文本已进入签署，尚需登记双方签署事实。", ("合同签署", "待签合同", "签署流程"), is_opportunity_confirmed=True),
+    StageDefinition("won", "赢单", 10, "材料出现成交建议；正式赢单须登记真实合同及签署事实。", ("中标", "已签约", "合同已签", "成交", "赢单", "PO"), is_terminal=True, is_opportunity_confirmed=True),
+    StageDefinition("lost", "丢单", 11, "材料出现明确丢单信号；暂停和取消由生命周期状态单独记录。", ("未中标", "选择其他供应商", "丢单"), is_terminal=True, is_opportunity_confirmed=True),
 ]
 
 
@@ -53,8 +54,15 @@ CONFIRMED_CONTEXT_PREFIX_MARKERS = (
     "还未",
     "暂未",
     "走流程",
+    "将",
+    "是否",
+    "决定",
+    "模板",
 )
 CONFIRMED_CONTEXT_SUFFIX_MARKERS = (
+    "模板",
+    "样本",
+    "示例",
     "仍待确认",
     "待确认",
     "将",
@@ -184,13 +192,26 @@ def _signal_is_blocked(text: str, signal: str, start: int, *, guard_confirmed_co
     if not guard_confirmed_context:
         return False
 
+    clause_start, clause_end = _clause_bounds(text, start)
+    clause = text[clause_start:clause_end]
+    if any(marker in clause for marker in ('模板', '示例', '样本', '去年', '历史项目', '曾经', '此前')):
+        return True
+    if signal == 'PO':
+        prefix = text[max(clause_start, start - 4):start]
+        suffix = text[start + len(signal):clause_end]
+        if not prefix.endswith(('已下', '下发')) and not suffix.startswith(('已下', '已下发', '已确认', '确认')):
+            return True
     if _clause_contains_condition_sequence(text, start):
         return True
 
-    prefix = _normalize_context_snippet(text[max(0, start - CONTEXT_WINDOW):start], strip_left=False)
-    suffix = _normalize_context_snippet(text[start + len(signal):start + len(signal) + CONTEXT_WINDOW], strip_left=True)
+    sentence_start = max((text.rfind(mark, 0, start) + 1 for mark in '。.;；!?！？\n'), default=0)
+    sentence_end = min((pos for mark in '。.;；!?！？\n' if (pos := text.find(mark, start)) >= 0), default=len(text))
+    if signal in stage_by_id('solution_cocreation').signals:
+        sentence_end = clause_end
+    prefix = _normalize_context_snippet(text[max(sentence_start, start - CONTEXT_WINDOW):start], strip_left=False)
+    suffix = _normalize_context_snippet(text[start + len(signal):min(sentence_end, start + len(signal) + CONTEXT_WINDOW)], strip_left=True)
 
-    if _contains_any_marker(prefix, CONFIRMED_CONTEXT_PREFIX_MARKERS) or _contains_any_marker(suffix, CONFIRMED_CONTEXT_PREFIX_MARKERS):
+    if _contains_any_marker(prefix, CONFIRMED_CONTEXT_PREFIX_MARKERS) or _contains_any_marker(suffix, tuple(m for m in CONFIRMED_CONTEXT_PREFIX_MARKERS if m not in {"是否", "决定"})):
         return True
 
     if any(prefix.endswith(marker) for marker in CONFIRMED_CONTEXT_EDGE_MARKERS):

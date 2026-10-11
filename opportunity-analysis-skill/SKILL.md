@@ -1,7 +1,6 @@
 ---
 name: opportunity-analysis-skill
-description: Portable opportunity analysis capability for enterprise-service agents. Use it to turn visit notes, meeting transcripts, emails, OCR text, documents, or normalized evidence into structured accounts, contacts, opportunities, risks, next actions, local SQLite records, safe queries, and HTML/Markdown views. Designed to run inside different agent hosts such as Claude Code, WorkBuddy, OpenClaw, Hermes Agent, MateClaw, or plain shell automation.
-version: 0.3.0
+description: Analyze B2B customer visit notes, meetings, emails and normalized evidence into account facts, opportunity qualification, commercial assessments and suggested next actions; create or incrementally update a local opportunity dossier with evidence-backed enterprise HTML/Markdown views.
 ---
 
 # Opportunity Analysis Skill
@@ -21,7 +20,15 @@ Convert scattered customer material into a follow-up-ready opportunity asset:
 
 This package is both a portable agent skill and a Python reference runtime. The default runtime is intentionally self-contained: no external service is required, and SQLite is the default storage.
 
-The package is intentionally one P0 closed-loop skill, not three separate skills. The internal stages live under `src/opportunity_skill/stages/` so future agents, adapters, or model-backed extractors can reuse one stage without breaking the end-to-end `analyze/query/detail` workflow.
+This remains the standalone analysis entry and shared reference runtime. For ongoing management through signing, use the sibling [opportunity-orchestrator](../opportunity-orchestrator/SKILL.md) and its [lifecycle contract](../opportunity-orchestrator/references/lifecycle-contract.md). Internal extraction stages remain reusable without duplicating databases or changing the existing analyze/query/detail commands.
+
+## Incremental analysis and lifecycle truth
+
+For an existing opportunity pass `opportunity_id`, a unique `request_id`, and the current `expected_revision`; use explicit `account_id` when creating another opportunity under the same customer. Read the existing dossier before merging new material. Do not merge unrelated procurement projects by company name.
+
+`lifecycle.current_stage_id` is the confirmed business stage; `suggested_stage_id` and legacy `opportunity.stage/stage_id` are analytical suggestions. Inference never fabricates stage history or signed commitments. Unknown sales answers remain unresolved. Confirmed business facts, actions, artifacts and signed records are written through `manage`, then read back through `lifecycle` or `detail`.
+
+Query defaults to the enterprise list. Use `--template opportunity_kanban` for the board, `--current-stage` for confirmed stages, and `--theme dark` for dark views. Legacy `--stage` continues to filter analysis suggestions. Static HTML has no write controls; execute mutations through the runtime or an actual host integration.
 
 ## Quick Run
 
@@ -125,7 +132,7 @@ Every successful analyze run returns:
 
 - Do not invent customer names, contact names, phone numbers, emails, budget amounts, or signed commitments.
 - Emit explicit budget amounts only when the source text states them.
-- Stages, scores, win probabilities, and risk levels may be inferred, but include a reason and evidence mapping.
+- Suggested stages, scores, heuristic win estimates, and risk levels may be inferred, but include a reason and evidence mapping. They do not confirm the current business stage or a signed contract.
 - Next actions must connect to missing information, stage movement, or risk mitigation.
 - Key fields should reference Evidence when evidence exists.
 - Render HTML from structured data only; escape user-controlled values.

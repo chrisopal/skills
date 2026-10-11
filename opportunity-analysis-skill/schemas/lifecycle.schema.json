@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OpportunityLifecycle",
+  "type": "object",
+  "required": [
+    "current_stage_id",
+    "suggested_stage_id",
+    "status",
+    "revision",
+    "facts",
+    "history",
+    "actions",
+    "artifacts",
+    "contracts"
+  ],
+  "properties": {
+    "current_stage_id": {
+      "type": "string"
+    },
+    "suggested_stage_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "active",
+        "paused",
+        "won",
+        "lost",
+        "cancelled"
+      ]
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "history": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "contracts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "status_history": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "next_action": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verification_status": {
+      "enum": [
+        "current",
+        "needs_review"
+      ]
+    },
+    "owner": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owner_history": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  }
+}

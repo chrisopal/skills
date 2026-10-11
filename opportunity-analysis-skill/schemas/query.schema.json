@@ -42,6 +42,10 @@
         },
         "next_action_status": {
           "type": "string"
+        },
+        "current_stage_id": {
+          "type": "string",
+          "description": "Confirmed lifecycle stage; stage remains legacy analysis suggestion filter."
         }
       }
     },

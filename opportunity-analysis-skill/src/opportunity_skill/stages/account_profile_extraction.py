@@ -114,7 +114,7 @@ def extract_contacts(text: str, account_id: str) -> list[dict[str, Any]]:
     for m in re.finditer(r"([\u4e00-\u9fa5]{1,4}(?:总|经理|工|主任|部长)?)（客户[-－—]([^）]{2,20})）", text):
         add_contact(m.group(1), m.group(2), "speaker_label")
 
-    for m in re.finditer(r"([\u4e00-\u9fa5]{2,4})[｜|，,\s]*(采购总监|生产负责人|项目负责人|需求负责人|业务负责人|信息化负责人|数字化负责人|技术负责人|项目经理|总经理|厂长|经理|部长|主任|工程师)", text):
+    for m in re.finditer(r"(?<![\u4e00-\u9fa5])([\u4e00-\u9fa5]{2,4})[｜|，, \t]*(采购总监|生产负责人|项目负责人|需求负责人|业务负责人|信息化负责人|数字化负责人|技术负责人|项目经理|总经理|厂长|经理|部长|主任|工程师)", text):
         add_contact(m.group(1), m.group(2), "contact_text")
 
     if not contacts_by_key:

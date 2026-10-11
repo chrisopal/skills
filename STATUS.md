@@ -1,3 +1,12 @@
+## 2026-10-11 — Opportunity lifecycle Skill suite v0.4.0
+
+- Scope: Upgrade the existing analysis skill with enterprise light/dark reports; add one orchestrator and five task skills, sharing SQLite/runtime through signed closeout and handoff.
+- Evidence: 42 analysis/display/incremental tests and 5 distribution/workflow tests pass; portable validator, seven Skill Creator entry checks, suite links and installed-suite CLI rehearsal pass. Simulated signing reaches revision 13; missing signatures reject atomically. Browser checks cover 24 primary responsive/theme combinations, 10 auxiliary/empty pages, keyboard disclosure, real detail navigation and contract download.
+- Simplification: Keep stdlib + SQLite, reuse existing presales/bid capabilities, preserve legacy theme explicitly; no new dependencies, CRM service or fake write controls. Keep actual lifecycle separate from analytical stage suggestions.
+- Review fixes: Live integrity on replay, retained confirmation answers/owner, current projections without duplicates, correct next action, archived artifact links and warning-tag contrast.
+- Limits: Synthetic-case E2E, static reports and heuristic reference extraction; no actual customer acceptance, signature authentication, live CRM/RBAC/approval integration or Python static type gate. Local artifacts remain in output/opportunity-lifecycle-release-20261011/ and are excluded.
+- Commit/push: This entry accompanies the scoped source/documentation commit; remote SHA is checked after push. Existing unrelated work is preserved. Detailed evidence: docs/plans/2026-10-11-opportunity-lifecycle-validation.md.
+
 ## 2026-10-11 — Software project-delivery Skill design
 
 - Scope: Add `docs/plans/2026-10-11-project-delivery-skills-design.md` for custom software and systems integration: contract handover through warranty/closure, one orchestrator plus 24 business skills, kickoff/discovery/blueprint templates, Master Plan, timesheets/cost/travel, risk/quality/change, acceptance and project folders.

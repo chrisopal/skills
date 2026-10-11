@@ -1,0 +1,6 @@
+interface:
+  display_name: "接口与数据集成"
+  short_description: "设计系统接口、字段映射、联调、数据迁移和业务一致性核对，明确第三方依赖与可回滚条件"
+  default_prompt: "使用 $delivery-integration-data 设计接口映射、迁移方案并记录业务核对证据。"
+policy:
+  allow_implicit_invocation: true

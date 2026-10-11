@@ -49,7 +49,7 @@ class TemplateEntry:
 
 
 def _safe_id(value: Any, label: str) -> str:
-    if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,99}", value):
+    if not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,99}", value):
         raise ExportError(f"{label} must be a safe template identifier")
     return value
 
@@ -154,6 +154,9 @@ def _style_document(document: Any) -> None:
         style._element.get_or_add_rPr().get_or_add_rFonts().set(qn("w:eastAsia"), EAST_ASIA_FONT)
         style.font.color.rgb = __import__("docx").shared.RGBColor.from_string("0B1220")
     title = document.styles["Title"]
+    # The stock Word Title carries a theme border; avoid a decorative rule.
+    for border in list(title.element.iter(qn('w:pBdr'))):
+        border.getparent().remove(border)
     title.font.size = Pt(22)
     document.styles['Normal'].font.size = Pt(10)
     document.styles['Normal'].paragraph_format.space_after = Pt(6)
@@ -309,6 +312,8 @@ def _add_table(document: Any, rows: list[list[str]]) -> None:
             cell.text = row[col_index] if col_index < len(row) else ""
             for paragraph in cell.paragraphs:
                 paragraph.paragraph_format.keep_with_next = row_index == 0
+                paragraph.paragraph_format.space_before = __import__("docx").shared.Pt(0)
+                paragraph.paragraph_format.space_after = __import__("docx").shared.Pt(3)
                 for run in paragraph.runs:
                     _set_run_font(run, 9 if row_index else 9, bold=row_index == 0)
             if row_index == 0:
@@ -319,7 +324,10 @@ def _add_table(document: Any, rows: list[list[str]]) -> None:
             elif row_index % 2 == 0:
                 _shade_cell(cell, LIGHT_BLUE)
     _set_cell_borders(table)
-    document.add_paragraph()
+    # Keep tables distinct in Word without inheriting full body paragraph spacing.
+    separator = document.add_paragraph()
+    separator.paragraph_format.space_after = __import__("docx").shared.Pt(0)
+    separator.paragraph_format.line_spacing = __import__("docx").shared.Pt(6)
 
 
 def _write_docx(entry: TemplateEntry, output: Path) -> None:
@@ -349,7 +357,7 @@ def _write_docx(entry: TemplateEntry, output: Path) -> None:
     for index, (kind, value) in enumerate(blocks):
         if kind == "heading":
             level, text = value
-            if index == 0 and text == entry.title:
+            if index == 0 and level == 1:
                 continue
             paragraph = document.add_paragraph(style=f"Heading {level}")
             paragraph.add_run(text)

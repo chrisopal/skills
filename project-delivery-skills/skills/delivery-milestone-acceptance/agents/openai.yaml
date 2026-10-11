@@ -1,6 +1,6 @@
 interface:
   display_name: "里程碑与验收"
-  short_description: "绑定交付物证据和确认范围"
+  short_description: "按合同与有效变更组织阶段交付和里程碑验收，精确绑定交付物、证据、确认范围与遗留项"
   default_prompt: "使用 $delivery-milestone-acceptance 组织精确到版本和范围的里程碑验收包。"
 policy:
   allow_implicit_invocation: true

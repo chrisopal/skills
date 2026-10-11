@@ -1,6 +1,6 @@
-# 软件项目交付 Skills 第一批
+# 软件项目交付 Skills
 
-版本 0.1.0。17 个可独立调用的技能，覆盖软件定制开发与系统集成项目的交接、启动、调研、需求蓝图、总体计划、进度周报、资源工时/成本差旅、风险质量/变更和里程碑确认。
+版本 0.2.0。24 个可独立调用的技能，覆盖软件定制开发与系统集成项目的交接、启动、调研、需求蓝图、实施设计、接口迁移、工程工作包、测试/UAT、上线回滚、培训运维移交，以及贯穿全程的计划、进度、资源工时/成本差旅、风险质量/变更和里程碑确认。
 
 Agent 负责读取、分析和编写；运行工具负责可复现的登记、版本依赖、基线、金额和交付包检查。工具本身不生成业务结论、不转录录音、不认证客户身份、不发送文件、不开发业务系统、不执行生产上线。
 
@@ -46,7 +46,19 @@ python3 project-delivery-skills/scripts/install.py --dest "$HOME/.codex/skills"
 | [delivery-milestone-acceptance](skills/delivery-milestone-acceptance/SKILL.md) | 阶段确认、交付和验收证据 |
 | [delivery-artifact-review](skills/delivery-artifact-review/SKILL.md) | 事实、追溯、版本、敏感内容与文件回读 |
 
-专业开发执行、专项 UI/接口/迁移工程、完整测试/上线及质保收尾属于后续批次。第一批可以登记这些环节已有的真实工程证据，并组织里程碑确认；不把登记能力当作已实现工程能力。
+## 第二批技能
+
+| 技能 | 用途 |
+|---|---|
+| [delivery-solution-design](skills/delivery-solution-design/SKILL.md) | 实施架构、部署、安全、非功能目标和设计决策 |
+| [delivery-ui-field-design](skills/delivery-ui-field-design/SKILL.md) | 页面、字段、权限和业务状态 |
+| [delivery-integration-data](skills/delivery-integration-data/SKILL.md) | 接口映射、联调、迁移与业务对账 |
+| [delivery-work-package](skills/delivery-work-package/SKILL.md) | 计划到工程工作包、构建与完成证据 |
+| [delivery-quality-testing](skills/delivery-quality-testing/SKILL.md) | 实际测试、缺陷复测与 UAT |
+| [delivery-go-live-transition](skills/delivery-go-live-transition/SKILL.md) | 就绪核验、切换、回滚与恢复记录 |
+| [delivery-training-handover](skills/delivery-training-handover/SKILL.md) | 角色培训、能力验证、资产与运维接收 |
+
+第二批同步细化资源负荷、逐项剩余工作、采购部分发生和付款条件。技能组织工程工作与证据，代码/制品仍由工程工具维护，生产动作需实际环境和既有授权。质保收尾、跨项目与外部系统对接保留第三批。
 
 ## 项目工具
 
@@ -68,7 +80,7 @@ python3 "$RUNTIME" apply-change "$PROJECT" CHANGE-001
 
 ## 模板与审阅
 
-模板是可编辑 Markdown 文档与 CSV 台账，位于[公共模板目录](skills/delivery-orchestrator/assets/templates/)，由 `index.json` 登记。客户已有模板优先，通过字段映射适配。
+47 套模板是可编辑 Markdown 文档与 CSV 台账，位于[公共模板目录](skills/delivery-orchestrator/assets/templates/)，由 `index.json` 登记。客户已有模板优先，通过字段映射适配。
 
 ```bash
 # 使用已具备 python-docx/openpyxl 的 Python（Codex 可读取内置运行环境）。
@@ -88,6 +100,14 @@ python3 "$RUNTIME" prepare-customer "$PROJECT" --ids BLUEPRINT WEEKLY --out /abs
 
 ## 验证与边界
 
-测试覆盖来源/产物篡改、版本依赖、候选与基线分离、变更失败不混用、确认/审核精确绑定、工时缺口、差旅/外包去重、客户过滤和非覆盖安装。Office 文件回读、浏览器和 Agent 业务复核见[第一批验证记录](docs/VALIDATION.md)。Word/XLSX 使用 Arial Unicode MS；跨机器打开时检查字体替换和分页。模板台账由 Agent 映射到共享 JSON 契约，首版没有自动双向同步。
+第二批分段演练可在全新目录运行：
+
+```bash
+python3 project-delivery-skills/scripts/verify_phase_two.py --out /absolute/path/to/fresh-phase-two-case
+```
+
+该脚本实际运行本机 HTTP/SQLite 工程夹具并保存原始日志和迁移恢复记录；其 UAT、培训和接收均为显式模拟。输出目录已有内容时拒绝覆盖。每段对象和门槛见生成的 `report.json`，不能据此判断真实项目已完成。
+
+测试覆盖来源/产物篡改、版本依赖、候选与基线分离、变更失败不混用、确认/审核精确绑定、工时缺口、差旅/外包去重、客户过滤和非覆盖安装。Office 文件回读、浏览器和 Agent 业务复核见[第一批验证记录](docs/VALIDATION.md)及[第二批验证记录](docs/VALIDATION_PHASE_TWO.md)。Word/XLSX 使用 Arial Unicode MS；跨机器打开时检查字体替换和分页。模板台账由 Agent 映射到共享 JSON 契约，首版没有自动双向同步。
 
 模拟案例使用 purpose=simulation，模拟确认不能进入真实项目。JSON 校验、语义审查、实际文件可读、客户接受是不同证据，不互相替代。没有真实合同、客户回答或工程测试证据时保留草稿与明确缺口。

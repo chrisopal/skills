@@ -26,7 +26,7 @@ except ImportError:  # Direct script invocation from any working directory.
 
 # Keep the renderer's customer boundary identical to runtime.prepare_customer.
 # Review, confirmation, source and finance objects remain internal controls.
-PUBLIC_KINDS = frozenset({"kickoff", "discovery", "minutes", "requirements", "blueprint", "plan", "weekly", "milestone"})
+PUBLIC_KINDS = frozenset({"kickoff", "discovery", "minutes", "requirements", "blueprint", "plan", "weekly", "milestone", "solution", "ui_design", "integration", "testing", "handover"})
 STAGES = {
     "costs": "贯穿全程 · 成本", "timesheets": "贯穿全程 · 工时", "source": "原始材料",
     "contract": "S0 交接",
@@ -43,6 +43,8 @@ STAGES = {
     "confirmation": "S8 确认",
     "review": "交付审阅",
     "evidence": "证据",
+    "solution": "S4 实施设计", "ui_design": "S4 页面字段权限", "integration": "S5 接口与迁移",
+    "work_package": "S5 工程工作包", "testing": "S6 测试与UAT", "release": "S7 上线回滚", "handover": "S7 培训运维移交",
 }
 PRIVATE_KEYS = frozenset(
     {
@@ -93,6 +95,35 @@ LABELS = {
 LABELS.update({'obligations': '合同义务', 'scope_in': '范围内', 'scope_out': '范围外', 'customer_dependencies': '客户配合前提', 'source_id': '来源编号', 'locator': '原文定位', 'acceptance': '验收标准', 'goals': '目标', 'roles': '参与角色', 'role': '角色', 'responsibility': '职责', 'milestones': '里程碑', 'customer_actions': '客户配合事项', 'sessions': '调研安排', 'customer_role': '客户关键人', 'topic': '调研主题', 'questions': '调研问题', 'customer_inputs': '客户提供资料', 'expected_outputs': '预期输出', 'meeting_date': '会议日期', 'participants': '参会人', 'priority': '优先级', 'steps': '步骤', 'requirement_ids': '需求编号', 'outputs': '输出', 'page_id': '页面编号', 'length': '长度', 'required': '必填', 'default': '默认值', 'validation': '校验规则', 'permission': '权限规则', 'source': '原始材料', 'read_only': '只读', 'output': '输出字段', 'allowed_roles': '允许角色', 'denied_roles': '禁止角色', 'condition': '条件', 'errors': '异常处理', 'source_system': '来源系统', 'target_system': '目标系统', 'field_mappings': '字段映射', 'error_contract': '异常约定', 'test_case': '测试用例', 'expected': '预期结果', 'permission_ids': '权限编号', 'work_packages': '工作包', 'baseline_start': '基线开始', 'baseline_finish': '基线完成', 'forecast_finish': '预测完成', 'dependencies': '前置依赖', 'completion_rule': '完成标准', 'period': '报告周期', 'as_of': '截止日期', 'completed': '已完成', 'completion_evidence': '完成依据', 'next': '下一步', 'decisions_required': '待决策事项', 'coverage_gaps': '覆盖缺口', 'artifact_id': '产物编号', 'revision': '版本', 'sha256': '文件指纹', 'state': '业务状态', 'actor': '确认人', 'origin': '依据类型', 'evidence_status': '证据状态', 'amount_basis': '金额口径', 'evidence_note': '证据说明', 'budget_evidence_refs': '预算依据', 'other_remaining': '其他剩余估计', 'other_remaining_evidence_refs': '剩余估计依据', 'category': '类别', 'work_package_id': '工作包编号', 'amount': '金额', 'basis': '估计依据', 'payment_status': '付款状态', 'person': '人员', 'hours': '工时', 'rate': '内部费率', 'resource_type': '资源类型', 'remaining_labor': '剩余人工估计', 'remaining_labor_basis': '剩余人工口径', 'remaining_labor_evidence_refs': '剩余人工依据', 'criteria': '验收条目', 'deliverable_refs': '交付物引用', 'milestone_id': '里程碑编号', 'coverage_summary': '覆盖说明', 'method': '审核方法', 'verdict': '结论', 'reviewer': '审核人', 'findings': '审核发现', 'unchecked': '未核验范围', 'impact': '影响分析', 'reason': '原因', 'affected_ids': '影响对象', 'baseline_refs': '原有效版本', 'replacements': '候选替代版本', 'decision_refs': '决策依据', 'path': '登记路径', 'complete': '计算与已声明证据完整'})
 
 
+LABELS.update({
+    'solution': '实施设计', 'ui_design': '页面字段权限', 'integration': '接口与迁移',
+    'work_package': '工程工作包', 'testing': '测试与UAT', 'release': '上线回滚', 'handover': '培训运维移交',
+    'components': '实施组件', 'deployment': '部署安排', 'security': '安全规则', 'nonfunctional': '非功能目标',
+    'question': '决策问题', 'options': '候选方案', 'selected': '选择', 'rationale': '理由',
+    'states': '业务状态', 'from': '起始状态', 'to': '目标状态', 'effect': '允许或拒绝',
+    'field_ids': '字段编号', 'precision': '精度', 'unit': '单位', 'enum': '枚举值', 'sensitivity': '敏感级别',
+    'mappings': '字段映射', 'migration': '数据迁移', 'reconciliations': '业务核对', 'interface_id': '接口编号',
+    'direction': '方向', 'trigger': '触发方式', 'protocol': '协议', 'auth_method': '认证方式', 'environment': '环境',
+    'idempotency': '幂等规则', 'timeout': '超时', 'retry': '重试', 'compensation': '补偿机制',
+    'source_field': '来源字段', 'target_field': '目标字段', 'transform': '转换规则', 'business_key': '业务键',
+    'business_keys': '业务键核对', 'counts': '数量核对', 'applicable': '是否适用', 'backup_refs': '备份证据',
+    'rollback_plan': '回滚方案', 'freeze_window': '冻结窗口', 'rehearsal_refs': '演练证据', 'reconciliation_refs': '对账证据',
+    'plan_work_package_id': '计划工作包编号', 'design_refs': '详细设计依据', 'build_ref': '构建版本', 'repository': '工程仓库',
+    'cases': '测试用例', 'defects': '缺陷', 'uat': '客户验证', 'actual': '实际结果', 'case_id': '用例编号',
+    'severity': '严重度', 'retest_case_id': '复测用例', 'retest_refs': '复测证据', 'scope_requirement_ids': '确认需求范围',
+    'testing_ref': '质量依据', 'readiness': '上线就绪检查', 'execution': '实际执行', 'rollback': '回滚',
+    'verification_refs': '业务验证证据', 'restore_refs': '恢复证据', 'audiences': '培训对象', 'training': '培训验证',
+    'operations': '运维接收', 'assets': '移交资产', 'audience_id': '培训对象编号', 'attendance': '参与记录',
+    'competency': '能力验证', 'runbook_refs': '运维手册', 'receipt_refs': '接收证据', 'version': '版本',
+    'pass': '通过', 'fail': '失败', 'not_run': '未执行', 'not_checked': '未检查', 'pending': '待处理',
+    'accepted': '已接受', 'conditional': '有条件', 'rejected': '已拒绝', 'planned': '已计划',
+    'succeeded': '成功', 'failed': '失败', 'rolled_back': '已回滚', 'not_needed': '无需回滚',
+    'unknown': '未知', 'designed': '已设计', 'verified': '已验证', 'decided': '已决定', 'proposed': '待决定',
+    'open': '未关闭', 'fixed': '已修复待复测', 'closed': '已关闭', 'ready_to_execute': '具备执行条件',
+    'blocking': '阻断', 'major': '严重', 'minor': '一般', 'in_progress': '进行中',
+})
+
+
 def _esc(value: Any) -> str:
     return html.escape(str(value), quote=True)
 
@@ -110,7 +141,7 @@ def _safe_public(value: Any) -> Any:
         return {
             str(key): _safe_public(item)
             for key, item in value.items()
-            if str(key).lower() not in PRIVATE_KEYS
+            if str(key).lower() not in PRIVATE_KEYS and not (runtime and runtime.forbidden_customer_key(key))
         }
     if isinstance(value, list):
         return [_safe_public(item) for item in value]

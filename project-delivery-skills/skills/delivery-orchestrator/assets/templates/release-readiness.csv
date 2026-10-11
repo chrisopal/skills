@@ -1,0 +1,2 @@
+template_id,template_version,visibility,release_id,environment,build_ref,requirement_ids,readiness_check,criterion,evidence_ref,owner,status,execution_step,actual_result,executed_at,rollback_trigger,rollback_step,backup_ref,monitoring_window,authorization_ref,revision
+,,,,,,,,,,,,,,,,,,,,

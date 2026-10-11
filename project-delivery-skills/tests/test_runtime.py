@@ -469,6 +469,65 @@ class RuntimeTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.r.prepare_customer(self.project, ['REQ'], self.base/'pack')
 
+    def test_payment_condition_cannot_disappear_or_change_cost_owner(self):
+        data = {'currency':'CNY','budget':1000,'other_remaining':0,'items':[
+            {'id': name, 'category':'purchase','work_package_id':'WP1','state':'incurred','amount':500,
+             'basis':'synthetic receipt','payment_status':'paid'} for name in ('PO1','PO2')],
+            'payment_conditions':[{'id':'PAY1','cost_item_id':'PO1','amount':400,'due_date':'2026-10-11',
+                'condition':'received','state':'paid','evidence_refs':[self.src]}]}
+        self.register(self.artifact('COST', 'costs', data=data, visibility='internal'))
+        removed = copy.deepcopy(data)
+        removed.pop('payment_conditions')
+        with self.assertRaises(ValueError):
+            self.register(self.artifact('COST', 'costs', revision=2, data=removed, visibility='internal'))
+        remapped = copy.deepcopy(data)
+        remapped['payment_conditions'][0]['cost_item_id'] = 'PO2'
+        with self.assertRaises(ValueError):
+            self.register(self.artifact('COST', 'costs', revision=2, data=remapped, visibility='internal'))
+
+    def test_partial_procurement_payment_update_keeps_one_cost(self):
+        self.register(self.artifact('HOURS', 'timesheets', visibility='internal',
+            data={'items': [], 'remaining_labor': 0}))
+        expense = {'currency': 'CNY', 'budget': 1000, 'other_remaining': 0, 'items': [{
+            'id': 'PO1', 'category': 'purchase', 'work_package_id': 'WP1', 'state': 'committed',
+            'amount': 1000, 'basis': 'synthetic purchase order', 'payment_status': 'pending', 'procurement_ref': 'ORDER1'}]}
+        self.register(self.artifact('COST', 'costs', data=expense, visibility='internal'))
+        self.r.activate(self.project, ['COST'])
+        changed = copy.deepcopy(expense)
+        changed['items'][0].update(state='partial', incurred_amount=400, remaining_amount=600, payment_status='part_paid')
+        changed['payment_conditions'] = [{'id': 'PAY1', 'cost_item_id': 'PO1', 'amount': 400,
+            'due_date': '2026-10-11', 'condition': 'received first batch', 'state': 'paid', 'evidence_refs': [self.src]}]
+        self.register(self.artifact('COST', 'costs', revision=2, data=changed, visibility='internal'))
+        result = self.r.cost_summary(self.project)
+        self.assertEqual(result['forecast'], '1000.00')
+        self.assertEqual(result['other_incurred'], '400.00')
+        self.assertEqual(result['committed_remaining'], '600.00')
+        self.assertEqual(result['payment_summary']['paid'], '400.00')
+        self.assertTrue(result['complete'])
+
+    def test_remaining_work_drives_forecast_and_load_without_aggregate_duplication(self):
+        data = {'items': [], 'remaining_labor': None,
+            'remaining_work': [{'id': 'RW1', 'person': 'A', 'work_package_id': 'WP1',
+                'remaining_hours': 10, 'rate': 100, 'resource_type': 'internal', 'basis': 'remaining tasks'}],
+            'capacities': [{'id': 'CAP1', 'person': 'A', 'period': 'week1', 'available_hours': 8}],
+            'allocations': [{'id': 'AL1', 'person': 'A', 'period': 'week1', 'work_package_id': 'WP1', 'planned_hours': 10}]}
+        self.register(self.artifact('HOURS', 'timesheets', data=data, visibility='internal'))
+        self.register(self.artifact('COST', 'costs', data={'currency':'CNY','budget':2000,'items':[],'other_remaining':0}, visibility='internal'))
+        result = self.r.cost_summary(self.project)
+        self.assertEqual(result['forecast'], '1000.00')
+        self.assertTrue(result['resource_summary']['overloaded'])
+        self.assertTrue(result['resource_summary']['complete'])
+
+    def test_outsourced_remaining_work_without_settlement_keeps_gap(self):
+        data = {'items': [], 'remaining_labor': None, 'remaining_work': [{'id': 'RW1', 'person': 'Vendor',
+            'work_package_id': 'WP1', 'remaining_hours': 10, 'rate': 100, 'resource_type': 'outsourced', 'basis': 'contract tasks'}]}
+        self.register(self.artifact('HOURS', 'timesheets', data=data, visibility='internal'))
+        self.register(self.artifact('COST', 'costs', data={'currency':'CNY','budget':2000,'items':[],'other_remaining':0}, visibility='internal'))
+        result = self.r.cost_summary(self.project)
+        self.assertFalse(result['complete'])
+        self.assertTrue(any('outsourced remaining' in gap for gap in result['gaps']))
+        self.assertEqual(result['internal_labor'], '0.00')
+
 
 if __name__ == '__main__':
     unittest.main()

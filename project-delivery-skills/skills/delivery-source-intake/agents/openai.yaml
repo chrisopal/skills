@@ -1,6 +1,6 @@
 interface:
   display_name: "来源材料接收"
-  short_description: "保存原件并记录读取覆盖"
+  short_description: "归集合同、文档、表格、截图、邮件和录音，保存原件快照并形成可追溯的证据底稿与读取覆盖记录"
   default_prompt: "使用 $delivery-source-intake 归集材料并建立可追溯证据底稿。"
 policy:
   allow_implicit_invocation: true

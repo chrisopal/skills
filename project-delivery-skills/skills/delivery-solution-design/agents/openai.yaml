@@ -1,0 +1,6 @@
+interface:
+  display_name: "实施方案设计"
+  short_description: "将已确认的业务蓝图和需求转为可实施的组件、部署、非功能、安全与运维设计，并保留可追溯的设计决策"
+  default_prompt: "使用 $delivery-solution-design 将有效蓝图转为可实施方案并登记设计决策。"
+policy:
+  allow_implicit_invocation: true

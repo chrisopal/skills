@@ -1,6 +1,6 @@
 interface:
   display_name: "交付项目总控"
-  short_description: "恢复项目状态并路由交付任务"
+  short_description: "统筹软件定制与系统集成交付项目，恢复有效版本、拆解下一任务、登记产物与确认边界，并把工作路由到已安装的项目交付 Skills"
   default_prompt: "使用 $delivery-orchestrator 恢复项目有效版本并生成下一步任务卡。"
 policy:
   allow_implicit_invocation: true

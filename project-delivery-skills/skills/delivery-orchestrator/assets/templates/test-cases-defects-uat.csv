@@ -1,0 +1,2 @@
+template_id,template_version,visibility,test_id,requirement_ids,environment,build_ref,case_type,preconditions,steps,expected_result,actual_result,evidence_refs,executed_by,executed_at,result,defect_id,severity,defect_status,retest_build_ref,uat_actor,uat_scope,uat_decision,uat_evidence_ref,residual_acceptance_ref,revision
+,,,,,,,,,,,,,,,,,,,,,,,,,

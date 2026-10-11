@@ -24,6 +24,7 @@ class ReviewRendererTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.renderer = load_module()
+        cls.forbidden_customer_key = staticmethod(cls.renderer.runtime.forbidden_customer_key)
 
     def setUp(self):
         self.snapshot = {
@@ -74,7 +75,10 @@ class ReviewRendererTests(unittest.TestCase):
             "alerts": ["private alert"],
             "gates": {"blueprint": {"ready": False, "reasons": ["not confirmed"]}},
         }
-        self.renderer.runtime = type("Runtime", (), {"snapshot": staticmethod(lambda project: self.snapshot)})
+        self.renderer.runtime = type("Runtime", (), {
+            "snapshot": staticmethod(lambda project: self.snapshot),
+            "forbidden_customer_key": staticmethod(self.forbidden_customer_key),
+        })
 
     def test_customer_view_filters_internal_data_and_snapshot_fields(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -121,7 +125,8 @@ class ReviewRendererTests(unittest.TestCase):
         self.assertIn('已生效版本', rendered)
 
     def test_customer_nested_sensitive_fields_are_removed(self):
-        secrets = ['internal_rate', 'salary', 'margin', 'internal_notes', 'secret', 'access_token', 'password']
+        secrets = ['internal_rate', 'salary', 'margin', 'internal_notes', 'secret', 'access_token', 'password',
+                   'private_key', 'apiKey', 'client-secret', 'refreshToken', 'Authorization', 'credential', 'token']
         self.snapshot['artifacts'][0]['data']['nested'] = [{key.upper(): 'hidden-' + key for key in secrets}]
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / 'customer.html'

@@ -9,6 +9,8 @@ description: 管理项目人员容量、分配、实际工时和审核差异，�
 
 ## 处理
 
+第二批在 timesheets 同一主账增加 capacities、allocations 和 remaining_work，按人/周期核对可用容量与分配并提示超负荷。逐项剩余工时×内部费率推导剩余人工时，remaining_labor 必须为空，防止与旧汇总叠加。外包剩余工作只用于负荷与估计，成本仍由同工作包外包事项提供。
+
 每条工时关联稳定记录 ID、人员、日期、项目/工作包、活动、正常/加班、小时、说明/证据、资源类型、填报/审核状态和费率版本。人员容量分开记录可用、分配、请假/驻场/替补；并行分配不能直接改变工期。外包工时可用于进度和结算核验，不自动加入内部人工成本。
 
 拒绝同一时间重复计入多个工作包；申请、审核、拒绝和修订保留历史。未填报不是零，未知小时/费率保留缺口；内部费率仅 internal visibility。工时事实与完成度分开，交由进度 Skill 结合完成规则判断。
@@ -19,4 +21,4 @@ description: 管理项目人员容量、分配、实际工时和审核差异，�
 
 ## 模板
 
-使用 `../delivery-orchestrator/assets/templates/resource-timesheet.md`、`timesheets.csv`、`roles.csv` 和 `template-field-guide.md`。
+使用 `../delivery-orchestrator/assets/templates/resource-timesheet.md`、`timesheets.csv`、`roles.csv`、`resources-capacity.csv` 和 `template-field-guide.md`。

@@ -13,7 +13,7 @@ spec.loader.exec_module(validate_suite)
 
 
 class SuiteTests(unittest.TestCase):
-    def test_first_batch_roster_and_metadata(self):
+    def test_installed_batches_roster_and_metadata(self):
         self.assertEqual(validate_suite.validate(), [])
 
     def test_index_has_markdown_and_csv_templates(self):

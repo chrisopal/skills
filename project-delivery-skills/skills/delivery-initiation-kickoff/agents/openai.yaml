@@ -1,6 +1,6 @@
 interface:
   display_name: "项目启动与启动会"
-  short_description: "明确目标角色和启动动作"
+  short_description: "组织项目章程、启动会、角色职责、沟通升级和客户配合安排，区分拟定人员与已确认责任"
   default_prompt: "使用 $delivery-initiation-kickoff 生成项目章程、RACI和启动行动项。"
 policy:
   allow_implicit_invocation: true

@@ -1,6 +1,6 @@
 interface:
   display_name: "进度控制"
-  short_description: "比较基线实际并提出纠偏"
+  short_description: "基于计划基线、实际交付、剩余工作和依赖更新进度预测，分析偏差并提出可执行纠偏选项"
   default_prompt: "使用 $delivery-progress-control 更新基线、实际和预测的进度视图。"
 policy:
   allow_implicit_invocation: true

@@ -1,6 +1,6 @@
 interface:
   display_name: "项目报告"
-  short_description: "生成有截止日的内外部周报"
+  short_description: "从项目主账生成按截止日可追溯的内部/客户周报、周会议程与管理摘要，区分事实、预测和待决项"
   default_prompt: "使用 $delivery-reporting 从主账生成可追溯的内部或客户周报。"
 policy:
   allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "实施工作包"
+  short_description: "将设计与需求拆成有完成规则、依赖、构建引用和证据的实施工作包，区分工程执行事实与业务交付确认"
+  default_prompt: "使用 $delivery-work-package 将设计拆成可验证的实施工作包并记录构建证据。"
+policy:
+  allow_implicit_invocation: true

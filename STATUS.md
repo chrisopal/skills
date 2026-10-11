@@ -1,3 +1,11 @@
+## 2026-10-11 — Executable presales Skill suite v0.1.0
+
+- Scope: Publish and locally install 10 presales skills, stdlib extraction/version/review/PPT-handoff tools, non-overwriting installer, tests and integration documentation.
+- Evidence: 47 tests pass; suite and all 10 skill-entry validators pass; installed hashes match. Fresh five-source → 14 requirements → six-page content → local ppt-master-plus → actual PPTX/PDF review completed. 18 registered objects validate; source and rendered-page mutations invalidate downstream reviews in disposable copies.
+- Simplification: Agent semantic work and deterministic file checks remain separate; reuse external PPT skill and existing renderers, no new dependencies or rendering engine. Generated files stay in output/presales-suite-e2e-2026-10-11/.
+- Limits: Internal synthetic-case integration only. PDF is readable with substituted fonts; PowerPoint native checks blocked by locked Mac, exact typeface fidelity unverified. OCR, real customer/product acceptance and concurrent writers remain unproven.
+- Commit/push: This entry accompanies the scoped source/documentation commit; configured remote HEAD is verified after push. Unrelated work is excluded.
+
 ## 2026-10-11 — Presales rehearsal with local ppt-master-plus
 
 - Scope: Run the designed mixed-input → requirements → clarification → storyline → solution → page pack → local PPT → review flow on a synthetic service-workorder case; add the validation report and link it from the design.

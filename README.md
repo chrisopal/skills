@@ -4,6 +4,8 @@
 
 ## 当前收录
 
+- [`presales-solution-skills`](./presales-solution-skills/README.md)：通用 B 端售前10技能，从混合资料、需求脑图、方案与逐页内容到本地PPT制作和实际文件审核，含版本失效工具与测试。
+
 - [`industrial-ai-architect`](./industrial-ai-architect/README.md)：工业数字化、智能工厂、AI 战略架构、方案蓝图、路线图和业务落地设计。
 - [`ppt-maker-with-image`](./ppt-maker-with-image/README.md)：图片优先的 PPT 生成流程，包含需求确认、大纲、逐页提示词、图片生成和 PPTX 组装。
 - [`ppt-maker-direct-pptx`](./ppt-maker-direct-pptx/README.md)：七道闸确认式 PPT 生成，输出可编辑 PowerPoint 原生对象。12 个 layout pattern + 5 内置预设 + 自然语言/参考图自定义风格 + 自动 lint + 状态机断点续做，兼容任意 OpenAI 协议 LLM（OpenAI / OpenRouter / Azure / Groq / Together / DeepSeek / vLLM / Ollama / LiteLLM）。
@@ -13,6 +15,8 @@
 - [`book2video`](./book2video/README.md)：Book2Video 独立 Node 工程，提供 CLI、三段工具、Provider 占位、Remotion 模板占位和测试，用于把书籍方法论生成短视频生产包。
 
 ## 推荐安装方式
+
+售前套件需将10个技能安装为兄弟目录，请运行 `python3 presales-solution-skills/scripts/install.py --dest "$HOME/.codex/skills"`，不要只链接套件根目录。详见其README。
 
 建议先克隆整个仓库，再把需要的 skill 软链接到客户端扫描目录。这样后续 `git pull` 即可统一更新。
 

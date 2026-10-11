@@ -1,0 +1,4 @@
+interface:
+  display_name: "售前材料与能力匹配"
+  short_description: "售前材料与能力匹配，保留来源、版本、适用条件和实际审核边界"
+  default_prompt: "请使用 $presales-material-matching 处理当前售前任务，读取已有材料并交付可回查的结果。"

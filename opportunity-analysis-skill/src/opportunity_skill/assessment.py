@@ -173,14 +173,14 @@ def build_commercial_assessment(context: dict[str, Any]) -> dict[str, Any]:
     for spec in DIMENSIONS:
         inferred = _infer_dimension(spec["id"], normalized_context)
         answer = answer_map.get(spec["id"])
-        if answer:
+        if answer and normalize_rating(answer.get("rating")) not in {None, "unknown"} and normalize_rating(answer.get("answer_text") or answer.get("answer")) != "unknown":
             rating = normalize_rating(answer.get("rating")) or inferred["rating"]
             evidence_status = "sales_confirmed"
             answer_text = answer.get("answer_text") or answer.get("answer")
             rationale = answer_text or inferred["rationale"]
         else:
-            rating = inferred["rating"]
-            evidence_status = inferred["evidence_status"]
+            rating = "unknown" if answer else inferred["rating"]
+            evidence_status = "needs_sales_confirmation" if answer else inferred["evidence_status"]
             answer_text = None
             rationale = inferred["rationale"]
         dimensions.append({
@@ -300,7 +300,7 @@ def _infer_dimension(dimension_id: str, context: dict[str, Any]) -> dict[str, An
     has_decision_maker = any(n.get("decision_role") == "最终决策人/关键拍板人" and n.get("status") == "confirmed" for n in decision_chain)
 
     def out(rating: str, status: str, rationale: str) -> dict[str, Any]:
-        return {"rating": rating, "evidence_status": status, "rationale": rationale, "evidence_refs": evidence_refs}
+        return {"rating": rating, "evidence_status": "needs_sales_confirmation" if any(ev.get("requires_human_confirmation") for ev in context.get("evidence_list", [])) else status, "rationale": rationale, "evidence_refs": evidence_refs}
 
     if dimension_id == "customer_purchase_intent":
         if (
@@ -428,7 +428,7 @@ def _questions_from_dimensions(dimensions: list[dict[str, Any]], limit: int = 8)
     priority_order = {"P0": 0, "P1": 1, "P2": 2}
     candidates = [
         d for d in dimensions
-        if d["evidence_status"] == "needs_sales_confirmation" and d["rating"] in {"unknown", "weak", "medium"}
+        if d["evidence_status"] == "needs_sales_confirmation"
     ]
     candidates.sort(key=lambda d: (priority_order.get(d["priority"], 9), 0 if d["critical"] else 1, d["category"], d["dimension_id"]))
     questions = []

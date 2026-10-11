@@ -28,10 +28,8 @@
       ]
     },
     "owner": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "type": "string",
+      "minLength": 1
     },
     "sales_confirmation_answers": {
       "type": "array",
@@ -71,6 +69,22 @@
           }
         }
       }
+    },
+    "opportunity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "account_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected_revision": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "anyOf": [
@@ -83,6 +97,20 @@
       "required": [
         "evidence_list"
       ]
+    }
+  ],
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "opportunity_id"
+        ]
+      },
+      "then": {
+        "required": [
+          "expected_revision"
+        ]
+      }
     }
   ]
 }

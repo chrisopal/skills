@@ -1,0 +1,15 @@
+name: manage_opportunity
+kind: reference-workflow
+description: Evidence-backed atomic lifecycle mutation with optimistic concurrency.
+input_schema: schemas/manage.schema.json
+steps:
+  - id: restore_and_check_request
+    uses: opportunity_skill.storage.OpportunitySQLiteAdapter.manage
+    note: BEGIN IMMEDIATE, request payload idempotency, ownership and expected_revision checks.
+  - id: validate_and_apply
+    uses: opportunity_skill.lifecycle.apply_operations
+    note: Fact gates, current artifacts, file hashes, action completion and signed-contract metadata.
+  - id: readback
+    uses: opportunity_skill.storage.OpportunitySQLiteAdapter.get_lifecycle
+    output_schema: schemas/lifecycle.schema.json
+    note: Only actual transitions; stale files and revoked facts become blockers.

@@ -1,26 +1,28 @@
 <section class="ql-opportunity-card">
   <div class="ql-header">
     <div>
-      <div class="ql-kicker">商机档案 / Opportunity</div>
+      <div class="ql-kicker">QILIN · 企灵</div>
       <h1 class="ql-title">{{opportunity.name}}</h1>
-      <p class="ql-subtitle">{{account.company_name}}｜{{account.industry}}｜{{account.region}}｜当前阶段依据：{{opportunity.stage_reason}}</p>
+      <p class="ql-subtitle">{{account.company_name}}｜{{account.industry}}｜{{account.region}}</p>
     </div>
     <div class="ql-status-stack">
       <span class="ql-tag green">{{opportunity.stage}}</span>
       <span class="ql-tag risk-{{opportunity.risk_level}}">风险 {{opportunity.risk_label}}</span>
-      <span class="ql-tag">等级 {{opportunity.score_level}}</span>
+      {{opportunity.score_level_tag}}
     </div>
   </div>
+
+  {{lifecycle.summary}}
 
   <div class="ql-hero-metrics">
     <div class="ql-hero-metric">
       <span>商机评分</span>
       <strong>{{opportunity.score}}</strong>
-      <em>{{opportunity.score_level}}级商机</em>
+      <em>{{opportunity.score_level_note}}</em>
     </div>
     <div class="ql-hero-metric">
-      <span>赢单概率</span>
-      <strong>{{opportunity.win_probability_percent}}%</strong>
+      <span>赢单参考值</span>
+      <strong>{{opportunity.win_probability_percent}}</strong>
       <em>{{assessment.confidence_level}}可信度</em>
     </div>
     <div class="ql-hero-metric risk-{{opportunity.risk_level}}">
@@ -34,7 +36,7 @@
     <section class="ql-panel">
       <div class="ql-panel-header">
         <h2 class="ql-panel-title">核心需求</h2>
-        <span class="ql-panel-subtitle">客户要解决什么</span>
+        <span class="ql-panel-subtitle"></span>
       </div>
       <div class="ql-panel-body">
         <p class="ql-text">{{opportunity.core_need}}</p>
@@ -44,7 +46,7 @@
     <section class="ql-panel">
       <div class="ql-panel-header">
         <h2 class="ql-panel-title">现有系统与建设要求</h2>
-        <span class="ql-panel-subtitle">集成边界</span>
+        <span class="ql-panel-subtitle"></span>
       </div>
       <div class="ql-panel-body">
         <ul class="ql-list">{{requirements_list}}</ul>

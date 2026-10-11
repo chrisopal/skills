@@ -19,7 +19,7 @@ The bundled extractor is a lightweight reference implementation. Production depl
 
 ## Internal Pipeline Stages
 
-This is still one closed-loop skill with a single `analyze/query/detail` runtime. Internally, the analysis is split into three reusable stages:
+This remains the analysis entry in a seven-skill opportunity management set. It shares one SQLite/runtime with the sibling orchestrator and task skills, preserving `analyze/query/detail` and adding `manage/lifecycle`. Internally, extraction is split into three reusable stages:
 
 - `evidence_normalization`: implemented by `src/opportunity_skill/stages/evidence_normalization.py`; wraps normalized evidence or parsed text materials and preserves file/archive metadata.
 - `account_profile_extraction`: implemented by `src/opportunity_skill/stages/account_profile_extraction.py`; extracts customer profile, systems, pain points, requirement owners, contacts, and decision-chain nodes.
@@ -149,6 +149,21 @@ Hosts should provide credentials through configuration references, environment v
 External adapters should preserve the same file metadata contract as SQLite. For example, a Feishu adapter may upload archived files to Drive and store the resulting Drive token or URL in the adapter-specific fields while keeping `evidence_id`, `file_name`, `mime_type`, `sha256`, and display link fields available to the renderer.
 
 ## Validation
+
+Version 0.4.0 adds evidence-backed lifecycle updates through signing. Start with [opportunity-orchestrator](../opportunity-orchestrator/SKILL.md); the [shared contract](../opportunity-orchestrator/references/lifecycle-contract.md) documents stable identity, revisions, action results, actual stage history, artifact hashes and signed-record requirements. `lifecycle.current_stage_id` is authoritative; legacy stage fields remain analytical suggestions. Unknown answers do not count as confirmed business facts.
+
+The enterprise renderer supports light/dark themes, a default opportunity list and optional kanban. Use `--theme dark` and `--template opportunity_kanban` as needed; `--current-stage` filters confirmed stages. Original styling is available through `SkillDisplayRenderer.render(..., profile="legacy")`. Static reports contain no fake write controls.
+
+Install all seven siblings into an explicit destination without overwriting different existing skills:
+
+```bash
+python3 ../opportunity-orchestrator/scripts/install.py --dest /absolute/path/to/skills
+python3 ../opportunity-orchestrator/scripts/validate_suite.py
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src python3 -m unittest discover -s tests -v
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s ../opportunity-orchestrator/tests -v
+```
+
+The reference runtime checks fields, provenance links, revisions and file hashes; it does not authenticate business actors, verify signature authenticity, perform legal approval or connect the stub CRM adapters. Example workflows and tests use simulated data, not customer acceptance.
 
 Run the portable validator:
 

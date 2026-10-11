@@ -5,7 +5,8 @@ import sys
 from pathlib import Path
 from .confirmation import collect_sales_confirmation_answers
 from .extractor import analyze
-from .pipeline import run_analyze, run_query, run_detail
+from .pipeline import run_analyze, run_query, run_detail, run_manage
+from .storage import OpportunitySQLiteAdapter
 from .utils import default_db_path
 
 
@@ -43,6 +44,18 @@ def main():
     p_detail.add_argument("--template", default="opportunity_detail")
     p_detail.add_argument("--output-dir", default="outputs/detail")
 
+    for target in (p_analyze, p_query, p_detail):
+        target.add_argument('--theme', choices=['light', 'dark'], default='light')
+    p_query.add_argument('--template', default='opportunity_list')
+    p_query.add_argument('--current-stage', help='Confirmed lifecycle stage ID (legacy --stage filters suggestions)')
+    p_query.add_argument('--status', choices=['active', 'paused', 'won', 'lost', 'cancelled'])
+    p_manage = sub.add_parser('manage', help='Apply an atomic, evidence-backed lifecycle change')
+    p_manage.add_argument('--input', required=True, help='JSON change envelope')
+    p_manage.add_argument('--db')
+    p_lifecycle = sub.add_parser('lifecycle', help='Read confirmed lifecycle and next action as JSON')
+    p_lifecycle.add_argument('--opportunity-id', required=True)
+    p_lifecycle.add_argument('--db')
+
     args = parser.parse_args()
     db_path = args.db or str(default_db_path())
 
@@ -61,11 +74,15 @@ def main():
             if answers:
                 input_data = dict(input_data)
                 input_data["sales_confirmation_answers"] = list(input_data.get("sales_confirmation_answers", [])) + answers
-        result = run_analyze(input_data, db_path, args.output_dir, args.template)
+        result = run_analyze(input_data, db_path, args.output_dir, args.template, theme=args.theme)
         print(json.dumps({"human_summary": result["human_summary"], "storage_result": result["storage_result"], "display_result": {k: v for k, v in result["display_result"].items() if k != "html"}}, ensure_ascii=False, indent=2))
 
     elif args.command == "query":
         filters = {}
+        if args.current_stage:
+            filters['current_stage_id'] = args.current_stage
+        if args.status:
+            filters['status'] = args.status
         if args.stage:
             filters["stage"] = args.stage
         if args.risk_level:
@@ -75,12 +92,23 @@ def main():
         if args.company_name:
             filters["company_name"] = args.company_name
         query = {"query_type": "opportunity_search", "filters": filters, "sort": {"field": "score", "order": "desc"}, "limit": args.limit}
-        result = run_query(db_path, query, args.output_dir, args.render_html)
+        result = run_query(db_path, query, args.output_dir, args.render_html, template_id=args.template, theme=args.theme)
         print(json.dumps({"count": result["count"], "opportunities": result["opportunities"]}, ensure_ascii=False, indent=2))
 
     elif args.command == "detail":
-        result = run_detail(db_path, args.opportunity_id, args.output_dir, args.template)
+        result = run_detail(db_path, args.opportunity_id, args.output_dir, args.template, theme=args.theme)
         print(json.dumps({"opportunity_id": args.opportunity_id, "output_dir": args.output_dir}, ensure_ascii=False, indent=2))
+
+    elif args.command == 'manage':
+        change = json.loads(Path(args.input).read_text(encoding='utf-8'))
+        print(json.dumps(run_manage(db_path, change), ensure_ascii=False, indent=2))
+
+    elif args.command == 'lifecycle':
+        adapter = OpportunitySQLiteAdapter(db_path)
+        try:
+            print(json.dumps({'opportunity_id': args.opportunity_id, 'lifecycle': adapter.get_lifecycle(args.opportunity_id)}, ensure_ascii=False, indent=2))
+        finally:
+            adapter.close()
 
 
 if __name__ == "__main__":

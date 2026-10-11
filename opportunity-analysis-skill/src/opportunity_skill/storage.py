@@ -1,7 +1,12 @@
 from __future__ import annotations
 import sqlite3
+import hashlib
+import json
+from copy import deepcopy
+from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
+from .lifecycle import initial_lifecycle, read_lifecycle, apply_operations, require_text
 from .stage_management import LEGACY_STAGE_NAME_TO_ID, stage_by_id, stage_from_name
 from .utils import now_iso, to_json, from_json, ensure_parent, new_id
 
@@ -15,8 +20,92 @@ class OpportunitySQLiteAdapter:
         ensure_parent(self.db_path)
         self.conn = sqlite3.connect(str(self.db_path))
         self.conn.row_factory = sqlite3.Row
+        self._transaction_depth = 0
         self.conn.execute("PRAGMA foreign_keys = ON")
         self.migrate()
+
+    def _commit(self):
+        if not self._transaction_depth:
+            self.conn.commit()
+
+    @contextmanager
+    def transaction(self):
+        if self._transaction_depth:
+            raise RuntimeError('nested transactions are unsupported')
+        self.conn.execute('BEGIN IMMEDIATE')
+        self._transaction_depth = 1
+        try:
+            yield
+            self.conn.commit()
+        except Exception:
+            self.conn.rollback()
+            raise
+        finally:
+            self._transaction_depth = 0
+
+    def _request_replay(self, request_id, payload):
+        if not request_id:
+            return None
+        require_text(request_id, 'request_id')
+        row = self.conn.execute('SELECT * FROM lifecycle_requests WHERE request_id = ?', (request_id,)).fetchone()
+        if row:
+            if row['payload_sha256'] != self._payload_hash(payload):
+                raise ValueError('request_id already used with a different payload')
+            response = from_json(row['response_json'], default={})
+            response['idempotent_replay'] = True
+            return response
+        return None
+
+    @staticmethod
+    def _payload_hash(payload):
+        return hashlib.sha256(json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+    def _save_request(self, request_id, payload, response):
+        if request_id:
+            self.conn.execute('INSERT INTO lifecycle_requests VALUES (?, ?, ?, ?)',
+                              (request_id, self._payload_hash(payload), to_json(response), now_iso()))
+
+    def get_lifecycle(self, opportunity_id):
+        row = self.conn.execute('SELECT state_json FROM opportunity_lifecycle WHERE opportunity_id = ?', (opportunity_id,)).fetchone()
+        if row:
+            return read_lifecycle(from_json(row['state_json'], default={}))
+        opportunity = self.conn.execute('SELECT stage_id, stage FROM opportunities WHERE id = ?', (opportunity_id,)).fetchone()
+        if not opportunity:
+            raise KeyError(f'Opportunity not found: {opportunity_id}')
+        stage = stage_by_id(opportunity['stage_id']) or stage_from_name(opportunity['stage'])
+        return read_lifecycle(initial_lifecycle(stage.stage_id if stage else None, legacy=True))
+
+    def _write_lifecycle(self, opportunity_id, state):
+        self.conn.execute('INSERT INTO opportunity_lifecycle VALUES (?, ?, ?) ON CONFLICT(opportunity_id) DO UPDATE SET revision=excluded.revision, state_json=excluded.state_json',
+                          (opportunity_id, state['revision'], to_json(state)))
+
+    @staticmethod
+    def _check_revision(state, expected_revision):
+        if type(expected_revision) is not int or expected_revision != state['revision']:
+            raise ValueError(f"revision conflict: expected {expected_revision}, current {state['revision']}")
+
+    def manage(self, change):
+        require_text(change.get('request_id'), 'request_id')
+        actor = require_text(change.get('actor'), 'actor')
+        opportunity_id = require_text(change.get('opportunity_id'), 'opportunity_id')
+        with self.transaction():
+            replay = self._request_replay(change['request_id'], {'command': 'manage', 'change': change})
+            if replay:
+                # The receipt revision is immutable, but file integrity and later
+                # mutations are live state rather than an old cached assertion.
+                replay['lifecycle'] = self.get_lifecycle(opportunity_id)
+                replay['current_revision'] = replay['lifecycle']['revision']
+                return replay
+            state = self.get_lifecycle(opportunity_id)
+            self._check_revision(state, change.get('expected_revision'))
+            owned = {row['evidence_id'] for row in self.conn.execute('SELECT evidence_id FROM opportunity_evidence_map WHERE opportunity_id = ?', (opportunity_id,))}
+            state = apply_operations(state, change.get('operations'), actor, owned)
+            state['revision'] += 1
+            self._write_lifecycle(opportunity_id, state)
+            self.conn.execute('UPDATE opportunities SET status=?, updated_at=? WHERE id=?', (state['status'], now_iso(), opportunity_id))
+            response = {'request_id': change['request_id'], 'opportunity_id': opportunity_id, 'revision': state['revision'], 'current_revision': state['revision'], 'lifecycle': read_lifecycle(state), 'idempotent_replay': False}
+            self._save_request(change['request_id'], {'command': 'manage', 'change': change}, response)
+            return response
 
     def close(self):
         self.conn.close()
@@ -26,7 +115,7 @@ class OpportunitySQLiteAdapter:
         self.conn.executescript(sql)
         self._ensure_contact_columns()
         self._ensure_opportunity_stage_columns()
-        self.conn.commit()
+        self._commit()
 
     def _ensure_contact_columns(self):
         existing = {row["name"] for row in self.conn.execute("PRAGMA table_info(contacts)").fetchall()}
@@ -78,7 +167,7 @@ class OpportunitySQLiteAdapter:
                 to_json(account.get("key_pain_points", [])), account.get("source_confidence"), now, now
             )
         )
-        self.conn.commit()
+        self._commit()
         return account_id
 
     def upsert_contact(self, contact: dict[str, Any]) -> str:
@@ -103,7 +192,7 @@ class OpportunitySQLiteAdapter:
                 to_json(contact.get("source_refs", [])), now, now
             )
         )
-        self.conn.commit()
+        self._commit()
         return contact_id
 
     def upsert_opportunity(self, opportunity: dict[str, Any]) -> str:
@@ -135,7 +224,7 @@ class OpportunitySQLiteAdapter:
                 to_json(opportunity.get("missing_information", [])), opportunity.get("status", "active"), now, now
             )
         )
-        self.conn.commit()
+        self._commit()
         return opp_id
 
     def append_interaction(self, interaction: dict[str, Any]) -> str:
@@ -147,11 +236,14 @@ class OpportunitySQLiteAdapter:
             """,
             (iid, interaction.get("account_id"), interaction.get("opportunity_id"), interaction.get("interaction_type"), interaction.get("channel"), interaction.get("title"), interaction.get("summary"), interaction.get("content"), interaction.get("occurred_at"), interaction.get("owner"), now_iso())
         )
-        self.conn.commit()
+        self._commit()
         return iid
 
     def append_evidence(self, evidence: dict[str, Any]) -> str:
         eid = evidence.get("evidence_id") or evidence.get("id") or new_id("ev")
+        previous = self.conn.execute('SELECT * FROM evidence WHERE id=?', (eid,)).fetchone()
+        if previous and any(previous[key] != evidence.get(key) for key in ('content', 'source_type', 'source_name', 'source_ref')):
+            raise ValueError('evidence_id provenance is immutable; use a new evidence_id')
         self.conn.execute(
             """
             INSERT OR REPLACE INTO evidence (id, source_type, source_name, source_ref, content, extracted_fields, confidence, requires_human_confirmation, created_at)
@@ -162,7 +254,7 @@ class OpportunitySQLiteAdapter:
         for item in evidence.get("archived_files", []) or []:
             item["evidence_id"] = eid
             self.append_evidence_file(item)
-        self.conn.commit()
+        self._commit()
         return eid
 
     def append_evidence_file(self, item: dict[str, Any]) -> str:
@@ -199,7 +291,7 @@ class OpportunitySQLiteAdapter:
             """,
             (mid, item.get("opportunity_id"), item.get("evidence_id"), item.get("field_name"), item.get("field_value"), item.get("status"), item.get("confidence"), now_iso())
         )
-        self.conn.commit()
+        self._commit()
         return mid
 
     def create_decision_chain_node(self, node: dict[str, Any]) -> str:
@@ -226,7 +318,7 @@ class OpportunitySQLiteAdapter:
                 now_iso(),
             ),
         )
-        self.conn.commit()
+        self._commit()
         return nid
 
     def save_commercial_assessment(self, opportunity_id: str, assessment: dict[str, Any]) -> str:
@@ -257,7 +349,7 @@ class OpportunitySQLiteAdapter:
             self.save_sales_confirmation_question(opportunity_id, aid, item)
         for item in assessment.get("answers", []) or []:
             self.save_sales_confirmation_answer(opportunity_id, aid, item)
-        self.conn.commit()
+        self._commit()
         return aid
 
     def save_assessment_dimension(self, opportunity_id: str, assessment_id: str, item: dict[str, Any]) -> str:
@@ -349,7 +441,7 @@ class OpportunitySQLiteAdapter:
             """,
             (rid, risk.get("opportunity_id"), risk.get("risk_type"), risk.get("risk_level"), risk.get("description"), risk.get("mitigation"), to_json(risk.get("evidence_refs", [])), now, now)
         )
-        self.conn.commit()
+        self._commit()
         return rid
 
     def create_next_action(self, action: dict[str, Any]) -> str:
@@ -362,7 +454,7 @@ class OpportunitySQLiteAdapter:
             """,
             (aid, action.get("opportunity_id"), action.get("action_title"), action.get("action_detail"), action.get("priority"), action.get("owner"), action.get("deadline_suggestion"), action.get("status", "open"), action.get("reason"), now, now)
         )
-        self.conn.commit()
+        self._commit()
         return aid
 
     def save_skill_run(self, run: dict[str, Any]) -> str:
@@ -374,7 +466,7 @@ class OpportunitySQLiteAdapter:
             """,
             (rid, run.get("skill_name", "opportunity-analysis-skill"), run.get("input_summary"), run.get("output_summary"), run.get("structured_output"), run.get("display_output_path"), run.get("status", "success"), now_iso())
         )
-        self.conn.commit()
+        self._commit()
         return rid
 
     def save_rendered_view(self, object_type: str, object_id: str, template_id: str, html_content: str, markdown_content: str) -> str:
@@ -387,10 +479,81 @@ class OpportunitySQLiteAdapter:
             """,
             (vid, object_type, object_id, template_id, html_content, markdown_content, now, now)
         )
-        self.conn.commit()
+        self._commit()
         return vid
 
-    def save_structured_data(self, data: dict[str, Any]) -> dict[str, Any]:
+    def save_structured_data(self, data: dict[str, Any], request: dict[str, Any] | None = None) -> dict[str, Any]:
+        request = request or {}
+        payload = {'command': 'analyze', 'input': request}
+        # Direct callers can use a deterministic payload; normal pipeline supplies original input.
+        if not request:
+            payload['data'] = data
+        elif not any(key in request for key in ('materials', 'evidence_list')):
+            structured = data.get('structured_data', data)
+            payload['source_materials'] = [{key: ev.get(key) for key in ('content', 'source_type', 'source_name', 'source_ref', 'file_path', 'confidence', 'requires_human_confirmation')} for ev in structured.get('evidence', [])]
+        with self.transaction():
+            replay = self._request_replay(request.get('request_id'), payload)
+            if replay:
+                return replay
+            data = deepcopy(data)
+            sd = data.get('structured_data', data)
+            opportunity_id = request.get('opportunity_id')
+            if opportunity_id:
+                existing = self.conn.execute('SELECT account_id FROM opportunities WHERE id=?', (opportunity_id,)).fetchone()
+                if not existing:
+                    raise KeyError(f'Opportunity not found: {opportunity_id}')
+                state = self.get_lifecycle(opportunity_id)
+                self._check_revision(state, request.get('expected_revision'))
+                if request.get('account_id') and request['account_id'] != existing['account_id']:
+                    raise ValueError('opportunity cannot be reassigned to another account')
+                account_id = existing['account_id']
+                sd['opportunity']['id'] = opportunity_id
+            else:
+                state = initial_lifecycle()
+                account_id = request.get('account_id')
+                if account_id and not self.conn.execute('SELECT id FROM accounts WHERE id=?', (account_id,)).fetchone():
+                    raise ValueError('account_id does not exist')
+                if 'expected_revision' in request and request['expected_revision'] != 0:
+                    raise ValueError('new opportunity expected_revision must be 0')
+            if account_id:
+                sd['account']['id'] = account_id
+                # A material update cannot erase an established customer profile.
+                existing_account = dict(self.conn.execute('SELECT * FROM accounts WHERE id=?', (account_id,)).fetchone())
+                sd['account'] = {**sd['account'], 'company_name': existing_account['company_name'], 'normalized_name': existing_account['normalized_name']}
+            state['suggested_stage_id'] = sd['opportunity'].get('stage_id')
+            if 'owner' in request:
+                owner = require_text(request['owner'], 'owner')
+                if state.get('owner') != owner:
+                    state.setdefault('owner_history', []).append({'from_owner': state.get('owner'),
+                        'to_owner': owner, 'actor': request.get('actor') or 'analysis-input',
+                        'time': now_iso(), 'reason': 'Explicit owner in analysis input'})
+                    state['owner'] = owner
+            sd['opportunity']['status'] = state['status']
+            # Evidence IDs are immutable and single-opportunity scoped; never overwrite provenance.
+            if account_id:
+                existing_contacts = {row['name']: row['id'] for row in self.conn.execute('SELECT id, name FROM contacts WHERE account_id=?', (account_id,))}
+                contact_ids = {}
+                for contact in sd.get('contacts', []):
+                    if contact.get('name') in existing_contacts:
+                        contact_ids[contact['id']] = existing_contacts[contact['name']]
+                        contact['id'] = existing_contacts[contact['name']]
+                for node in sd.get('decision_chain', []):
+                    if node.get('contact_id') in contact_ids:
+                        node['contact_id'] = contact_ids[node['contact_id']]
+            for ev in sd.get('evidence', []):
+                eid = ev.get('evidence_id') or ev.get('id')
+                previous = self.conn.execute('SELECT content FROM evidence WHERE id=?', (eid,)).fetchone()
+                owners = {row['opportunity_id'] for row in self.conn.execute('SELECT opportunity_id FROM opportunity_evidence_map WHERE evidence_id=?', (eid,))}
+                if previous and (previous['content'] != ev.get('content') or owners - {opportunity_id}):
+                    raise ValueError('evidence_id already exists with different content or belongs to another opportunity')
+            result = self._save_structured_data(data)
+            state['revision'] += 1
+            self._write_lifecycle(result['opportunity_id'], state)
+            result.update(revision=state['revision'], idempotent_replay=False)
+            self._save_request(request.get('request_id'), payload, result)
+            return result
+
+    def _save_structured_data(self, data: dict[str, Any]) -> dict[str, Any]:
         sd = data["structured_data"] if "structured_data" in data else data
         account_id = self.upsert_account(sd["account"])
         for ev in sd.get("evidence", []):
@@ -401,6 +564,10 @@ class OpportunitySQLiteAdapter:
         opp = sd["opportunity"]
         opp["account_id"] = account_id
         opportunity_id = self.upsert_opportunity(opp)
+        # These are current analysis projections, not completed business records.
+        # Actual actions and history live separately in lifecycle JSON.
+        for table in ('decision_chain', 'risks', 'next_actions'):
+            self.conn.execute(f'DELETE FROM {table} WHERE opportunity_id=?', (opportunity_id,))
         mapped_evidence_ids = {item.get("evidence_id") for item in sd.get("evidence_map", [])}
         for item in sd.get("evidence_map", []):
             item["opportunity_id"] = opportunity_id
@@ -438,6 +605,9 @@ class OpportunitySQLiteAdapter:
         WHERE 1=1
         """
         params = []
+        if filters.get('current_stage_id'):
+            sql += " AND COALESCE((SELECT json_extract(l.state_json, '$.current_stage_id') FROM opportunity_lifecycle l WHERE l.opportunity_id=o.id), 'lead_identified') = ?"
+            params.append(filters['current_stage_id'])
         if filters.get("account_id"):
             sql += " AND o.account_id = ?"
             params.append(filters["account_id"])
@@ -478,7 +648,14 @@ class OpportunitySQLiteAdapter:
         sql += f" ORDER BY {field} {order} LIMIT ?"
         params.append(int(query.get("limit", 50)))
         rows = self.conn.execute(sql, params).fetchall()
-        return [self._row_to_opportunity_summary(r) for r in rows]
+        results = []
+        for row in rows:
+            item = self._row_to_opportunity_summary(row)
+            item['lifecycle'] = self.get_lifecycle(row['id'])
+            if filters.get('current_stage_id') and item['lifecycle']['current_stage_id'] != filters['current_stage_id']:
+                continue
+            results.append(item)
+        return results
 
     def get_opportunity_detail(self, opportunity_id: str) -> dict[str, Any]:
         row = self.conn.execute(
@@ -530,6 +707,7 @@ class OpportunitySQLiteAdapter:
         return {
             "account": account,
             "opportunity": opportunity,
+            "lifecycle": self.get_lifecycle(opportunity_id),
             "contacts": contacts,
             "decision_chain": decision_chain,
             "commercial_assessment": commercial_assessment,
@@ -544,7 +722,7 @@ class OpportunitySQLiteAdapter:
 
     def _get_commercial_assessment(self, opportunity_id: str) -> dict[str, Any]:
         row = self.conn.execute(
-            "SELECT * FROM commercial_assessments WHERE opportunity_id = ? ORDER BY created_at DESC LIMIT 1",
+            "SELECT * FROM commercial_assessments WHERE opportunity_id = ? ORDER BY created_at DESC, rowid DESC LIMIT 1",
             (opportunity_id,),
         ).fetchone()
         if not row:

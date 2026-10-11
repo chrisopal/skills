@@ -1,7 +1,9 @@
 from __future__ import annotations
 import html
 import math
-from urllib.parse import quote
+import json
+import re
+from urllib.parse import quote, urlsplit
 from pathlib import Path
 from typing import Any
 
@@ -42,10 +44,7 @@ def compact(value: Any, limit: int = 160) -> str:
 
 
 def replace_tokens(template: str, mapping: dict[str, Any]) -> str:
-    result = template
-    for key, value in mapping.items():
-        result = result.replace("{{" + key + "}}", str(value))
-    return result
+    return re.sub(r"\{\{([^{}]+)\}\}", lambda match: str(mapping.get(match.group(1), match.group(0))), template)
 
 
 class SkillDisplayRenderer:
@@ -53,11 +52,13 @@ class SkillDisplayRenderer:
         self.template_dir = Path(template_dir) if template_dir else TEMPLATE_DIR
         self.css = CSS_PATH.read_text(encoding="utf-8") if CSS_PATH.exists() else ""
 
-    def render(self, template_id: str, data: dict[str, Any], output_format: str = "html") -> dict[str, str]:
+    def render(self, template_id: str, data: dict[str, Any], output_format: str = "html", *, theme: str = "light", profile: str = "enterprise") -> dict[str, str]:
         if template_id == "opportunity_detail":
             html_body = self._render_opportunity_detail(data)
         elif template_id == "customer_profile":
             html_body = self._render_customer_profile(data)
+        elif template_id == "opportunity_list":
+            html_body = self._render_list(data)
         elif template_id == "opportunity_kanban":
             html_body = self._render_kanban(data)
         elif template_id == "risk_table":
@@ -66,15 +67,21 @@ class SkillDisplayRenderer:
             html_body = self._render_next_actions(data)
         else:
             html_body = self._render_opportunity_card(data)
+        if template_id in {"opportunity_card", "customer_profile", "risk_table", "next_action_list"}:
+            html_body = "<div class='ql-page'><header class='ql-topbar'><span class='ql-breadcrumb'>QILIN · 企灵 / 商机工作区</span></header><main class='ql-main'>" + html_body + "</main></div>"
+        theme = "dark" if theme == "dark" else "light"
+        profile = "legacy" if profile == "legacy" else "enterprise"
+        css = (CSS_PATH.parent / "legacy.css").read_text(encoding="utf-8") if profile == "legacy" else self.css
         full_html = (
             "<!doctype html>\n"
-            "<html lang='zh-CN'>\n"
+            f"<html lang='zh-CN' data-ui='{profile}' data-theme='{theme}'>\n"
             "<head>\n"
             "<meta charset='utf-8'>\n"
             "<meta name='viewport' content='width=device-width, initial-scale=1'>\n"
-            f"<style>{self.css}</style>\n"
+            f"<title>{esc(data.get('opportunity', {}).get('name') or '企灵商机工作区')}</title>\n"
+            f"<style>{css}</style>\n"
             "</head>\n"
-            f"<body>{html_body}</body>\n"
+            f"<body class='ql-app'>{html_body}</body>\n"
             "</html>"
         )
         markdown = self.to_markdown(data)
@@ -84,20 +91,25 @@ class SkillDisplayRenderer:
         tpl = (self.template_dir / "opportunity_card.html").read_text(encoding="utf-8")
         account = data.get("account", {})
         opp = dict(data.get("opportunity", {}))
+        lifecycle = self._lifecycle(data)
         assessment = data.get("commercial_assessment", {}) or {}
-        opp["win_probability_percent"] = int(round((opp.get("win_probability") or 0) * 100))
+        probability = opp.get("win_probability")
+        opp["win_probability_percent"] = f"{round(probability * 100)}%" if isinstance(probability, (int, float)) else "待评估"
         mapping = {
             "opportunity.name": esc(opp.get("name")),
+            "lifecycle.summary": self._lifecycle_summary(data),
             "account.company_name": esc(account.get("company_name")),
             "account.industry": esc(account.get("industry")),
             "account.region": esc(account.get("region")),
             "opportunity.score_level": esc(opp.get("score_level")),
+            "opportunity.score_level_tag": f"<span class='ql-tag'>等级 {esc(opp['score_level'])}</span>" if opp.get("score_level") else "",
+            "opportunity.score_level_note": f"{esc(opp['score_level'])}级商机" if opp.get("score_level") else "",
             "opportunity.score": esc(opp.get("score")),
-            "opportunity.stage": esc(opp.get("stage")),
+            "opportunity.stage": esc(self._stage_label(lifecycle.get("current_stage_id"))),
             "opportunity.stage_reason": esc(opp.get("stage_reason")),
             "opportunity.stage_confidence_label": esc(self._confidence_label(opp.get("stage_confidence"))),
-            "opportunity.stage_confirmed_label": esc(self._opportunity_confirmed_label(opp)),
-            "opportunity.stage_path": self._stage_path(opp),
+            "opportunity.stage_confirmed_label": esc("待确认" if not lifecycle.get("current_stage_id") else self._opportunity_confirmed_label({"stage_id": lifecycle.get("current_stage_id")})),
+            "opportunity.stage_path": self._stage_path(lifecycle),
             "opportunity.risk_level": esc(opp.get("risk_level")),
             "opportunity.risk_label": esc(self._risk_label(opp.get("risk_level"))),
             "opportunity.win_probability_percent": esc(opp.get("win_probability_percent")),
@@ -111,7 +123,7 @@ class SkillDisplayRenderer:
             "assessment.win_probability_note": esc(self._win_probability_note(assessment)),
             "pain_points_list": li(opp.get("pain_points", [])),
             "requirements_list": li(opp.get("requirements", [])),
-            "next_actions_list": self._action_items(data.get("next_actions", [])),
+            "next_actions_list": self._action_items(lifecycle.get("actions") or data.get("next_actions", [])),
             "missing_information_list": li(opp.get("missing_information", []) or data.get("missing_information", [])),
         }
         return replace_tokens(tpl, mapping)
@@ -120,15 +132,17 @@ class SkillDisplayRenderer:
         card = self._render_opportunity_card(data)
         tpl = (self.template_dir / "opportunity_detail.html").read_text(encoding="utf-8")
         opp = dict(data.get("opportunity", {}))
+        lifecycle = self._lifecycle(data)
         mapping = {
             "opportunity_card": card,
+            "lifecycle.sections": self._lifecycle_sections(data),
             "account.company_name": esc(data.get("account", {}).get("company_name")),
             "account.business_summary": esc(data.get("account", {}).get("business_summary")),
-            "opportunity.stage": esc(opp.get("stage")),
+            "opportunity.stage": esc(self._stage_label(lifecycle.get("current_stage_id"))),
             "opportunity.stage_reason": esc(opp.get("stage_reason")),
             "opportunity.stage_confidence_label": esc(self._confidence_label(opp.get("stage_confidence"))),
-            "opportunity.stage_confirmed_label": esc(self._opportunity_confirmed_label(opp)),
-            "opportunity.stage_path": self._stage_path(opp),
+            "opportunity.stage_confirmed_label": esc("待确认" if not lifecycle.get("current_stage_id") else self._opportunity_confirmed_label({"stage_id": lifecycle.get("current_stage_id")})),
+            "opportunity.stage_path": self._stage_path(lifecycle),
             "contacts.count": esc(len(data.get("contacts", []))),
             "decision_chain.summary": esc(self._decision_chain_summary(data.get("decision_chain", []))),
             "assessment.summary": esc(self._assessment_summary(data.get("commercial_assessment", {}))),
@@ -143,7 +157,7 @@ class SkillDisplayRenderer:
             "evidence.count": esc(len(data.get("evidence", []))),
             "materials.count": esc(len(self._collect_archived_files(data))),
             "pain_points_list": li(data.get("opportunity", {}).get("pain_points", [])),
-            "next_actions_list": self._action_items(data.get("next_actions", [])),
+            "next_actions_list": self._action_items(lifecycle.get("actions") or data.get("next_actions", [])),
             "missing_information_list": li(data.get("opportunity", {}).get("missing_information", [])),
             "contacts_rows": self._contacts_rows(data.get("contacts", [])),
             "decision_chain_map": self._decision_chain_map(data.get("decision_chain", []), opp),
@@ -174,98 +188,218 @@ class SkillDisplayRenderer:
 
     def _render_next_actions(self, data: dict[str, Any]) -> str:
         tpl = (self.template_dir / "next_action_list.html").read_text(encoding="utf-8")
-        return replace_tokens(tpl, {"next_actions_list": self._action_items(data.get("next_actions", []))})
+        return replace_tokens(tpl, {"next_actions_list": self._action_items(self._lifecycle(data).get("actions") or data.get("next_actions", []))})
+
+    def _query_records(self, data: dict[str, Any]) -> list[dict[str, Any]]:
+        records = data.get("opportunities", [])
+        return records if isinstance(records, list) else []
+
+    def _record_data(self, record: dict[str, Any]) -> dict[str, Any]:
+        return record if isinstance(record.get("opportunity"), dict) else {**record, "opportunity": record}
+
+    def _record_title(self, record: dict[str, Any]) -> str:
+        data = self._record_data(record)
+        opp = data["opportunity"]
+        title = esc(opp.get("name"))
+        url = self._safe_url(record.get("detail_url") or opp.get("detail_url") or record.get("url"))
+        return f"<a class='ql-link' href='{esc(url)}'>{title} →</a>" if url else title
+
+    def _render_list(self, data: dict[str, Any]) -> str:
+        rows = []
+        for record in self._query_records(data):
+            item = self._record_data(record)
+            opp = item["opportunity"]
+            life = self._lifecycle(item)
+            action = self._next_action(life)
+            values = [self._record_title(record), esc(opp.get("company_name") or item.get("account", {}).get("company_name")),
+                      esc(life.get("owner") or life.get("owner_name") or opp.get("owner") or opp.get("owner_name")),
+                      esc(self._stage_label(life.get("current_stage_id"))), esc(self._stage_label(life.get("suggested_stage_id"))),
+                      esc(self._status_label(life.get("status"))), esc(action.get("action_title") or action.get("title")),
+                      esc(action.get("due_date") or action.get("due_at")), esc(self._blockers(item)), esc(opp.get("score"))]
+            rows.append("<tr>" + "".join(f"<td>{value}</td>" for value in values) + "</tr>")
+        tpl = (self.template_dir / "opportunity_list.html").read_text(encoding="utf-8")
+        return replace_tokens(tpl, {"list_rows": "".join(rows) or "<tr><td colspan='10' class='ql-empty'>暂无商机</td></tr>",
+                                    "summary.count": len(rows), "query.summary": esc(self._query_summary(data.get("query", {})))})
 
     def _render_kanban(self, data: dict[str, Any]) -> str:
-        tpl = (self.template_dir / "opportunity_kanban.html").read_text(encoding="utf-8")
-        opportunities = data.get("opportunities", []) if isinstance(data.get("opportunities"), list) else []
-        columns = []
-        total_score = 0
-        scored_count = 0
-        high_risk_count = 0
+        records = self._query_records(data)
+        buckets: dict[str, list[dict[str, Any]]] = {stage.stage_id: [] for stage in self._pipeline_stages()}
+        buckets.update({"unconfirmed": [], "paused": [], "lost": [], "cancelled": []})
         confirmed_count = 0
-        missing_total = 0
-        stage_buckets: dict[str, list[dict[str, Any]]] = {stage.stage_id: [] for stage in STAGE_DEFINITIONS}
-        for opp in opportunities:
-            if opp.get("score") is not None:
-                total_score += int(opp.get("score") or 0)
-                scored_count += 1
-            if opp.get("risk_level") == "high":
-                high_risk_count += 1
-            if self._opportunity_confirmed_label(opp) == "已确认商机":
+        for record in records:
+            item = self._record_data(record)
+            life = self._lifecycle(item)
+            stage_id = life.get("current_stage_id") or "unconfirmed"
+            if life.get("status") in {"paused", "lost", "cancelled"}:
+                stage_id = life["status"]
+            buckets.setdefault(str(stage_id), []).append(record)
+            if life.get("current_stage_id") and self._opportunity_confirmed_label({"stage_id": life["current_stage_id"]}) == "已确认商机":
                 confirmed_count += 1
-            missing_total += len(opp.get("missing_information") or [])
-            stage_def = self._resolve_stage_definition(opp)
-            if stage_def is not None:
-                stage_buckets[stage_def.stage_id].append(opp)
-        for stage in STAGE_DEFINITIONS:
+        columns = []
+        for stage_id, items in buckets.items():
+            if stage_id in {"unconfirmed", "paused", "lost", "cancelled"} and not items:
+                continue
             cards = []
-            stage_items = stage_buckets.get(stage.stage_id, [])
-            stage_items = sorted(stage_items, key=lambda x: (x.get("score") or 0, x.get("updated_at") or ""), reverse=True)
-            stage_score = round(sum((opp.get("score") or 0) for opp in stage_items) / max(len(stage_items), 1)) if stage_items else "暂无"
-            for opp in stage_items:
-                score = int(opp.get("score") or 0)
-                win_percent = int(round((opp.get("win_probability") or 0) * 100))
-                risk = self._risk_class(opp.get("risk_level"))
-                missing = opp.get("missing_information") or []
-                requirements = opp.get("requirements") or []
-                focus = missing[0] if missing else (requirements[0] if requirements else "下一步待根据客户反馈确认")
-                budget = opp.get("budget_amount") or opp.get("budget_signal") or "预算待确认"
-                confirmed_label = self._opportunity_confirmed_label(opp)
-                cards.append(
-                    "<article class='kanban-card'>"
-                    "<div class='kanban-card-topline'>"
-                    f"<span class='ql-tag green'>{esc(opp.get('score_level'))}级</span>"
-                    f"<span class='ql-tag risk-{risk}'>风险 {esc(self._risk_label(opp.get('risk_level')))}</span>"
-                    f"<span class='ql-tag stage-confirmed'>{esc(confirmed_label)}</span>"
-                    "</div>"
-                    f"<h3>{esc(opp.get('name'))}</h3>"
-                    f"<p class='kanban-account'>{esc(opp.get('company_name'))} · {esc(opp.get('industry'))} · {esc(opp.get('region'))}</p>"
-                    "<div class='kanban-score-row'>"
-                    "<div>"
-                    "<span>评分</span>"
-                    f"<strong>{esc(score)}</strong>"
-                    "</div>"
-                    "<div>"
-                    "<span>赢单</span>"
-                    f"<strong>{esc(win_percent)}%</strong>"
-                    "</div>"
-                    "</div>"
-                    "<div class='kanban-score-track' aria-hidden='true'>"
-                    f"<span style='width:{max(0, min(100, score))}%'></span>"
-                    "</div>"
-                    "<dl class='kanban-meta'>"
-                    f"<div><dt>需求</dt><dd>{esc(compact(opp.get('core_need'), 34))}</dd></div>"
-                    f"<div><dt>时间</dt><dd>{esc(opp.get('expected_timeline'))}</dd></div>"
-                    f"<div><dt>预算</dt><dd>{esc(compact(budget, 34))}</dd></div>"
-                    "</dl>"
-                    "<div class='kanban-focus'>"
-                    "<span>优先动作</span>"
-                    f"<strong>{esc(compact(focus, 58))}</strong>"
-                    "</div>"
-                    "</article>"
-                )
-            empty = "<div class='kanban-empty'>暂无商机</div>"
-            columns.append(
-                "<section class='kanban-col'>"
-                "<div class='kanban-col-head'>"
-                f"<div><h2>{esc(stage.name)}</h2><span>{esc(len(stage_items))} 个商机</span></div>"
-                f"<strong>{esc(stage_score)}</strong>"
-                "</div>"
-                f"<div class='kanban-card-list'>{''.join(cards) or empty}</div>"
-                "</section>"
-            )
-        avg_score = round(total_score / scored_count) if scored_count else "暂无"
-        query_summary = self._query_summary(data.get("query", {}))
-        return replace_tokens(tpl, {
-            "kanban_columns": "".join(columns),
-            "query.summary": esc(query_summary),
-            "summary.count": esc(len(opportunities)),
-            "summary.avg_score": esc(avg_score),
-            "summary.high_risk": esc(high_risk_count),
-            "summary.confirmed": esc(confirmed_count),
-            "summary.missing": esc(missing_total),
-        })
+            for record in items:
+                item = self._record_data(record)
+                life = self._lifecycle(item)
+                opp = item["opportunity"]
+                cards.append("<article class='kanban-card'>" + f"<h3>{self._record_title(record)}</h3>"
+                             + f"<p class='kanban-account'>{esc(opp.get('company_name') or item.get('account', {}).get('company_name'))}</p>"
+                             + self._lifecycle_summary(item)
+                             + f"<div class='ql-record-score'>评分 {esc(opp.get('score'))} · 风险 {esc(self._risk_label(opp.get('risk_level')))} · {esc('尚未确认商机' if not life.get('current_stage_id') else self._opportunity_confirmed_label({'stage_id': life['current_stage_id']}))}</div>"
+                             + "</article>")
+            label = self._status_label(stage_id) if stage_id in {"paused", "lost", "cancelled"} else self._stage_label(stage_id)
+            columns.append(f"<section class='kanban-col'><div class='kanban-col-head'><h2>{esc(label)}</h2><span>{len(items)}</span></div>"
+                           + "<div class='kanban-card-list'>" + ("".join(cards) or "<div class='kanban-empty'>暂无商机</div>") + "</div></section>")
+        tpl = (self.template_dir / "opportunity_kanban.html").read_text(encoding="utf-8")
+        return replace_tokens(tpl, {"kanban_columns": "".join(columns), "query.summary": esc(self._query_summary(data.get("query", {}))),
+                                    "summary.count": len(records), "summary.confirmed": confirmed_count})
+
+    def _safe_url(self, value: Any) -> str:
+        if not value:
+            return ""
+        raw = str(value).strip()
+        if any(ord(char) < 32 for char in raw) or raw.startswith("//") or "\\" in raw:
+            return ""
+        if urlsplit(raw).scheme.lower() not in {"", "http", "https", "file"}:
+            return ""
+        return quote(raw, safe="/:._-%#?=&")
+
+    def _pipeline_stages(self) -> list[Any]:
+        return [stage for stage in STAGE_DEFINITIONS if stage.stage_id not in {"lost", "cancelled", "paused"}]
+
+    def _stage_label(self, stage_id: Any) -> str:
+        if not stage_id or stage_id == "unconfirmed":
+            return "待确认"
+        stage = stage_by_id(str(stage_id))
+        if stage:
+            return stage.name
+        return {"contract_signing": "合同签署", "signed": "已签单"}.get(str(stage_id), str(stage_id))
+
+    def _lifecycle(self, data: dict[str, Any]) -> dict[str, Any]:
+        value = data.get("lifecycle")
+        if isinstance(value, dict):
+            return value
+        if "current_stage_id" in data:
+            return data
+        opp = data.get("opportunity", {})
+        suggested = self._resolve_stage_definition(opp)
+        return {"current_stage_id": None, "suggested_stage_id": suggested.stage_id if suggested else opp.get("stage"),
+                "status": "unconfirmed", "revision": None, "actions": data.get("next_actions", []), "history": []}
+
+    def _next_action(self, life: dict[str, Any]) -> dict[str, Any]:
+        if "next_action" in life:
+            selected = life["next_action"]
+            return selected if isinstance(selected, dict) else ({"title": selected} if selected else {})
+        pending = [action for action in life.get("actions", []) or [] if action.get("status") not in {"completed", "done", "cancelled"}]
+        return min(pending, key=lambda action: (action.get("due_date") or action.get("due_at") or "9999", action.get("created_at") or "")) if pending else {}
+
+    def _blockers(self, data: dict[str, Any]) -> str:
+        life = self._lifecycle(data)
+        values = life.get("blockers", []) if "blockers" in life else data.get("opportunity", {}).get("missing_information") or []
+        if isinstance(values, list):
+            return "；".join(self._blocker_label(value) for value in values)
+        return str(values)
+
+    def _fact_label(self, fact_id: Any) -> str:
+        return {"contact_established": "客户接触已建立", "need_confirmed": "客户需求已确认", "requirement_owner": "需求负责人", "continue_intent": "继续推进意愿", "solution_scope": "方案范围", "budget_confirmed": "预算已确认", "quote_authorized": "报价已授权"}.get(str(fact_id), "自定义事实")
+
+    def _kind_label(self, kind: Any) -> Any:
+        return {"solution": "解决方案", "proposal": "方案", "quote": "报价", "negotiation": "谈判纪要", "contract": "合同", "handoff": "交接包"}.get(str(kind), kind)
+
+    def _blocker_label(self, value: Any) -> str:
+        text = str(value)
+        if text.startswith("fact unresolved, missing or negative: "):
+            return "待确认：" + self._fact_label(text.rsplit(": ", 1)[-1])
+        if text.startswith("current artifact stale or missing: "):
+            return str(self._kind_label(text.rsplit(": ", 1)[-1])) + "文件已变更或缺失"
+        return {"quote authorization is stale or unbound": "报价授权已过期或未绑定当前版本", "signed contract record missing": "缺少已签署合同登记", "signed contract stale, missing or superseded": "签署合同文件已变更、缺失或被新版本替代"}.get(text, text)
+
+    def _lifecycle_summary(self, data: dict[str, Any]) -> str:
+        life = self._lifecycle(data)
+        opp = data.get("opportunity", {})
+        action = self._next_action(life)
+        fields = [("当前阶段", self._stage_label(life.get("current_stage_id"))), ("建议阶段", self._stage_label(life.get("suggested_stage_id"))),
+                  ("状态", self._status_label(life.get("status"))), ("负责人", life.get("owner") or life.get("owner_name") or opp.get("owner") or opp.get("owner_name")),
+                  ("下一行动", action.get("action_title") or action.get("title")), ("期限", action.get("due_date") or action.get("due_at")),
+                  ("阻塞", self._blockers(data) or "暂无已登记阻塞"), ("版本", life.get("revision")), ("文件状态", self._file_status(life))]
+        if life.get("close_reason"):
+            fields.append(("结束原因", life["close_reason"]))
+        return "<dl class='ql-lifecycle-summary'>" + "".join(f"<div><dt>{label}</dt><dd>{esc(value)}</dd></div>" for label, value in fields) + "</dl>"
+
+    def _file_status(self, life: dict[str, Any]) -> str:
+        if not life.get("artifacts"):
+            return "未登记"
+        if any(artifact.get("validity") in {"stale_or_missing", "invalid"} or artifact.get("valid") is False for artifact in life["artifacts"]):
+            return "需复核"
+        if life.get("verification_status") == "current":
+            return "文件未变更"
+        return "需复核"
+
+    def _record_details(self, records: Any, empty: str) -> str:
+        if not records:
+            return f"<p class='ql-empty'>{esc(empty)}</p>"
+        if isinstance(records, dict):
+            records = [records]
+        labels = {"from_stage": "原阶段", "to_stage": "新阶段", "from_stage_id": "原阶段", "to_stage_id": "新阶段", "at": "时间", "created_at": "时间", "actor": "操作者", "time": "时间", "reason": "理由", "evidence_ids": "证据", "evidence": "证据", "id": "编号", "artifact_id": "成果编号", "kind": "类型", "type": "类型", "version": "版本", "status": "状态", "valid": "有效性", "validity": "有效性", "invalid_reason": "失效原因", "document_id": "文档编号", "metadata": "成果信息", "validity_reason": "有效性说明", "sha256": "文件校验", "title": "名称", "name": "名称", "value": "事实", "result": "结果", "signed_at": "签署时间", "signed_file": "签署文件", "fact_id": "事实编号", "signing_date": "签署日期", "amount": "合同金额", "currency": "币种", "verification_scope": "核验范围", "parties": "签约主体", "signature_facts": "签署登记", "relative_path": "归档文件", "archive_path": "归档文件", "archived_path": "归档文件", "file_path": "文件", "path": "文件", "url": "链接"}
+        output = []
+        for record in records:
+            if not isinstance(record, dict):
+                output.append(f"<li>{esc(record)}</li>")
+                continue
+            fields = []
+            audit_fields = []
+            if record.get("fact_id"):
+                fields.append(f"<div><dt>事项</dt><dd>{esc(self._fact_label(record['fact_id']))}</dd></div>")
+            for key, value in record.items():
+                if value is None:
+                    continue
+                if key in {"from_stage", "to_stage", "from_stage_id", "to_stage_id"}:
+                    value = self._stage_label(value)
+                elif key in {"status", "validity"}:
+                    value = self._status_label(value)
+                elif key in {"kind", "type"}:
+                    value = self._kind_label(value)
+                elif key == "currency":
+                    value = {"CNY": "人民币（CNY）", "USD": "美元（USD）", "EUR": "欧元（EUR）"}.get(str(value), value)
+                elif key == "verification_scope" and value == "Recorded signature facts; no legal or signature authenticity verification.":
+                    value = "仅登记签署事实；签名真实性与法律效力未核验。"
+                elif key == "parties" and isinstance(value, list):
+                    value = "；".join(str(party) for party in value)
+                elif isinstance(value, bool):
+                    value = "是" if value else "否"
+                elif isinstance(value, (list, dict)):
+                    value = json.dumps(value, ensure_ascii=False)
+                shown = esc(value)
+                if key == "signature_facts" and isinstance(record[key], dict):
+                    signatures = record[key]
+                    summary = "；".join(label + ("已登记签署" if signatures.get(field) is True else "待登记") for field, label in [("customer_signed", "客户："), ("supplier_signed", "供应商：")])
+                    fields.append(f"<div><dt>签署登记</dt><dd>{esc(summary)}</dd></div>")
+                if key in {"file_path", "path", "url", "signed_file"}:
+                    target_path = record.get("relative_path") or record.get("archive_path") or record.get("archived_path") or value
+                    link = self._safe_url(target_path) if not str(target_path).startswith("/") else ""
+                    label = Path(str(value)).name if key in {"file_path", "path", "signed_file"} else str(value)
+                    shown = f"<a class='ql-link' href='{esc(link)}'>{esc(label)} ↗</a>" if link else esc(label)
+                    if str(value).startswith("/"):
+                        audit_fields.append(f"<div><dt>源文件路径</dt><dd>{esc(value)}</dd></div>")
+                target = audit_fields if key in {"id", "fact_id", "artifact_id", "document_id", "sha256", "evidence", "evidence_ids", "metadata", "signature_facts", "relative_path", "archive_path", "archived_path"} or (isinstance(record.get(key), (list, dict)) and key != "parties") else fields
+                target.append(f"<div><dt>{esc(labels.get(key, key))}</dt><dd>{shown}</dd></div>")
+            audit_html = ""
+            if audit_fields:
+                audit_html = "<details class='ql-disclosure ql-record-audit'><summary>编号与证据</summary><dl class='ql-record-fields'>" + "".join(audit_fields) + "</dl></details>"
+            invalid = record.get("validity") in {"superseded", "stale_or_missing", "invalid"} or record.get("valid") is False or record.get("status") in {"stale", "invalid"}
+            output.append(("<li class='ql-record-invalid'>" if invalid else "<li>") + "<dl class='ql-record-fields'>" + "".join(fields) + "</dl>" + audit_html + "</li>")
+        return "<ul class='ql-record-list'>" + "".join(output) + "</ul>"
+
+    def _lifecycle_sections(self, data: dict[str, Any]) -> str:
+        life = self._lifecycle(data)
+        sections = [("history", "阶段历史", "暂无正式阶段变更"), ("facts", "已登记事实", "暂无已登记事实"),
+                    ("artifacts", "版本成果", "暂无版本成果"), ("contracts", "合同与签署", "暂无合同记录")]
+        if life.get("status_history"):
+            sections.append(("status_history", "状态变更", "暂无状态变更"))
+        return "".join(f"<section id='{key}' class='ql-panel'><div class='ql-panel-header'><h2 class='ql-panel-title'>{label}</h2></div>"
+                       + "<div class='ql-panel-body'>" + self._record_details(life.get(key), empty) + "</div></section>" for key, label, empty in sections)
 
     def _resolve_stage_definition(self, opportunity: dict[str, Any]) -> Any:
         stage_id = opportunity.get("stage_id")
@@ -307,59 +441,36 @@ class SkillDisplayRenderer:
             value = bool(value)
         return "已确认商机" if value else "尚未确认商机"
 
-    def _stage_path(self, opportunity: dict[str, Any]) -> str:
-        stage_def = self._resolve_stage_definition(opportunity)
-        current_id = stage_def.stage_id if stage_def else None
-        current_order = stage_def.order if stage_def else 0
-        raw_stage = opportunity.get("stage")
+    def _stage_path(self, lifecycle: dict[str, Any]) -> str:
+        current_id = lifecycle.get("current_stage_id")
         parts = []
-        for stage in STAGE_DEFINITIONS:
-            classes = ["ql-stage-step"]
-            if current_order and stage.order < current_order:
-                classes.append("ql-stage-step-done")
-            elif stage.stage_id == current_id:
-                classes.append("ql-stage-step-current")
-            else:
-                classes.append("ql-stage-step-future")
+        for stage in self._pipeline_stages():
+            current = stage.stage_id == current_id
+            classes = "ql-stage-step ql-stage-step-current" if current else "ql-stage-step ql-stage-step-future"
             if stage.stage_id == "opportunity_confirmed":
-                classes.append("ql-stage-confirmed-marker")
-            marker = "关键节点" if stage.stage_id == "opportunity_confirmed" else str(stage.order)
-            icon = "★" if stage.stage_id == "opportunity_confirmed" else ("✓" if current_order and stage.order < current_order else "")
-            parts.append(
-                "<div class='" + " ".join(classes) + "'>"
-                "<div class='ql-stage-dot' aria-hidden='true'>"
-                f"<span>{esc(icon)}</span>"
-                "</div>"
-                "<div class='ql-stage-label'>"
-                f"<span>{esc(marker)}</span>"
-                f"<strong>{esc(stage.name)}</strong>"
-                "</div>"
-                "</div>"
-            )
-        if stage_def is None and raw_stage:
-            parts.append(
-                "<div class='ql-stage-step ql-stage-step-current ql-stage-step-unmapped'>"
-                "<div class='ql-stage-dot' aria-hidden='true'><span></span></div>"
-                "<div class='ql-stage-label'>"
-                f"<span>{esc('未归类')}</span>"
-                f"<strong>{esc(raw_stage)}</strong>"
-                "</div>"
-                "</div>"
-            )
+                classes += " ql-stage-confirmed-marker"
+            parts.append(f"<div class='{classes}'><span class='ql-stage-dot' aria-hidden='true'></span><strong>{esc(stage.name)}</strong></div>")
+        if current_id and not stage_by_id(str(current_id)):
+            parts.append(f"<div class='ql-stage-step ql-stage-step-current ql-stage-step-unmapped'><strong>{esc(current_id)}</strong></div>")
         return "".join(parts)
 
     def _action_items(self, actions: list[dict[str, Any]]) -> str:
         if not actions:
-            return "<li>暂无</li>"
+            return "<li class='ql-empty'>暂无行动</li>"
         out = []
         for a in actions:
-            out.append(
-                "<li>"
-                f"<strong>{esc(a.get('action_title'))}</strong>"
-                f"<span class='ql-tag orange'>{esc(self._priority_label(a.get('priority')))}</span><br/>"
-                f"<span>{esc(self._localized_level_text(a.get('reason')))}</span>"
-                "</li>"
-            )
+            evidence = a.get("completion_evidence_ids") or a.get("evidence_ids") or a.get("evidence")
+            if isinstance(evidence, (list, dict)):
+                evidence = json.dumps(evidence, ensure_ascii=False)
+            out.append("<li>" + f"<strong>{esc(a.get('action_title') or a.get('title'))}</strong> "
+                       + f"<span class='ql-tag'>{esc(self._status_label(a.get('status') or 'open'))}</span>"
+                       + "<dl class='ql-record-fields'>"
+                       + f"<div><dt>负责人</dt><dd>{esc(a.get('owner') or a.get('owner_name'))}</dd></div>"
+                       + f"<div><dt>期限</dt><dd>{esc(a.get('due_date') or a.get('due_at'))}</dd></div>"
+                       + f"<div><dt>优先级</dt><dd>{esc(self._priority_label(a.get('priority')))}</dd></div>"
+                       + f"<div><dt>依据</dt><dd>{esc(a.get('reason'))}</dd></div>"
+                       + f"<div><dt>结果</dt><dd>{esc(a.get('result'))}</dd></div>"
+                       + f"<div><dt>完成证据</dt><dd>{esc(evidence)}</dd></div></dl></li>")
         return "".join(out)
 
     def _priority_label(self, priority: Any) -> str:
@@ -513,7 +624,7 @@ class SkillDisplayRenderer:
     def _category_label(self, category: Any) -> str:
         mapping = {
             "win_likelihood": "赢单可能性",
-            "deal_attractiveness": "成交意向",
+            "deal_attractiveness": "商机价值",
             "delivery_confidence": "交付信心",
         }
         return mapping.get(str(category), esc(category))
@@ -659,8 +770,8 @@ class SkillDisplayRenderer:
                 f"<td><strong>{esc(item.get('label'))}</strong><br/><span class='ql-muted-text'>{esc(status)}</span></td>"
                 f"<td>{esc(self._category_label(item.get('category')))}</td>"
                 f"<td><span class='ql-tag rating-{esc(rating)}'>{esc(self._rating_label(rating))}</span><br/><span class='ql-muted-text'>{esc(item.get('score'))}分</span></td>"
-                f"<td>{esc(compact(item.get('rationale'), 120))}</td>"
-                f"<td>{esc(item.get('question'))}</td>"
+                f"<td>{esc(item.get('rationale'))}</td>"
+                f"<td>{esc(item.get('question'))}" + (f"<br/><strong>已记录回答</strong><br/>{esc(item.get('answer'))}" if item.get("answer") else "") + "</td>"
                 "</tr>"
             )
         return "".join(rows)
@@ -715,7 +826,7 @@ class SkillDisplayRenderer:
                 "<li>"
                 f"<strong>{esc(ev.get('source_name'))}</strong>"
                 f"{badge}"
-                f"{esc(compact(ev.get('content'), 220))}"
+                f"<details class='ql-disclosure'><summary>{esc(compact(ev.get('content'), 100))}</summary><p>{esc(ev.get('content'))}</p></details>"
                 "</li>"
             )
         return "".join(out)
@@ -743,24 +854,27 @@ class SkillDisplayRenderer:
         cards = []
         for item in files:
             href = item.get("relative_path") or item.get("archived_path") or item.get("original_path") or "#"
-            href = quote(str(href), safe="/:._-%#?=&")
+            href = self._safe_url(href)
+            href = "" if href == "#" else href
             name = item.get("display_name") or item.get("file_name") or "原始材料"
             file_name = item.get("file_name") or name
             mime = item.get("mime_type") or "文件"
             size = self._format_size(item.get("size_bytes"))
-            if item.get("is_image") or str(mime).startswith("image/"):
+            if href and (item.get("is_image") or str(mime).startswith("image/")):
                 thumb = f"<img src='{esc(href)}' alt='{esc(name)}'>"
             else:
                 thumb = f"<div class='ql-file-icon'>{esc(Path(str(file_name)).suffix.upper() or 'FILE')}</div>"
             cards.append(
-                f"<a class='ql-material-card' href='{esc(href)}' target='_blank' rel='noopener'>"
+                (f"<a class='ql-material-card' href='{esc(href)}' target='_blank' rel='noopener'>" if href else "<div class='ql-material-card ql-material-unavailable'>")
+                +
                 f"<div class='ql-material-thumb'>{thumb}</div>"
                 "<div class='ql-material-meta'>"
                 f"<strong>{esc(name)}</strong>"
                 f"<span>{esc(file_name)}</span>"
-                f"<small>{esc(mime)} · {esc(size)}</small>"
-                "</div>"
-                "</a>"
+                f"<small>{esc(mime)} · {esc(size)}"
+                + ("" if href else " · 材料链接不可用") + "</small>"
+                + "</div>"
+                + ("</a>" if href else "</div>")
             )
         return "".join(cards)
 
@@ -776,46 +890,61 @@ class SkillDisplayRenderer:
         return f"{value} B"
 
     def to_markdown(self, data: dict[str, Any]) -> str:
+        def text(value: Any) -> str:
+            if isinstance(value, (dict, list)):
+                value = json.dumps(value, ensure_ascii=False)
+            value = esc(value).replace("\n", " ")
+            return re.sub(r"([\\`*_{}\[\]()#+!|])", r"\\\1", value)
+
+        if "opportunities" in data:
+            lines = ["# 企灵商机列表", "", "| 商机 | 当前阶段 | 建议阶段 | 状态 | 负责人 | 下一行动 | 期限 | 阻塞 |", "|---|---|---|---|---|---|---|---|"]
+            for record in self._query_records(data):
+                item = self._record_data(record)
+                life = self._lifecycle(item)
+                action = self._next_action(life)
+                values = [item["opportunity"].get("name"), self._stage_label(life.get("current_stage_id")), self._stage_label(life.get("suggested_stage_id")),
+                          self._status_label(life.get("status")), life.get("owner") or item["opportunity"].get("owner"),
+                          action.get("title") or action.get("action_title"), action.get("due_date"), self._blockers(item)]
+                lines.append("| " + " | ".join(text(value) for value in values) + " |")
+            return "\n".join(lines)
         account = data.get("account", {})
         opp = data.get("opportunity", {})
-        lines = [
-            f"# {opp.get('name', '商机详情')}",
-            "",
-            f"**客户：** {account.get('company_name', '待确认')}",
-            f"**行业/地区：** {account.get('industry', '待确认')} / {account.get('region', '待确认')}",
-            f"**阶段：** {opp.get('stage', '待确认')}",
-            f"**评分：** {opp.get('score', '待确认')} / 100",
-            f"**风险等级：** {self._risk_label(opp.get('risk_level'))}",
-            "",
-            "## 核心需求",
-            str(opp.get("core_need", "待确认")),
-            "",
-            "## 下一步行动",
-        ]
-        for a in data.get("next_actions", []):
-            lines.append(f"- {a.get('action_title')}｜{self._priority_label(a.get('priority'))}｜{self._localized_level_text(a.get('reason'))}")
-        lines.append("\n## 决策链")
-        for node in data.get("decision_chain", []):
-            name = node.get("person_name") or "待确认"
-            lines.append(f"- {node.get('decision_role')}: {name}｜{self._status_label(node.get('status'))}｜{self._localized_level_text(node.get('next_step'))}")
+        life = self._lifecycle(data)
+        lines = [f"# {text(opp.get('name', '商机详情'))}", "", f"客户：{text(account.get('company_name'))}",
+                 f"当前阶段：{text(self._stage_label(life.get('current_stage_id')))}", f"建议阶段：{text(self._stage_label(life.get('suggested_stage_id')))}",
+                 f"状态：{text(self._status_label(life.get('status')))}", f"版本：{text(life.get('revision'))}",
+                 f"负责人：{text(life.get('owner') or opp.get('owner'))}", f"阻塞：{text(self._blockers(data) or '暂无已登记阻塞')}",
+                 f"文件状态：{text(self._file_status(life))}", f"结束原因：{text(life.get('close_reason'))}" if life.get("close_reason") else "",
+                 f"评分：{text(opp.get('score'))} / 100", f"风险：{text(self._risk_label(opp.get('risk_level')))}",
+                 "", "## 核心需求", text(opp.get("core_need")), "", "## 行动与结果"]
+        for action in life.get("actions") or data.get("next_actions", []):
+            lines.append(f"- {text(action.get('title') or action.get('action_title'))}｜{text(self._status_label(action.get('status') or 'open'))}｜负责人 {text(action.get('owner'))}｜期限 {text(action.get('due_date'))}｜结果 {text(action.get('result'))}｜完成证据 {text(action.get('completion_evidence_ids') or action.get('evidence_ids') or action.get('evidence'))}")
+        for key, label in [("history", "阶段历史"), ("facts", "已登记事实"), ("artifacts", "版本成果"), ("contracts", "合同与签署"), ("status_history", "状态变更")]:
+            lines.extend(["", f"## {label}"])
+            records = life.get(key) or []
+            if isinstance(records, dict):
+                records = [records]
+            lines.extend(f"- {text(record)}" for record in records)
+            if not records:
+                lines.append("暂无记录")
+        for key, label in [("contacts", "联系人"), ("decision_chain", "决策链"), ("risks", "风险清单"), ("evidence", "证据来源")]:
+            lines.extend(["", f"## {label}"])
+            lines.extend(f"- {text(record)}" for record in data.get(key, []))
         assessment = data.get("commercial_assessment", {}) or {}
         if assessment:
-            lines.append("\n## 商务确认评估")
-            lines.append(f"- 赢单可能性：{assessment.get('win_likelihood_score')}")
-            lines.append(f"- 成交意向：{assessment.get('deal_attractiveness_score')}")
-            lines.append(f"- 交付信心：{assessment.get('delivery_confidence_score')}")
-            lines.append(f"- 评估可信度：{self._confidence_label(assessment.get('confidence_level'))}")
-        lines.append("\n## 待确认信息")
-        for item in opp.get("missing_information", []):
-            lines.append(f"- {item}")
-        files = self._collect_archived_files(data)
-        if files:
-            lines.append("\n## 原始材料")
-            for item in files:
-                link = item.get("relative_path") or item.get("archived_path") or item.get("original_path") or ""
-                lines.append(f"- {item.get('display_name') or item.get('file_name') or '原始材料'}: {link}")
+            lines.extend(["", "## 商务确认评估", f"- 赢单可能性：{text(assessment.get('win_likelihood_score'))}",
+                          f"- 商机价值：{text(assessment.get('deal_attractiveness_score'))}", f"- 交付信心：{text(assessment.get('delivery_confidence_score'))}",
+                          f"- 评估可信度：{text(self._confidence_label(assessment.get('confidence_level')))}"])
+            lines.extend(f"- {text(record)}" for record in assessment.get("dimensions", []))
+        for key, label in [("pain_points", "痛点"), ("requirements", "建设要求"), ("missing_information", "待确认信息")]:
+            lines.extend(["", f"## {label}"])
+            lines.extend(f"- {text(item)}" for item in opp.get(key, []))
+        lines.extend(["", "## 原始材料"])
+        for item in self._collect_archived_files(data):
+            path = item.get("relative_path") or item.get("archived_path") or item.get("original_path")
+            lines.append(f"- {text(item.get('display_name') or item.get('file_name'))}: {text(path)}")
         return "\n".join(lines)
 
     def _status_label(self, status: Any) -> str:
-        mapping = {"confirmed": "已确认", "missing": "待补充", "open": "待处理", "active": "进行中"}
+        mapping = {"confirmed": "已确认", "missing": "待补充", "open": "待处理", "active": "进行中", "unconfirmed": "待确认", "completed": "已完成", "done": "已完成", "paused": "暂停", "lost": "丢单", "cancelled": "取消", "signed": "已签单", "won": "已签单", "registered": "已登记", "needs_review": "需复核", "stale": "已过期", "invalid": "已失效", "valid": "有效", "superseded": "已被新版本替代", "stale_or_missing": "文件已变更或缺失", "verified": "已核验", "unverified": "待核验"}
         return mapping.get(str(status), esc(status))

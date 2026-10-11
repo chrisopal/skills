@@ -148,6 +148,7 @@ def check_stage_management() -> None:
         "预算/立项确认",
         "报价/投标",
         "商务谈判",
+        "合同签署",
         "赢单",
         "丢单",
     ]
@@ -470,10 +471,13 @@ def check_legacy_stage_storage_compatibility(temp_root: Path) -> None:
 
 
 def check_unknown_stage_path_fallback() -> None:
-    html = SkillDisplayRenderer()._stage_path({"stage": "未知阶段X"})
-    for marker in ["ql-stage-step-current", "ql-stage-step-unmapped", "未知阶段X"]:
-        if marker not in html:
-            fail(f"unknown stage path did not render {marker}: {html}")
+    renderer = SkillDisplayRenderer()
+    html = renderer._stage_path({"stage": "未知阶段X"})
+    if "ql-stage-step-current" in html or "ql-stage-step-done" in html:
+        fail("legacy unknown suggestion fabricated a confirmed stage or history")
+    detail = renderer.render("opportunity_detail", {"opportunity": {"stage": "未知阶段X"}})["html"]
+    if "未知阶段X" not in detail:
+        fail("legacy unknown suggestion was lost from detail")
     print("ok unknown stage path fallback")
 
 
@@ -526,19 +530,21 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         query_html = query_result.get("display_result", {}).get("html", "")
         if not query_html:
             fail("query HTML render is empty")
-        assert_no_template_tokens(query_html, "query kanban HTML")
+        assert_no_template_tokens(query_html, "query list HTML")
+        board = run_query(first_db, {"filters": {}, "limit": 10}, render_html=True, template_id="opportunity_kanban")
+        board_html = board["display_result"]["html"]
         expected_stages = stage_names()
-        if len(expected_stages) != 10:
-            fail(f"validator expected 10 stage columns, got {expected_stages}")
         for stage_name in expected_stages:
-            if stage_name not in query_html:
+            if stage_name == "丢单":
+                continue  # Closed results are separate from the active stage sequence.
+            if stage_name not in board_html:
                 fail(f"kanban missing stage column {stage_name}")
         expected_confirmed = sum(
-            1 for item in query_result.get("opportunities", []) if item.get("opportunity_confirmed") is True
+            1 for item in query_result.get("opportunities", []) if item.get("lifecycle", {}).get("current_stage_id") not in {None, "lead_identified", "customer_contacted", "needs_discovery"}
         )
-        if "已确认商机" not in query_html and "尚未确认商机" not in query_html:
+        if "已确认商机" not in board_html and "尚未确认商机" not in board_html:
             fail("kanban did not render confirmed opportunity status")
-        assert_confirmed_summary_tile(query_html, expected_confirmed, "query kanban HTML")
+        assert_confirmed_summary_tile(board_html, expected_confirmed, "query kanban HTML")
         for opportunity in query_result.get("opportunities", []):
             name = opportunity.get("name")
             company = opportunity.get("company_name")
@@ -660,11 +666,11 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
         for marker in [
             "ql-stage-panel",
             "商机阶段",
-            "已确认商机",
+            "尚未确认商机",
             "ql-stage-timeline",
             "ql-hero-metrics",
             "商机评分",
-            "赢单概率",
+            "赢单参考值",
             "风险等级",
             "ql-stage-step-current",
             "ql-stage-confirmed-marker",
@@ -721,6 +727,7 @@ def check_targeted_kanban_fixture() -> None:
                     "missing_information": ["待确认现场节拍"],
                     "requirements": ["需要兼容现有 MES"],
                     "opportunity_confirmed": True,
+                    "lifecycle": {"current_stage_id": "solution_cocreation", "status": "active", "history": [], "actions": []},
                     "updated_at": "2026-07-07T10:00:00",
                 },
                 {
@@ -741,6 +748,7 @@ def check_targeted_kanban_fixture() -> None:
                     "missing_information": ["尚未拿到正式需求清单"],
                     "requirements": ["需要先安排客户访谈"],
                     "opportunity_confirmed": False,
+                    "lifecycle": {"current_stage_id": "customer_contacted", "status": "active", "history": [], "actions": []},
                     "updated_at": "2026-07-07T09:00:00",
                 },
             ],

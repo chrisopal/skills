@@ -1,4 +1,10 @@
 templates:
+  - id: opportunity_list
+    name: 商机列表
+    file: templates/opportunity_list.html
+    input_object: opportunity_list
+    output_format: html
+    fallback_format: markdown
   - id: opportunity_card
     name: 商机卡片
     file: templates/opportunity_card.html

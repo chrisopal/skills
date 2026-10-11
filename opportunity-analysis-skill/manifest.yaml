@@ -1,5 +1,5 @@
 name: opportunity-analysis-skill
-version: 0.3.0
+version: 0.4.0
 kind: portable-agent-capability
 description: Portable opportunity analysis capability with a Python reference runtime, default SQLite storage, controlled querying, and HTML/Markdown rendering.
 
@@ -74,9 +74,14 @@ outputs:
       - structured_data.archived_files
   query:
     schema: schemas/query.schema.json
-    renderer: opportunity_kanban
+    renderer: opportunity_list
   detail:
     renderer: opportunity_detail
+  lifecycle:
+    implementation: src/opportunity_skill/lifecycle.py
+    commands: [manage, lifecycle]
+    contract: ../opportunity-orchestrator/references/lifecycle-contract.md
+    authority: lifecycle.current_stage_id
 
 storage:
   default_adapter: sqlite
@@ -105,6 +110,8 @@ display:
   renderer: src/opportunity_skill/renderer.py
   template_engine: builtin_safe_renderer
   templates:
+    - id: opportunity_list
+      file: display/templates/opportunity_list.html
     - id: opportunity_card
       file: display/templates/opportunity_card.html
     - id: opportunity_detail

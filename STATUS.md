@@ -1,3 +1,11 @@
+## 2026-10-11 — Software project-delivery Skill design
+
+- Scope: Add `docs/plans/2026-10-11-project-delivery-skills-design.md` for custom software and systems integration: contract handover through warranty/closure, one orchestrator plus 24 business skills, kickoff/discovery/blueprint templates, Master Plan, timesheets/cost/travel, risk/quality/change, acceptance and project folders.
+- Simplification: Reuse existing opportunity/bid/presales/consulting/engineering and document-rendering capabilities; one owner per project ledger, versioned effective baselines, local files first. No new runtime, dependency, installed skills or generated client artifacts.
+- Validation: Unique Skill numbering/names, ten stage definitions, required-topic coverage, table/fence structure, existing-suite references and scoped whitespace checks pass. Independent review findings addressed: implementation-blueprint confirmation, complete change application before activation, and outsourcing estimate/settlement cost deduplication.
+- Limits: Business design proposal only; executable contracts, actual templates, cross-suite adapters, real project runs and customer acceptance remain unverified.
+- Commit/push: This entry accompanies the scoped design/documentation commit; configured remote HEAD is checked after push. Unrelated concurrent changes are excluded.
+
 ## 2026-10-11 — Executable presales Skill suite v0.1.0
 
 - Scope: Publish and locally install 10 presales skills, stdlib extraction/version/review/PPT-handoff tools, non-overwriting installer, tests and integration documentation.

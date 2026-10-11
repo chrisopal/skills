@@ -2,7 +2,7 @@
 name: bid-export-acceptance
 description: 生成并核验实际Word／PDF交付文件，确保成稿对应已审核版本且没有漏页、乱码或内部信息泄漏。 适用于：导出标书、Word/PDF成稿、交付打包、检查目录页码、实际文件验收。
 metadata:
-  version: 1.2.1
+  version: 1.2.2
   language: zh-CN
   sequence: '16'
   suite: bid-skills-suite
@@ -37,6 +37,8 @@ metadata:
 
 完整候选编标及宿主对话修订的保存、失效和重导出规则见[写作流程](references/WRITING_WORKFLOW.md)。
 
+Word 来源的自动引文核验使用随包 `review_checks.py` 的精确节点读取；缺依赖、位置歧义或原件哈希变化须保留错误。界面图内容按[配图复核](references/INTERFACE_VISUAL_QA.md)检查后再核对实际 Word/PDF，不能把源码正确或图片存在当成成稿正确。
+
 ## 执行步骤
 
 按[章节篇幅与界面图](references/CHAPTER_WRITING_POLICY.md)复核明确目标和必配图缺口，以及实际Word/PDF入图；设置变化使旧快照失效，不以数量达标自动接受整标。
@@ -67,7 +69,7 @@ metadata:
 
    基础生成器的表格会保留可编辑结构，并按 `style` 设置或关闭边框、表头底色、交替数据行、单元格内边距和统一字体；表格/图注行距未单独指定时继承正文行距。插图居中且图注与图片保持在同一排版组，内嵌图片会按原始纵横比检查排版组高度。实际导出仍需以渲染结果检查表格断页、标题间距、图片比例和字体替换。
 
-   `build_docx.py` 开启 TOC 时只写入可更新的 Word TOC 字段与标题书签，并保留“待更新”状态；必须在实际 Word/LibreOffice 交付引擎更新、保存并读回，不能把字段存在或 XML 文本当作目录已刷新。脚本返回 `draft_only` 和 `visual_qa=NOT_RUN`，通过结构检查不等于正式交付、签署或递交授权。
+   `build_docx.py` 开启 TOC 时只写入可更新的 Word TOC 字段与标题书签，并保留“待更新”状态；必须在实际 Word/LibreOffice 交付引擎更新整个目录、保存并读回缓存条目、书签目标和页码。窗口显示目录不证明缓存已保存，DOCX有超链接也不证明转换后的PDF保留跳转；导出后逐项核对实际PDF链接和目的页，缺链接时在实际引擎重新更新目录并导出。不能移用其他版本目录或伪造页码。脚本返回 `draft_only` 和 `visual_qa=NOT_RUN`，通过结构检查不等于正式交付、签署或递交授权。
 
 6. **步骤6**
 

@@ -2,7 +2,7 @@
 name: bid-review-remediation
 description: 逐项审核评分条件、关键材料完整性和资格／否决条件，记录原文、正文与证明材料，复核整改后再形成当前版本的交付建议。
 metadata:
-  version: 1.3.0
+  version: 1.3.1
   language: zh-CN
   sequence: '15'
   suite: bid-skills-suite
@@ -54,6 +54,8 @@ python scripts/review_checks.py check --project /project \
 `prepare`只建立全部待核验行，不生成通过结论。`check`验证当前集合、文件哈希、具体引文、检查结果和正式阻塞；不判断全部语义，不认证真实性或审批人。正文引用用JSON Pointer或实际行号，不能引用整个JSON或评审报告自证。缺OCR、图片证据回读或专业判断能力时保留unknown并说明范围。
 
 本技能可独立安装，包含快照与核心检查脚本。来源只读放inputs，正文与分析放artifacts，正式图和排版配置放assets/profiles，试验记录放work；评审放reviews以免自引用。旧报告缺核心矩阵时须重新评审，不继承历史ready。
+
+DOCX 来源引文可按原生解析的正文段落、表格单元格或唯一页眉／页脚位置直接核验，先检查登记身份、版本和原件哈希，再读取指定节点。不要换成全文搜索、引用解析缓存或删除错误以绕过位置校验；多分节歧义、扫描图片、复杂文本框等未核验范围仍需宿主补读。具体定位见[核心逐项评审](references/CORE_REVIEW.md)。配图问题按[界面图内容复核](references/INTERFACE_VISUAL_QA.md)回读当前图和成稿，图片存在不证明语义正确。
 
 需要可读界面、截图或PDF时，按[评审展示与打印](references/REVIEW_PRESENTATION.md)使用`render_review_report.py`生成当前JSON的HTML：概览、逐项理由、证据、整改及范围分区，正文和标签字号统一。长引文可展开，打印全部保留；不做一个新的手写卡片页面替代真实评审数据。导出PDF后逐页查看。
 

@@ -2,7 +2,7 @@
 name: bid-technical-writing
 description: 按明确任务卡编写有证据、有机制、有验收说明的技术正文与逐项响应。 适用于：编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。
 metadata:
-  version: "1.14.0"
+  version: "1.14.1"
   language: zh-CN
   sequence: '11'
   suite: bid-skills-suite

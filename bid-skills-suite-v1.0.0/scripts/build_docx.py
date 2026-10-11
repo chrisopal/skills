@@ -151,7 +151,8 @@ def _validate_inline_image(image, asset_root: Path, content_width: float,
     if width > content_width:
         raise ValueError('图片宽度超过当前页面正文宽度')
     spacing_cm = (6 + 3 + (8 if caption.strip() else 0)) * 2.54 / 72
-    caption_lines = max(1, math.ceil(len(caption.strip()) * caption_size * 0.5
+    # Reserve full-width glyphs: Chinese captions must not use Latin half-width estimates.
+    caption_lines = max(1, math.ceil(len(caption.strip()) * caption_size
                                      / (content_width * 72 / 2.54))) if caption.strip() else 0
     caption_cm = caption_lines * caption_size * caption_line_spacing * 2.54 / 72
     if height + spacing_cm + caption_cm + leading_space_cm > usable_height:
@@ -887,6 +888,10 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
                 if texts:
                     lines = max(1, math.ceil(len(texts[-1]) * body_size / width_pt))
                     leading_space_cm += (lines * body_size * spacing + before + after) * 2.54 / 72
+            # Inline drawings occupy a text line box as well as their image extent.
+            # Reserve one body line for baseline/font differences across Word renderers;
+            # keep-with-next alone cannot prevent a too-tall group from splitting.
+            leading_space_cm += body_size * spacing * 2.54 / 72
             image_path, image_width, image_height = _validate_inline_image(
                 {'path': str(rel), **{key: image[key] for key in ('width_cm', 'height_cm') if key in image}},
                 asset_root, content_width, usable_height, caption_text, caption_size,
@@ -897,6 +902,9 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
             document.add_picture(str(image_path), **kwargs)
             image_paragraph=document.paragraphs[-1]
             _set_paragraph_alignment(image_paragraph, 'center')
+            # Pictures use single leading; body paragraph spacing is for prose.
+            image_paragraph.paragraph_format.line_spacing = 1
+            image_paragraph.paragraph_format.keep_together = True
             image_paragraph.paragraph_format.first_line_indent = Pt(0)
             image_paragraph.paragraph_format.space_before = Pt(6)
             image_paragraph.paragraph_format.space_after = Pt(3)

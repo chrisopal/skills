@@ -99,7 +99,98 @@ def reference_text(project, reference):
     return value
 
 
+def _docx_location_text(path, location):
+    """Read only the DOCX node named by the native extraction location."""
+    try:
+        from docx import Document
+        from docx.enum.section import WD_HEADER_FOOTER
+        from docx.table import Table
+        from docx.text.paragraph import Paragraph
+    except ImportError as exc:
+        raise ValueError(
+            'DOCX原件读取依赖python-docx未配置，需宿主核验，不能自动通过'
+        ) from exc
+
+    try:
+        document = Document(path)
+    except Exception as exc:
+        raise ValueError(
+            'DOCX原件损坏或不可读取，需宿主核验，不能自动通过'
+        ) from exc
+
+    body_match = re.fullmatch(r'body\[(\d+)\]/paragraph', location)
+    table_match = re.fullmatch(r'body\[(\d+)\]/table/r(\d+)/c(\d+)', location)
+    if body_match or table_match:
+        body_index = int((body_match or table_match)[1])
+        body = list(document.element.body)
+        if not 1 <= body_index <= len(body):
+            raise ValueError('DOCX证据定位超出原件范围')
+        child = body[body_index - 1]
+        if body_match:
+            if not child.tag.endswith('}p'):
+                raise ValueError('DOCX证据定位类型与实际节点不一致')
+            return Paragraph(child, document).text
+        if not child.tag.endswith('}tbl'):
+            raise ValueError('DOCX证据定位类型与实际节点不一致')
+        table = Table(child, document)
+        row_number, column_number = int(table_match[2]), int(table_match[3])
+        if not 1 <= row_number <= len(table.rows):
+            raise ValueError('DOCX证据表格行号超出原件范围')
+        row = table.rows[row_number - 1]
+        if not 1 <= column_number <= len(row.cells):
+            raise ValueError('DOCX证据表格列号超出原件范围')
+        return row.cells[column_number - 1].text
+
+    part_match = re.fullmatch(r'(?:hdr|header|ftr|footer)/p(\d+)', location)
+    if part_match:
+        part_name = location.split('/', 1)[0]
+        expected_tag = 'header' if part_name in {'hdr', 'header'} else 'footer'
+        paragraph_number = int(part_match[1])
+        part_getter = (
+            document.part.header_part
+            if expected_tag == 'header'
+            else document.part.footer_part
+        )
+        part_type = WD_HEADER_FOOTER
+        parts = []
+        seen_parts = set()
+        for section in document.sections:
+            for part_index in (
+                part_type.PRIMARY,
+                part_type.FIRST_PAGE,
+                part_type.EVEN_PAGE,
+            ):
+                reference = (
+                    section._sectPr.get_headerReference(part_index)
+                    if expected_tag == 'header'
+                    else section._sectPr.get_footerReference(part_index)
+                )
+                if reference is None:
+                    continue
+                part = part_getter(reference.rId)
+                identity = part.partname
+                if identity in seen_parts:
+                    continue
+                seen_parts.add(identity)
+                parts.append(part)
+        if not parts:
+            raise ValueError('DOCX证据页眉/页脚位置不存在')
+        if len(parts) != 1:
+            raise ValueError('DOCX证据页眉/页脚位置不唯一，需明确具体分节')
+        paragraphs = [Paragraph(element, parts[0]) for element in parts[0].element.p_lst]
+        if not 1 <= paragraph_number <= len(paragraphs):
+            raise ValueError('DOCX证据页眉/页脚段落号超出原件范围')
+        return paragraphs[paragraph_number - 1].text
+
+    raise ValueError(
+        'DOCX证据定位格式不支持，需使用body[N]/paragraph、body[N]/table/rR/cC或'
+        'hdr/pN、ftr/pN'
+    )
+
+
 def source_text(project, source, cache):
+    if not isinstance(source.get('quote'), str) or not source['quote'].strip():
+        raise ValueError('证据引文不能为空')
     registry = bidkit.read(bidkit.safe(project, 'inputs/source-registry.json'))
     candidates = [s for s in registry['sources'] if s['source_id'] == source['source_id']
                   and s['revision'] == source['revision']]
@@ -110,6 +201,14 @@ def source_text(project, source, cache):
     if source['sha256'] != registered['sha256'] or bidkit.digest(path) != source['sha256']:
         raise ValueError('证据原件哈希过期')
     key = (source['source_id'], source['location'])
+    if path.suffix.lower() == '.docx':
+        # DOCX evidence is always read from the registered bytes.  Do not trust
+        # an intake/extraction cache as proof of a quote at an exact location.
+        value = _docx_location_text(path, source['location'])
+        normalize = lambda text: re.sub(r'\s+', '', text)
+        if normalize(source['quote']) not in normalize(value):
+            raise ValueError('证据引文不在原件指定位置')
+        return
     if key not in cache:
         if path.suffix.lower() == '.pdf':
             match = re.fullmatch(r'P(\d+)(?:[-–]P?(\d+))?', source['location'])

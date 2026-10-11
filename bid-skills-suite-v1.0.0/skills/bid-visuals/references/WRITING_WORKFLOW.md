@@ -58,6 +58,8 @@ python scripts/writing_workspace.py --project /absolute/project --port 8767
 
 ## 配图与生图配置
 
+界面术语、字段与连线的实际回读及定向修复见[界面图内容复核与修复](INTERFACE_VISUAL_QA.md)。密集界面多次修复回退时，可分开表达操作界面与矢量流程；必配界面图仍使用宿主原生生图并独立验收。
+
 设置保存于`work/writing-settings.json`，示例为`assets/writing-settings.example.json`。旧文件无visuals时补默认；编辑器可修改并按版本/哈希保存。设置及visuals仅接收列明的字段，未知字段和Key/凭据字段拒绝保存。生图凭据与授权沿用实际宿主；没有工具或凭据时保留缺口。
 
 已保存的旧`visuals.diagram_renderer`只在首次读取或写入时迁移：`svg`变为`diagram_engine=auto`和`diagram_format=svg`，`mermaid`变为`mermaid+svg`，`auto`变为`auto+svg`。新保存请求不再接受旧字段，迁移后文件只保留新字段。

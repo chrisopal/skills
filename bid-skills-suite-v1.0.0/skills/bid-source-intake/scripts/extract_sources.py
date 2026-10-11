@@ -279,6 +279,7 @@ def extract(
                     add(line, f"L{line_number}")
             elif suffix == ".docx":
                 from docx import Document
+                from docx.enum.section import WD_HEADER_FOOTER
                 from docx.table import Table
                 from docx.text.paragraph import Paragraph
 
@@ -291,14 +292,38 @@ def extract(
                         for row_number, cells in enumerate(table.rows, 1):
                             for column_number, cell in enumerate(cells.cells, 1):
                                 add(cell.text, f"body[{body_index}]/table/r{row_number}/c{column_number}")
-                seen: set[int] = set()
+                seen: set[object] = set()
                 for section in doc.sections:
-                    for part in (section.header, section.footer):
-                        if id(part._element) in seen:
-                            continue
-                        seen.add(id(part._element))
-                        for number, paragraph in enumerate(part.paragraphs, 1):
-                            add(paragraph.text, f'{part._element.tag.split("}")[-1]}/p{number}')
+                    for part_kind, part_getter, reference_getter in (
+                        (
+                            "hdr",
+                            doc.part.header_part,
+                            section._sectPr.get_headerReference,
+                        ),
+                        (
+                            "ftr",
+                            doc.part.footer_part,
+                            section._sectPr.get_footerReference,
+                        ),
+                    ):
+                        for part_index in (
+                            WD_HEADER_FOOTER.PRIMARY,
+                            WD_HEADER_FOOTER.FIRST_PAGE,
+                            WD_HEADER_FOOTER.EVEN_PAGE,
+                        ):
+                            reference = reference_getter(part_index)
+                            if reference is None:
+                                continue
+                            part = part_getter(reference.rId)
+                            identity = part.partname
+                            if identity in seen:
+                                continue
+                            seen.add(identity)
+                            paragraphs = [
+                                Paragraph(element, part) for element in part.element.p_lst
+                            ]
+                            for number, paragraph in enumerate(paragraphs, 1):
+                                add(paragraph.text, f"{part_kind}/p{number}")
                 review = True
                 warnings.append(
                     sid

@@ -52,7 +52,7 @@ DISTRIBUTED_DOCS = {
     'bid-commercial-documents': ('SIMULATION_TESTING.md',),
     'bid-outline-planning': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md',),
     'bid-technical-writing': ('KNOWLEDGE.md', 'OCR_SETUP.md', 'WRITING_WORKFLOW.md', 'SIMULATION_TESTING.md', 'PARALLEL_WRITING.md'),
-    'bid-visuals': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'DIAGRAM_TOOLS.md', 'ENTERPRISE_DIAGRAMS.md'),
+    'bid-visuals': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'DIAGRAM_TOOLS.md', 'ENTERPRISE_DIAGRAMS.md', 'INTERFACE_VISUAL_QA.md'),
     'bid-document-layout': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'BID_LAYOUT_TEMPLATES.md', 'EXPORT_LAYOUT.md'),
     'bid-review-remediation': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md', 'CORE_REVIEW.md'),
     'bid-export-acceptance': ('WRITING_WORKFLOW.md', 'PARALLEL_WRITING.md', 'SIMULATION_TESTING.md', 'CORE_REVIEW.md', 'EXPORT_LAYOUT.md'),
@@ -63,6 +63,10 @@ for _skill in ('bid-outline-planning', 'bid-technical-writing', 'bid-visuals',
     DISTRIBUTED_DOCS[_skill] += ('CHAPTER_WRITING_POLICY.md',)
 for _skill in ('bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
     DISTRIBUTED_DOCS[_skill] += ('REVIEW_PRESENTATION.md',)
+for _skill in ('bid-technical-writing', 'bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
+    DISTRIBUTED_DOCS[_skill] += ('INTERFACE_VISUAL_QA.md',)
+for _skill in ('bid-outline-planning', 'bid-document-layout'):
+    DISTRIBUTED_DOCS[_skill] += ('INTERFACE_VISUAL_QA.md',)
 for _skill in ('bid-scoring', 'bid-outline-planning', 'bid-technical-writing',
                'bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
     DISTRIBUTED_DOCS[_skill] += ('QUALITY_WORKFLOW.md', 'QUALITY_REVIEW.md', 'EXPORT_ACCEPTANCE_CHECKS.md', 'REVIEW_ACTIONS.md')
@@ -74,7 +78,7 @@ DISTRIBUTED_ASSET_DIRS = {
     'bid-export-acceptance': ('layout-templates',),
     'bid-orchestrator': ('tender-routing', 'ui', 'layout-templates', 'diagram-templates'),
 }
-REVIEW_SCHEMA_SKILLS = ('bid-evidence-matching', 'bid-review-remediation',
+REVIEW_SCHEMA_SKILLS = ('bid-evidence-matching', 'bid-technical-writing', 'bid-review-remediation',
                        'bid-export-acceptance', 'bid-orchestrator')
 DELIVERY_SCHEMA_SKILLS = ('bid-export-acceptance', 'bid-orchestrator')
 

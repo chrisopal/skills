@@ -1278,3 +1278,12 @@
 - 完成内容：更新根 README、投标套件 README 和 START_HERE，新增 enterprise-diagrams README、WorkBuddy 安装/调用/结果说明，追加 QA_REPORT。覆盖完整目录/单包安装、Codex/WorkBuddy/其他宿主、Python 依赖、首次指令、篇幅与配图、续写、评审及导出；保留 Draw.io，明确独立绘图与原生生图的区别。仅文档变更，不新增运行抽象、项目依赖、API 或部署。
 - 验证：17 Skill/34 Schema 与分发同源检查、336 项 unittest 通过；实际执行 README 复制块验证 18 个完整目录及拒绝覆盖，绘图 CLI、独立 ZIP 结构、本地 Markdown 链接和 diff 检查通过。WorkBuddy 5.6.2 实际安装发现、DOCX 23 块、组合分类、12 需求/100 分评分、933 字候选、teal SVG/PNG、原生 ImageGen 调用与编辑修订、HTML 预览均保存回读证据。缺资质/签署/业绩仍阻塞，未提升为正式可交付。
 - 风险/后续：DOCX 自动引文核验仍受限，界面图状态/退回连线语义仍待整改，已公开记录；本次未改运行代码或把人工回读算成自动门禁通过。未运行整标、Word/PDF/目录刷新、多章并行、OCR/私有知识库、Windows/PowerShell、ZIP 界面导入及真实投标验收。生成物仅留本地，无关 WIP 保持；验证后按仓库约定提交并推送 main。
+
+
+## 2026-10-11 — 投标Skill 1.17.1 DOCX与Word/配图修复
+
+- 完成内容：修复review_checks的DOCX精确来源核验；同步extract_sources普通/首页/偶数页页眉页脚读取及部件歧义拒绝，保留身份/版本/哈希门禁。修复独立技术写作包缺评审schema及已有依赖声明。build_docx图片单倍行距、中文图注与行框高度预检；更新配图实际内容复核、整个目录保存回读与PDF跳转核验规程、README/WORKBUDDY/QA及同源独立包，套件1.17.1。
+- 验证：Python3.13完整353项unittest通过；17Skill/34Schema/17ZIP与637文件哈希同源检查通过，独立Sol复核15项DOCX回归、实际19条引用、五包运行、r3界面与SVG语义及图注分页。WorkBuddy原生ImageGen真实生成新图；模拟单章6页Word/PDF全文、2图哈希、9目录及PDF目的页、图与图注同页和全部页实际查看通过。当前评审0错误、矩阵完整，19项材料/资格阻塞保留且正式门禁拒绝。
+- 决策与简化：复用已有python-docx及原生渲染器，不新增框架或后台模型调用。复杂UI与流程分开表达，图1缩宽14cm，图2使用宿主原生生图；仅修改投标套件与本记录，保留无关WIP，生成物留本机不提交。最终目录由已安装LibreOffice实际刷新保存并重开导出，无全局安全配置变更。
+- 补充校验：18个Skill frontmatter、17个变更Python文件编译、223个Markdown本地目标及diff检查通过；Codex/WorkBuddy各17个完整安装目录逐文件SHA回读一致，旧链接/目录备份到发现路径外，最终客户端重新发现因锁屏未复测。
+- 风险/后续：最终原生Word复测因Mac锁屏NOT_RUN，r4原生保存缓存与最终LibreOffice检查分别记录。单章仍proposed，整标、复杂附件、并行、OCR/知识库、Windows及真实签署递交/业务验收未运行；不把引文或模拟图通过当正式评标通过。无应用API/数据库/部署变化，应用lint/build不适用。按用户授权和仓库约定验证后提交推送main。

@@ -216,6 +216,40 @@ class ExportLayoutTests(unittest.TestCase):
             with zipfile.ZipFile(legacy_output) as archive:
                 self.assertIn(b'w:instr="PAGE"', archive.read('word/footer1.xml'))
 
+    def test_inline_figure_does_not_inherit_body_line_spacing(self):
+        # Image paragraphs must not inherit prose leading; pagination also needs
+        # the height preflight and a real saved/rendered document check.
+        from docx import Document
+        png = base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1kAAAAASUVORK5CYII=')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'figure.png').write_bytes(png)
+            spec = self._write_spec(root, images=[{
+                'path': 'figure.png', 'width_cm': 4, 'caption': '图1 设计示意'}])
+            output = root / 'figure.docx'
+            build_docx.build(spec, output, root)
+            document = Document(output)
+            index = next(i for i, p in enumerate(document.paragraphs)
+                         if p._p.xpath('.//w:drawing'))
+            image = document.paragraphs[index].paragraph_format
+            self.assertEqual(image.line_spacing, 1)
+            self.assertTrue(image.keep_together)
+            self.assertTrue(image.keep_with_next)
+            self.assertEqual(document.paragraphs[index + 1].text, '图1 设计示意')
+
+    def test_tall_figure_reserves_inline_line_box_and_full_width_caption(self):
+        png = base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1kAAAAASUVORK5CYII=')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'figure.png').write_bytes(png)
+            spec = self._write_spec(root, images=[{
+                'path': 'figure.png', 'width_cm': 16, 'height_cm': 23.4,
+                'caption': '完整中文图注' * 16}])
+            output = root / 'too-tall.docx'
+            with self.assertRaisesRegex(ValueError, '排版组超过'):
+                build_docx.build(spec, output, root)
+            self.assertFalse(output.exists())
+
     def test_invalid_export_options_and_image_bounds_fail_before_output(self):
         png = base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1kAAAAASUVORK5CYII=')
         invalid_configs = [

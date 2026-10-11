@@ -1,6 +1,6 @@
 # 投标编制 Skill 套件
 
-**版本 1.17.0 · 16 个业务 Skill + 1 个总控 Skill**
+**版本 1.17.1 · 16 个业务 Skill + 1 个总控 Skill**
 
 把招标文件解析、项目分类、需求与评分提取、目录、证据匹配、写作、配图、评审和 Word/PDF 导出串成一条可追溯的编标流程。安装到支持 `SKILL.md` 的宿主 Agent 后，由宿主模型和实际工具执行；不需要部署 Bid Agent 应用。
 
@@ -179,6 +179,6 @@ Windows 对应解释器为 `.venv\Scripts\python.exe`。告诉宿主使用该解
 
 源码副本用 `git pull --ff-only` 更新；复制安装需先把同名旧 Skill 备份到宿主发现目录**以外**，再安装完整新目录。软链接安装保留源码路径，新会话核对实际加载版本。不要删除其他 Skill 或把旧、新目录同时留在发现目录造成重复加载。现有项目不因更新自动重跑，继续前核对版本及受影响产物。
 
-工程检查可在已安装依赖的环境运行 `python scripts/check_suite.py` 和 `python -m unittest discover -s tests -v`。需要完整 pytest 回归时另使用已有 pytest 环境。结构、分发一致性、模型执行、视觉检查和真实业务验收是不同证据。当前 DOCX 原生解析可执行，但核心评审自动引文核验仍需宿主补充回读，并保留脚本限制；见 [WorkBuddy实测边界](docs/WORKBUDDY.md#docx-评审的当前限制)。
+工程检查可在已安装依赖的环境运行 `python scripts/check_suite.py` 和 `python -m unittest discover -s tests -v`。需要完整 pytest 回归时另使用已有 pytest 环境。结构、分发一致性、模型执行、视觉检查和真实业务验收是不同证据。DOCX 原生解析与核心评审现在可按段落／单元格精确核验引文；复杂页眉歧义、扫描及渲染范围仍保留限制，见 [WorkBuddy实测边界](docs/WORKBUDDY.md#docx-来源核验与边界)。
 
 本套件不附真实客户原件、证照或法定行业结论，不代签、不递交。种子模板和合成材料用于验证；模拟评审通过不能替代真实材料与授权。宿主/模型/工具组合的实际覆盖以测试记录为准，不承诺所有平台自动兼容。

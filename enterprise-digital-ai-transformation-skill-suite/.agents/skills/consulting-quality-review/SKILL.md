@@ -1,7 +1,7 @@
 # 独立质量、4A 追溯与一致性审查
 
 - **Skill name**: `consulting-quality-review`
-- **Version**: `1.4.0`
+- **Version**: `1.5.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -40,6 +40,10 @@
 9. 根据 Gate 规则给出 pass、conditional-pass 或 fail，并生成修订任务。
 
 ## 质量规则
+
+- 按 `shared/references/runtime-closure-contract.md` 分别记录技术检查、独立专业评审、客户批准；每条问题明确状态、责任人、期限、目标产物版本，关闭时附整改及复测证据。未关闭阻断项禁止正式交付。
+- Reviewer 与任务运行记录中的生成者交叉核对，不能只信评审报告的自声明。缺少独立专业评审时，技术通过仍不代表专业通过。
+- PPT 使用 `shared/references/consulting-ppt-style.md`，实际 PPTX 字号以 pt 检查，SVG 像素不能冒充磅值；内容包、实际页数、映射和源版本共同核验，再检查 Office 渲染。不得将旧版 HTML 的审阅意见当作新版 PPT 的批准。
 
 - 涉及报告、HTML或PPT内容确认时读取 `shared/references/document-and-html-review-contract.md`，独立核对源版本与哈希、节点/关系/数字/状态未漂移、阶段候选阅读不越Gate、审阅意见不等同批准。浏览器交互、视觉可读性、文档渲染和业务审批分别记录；未检查的表现层不得写通过。
 

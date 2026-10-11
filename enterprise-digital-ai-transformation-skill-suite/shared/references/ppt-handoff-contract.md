@@ -2,6 +2,10 @@
 
 ## 原则
 
+本项目咨询阅读版采用 `consulting-ppt-style.md` 和
+`shared/assets/consulting-ppt-style.json` 的32/28/24/18/14/12pt角色约定；
+交接必须传递样式版本与哈希，不以“咨询风格”一句话代替可执行参数。
+
 `transformation-storyline-builder` 负责“讲什么”；外部 PPT Skill 负责“怎么呈现”。
 
 默认推荐渲染器为 `ppt-master-plus` 的 `Generate PPTX` 路线。它是可替换实现，不属于咨询方法论本体；更换渲染器不得改变本契约。

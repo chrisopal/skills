@@ -1,6 +1,6 @@
 # Enterprise Digital & AI Transformation Skill Suite
 
-> Version 1.4 — Enterprise planning with document and HTML review surfaces
+> Version 1.5 — Evidence, review closure and consulting presentation contracts
 
 一个面向企业数字化转型与 AI 转型咨询的多 Skill 操作系统骨架。
 
@@ -41,6 +41,20 @@
 5. 每次只执行一个任务卡，产物登记后调用 `consulting-quality-review`。
 6. 分析产物全部通过 Gate 后，再调用 `transformation-storyline-builder`。
 7. 将 `slide-content-pack.json` 交给独立 PPT 模板/渲染 Skill。
+
+## 运行闭环与交付检查
+
+- [证据采集约定](shared/references/evidence-collection-contract.md)：采集计划、来源定位、核验记录及冲突后续动作；有字段不等于事实已被证实。
+- [运行闭环约定](shared/references/runtime-closure-contract.md)：任务输入输出锁定、评审整改复核、变更失效传播、人工 Gate 与交付映射。校验工具不自动执行咨询流程，也不证明签署者身份。
+- [咨询 PPT 样式](shared/references/consulting-ppt-style.md)：封面32、章节28、页标题24、正文18、表格14、脚注12磅；通过版本与哈希传递给外部 PPT Skill。
+
+```sh
+python scripts/validate_runtime_closure.py path/to/snapshot.json path/to/project
+python -m unittest discover -s scripts -p 'test_*.py'
+python scripts/validate_suite.py
+```
+
+模拟项目只能产生候选成果；技术校验、专业评审及客户验收是三个独立状态。
 
 ## 目录
 

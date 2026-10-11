@@ -1,5 +1,15 @@
 # Status
 
+## 2026-10-11 — Consulting delivery contracts 1.5
+
+- Scope: retain 17 business skills; strengthen evidence collection/verification, version/hash-bound runtime records, remediation/retest, transitive staleness and delivery mapping. No automatic workflow executor or customer approval authority added.
+- Source: four skill/manifest pairs; consulting typography JSON/reference, evidence schema/reference, runtime validator/example and regression tests, PPT handoff and README. Reuse existing task/quality schemas; no new dependency.
+- Verified: 72 Python tests pass; suite validator, Python compile, JS syntax and diff whitespace checks pass. Negative regressions exposed and fixed false approvals, cross-task version drift, malformed reviews and fake PPT ZIP acceptance. Real v2 contentpack and OOXML presentation both resolve 24 pages.
+- PPT: local `smart-factory-consulting-v2_ppt169_20261011` has 24 slides/24 notes/597 editable shapes, unchanged source text/notes, actual 12/14/18/24/28/32pt, YaHei/Arial theme. PowerPoint-exported PDF inspected; no detected text overflow or obvious visual overlap. Old 14-page HTML remains historical, not a current approval surface. Outputs stay outside Git.
+- WorkBuddy: expert source profile/lock updated and official package validation/re-registration passed; source skills are symlinked. Old cached package remains; reloading and actual host execution are unverified.
+- Commit/push: this source-only increment is committed and pushed after final checks; exact remote hash is reported in the task response. Unrelated WIP is excluded.
+- Remaining: real customer evidence, professional/customer approval, WorkBuddy runtime execution, document authenticity and HTML/report visual consistency still require their own checks. This simulation is not end-to-end business acceptance.
+
 ## 2026-10-10 — Diagram-first process review
 
 - Reuse: sibling Enterprise Diagrams engine without copying or modifying it; a small projection adapter separates parent containment from explicit upstream/downstream execution relationships.

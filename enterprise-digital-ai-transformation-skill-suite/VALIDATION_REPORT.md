@@ -1,5 +1,14 @@
 # Validation Report
 
+## 2026-10-11 revision 1.5
+
+- `uv run --offline --with pyyaml --with jsonschema python -m unittest discover -s scripts -p 'test_*.py'`: 72 passed, including 40 runtime closure and 6 evidence/style contract checks.
+- Runtime negative tests were observed failing before fixes. Coverage includes simulated approval, independent reviewer identity, open/closed findings and retest, conditional versus approved Gate, technical/professional result separation, same-ID input/output version binding, transitive stale, source-ID coverage, real OOXML relationships and malformed nested results.
+- `validate_suite.py`, Python compilation, existing JS syntax and `git diff --check` pass. Runtime example passes as an in-progress candidate, not a completed engagement. No new packages added.
+- Real local PPTX/contentpack read-back: 24 pages each and 24 resolved source IDs. Actual PPT has 24 notes, 597 editable shapes, no pictures and only 12/14/18/24/28/32pt runs; theme resolves Arial/YaHei. Source SVG text and notes match old draft. PowerPoint PDF has 24 pages and no detected out-of-page text; contact sheets and dense sample pages visually inspected.
+- Independent adversarial review exposed result-type crashes and cross-task reference drift; both received regression tests and fixes. Further hardening rejects candidate formal outputs, omitted content pages and fake slide-only ZIPs.
+- Boundaries: validator does not authenticate signers, execute Skills, infer Manifest prerequisites, prove customer facts, or render HTML/report/PPT. Actual customer approval and WorkBuddy execution remain unverified; old HTML preview is historical. Generated audit evidence and decks remain local.
+
 ## 2026-10-10 process diagram increment
 
 - 26 Python tests pass, including seven diagram tests: containment semantics, explicit edge direction, upstream-only declarations, contradictory/dangling references, cross-parent endpoints, missing engine and safe isolated SVG/source outputs.

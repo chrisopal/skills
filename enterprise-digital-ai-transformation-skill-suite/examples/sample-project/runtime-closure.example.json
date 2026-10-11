@@ -1,0 +1,102 @@
+{
+  "artifact_header": {
+    "artifact_id": "sample-manufacturing-dtx-runtime-closure-001",
+    "artifact_type": "runtime-closure-snapshot",
+    "project_id": "sample-manufacturing-dtx",
+    "generated_by": {"skill_name": "dtx-consulting-orchestrator", "skill_version": "1.5.0"},
+    "version": "1.1.0",
+    "status": "draft",
+    "upstream_artifact_ids": [],
+    "evidence_ids": [],
+    "assumptions": ["仅用于显式模拟结构校验；未执行真实 Skill、专业审查或客户审批"],
+    "reviewer": "not-run"
+  },
+  "snapshot_id": "sample-manufacturing-dtx-runtime-closure-001",
+  "project_id": "sample-manufacturing-dtx",
+  "mode": "manual-simulation",
+  "execution_state": "in-progress",
+  "tasks": [
+    {
+      "id": "task-s1-evidence",
+      "stage": "S1",
+      "required_input_ids": ["project-context", "artifact-register", "enterprise-planning"],
+      "inputs": [
+        {
+          "id": "project-context",
+          "version": "1.0.0",
+          "sha256": "f34234bc1964f8c13bdd4eb02c12a51fcae4367aa9e29bade2e6f7e89029fab3",
+          "path": "examples/sample-project/project-context.yaml"
+        },
+        {
+          "id": "artifact-register",
+          "version": "1.0.0",
+          "sha256": "9de5fc39bd9fb291777514d4de6af678bf1b569f9b20bb8c3608b45e74d2feda",
+          "path": "examples/sample-project/artifact-register.yaml"
+        },
+        {
+          "id": "enterprise-planning",
+          "version": "1.4.0",
+          "sha256": "c90a53e48dfe6b987ad9d109680a151eb38d7c4be53d252dd1538d4718d1ebe4",
+          "path": "shared/workflows/enterprise-planning.yaml"
+        }
+      ],
+      "outputs": [
+        {
+          "id": "candidate-task-card",
+          "version": "1.0.0",
+          "sha256": "2d58699d06e1dc37ed583b8628ab8a86553665f6079c7abe314264e55ac30eb0",
+          "path": "examples/sample-project/task-card.example.yaml",
+          "status": "candidate"
+        }
+      ],
+      "run": {
+        "mode": "manual-simulation",
+        "actor": "simulation-operator"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "id": "review-s1-example",
+      "candidate": {
+        "id": "candidate-task-card",
+        "version": "1.0.0",
+        "sha256": "2d58699d06e1dc37ed583b8628ab8a86553665f6079c7abe314264e55ac30eb0",
+        "path": "examples/sample-project/task-card.example.yaml"
+      },
+      "generated_by": "simulation-operator",
+      "reviewed_by": "independent-simulation-reviewer",
+      "reviewer_independent": true,
+      "results": {
+        "technical": {"status": "pending"},
+        "professional": {"status": "pending"},
+        "customer": {"status": "pending"}
+      },
+      "findings": [
+        {
+          "id": "finding-s1-example",
+          "owner": "not-assigned",
+          "due": "2026-10-12",
+          "status": "open"
+        }
+      ]
+    }
+  ],
+  "gate_decisions": [
+    {
+      "id": "gate-s1-example",
+      "gate": "G1",
+      "gate_type": "phase",
+      "mode": "manual-simulation",
+      "decision": "pending",
+      "candidate": {
+        "id": "candidate-task-card",
+        "version": "1.0.0",
+        "sha256": "2d58699d06e1dc37ed583b8628ab8a86553665f6079c7abe314264e55ac30eb0",
+        "path": "examples/sample-project/task-card.example.yaml"
+      }
+    }
+  ],
+  "upstream_changes": [],
+  "deliveries": []
+}

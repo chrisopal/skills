@@ -1,7 +1,7 @@
 # 证据、事实底座与 4A 资料分类
 
 - **Skill name**: `evidence-factbase`
-- **Version**: `1.1.0`
+- **Version**: `1.2.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -31,6 +31,11 @@
 - `conflict-and-verification-log`
 
 ## 执行步骤
+
+采集与核验时必须读取 `shared/references/evidence-collection-contract.md`。
+按角色/组织层级生成问题和原始材料任务，登记采集Owner/期限；
+verified与conflicted状态分别满足共享Schema的核验记录和冲突处理字段。
+Schema通过不证明来源真实，仍需回读受控原始材料。
 
 1. 为每个来源记录来源类型、日期、Owner、范围、可信度和访问限制
 2. 把原始内容拆分为 Evidence Item，区分事实、观点、假设、建议和外部基准

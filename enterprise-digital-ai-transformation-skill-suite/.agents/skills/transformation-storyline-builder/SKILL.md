@@ -1,7 +1,7 @@
 # 咨询故事线、4A 蓝图与 PPT 内容包
 
 - **Skill name**: `transformation-storyline-builder`
-- **Version**: `1.4.0`
+- **Version**: `1.5.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -55,6 +55,10 @@
 - 页面中的每个关键架构对象必须引用已批准 4A Artifact
 
 ## 质量规则
+
+- 读取 `shared/references/ppt-handoff-contract.md` 与其中的咨询排版契约；
+  把内容包及样式配置的ID/版本/哈希交给渲染Skill。拆页须回写新内容包和逐页映射，
+  正文18pt、表格14pt、脚注12pt等角色以实际导出字号核验，不使用SVG像素值冒充pt。
 
 - 过程报告、HTML与PPT审阅交接遵循 `shared/references/document-and-html-review-contract.md`：内容编排与文档写作/Word排版/HTML表现各为独立任务，不将图表美化混入专业分析。本Skill输出锁定版本的内容包，由enterprise-ui-design表现为可阅读的逐页草稿；审阅意见不可自动批准。无正式批准的真实项目候选成果仅供当期审阅，不借此进入正式S8交付。
 

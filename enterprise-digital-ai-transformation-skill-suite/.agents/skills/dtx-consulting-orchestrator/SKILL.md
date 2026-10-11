@@ -1,7 +1,7 @@
 # 数字化与 AI 转型咨询主编排
 
 - **Skill name**: `dtx-consulting-orchestrator`
-- **Version**: `1.4.0`
+- **Version**: `1.5.0`
 - **类型**: 可复用咨询 SOP
 
 ## 目的
@@ -69,6 +69,10 @@ G4 只检查当期4A与候选过渡状态；G5补举措，G6补波次。依 phas
 - G8 不得允许 PPT Skill 创建新的 4A 对象
 
 ## 质量规则
+
+- 读取 `shared/references/runtime-closure-contract.md`。每次任务记录唯一主 Skill 与版本、输入/输出版本和 SHA-256、执行者、实际运行证据；模拟推演与宿主实际执行分别登记。
+- 阶段结束运行 `scripts/validate_runtime_closure.py` 检查记录；失败则阻止进入下游。工具只校验记录及文件，不代替专业评审、客户签署或自动执行工作流。
+- 上游变更沿任务输入依赖传递，将受影响下游标为待重审；评审绑定确切版本和哈希。正式交付必须有已闭环的阻断项、独立复核及真实人工 Gate，不能把技术检查通过改写成客户批准。
 
 - 不得直接完成业务分析、架构设计、路线图或 PPT 内容
 - 不得跳过 Evidence、As-Is、To-Be、4A、Portfolio 等必要 Gate

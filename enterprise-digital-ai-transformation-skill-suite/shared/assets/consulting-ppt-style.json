@@ -1,0 +1,30 @@
+{
+  "profile_id": "consulting-readable-18",
+  "version": "1.0.0",
+  "unit": "pt",
+  "canvas_inches": [13.333333333333334, 7.5],
+  "svg_canvas": [1280, 720],
+  "svg_px_per_pt": 1.3333333333333333,
+  "fonts": {"zh": "Microsoft YaHei", "latin": "Arial", "fallback_requires_render_review": true},
+  "roles": {
+    "cover_title": {"size": 32, "bold": true},
+    "section_title": {"size": 28, "bold": true},
+    "slide_title": {"size": 24, "bold": true},
+    "group_heading": {"size": 18, "bold": true},
+    "body": {"size": 18, "bold": false},
+    "flow_node": {"size": 18, "bold": false},
+    "table": {"size": 14, "bold": false, "header_bold": true},
+    "chart_label": {"size": 14, "bold": false},
+    "secondary": {"size": 14, "bold": false},
+    "footnote": {"size": 12, "bold": false},
+    "key_number": {"size": 28, "bold": false}
+  },
+  "margins_inches": {"left": 0.5, "right": 0.5, "column_gap_min": 0.3},
+  "body_line_spacing_ratio": 1.15,
+  "title_max_lines": 2,
+  "auto_shrink": false,
+  "colors": {"background": "#FFFFFF", "body": "#1F2937", "primary": "#1E40AF", "muted": "#64748B", "border": "#CBD5E1"},
+  "critical_caveats_role": "body",
+  "overflow_resolution": ["rewrite_without_changing_meaning", "reflow", "split_slide_and_update_page_map"],
+  "brand_marks": false
+}

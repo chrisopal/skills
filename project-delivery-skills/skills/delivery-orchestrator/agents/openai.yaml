@@ -1,0 +1,6 @@
+interface:
+  display_name: "交付项目总控"
+  short_description: "恢复项目状态并路由交付任务"
+  default_prompt: "使用 $delivery-orchestrator 恢复项目有效版本并生成下一步任务卡。"
+policy:
+  allow_implicit_invocation: true

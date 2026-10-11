@@ -1,0 +1,6 @@
+interface:
+  display_name: "成本与费用"
+  short_description: "归集预算并避免成本重复"
+  default_prompt: "使用 $delivery-cost-expenses 建立预算、发生、承诺和完工预测。"
+policy:
+  allow_implicit_invocation: true

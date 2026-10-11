@@ -1,0 +1,6 @@
+interface:
+  display_name: "需求基线"
+  short_description: "建立可追溯的原子需求"
+  default_prompt: "使用 $delivery-requirements-baseline 从原始材料建立需求台账和验收映射。"
+policy:
+  allow_implicit_invocation: true

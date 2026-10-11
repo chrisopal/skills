@@ -1,0 +1,6 @@
+interface:
+  display_name: "客户调研计划"
+  short_description: "设计访谈和资料准备路径"
+  default_prompt: "使用 $delivery-discovery-planning 设计一组有目标和输出的客户调研场次。"
+policy:
+  allow_implicit_invocation: true

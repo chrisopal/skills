@@ -1,0 +1,6 @@
+interface:
+  display_name: "合同与交接"
+  short_description: "提取义务并锁定范围边界"
+  default_prompt: "使用 $delivery-contract-handover 从合同材料建立交付义务和交接清单。"
+policy:
+  allow_implicit_invocation: true

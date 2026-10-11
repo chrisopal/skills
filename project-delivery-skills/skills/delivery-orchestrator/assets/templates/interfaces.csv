@@ -1,0 +1,2 @@
+template_id,template_version,visibility,interface_id,source_system,source_version,target_system,target_version,business_purpose,direction,trigger,protocol,authentication,environment,frequency,capacity,field_mapping,encoding,unit,idempotency,timeout,retry,error_compensation,monitoring,test_sample,success_criteria,owner,third_party_dependency,status,revision
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

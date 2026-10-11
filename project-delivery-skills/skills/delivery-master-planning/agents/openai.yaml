@@ -1,0 +1,6 @@
+interface:
+  display_name: "Master Plan"
+  short_description: "建立基线预测和里程碑计划"
+  default_prompt: "使用 $delivery-master-planning 生成带基线、预测和依赖的 Master Plan。"
+policy:
+  allow_implicit_invocation: true

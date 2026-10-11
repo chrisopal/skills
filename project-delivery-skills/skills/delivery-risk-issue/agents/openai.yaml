@@ -1,0 +1,6 @@
+interface:
+  display_name: "风险与问题"
+  short_description: "跟踪风险问题和关闭证据"
+  default_prompt: "使用 $delivery-risk-issue 建立可升级且有证据的风险问题台账。"
+policy:
+  allow_implicit_invocation: true

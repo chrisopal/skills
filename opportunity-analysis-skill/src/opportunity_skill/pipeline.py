@@ -155,7 +155,7 @@ def run_analyze(input_data: dict[str, Any], db_path: str | Path, output_dir: str
         adapter.close()
         raise
     detail = adapter.get_opportunity_detail(storage_result["opportunity_id"])
-    for key in ('account', 'opportunity', 'contacts', 'decision_chain', 'commercial_assessment', 'sales_confirmation_questions', 'sales_confirmation_answers', 'risks', 'next_actions', 'evidence', 'evidence_map', 'archived_files', 'lifecycle'):
+    for key in ('account', 'opportunity', 'contacts', 'decision_chain', 'commercial_assessment', 'assessment_history', 'sales_confirmation_questions', 'sales_confirmation_answers', 'risks', 'next_actions', 'evidence', 'evidence_map', 'archived_files', 'lifecycle'):
         result['structured_data'][key] = deepcopy(detail[key])
     prepare_detail_attachments(detail, output_dir)
     renderer = SkillDisplayRenderer()

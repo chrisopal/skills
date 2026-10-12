@@ -115,6 +115,7 @@ class OpportunitySQLiteAdapter:
         self.conn.executescript(sql)
         self._ensure_contact_columns()
         self._ensure_opportunity_stage_columns()
+        self._ensure_assessment_columns()
         self._commit()
 
     def _ensure_contact_columns(self):
@@ -141,6 +142,11 @@ class OpportunitySQLiteAdapter:
         for name, ddl in columns.items():
             if name not in existing:
                 self.conn.execute(f"ALTER TABLE opportunities ADD COLUMN {name} {ddl}")
+
+    def _ensure_assessment_columns(self):
+        existing = {row["name"] for row in self.conn.execute("PRAGMA table_info(sales_confirmation_answers)").fetchall()}
+        if "evidence_refs" not in existing:
+            self.conn.execute("ALTER TABLE sales_confirmation_answers ADD COLUMN evidence_refs TEXT")
 
     def upsert_account(self, account: dict[str, Any]) -> str:
         now = now_iso()
@@ -412,8 +418,8 @@ class OpportunitySQLiteAdapter:
         self.conn.execute(
             """
             INSERT OR REPLACE INTO sales_confirmation_answers
-              (id, opportunity_id, assessment_id, question_id, dimension_id, answer_text, rating, source, answered_by, answered_at, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              (id, opportunity_id, assessment_id, question_id, dimension_id, answer_text, rating, source, answered_by, answered_at, evidence_refs, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 answer_id,
@@ -426,6 +432,7 @@ class OpportunitySQLiteAdapter:
                 item.get("source", "sales_confirmation"),
                 item.get("answered_by"),
                 item.get("answered_at"),
+                to_json(item.get("evidence_refs", [])),
                 now_iso(),
             ),
         )
@@ -515,6 +522,20 @@ class OpportunitySQLiteAdapter:
                     raise ValueError('account_id does not exist')
                 if 'expected_revision' in request and request['expected_revision'] != 0:
                     raise ValueError('new opportunity expected_revision must be 0')
+            incoming_evidence_ids = {ev.get('evidence_id') or ev.get('id') for ev in sd.get('evidence', [])}
+            owned_evidence_ids = {row['evidence_id'] for row in self.conn.execute(
+                'SELECT evidence_id FROM opportunity_evidence_map WHERE opportunity_id = ?', (opportunity_id,)
+            )} if opportunity_id else set()
+            answers_to_validate = request.get('sales_confirmation_answers') or (sd.get('commercial_assessment') or {}).get('answers', [])
+            for answer in answers_to_validate or []:
+                refs = answer.get('evidence_refs')
+                if refs is None or refs == []:
+                    continue
+                if not isinstance(refs, list) or not refs or any(not isinstance(ref, str) or not ref.strip() for ref in refs):
+                    raise ValueError('sales confirmation evidence_refs must be a nonempty array')
+                foreign = set(refs) - (owned_evidence_ids | incoming_evidence_ids)
+                if foreign:
+                    raise ValueError('sales confirmation evidence_refs must reference evidence owned by this opportunity: ' + ', '.join(sorted(foreign)))
             if account_id:
                 sd['account']['id'] = account_id
                 # A material update cannot erase an established customer profile.
@@ -587,7 +608,13 @@ class OpportunitySQLiteAdapter:
             node["opportunity_id"] = opportunity_id
             self.create_decision_chain_node(node)
         if sd.get("commercial_assessment"):
-            self.save_commercial_assessment(opportunity_id, sd["commercial_assessment"])
+            assessment = sd["commercial_assessment"]
+            answers = {answer.get('dimension_id') or answer.get('question_id'): answer for answer in assessment.get('answers', []) or []}
+            for dimension in assessment.get('dimensions', []) or []:
+                answer = answers.get(dimension.get('dimension_id'))
+                if answer and answer.get('evidence_refs'):
+                    dimension['evidence_refs'] = list(dict.fromkeys(answer['evidence_refs']))
+            self.save_commercial_assessment(opportunity_id, assessment)
         for risk in sd.get("risks", []):
             risk["opportunity_id"] = opportunity_id
             self.create_risk(risk)
@@ -711,6 +738,7 @@ class OpportunitySQLiteAdapter:
             "contacts": contacts,
             "decision_chain": decision_chain,
             "commercial_assessment": commercial_assessment,
+            "assessment_history": self._get_assessment_history(opportunity_id),
             "sales_confirmation_questions": commercial_assessment.get("questions", []) if commercial_assessment else [],
             "sales_confirmation_answers": commercial_assessment.get("answers", []) if commercial_assessment else [],
             "risks": risks,
@@ -727,6 +755,9 @@ class OpportunitySQLiteAdapter:
         ).fetchone()
         if not row:
             return {}
+        return self._assessment_record(row)
+
+    def _assessment_record(self, row: sqlite3.Row | dict[str, Any]) -> dict[str, Any]:
         assessment = dict(row)
         assessment_id = assessment["id"]
         dimensions = [dict(r) for r in self.conn.execute(
@@ -735,7 +766,7 @@ class OpportunitySQLiteAdapter:
         ).fetchall()]
         for item in dimensions:
             item["critical"] = bool(item.get("critical"))
-            item["evidence_refs"] = from_json(item.get("evidence_refs"))
+            item["evidence_refs"] = from_json(item.get("evidence_refs"), default=[])
         questions = [dict(r) for r in self.conn.execute(
             "SELECT * FROM sales_confirmation_questions WHERE assessment_id = ? ORDER BY priority, category, dimension_id",
             (assessment_id,),
@@ -744,10 +775,46 @@ class OpportunitySQLiteAdapter:
             "SELECT * FROM sales_confirmation_answers WHERE assessment_id = ? ORDER BY created_at",
             (assessment_id,),
         ).fetchall()]
+        for answer in answers:
+            answer["evidence_refs"] = from_json(answer.get("evidence_refs"), default=[])
         assessment["dimensions"] = dimensions
         assessment["questions"] = questions
         assessment["answers"] = answers
         return assessment
+
+    def _get_assessment_history(self, opportunity_id: str) -> list[dict[str, Any]]:
+        rows = self.conn.execute(
+            "SELECT * FROM commercial_assessments WHERE opportunity_id = ? ORDER BY created_at, rowid",
+            (opportunity_id,),
+        ).fetchall()
+        history: list[dict[str, Any]] = []
+        previous: dict[str, Any] | None = None
+        score_keys = ('overall_opportunity_score', 'win_likelihood_score', 'deal_attractiveness_score', 'delivery_confidence_score')
+        for row in rows:
+            assessment = self._assessment_record(row)
+            item = {key: assessment.get(key) for key in ('id', 'created_at', *score_keys, 'confidence_level', 'assessment_confidence_score', 'unanswered_critical_count', 'dimensions')}
+            item['assessment_id'] = item.pop('id')
+            item['answers'] = assessment['answers']
+            deltas: dict[str, Any] = {}
+            if previous is not None:
+                for key in score_keys:
+                    before, after = previous.get(key), item.get(key)
+                    deltas[key] = {'from': before, 'to': after, 'delta': after - before if isinstance(before, (int, float)) and isinstance(after, (int, float)) else None}
+                before_dimensions = {d.get('dimension_id'): d for d in previous.get('dimensions', []) or []}
+                dimension_deltas = {}
+                for dimension in item.get('dimensions', []) or []:
+                    before = before_dimensions.get(dimension.get('dimension_id'), {})
+                    before_score, after_score = before.get('score'), dimension.get('score')
+                    dimension_deltas[dimension.get('dimension_id')] = {
+                        'from_rating': before.get('rating'), 'to_rating': dimension.get('rating'),
+                        'from_score': before_score, 'to_score': after_score,
+                        'delta': after_score - before_score if isinstance(before_score, (int, float)) and isinstance(after_score, (int, float)) else None,
+                    }
+                deltas['dimensions'] = dimension_deltas
+            item['deltas'] = deltas
+            history.append(item)
+            previous = assessment
+        return history
 
     def _stage_filter_values(self, stage_filter: Any) -> tuple[list[str], str | None]:
         normalized = str(stage_filter or "").strip()

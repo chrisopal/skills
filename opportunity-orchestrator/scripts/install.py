@@ -14,7 +14,7 @@ SKILLS = (
     "opportunity-negotiation", "opportunity-closeout",
 )
 EXCLUDED_DIRS = {".git", ".venv", ".skill_data", "__pycache__", "outputs", "output", "projects", "node_modules", ".pytest_cache"}
-SOURCE_SUFFIXES = {".md", ".py", ".json", ".yaml", ".yml", ".toml", ".sql", ".css", ".html", ".txt"}
+SOURCE_SUFFIXES = {".md", ".py", ".json", ".yaml", ".yml", ".toml", ".sql", ".css", ".html", ".js", ".txt"}
 
 
 def source_files(root: Path):

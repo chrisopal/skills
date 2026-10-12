@@ -1,3 +1,13 @@
+## 2026-10-12 — Editable opportunity workbench and presales bridge v0.6.0
+
+- Scope/files: Shared analysis/storage/lifecycle/CLI, three schemas, enterprise workbench assets and stdlib server, presales_bridge.py, case/installer and four Skill guides. Design and validation: docs/plans/2026-10-12-opportunity-workbench*.md.
+- Behavior: Save visits, evidence-backed scores, competitor versions, actions and review closure/reopen in one SQLite; preserve assessment deltas, sources and immutable history. Revision conflicts reject stale writes. Actual presales export/receive binds selected evidence, purpose/config, reviewed content, DELIVERY and real file hashes; changes invalidate dependents and require review.
+- Simplification: Reuse existing presales runtime/PPT Skill, analysis/radar and transaction controls; stdlib HTTP and native assets, no new dependency or separate CRM. Installer includes JS. Actor remains an unauthenticated local record field.
+- Validation: 89 analysis + 12 orchestration tests, seven entry validators, suite/link/runtime, Python/JS syntax and whitespace pass. Independent review approved after four fixes. Fresh full12 case reaches simulated358000 CNY with unchanged score sequence; real four-page editable PPT/PDF/render readback and version invalidation/re-receive pass. Browser form/restart/conflict/guard checks and eight final theme/width states pass, no page overflow or console errors; visual verdict94/pass.
+- Current demonstration: Local editable case revision20, SOL-PPT-4 valid, prior solutions superseded; customer reviews need revalidation and formal stage remains solution_cocreation. Content review was independently returned and repaired before real PPT creation.
+- Limits/artifacts: Local loopback only; fictional case and internal draft, no real customer acceptance, production POC, signature, revenue, PowerPoint GUI or Python typing claim. Outputs under output/opportunity-workbench-20261012/ stay local and excluded. Whole presales-index hash conservatively invalidates on unrelated changes.
+- Commit/push: Scoped verified source and documentation accompany a Lore commit, non-force branch/main pushes with remote SHA check, followed by installed-source synchronization. Unrelated shared checkout WIP is retained.
+
 ## 2026-10-12 — Opportunity review closure and artifact lineage v0.5.0
 
 - Main integration: Original opportunity suite/case isolated from shared-branch delivery work and integrated into main as 1863bef6 after 52 tests; unrelated local WIP retained.

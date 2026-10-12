@@ -379,6 +379,80 @@
             "type": "object",
             "required": [
               "type",
+              "competitor_id",
+              "name",
+              "position",
+              "strengths",
+              "weaknesses",
+              "response",
+              "status",
+              "evidence"
+            ],
+            "properties": {
+              "type": {
+                "const": "record_competitor"
+              },
+              "competitor_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "position": {
+                "type": "string",
+                "minLength": 1
+              },
+              "strengths": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "weaknesses": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "response": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "enum": [
+                  "confirmed",
+                  "reported",
+                  "unknown"
+                ]
+              },
+              "price_amount": {
+                "type": "number",
+                "minimum": 0
+              },
+              "currency": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "type",
               "review_id",
               "title",
               "requirement_ids",

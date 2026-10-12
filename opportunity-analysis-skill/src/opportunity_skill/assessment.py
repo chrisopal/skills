@@ -173,10 +173,15 @@ def build_commercial_assessment(context: dict[str, Any]) -> dict[str, Any]:
     for spec in DIMENSIONS:
         inferred = _infer_dimension(spec["id"], normalized_context)
         answer = answer_map.get(spec["id"])
-        if answer and normalize_rating(answer.get("rating")) not in {None, "unknown"} and normalize_rating(answer.get("answer_text") or answer.get("answer")) != "unknown":
+        explicit_refs = answer.get("evidence_refs") if answer else None
+        has_explicit_refs = isinstance(explicit_refs, list) and bool(explicit_refs)
+        answer_rating = normalize_rating(answer.get("rating")) if answer else None
+        answer_text = answer.get("answer_text") or answer.get("answer") if answer else None
+        if answer and answer_rating not in {None, "unknown"} and normalize_rating(answer_text) != "unknown":
             rating = normalize_rating(answer.get("rating")) or inferred["rating"]
-            evidence_status = "sales_confirmed"
-            answer_text = answer.get("answer_text") or answer.get("answer")
+            # A sales answer without an immutable source is still an answer, but
+            # it cannot raise the evidence confidence of the dimension.
+            evidence_status = "sales_confirmed" if has_explicit_refs else "needs_sales_confirmation"
             rationale = answer_text or inferred["rationale"]
         else:
             rating = "unknown" if answer else inferred["rating"]
@@ -197,7 +202,9 @@ def build_commercial_assessment(context: dict[str, Any]) -> dict[str, Any]:
             "rationale": rationale,
             "question": spec["question"],
             "answer": answer_text,
-            "evidence_refs": inferred.get("evidence_refs", []),
+            # Explicit answer refs replace generic material inference. Do not
+            # attribute a sales assertion to the first two source materials.
+            "evidence_refs": list(dict.fromkeys(explicit_refs)) if has_explicit_refs else ([] if answer else inferred.get("evidence_refs", [])),
         })
 
     category_scores = _category_scores(dimensions)

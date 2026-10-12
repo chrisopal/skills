@@ -1,6 +1,6 @@
 [project]
 name = "opportunity-analysis-skill"
-version = "0.5.0"
+version = "0.6.0"
 description = "Self-contained opportunity analysis skill with SQLite storage and HTML rendering"
 requires-python = ">=3.10"
 dependencies = []

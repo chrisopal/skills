@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN" data-ui="enterprise" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商机工作台</title>
+  <link rel="stylesheet" href="/assets/workbench.css">
+</head>
+<body class="wb-app">
+  <div class="wb-shell">
+    <header class="wb-topbar">
+      <div>
+        <div class="wb-eyebrow">商机推进</div>
+        <h1>商机工作台</h1>
+        <p class="wb-muted">拜访、判断、方案反馈、竞争与签单推进</p>
+      </div>
+      <div class="wb-top-actions">
+        <button class="wb-btn wb-btn-secondary" id="theme-toggle" type="button">切换深色</button>
+        <button class="wb-btn wb-btn-secondary" id="refresh-list" type="button">刷新列表</button>
+      </div>
+    </header>
+
+    <main class="wb-main">
+      <section class="wb-layout">
+        <aside class="wb-panel wb-list-panel" aria-label="商机列表">
+          <div class="wb-panel-head">
+            <div>
+              <h2>商机主账</h2>
+              <p class="wb-muted" id="list-count">加载中…</p>
+            </div>
+            <button class="wb-btn wb-btn-primary wb-btn-small" id="new-opportunity" type="button">新增商机</button>
+          </div>
+          <div id="opportunity-list" class="wb-opportunity-list" tabindex="0"></div>
+        </aside>
+
+        <section class="wb-detail-column" aria-live="polite">
+          <div id="notice" class="wb-notice" role="status" hidden></div>
+          <div id="detail-empty" class="wb-panel wb-empty-state">
+            <div class="wb-empty-icon">◎</div>
+            <h2>选择一个商机</h2>
+            <p class="wb-muted">从左侧打开主账，查看雷达评分、阶段、评审意见和竞争台账。</p>
+          </div>
+          <div id="detail-view" hidden></div>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script>window.WORKBENCH_TOKEN = __WORKBENCH_TOKEN__;</script>
+  <script src="/assets/workbench.js"></script>
+</body>
+</html>

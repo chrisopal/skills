@@ -204,6 +204,7 @@ CREATE TABLE IF NOT EXISTS sales_confirmation_answers (
     source TEXT,
     answered_by TEXT,
     answered_at TEXT,
+    evidence_refs TEXT,
     created_at TEXT NOT NULL,
     FOREIGN KEY(opportunity_id) REFERENCES opportunities(id)
 );

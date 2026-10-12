@@ -20,3 +20,7 @@ description: 为已有 B 端商机制定推进策略，维护决策链、竞争�
 输出推进策略、决策链差异、明确行动、未解决事项和证据引用。通过 manage 的 add_action / complete_action / confirm_fact 保存，随后读回 lifecycle。只要产生行动，就明确其负责人及期限；缺少业务信息时交付候选行动和待补充项。
 
 完成条件是推进计划与事实一致、行动能被执行、已执行结果已回读；建议列表生成不代表行动完成。用户已授权的准备工作继续执行；客户沟通和外发按本次具体授权办理。
+
+## 竞争版本
+
+竞争线索使用共享 `record_competitor` 操作：稳定 `competitor_id`、定位、优势、弱点、应对、来源状态和证据；更新同一 ID 保留版本历史。价格只作线索，保留币种与 `reported` 状态，先核对范围及税费。评分变化需另行绑定依据执行分析，竞争台账更新不会自动提高或降低评分。见[操作指南](../opportunity-orchestrator/references/workbench-presales.md)。

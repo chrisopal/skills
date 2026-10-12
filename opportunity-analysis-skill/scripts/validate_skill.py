@@ -602,6 +602,7 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
                 "analysis_goal": "验证原始材料归档",
                 "materials": [
                     {
+                        "evidence_id": "archive-ev1",
                         "type": "image_ocr",
                         "name": "现场白板照片",
                         "file_path": str(source_image),
@@ -614,13 +615,15 @@ def check_evaluation_cases(keep_artifacts: bool = False) -> None:
                         "dimension_id": "customer_purchase_intent",
                         "rating": "strong",
                         "answer_text": "客户已立项，计划在本季度完成方案评审并进入采购流程。",
-                        "answered_by": "商务负责人"
+                        "answered_by": "商务负责人",
+                        "evidence_refs": ["archive-ev1"]
                     },
                     {
                         "dimension_id": "competitors",
                         "rating": "medium",
                         "answer_text": "已知有两家竞争对手，但客户认为我方方案更贴近现场节拍要求。",
-                        "answered_by": "商务负责人"
+                        "answered_by": "商务负责人",
+                        "evidence_refs": ["archive-ev1"]
                     }
                 ],
             },

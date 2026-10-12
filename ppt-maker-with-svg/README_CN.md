@@ -1,3 +1,5 @@
+> PPT Master Plus 已迁移至独立私有仓库。使用下述路径前，请先按[私有 Skill 安装说明](PRIVATE_SKILL.md)完成配置。
+
 # PPT Master — AI 生成原生可编辑 PPTX，支持任意文档输入
 
 [![Version](https://img.shields.io/badge/version-v2.9.0-blue.svg)](https://github.com/hugohe3/ppt-master/releases)

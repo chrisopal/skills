@@ -3,6 +3,7 @@
 import argparse
 import copy
 import html
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -92,21 +93,26 @@ def render(snapshot, all_steps, theme, css):
     ratings = [[d["label"], d["score"], {"strong": "强", "medium": "中", "weak": "弱", "unknown": "未知"}[d["rating"]], d["rationale"]] for d in dimensions]
     overview = f"<section class='case-panel'><h2>本次判断</h2><p class='case-decision'>{esc(step['decision'])}</p><p>{esc(step['note'])}</p></section><section class='case-panel'><h2>商机评估</h2><div class='case-metrics'>{metrics}</div><details><summary>评分口径与未知项</summary><p>18个维度使用既有运行层评分。强100、中65、弱25、未知40；未知40表示缺信息。综合分含原引擎基线混合，是启发式参考，不是实测成交概率。回答由本案例作者模拟提供；正式阶段、客户评审和签署分别登记。</p></details>{radar}<h3>本次评分变化</h3>{table(['维度','前次 → 本次','本次依据'], changes)}<details><summary>全部18个评分项</summary>{table(['维度','分数','判断','依据'], ratings)}</details></section><section class='case-panel'><h2>跟进行动</h2>{table(['行动','负责人','期限','状态'], action_rows)}</section>"
     reviews = []
-    if snapshot["review_status"]:
-        closed = snapshot["review_status"] == "closed"
-        reviews = [
-            ["RV-01 / REQ-02", "夜间提醒不合理", "林工", "已关闭" if closed else "待整改", "V2工作日计时；EV-06三组演示" if closed else "补工作时段规则与测试"],
-            ["RV-02 / REQ-04", "离线及双端冲突未覆盖", "周工", "已关闭（本轮演示）" if closed else "待整改", "V2离线20单及冲突队列；EV-06" if closed else "补离线去重和冲突保护"],
-            ["RV-03 / REQ-03", "ERP日期及延期处理不具体", "顾宁", "已关闭（方案措辞）" if closed else "待整改", "V2锁定资料前提；EV-06" if closed else "明确起算与客户责任"],
-        ]
+    for review in lifecycle.get("reviews", []):
+        closure = review.get("closure") or {}
+        status = "待整改" if review["status"] == "open" else "需复核" if review.get("verification_status") == "needs_review" else "已关闭"
+        basis = closure.get("resolution", "整改后提交客户复审")
+        if closure:
+            basis += "；" + "、".join(closure["evidence"])
+        reviews.append([review["id"] + " / " + "、".join(review["requirement_ids"]), review["title"],
+                        review["owner"] + " / " + review["due_date"], status,
+                        review["artifact_id"] + (" → " + closure["artifact_id"] if closure else ""), basis])
     solution_docs = [n for n in snapshot["documents"] if n.startswith(("requirements", "solution", "customer-review"))]
-    solution = f"<section class='case-panel'><h2>需求与方案版本</h2>{document_links(solution_docs, documents) if solution_docs else '<p class=case-empty>等待需求调研与方案任务。</p>'}<p>{'当前方案 V2；客户认可范围限于演示与报价。生产联通、现场压力及正式验收待交付验证。' if 'solution-v2.md' in solution_docs else '方案 V1 已评审退回，三项意见待整改。' if snapshot['review_status'] == 'open' else '当前方案 V1，等待客户评审。' if 'solution-v1.md' in solution_docs else '已形成需求工作稿，尚未形成可评审方案。' if solution_docs else '需求待进一步调研。'}</p></section><section class='case-panel'><h2>客户评审与整改</h2>{table(['意见 / 需求','客户意见','责任人','状态','关闭依据 / 下一步'], reviews, '尚未召开客户方案评审')}</section>"
+    solution = f"<section class='case-panel'><h2>需求与方案版本</h2>{document_links(solution_docs, documents) if solution_docs else '<p class=case-empty>等待需求调研与方案任务。</p>'}<p>{'当前方案 V2；客户认可范围限于演示与报价。生产联通、现场压力及正式验收待交付验证。' if 'solution-v2.md' in solution_docs else '方案 V1 已评审退回，三项意见待整改。' if snapshot['review_status'] == 'open' else '当前方案 V1，等待客户评审。' if 'solution-v1.md' in solution_docs else '已形成需求工作稿，尚未形成可评审方案。' if solution_docs else '需求待进一步调研。'}</p></section><section class='case-panel'><h2>客户评审与整改</h2>{table(['意见 / 需求','客户意见','负责人 / 期限','状态','评审 → 关闭方案','关闭依据 / 下一步'], reviews, '尚未召开客户方案评审')}</section>"
     roles = case["roles"][:1 if number == 1 else 2 if number == 2 else 4]
     competition = f"<section class='case-panel'><h2>决策链</h2>{table(['人员','职责','决策范围','识别来源'], roles)}</section><section class='case-panel'><h2>竞争态势</h2>{table(['供方','已知位置','缺口 / 风险','来源'], snapshot['competitors'], '竞争者未知，列入调研问题')}<p>转述价格保留来源；没有取得原始报价时，不认定为同范围对价。</p></section>"
-    artifacts = [[a.get("artifact_id", a.get("id", "")), a["kind"], f"V{a['version']}", Path(a["file_path"]).name] for a in lifecycle["artifacts"]]
+    renderer = SkillDisplayRenderer()
+    artifacts = [[a["id"], renderer._kind_label(a["kind"]), f"V{a['version']}",
+                  renderer._dependency_label(lifecycle, a), renderer._status_label(a["validity"]),
+                  Path(a["file_path"]).name] for a in lifecycle["artifacts"]]
     contracts = [[c.get("contract_id", c.get("id", "")), c["signing_date"], c["amount"], c["currency"], "双方模拟签署"] for c in lifecycle["contracts"]]
     commercial_docs = [n for n in snapshot["documents"] if n.startswith(("quote", "negotiation", "contract", "handoff", "competition"))]
-    commercial = f"<section class='case-panel'><h2>商务与签署</h2>{document_links(commercial_docs, documents)}{table(['合同','签署日期','含税金额','币种','签署状态'], contracts, '没有双方签署登记；当前不能判断已签单')}<p>{'预算未确认。' if number < 7 else '批准预算40万元。' + (' 最终模拟合同35.8万元；首款10.74万元尚未核实，回款/收入/交付验收分别记录。' if lifecycle['status'] == 'won' else ' 预算批准、报价接受和合同签署分别判断。')}</p></section><section class='case-panel'><h2>成果版本台账</h2>{table(['成果','类型','版本','实际文件'], artifacts)}</section>"
+    commercial = f"<section class='case-panel'><h2>商务与签署</h2>{document_links(commercial_docs, documents)}{table(['合同','签署日期','含税金额','币种','签署状态'], contracts, '没有双方签署登记；当前不能判断已签单')}<p>{'预算未确认。' if number < 7 else '批准预算40万元。' + (' 最终模拟合同35.8万元；首款10.74万元尚未核实，回款/收入/交付验收分别记录。' if lifecycle['status'] == 'won' else ' 预算批准、报价接受和合同签署分别判断。')}</p></section><section class='case-panel'><h2>成果版本台账</h2>{table(['成果','类型','版本','依据版本','核验状态','实际文件'], artifacts)}</section>"
     skill_rows = [["opportunity-orchestrator", "恢复当前版本→任务分派→变更核验→回读正式状态"]] + [[s, "本阶段按对应Skill指引处理，结果见输入/输出与文件"] for s in step["skills"] if s != "opportunity-orchestrator"]
     handoff = f"<section class='case-panel'><h2>本阶段 Skill 调用链</h2>{table(['Skill','责任'], skill_rows)}<h3>输入</h3><p>{esc(step['inputs'])}</p><h3>输出</h3><p>{esc(step['outputs'])}</p><h3>管理页面</h3><p>{esc(step['page'])}</p><details><summary>本次运行证据与执行边界</summary><p>本地CLI实际执行分析、管理和回读。Skill是Agent工作指引，未声称独立多Agent自动调用。方案为需求及方案工作稿；未制作PPT、实际POC或外发。页面是分时只读案例工作台。</p><a href='../stages/{number:02d}/snapshot.json'>本阶段实际回读数据 ↗</a><p>业务日期 {step['date']}；运行层审计时间为真实执行时间，二者分别保留。</p></details></section>"
     panes = [("overview", "概览与评估", overview), ("reviews", "方案与客户评审", solution), ("competition", "竞争与决策链", competition), ("commercial", "商务与合同", commercial), ("skills", "Skill 交接", handoff)]
@@ -142,6 +148,7 @@ def run_case(output):
         return json.loads(result.stdout)
 
     oid = None
+    registered = {}
     snapshots, available_docs, competitors, review_status, previous_scores = [], [], [], None, {}
     answers = {d["id"]: {"dimension_id": d["id"], "rating": "unknown", "answer_text": "未知", "answered_by": "模拟销售顾宁"} for d in DIMENSIONS}
     for number, raw in enumerate(steps, 1):
@@ -170,7 +177,19 @@ def run_case(output):
             path.write_text(documents[name], encoding="utf-8")
             available_docs.append(name)
         for aid, kind, version, filename in step.get("artifacts", []):
-            operations.append({"type": "register_artifact", "artifact_id": aid, "document_id": kind, "kind": kind, "version": version, "file_path": str(output / "documents" / filename), "evidence": [ev], "metadata": {"simulated": True, "scenario_date": step["date"], "solution_version": "V2" if number >= 6 else "V1", "source_skill": step["skills"][0]}})
+            required = {"quote": ["solution"], "negotiation": ["quote"], "contract": ["quote"], "handoff": ["contract"]}.get(kind, [])
+            if kind == "contract" and "negotiation" in registered:
+                required.append("negotiation")
+            dependencies = [registered[k] for k in required]
+            path = output / "documents" / filename
+            operations.append({"type": "register_artifact", "artifact_id": aid, "document_id": kind, "kind": kind, "version": version, "file_path": str(path), "dependencies": dependencies, "evidence": [ev], "metadata": {"simulated": True, "scenario_date": step["date"], "source_skill": step["skills"][0]}})
+            registered[kind] = {"artifact_id": aid, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+        if step.get("review_status") == "open":
+            for review in case["reviews"]:
+                operations.append({"type": "record_review", **{k: v for k, v in review.items() if k != "resolution"}, "artifact_id": "SOL-1", "blocking": True, "evidence": [ev]})
+        if step.get("review_status") == "closed":
+            for review in case["reviews"]:
+                operations.append({"type": "resolve_review", "review_id": review["review_id"], "artifact_id": "SOL-2", "resolution": review["resolution"], "evidence": [ev]})
         for key, value in step.get("facts", {}).items():
             operations.append({"type": "confirm_fact", "fact_id": key, "value": value, "evidence": [ev]})
         if step.get("authorize"):
@@ -200,7 +219,8 @@ def run_case(output):
             cli("detail", "--opportunity-id", oid, "--theme", theme, "--output-dir", folder / theme)
         detail = json.loads((folder / "light" / "detail.json").read_text(encoding="utf-8"))
         competitors = step.get("competitors", competitors)
-        review_status = step.get("review_status", review_status)
+        saved_reviews = detail["lifecycle"].get("reviews", [])
+        review_status = ("closed" if all(r["status"] == "resolved" and r["verification_status"] == "current" for r in saved_reviews) else "open") if saved_reviews else None
         snapshot = {"simulated": True, "number": number, "scenario_date": step["date"], "step": step, "detail": detail, "documents": list(available_docs), "competitors": copy.deepcopy(competitors), "review_status": review_status, "previous_scores": previous_scores}
         write_json(folder / "snapshot.json", snapshot)
         snapshots.append(snapshot)
@@ -219,7 +239,7 @@ def run_case(output):
         rows.append([st["date"], st["title"], stage_by_id(l["current_stage_id"]).name, a["overall_opportunity_score"], "、".join(st["skills"]), st["inputs"], st["outputs"], st["page"]])
     markdown = "# 完整商机案例：华辰装备售后工单平台一期\n\n所有客户、评审、竞争、金额和签署为模拟；CLI实际运行。业务日期与运行时间分开记录。\n\n| 日期 | 事件 | 正式阶段 | 综合分 | Skill（总控始终参与） | 输入 | 输出 | 页面 |\n|---|---|---|---|---|---|---|---|\n" + "\n".join("| " + " | ".join(map(str, row)) + " |" for row in rows)
     (output / "case-report.md").write_text(markdown + "\n\n签单35.8万元，不等于回款或收入。方案工作稿、模拟演示与真实生产验收分别记录。所有页面为本地只读案例视图，写入通过运行层完成。\n", encoding="utf-8")
-    result = {"simulated": True, "opportunity_id": oid, "timepoints": len(snapshots), "final_lifecycle": snapshots[-1]["detail"]["lifecycle"], "scores": [s["detail"]["commercial_assessment"]["overall_opportunity_score"] for s in snapshots], "checks": ["同一商机按12份分时证据增量更新", "V1退回与V2复审期间不伪造正式阶段推进", "竞争低价后竞争和价格评分下降", "Q2重新授权并绑定版本", "未签署赢单拒绝且版本不变", "C2模拟签署绑定35.8万元，回款与验收留待核验"]}
+    result = {"simulated": True, "opportunity_id": oid, "timepoints": len(snapshots), "final_lifecycle": snapshots[-1]["detail"]["lifecycle"], "scores": [s["detail"]["commercial_assessment"]["overall_opportunity_score"] for s in snapshots], "checks": ["同一商机按12份分时证据增量更新", "V1退回与V2复审期间不伪造正式阶段推进", "RV-01至03实际持久化并绑定SOL-2关闭", "报价谈判合同交接显式绑定依据摘要", "竞争低价后竞争和价格评分下降", "Q2重新授权并绑定版本", "未签署赢单拒绝且版本不变", "C2模拟签署绑定35.8万元，回款与验收留待核验"]}
     write_json(output / "acceptance.json", result)
     return {"output": str(output), "opportunity_id": oid, "timepoints": len(snapshots), "scores": result["scores"]}
 

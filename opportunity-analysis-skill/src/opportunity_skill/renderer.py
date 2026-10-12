@@ -312,9 +312,31 @@ class SkillDisplayRenderer:
         text = str(value)
         if text.startswith("fact unresolved, missing or negative: "):
             return "待确认：" + self._fact_label(text.rsplit(": ", 1)[-1])
-        if text.startswith("current artifact stale or missing: "):
-            return str(self._kind_label(text.rsplit(": ", 1)[-1])) + "文件已变更或缺失"
-        return {"quote authorization is stale or unbound": "报价授权已过期或未绑定当前版本", "signed contract record missing": "缺少已签署合同登记", "signed contract stale, missing or superseded": "签署合同文件已变更、缺失或被新版本替代"}.get(text, text)
+        if text.startswith(("current artifact stale or missing: ", "current artifact stale, unbound or missing: ")):
+            return str(self._kind_label(text.rsplit(": ", 1)[-1])) + "文件或依据版本需复核"
+        if text.startswith("blocking review requires resolution or revalidation: "):
+            return "评审意见待整改或复核：" + text.rsplit(": ", 1)[-1]
+        if text.startswith("current artifact does not match latest authorized quote: "):
+            return str(self._kind_label(text.rsplit(": ", 1)[-1])) + "依据的报价与最新授权不一致"
+        if text.startswith(("artifact does not match latest authorized quote: ", "signed contract does not match latest authorized quote: ")):
+            return "成果依据的报价与最新授权不一致：" + text.rsplit(": ", 1)[-1]
+        return {"quote authorization is stale or unbound": "报价授权已过期或未绑定当前版本", "authorized quote is stale or unbound": "授权报价已过期或未绑定当前版本", "authorized quote is missing or unresolved": "缺少已确认的报价授权", "signed contract stale, unbound, missing or superseded": "签署合同或依据版本已失效、未绑定或被替代", "signed contract record missing": "缺少已签署合同登记", "signed contract stale, missing or superseded": "签署合同文件已变更、缺失或被新版本替代"}.get(text, text)
+
+    def _verification_label(self, reason: str) -> str:
+        if reason == "review is open":
+            return "等待整改与客户复审"
+        if reason.startswith("review closure solution is "):
+            return "关闭依据需复核：" + self._status_label(reason.removeprefix("review closure solution is "))
+        if reason.startswith("required dependency missing: "):
+            return "缺少依据版本：" + str(self._kind_label(reason.rsplit(": ", 1)[-1]))
+        prefixes = {"dependency invalid: ": "上游成果需复核：", "dependency missing: ": "上游成果缺失：",
+                    "dependency hash mismatch: ": "上游摘要不符：", "artifact dependency cycle: ": "成果依赖循环：", "artifact superseded: ": "成果已被新版本替代：", "artifact file stale or missing: ": "成果文件已变更或缺失："}
+        for prefix, label in prefixes.items():
+            if reason.startswith(prefix):
+                return label + reason[len(prefix):].split(" (")[0]
+        return {"review closure solution binding missing or mismatched": "关闭依据未绑定或摘要不符",
+                "artifact file stale or missing": "成果文件已变更或缺失",
+                "artifact superseded": "成果已被新版本替代"}.get(reason, reason)
 
     def _lifecycle_summary(self, data: dict[str, Any]) -> str:
         life = self._lifecycle(data)
@@ -331,7 +353,7 @@ class SkillDisplayRenderer:
     def _file_status(self, life: dict[str, Any]) -> str:
         if not life.get("artifacts"):
             return "未登记"
-        if any(artifact.get("validity") in {"stale_or_missing", "invalid"} or artifact.get("valid") is False for artifact in life["artifacts"]):
+        if any(artifact.get("validity") in {"stale_or_missing", "invalid", "unbound", "dependency_invalid"} or artifact.get("valid") is False for artifact in life["artifacts"]):
             return "需复核"
         if life.get("verification_status") == "current":
             return "文件未变更"
@@ -342,7 +364,7 @@ class SkillDisplayRenderer:
             return f"<p class='ql-empty'>{esc(empty)}</p>"
         if isinstance(records, dict):
             records = [records]
-        labels = {"from_stage": "原阶段", "to_stage": "新阶段", "from_stage_id": "原阶段", "to_stage_id": "新阶段", "at": "时间", "created_at": "时间", "actor": "操作者", "time": "时间", "reason": "理由", "evidence_ids": "证据", "evidence": "证据", "id": "编号", "artifact_id": "成果编号", "kind": "类型", "type": "类型", "version": "版本", "status": "状态", "valid": "有效性", "validity": "有效性", "invalid_reason": "失效原因", "document_id": "文档编号", "metadata": "成果信息", "validity_reason": "有效性说明", "sha256": "文件校验", "title": "名称", "name": "名称", "value": "事实", "result": "结果", "signed_at": "签署时间", "signed_file": "签署文件", "fact_id": "事实编号", "signing_date": "签署日期", "amount": "合同金额", "currency": "币种", "verification_scope": "核验范围", "parties": "签约主体", "signature_facts": "签署登记", "relative_path": "归档文件", "archive_path": "归档文件", "archived_path": "归档文件", "file_path": "文件", "path": "文件", "url": "链接"}
+        labels = {"from_stage": "原阶段", "to_stage": "新阶段", "from_stage_id": "原阶段", "to_stage_id": "新阶段", "at": "时间", "created_at": "时间", "actor": "操作者", "time": "时间", "reason": "理由", "evidence_ids": "证据", "evidence": "证据", "id": "编号", "artifact_id": "成果编号", "kind": "类型", "type": "类型", "version": "版本", "status": "状态", "valid": "有效性", "validity": "有效性", "invalid_reason": "失效原因", "document_id": "文档编号", "metadata": "成果信息", "dependencies": "依据摘要", "verification_reasons": "核验详情", "closure": "关闭记录", "history": "处理历史", "validity_reason": "有效性说明", "sha256": "文件校验", "title": "名称", "name": "名称", "value": "事实", "result": "结果", "signed_at": "签署时间", "signed_file": "签署文件", "fact_id": "事实编号", "signing_date": "签署日期", "amount": "合同金额", "currency": "币种", "verification_scope": "核验范围", "parties": "签约主体", "signature_facts": "签署登记", "relative_path": "归档文件", "archive_path": "归档文件", "archived_path": "归档文件", "file_path": "文件", "path": "文件", "url": "链接"}
         output = []
         for record in records:
             if not isinstance(record, dict):
@@ -388,7 +410,7 @@ class SkillDisplayRenderer:
             audit_html = ""
             if audit_fields:
                 audit_html = "<details class='ql-disclosure ql-record-audit'><summary>编号与证据</summary><dl class='ql-record-fields'>" + "".join(audit_fields) + "</dl></details>"
-            invalid = record.get("validity") in {"superseded", "stale_or_missing", "invalid"} or record.get("valid") is False or record.get("status") in {"stale", "invalid"}
+            invalid = record.get("validity") in {"superseded", "stale_or_missing", "invalid", "unbound", "dependency_invalid"} or record.get("valid") is False or record.get("status") in {"stale", "invalid"}
             output.append(("<li class='ql-record-invalid'>" if invalid else "<li>") + "<dl class='ql-record-fields'>" + "".join(fields) + "</dl>" + audit_html + "</li>")
         return "<ul class='ql-record-list'>" + "".join(output) + "</ul>"
 
@@ -398,8 +420,46 @@ class SkillDisplayRenderer:
                     ("artifacts", "版本成果", "暂无版本成果"), ("contracts", "合同与签署", "暂无合同记录")]
         if life.get("status_history"):
             sections.append(("status_history", "状态变更", "暂无状态变更"))
-        return "".join(f"<section id='{key}' class='ql-panel'><div class='ql-panel-header'><h2 class='ql-panel-title'>{label}</h2></div>"
-                       + "<div class='ql-panel-body'>" + self._record_details(life.get(key), empty) + "</div></section>" for key, label, empty in sections)
+        output = self._review_section(life)
+        for key, label, empty in sections:
+            records = life.get(key)
+            if key == "artifacts":
+                records = [{**a, "依据版本": self._dependency_label(life, a),
+                            "核验说明": "；".join(self._verification_label(r) for r in a.get("verification_reasons", [])) or "—"} for a in records or []]
+            output += f"<section id='{key}' class='ql-panel'><div class='ql-panel-header'><h2 class='ql-panel-title'>{label}</h2></div>"
+            output += "<div class='ql-panel-body'>" + self._record_details(records, empty) + "</div></section>"
+        return output
+
+    def _dependency_label(self, life: dict[str, Any], artifact: dict[str, Any]) -> str:
+        by_id = {a.get("id"): a for a in life.get("artifacts", [])}
+        labels = []
+        for dep in artifact.get("dependencies", []):
+            source = by_id.get(dep.get("artifact_id"), {})
+            labels.append(f"{self._kind_label(source.get('kind', '缺失成果'))} V{source.get('version', '？')}")
+        return "；".join(labels) or ("原始成果" if artifact.get("kind") == "solution" else "未绑定")
+
+    def _review_section(self, life: dict[str, Any]) -> str:
+        rows = []
+        artifacts = {a.get("id"): a for a in life.get("artifacts", [])}
+        for review in life.get("reviews", []):
+            closure = review.get("closure") or {}
+            reviewed = artifacts.get(review.get("artifact_id"), {})
+            resolved = artifacts.get(closure.get("artifact_id"), {})
+            status = "待整改" if review.get("status") == "open" else "需复核" if review.get("verification_status") == "needs_review" else "已关闭"
+            binding = f"评审 V{reviewed.get('version', '？')}"
+            if closure:
+                binding += f" → 关闭 V{resolved.get('version', '？')}：{closure.get('resolution', '')}"
+            audit = self._record_details([{"evidence": review.get("evidence", []), "closure": closure,
+                                          "history": review.get("history", [])}], "无记录")
+            notes = "；".join(self._verification_label(r) for r in review.get("verification_reasons", []))
+            rows.append("<tr>" + "".join(f"<td>{esc(value)}</td>" for value in [
+                review.get("id"), "、".join(review.get("requirement_ids", [])), review.get("title"),
+                f"{review.get('owner', '—')} / {review.get('due_date', '—')}",
+                status + (" · 阻塞推进" if status != "已关闭" and review.get("blocking") else " · 非阻塞" if status != "已关闭" else "")])
+                + f"<td>{esc(binding)}<p>{esc(notes)}</p><details class='ql-disclosure'><summary>关闭证据与历史</summary>{audit}</details></td></tr>")
+        body = ("<div class='ql-table-wrap'><table><thead><tr><th>意见</th><th>需求</th><th>客户意见</th><th>负责人 / 期限</th><th>状态</th><th>方案与关闭依据</th></tr></thead><tbody>"
+                + "".join(rows) + "</tbody></table></div>") if rows else "<p class='ql-empty'>暂无客户评审意见</p>"
+        return "<section id='reviews' class='ql-panel'><div class='ql-panel-header'><h2 class='ql-panel-title'>客户评审与整改</h2></div>" + body + "</section>"
 
     def _resolve_stage_definition(self, opportunity: dict[str, Any]) -> Any:
         stage_id = opportunity.get("stage_id")
@@ -919,7 +979,7 @@ class SkillDisplayRenderer:
                  "", "## 核心需求", text(opp.get("core_need")), "", "## 行动与结果"]
         for action in life.get("actions") or data.get("next_actions", []):
             lines.append(f"- {text(action.get('title') or action.get('action_title'))}｜{text(self._status_label(action.get('status') or 'open'))}｜负责人 {text(action.get('owner'))}｜期限 {text(action.get('due_date'))}｜结果 {text(action.get('result'))}｜完成证据 {text(action.get('completion_evidence_ids') or action.get('evidence_ids') or action.get('evidence'))}")
-        for key, label in [("history", "阶段历史"), ("facts", "已登记事实"), ("artifacts", "版本成果"), ("contracts", "合同与签署"), ("status_history", "状态变更")]:
+        for key, label in [("reviews", "客户评审与整改"), ("history", "阶段历史"), ("facts", "已登记事实"), ("artifacts", "版本成果"), ("contracts", "合同与签署"), ("status_history", "状态变更")]:
             lines.extend(["", f"## {label}"])
             records = life.get(key) or []
             if isinstance(records, dict):
@@ -946,5 +1006,5 @@ class SkillDisplayRenderer:
         return "\n".join(lines)
 
     def _status_label(self, status: Any) -> str:
-        mapping = {"confirmed": "已确认", "missing": "待补充", "open": "待处理", "active": "进行中", "unconfirmed": "待确认", "completed": "已完成", "done": "已完成", "paused": "暂停", "lost": "丢单", "cancelled": "取消", "signed": "已签单", "won": "已签单", "registered": "已登记", "needs_review": "需复核", "stale": "已过期", "invalid": "已失效", "valid": "有效", "superseded": "已被新版本替代", "stale_or_missing": "文件已变更或缺失", "verified": "已核验", "unverified": "待核验"}
+        mapping = {"confirmed": "已确认", "missing": "待补充", "open": "待处理", "active": "进行中", "unconfirmed": "待确认", "completed": "已完成", "done": "已完成", "paused": "暂停", "lost": "丢单", "cancelled": "取消", "signed": "已签单", "won": "已签单", "registered": "已登记", "needs_review": "需复核", "stale": "已过期", "invalid": "已失效", "valid": "有效", "superseded": "已被新版本替代", "stale_or_missing": "文件已变更或缺失", "verified": "已核验", "unverified": "待核验", "unbound": "依据版本未绑定", "dependency_invalid": "依据版本需复核", "resolved": "已关闭"}
         return mapping.get(str(status), esc(status))

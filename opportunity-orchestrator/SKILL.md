@@ -37,8 +37,8 @@ python3 "$RUN" detail --opportunity-id "$OPP" --db "$DB" --output-dir /absolute/
 1. 新材料按既有 opportunity_id 增量分析，使用 request_id 和当前 expected_revision；先识别冲突、否定、条件和历史事实。
 2. 子 Skill 交付证据与变更建议。推断只改变 suggested_stage，不直接变成正式阶段。
 3. 依据原始材料核验事实、行动结果和成果文件；组装契约中的 manage 请求，由运行层一次事务提交。
-4. 回读 revision、current_stage、history、actions、artifacts 和 contracts。失败时保留原正式状态；先处理明确错误，再用新 request_id 提交修订。
-5. 范围、价格、方案或材料版本变化后重查受影响的阶段条件；历史记录保留，不通过覆盖旧记录隐藏变化。
+4. 回读 revision、current_stage、history、actions、reviews、artifacts 和 contracts。失败时保留原正式状态；先处理明确错误，再用新 request_id 提交修订。
+5. 范围、价格、方案或材料版本变化后回读依赖有效性及客户意见复核状态；阻塞意见未关闭时不得推进商务阶段。重查受影响的阶段条件；历史记录保留，不通过覆盖旧记录隐藏变化。
 
 ```bash
 python3 "$RUN" manage --input /absolute/project/change.json --db "$DB"

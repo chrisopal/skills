@@ -156,3 +156,7 @@ python3.12 scripts/validate_skill.py
 ```
 
 The validator checks JSON files, Python compilation, template safety, evaluation cases, analyze/query/detail runtime behavior, and accidental distribution artifacts.
+
+## 评审与版本恢复
+
+客户意见通过共享契约的 record_review / resolve_review / reopen_review 保存；回读 reviews 的当前核验状态及处理历史。成果依赖使用明确 dependencies（上游ID和摘要），不靠 metadata 自由文本。报价、谈判、合同及签署必须对应授权的同一报价依据；上游变化后重新评审和登记新版。只读报告中的已关闭/已签署历史不能代替当前版本核验。

@@ -23,3 +23,7 @@ PPT 生成、内部审核、客户认可和正式外发分别记录。方案做�
 接入 CRM 时指定唯一权威库和同步方向；不要让 SQLite 与 CRM 各自推进正式阶段。当前 Feishu/CRM/Postgres adapter 是扩展入口，本套件不宣称已实现外部连接。
 
 HTML/Markdown 是派生视图。静态视图支持真实链接与原生展开，写操作通过 CLI/宿主执行；无操作连接时不能渲染假的新增、编辑、签署按钮。
+
+## 已实现的本地桥接
+
+共享 CLI 已提供 `presales-export`/`presales-receive`，用实际售前 runtime API 初始化新项目、保存白名单交接和回收当前审核过的 DELIVERY；步骤与限制见[操作指南](workbench-presales.md)。PPT继续由已有制作 Skill 生成，商机套件没有第二个 PPT 渲染器。已实现本机 `serve` 表单；静态报告仍只读，跨用户认证、真实审批、客户发送和电子签署仍由宿主负责。

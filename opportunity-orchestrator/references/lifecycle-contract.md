@@ -52,6 +52,7 @@ expected_revision 必须换成回读值，不能照抄0。新材料用于增量�
 | add_action | action_id（可选）、title、owner、due_date | 建立可执行行动 |
 | complete_action | action_id、result、evidence | 保存真实完成结果 |
 | register_artifact | artifact_id（可选）、kind、version、file_path、dependencies、evidence、metadata | 登记实际文件、版本和摘要 |
+| record_competitor | competitor_id、name、position、strengths、weaknesses、response、status、evidence；可选price_amount/currency | 同ID更新当前竞争记录并追加版本历史；不自动调分 |
 | record_review | review_id、title、requirement_ids、artifact_id、owner、due_date、blocking、evidence | 登记当前方案的客户意见与整改责任 |
 | resolve_review | review_id、artifact_id、resolution、evidence | 绑定当前方案和关闭依据，保留处理历史 |
 | reopen_review | review_id、reason、evidence | 重新打开意见，不删除历史关闭记录 |
@@ -108,3 +109,7 @@ resolve_review 必须提交与被评审方案相同 document_id 的当前有效�
 冲突版本先读回新状态再整理差异，不能盲目覆盖。重复 manage 请求保留原变更回执 revision，lifecycle 和 current_revision 回读当前状态及文件有效性；不会再次执行操作。分析重试保留原保存回执并重新回读现状。改变请求内容不能借同一 ID 重放。证据错属、文件失效、缺少条件或请求非法时保留原正式状态。失败修订用新 request_id 和最新 revision。
 
 最终回读 lifecycle 的 revision、current_stage_id、suggested_stage_id、status、facts、history、actions、reviews、artifacts、contracts，以及未解决阻塞。已完成行动、阶段完成、签单和客户验收分别汇报。
+
+## 可编辑工作台与售前桥接
+
+同一共享运行层提供本机 `serve`、`presales-export` 和 `presales-receive`；[操作指南](workbench-presales.md)定义实际表单、评分历史、白名单交接、内容/交付审核、文件摘要以及上游变化后的复核。既有静态报告仍只读，actor不代表认证，内部审核不代表客户批准。

@@ -1,5 +1,5 @@
 name: opportunity-analysis-skill
-version: 0.5.0
+version: 0.6.0
 kind: portable-agent-capability
 description: Portable opportunity analysis capability with a Python reference runtime, default SQLite storage, controlled querying, and HTML/Markdown rendering.
 
@@ -79,7 +79,7 @@ outputs:
     renderer: opportunity_detail
   lifecycle:
     implementation: src/opportunity_skill/lifecycle.py
-    commands: [manage, lifecycle]
+    commands: [manage, lifecycle, serve, presales-export, presales-receive]
     contract: ../opportunity-orchestrator/references/lifecycle-contract.md
     authority: lifecycle.current_stage_id
 

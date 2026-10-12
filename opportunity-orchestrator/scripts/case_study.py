@@ -124,12 +124,15 @@ def render(snapshot, all_steps, theme, css):
     return f"""<!doctype html><html lang='zh-CN' data-ui='enterprise' data-theme='{theme}'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>{esc(step['title'])} · 华辰商机案例</title><style>{css}</style></head><body class='case-app'><header class='case-topbar'><strong>商机工作台</strong><span>完整案例 · 模拟数据</span><a href='../{other}/{number:02d}.html'>{'深色' if theme == 'light' else '浅色'}模式</a></header><div class='case-shell'><aside class='case-sidebar'><p>华辰装备 / 一期</p><nav aria-label='案例时间点'>{nav}</nav></aside><main class='case-main'><div class='case-heading'><div><p class='case-meta'>{step['date']} · 第 {number} / {len(all_steps)} 个时间点 · 负责人 顾宁</p><h1>{esc(step['title'])}<span class='case-tag'>{esc(stage_by_id(lifecycle['current_stage_id']).name)}</span></h1><p>{esc(case['name'])}</p></div><a class='case-outline' href='../stages/{number:02d}/{theme}/opportunity_detail.html'>查看商机详情 ↗</a></div><div class='case-tabs' role='tablist' aria-label='商机管理页面'>{tabs}</div>{content}<footer class='case-footer'>{before}{after}</footer></main></div><script>{script}</script></body></html>"""
 
 
-def run_case(output):
+def run_case(output, *, through=12):
+    if type(through) is not int or not 1 <= through <= 12:
+        raise ValueError('through must be between 1 and 12')
     output = output.resolve()
     if output.exists() and any(output.iterdir()):
         raise ValueError("Choose a new empty output directory; existing cases are never overwritten")
     output.mkdir(parents=True, exist_ok=True)
     case, documents, steps = fixture()
+    steps = steps[:through]
     for folder in ("documents", "sources", "requests", "stages", "light", "dark"):
         (output / folder).mkdir()
     db, sequence = output / "opportunity.db", 0
@@ -163,7 +166,7 @@ def run_case(output):
             return cli("lifecycle", "--opportunity-id", oid)["lifecycle"]
 
         for dimension, (rating, reason) in step.get("scores", {}).items():
-            answers[dimension] = {"dimension_id": dimension, "rating": rating, "answer_text": f"{ev}（模拟）：{reason}", "answered_by": "模拟销售顾宁"}
+            answers[dimension] = {"dimension_id": dimension, "rating": rating, "answer_text": f"{ev}（模拟）：{reason}", "answered_by": "模拟销售顾宁", "evidence_refs": [ev]}
         payload = {"request_id": f"case-analysis-{number}", "account_hint": case["customer"], "owner": case["owner"], "evidence_list": [{"evidence_id": ev, "source_type": "meeting_note", "source_name": f"{step['date']} {step['title']}（模拟）", "content": source.read_text(encoding="utf-8"), "file_path": str(source), "confidence": 0.9}], "sales_confirmation_answers": list(answers.values())}
         if oid:
             payload.update(opportunity_id=oid, expected_revision=state()["revision"])
@@ -172,6 +175,13 @@ def run_case(output):
         result = cli("analyze", "--input", request, "--output-dir", folder / "analysis")
         oid = result["storage_result"]["opportunity_id"]
         operations = []
+        for name, position, gaps, source_note in step.get('competitors', []):
+            if name == '我方':
+                continue
+            operations.append({'type': 'record_competitor', 'competitor_id': 'COMP-' + name,
+                'name': name, 'position': position, 'strengths': ['存在客户接触线索；具体优势待核实'],
+                'weaknesses': [gaps], 'response': '核验相同范围、税费与交付责任后再比较',
+                'status': 'reported', 'evidence': [ev]})
         for name in step.get("docs", []):
             path = output / "documents" / name
             path.write_text(documents[name], encoding="utf-8")
@@ -218,7 +228,8 @@ def run_case(output):
         for theme in ("light", "dark"):
             cli("detail", "--opportunity-id", oid, "--theme", theme, "--output-dir", folder / theme)
         detail = json.loads((folder / "light" / "detail.json").read_text(encoding="utf-8"))
-        competitors = step.get("competitors", competitors)
+        competitors = [[c['name'], c['position'], '；'.join(c['weaknesses']), '、'.join(c['evidence'])]
+                       for c in detail['lifecycle'].get('competitors', [])]
         saved_reviews = detail["lifecycle"].get("reviews", [])
         review_status = ("closed" if all(r["status"] == "resolved" and r["verification_status"] == "current" for r in saved_reviews) else "open") if saved_reviews else None
         snapshot = {"simulated": True, "number": number, "scenario_date": step["date"], "step": step, "detail": detail, "documents": list(available_docs), "competitors": copy.deepcopy(competitors), "review_status": review_status, "previous_scores": previous_scores}
@@ -237,9 +248,9 @@ def run_case(output):
     for s in snapshots:
         a, l, st = s["detail"]["commercial_assessment"], s["detail"]["lifecycle"], s["step"]
         rows.append([st["date"], st["title"], stage_by_id(l["current_stage_id"]).name, a["overall_opportunity_score"], "、".join(st["skills"]), st["inputs"], st["outputs"], st["page"]])
-    markdown = "# 完整商机案例：华辰装备售后工单平台一期\n\n所有客户、评审、竞争、金额和签署为模拟；CLI实际运行。业务日期与运行时间分开记录。\n\n| 日期 | 事件 | 正式阶段 | 综合分 | Skill（总控始终参与） | 输入 | 输出 | 页面 |\n|---|---|---|---|---|---|---|---|\n" + "\n".join("| " + " | ".join(map(str, row)) + " |" for row in rows)
-    (output / "case-report.md").write_text(markdown + "\n\n签单35.8万元，不等于回款或收入。方案工作稿、模拟演示与真实生产验收分别记录。所有页面为本地只读案例视图，写入通过运行层完成。\n", encoding="utf-8")
-    result = {"simulated": True, "opportunity_id": oid, "timepoints": len(snapshots), "final_lifecycle": snapshots[-1]["detail"]["lifecycle"], "scores": [s["detail"]["commercial_assessment"]["overall_opportunity_score"] for s in snapshots], "checks": ["同一商机按12份分时证据增量更新", "V1退回与V2复审期间不伪造正式阶段推进", "RV-01至03实际持久化并绑定SOL-2关闭", "报价谈判合同交接显式绑定依据摘要", "竞争低价后竞争和价格评分下降", "Q2重新授权并绑定版本", "未签署赢单拒绝且版本不变", "C2模拟签署绑定35.8万元，回款与验收留待核验"]}
+    markdown = f"# 商机案例：华辰装备售后工单平台一期（截至第{through}次事件）\n\n所有客户、评审、竞争、金额和签署为模拟；CLI实际运行。业务日期与运行时间分开记录。\n\n| 日期 | 事件 | 正式阶段 | 综合分 | Skill（总控始终参与） | 输入 | 输出 | 页面 |\n|---|---|---|---|---|---|---|---|\n" + "\n".join("| " + " | ".join(map(str, row)) + " |" for row in rows)
+    (output / "case-report.md").write_text(markdown + ("\n\n模拟签单35.8万元，不等于回款或收入。" if through == 12 else "\n\n此案例截取尚未记录合同签署。") + "方案工作稿、模拟演示与真实生产验收分别记录。所有页面为本地只读案例视图，写入通过运行层完成。\n", encoding="utf-8")
+    result = {"simulated": True, "opportunity_id": oid, "timepoints": len(snapshots), "final_lifecycle": snapshots[-1]["detail"]["lifecycle"], "scores": [s["detail"]["commercial_assessment"]["overall_opportunity_score"] for s in snapshots], "checks": [f"同一商机按{len(snapshots)}份分时证据增量更新", "评分依据与竞争情报实际写入并回读"], "complete_case": through == 12}
     write_json(output / "acceptance.json", result)
     return {"output": str(output), "opportunity_id": oid, "timepoints": len(snapshots), "scores": result["scores"]}
 
@@ -247,5 +258,6 @@ def run_case(output):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--through", type=int, default=12, help="Stop at a timepoint for an editable rehearsal")
     args = parser.parse_args()
-    print(json.dumps(run_case(args.output), ensure_ascii=False, indent=2))
+    print(json.dumps(run_case(args.output, through=args.through), ensure_ascii=False, indent=2))

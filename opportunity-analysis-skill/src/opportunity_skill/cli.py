@@ -56,8 +56,50 @@ def main():
     p_lifecycle.add_argument('--opportunity-id', required=True)
     p_lifecycle.add_argument('--db')
 
+    p_serve = sub.add_parser('serve', help='Open the loopback editing workbench')
+    p_serve.add_argument('--db')
+    p_serve.add_argument('--port', type=int, default=18768)
+    p_export = sub.add_parser('presales-export', help='Export selected evidence and requirements to a new presales project')
+    p_export.add_argument('--db')
+    p_export.add_argument('--opportunity-id', required=True)
+    p_export.add_argument('--project', required=True)
+    p_export.add_argument('--project-id', required=True)
+    p_export.add_argument('--evidence', action='append', required=True)
+    p_export.add_argument('--requirements', required=True, help='JSON array of authored requirements')
+    p_export.add_argument('--audience', required=True)
+    p_export.add_argument('--purpose', choices=['internal-draft', 'customer-review'], default='internal-draft')
+    p_export.add_argument('--runtime', help='Explicit trusted presales runtime.py path')
+    p_receive = sub.add_parser('presales-receive', help='Register a reviewed actual presales PPT as a solution version')
+    p_receive.add_argument('--db')
+    for name in ('opportunity-id', 'project', 'delivery-id', 'artifact-id', 'request-id', 'actor'):
+        p_receive.add_argument('--' + name, required=True)
+    p_receive.add_argument('--version', type=int, required=True)
+    p_receive.add_argument('--expected-revision', type=int, required=True)
+    p_receive.add_argument('--document-id', default='solution')
+    p_receive.add_argument('--runtime', help='Explicit trusted presales runtime.py path')
+
     args = parser.parse_args()
     db_path = args.db or str(default_db_path())
+
+    if args.command == 'serve':
+        from .workbench import serve
+        serve(db_path, port=args.port)
+        return
+    if args.command == 'presales-export':
+        from .presales_bridge import export_project
+        result = export_project(db_path, args.opportunity_id, args.project, args.project_id,
+            args.evidence, json.loads(Path(args.requirements).read_text(encoding='utf-8')),
+            audience=args.audience, purpose=args.purpose, runtime_path=args.runtime)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
+    if args.command == 'presales-receive':
+        from .presales_bridge import receive_delivery
+        result = receive_delivery(db_path, args.opportunity_id, args.project, args.delivery_id,
+            artifact_id=args.artifact_id, version=args.version, request_id=args.request_id,
+            expected_revision=args.expected_revision, actor=args.actor, document_id=args.document_id,
+            runtime_path=args.runtime)
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return
 
     if args.command == "analyze":
         input_data = json.loads(Path(args.input).read_text(encoding="utf-8"))

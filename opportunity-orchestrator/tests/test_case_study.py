@@ -105,6 +105,20 @@ class CaseStudyTests(unittest.TestCase):
                         self.assertTrue(target.is_relative_to(self.output), (page, href))
                         self.assertTrue(target.is_file(), (page, href))
 
+    def test_partial_rehearsal_does_not_claim_later_signing(self):
+        partial = Path(self.temp.name) / "partial"
+        result = case.run_case(partial, through=6)
+        self.assertEqual(result["timepoints"], 6)
+        saved = json.loads((partial / "acceptance.json").read_text())
+        self.assertFalse(saved["complete_case"])
+        self.assertEqual(saved["final_lifecycle"]["contracts"], [])
+        report = (partial / "case-report.md").read_text()
+        self.assertNotIn("35.8", report)
+        self.assertIn("尚未记录合同签署", report)
+        latest = json.loads((partial / "stages/06/snapshot.json").read_text())
+        solution_fit = next(d for d in latest["detail"]["assessment_history"][-1]["dimensions"] if d["dimension_id"] == "solution_fit")
+        self.assertEqual(solution_fit["evidence_refs"], ["EV-06"])
+
     def test_existing_case_is_preserved(self):
         original = (self.output / "acceptance.json").read_bytes()
         with self.assertRaises(ValueError):

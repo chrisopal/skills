@@ -28,7 +28,7 @@ For an existing opportunity pass `opportunity_id`, a unique `request_id`, and th
 
 `lifecycle.current_stage_id` is the confirmed business stage; `suggested_stage_id` and legacy `opportunity.stage/stage_id` are analytical suggestions. Inference never fabricates stage history or signed commitments. Unknown sales answers remain unresolved. Confirmed business facts, actions, artifacts and signed records are written through `manage`, then read back through `lifecycle` or `detail`.
 
-Query defaults to the enterprise list. Use `--template opportunity_kanban` for the board, `--current-stage` for confirmed stages, and `--theme dark` for dark views. Legacy `--stage` continues to filter analysis suggestions. Static HTML has no write controls; execute mutations through the runtime or an actual host integration.
+Query defaults to the enterprise list. Use `--template opportunity_kanban` for the board, `--current-stage` for confirmed stages, and `--theme dark` for dark views. Legacy `--stage` continues to filter analysis suggestions. Static HTML has no write controls. For actual local editing use the `serve` workbench described in the [workbench and presales guide](../opportunity-orchestrator/references/workbench-presales.md); its forms call the same runtime and SQLite ledger.
 
 ## Quick Run
 
@@ -84,7 +84,7 @@ Preferred input is `evidence_list`, where each item contains:
 The reference runtime also accepts `materials` with text content and wraps them into Evidence objects.
 When `file_path`, `path`, `source_path`, `source_ref`, or `attachments` points to a readable local file, the runtime copies it into an `attachments/` archive folder, records file metadata in SQLite, and exposes thumbnails or file links in the detail view.
 
-Optional `sales_confirmation_answers` lets a host pass business staff answers back into the skill. Each answer should include `dimension_id`, `rating` (`strong`, `medium`, `weak`, or `unknown`; Chinese `强`, `中`, `弱`, `未知`, `不确定`, `待确定`, and `待确认` are accepted), optional `answer_text`, and optional `answered_by`. These answers override inferred ratings and recalculate the commercial assessment and win probability.
+Optional `sales_confirmation_answers` lets a host pass business staff answers back into the skill. Each answer should include `dimension_id`, `rating` (`strong`, `medium`, `weak`, or `unknown`; Chinese `强`, `中`, `弱`, `未知`, `不确定`, `待确定`, and `待确认` are accepted), optional `answer_text`, optional `answered_by`, and `evidence_refs` containing IDs owned by this opportunity. Explicit answer references replace inferred references. Ratings without references remain `needs_sales_confirmation`; an answer is not its own source. Answers recalculate the heuristic assessment, not an empirical probability.
 
 The detail renderer must make commercial dimensions operational: show dimension-level radar charts grouped under the major score categories and show each dimension score/status in the dimension list and table. Do not render separate sales-confirmation cards in the business detail page; sales confirmation should happen during the analysis workflow through `sales_confirmation_questions` and `sales_confirmation_answers`. The major categories are summaries, not the radar axes.
 
@@ -101,6 +101,7 @@ Every successful analyze run returns:
     "decision_chain": [],
     "opportunity": {},
     "commercial_assessment": {},
+    "assessment_history": [],
     "sales_confirmation_questions": [],
     "sales_confirmation_answers": [],
     "risks": [],
@@ -160,3 +161,9 @@ The validator checks JSON files, Python compilation, template safety, evaluation
 ## 评审与版本恢复
 
 客户意见通过共享契约的 record_review / resolve_review / reopen_review 保存；回读 reviews 的当前核验状态及处理历史。成果依赖使用明确 dependencies（上游ID和摘要），不靠 metadata 自由文本。报价、谈判、合同及签署必须对应授权的同一报价依据；上游变化后重新评审和登记新版。只读报告中的已关闭/已签署历史不能代替当前版本核验。
+
+## 可编辑主账与版本联动
+
+`serve` 提供本机拜访/反馈、评分依据、竞争版本、行动、评审和阶段表单。每次写入沿用 `request_id` 与 `expected_revision`，冲突时刷新再重试。`assessment_history` 保留各次维度、答案、来源与相邻差值；不能倒改历史。竞争台账的 `confirmed/reported/unknown` 与价格线索分开显示，竞争更新不自动调分。
+
+真实售前联动使用 `presales-export` 和 `presales-receive`，只传选定证据与人工整理需求；回收实际 PPT/PDF、内容独立审核和文件回读记录。上游文件变化会使商机方案及其下游失效。操作与限制见[联动说明](../opportunity-orchestrator/references/workbench-presales.md)。

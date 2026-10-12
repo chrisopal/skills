@@ -54,3 +54,7 @@ python3 "$RUN" lifecycle --opportunity-id "$OPP" --db "$DB"
 ## 连续案例
 
 需要理解首次拜访到签单的输入输出、评分变化、方案评审回流与页面时，读[完整案例](references/full-lifecycle-case.md)。使用 scripts/case_study.py 在新的项目输出目录生成分时证据、真实 CLI 回读及亮暗案例页面；样例客户与签署均为模拟。
+
+## 实际编辑与售前成果回收
+
+需要持续更新管理页面时，启动共享运行层 `serve --db "$DB" --port 18768`，在本机工作台保存拜访、竞争、评分、行动、客户意见和阶段。页面和 CLI 共用修订号，不能把刷新后的显示当作业务审批。真实方案制作按[工作台与售前联动](references/workbench-presales.md)导出/回收，报价前再次核验当前成果及评审范围。

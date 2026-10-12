@@ -153,6 +153,7 @@ class SkillDisplayRenderer:
             "assessment_radar_chart": self._assessment_radar_chart(data.get("commercial_assessment", {})),
             "assessment_dimension_bars": self._assessment_dimension_bars(data.get("commercial_assessment", {}).get("dimensions", [])),
             "assessment_dimension_rows": self._assessment_dimension_rows(data.get("commercial_assessment", {}).get("dimensions", [])),
+            "assessment_history": self._assessment_history_section(data.get("assessment_history", [])),
             "missing.count": esc(len(data.get("opportunity", {}).get("missing_information", []))),
             "evidence.count": esc(len(data.get("evidence", []))),
             "materials.count": esc(len(self._collect_archived_files(data))),
@@ -428,7 +429,42 @@ class SkillDisplayRenderer:
                             "核验说明": "；".join(self._verification_label(r) for r in a.get("verification_reasons", [])) or "—"} for a in records or []]
             output += f"<section id='{key}' class='ql-panel'><div class='ql-panel-header'><h2 class='ql-panel-title'>{label}</h2></div>"
             output += "<div class='ql-panel-body'>" + self._record_details(records, empty) + "</div></section>"
+        output += self._competitor_section(life.get('competitors', []))
         return output
+
+    def _assessment_history_section(self, history: list[dict[str, Any]]) -> str:
+        if not history:
+            return "<section id='assessment-history' class='ql-panel'><div class='ql-panel-header'><h2 class='ql-panel-title'>评分依据历史</h2></div><div class='ql-panel-body'><p class='ql-empty'>暂无历史评估</p></div></section>"
+        rows = []
+        for item in history:
+            deltas = item.get('deltas') or {}
+            overall = deltas.get('overall_opportunity_score') or {}
+            delta = overall.get('delta')
+            delta_text = '首版' if not overall else ('+' if delta is not None and delta > 0 else '') + str(delta if delta is not None else '待确认')
+            dims = []
+            for dimension in item.get('dimensions', []) or []:
+                refs = '、'.join(dimension.get('evidence_refs', []) or []) or '无明确来源'
+                dims.append(f"<li><strong>{esc(dimension.get('label') or dimension.get('dimension_id'))}</strong>：{esc(self._rating_label(dimension.get('rating')))} / {esc(dimension.get('score'))}分 · {esc(self._evidence_status_label(dimension.get('evidence_status')))}<br/><span>{esc(dimension.get('rationale'))}</span><br/><small>来源：{esc(refs)}</small></li>")
+            details = "<details class='ql-disclosure'><summary>维度依据与来源</summary><ul class='ql-record-list'>" + ''.join(dims) + "</ul></details>"
+            rows.append("<tr>" + ''.join(f"<td>{esc(value)}</td>" for value in [item.get('created_at'), item.get('assessment_id'), item.get('overall_opportunity_score'), delta_text, item.get('confidence_level')]) + f"<td>{details}</td></tr>")
+        return "<section id='assessment-history' class='ql-panel'><div class='ql-panel-header'><h2 class='ql-panel-title'>评分依据历史</h2><span class='ql-panel-subtitle'>启发式评估，不等同统计赢率</span></div><div class='ql-table-wrap'><table><thead><tr><th>时间</th><th>评估编号</th><th>总分</th><th>相邻变化</th><th>可信度</th><th>维度依据</th></tr></thead><tbody>" + ''.join(rows) + "</tbody></table></div></section>"
+
+    def _competitor_section(self, competitors: list[dict[str, Any]]) -> str:
+        if not competitors:
+            body = "<p class='ql-empty'>暂无竞争台账</p>"
+        else:
+            rows = []
+            for item in competitors:
+                status = self._status_label(item.get('status'))
+                price = item.get('price_amount')
+                price_text = '待确认' if price is None else f"{price} {item.get('currency') or ''}".strip()
+                if price is not None and item.get('status') != 'confirmed':
+                    price_text += '（传闻/报告，未确认）'
+                history = self._record_details(item.get('history', []), '暂无历史')
+                sources = '、'.join(item.get('evidence', []) or []) or '无来源'
+                rows.append("<tr>" + ''.join(f"<td>{esc(value)}</td>" for value in [item.get('name'), status, item.get('position'), '；'.join(item.get('strengths', []) or []), '；'.join(item.get('weaknesses', []) or []), price_text, item.get('response'), sources]) + f"<td><details class='ql-disclosure'><summary>{len(item.get('history', []) or [])} 次记录</summary>{history}</details></td></tr>")
+            body = "<div class='ql-table-wrap'><table><thead><tr><th>对手</th><th>状态</th><th>客户侧位置</th><th>优势</th><th>弱点</th><th>价格</th><th>我方应对</th><th>来源</th><th>历史</th></tr></thead><tbody>" + ''.join(rows) + "</tbody></table></div>"
+        return "<section id='competition' class='ql-panel'><div class='ql-panel-header'><h2 class='ql-panel-title'>竞争台账</h2><span class='ql-panel-subtitle'>竞争情报变更不会自动改分</span></div><div class='ql-panel-body'>" + body + "</div></section>"
 
     def _dependency_label(self, life: dict[str, Any], artifact: dict[str, Any]) -> str:
         by_id = {a.get("id"): a for a in life.get("artifacts", [])}
@@ -979,7 +1015,7 @@ class SkillDisplayRenderer:
                  "", "## 核心需求", text(opp.get("core_need")), "", "## 行动与结果"]
         for action in life.get("actions") or data.get("next_actions", []):
             lines.append(f"- {text(action.get('title') or action.get('action_title'))}｜{text(self._status_label(action.get('status') or 'open'))}｜负责人 {text(action.get('owner'))}｜期限 {text(action.get('due_date'))}｜结果 {text(action.get('result'))}｜完成证据 {text(action.get('completion_evidence_ids') or action.get('evidence_ids') or action.get('evidence'))}")
-        for key, label in [("reviews", "客户评审与整改"), ("history", "阶段历史"), ("facts", "已登记事实"), ("artifacts", "版本成果"), ("contracts", "合同与签署"), ("status_history", "状态变更")]:
+        for key, label in [("reviews", "客户评审与整改"), ("history", "阶段历史"), ("facts", "已登记事实"), ("artifacts", "版本成果"), ("contracts", "合同与签署"), ("status_history", "状态变更"), ("competitors", "竞争台账")]:
             lines.extend(["", f"## {label}"])
             records = life.get(key) or []
             if isinstance(records, dict):
@@ -996,6 +1032,8 @@ class SkillDisplayRenderer:
                           f"- 商机价值：{text(assessment.get('deal_attractiveness_score'))}", f"- 交付信心：{text(assessment.get('delivery_confidence_score'))}",
                           f"- 评估可信度：{text(self._confidence_label(assessment.get('confidence_level')))}"])
             lines.extend(f"- {text(record)}" for record in assessment.get("dimensions", []))
+        lines.extend(["", "## 评分依据历史"])
+        lines.extend(f"- {text(record)}" for record in data.get("assessment_history", []))
         for key, label in [("pain_points", "痛点"), ("requirements", "建设要求"), ("missing_information", "待确认信息")]:
             lines.extend(["", f"## {label}"])
             lines.extend(f"- {text(item)}" for item in opp.get(key, []))

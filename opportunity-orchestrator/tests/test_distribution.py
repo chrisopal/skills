@@ -25,6 +25,11 @@ class DistributionTests(unittest.TestCase):
             completed = subprocess.run([sys.executable, str(run), "--help"], capture_output=True, text=True)
             self.assertEqual(completed.returncode, 0, completed.stderr)
             self.assertIn("analyze", completed.stdout)
+            self.assertIn("serve", completed.stdout)
+            self.assertIn("presales-receive", completed.stdout)
+            source_assets = ROOT.parent / "opportunity-analysis-skill/display/workbench"
+            for name in ("index.html", "workbench.css", "workbench.js"):
+                self.assertEqual((dest / "opportunity-analysis-skill/display/workbench" / name).read_bytes(), (source_assets / name).read_bytes())
             self.assertEqual(len(installer.install(dest)["unchanged"]), 7)
 
     def test_conflict_preflight_does_not_overwrite_or_partially_install(self):

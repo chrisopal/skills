@@ -4,6 +4,8 @@
 
 ## 当前收录
 
+- [`opportunity-orchestrator`](./opportunity-orchestrator/SKILL.md)：七个商机 Skills，从首次拜访、评分与竞争、方案评审到签单交接；共享 SQLite、本机可编辑工作台及真实售前/PPT版本桥接。[运行与安装说明](./opportunity-orchestrator/references/workbench-presales.md)。
+
 - [`presales-solution-skills`](./presales-solution-skills/README.md)：通用 B 端售前10技能，从混合资料、需求脑图、方案与逐页内容到本地PPT制作和实际文件审核，含版本失效工具与测试。
 
 - [`industrial-ai-architect`](./industrial-ai-architect/README.md)：工业数字化、智能工厂、AI 战略架构、方案蓝图、路线图和业务落地设计。
@@ -15,6 +17,8 @@
 - [`book2video`](./book2video/README.md)：Book2Video 独立 Node 工程，提供 CLI、三段工具、Provider 占位、Remotion 模板占位和测试，用于把书籍方法论生成短视频生产包。
 
 ## 推荐安装方式
+
+商机套件需安装七个兄弟目录：`python3 opportunity-orchestrator/scripts/install.py --dest /absolute/new-skill-directory`。安装器保留已有目录，发现差异会拒绝覆盖；真实售前/PPT联动另需安装相应售前与制作 Skill。
 
 售前套件需将10个技能安装为兄弟目录，请运行 `python3 presales-solution-skills/scripts/install.py --dest "$HOME/.codex/skills"`，不要只链接套件根目录。详见其README。
 

@@ -30,7 +30,7 @@ COMMERCIAL_STAGES = {'proposal_bidding', 'commercial_negotiation', 'contract_sig
 def initial_lifecycle(suggested_stage_id: str | None = None, *, legacy: bool = False) -> dict[str, Any]:
     return {'current_stage_id': 'lead_identified', 'suggested_stage_id': suggested_stage_id,
             'status': 'active', 'revision': 0, 'facts': [], 'history': [], 'actions': [],
-            'artifacts': [], 'contracts': [], 'reviews': [], 'status_history': [], 'next_action': None,
+            'artifacts': [], 'contracts': [], 'reviews': [], 'competitors': [], 'status_history': [], 'next_action': None,
             'owner': None, 'owner_history': [],
             'close_reason': None, 'migration_note': 'Legacy stage retained as suggestion; no confirmed facts or history inferred.' if legacy else None}
 
@@ -99,6 +99,28 @@ def artifact_verification(state, artifact, visiting=None):
         return 'superseded', ['artifact superseded: ' + artifact['id']]
     if not artifact_is_current(artifact):
         return 'stale_or_missing', ['artifact file stale or missing: ' + artifact['id']]
+    metadata = artifact.get('metadata')
+    if isinstance(metadata, dict) and 'presales_binding' in metadata:
+        binding = metadata.get('presales_binding')
+        if not isinstance(binding, dict) or not isinstance(binding.get('files'), list) or not binding['files']:
+            return 'dependency_invalid', ['presales source changed: binding files are missing or malformed']
+        project_path = binding.get('project_path')
+        if not isinstance(project_path, str) or not project_path.strip() or not Path(project_path).expanduser().is_dir():
+            return 'dependency_invalid', ['presales source changed: project path is missing']
+        source_reasons = []
+        for item in binding['files']:
+            if not isinstance(item, dict) or not isinstance(item.get('file_path'), str) or not item.get('file_path').strip() or not isinstance(item.get('sha256'), str):
+                source_reasons.append('presales source changed: binding file is malformed')
+                continue
+            source = Path(item['file_path']).expanduser()
+            try:
+                digest = hashlib.sha256(source.read_bytes()).hexdigest() if source.is_file() else None
+            except OSError:
+                digest = None
+            if digest != item['sha256']:
+                source_reasons.append('presales source changed: ' + str(source))
+        if source_reasons:
+            return 'dependency_invalid', list(dict.fromkeys(source_reasons))
     dependencies = artifact.get('dependencies', [])
     required = dependency_kinds(state, artifact['kind'])
     if not isinstance(dependencies, list):
@@ -246,6 +268,7 @@ def apply_operations(state: dict[str, Any], operations: Any, actor: str, evidenc
         raise ValueError('operations must be a nonempty array')
     state = deepcopy(state)
     state.setdefault('reviews', [])
+    state.setdefault('competitors', [])
     timestamp = now_iso()
 
     def evidence(op):
@@ -306,6 +329,51 @@ def apply_operations(state: dict[str, Any], operations: Any, actor: str, evidenc
                 raise ValueError('action already completed')
             action.update(status='completed', result=require_text(op.get('result'), 'result'), evidence=evidence(op),
                           completed_at=timestamp, completed_by=actor)
+        elif kind == 'record_competitor':
+            competitor_id = require_text(op.get('competitor_id'), 'competitor_id')
+            name = require_text(op.get('name'), 'name')
+            status = op.get('status', 'reported')
+            if status not in {'confirmed', 'reported', 'unknown'}:
+                raise ValueError('competitor status must be confirmed, reported or unknown')
+            position = require_text(op.get('position'), 'position')
+            response = require_text(op.get('response'), 'response')
+
+            def text_list(value, label):
+                if isinstance(value, str):
+                    value = [value]
+                if not isinstance(value, list) or not value or any(not isinstance(item, str) or not item.strip() for item in value):
+                    raise ValueError(f'{label} must be a nonempty array of text')
+                return list(dict.fromkeys(item.strip() for item in value))
+
+            strengths = text_list(op.get('strengths'), 'strengths')
+            weaknesses = text_list(op.get('weaknesses'), 'weaknesses')
+            refs = evidence(op)
+            price = op.get('price_amount')
+            currency = op.get('currency')
+            if price is not None:
+                if type(price) not in (int, float) or not math.isfinite(price) or price < 0:
+                    raise ValueError('competitor price_amount must be a nonnegative number')
+                currency = require_text(currency, 'currency')
+            elif currency is not None:
+                currency = require_text(currency, 'currency')
+            current = next((item for item in state['competitors'] if item.get('competitor_id') == competitor_id), None)
+            version = (current.get('history') and max((entry.get('version', 0) for entry in current['history']), default=0) + 1) if current else 1
+            snapshot = {'id': competitor_id, 'version': version, 'competitor_id': competitor_id, 'name': name, 'position': position,
+                        'strengths': strengths, 'weaknesses': weaknesses, 'response': response, 'status': status,
+                        'evidence': refs, 'actor': actor, 'time': timestamp}
+            if price is not None:
+                snapshot['price_amount'] = price
+            if currency is not None:
+                snapshot['currency'] = currency
+            if current:
+                current['version'] = version
+                current.update({key: value for key, value in snapshot.items() if key != 'version'})
+                if price is None:
+                    current.pop('price_amount', None)
+                    current.pop('currency', None)
+                current.setdefault('history', []).append(deepcopy(snapshot))
+            else:
+                state['competitors'].append({**deepcopy(snapshot), 'history': [deepcopy(snapshot)]})
         elif kind == 'register_artifact':
             artifact_kind = op.get('kind')
             if artifact_kind not in ARTIFACT_KINDS:

@@ -20,3 +20,5 @@ description: 将合同范围、需求、资源和依赖分解为可追踪的 WBS
 ## 模板
 
 使用 `../delivery-orchestrator/assets/templates/master-plan.csv`、`milestone-acceptance.md` 和 `template-field-guide.md`。
+
+需要形成可评审文件时，使用总控的 `scripts/export_core_documents.py` 导出 Master Plan 与 WBS。导出并列显示基线、当前计划、实际日期、剩余工作和预测；缺少日历或工期依据时保持待确认。

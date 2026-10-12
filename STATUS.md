@@ -1,3 +1,12 @@
+## 2026-10-12 — Delivery raw-input validation, core documents and daily operations
+
+- Scope: Five Skill guides, six existing templates, field_validation/export_core_documents/daily_operations/daily_workbench, one Enterprise UI Design blue page, fixtures/tests and operating/validation docs. Keep25 Skills/58 templates.
+- Behavior: Freeze authorized declared actual/simulation inputs with exact source quotes; independent Agent task without built-in business answers. Export six native DOCX/MD discussion drafts with modules, fields, WBS evidence and immutable source manifest. Save actual progress/submitted hours/risks/proposed changes in existing ledgers, preserve effective baseline and regenerate internal/customer weekly drafts.
+- Verification: 227 regression tests pass with1 Office gate skip; separately enabled Office suite7 pass. Final changes core7/daily12/field6 pass; suite/5 Skill entry/Python+JS/whitespace checks. Independent simulated case11 artifacts/13 exact quotes/14 requirements; root semantic readback conditional. Six DOCX30 rendered pages read back; independent review closed2 export omissions. Actual browser four saves/reload/downloads, missing evidence rejection and external-write409; four light widths/two dark states, no horizontal overflow, visual92/pass.
+- Expected invalidation: New HOURS leaves five old weekly/closure/exchange dependents stale; report exposes them, approved effective set unchanged. Do not reuse old closure/review as new acceptance.
+- Simplification/limits: Reuse runtime, Office styling and installer; no dependency/new database. Local exclusive writer only. Actual material directory still pending; fictional input and internal/customer discussion drafts do not establish real contract/customer acceptance/payment/production. Generated files and backups remain local under output/delivery-improvements-20261012/.
+- Installation/commit: Five installed Skill directories backed up and updated only after HEAD comparison; all25 hash-match source. Scoped source/docs accompany a Lore commit and branch push; generated outputs/unrelated WIP excluded. Commit/push identity is reported after remote verification.
+
 ## 2026-10-11 — Complete project-delivery simulation
 
 - Scope: Rehearse all25 delivery Skills on FULL-SIM-001 from synthetic contract through WBS/discovery/blueprint/design, 5 streams/milestones, actual local engineering, acceptance/administrative closure and continuing warranty. Add reusable case/render/workbook/audit scripts, blue review HTML, regression tests and validation guide.

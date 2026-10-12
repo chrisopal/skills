@@ -22,3 +22,5 @@ description: 组织现状与目标业务流程、角色、系统边界、规则�
 ## 模板
 
 使用 `../delivery-orchestrator/assets/templates/business-blueprint.md`、`implementation-blueprint.md`、`requirements.csv`、`fields.csv`、`interfaces.csv` 和 `template-field-guide.md`。
+
+需要形成可评审文件时，使用总控的 `scripts/export_core_documents.py` 导出业务蓝图。导出内容只包含业务蓝图主账，详细实施组件与设计决策在独立文档中维护；默认是带精确 revision/hash 的讨论稿。

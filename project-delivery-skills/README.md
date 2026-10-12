@@ -24,6 +24,23 @@ python3 project-delivery-skills/scripts/install.py --dest "$HOME/.codex/skills"
 
 单项任务也可以调用 `$delivery-discovery-planning`、`$delivery-business-blueprint`、`$delivery-reporting` 等，不要求补造完整流程历史。
 
+## 原始材料验证、核心文档与日常工作台
+
+当前仍为25个 Skills、58种模板，新增通用项目操作入口，复用现有不可变版本与有效基线。
+
+```bash
+# 显式提供材料角色、actual/simulation来源、授权及脱敏说明；输出目录必须是新的
+python3 project-delivery-skills/skills/delivery-orchestrator/scripts/field_validation.py prepare /absolute/manifest.json --out /absolute/evaluation
+# 按生成的agent-task.md独立调用Skills后，核对精确引文与来源
+python3 project-delivery-skills/skills/delivery-orchestrator/scripts/field_validation.py audit /absolute/evaluation
+# 六套可编辑DOCX/MD，需已有python-docx；只生成讨论稿
+python3 project-delivery-skills/skills/delivery-orchestrator/scripts/export_core_documents.py --project /absolute/project --out /absolute/new-documents
+# 本机录入进度、提交工时、风险及变更申请，再下载当前周报
+python3 project-delivery-skills/skills/delivery-orchestrator/scripts/daily_workbench.py /absolute/project --port 18763
+```
+
+材料清单、格式限制、单写入约束与审核边界见[日常交付规程](skills/delivery-orchestrator/references/daily-delivery.md)；验证证据见[本轮验证](docs/VALIDATION_DAILY_LOOP.md)。实际材料来源不等于真实性认证，自动引文检查不等于语义审核；模拟盲测不等于真实项目验证。核心文档目录混有内部材料，不能整包对客发送。工时仅提交、变更仅申请，日常事实不改批准基线。依赖旧台账的周报/结项材料会失效并要求复核。
+
 ## 第一批技能
 
 | 技能 | 用途 |

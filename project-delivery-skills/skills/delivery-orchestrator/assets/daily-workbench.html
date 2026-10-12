@@ -1,0 +1,239 @@
+<!--
+UI BLUEPRINT · Daily delivery workbench
+Product truth: one local operator records actual progress, submitted
+timesheets, risks/issues, and change proposals against one bound project. The
+page has no approval, activation, customer-confirmation, finance submission,
+search, tenant, notification, or remote integration capability.
+Primary task: read the current ledgers, submit one validated daily fact, then
+download an internal or customer-scoped weekly report.
+Information architecture: project header and revision state; four real forms
+(progress, hours, risk, change); current activity history; report downloads.
+States: empty, loaded, success, field error, server error, stale 409 conflict,
+and disabled submission while a request is running. Internal hours/rates/cost
+summary remain in the internal report and are not rendered in customer output.
+Visual mapping: flat blue enterprise tokens, 14px body, 4px controls, 6px
+panels, visible borders, semantic light/dark colors, no gradients or shadows.
+Responsive/interaction contract: 390px one-column form layout and 1366/1440/
+1920px two-column workbench; keyboard labels/focus are retained; reload is a
+real action after conflict; every visible button calls a real local endpoint.
+Acceptance evidence: GET/POST HTTP tests cover persistence/reload, invalid
+input, stale revision conflict, CSRF, body limits, injection/path safety and
+absence of public exposure; browser visual verification is performed by the
+parent task against the rendered local server.
+-->
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>交付日常工作台</title>
+  <style>
+    :root {
+      --ui-brand:#1677ff; --ui-action-text:#0966d9; --ui-action-solid:#0966d9;
+      --ui-action-solid-hover:#0754b5; --ui-on-action:#fff; --ui-canvas:#f5f7fa;
+      --ui-surface:#fff; --ui-text:#0b1220; --ui-text-secondary:#526075;
+      --ui-text-muted:#68758a; --ui-border:#d9dee7; --ui-border-control:#8090a6; --ui-border-subtle:#e7eaf0;
+      --ui-selected:#edf4ff; --ui-danger:#c62828; --ui-success:#167447;
+      --ui-control-md:34px; --ui-radius-control:4px; --ui-radius-panel:6px;
+    }
+    html[data-theme="dark"] {
+      --ui-action-text:#80b5ff; --ui-action-solid:#1558b0; --ui-action-solid-hover:#1a65c8;
+      --ui-canvas:#101722; --ui-surface:#182230; --ui-text:#edf2f9;
+      --ui-text-secondary:#b8c5d8; --ui-text-muted:#9aaac0; --ui-border:#35445a; --ui-border-control:#8193ac;
+      --ui-border-subtle:#2a384b; --ui-selected:#1b304d; --ui-danger:#ff8a8a;
+      --ui-success:#75d6a0;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--ui-canvas); color:var(--ui-text); font:14px/1.57 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; }
+    button, input, select, textarea { font:inherit; }
+    button { cursor:pointer; }
+    .topbar { min-height:48px; display:flex; align-items:center; gap:16px; padding:8px 32px; background:var(--ui-surface); border-bottom:1px solid var(--ui-border); }
+    .brand-line { width:3px; height:24px; background:var(--ui-brand); }
+    h1 { margin:0; font-size:24px; line-height:1.25; font-weight:600; }
+    .context { color:var(--ui-text-secondary); }
+    .top-actions { margin-left:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    main { max-width:1920px; margin:0 auto; padding:24px 32px 40px; }
+    .statusbar { display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-bottom:20px; }
+    .statusbar strong { font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .badge { padding:3px 8px; border:1px solid var(--ui-border); border-radius:3px; color:var(--ui-text-secondary); }
+    .button { min-height:34px; padding:6px 14px; border-radius:var(--ui-radius-control); border:1px solid var(--ui-action-solid); background:var(--ui-action-solid); color:var(--ui-on-action); font-weight:600; }
+    .button:hover:not(:disabled) { background:var(--ui-action-solid-hover); }
+    .button.secondary { background:transparent; color:var(--ui-action-text); border-color:var(--ui-border-control); }
+    .button.secondary:hover:not(:disabled) { background:var(--ui-selected); border-color:var(--ui-action-text); }
+    .button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline:2px solid var(--ui-action-text); outline-offset:2px; }
+    .button:disabled { background:var(--ui-border); border-color:var(--ui-border); color:var(--ui-text-muted); cursor:not-allowed; }
+    .layout { display:grid; grid-template-columns:minmax(0, 1.35fr) minmax(320px, .65fr); gap:24px; align-items:start; }
+    .forms { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+    .panel { background:var(--ui-surface); border:1px solid var(--ui-border); border-radius:var(--ui-radius-panel); padding:16px 20px; }
+    .panel h2 { margin:0 0 12px; font-size:16px; line-height:1.35; font-weight:600; }
+    form { display:grid; gap:12px; }
+    .field { display:grid; gap:4px; min-width:0; }
+    label { font-size:13px; font-weight:600; color:var(--ui-text-secondary); }
+    input, select, textarea { width:100%; min-height:34px; padding:6px 9px; border:1px solid var(--ui-border-control); border-radius:var(--ui-radius-control); background:var(--ui-surface); color:var(--ui-text); }
+    .field input[type="checkbox"] { width:auto; min-height:0; margin:0 8px 0 0; }
+    .statusbar { overflow-wrap:anywhere; }
+    textarea { min-height:74px; resize:vertical; }
+    .hint { color:var(--ui-text-muted); font-size:12px; }
+    .form-error { color:var(--ui-danger); min-height:20px; }
+    .notice { border-left:3px solid var(--ui-brand); padding:8px 12px; background:var(--ui-selected); color:var(--ui-text-secondary); margin-bottom:16px; }
+    .notice.error { border-left-color:var(--ui-danger); }
+    .notice.success { border-left-color:var(--ui-success); }
+    .history { max-height:570px; overflow:auto; }
+    .history table { width:100%; border-collapse:collapse; }
+    th, td { padding:10px 8px; border-bottom:1px solid var(--ui-border-subtle); text-align:left; vertical-align:top; }
+    th { background:var(--ui-canvas); color:var(--ui-text-secondary); font-size:12px; white-space:nowrap; }
+    td small { display:block; color:var(--ui-text-muted); }
+    .report-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .meta { color:var(--ui-text-muted); font-size:12px; }
+    @media (max-width:1023px) { main { padding:20px 16px 32px; } .topbar { padding:8px 16px; } .layout { grid-template-columns:1fr; } }
+    @media (max-width:680px) { h1 { font-size:20px; } .forms { grid-template-columns:1fr; } .topbar { align-items:center; flex-wrap:wrap; } .topbar h1 { white-space:nowrap; } .topbar .context { margin-left:auto; } .top-actions { margin-left:0; width:100%; } .top-actions .button { flex:1; } }
+    @media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand-line" aria-hidden="true"></span>
+    <h1>交付日常工作台</h1>
+    <span class="context" id="project-context">读取项目中…</span>
+    <div class="top-actions">
+      <button class="button secondary" id="theme-button" type="button">切换深色</button>
+      <button class="button secondary" id="reload-button" type="button">重新读取</button>
+    </div>
+  </header>
+  <main>
+    <div id="notice" class="notice" role="status" aria-live="polite">正在读取当前台账…</div>
+    <div class="statusbar" aria-label="当前状态">
+      <span>当前项目：<strong id="project-id">—</strong></span>
+      <span>最新修订：<strong id="ledger-revisions">—</strong></span>
+      <span class="badge" id="project-purpose">—</span>
+    </div>
+    <section class="layout" aria-label="日常交付记录">
+      <div class="forms">
+        <section class="panel"><h2>登记进度事实</h2>
+          <form data-endpoint="/api/progress">
+            <div class="field"><label for="progress-date">日期</label><input id="progress-date" name="date" type="date" required></div>
+            <div class="field"><label for="progress-wp">工作包 ID</label><input id="progress-wp" name="work_package_id" list="plan-work-packages" required pattern="[A-Za-z0-9][A-Za-z0-9_-]{0,79}"></div>
+            <div class="field"><label for="progress-status">状态</label><select id="progress-status" name="status"><option value="in_progress">进行中</option><option value="completed">已完成</option><option value="blocked">阻塞</option><option value="planned">计划</option></select></div>
+            <div class="field"><label for="progress-summary">实际输出</label><textarea id="progress-summary" name="summary" required maxlength="5000"></textarea></div>
+            <div class="field"><label for="progress-next">下一步</label><textarea id="progress-next" name="next_step" maxlength="5000"></textarea></div>
+            <div class="field"><label for="progress-evidence">证据 ID（完成时必填，逗号分隔）</label><input id="progress-evidence" name="evidence_ids" list="evidence-options"><span class="hint">完成事实必须绑定当前已登记的精确证据修订。</span></div>
+            <div class="field"><label><input name="customer_visible" type="checkbox" value="true"> 用于客户周报草稿</label></div>
+            <div class="form-error" aria-live="polite"></div><button class="button" type="submit">保存进度事实</button>
+          </form>
+        </section>
+        <section class="panel"><h2>登记实际工时</h2>
+          <form data-endpoint="/api/hours">
+            <div class="field"><label for="hours-date">日期</label><input id="hours-date" name="date" type="date" required></div>
+            <div class="field"><label for="hours-person">人员</label><input id="hours-person" name="person" required maxlength="200"></div>
+            <div class="field"><label for="hours-wp">工作包 ID</label><input id="hours-wp" name="work_package_id" list="plan-work-packages" required pattern="[A-Za-z0-9][A-Za-z0-9_-]{0,79}"></div>
+            <div class="field"><label for="hours-hours">小时数</label><input id="hours-hours" name="hours" type="number" min="0" max="24" step="0.25" required></div>
+            <div class="field"><label for="hours-rate">内部费率（可选）</label><input id="hours-rate" name="rate" type="number" min="0" step="0.01"></div>
+            <div class="field"><label for="hours-resource">资源类型</label><select id="hours-resource" name="resource_type"><option value="internal">内部</option><option value="outsourced">外包</option></select></div>
+            <div class="field"><span class="hint">台账状态</span><input id="hours-status" name="status" type="hidden" value="submitted"><span class="hint">已提交；批准由受控领域流程处理。</span></div>
+            <div class="form-error" aria-live="polite"></div><button class="button" type="submit">保存实际工时</button>
+          </form>
+        </section>
+        <section class="panel"><h2>登记风险 / 问题</h2>
+          <form data-endpoint="/api/risks">
+            <div class="field"><label for="risk-id">条目 ID</label><input id="risk-id" name="entry_id" required pattern="[A-Za-z0-9][A-Za-z0-9_-]{0,79}"></div>
+            <div class="field"><label for="risk-type">类型</label><select id="risk-type" name="type"><option value="risk">风险</option><option value="issue">问题</option><option value="quality">质量</option></select></div>
+            <div class="field"><label for="risk-title">标题</label><input id="risk-title" name="title" required maxlength="300"></div>
+            <div class="field"><label for="risk-owner">责任人</label><input id="risk-owner" name="owner" required maxlength="200"></div>
+            <div class="field"><label for="risk-status">状态</label><select id="risk-status" name="status"><option value="open">开放</option><option value="closed">关闭</option></select></div>
+            <div class="field"><label for="risk-action">应对行动</label><textarea id="risk-action" name="action" maxlength="1000"></textarea></div>
+            <div class="field"><label for="risk-due">截止日期</label><input id="risk-due" name="due" type="date"></div>
+            <div class="field"><label for="risk-evidence">证据 ID（关闭时必填，逗号分隔）</label><input id="risk-evidence" name="evidence_ids" list="evidence-options"></div>
+            <div class="form-error" aria-live="polite"></div><button class="button" type="submit">保存风险条目</button>
+          </form>
+        </section>
+        <section class="panel"><h2>提出变更</h2>
+          <form data-endpoint="/api/changes">
+            <div class="field"><label for="change-id">变更 ID</label><input id="change-id" name="change_id" required pattern="[A-Za-z0-9][A-Za-z0-9_-]{0,79}"></div>
+            <div class="field"><label for="change-reason">变更原因</label><textarea id="change-reason" name="reason" required maxlength="2000"></textarea></div>
+            <div class="field"><label for="change-affected">受影响对象 ID（逗号分隔）</label><input id="change-affected" name="affected_ids" required></div>
+            <div class="field"><label for="change-schedule">进度影响</label><textarea id="change-schedule" name="impact_schedule" maxlength="2000" placeholder="待评估"></textarea></div>
+            <div class="field"><label for="change-cost">成本影响</label><textarea id="change-cost" name="impact_cost" maxlength="2000" placeholder="待评估"></textarea></div>
+            <div class="field"><label for="change-acceptance">范围与验收影响</label><textarea id="change-acceptance" name="impact_acceptance" maxlength="2000" placeholder="待评估"></textarea><span class="hint">提交后待审核，不改变有效基线。</span></div>
+            <div class="form-error" aria-live="polite"></div><button class="button" type="submit">保存变更提案</button>
+          </form>
+        </section>
+      </div>
+      <aside>
+        <section class="panel"><h2>周报下载</h2><p class="hint">下载使用当前台账；客户草稿只包含明确勾选的对客进度事实。</p><div class="report-actions"><button class="button" data-report="internal" type="button">下载内部周报</button><button class="button secondary" data-report="customer" type="button">下载客户草稿</button></div></section>
+        <section class="panel history"><h2>当前操作记录</h2><div id="history-content" class="meta">读取中…</div></section>
+      </aside>
+    </section>
+    <datalist id="plan-work-packages"></datalist><datalist id="evidence-options"></datalist>
+  </main>
+  <script>
+    (() => {
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+      let csrf = '';
+      let revisions = {};
+      let ledgerIds = {weekly:{artifact_id:'DAILY-PROGRESS'}, timesheets:{artifact_id:'HOURS'}, risks:{artifact_id:'RISKS'}};
+      let changeRevisions = {};
+      let registryFingerprint = '';
+      const today = new Date().toISOString().slice(0, 10);
+      $$('#progress-date, #hours-date').forEach((node) => { node.value = today; });
+
+      function setNotice(message, kind = '') { const notice = $('#notice'); notice.textContent = message; notice.className = `notice ${kind}`; }
+      function formData(form) {
+        const data = Object.fromEntries(new FormData(form).entries());
+        for (const key of ['evidence_refs', 'evidence_ids', 'affected_ids']) if (key in data) data[key] = data[key] ? data[key].split(',').map((item) => item.trim()).filter(Boolean) : [];
+        if (data.hours !== undefined) data.hours = Number(data.hours);
+        if (data.rate !== undefined) data.rate = data.rate === '' ? null : Number(data.rate);
+        if ('impact_schedule' in data) { data.impact={schedule:data.impact_schedule||'待评估',cost:data.impact_cost||'待评估',acceptance:data.impact_acceptance||'待评估'}; delete data.impact_schedule; delete data.impact_cost; delete data.impact_acceptance; }
+        data.customer_visible = data.customer_visible === 'true';
+
+        return data;
+      }
+      async function load() {
+        const token = await fetch('/api/csrf', {cache:'no-store'}); if (!token.ok) throw new Error('无法获取安全令牌'); csrf = (await token.json()).csrf_token;
+        const response = await fetch('/api/state', {cache:'no-store'}); if (!response.ok) throw new Error('无法读取当前台账');
+        const data = await response.json(); revisions = data.active_ledgers || revisions; ledgerIds = data.ledger_ids || ledgerIds; registryFingerprint = data.registry_fingerprint || '';
+        changeRevisions = Object.fromEntries(Object.entries(data.latest || {}).filter(([, item]) => item.kind === 'change').map(([id, item]) => [id, item.revision]));
+        $('#project-id').textContent = data.project.project_id; $('#project-purpose').textContent = data.project.purpose === 'simulation' ? '模拟项目' : '内部项目'; $('#project-context').textContent = data.project.project_id;
+        $('#ledger-revisions').textContent = Object.entries(revisions).map(([key, value]) => `${key} r${value}`).join(' · ');
+        $('#plan-work-packages').innerHTML = (data.plan_work_packages || []).map((id) => `<option value="${escapeHtml(id)}"></option>`).join('');
+        $('#evidence-options').innerHTML = (data.evidence_options || []).map((item) => `<option value="${escapeHtml(item.artifact_id)}">${escapeHtml(item.kind)} r${escapeHtml(item.revision)}</option>`).join('');
+        renderHistory(data.snapshot); $$('form button[type=submit]').forEach(b=>b.disabled=false); setNotice('当前台账已读取。', 'success');
+      }
+      function renderHistory(snapshot) {
+        const byId = Object.fromEntries((snapshot.artifacts || []).map((item) => [item.artifact_id, item]));
+        const rows = [];
+        for (const item of (byId[ledgerIds.weekly.artifact_id]?.data?.operations || []).slice().reverse()) rows.push(`<tr><td>${escapeHtml(item.date)}</td><td>进度 · ${escapeHtml(item.work_package_id)}<small>${escapeHtml(item.summary)}</small></td><td>${escapeHtml(({completed:'已登记完成',in_progress:'进行中',blocked:'阻塞',planned:'计划',open:'开放',closed:'关闭'})[item.status]||item.status)}</td></tr>`);
+        for (const item of (byId[ledgerIds.timesheets.artifact_id]?.data?.items || []).slice().reverse()) rows.push(`<tr><td>${escapeHtml(item.date)}</td><td>工时 · ${escapeHtml(item.person)}<small>${escapeHtml(item.work_package_id)}</small></td><td>${escapeHtml(String(item.hours))} 小时</td></tr>`);
+        for (const item of (byId[ledgerIds.risks.artifact_id]?.data?.items || []).slice().reverse()) rows.push(`<tr><td>${escapeHtml(item.due || '—')}</td><td>风险 · ${escapeHtml(item.title)}<small>${escapeHtml(item.owner)}</small></td><td>${escapeHtml(({completed:'已登记完成',in_progress:'进行中',blocked:'阻塞',planned:'计划',open:'开放',closed:'关闭'})[item.status]||item.status)}</td></tr>`);
+        for (const item of (snapshot.artifacts || []).filter(x=>x.kind==='change')) rows.push(`<tr><td>变更</td><td>${escapeHtml(item.artifact_id)}<small>${escapeHtml(item.data.reason)}</small></td><td>${escapeHtml(({proposed:'待审核',approved:'已批准',rejected:'已拒绝'})[item.data.state]||item.data.state)}</td></tr>`);
+        $('#history-content').innerHTML = rows.length ? `<table><thead><tr><th>日期</th><th>记录</th><th>状态</th></tr></thead><tbody>${rows.slice(0, 40).join('')}</tbody></table>` : '暂无日常记录。';
+      }
+      function escapeHtml(value) { return String(value).replace(/[&<>'"]/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;', '"':'&quot;'}[char])); }
+      async function submit(form) {
+        const error = $('.form-error', form); error.textContent = '';
+        const submitButton = $('button[type=submit]',form); submitButton.disabled=true;
+        try {
+          const body = formData(form); const endpoint = form.dataset.endpoint;
+          const ledger = endpoint === '/api/progress' ? ledgerIds.weekly.artifact_id : endpoint === '/api/hours' ? ledgerIds.timesheets.artifact_id : endpoint === '/api/risks' ? ledgerIds.risks.artifact_id : null;
+          if (ledger) body.expected_revision = revisions[ledger] || 0;
+          if (endpoint === '/api/changes' && changeRevisions[body.change_id] !== undefined) body.expected_revision = changeRevisions[body.change_id];
+          body.expected_registry_fingerprint = registryFingerprint;
+          const response = await fetch(endpoint, {method:'POST', headers:{'Content-Type':'application/json','X-CSRF-Token':csrf}, body:JSON.stringify(body)});
+          const data = await response.json();
+          if (response.status === 409) { error.textContent = `项目台账已更新（${data.current_revision ? `修订 r${data.current_revision}` : '版本指纹变化'}），请重新读取后再提交。`; setNotice('检测到过期版本，请重新读取。', 'error'); return; }
+          if (!response.ok) throw new Error(({ 'Completed progress requires exact registered evidence references':'完成状态需要选择已登记的证据。', 'Closing a risk requires exact registered evidence references':'关闭风险需要选择已登记的证据。', 'Daily hours exceed 24 for one person':'同一人员单日工时不能超过24小时。' })[data.error] || data.error || '保存失败');
+          form.reset(); if (['/api/progress','/api/hours'].includes(endpoint)) { const dateInput = $('.field input[type=date]', form); if (dateInput) dateInput.value = today; }
+          await load(); setNotice('已保存实际记录，历史修订已保留。', 'success');
+        } catch (err) { error.textContent = err.message || '输入或服务器错误'; setNotice('保存失败，请检查字段后重试。', 'error'); } finally { submitButton.disabled=false; }
+      }
+      $$('#theme-button').forEach((button) => button.addEventListener('click', () => { const root = document.documentElement; const dark = root.dataset.theme === 'dark'; root.dataset.theme = dark ? 'light' : 'dark'; button.textContent = dark ? '切换深色' : '切换浅色'; }));
+      $('#reload-button').addEventListener('click', () => load().catch((err) => setNotice(err.message, 'error')));
+      $$('form').forEach((form) => form.addEventListener('submit', (event) => { event.preventDefault(); if (form.reportValidity()) submit(form); }));
+      $$('[data-report]').forEach((button) => button.addEventListener('click', async () => { try { const response = await fetch(`/api/report?audience=${button.dataset.report}`); if (!response.ok) throw new Error('周报下载失败'); const blob = await response.blob(); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `weekly-${button.dataset.report === 'customer' ? 'customer-draft' : 'internal'}.md`; link.click(); URL.revokeObjectURL(url); } catch (err) { setNotice(err.message, 'error'); } }));
+      $$('form button[type=submit]').forEach(b=>b.disabled=true);
+      load().catch((err) => setNotice(err.message, 'error'));
+    })();
+  </script>
+</body>
+</html>

@@ -16,3 +16,7 @@ book2videoskill/projects/
 **/images/generated/
 
 !.gitkeep
+
+# PPT Master Plus is maintained in its own private repository.
+/ppt-maker-with-svg/skills/ppt-master-plus/
+/ppt-master-plus*.zip

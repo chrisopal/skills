@@ -20,3 +20,5 @@ description: 按合同与有效变更组织阶段交付和里程碑验收，精�
 ## 模板
 
 使用 `../delivery-orchestrator/assets/templates/milestone-acceptance.md`、`deliverables.csv`、`actions.csv` 和 `template-field-guide.md`。
+
+需要形成可评审文件时，使用总控的 `scripts/export_core_documents.py` 导出里程碑验收包。导出默认是 discussion draft，逐项保留交付物版本/hash、证据与确认来源；登记状态不等于客户签署、验收或付款触发。

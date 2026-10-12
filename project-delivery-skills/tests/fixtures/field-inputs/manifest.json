@@ -1,0 +1,11 @@
+{
+  "project_id": "BLIND-SIM-002",
+  "material_origin": "simulation",
+  "authorization_note": "Repository-owned fictional regression inputs; local independent validation only",
+  "redaction_note": "All parties, amounts and events are authored test data; no credentials or customer originals",
+  "materials": [
+    {"id":"SRC-CONTRACT","role":"contract","path":"contract.md"},
+    {"id":"SRC-TECH","role":"technical_agreement","path":"technical.md"},
+    {"id":"SRC-DISCOVERY","role":"discovery","path":"discovery.md"}
+  ]
+}

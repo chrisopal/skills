@@ -22,3 +22,5 @@ description: 将已确认的业务蓝图和需求转为可实施的组件、部�
 ## 模板
 
 使用 `../delivery-orchestrator/assets/templates/solution-design.md` 和 `solution-decisions.csv`。CSV 保持机器字段名、元数据列和一行空白占位；模板占位内容不是项目事实。
+
+需要形成可评审文件时，使用总控的 `scripts/export_core_documents.py` 导出实施方案。导出结果保留需求、蓝图和设计输入的精确 revision/hash；`ready` 或本地验证不改写为生产部署或客户确认。

@@ -1,0 +1,4 @@
+interface:
+  display_name: "史书留白 · 纸本配图"
+  short_description: "为历史人物与读书分享制作纸本风格的小红书封面和无文字插图"
+  default_prompt: "请用 $history-paper-visuals 为这个历史故事制作统一纸本风格的3:4封面和无文字插图，保留原有叙事关系。"

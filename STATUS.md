@@ -1,3 +1,12 @@
+## 2026-10-12 — Keep history covers consistent with the latest light-paper revision
+
+- Scope: Add the existing local `history-paper-visuals/` Skill to the repository and incorporate the user-requested recent cover refinements.
+- Rules: Light warm beige across paper/walls/ground, sparse grain, flat indigo figures, vermilion accents, adjacent upper-left seal, platform-safe corners, exact text and actual output-size checks.
+- Reusable assets: Retain the original series references and add the recent Pei figure and Shi Rao light-paper covers as portable visual references requested for this Skill update; exclude platform screenshots, one-off renders and QA logs.
+- Simplification: Reuse the existing entrypoint and two reference guides; no new scripts, dependencies or generation backend. Reference priority prevents inheriting old dark backgrounds or story-specific costumes.
+- Verification: Skill Creator validation passes; Markdown links resolve, paths are portable, and both new reference PNGs are 1080×1440. Existing rendered revisions were visually inspected in this task; no new paid generation run for this documentation update.
+- Delivery: This entry accompanies the scoped Lore commit; push to main without force, verify remote ancestry and sync the installed Skill with a local backup. Generative output still requires per-image visual review.
+
 ## 2026-10-12 — Integrate the verified delivery Skills into main
 
 - Scope: Selectively integrate the six delivery commits (2be02ce1, a26c35df, 04945547, 8d08ebfb, c0d800ed, e8d2d6a2) onto current origin/main; retain unrelated main changes and the original working directory WIP.

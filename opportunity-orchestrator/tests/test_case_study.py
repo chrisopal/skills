@@ -76,6 +76,23 @@ class CaseStudyTests(unittest.TestCase):
         self.assertNotEqual(self.result["scores"][-1], 100)
         self.assertTrue(any(a["id"] == "A-09" and a["status"] == "open" for a in final["actions"]))
 
+    def test_customer_reviews_and_lineage_come_from_persisted_runtime(self):
+        opened = self.snapshots[4]["detail"]["lifecycle"]["reviews"]
+        closed = self.snapshots[5]["detail"]["lifecycle"]["reviews"]
+        self.assertEqual({r["id"] for r in opened}, {"RV-01", "RV-02", "RV-03"})
+        self.assertTrue(all(r["status"] == "open" and r["artifact_id"] == "SOL-1" for r in opened))
+        self.assertTrue(all(r["status"] == "resolved" and r["verification_status"] == "current" and
+                            r["closure"]["artifact_id"] == "SOL-2" and r["closure"]["evidence"] == ["EV-06"] for r in closed))
+        self.assertTrue(all(len(r["history"]) == 2 for r in closed))
+        final = self.snapshots[-1]["detail"]["lifecycle"]
+        by_id = {a["id"]: a for a in final["artifacts"]}
+        for aid, expected in {"Q-2": ["SOL-2"], "N-1": ["Q-2"], "C-2": ["Q-2", "N-1"], "H-1": ["C-2"]}.items():
+            artifact = by_id[aid]
+            self.assertEqual([d["artifact_id"] for d in artifact["dependencies"]], expected)
+            self.assertTrue(all(d["sha256"] == by_id[d["artifact_id"]]["sha256"] for d in artifact["dependencies"]))
+            self.assertEqual(artifact["validity"], "valid")
+        self.assertEqual(final["verification_status"], "current")
+
     def test_every_case_page_and_artifact_link_resolves(self):
         for folder in ("light", "dark", "documents"):
             for page in (self.output / folder).glob("*.html"):

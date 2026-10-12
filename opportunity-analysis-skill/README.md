@@ -172,3 +172,9 @@ python3.12 scripts/validate_skill.py
 ```
 
 It checks JSON files, Python compilation, template safety, evaluation cases, analyze/query/detail runtime behavior, and distribution noise such as `outputs/`, `.skill_data/`, `*.egg-info`, `__pycache__`, and `*.pyc`.
+
+### Review closure and artifact lineage (0.5.0)
+
+Customer review issues are persisted in `lifecycle.reviews` with requirement IDs, reviewed solution, owner, deadline, blocking flag and immutable processing history. Close/reopen them through `record_review`, `resolve_review`, `reopen_review`; closure binds the current solution and evidence. Replaced or changed solutions require revalidation.
+
+New commercial artifacts require explicit `dependencies` containing upstream artifact IDs and SHA-256 digests. Quote → solution, negotiation → quote, contract → quote plus existing negotiation, handoff → existing contract. Commercial progression and signing must use the authorized quote. Existing unbound artifacts stay readable and require re-registration before new progression. A documented rollback permits remediation without deleting history. See the [shared contract](../opportunity-orchestrator/references/lifecycle-contract.md) for operations and migration limits.

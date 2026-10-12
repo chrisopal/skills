@@ -1,3 +1,14 @@
+## 2026-10-12 — Opportunity review closure and artifact lineage v0.5.0
+
+- Main integration: Original opportunity suite/case isolated from shared-branch delivery work and integrated into main as 1863bef6 after 52 tests; unrelated local WIP retained.
+- Scope/files: Shared lifecycle.py, schemas, renderer/detail template, runtime/display/case tests, case/rehearsal fixtures, six affected Skill instructions and shared contract; plan and validation in docs/plans/2026-10-12-opportunity-review-lineage*.md.
+- Behavior: Persist customer review ownership/deadlines, issue closure/reopen and solution revalidation; explicit quote/negotiation/contract/handoff dependencies with transitive hash/version checks. Commercial use must match the exact authorized quote; evidence-backed rollback permits remediation, keeping history and core negative facts.
+- Validation: 68 analysis + 11 orchestration tests pass; original complete case and independently installed seven-Skill copy both reach simulated signed closeout at 358000 CNY with unchanged 12-timepoint scores. Real CLI file fault makes downstream invalid and closed reviews require revalidation; failed reopen-and-win transaction preserves revision/history. Independent reviewer reproduced and closed two authorization/recovery findings.
+- UI: Enterprise theme reused, no new dependencies or fake write controls. 120 case tab/theme/viewport states plus 16 real detail states, keyboard evidence disclosure, closeout lineage and fault prompts verified; final visual verdict94 against existing layout/blueprint, no external pixel-reference claim.
+- Limits: Authored simulated materials, heuristic extraction, static local views; no actual PPT/POC, customer acceptance, signature authentication, payment/revenue, CRM editing or Python static type-check claim. Artifacts remain local under output/review-lineage-20261012/ and are excluded.
+- Commit/push: This entry accompanies the scoped Lore commit. Publish the verified branch and main with non-force pushes, check remote HEAD, then synchronize the installed Skills' source checkout without touching unrelated changes.
+
+
 ## 2026-10-11 — Complete project-delivery simulation
 
 - Scope: Rehearse all25 delivery Skills on FULL-SIM-001 from synthetic contract through WBS/discovery/blueprint/design, 5 streams/milestones, actual local engineering, acceptance/administrative closure and continuing warranty. Add reusable case/render/workbook/audit scripts, blue review HTML, regression tests and validation guide.

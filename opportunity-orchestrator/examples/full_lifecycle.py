@@ -3,6 +3,11 @@
 CASE = {
     "customer": "华辰装备有限公司", "supplier": "启程数字科技有限公司",
     "name": "售后工单平台一期", "owner": "顾宁", "amount": 358000,
+    "reviews": [
+        {"review_id": "RV-01", "requirement_ids": ["REQ-02"], "title": "夜间提醒不合理，须按工作时段计时", "owner": "林工", "due_date": "2026-08-20", "resolution": "V2工作日计时；跨班次、节假日三组演示通过"},
+        {"review_id": "RV-02", "requirement_ids": ["REQ-04"], "title": "离线及双端冲突未覆盖，不能静默覆盖", "owner": "周工", "due_date": "2026-08-20", "resolution": "V2离线20单及冲突队列演示通过；生产验收待交付"},
+        {"review_id": "RV-03", "requirement_ids": ["REQ-03"], "title": "ERP日期及延期处理不具体", "owner": "顾宁", "due_date": "2026-08-20", "resolution": "V2写明ERP资料起算前提与延期处理；客户认可方案措辞"},
+    ],
     "roles": [
         ["王敏", "售后业务负责人", "需求与业务评审", "2026-07-06 首访"],
         ["李工", "IT负责人", "接口、安全、技术评估", "2026-07-13 调研"],
@@ -191,7 +196,7 @@ STEPS = [
          note="客户提出35万元及20/70/10付款。刘总模拟授权最低35.8万元、首款不少于30%。双方模拟会议同意35.8万元、30/60/10、保留V2完整范围和8周起算条件，作为合同起草依据。Q2单独批准，口头一致未签约。",
          decision="进入谈判；Q2替代Q1并重新授权，准备合同审核。", inputs="EV-10客户诉求、Q1、V2、内部让步授权", outputs="谈判N1、授权差异、Q2 35.8万元、剩余条款",
          scores={"pricing_budget_fit": ("strong", "双方接受35.8万作为合同草拟依据，仍待签署"), "competitors": ("medium", "客户接受我方范围价值，未取得对手完整材料"), "margin_deal_shape": ("medium", "首款30%，总价下降；成本仍是估算"), "customer_relationship": ("strong", "业务/IT与采购共同认可合同起草依据")},
-         docs=["negotiation-v1.md", "quote-v2.md"], artifacts=[("N-1", "negotiation", 1, "negotiation-v1.md"), ("Q-2", "quote", 2, "quote-v2.md")], authorize="Q-2", complete="A-07", action=("A-08", "核对合同主体、条款与双方签署", "顾宁", "2026-10-09")),
+         docs=["negotiation-v1.md", "quote-v2.md"], artifacts=[("Q-2", "quote", 2, "quote-v2.md"), ("N-1", "negotiation", 1, "negotiation-v1.md")], authorize="Q-2", complete="A-07", action=("A-08", "核对合同主体、条款与双方签署", "顾宁", "2026-10-09")),
     dict(date="2026-09-25", title="合同审核待签", stage="contract_signing", page="合同版本 / 签署核验",
          skills=["opportunity-closeout", "opportunity-negotiation"],
          note="合同C1模拟内部及客户条款审阅完成，编号HC-2026-SVC-01，金额35.8万元含税，范围V2和Q2，付款30/60/10。双方尚未签署。高评分和条款认可不能当成赢单。",

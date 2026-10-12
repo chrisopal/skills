@@ -56,6 +56,23 @@ class DisplayTests(unittest.TestCase):
         self.assertNotIn("ql-stage-step-current", body)
         self.assertNotIn("已确认商机", body)
 
+    def test_reviews_and_dependency_revalidation_are_visible_and_escaped(self):
+        self.data["lifecycle"]["reviews"] = [{"id": "RV-01", "title": "<客户意见>",
+            "requirement_ids": ["REQ-02"], "owner": "林工", "due_date": "2026-10-22",
+            "artifact_id": "s1", "blocking": True, "status": "resolved", "verification_status": "needs_review",
+            "verification_reasons": ["review closure solution is superseded"],
+            "closure": {"artifact_id": "s2", "resolution": "<整改结果>", "evidence": ["ev3"]}, "history": []}]
+        self.data["lifecycle"]["artifacts"] = [
+            {"id": "s1", "kind": "solution", "version": 1, "validity": "superseded"},
+            {"id": "s2", "kind": "solution", "version": 2, "validity": "superseded"},
+            {"id": "q1", "kind": "quote", "version": 1, "validity": "dependency_invalid",
+             "dependencies": [{"artifact_id": "s2", "sha256": "abc"}], "verification_reasons": ["dependency invalid: s2 (superseded)"]}]
+        result = self.renderer.render("opportunity_detail", self.data)
+        for marker in ["客户评审与整改", "需复核 · 阻塞推进", "REQ-02", "2026-10-22", "评审 V1", "关闭 V2", "解决方案 V2", "依据版本需复核", "上游成果需复核：s2", "ev3", "&lt;客户意见&gt;"]:
+            self.assertIn(marker, result["html"])
+        self.assertNotIn("<整改结果>", result["html"])
+        self.assertIn("RV-01", result["markdown"])
+
     def test_current_stage_is_authoritative_and_results_not_pipeline_steps(self):
         body = self.body(self.renderer.render("opportunity_detail", self.data))
         self.assertIn("ql-stage-step-current", body)

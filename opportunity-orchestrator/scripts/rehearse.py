@@ -72,7 +72,13 @@ def rehearse(output: Path) -> dict:
             "handoff": "模拟交付交接：工单管理范围、联系人、付款安排、验收口径、待办及资源安排。未记录实际回款或客户验收。",
         }
         path.write_text(f"# 模拟{kind}文件\n\n{descriptions[kind]}\n", encoding="utf-8")
-        return {"type": "register_artifact", "artifact_id": aid, "document_id": kind, "kind": kind, "version": version, "file_path": str(path), "evidence": ["EV-FOLLOWUP"], "metadata": {"simulated": True, "use_scope": "internal-rehearsal", "contract_number": "DEMO-2026-001" if kind == "contract" else None}}
+        required = {"quote": ["solution"], "negotiation": ["quote"], "contract": ["quote", "negotiation"], "handoff": ["contract"]}.get(kind, [])
+        current = state()["artifacts"]
+        dependencies = []
+        for upstream_kind in required:
+            upstream = next(a for a in reversed(current) if a["kind"] == upstream_kind and a["validity"] == "valid")
+            dependencies.append({"artifact_id": upstream["id"], "sha256": upstream["sha256"]})
+        return {"type": "register_artifact", "dependencies": dependencies, "artifact_id": aid, "document_id": kind, "kind": kind, "version": version, "file_path": str(path), "evidence": ["EV-FOLLOWUP"], "metadata": {"simulated": True, "use_scope": "internal-rehearsal", "contract_number": "DEMO-2026-001" if kind == "contract" else None}}
 
     initial = state()
     assert initial["current_stage_id"] == "lead_identified" and not initial["history"]

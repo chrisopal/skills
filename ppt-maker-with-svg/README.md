@@ -1,3 +1,5 @@
+> PPT Master Plus is maintained in a separate private repository. Follow [private Skill setup](PRIVATE_SKILL.md) before using the paths below.
+
 # PPT Master — AI generates natively editable PPTX from any document
 
 [![Version](https://img.shields.io/badge/version-v2.9.0-blue.svg)](https://github.com/hugohe3/ppt-master/releases)

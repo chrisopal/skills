@@ -1,3 +1,5 @@
+> The Plus Skill requires a separate authenticated checkout. If `skills/ppt-master-plus/SKILL.md` is absent, read [PRIVATE_SKILL.md](PRIVATE_SKILL.md) and install it before following the entry instructions below.
+
 # AGENTS.md
 
 This file is the project entry point for general AI agents.

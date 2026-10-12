@@ -1,3 +1,12 @@
+## 2026-10-12 — Isolate PPT Master Plus in a private repository
+
+- Scope: Remove `ppt-maker-with-svg/skills/ppt-master-plus/` from all 10 affected public branch tips; retain existing local files and unrelated WIP.
+- Destination: `chrisopal/ppt-master-plus` is verified private; main source commit `63ebdc4270a8` plus `archive/pre-split-workspace` preserve both exact original subtree versions (12,340 / 12,473 files).
+- Files/simplification: Ignore the private checkout and distribution ZIPs; document authenticated installation in README/PRIVATE_SKILL and wrapper entrypoints. Runtime source, templates and dependencies are unchanged in the private copy.
+- Validation: Git subtree identity for both private imports, attribution integrity guard, private remote branch identities, scoped public removal and migration-document whitespace; verify all public branch tips after atomic non-force push.
+- Commit/push: Scoped Lore migration commits are pushed for the affected existing branches; generated artifacts and unrelated working changes are excluded.
+- Limits: Public history, forks and downloaded copies remain accessible; no history rewrite or visibility change for other Skills. No new PPTX export. Optional runtime preflight needs Python 3.10+ and PyYAML; no dependencies installed during migration.
+
 ## 2026-10-11: Dense Chinese business typography preference
 
 - Scope: visual-to-editable-ppt entry, references, seven theme profiles (v1.2.0),

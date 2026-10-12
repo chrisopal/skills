@@ -2,6 +2,10 @@
 
 这是一个用于集中管理与分发各类 AI skill 的仓库。每个子目录是一套独立 skill，包含 `SKILL.md`、`README.md`、脚本、配置、模板和必要参考资料。
 
+## PPT Master Plus 私有仓库
+
+`ppt-master-plus` 已迁移至 [chrisopal/ppt-master-plus](https://github.com/chrisopal/ppt-master-plus)（需访问权限）。安装及原路径兼容方式见 [迁移说明](ppt-maker-with-svg/PRIVATE_SKILL.md)。
+
 ## 当前收录
 
 - [`presales-solution-skills`](./presales-solution-skills/README.md)：通用 B 端售前10技能，从混合资料、需求脑图、方案与逐页内容到本地PPT制作和实际文件审核，含版本失效工具与测试。

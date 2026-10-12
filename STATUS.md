@@ -1,3 +1,11 @@
+## 2026-10-12 — Integrate the verified delivery Skills into main
+
+- Scope: Selectively integrate the six delivery commits (2be02ce1, a26c35df, 04945547, 8d08ebfb, c0d800ed, e8d2d6a2) onto current origin/main; retain unrelated main changes and the original working directory WIP.
+- Files/simplification: project-delivery-skills/, six delivery design/implementation plans and this status log only. Reuse the verified source without code changes; preserve both sides of STATUS-only conflicts. Generated outputs stay local.
+- Validation: All 229 tests pass with DELIVERY_OFFICE_TESTS=1, including Office integration; 25 Skills/58 templates validated; source and plans match e8d2d6a2 exactly; scoped whitespace check passes.
+- Limits: User has no real project materials available yet; real-material validation remains pending. Existing simulation, customer-acceptance and local single-writer boundaries remain unchanged.
+- Commit/push: This entry accompanies the integration record; publish to origin/main without force and verify the remote SHA after push.
+
 ## 2026-10-12 — Delivery raw-input validation, core documents and daily operations
 
 - Scope: Five Skill guides, six existing templates, field_validation/export_core_documents/daily_operations/daily_workbench, one Enterprise UI Design blue page, fixtures/tests and operating/validation docs. Keep25 Skills/58 templates.

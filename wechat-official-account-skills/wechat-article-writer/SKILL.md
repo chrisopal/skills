@@ -250,7 +250,7 @@ Sentence-level checks before handing off:
 - If a paragraph can be split into two shorter spoken paragraphs, split it.
 - If a judgment sentence could apply to almost any AI article, rewrite it until it belongs to this one.
 - If the draft keeps explaining what the company `意味着什么`, add one line about what the team actually has to do differently.
-- If a section has no crisp takeaway line, add one. The reader should be able to retell that section after one pass.
+- Check whether the reader can retell what a section establishes. Clarify the evidence or reasoning when needed; do not append a takeaway slogan to every section.
 - If a closing judgment sounds like a commentator speaking from outside the work, rewrite it until it sounds like an operator giving a practical recommendation.
 - If three or more neighboring clauses use the same grammatical frame, keep two and rewrite or delete the third.
 - If sentences and paragraphs are nearly uniform in length, restore natural long-short variation according to information density.
@@ -259,53 +259,26 @@ Sentence-level checks before handing off:
 
 ## Article Structure
 
-Default structure:
+Choose the progression from the available material and the reader's decision. Apply `../references/human-writing-playbook.md` → `从实践中提炼读者判断，不复制成功文章` before outlining. Propose two genuinely different approaches internally, then select one; do not present a planning worksheet in the article.
 
-1. Opening: 80-150 words, name the reader, the workflow, and the business tension.
-2. What is really going wrong: explain the practical consequence and common wrong fixes.
-3. Mechanism: explain the technical idea in plain language after the reader already cares.
-4. Enterprise reality: explain what changes in real workflows, roles, permissions, and maintenance.
-5. Case or pattern: success, failure, or a reusable adoption pattern.
-6. Closing: one grounded judgment that readers can repeat or forward.
+These are conditional editorial choices, not required chapter names, fixed sequences, or a rotation schedule:
 
-When writing an industrial landing or real-company case, prefer this stronger structure:
+| Material and reader need | Possible organizing choice | Evidence or boundary to preserve |
+| --- | --- | --- |
+| A real project changed direction | Follow the decision that changed, or start with the resulting artifact and explain its origin | Original goal, actual cost, reason for change, reused work, current result and limits |
+| An unexplained failure or anomaly | Start from the observed result and investigate plausible causes | Separate observations from hypotheses; an unresolved case need not end in a successful fix |
+| A choice between architectures or products | Compare under the same scenario and constraints | Comparable evidence, costs, tradeoffs, suitable and unsuitable conditions |
+| A stage summary across cases | Organize around a recurring question or a consequential disagreement | Observation range, counterexamples and uncertainty; do not invent a representative project |
+| A tutorial or mechanism explanation | Follow the reader's task, or use a worked example to build understanding | Necessary inputs, mechanism, checks, responsibility and limits; no invented failed predecessor |
 
-1. 故事开篇：谁在什么流程里卡住了，为什么它值得老板/负责人现在看
-2. 痛点展开：这条流程过去为什么慢、贵、乱、难复制
-3. 方案切入：真实公司或真实产品到底改了哪一段
-4. 技术路径：数据、模型、工作流、系统集成、人工确认分别怎么接
-5. 业务价值：效率、质量、交付、成本、人员复制、响应速度拿到了什么变化
-6. 洞见收尾：别的企业可以学什么，哪些条件不具备时别照抄
-
-When writing a stage summary, use this structure:
-
-1. 观察范围：这次总结基于哪些时间、行业或案例，不夸大样本
-2. 共性发现：反复出现了什么，给出案例证据
-3. 分歧与反例：哪些项目走了不同路径，为什么
-4. 客户决策：老板、数字化负责人或供应商应该改变哪一个判断
-5. 下一阶段：哪些问题值得继续跟踪，哪些结论仍未确认
-
-When the editorial mix explicitly calls for a `从 0 到 1 配一个……智能体` method article, this structure is available:
-
-1. 现场问题：谁在设备、维修、点检、故障、工单或售后流程里卡住了
-2. 边界定义：它不是聊天机器人，而是能查资料、问清问题、给步骤、留记录的现场助手
-3. 最小资料包：设备台账、说明书、故障码、维修工单、保养计划、备件清单、历史经验等
-4. 最小工作流：报故障/提交任务 -> 识别对象 -> 检索资料 -> 追问现象 -> 给排查步骤 -> 生成记录
-5. 权限和责任：哪些只能建议，哪些可以自动生成，哪些必须人工确认
-6. 0-1 验证步骤：先选 1 类设备或 1 条流程，导入有限资料，整理高频问题，跑真实案例
-7. 可复用清单：先做什么、不要做什么、做到什么算可用
+For a `从 0 到 1 配一个……智能体` method article, cover the minimum data package, minimum workflow, permission/responsibility boundary and practical validation that the task needs. Their order and section count follow the task, not a mandatory seven-step outline.
 
 For this article type, the first 300 Chinese characters should naturally include 1-3 stable search/recommendation terms such as `设备智能体`、`设备知识库`、`故障诊断`、`点检`、`工单`、`运维`.
 The terms must appear because the scene needs them, not as mechanical keyword stuffing.
 
-Do not schedule this article type if any of the previous four main articles used the same frame. Do not reuse the seven-step structure for case reviews or stage summaries.
+Do not schedule this article type if any of the previous four main articles used the same frame. Compare recent titles, openings, evidence order and endings; changing only the product name or headings is not a new approach. A follow-up on the same question is justified by new evidence, not cosmetic variation.
 
-Default paragraph ordering:
-
-- 先讲冲突
-- 再讲代价
-- 再讲机制
-- 最后讲判断和动作
+For a practice story, distinguish the intended product from the generic agent capabilities the team ended up maintaining. Explain changes in responsibilities with a few concrete examples instead of recounting the author's execution log or cataloguing every Skill. Keep prior accumulation visible when reporting a short rebuild time. This is relevant when the material supports it, not a requirement for unrelated articles.
 
 When a draft starts from a technology term, rewrite it until a business reader can understand why the article matters before the term is fully defined.
 
@@ -319,13 +292,11 @@ The writer owns the illustration intent. The layout skill owns the final visual 
 
 When drafting an article, decide whether the reader needs an inline illustration to understand the argument. Add an illustration brief only when it clarifies structure, flow, comparison, or an enterprise case. Do not add decorative images.
 
-Use at most 1-3 inline illustrations for a normal WeChat article.
-
-For real industrial case pieces, default to `2-4` visuals when the material supports it:
+Usually 1-3 inline illustrations are enough; a real case may need 2-4 or more when each supplies distinct evidence. Count is not a quota or a hard cap. Possible visual roles include:
 
 - pain chain / conflict map
 - workflow or system architecture
-- high-fidelity product prototype or workbench
+- actual product interface or output artifact; a clearly labeled prototype when explaining a proposed design
 - value loop / metrics outcome map
 
 Do not add all four mechanically. Use only the ones that reduce reading friction.
@@ -336,35 +307,33 @@ Standard illustration types:
 - **Workflow diagram**: show how AI enters an enterprise process.
 - **Comparison diagram**: show demo vs production, chatbot vs agent, tool use vs responsibility boundary.
 - **Case path diagram**: show scenario -> AI capability -> human confirmation -> system action -> metric.
-- **High-fidelity product prototype**: show what the named agent system actually looks like in use, especially for scenarios such as 售后处置助手、投标助手、招聘助手、客服助手、工单助手.
+- **Actual screenshot / artifact**: show the existing system or the actual output version, with its state and privacy boundaries preserved.
+- **High-fidelity product prototype**: explain a proposed product interaction; it is not evidence of an implemented system.
 
-When an article names a concrete enterprise assistant or workflow product surface and there is no real screenshot available, default to adding a `高保真系统原型图` unless the article is intentionally abstract.
+Prefer actual, privacy-reviewed screenshots when discussing an existing product or delivered artifact. If none is available, use a clearly labeled diagram or design prototype only if it helps explain the idea; otherwise omit the image. Never invent a screenshot to fill an evidence gap.
 
-The prototype is not decorative. It should make the reader see:
+When a prototype is useful, it should make the reader see:
 
-- 这个智能体在真实系统里长什么样
+- 这个拟议界面如何承接文中的工作
 - 用户在哪里看规划、执行、人工确认和日志
 - 哪些界面模块对应文中提到的机制和责任边界
 
-Caption and alt text should describe the scene itself, not the production method.
+Caption and alt text should explain the scene and distinguish actual evidence from synthetic examples or proposed designs. Check the final exported pixels after hiding customer names, tender content and identifying project data. Embed the selected visuals next to the relevant paragraphs; links can supplement them, but do not replace the visual evidence in the article.
 
 Use:
 
-- `售后处置助手界面：工单摘要、规划步骤、人工确认与执行日志`
-- `投标助手界面：项目摘要、证据引用、风险条款与审批动作`
+- `投标解析界面（已脱敏）：需求与评分项的原文定位`
+- `评分项评审结果（合成材料演示）：证据缺口与待整改状态`
+- `售后处置助手设计示意：工单摘要、人工确认与执行日志`
 
-Avoid:
-
-- `高保真原型图`
-- `高清原型图`
-- `imagegen 效果图`
+Avoid captions that only advertise image quality or label a generated prototype as an existing system. Preserve failure, incomplete and blocked states in actual result screenshots. Inspect output readability and Word/PDF layout before presenting them as results.
 
 For each illustration, include:
 
 - placement: after which section or paragraph
 - purpose: what confusion it removes
-- diagram type: concept / workflow / comparison / case path / high-fidelity prototype
-- nodes: 4-6 short labels
+- type and provenance: concept / workflow / comparison / case path / actual screenshot or artifact / labeled prototype; record the source and version
+- diagram nodes or screenshot focus: keep only what the reader needs; do not force screenshots into 4-6 nodes
 - key message: one sentence
 - style note: use the account visual system, not a new style
 
@@ -407,8 +376,10 @@ Before handing off to layout or review, ensure:
 - every technical term is tied to a real problem
 - enterprise landing is not treated as an afterthought
 - the article contains at least one concrete scenario
-- the article makes clear `怎么落地 / 用了什么技术 / 拿到了什么价值`
-- the article includes at least one repeatable judgment sentence suitable for forwarding
+- according to the article type, it explains the relevant implementation or mechanism and distinguishes verified outcomes, decision value and what remains unknown; an unresolved failure does not need an invented positive result
+- a reader can explain which decision, problem or practical check the article helps with; there is no mandatory forwarding slogan
+- structure follows the current material, with no copied title frame, forced reversal or repeated chapter skeleton from a previous successful article
+- short completion times distinguish reused work from work done in the reported period, and observational engagement metrics are not presented as proven causes of growth
 - the article includes a content illustration brief or explicitly says no inline illustration is needed
 - the close does not become a hard sales CTA
 - the opening does not sound like a generic industry-summary preface

@@ -29,7 +29,7 @@ Be a strict editor. Prioritize issues that would make the article:
 ## Review Dimensions
 
 1. Positioning: Does it serve “把 AI 技术讲明白 / 把企业真实发生讲清楚”?
-2. Reader value: Will the target reader know what to do or think differently?
+2. Reader value: Will the target reader know what to do or think differently? If sharing is a goal, what concrete decision could they discuss with a colleague using this article?
 3. Technical clarity: Are terms explained through real problems?
 4. Enterprise reality: Are process, data, permission, ownership, and measurement considered?
 5. Tone: Does it sound human, specific, and object-aware?
@@ -43,7 +43,8 @@ In tone review, explicitly check for:
 - too many long, abstract judgment sentences in a row
 - repeated formula lines that could belong to almost any enterprise-AI article
 - whether the draft reads like a clear business explainer rather than a consultant memo
-- whether each major section has a concrete takeaway line the reader can repeat
+- whether the reader can retell the evidence and decision without every section ending in a forced takeaway slogan
+- whether the structure follows the current material instead of reproducing a successful article's title frame, reversal and chapter order
 - whether recommendation lines sound natural in spoken Chinese rather than like outside-in commentary
 - whether phrases such as `这条线很值得盯`、`更值得关注的是`、`这个信号是`、`下一步该补的是` should be rewritten into more natural operator language
 - whether each paragraph contributes new material instead of paraphrasing the previous paragraph
@@ -52,6 +53,8 @@ In tone review, explicitly check for:
 - whether sentence length, paragraph length, conjunctions, and repeated openers create a machine-like rhythm
 
 This reviewer remains the broad final editor. It should not substitute for the dedicated human-tone pass.
+
+For practice reviews, verify that the original goal, observed cost, changed responsibilities, reused work, actual outputs and applicable limits are clear where relevant. Do not require a project reversal for tutorials or explanations. Reject generated prototypes presented as actual screenshots, exposed customer material, or blocked/demo artifacts presented as successful delivery. Treat engagement explanations as hypotheses unless the available comparisons support causality; a ratio of displayed shares to reads is not a unique-reader share rate.
 
 ## Output Format
 

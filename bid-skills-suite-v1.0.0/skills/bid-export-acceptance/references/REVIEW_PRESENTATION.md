@@ -2,6 +2,8 @@
 
 评审JSON仍是交接数据。HTML用于阅读同一版本的概览、三张逐项矩阵、问题整改、复核记录和范围；展示工具不计算得分、不关闭发现、不执行正式交付门禁。
 
+另有独立的 [AI模拟专家评分](AI_EXPERT_SCORING.md) 页面，由`ai_scoring.py render`读取宿主实际评分的JSON。逐项展示模拟分、估计区间、扣分与提升，未知和未评单列，当前核心交付结论独立呈现。此页面不能替代本页的核心评审报告或正式发布门禁。
+
 ```bash
 python scripts/render_review_report.py --project /project \
   --review /project/reviews/15-review.json --scoring /project/artifacts/04-scoring.json \

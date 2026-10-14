@@ -1,7 +1,7 @@
 {
   "suite": "bid-skills-suite",
-  "version": "1.17.1",
-  "date": "2026-10-11",
+  "version": "1.18.0",
+  "date": "2026-10-14",
   "authoring_language": "zh-CN",
   "business_validation": "NOT_RUN",
   "skills": [
@@ -305,5 +305,13 @@
     "candidate_output": "artifacts/02-tender-routing.json",
     "model_classification": "host_semantic_with_source_evidence",
     "business_validation": "pilot_only_see_QA_REPORT"
+  },
+  "ai_expert_scoring": {
+    "skill_id": "bid-review-remediation",
+    "schema": "assets/ai-scoring.schema.json",
+    "entrypoint": "scripts/ai_scoring.py",
+    "semantic_evaluator": "current_host_agent",
+    "output": "reviews/15-ai-scoring-rN.json",
+    "formal_release_gate": "unchanged"
   }
 }

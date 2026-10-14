@@ -2,7 +2,7 @@
 name: bid-orchestrator
 description: 按任务范围调度16个业务技能，传递确切上下文、组织人工确认、识别变更和阻塞。 适用于：完整投标流程、启动编标、继续上次任务、安排技能、仅理解／仅评审、补遗影响分析。
 metadata:
-  version: "1.14.1"
+  version: "1.15.0"
   language: zh-CN
   sequence: '17'
   suite: bid-skills-suite
@@ -98,6 +98,8 @@ metadata:
 配图方式优先逐图明确指令和已保存偏好，技术图按auto路由并默认SVG输出，系统界面示意默认Agent自带生图Skill。生成配图时由11明确本章界面/技术图任务，13按[写作流程](references/WRITING_WORKFLOW.md)调用`scripts/diagram_tools.py`的doctor、plan、render流程或当前Agent实际生图能力；具体参数以将提供的`DIAGRAM_TOOLS.md`为准。核对实际文件、章节预览与工作稿，不将工具配置或提示词当作图片生成成功。
 
 ## 评审与导出配置
+
+完整编标核心评审后，以及用户说“模拟专家评分／严格打分／估计得分”时，调用15的[AI模拟专家评分](references/AI_EXPERT_SCORING.md)。04提供原文规则，宿主Agent实际回读当前正文与材料，保存模拟分、扣分及提升建议；未知价格和未评范围单列，模拟分不能解除正式门禁。用户要求修复／重写／提升时复用整改动作，实际保存新稿后重评，保留历史。
 
 15按[核心逐项评审](references/CORE_REVIEW.md)维护评分、关键材料和全部合规条款三张表；先prepare未知计划，再独立读取原件和候选正文，执行check及正式release_gate。旧总表通过不能继承为逐项通过。14/16按[导出配置](references/EXPORT_LAYOUT.md)保存profiles/export-settings.json，支持封面、多级目录、正文样式和页眉页脚；强制格式优先，配置改动作废旧快照。目录域必须由实际文档引擎刷新，检查导出附件实际存在。
 

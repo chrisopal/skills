@@ -44,3 +44,7 @@ sources中每条引用使用source_id、revision、sha256、location、quote、k
 ## 核心评审矩阵
 
 `data.core_matrix`必须包含compliance/materials/scoring三张逐项表；字段与运行检查见[CORE_REVIEW](CORE_REVIEW.md)。结构校验只验证单行形状；全集、版本、原件引文和正文回读由review_checks.check验证。空表模板不是完整评审结果。
+
+## 独立 AI 模拟评分产物
+
+模拟分不写回核心矩阵的正式得分字段。`reviews/15-ai-scoring-rN.json` 使用随包 `assets/ai-scoring.schema.json`，记录当前冻结输入、宿主评读、全部计分叶子、分数/区间/扣分/提升及引文；用 `scripts/ai_scoring.py check` 核验。工具准备的未评计划不是模型执行结果。HTML、范围和合计均由同一产物生成，完整执行见[AI模拟专家评分](AI_EXPERT_SCORING.md)。

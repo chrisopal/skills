@@ -1,6 +1,6 @@
 # 投标编制 Skill 套件
 
-**版本 1.17.1 · 16 个业务 Skill + 1 个总控 Skill**
+**版本 1.18.0 · 16 个业务 Skill + 1 个总控 Skill**
 
 把招标文件解析、项目分类、需求与评分提取、目录、证据匹配、写作、配图、评审和 Word/PDF 导出串成一条可追溯的编标流程。安装到支持 `SKILL.md` 的宿主 Agent 后，由宿主模型和实际工具执行；不需要部署 Bid Agent 应用。
 
@@ -239,6 +239,16 @@ Windows 对应解释器为 `.venv\Scripts\python.exe`。告诉宿主使用该解
 
 对话可随时调整目录、章节、篇幅和配图；宿主须保存新修订并使受影响评审/导出重新核验。网页上的“修复/重写/提升”生成版本绑定的任务；没有宿主唤醒接口时须把交接指令送回宿主执行，不能把按钮点击当作已修复。
 
+### AI 模拟专家评分
+
+1.18.0 起，15 支持对已写标书按招标原文模拟专家打分。当前宿主模型实际阅读正文与证明材料，逐项输出**模拟分、评分档次与区间、扣分理由、证据定位和提升动作**。无需新增模型 API；只运行 Python 脚本会生成未评计划，不会自动得到 AI 分数。
+
+> 调用 bid-review-remediation 对当前完整标书做 AI 模拟专家评分。逐项回读招标评分原文、实际章节和证明材料，严格按原文档次和封顶计分，给出扣分理由及提升建议，保存 JSON 和 HTML。价格分缺必要输入保持未知；无法核验的现场演示和材料不要猜分。
+
+看完报告后，可以继续要求“优先提升高分值失分章节，保存新稿并重新评分，保留前后版本”。单独请求评分时只生成评读结果与建议。
+
+结果保存为 `reviews/15-ai-scoring-rN.json` 和 `reports/ai-scoring-rN.html`。只评部分章节时显示已评小计与未评上限，不折算为整本满分；模拟分不解除资格、废标和缺材料门禁，也不保证官方得分或中标。规则、现稿或材料变化后重新评分。流程、命令与边界见 [AI 模拟专家评分](docs/AI_EXPERT_SCORING.md)。
+
 ## 画图：Skill 和渲染工具分别准备
 
 `bid-visuals` 管理图的用途、章节关联、来源与审核；独立 `enterprise-diagrams` 提供可复用版式。配置写入项目 `work/writing-settings.json` 的 `visuals`，不要只在聊天里说“已配置”。建议让总控读取已有设置再保存；不要用片段覆盖整份文件。
@@ -302,7 +312,7 @@ Windows 对应解释器为 `.venv\Scripts\python.exe`。告诉宿主使用该解
 - 分类：四类采购内容（工程、硬件供货、软件集成、服务外包）可组合，智慧园区/智能工厂是场景标签；见 [分类与模板](docs/TENDER_ROUTING.md)。
 - 写作：[目录、编辑与保存](docs/WRITING_WORKFLOW.md)、[评分篇幅与界面图策略](docs/CHAPTER_WRITING_POLICY.md)、[实际子 Agent 并行](docs/PARALLEL_WRITING.md)。
 - 成稿：[版式模板](docs/BID_LAYOUT_TEMPLATES.md)、[封面/目录/字体/缩进/行距配置](docs/EXPORT_LAYOUT.md)。招标文件和有效补遗优先于通用模板。
-- 质量：[核心逐项评审](docs/CORE_REVIEW.md)、[质量闭环](docs/QUALITY_WORKFLOW.md)、[修复/重写/提升](docs/REVIEW_ACTIONS.md)、[评审展示](docs/REVIEW_PRESENTATION.md)。
+- 质量：[核心逐项评审](docs/CORE_REVIEW.md)、[AI模拟专家评分](docs/AI_EXPERT_SCORING.md)、[质量闭环](docs/QUALITY_WORKFLOW.md)、[修复/重写/提升](docs/REVIEW_ACTIONS.md)、[评审展示](docs/REVIEW_PRESENTATION.md)。
 - 报告：[HTML展示](docs/REPORTS.md)、[执行复核](docs/EXECUTION_QUALITY.md)、[已知问题](docs/KNOWN_ISSUES.md)。
 - 测试：[工程记录](QA_REPORT.md)、[WorkBuddy实测](docs/WORKBUDDY.md)、[模拟材料闭环](docs/SIMULATION_TESTING.md)、[公开招标语料](benchmarks/public-tenders/README.md)。
 

@@ -94,6 +94,11 @@ def check(root=ROOT):
         local = root/'skills'/skill_id/'assets/scoring.schema.json'
         if not local.is_file() or local.read_bytes() != (root/'skills/bid-scoring/assets/output.schema.json').read_bytes():
             errors.append(skill_id+': 独立评审展示评分契约缺失或不一致')
+    for skill_id in ('bid-review-remediation', 'bid-orchestrator'):
+        local = root/'skills'/skill_id/'assets/ai-scoring.schema.json'
+        canonical = root/'assets/ai-scoring.schema.json'
+        if not canonical.is_file() or not local.is_file() or local.read_bytes() != canonical.read_bytes():
+            errors.append(skill_id+': AI模拟评分契约缺失或不一致')
     errors.extend(check_installable_zips(root,registry))
     companion = root.parent/'enterprise-diagrams'
     if companion.is_dir():

@@ -2,7 +2,7 @@
 name: bid-scoring
 description: 还原评分层级、计分方法和证据条件，形成可行动的评分覆盖矩阵。 适用于：提取评分项、分析评分表、检查分值、得分条件、价格公式、评审重点。
 metadata:
-  version: 1.3.0
+  version: 1.3.1
   language: zh-CN
   sequence: '4'
   suite: bid-skills-suite
@@ -70,6 +70,8 @@ metadata:
    输出评分矩阵、算术检查及歧义清单，交07策划、08目录和15评审复用；无评分办法时明确未提供，不能称不存在。
 
 ## 产物与交接
+
+对已写标书“模拟专家打分”交给15，按[AI模拟专家评分](references/AI_EXPERT_SCORING.md)区分原文计分规则与模型估计。04仍只提取规则，不将主观区间改写成确定得分，不推测竞价输入。
 
 保存 `04-scoring.json`（机器可读）和同名 `.md`（可读报告），使用 [JSON模板](assets/output.template.json) 与 [报告模板](assets/report.template.md)。字段必须符合 [JSON Schema](assets/output.schema.json)。不要把模板空值直接当结果；详细演示见 [合成示例](assets/example.output.json)。
 

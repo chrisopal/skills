@@ -1626,3 +1626,10 @@
 - 完成内容：根/套件/enterprise-diagrams README 增加通用 npx 安装、首次调用入口、网络排错及独立绘图说明；按用户明确授权公开完全模拟的招标示例、12 张实际过程截图、JSON/HTML 输出、SVG/JSON 图源、原生 ImageGen 界面示意及六页 Word/PDF。五个文档展示页复用现有目录/正文呈现函数；只读展示，无新增运行框架、项目依赖、API 或部署。Word 分享副本仅去掉修改者元数据，保留文档和媒体；无关 WIP 保持。
 - 验证：Skills CLI 1.7.2 隔离项目从 GitHub main 实装 18/18，452 个投标文件与9个绘图文件全部一致。12/12 截图加载、182 个本地链接、模拟统计、隐私/哈希、Word XML/两图、PDF 六页/九条目录目的页与标题均通过；五个展示页手机390px及导出展示1440/1920px无横向溢出。render_demo、py_compile、refresh_distribution、check_suite（17 Skill/34 Schema/17ZIP）及diff检查通过。
 - 风险/后续：示例为之前实际运行结果的公开展示快照，本轮未重新生成整本或重跑353项工程回归；应用lint/build不适用。保留单章未采纳、原文partial、缺企业材料及正式交付拒绝。NPX 1.7.2不支持WorkBuddy参数，README明确本地导入；Windows、整标、真实签署递交/业务验收未运行。按用户授权提交并以快进方式集成推送origin/main，不提交临时服务、缓存、失败诊断或真实客户材料。
+
+
+## 2026-10-14 — 投标Skill 1.18.0 AI模拟专家评分
+
+- 完成内容：扩展bid-review-remediation的宿主模型评分模式，并更新bid-scoring/bid-orchestrator路由、README、机器契约及独立分发。新增ai_scoring.py准备/校验/HTML报告、ai-scoring.schema.json、16项评分回归和独立15/17 ZIP测试；逐项模拟分、区间、扣分及提升依据原文和现稿，部分范围/未知价格单列，模拟评分保持独立于材料/资格/否决门禁。UI采用enterprise-ui-design扁平蓝色报告布局，可展开证据与窄屏/深色。复用既有模型宿主、引用检查、快照与整改工具，无新增服务、API、项目依赖或应用源码修改。
+- 验证：Python3.12既有环境完整370项unittest（369通过、1因可选CairoSVG未安装跳过）；新增评分16项及两隔离ZIP实际命令通过。17Skill/34既有Schema/新AI Schema、17 quick_validate、7Python编译、17ZIP/698同源校验及diff通过。独立模型读两份招标原文及37/30候选章节，共24评分叶子；青草沙46/50+价格50未知，东台13.3/60+价格40未知；单章另测22/25+30价格未知+45未评。三项目当前check通过，blocked未变化。三份报告四种宽度、浅深色、键盘/焦点、129链接及抽查文字对比度通过；Codex/WorkBuddy32个安装文件同源、12次安装CLI检查通过，旧文件备份在发现目录外。
+- 风险/后续：两份为候选正文与合成材料评分测试，非完整100分、真实资质或官方专家结论。最终Word/PDF同版评分/导出验收、WorkBuddy本轮模型评分、真实签署递交和业务验收未运行；工程检查不能认证模型判断。应用lint/build不适用，保留无关WIP；一次性生成物只留本机，按既有授权提交并推送main。

@@ -32,7 +32,43 @@
   function fitLabel(target) { return target.fit_score == null ? '适配待评估' : '适配 ' + Number(target.fit_score).toFixed(1) + ' / 100'; }
   function qualifiedTouches(detail, targetId) { return list(detail.touches).filter((t) => t.target_id === targetId && t.outcome === 'qualified' && t.evidence && t.occurred_on <= detail.as_of && t.occurred_on <= today()); }
   function money(values, fallback = '未知') { const pairs = Object.entries(values || {}); return pairs.length ? pairs.map(([c, v]) => c + ' ' + Number(v).toLocaleString('zh-CN', { maximumFractionDigits: 2 })).join(' · ') : fallback; }
-  window.GTMLogic = Object.freeze({ eventStatus, hasLocation, objects, matches, fitLabel, qualifiedTouches, money, groupPoints });
+  // Project the current snapshot without changing campaign or sales facts. Parity-tested
+  // against gtm._analytics; ownership is always the target, never an OR with event location.
+  function scopeSnapshot(detail, items) {
+    const targets = items.filter((x) => x.object_type === 'company'), events = items.filter((x) => x.object_type !== 'company');
+    const ids = new Set(targets.map((x) => x.id));
+    const touches = list(detail.touches).filter((t) => ids.has(t.target_id));
+    const through = [detail.actual_through || detail.as_of, detail.as_of, today()].filter(Boolean).sort()[0];
+    const actual = touches.filter((t) => t.outcome !== 'planned' && t.occurred_on <= through);
+    const pending = touches.filter((t) => !actual.includes(t));
+    const links = list(detail.links).filter((l) => ids.has(l.target_id) && l.linked_on <= detail.as_of);
+    const outcomes = ['contacted', 'responded', 'meeting', 'qualified'];
+    const unique = (rows, key) => new Set(rows.map((r) => r[key])).size;
+    const reached = (rows, outcome) => unique(rows.filter((t) => outcomes.indexOf(t.outcome) >= outcomes.indexOf(outcome)), 'target_id');
+    const sum = (rows, currencyKey, amountKey) => { const values = {}; rows.forEach((r) => { const c = r[currencyKey]; values[c] = Math.round(((values[c] || 0) + r[amountKey]) * 100) / 100; }); return values; };
+    const costs = (rows) => sum(rows.filter((r) => r.actual_cost != null), 'currency', 'actual_cost');
+    const missing = (rows) => rows.filter((r) => r.actual_cost == null).length;
+    const won = links.filter((l) => l.opportunity && l.opportunity.status === 'won' && list(l.opportunity.signed_amounts).length);
+    const funnel = { candidates: targets.length };
+    outcomes.forEach((k) => { funnel[k] = reached(actual, k); });
+    funnel.opportunities = unique(links, 'target_id'); funnel.won = unique(won, 'target_id');
+    const regions = [...new Set(targets.map((t) => t.region))].map((name) => {
+      const group = new Set(targets.filter((t) => t.region === name).map((t) => t.id)), rows = actual.filter((t) => group.has(t.target_id));
+      return { name, candidates: group.size, contacted: reached(rows, 'contacted'), qualified: reached(rows, 'qualified'), opportunities: unique(links.filter((l) => group.has(l.target_id)), 'target_id'), won: unique(won.filter((l) => group.has(l.target_id)), 'target_id') };
+    });
+    const channels = [...new Set(actual.map((t) => t.channel))].map((name) => {
+      const rows = actual.filter((t) => t.channel === name);
+      return { name, touches: rows.length, contacted: reached(rows, 'contacted'), responded: reached(rows, 'responded'), qualified: reached(rows, 'qualified'), costs: costs(rows), missing_cost_count: missing(rows) };
+    });
+    const eventMetrics = events.map((e) => {
+      const rows = actual.filter((t) => t.event_id === e.id);
+      return { id: e.id, name: e.name, targets: unique(rows, 'target_id'), qualified: reached(rows, 'qualified'), opportunities: unique(links.filter((l) => l.origin_event_id === e.id), 'target_id'), costs: costs(rows), missing_cost_count: missing(rows) };
+    });
+    const effectiveLinks = [...new Map(links.map((l) => [l.opportunity_id, l])).values()];
+    const signed = effectiveLinks.flatMap((l) => list(l.opportunity && l.opportunity.signed_amounts));
+    return { targets, events, touches, actual, pending, links, analytics: { funnel, regions, channels, events: eventMetrics, costs: costs(actual), missing_cost_count: missing(actual), signed_amounts: sum(signed, 'currency', 'amount'), unmapped_targets: targets.filter((t) => !t.location).length } };
+  }
+  window.GTMLogic = Object.freeze({ eventStatus, hasLocation, objects, matches, fitLabel, qualifiedTouches, money, groupPoints, scopeSnapshot });
   async function api(path, options) {
     const response = await fetch(path, options); let result;
     try { result = await response.json(); } catch (_) { throw new Error('服务返回结果无法读取，请重试。'); }
@@ -121,19 +157,30 @@
       if (!messages.length) return empty(n, '暂无匹配话术草稿。');
       messages.forEach((m) => { const section = node('article', 'gtm-message'); section.append(tag('草稿 · 未发送'), node('h3', '', m.title), node('p', 'gtm-muted', str(m.channel) + ' · ' + str(m.role) + ' · ' + str((list(state.detail.targets).find((t) => t.id === m.target_id) || {}).name, '分群话术'))); [['opening', '开场'], ['value', '价值'], ['proof', '证据'], ['cta', '下一步'], ['objection', '异议回应']].forEach(([key, label]) => { section.append(node('strong', '', label), node('p', '', str(m[key]))); }); section.append(actions([button('复制话术', () => copyMessage(m))])); detailSources(section, m.source_ids); n.append(section); });
     } else if (state.tab === 'touches') {
-      const allowed = new Set(targets.map((x) => x.id)), eventIds = new Set(visible.filter((x) => x.object_type !== 'company').map((x) => x.id));
-      const touches = list(state.detail.touches).filter((t) => allowed.has(t.target_id) || eventIds.has(t.event_id)).sort((a, b) => b.occurred_on.localeCompare(a.occurred_on));
+      const touches = scopeSnapshot(state.detail, visible).touches.sort((a, b) => b.occurred_on.localeCompare(a.occurred_on));
       const toolbar = node('div', 'gtm-section-head'); toolbar.append(actions([button('登记跟进', () => openTouch(), true)])); n.append(toolbar);
       if (!touches.length) return empty(n, '暂无匹配跟进记录。');
       n.append(table(['企业 / 日期', '渠道 / 结果', '跟进事实与证据', '下一步', '费用 / 操作'], touches.map((t) => { const target = list(state.detail.targets).find((x) => x.id === t.target_id), fact = node('div'); fact.append(node('div', '', t.summary), node('p', 'gtm-muted', '证据：' + str(t.evidence))); disclosure(fact, '记录标识', t.id); const next = node('div'); next.append(node('div', '', str(t.next_action)), node('div', 'gtm-muted', str(t.owner) + ' · ' + str(t.due_on))); const cost = node('div'); cost.append(node('p', '', t.outcome === 'planned' ? '计划无实际费用' : t.occurred_on > (state.detail.actual_through || (state.detail.as_of < today() ? state.detail.as_of : today())) ? '未来记录 · 未计实际费用' : t.actual_cost == null ? '费用未知' : str(t.currency, state.detail.campaign.currency) + ' ' + t.actual_cost)); if (t.outcome === 'qualified' && t.occurred_on <= state.detail.as_of && t.occurred_on <= today()) cost.append(button('关联商机', () => openLink(t.target_id, t.id))); return { cells: [(target ? target.name : t.target_id) + ' / ' + t.occurred_on, str(t.channel) + ' / ' + (labels[t.outcome] || t.outcome) + (t.occurred_on > (state.detail.actual_through || (state.detail.as_of < today() ? state.detail.as_of : today())) ? '（未来，不计实际）' : ''), fact, next, cost] }; })));
     } else renderAnalysis(n);
   }
   function renderAnalysis(n) {
-    const a = state.detail.analytics || {}, body = node('div', 'gtm-analysis'), totals = node('div', 'gtm-money');
-    [['已记录成本', money(a.costs)], ['缺少费用的实际跟进', str(a.missing_cost_count) + ' 条'], ['已签署合同金额', money(a.signed_amounts)]].forEach(([label, value]) => { const p = node('div'); p.append(node('span', 'gtm-muted', label), node('strong', '', value)); totals.append(p); }); body.append(totals);
-    const defs = node('details', 'gtm-disclosure'); defs.append(node('summary', '', '统计口径'), node('p', '', '统计整个推广计划，不随地图筛选变更。截至 ' + state.detail.as_of + '，按企业去重；未来跟进与计划不计实际。活动关联仅表示已登记来源。缺少成本保持未知，币种分别统计。关联商机的阶段、评分和签署金额为当前状态，不按历史截至日重建。签署金额来自当前有效签署事实。')); body.append(defs);
-    [['区域', a.regions, ['区域', '候选', '触达', '意向', '商机', '签约'], (r) => [r.name, r.candidates, r.contacted, r.qualified, r.opportunities, r.won]], ['渠道', a.channels, ['渠道', '跟进', '触达企业', '回应企业', '意向企业', '成本 / 缺失'], (r) => [r.name, r.touches, r.contacted, r.responded, r.qualified, money(r.costs) + ' / ' + str(r.missing_cost_count) + ' 条']], ['活动关联', a.events, ['活动', '企业', '意向', '商机', '成本 / 缺失'], (r) => [r.name, r.targets, r.qualified, r.opportunities, money(r.costs) + ' / ' + str(r.missing_cost_count) + ' 条']]].forEach(([title, rows, headers, cells]) => { const section = node('section'); section.append(node('h3', '', title)); if (list(rows).length) section.append(table(headers, rows.map((r) => ({ cells: cells(r) })))); else section.append(node('p', 'gtm-muted', '暂无统计记录。')); body.append(section); });
-    const links = list(state.detail.links); if (links.length) { const sec = node('section'); sec.append(node('h3', '', '当前关联商机'), table(['企业 / 商机', '当前阶段', '评分', '签署金额', '核验状态'], links.map((l) => { const o = l.opportunity || {}, name = node('div'); name.append(node('p', '', str(o.company_name)), navLink('/?opportunity_id=' + encodeURIComponent(l.opportunity_id), str(o.name, '打开商机') + ' ↗')); const sums = {}; list(o.signed_amounts).forEach((m) => { sums[m.currency] = (sums[m.currency] || 0) + m.amount; }); return { cells: [name, str(o.current_stage_name, stageLabels[o.current_stage_id] || o.current_stage_id), str(o.score), money(sums), l.link_error ? str(l.link_error) : str(verificationLabels[o.verification_status] || o.verification_status)] }; }))); body.append(sec); }
+    const d = state.detail, scoped = scopeSnapshot(d, visibleObjects()), national = scopeSnapshot(d, objects(d));
+    const a = scoped.analytics, all = d.analytics || national.analytics, body = node('div', 'gtm-analysis');
+    const filtered = !!(state.geoProvince || state.region || state.type || state.keyword);
+    const scope = state.geoProvince ? $('map-scope').textContent : state.region || '全国';
+    const heading = node('div', 'gtm-analysis-heading'); heading.append(node('h2', '', scope + ' · 分析'), node('span', 'gtm-muted', filtered ? '当前筛选 · 截至 ' + d.as_of : '全国汇总 · 截至 ' + d.as_of)); body.append(heading);
+    if (state.region || state.type || state.keyword) body.append(node('p', 'gtm-muted', '叠加筛选：' + [state.region, labels[state.type], state.keyword && '关键词“' + state.keyword + '”'].filter(Boolean).join(' · ')));
+    const metrics = node('div', 'gtm-scope-metrics'); metrics.setAttribute('aria-label', '当前范围指标');
+    [['企业', scoped.targets.length, national.targets.length], ['活动 / 渠道', scoped.events.length, national.events.length], ['实际跟进', scoped.actual.length, national.actual.length], ['有效线索', a.funnel.qualified, all.funnel.qualified], ['关联商机', a.funnel.opportunities, all.funnel.opportunities], ['已记录成本', money(a.costs), money(all.costs)], ['缺少费用的实际跟进', a.missing_cost_count + ' 条', all.missing_cost_count + ' 条'], ['已签署合同金额', money(a.signed_amounts), money(all.signed_amounts)]].forEach(([label, value, total]) => { const m = node('div', 'gtm-metric'); m.append(node('span', '', label), node('strong', '', String(value))); if (filtered) m.append(node('span', 'gtm-national-value', '全国 ' + total)); metrics.append(m); }); body.append(metrics);
+    disclosure(body, '统计口径', '分析与地图使用相同省市、区域、类型和关键词筛选。跟进、商机和费用归属目标企业所在地；活动/渠道按举办地展示，活动行仅统计当前筛选企业的关联。异地活动不会把客户跟进重复归入举办地；只看活动时无可见企业，企业指标为空。实际跟进截至 ' + d.actual_through + '；计划及未来记录单列，不计实际。企业里程碑去重累积；费用按币种统计，未登记保持未知；签署金额按商机去重。顶部漏斗与指标下方全国值不受筛选影响。商机阶段/评分为当前回读，历史截至日不重建商机状态，签署金额只来自有效签署事实。');
+    function section(title, rows, headers, cells, emptyText) { const sec = node('section'); sec.append(node('h3', '', title)); if (rows.length) sec.append(table(headers, rows.map((r) => ({ cells: cells(r) })))); else sec.append(node('p', 'gtm-muted', emptyText || '暂无统计记录。')); body.append(sec); }
+    section('企业（' + scoped.targets.length + '）', scoped.targets, ['企业', '区域 / 城市', '状态', '适配', '操作'], (t) => [t.name, [t.region, t.city].filter(Boolean).join(' / '), labels[t.status] || '候选', fitLabel(t), button('查看', () => selectObject(t, true))], '当前范围暂无企业。');
+    const touches = [...scoped.touches].sort((a, b) => b.occurred_on.localeCompare(a.occurred_on));
+    section('跟进（实际 ' + scoped.actual.length + ' · 计划 / 未来 ' + scoped.pending.length + '）', touches, ['企业 / 日期', '渠道 / 结果', '跟进摘要', '费用'], (t) => [(scoped.targets.find((x) => x.id === t.target_id) || {}).name + ' / ' + t.occurred_on, t.channel + ' / ' + (labels[t.outcome] || t.outcome), t.summary, scoped.actual.includes(t) ? (t.actual_cost == null ? '费用未知' : money({ [t.currency]: t.actual_cost })) : '计划 / 未来 · 不计实际费用'], '当前范围暂无跟进。');
+    section('区域分布', a.regions, ['区域', '候选', '触达', '意向', '商机', '签约'], (r) => [r.name, r.candidates, r.contacted, r.qualified, r.opportunities, r.won]);
+    section('渠道效果', a.channels, ['渠道', '实际跟进', '触达企业', '回应企业', '意向企业', '成本 / 缺失'], (r) => [r.name, r.touches, r.contacted, r.responded, r.qualified, money(r.costs) + ' / ' + r.missing_cost_count + ' 条']);
+    section('活动 / 渠道关联（' + scoped.events.length + '）', a.events, ['活动 / 渠道', '企业', '意向', '商机', '成本 / 缺失'], (r) => [r.name, r.targets, r.qualified, r.opportunities, money(r.costs) + ' / ' + r.missing_cost_count + ' 条'], '当前范围暂无活动或渠道。');
+    section('当前关联商机（' + scoped.links.length + '）', scoped.links, ['企业 / 商机', '当前阶段', '评分', '签署金额', '核验状态'], (l) => { const o = l.opportunity || {}, name = node('div'); name.append(node('p', '', str(o.company_name)), navLink('/?opportunity_id=' + encodeURIComponent(l.opportunity_id), str(o.name, '打开商机') + ' ↗')); const sums = {}; list(o.signed_amounts).forEach((m) => { sums[m.currency] = (sums[m.currency] || 0) + m.amount; }); return [name, str(o.current_stage_name, stageLabels[o.current_stage_id] || o.current_stage_id), str(o.score), money(sums), l.link_error ? str(l.link_error) : str(verificationLabels[o.verification_status] || o.verification_status)]; }, '当前范围暂无关联商机。');
     n.append(body);
   }
   function renderBrief() {

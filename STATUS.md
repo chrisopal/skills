@@ -1,3 +1,12 @@
+## 2026-10-15 — Opportunity scope and commercial content review v0.7.0
+
+- Scope/files: Lifecycle/renderer/workbench JS, manage/lifecycle schemas, regression fixtures, case/rehearsal scripts and five task/flow guides; design and verification in docs/plans/2026-10-15-opportunity-scope-review*.md.
+- Behavior: Bind confirmed scope to the exact current solution hash. Commercial files and contract handoff require recorded content read-back against the current scope fact version; replacing the solution or confirming scope again invalidates old commercial reviews. History/stage never silently change. Add real scope form, Chinese prerequisite/signature errors and visible alert recovery.
+- Simplification: Reuse existing facts, artifact dependency chain and atomic manage requests; no new service/dependency or semantic-approval engine. Review details stay in disclosure; generated test artifacts remain local.
+- Validation: 98 analysis/runtime +12 orchestration tests, seven entry validators, portable/suite/link checks, Python/JS syntax and whitespace pass. Independent review APPROVE after schema/UI fixes. Full12 case preserves scores52→84 and reaches simulated358000 CNY; actual browser V3 replacement→scope confirmation→customer/commercial repair→unsigned rejection→recorded signing→won succeeds, revision31. Light/dark1440/390 plus light1366/1920 have no page overflow; keyboard form action and console checks pass; visual verdict93/pass.
+- Compatibility/limits: Old unbound scope and missing content reviews remain readable and require explicit reconfirmation/new commercial versions; no fabricated approvals or altered old signature history. Scope review is an attributed read-back statement, not automatic semantics, customer acceptance, authentication or legal verification. No Python LSP/type-check claim. Evidence under output/opportunity-scope-review-20261015/ excluded.
+- Commit/push: This scoped verified source accompanies a Lore commit; publish feature/main non-force with remote SHA read-back, then synchronize the installed-source checkout while retaining unrelated WIP.
+
 ## 2026-10-12 — Isolate PPT Master Plus in a private repository
 
 - Scope: Remove `ppt-maker-with-svg/skills/ppt-master-plus/` from all 10 affected public branch tips; retain existing local files and unrelated WIP.

@@ -311,6 +311,8 @@ class SkillDisplayRenderer:
 
     def _blocker_label(self, value: Any) -> str:
         text = str(value)
+        if text.startswith('solution scope '):
+            return '方案范围需重新绑定当前方案并确认'
         if text.startswith("fact unresolved, missing or negative: "):
             return "待确认：" + self._fact_label(text.rsplit(": ", 1)[-1])
         if text.startswith(("current artifact stale or missing: ", "current artifact stale, unbound or missing: ")):
@@ -331,10 +333,14 @@ class SkillDisplayRenderer:
         if reason.startswith("required dependency missing: "):
             return "缺少依据版本：" + str(self._kind_label(reason.rsplit(": ", 1)[-1]))
         prefixes = {"dependency invalid: ": "上游成果需复核：", "dependency missing: ": "上游成果缺失：",
+                    "artifact content review is missing: ": "缺少内容复核：", "artifact content review uses an outdated solution scope: ": "内容复核对应的范围已过期：",
+                    "quote solution differs from confirmed solution scope: ": "报价方案与已确认范围不一致：",
                     "dependency hash mismatch: ": "上游摘要不符：", "artifact dependency cycle: ": "成果依赖循环：", "artifact superseded: ": "成果已被新版本替代：", "artifact file stale or missing: ": "成果文件已变更或缺失："}
         for prefix, label in prefixes.items():
             if reason.startswith(prefix):
                 return label + reason[len(prefix):].split(" (")[0]
+        if reason.startswith('solution scope '):
+            return self._blocker_label(reason)
         return {"review closure solution binding missing or mismatched": "关闭依据未绑定或摘要不符",
                 "artifact file stale or missing": "成果文件已变更或缺失",
                 "artifact superseded": "成果已被新版本替代"}.get(reason, reason)

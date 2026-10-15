@@ -90,6 +90,42 @@ def dependency_kinds(state, kind):
     return required
 
 
+def scope_verification(state, fact=None):
+    fact = latest_facts(state).get('solution_scope') if fact is None else fact
+    if not fact or not fact_satisfies(fact):
+        return 'needs_review', ['solution scope confirmation is missing or unresolved']
+    solution = next((a for a in state['artifacts'] if a['id'] == fact.get('artifact_id')), None)
+    if not solution or solution['kind'] != 'solution' or fact.get('sha256') != solution['sha256']:
+        return 'needs_review', ['solution scope confirmation is stale or unbound']
+    if solution.get('dependencies'):
+        return 'needs_review', ['solution scope artifact has unsupported dependencies']
+    validity, reasons = artifact_verification(state, solution)
+    if validity != 'valid':
+        return 'needs_review', ['solution scope confirmation is stale or unbound'] + reasons
+    return 'current', []
+
+
+def scope_review_required(state, kind):
+    return kind in {'quote', 'negotiation', 'contract'} or (
+        kind == 'handoff' and any(a['kind'] == 'contract' for a in state['artifacts']))
+
+
+def scope_review_verification(state, artifact):
+    review = artifact.get('scope_review')
+    if not isinstance(review, dict) or not review.get('scope_fact_id'):
+        return 'unbound', ['artifact content review is missing: ' + artifact['id']]
+    fact = latest_facts(state).get('solution_scope')
+    if scope_verification(state)[0] != 'current' or review.get('scope_fact_id') != fact['id'] or review.get('scope_version') != fact['version']:
+        return 'dependency_invalid', ['artifact content review uses an outdated solution scope: ' + artifact['id']]
+    if artifact['kind'] == 'quote':
+        dependencies = artifact.get('dependencies', [])
+        if not isinstance(dependencies, list) or not dependencies:
+            return 'unbound', ['required dependency missing: solution']
+        if {'artifact_id': fact['artifact_id'], 'sha256': fact['sha256']} not in dependencies:
+            return 'dependency_invalid', ['quote solution differs from confirmed solution scope: ' + artifact['id']]
+    return 'valid', []
+
+
 def artifact_verification(state, artifact, visiting=None):
     """Verify stored bindings recursively; never infer dependencies for older records."""
     visiting = set() if visiting is None else visiting
@@ -99,6 +135,10 @@ def artifact_verification(state, artifact, visiting=None):
         return 'superseded', ['artifact superseded: ' + artifact['id']]
     if not artifact_is_current(artifact):
         return 'stale_or_missing', ['artifact file stale or missing: ' + artifact['id']]
+    if scope_review_required(state, artifact['kind']):
+        validity, reasons = scope_review_verification(state, artifact)
+        if validity != 'valid':
+            return validity, reasons
     metadata = artifact.get('metadata')
     if isinstance(metadata, dict) and 'presales_binding' in metadata:
         binding = metadata.get('presales_binding')
@@ -216,6 +256,8 @@ def lifecycle_blockers(state, *, include_reviews=True):
     required_facts.update(core_facts & facts.keys())
     if state['current_stage_id'] in COMMERCIAL_STAGES:
         required_facts.add('quote_authorized')
+    if 'solution_scope' in required_facts or state['current_stage_id'] in COMMERCIAL_STAGES:
+        blockers.extend(scope_verification(state)[1])
     for fact_id in sorted(required_facts):
         if fact_id not in facts or not fact_satisfies(facts[fact_id]):
             blockers.append('fact unresolved, missing or negative: ' + fact_id)
@@ -250,6 +292,9 @@ def lifecycle_blockers(state, *, include_reviews=True):
 def read_lifecycle(state: dict[str, Any]) -> dict[str, Any]:
     state = deepcopy(state)
     state.setdefault('reviews', [])
+    for fact in state['facts']:
+        if fact['fact_id'] == 'solution_scope':
+            fact['verification_status'], fact['verification_reasons'] = scope_verification(state, fact)
     for artifact in state['artifacts']:
         artifact['validity'], artifact['verification_reasons'] = artifact_verification(state, artifact)
     for review in state['reviews']:
@@ -308,6 +353,12 @@ def apply_operations(state: dict[str, Any], operations: Any, actor: str, evidenc
             unresolved = isinstance(value, str) and value.strip().lower() in UNKNOWN_VALUES
             refs = evidence(op)
             binding = {}
+            if fact_id == 'solution_scope' and not unresolved:
+                require_text(value, 'solution_scope')
+                artifact = item_by_id(state['artifacts'], op.get('artifact_id'), 'solution scope artifact')
+                if artifact['kind'] != 'solution' or artifact_verification(state, artifact)[0] != 'valid':
+                    raise ValueError('solution scope must bind the current hash-matching solution artifact')
+                binding = {'artifact_id': artifact['id'], 'sha256': artifact['sha256']}
             if fact_id == 'quote_authorized' and value is True:
                 artifact = item_by_id(state['artifacts'], op.get('artifact_id'), 'authorized quote artifact')
                 if artifact['kind'] != 'quote' or artifact_verification(state, artifact)[0] != 'valid':
@@ -409,9 +460,19 @@ def apply_operations(state: dict[str, Any], operations: Any, actor: str, evidenc
                 bindings.append({'artifact_id': upstream['id'], 'sha256': upstream['sha256']})
             if dependency_types != dependency_kinds(state, artifact_kind):
                 raise ValueError('artifact dependencies must match required kinds: ' + ', '.join(sorted(dependency_kinds(state, artifact_kind))))
+            scope_review = {}
+            if scope_review_required(state, artifact_kind):
+                fact = latest_facts(state).get('solution_scope')
+                if scope_verification(state)[0] != 'current':
+                    raise ValueError('solution scope confirmation is missing, stale or unbound')
+                review = op.get('scope_review')
+                if not isinstance(review, dict) or type(review.get('scope_version')) is not int or review['scope_version'] != fact['version']:
+                    raise ValueError('artifact content review must reference the current solution scope version')
+                scope_review = {'scope_review': {'scope_fact_id': fact['id'], 'scope_version': fact['version'],
+                    'summary': require_text(review.get('summary'), 'content review summary'), 'actor': actor, 'time': timestamp}}
             state['artifacts'].append({'id': artifact_id, 'document_id': document_id, 'kind': artifact_kind, 'version': version,
                 'file_path': path, 'sha256': digest, 'dependencies': bindings, 'metadata': metadata, 'evidence': evidence(op),
-                'actor': actor, 'time': timestamp, 'status': 'registered'})
+                **scope_review, 'actor': actor, 'time': timestamp, 'status': 'registered'})
             validity, reasons = artifact_verification(state, state['artifacts'][-1])
             if validity != 'valid':
                 raise ValueError('artifact dependency verification failed: ' + '; '.join(reasons))
@@ -502,6 +563,8 @@ def apply_operations(state: dict[str, Any], operations: Any, actor: str, evidenc
                 raise ValueError('missing confirmed facts: ' + ', '.join(sorted(missing)))
             selected_artifact = None
             if target in COMMERCIAL_STAGES:
+                if scope_verification(state)[0] != 'current':
+                    raise ValueError('solution scope confirmation is missing, stale or unbound')
                 fact = latest_facts(state).get('quote_authorized')
                 if not fact or not fact_satisfies(fact):
                     raise ValueError('authorized quote is missing or unresolved')
@@ -517,6 +580,9 @@ def apply_operations(state: dict[str, Any], operations: Any, actor: str, evidenc
             required_kind = ARTIFACT_GATES.get(target)
             if required_kind:
                 candidates = [a for a in reversed(state['artifacts']) if a['kind'] == required_kind and artifact_verification(state, a)[0] == 'valid']
+                if target == 'solution_cocreation':
+                    scope = latest_facts(state)['solution_scope']
+                    candidates = [a for a in candidates if a['id'] == scope.get('artifact_id') and a['sha256'] == scope.get('sha256')]
                 if not candidates:
                     raise ValueError(f'{target} requires current {required_kind} artifact')
                 if target in COMMERCIAL_STAGES:

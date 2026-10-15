@@ -40,7 +40,27 @@
     "facts": {
       "type": "array",
       "items": {
-        "type": "object"
+        "type": "object",
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          },
+          "verification_status": {
+            "enum": [
+              "current",
+              "needs_review"
+            ]
+          },
+          "verification_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
     "history": {
@@ -96,6 +116,34 @@
               "type": "string",
               "minLength": 1
             }
+          },
+          "scope_review": {
+            "type": "object",
+            "required": [
+              "scope_fact_id",
+              "scope_version",
+              "summary",
+              "actor",
+              "time"
+            ],
+            "properties": {
+              "scope_fact_id": {
+                "type": "string"
+              },
+              "scope_version": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "summary": {
+                "type": "string"
+              },
+              "actor": {
+                "type": "string"
+              },
+              "time": {
+                "type": "string"
+              }
+            }
           }
         }
       }
@@ -122,17 +170,62 @@
           "history"
         ],
         "properties": {
-          "competitor_id": {"type": "string", "minLength": 1},
-          "name": {"type": "string", "minLength": 1},
-          "position": {"type": "string", "minLength": 1},
-          "strengths": {"type": "array", "items": {"type": "string"}},
-          "weaknesses": {"type": "array", "items": {"type": "string"}},
-          "response": {"type": "string", "minLength": 1},
-          "status": {"enum": ["confirmed", "reported", "unknown"]},
-          "price_amount": {"type": "number", "minimum": 0},
-          "currency": {"type": "string"},
-          "evidence": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-          "history": {"type": "array", "minItems": 1, "items": {"type": "object"}}
+          "competitor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "position": {
+            "type": "string",
+            "minLength": 1
+          },
+          "strengths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "weaknesses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "response": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "confirmed",
+              "reported",
+              "unknown"
+            ]
+          },
+          "price_amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "history": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object"
+            }
+          }
         }
       }
     },

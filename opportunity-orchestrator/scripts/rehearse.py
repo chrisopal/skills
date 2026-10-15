@@ -78,7 +78,7 @@ def rehearse(output: Path) -> dict:
         for upstream_kind in required:
             upstream = next(a for a in reversed(current) if a["kind"] == upstream_kind and a["validity"] == "valid")
             dependencies.append({"artifact_id": upstream["id"], "sha256": upstream["sha256"]})
-        return {"type": "register_artifact", "dependencies": dependencies, "artifact_id": aid, "document_id": kind, "kind": kind, "version": version, "file_path": str(path), "evidence": ["EV-FOLLOWUP"], "metadata": {"simulated": True, "use_scope": "internal-rehearsal", "contract_number": "DEMO-2026-001" if kind == "contract" else None}}
+        return {"type": "register_artifact", "dependencies": dependencies, "artifact_id": aid, "document_id": kind, "kind": kind, "version": version, "file_path": str(path), "evidence": ["EV-FOLLOWUP"], **({"scope_review": {"scope_version": 1, "summary": "模拟回读：正文范围、版本与商务前提一致"}} if kind != "solution" else {}), "metadata": {"simulated": True, "use_scope": "internal-rehearsal", "contract_number": "DEMO-2026-001" if kind == "contract" else None}}
 
     initial = state()
     assert initial["current_stage_id"] == "lead_identified" and not initial["history"]

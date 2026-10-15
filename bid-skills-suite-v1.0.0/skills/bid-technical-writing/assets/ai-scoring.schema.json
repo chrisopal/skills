@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bid-skills:ai-expert-scoring:1.0",
+  "title": "Host-agent AI simulated scoring artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "skill_id", "artifact_type", "project_id", "artifact_id", "revision", "created_at", "status", "scope", "semantic_evaluation", "inputs", "evaluator", "evaluated_at", "rows", "summary", "eligibility", "notice"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "skill_id": {"const": "bid-review-remediation"},
+    "artifact_type": {"const": "ai_expert_scoring"},
+    "project_id": {"type": "string", "minLength": 1},
+    "artifact_id": {"type": "string", "minLength": 1},
+    "revision": {"type": "integer", "minimum": 1},
+    "created_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["draft", "completed", "blocked"]},
+    "scope": {"enum": ["full", "limited"]},
+    "semantic_evaluation": {"enum": ["NOT_RUN", "COMPLETED"]},
+    "inputs": {
+      "type": "object", "additionalProperties": false,
+      "required": ["content_inventory", "content_fingerprint", "scoring", "review"],
+      "properties": {
+        "content_inventory": {"type": "array", "items": {"$ref": "#/$defs/file"}},
+        "content_fingerprint": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "scoring": {"$ref": "#/$defs/binding"},
+        "review": {"anyOf": [{"$ref": "#/$defs/review"}, {"type": "null"}]}
+      }
+    },
+    "evaluator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "host", "model"],
+      "properties": {"kind": {"const": "host_agent"}, "host": {"type": ["string", "null"]}, "model": {"type": ["string", "null"]}}
+    },
+    "evaluated_at": {"type": ["string", "null"], "format": "date-time"},
+    "rows": {"type": "array", "items": {"$ref": "#/$defs/row"}},
+    "summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scope", "known_score", "scored_max", "unknown_max", "not_reviewed_max", "not_applicable_max", "nominal_max", "aggregate_available", "computed_total", "aggregate_explanation"],
+      "properties": {
+        "scope": {"enum": ["full", "limited"]},
+        "known_score": {"type": ["number", "null"], "minimum": 0},
+        "scored_max": {"type": ["number", "null"], "minimum": 0},
+        "unknown_max": {"type": ["number", "null"], "minimum": 0},
+        "not_reviewed_max": {"type": ["number", "null"], "minimum": 0},
+        "not_applicable_max": {"type": ["number", "null"], "minimum": 0},
+        "nominal_max": {"type": ["number", "null"], "minimum": 0},
+        "aggregate_available": {"type": "boolean"},
+        "computed_total": {"type": ["number", "null"], "minimum": 0},
+        "aggregate_explanation": {"type": "string", "minLength": 1}
+      }
+    },
+    "eligibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["review_present", "release_recommendation", "review_scope", "independent", "note"],
+      "properties": {
+        "review_present": {"type": "boolean"},
+        "release_recommendation": {"type": ["string", "null"]},
+        "review_scope": {"type": ["string", "null"]},
+        "independent": {"const": true},
+        "note": {"type": "string", "minLength": 1}
+      }
+    },
+    "notice": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "file": {"type": "object", "additionalProperties": false, "required": ["relative_path", "sha256", "bytes"], "properties": {"relative_path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "bytes": {"type": "integer", "minimum": 0}}},
+    "binding": {"type": "object", "additionalProperties": false, "required": ["relative_path", "sha256", "artifact_id", "revision"], "properties": {"relative_path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "artifact_id": {"type": ["string", "null"]}, "revision": {"type": ["integer", "null"], "minimum": 1}}},
+    "review": {"type": "object", "additionalProperties": false, "required": ["relative_path", "sha256", "artifact_id", "revision", "release_recommendation", "review_scope"], "properties": {"relative_path": {"const": "reviews/15-review.json"}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "artifact_id": {"type": ["string", "null"]}, "revision": {"type": ["integer", "null"], "minimum": 1}, "release_recommendation": {"type": ["string", "null"]}, "review_scope": {"type": ["string", "null"]}}},
+    "ref": {"type": "object", "additionalProperties": false, "required": ["source_id", "revision", "sha256", "location", "quote", "kind"], "properties": {"source_id": {"type": "string", "minLength": 1}, "revision": {"type": "integer", "minimum": 1}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "location": {"type": "string", "minLength": 1}, "quote": {"type": "string", "minLength": 1}, "kind": {"type": "string", "minLength": 1}}},
+    "body_ref": {"type": "object", "additionalProperties": false, "required": ["relative_path", "sha256", "location", "quote"], "properties": {"relative_path": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}, "location": {"type": "string", "minLength": 1}, "quote": {"type": "string", "minLength": 1}}},
+    "deduction": {"type": "object", "additionalProperties": false, "required": ["points", "reason", "action"], "properties": {"points": {"type": "number", "minimum": 0}, "reason": {"type": "string", "minLength": 1}, "action": {"type": "string", "minLength": 1}}},
+    "row": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target_id", "title", "scoring_type", "evidence_mode", "status", "max_score", "simulated_score", "range", "confidence", "rationale", "rubric_basis", "tender_refs", "bid_refs", "material_sources", "deductions", "calculation_explanation", "inspection_scope", "price_inputs", "limitations"],
+      "properties": {
+        "target_id": {"type": "string", "minLength": 1}, "title": {"type": "string", "minLength": 1}, "scoring_type": {"enum": ["subjective", "objective", "price"]}, "evidence_mode": {"enum": ["real_documents", "synthetic_test"]}, "status": {"enum": ["scored", "unknown", "not_reviewed", "not_applicable"]}, "max_score": {"type": ["number", "null"], "minimum": 0}, "simulated_score": {"type": ["number", "null"], "minimum": 0},
+        "range": {"anyOf": [{"type": "null"}, {"type": "object", "additionalProperties": false, "required": ["low", "high"], "properties": {"low": {"type": "number", "minimum": 0}, "high": {"type": "number", "minimum": 0}}}]},
+        "confidence": {"enum": ["high", "medium", "low"]}, "rationale": {"type": "string"}, "rubric_basis": {"type": "string"}, "tender_refs": {"type": "array", "items": {"$ref": "#/$defs/ref"}}, "bid_refs": {"type": "array", "items": {"$ref": "#/$defs/body_ref"}}, "material_sources": {"type": "array", "items": {"$ref": "#/$defs/ref"}}, "deductions": {"type": "array", "items": {"$ref": "#/$defs/deduction"}}, "calculation_explanation": {"type": "string"}, "inspection_scope": {"type": ["string", "null"]},
+        "price_inputs": {"type": ["object", "null"], "additionalProperties": true}, "limitations": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

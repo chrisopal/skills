@@ -72,8 +72,10 @@ for _skill in ('bid-scoring', 'bid-outline-planning', 'bid-technical-writing',
     DISTRIBUTED_DOCS[_skill] += ('QUALITY_WORKFLOW.md', 'QUALITY_REVIEW.md', 'EXPORT_ACCEPTANCE_CHECKS.md', 'REVIEW_ACTIONS.md')
 for _skill in ('bid-scoring', 'bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
     DISTRIBUTED_DOCS[_skill] += ('AI_EXPERT_SCORING.md',)
-for _skill in ('bid-review-remediation', 'bid-orchestrator'):
-    DISTRIBUTED_SCRIPTS[_skill] += ('ai_scoring.py',)
+for _skill in ('bid-technical-writing', 'bid-review-remediation', 'bid-orchestrator'):
+    DISTRIBUTED_SCRIPTS[_skill] += ('ai_scoring.py', 'ai_scoring_actions.py', 'render_review_report.py')
+    DISTRIBUTED_DOCS[_skill] += ('AI_EXPERT_SCORING.md',)
+    DISTRIBUTED_DOCS[_skill] = tuple(dict.fromkeys(DISTRIBUTED_DOCS[_skill]))
 
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
@@ -105,7 +107,7 @@ def sync_standalone_resources(root=ROOT):
         for directory in directories:
             shutil.copytree(root / 'assets' / directory,
                             root / 'skills' / skill_id / 'assets' / directory, dirs_exist_ok=True)
-    for skill_id in ('bid-review-remediation', 'bid-orchestrator'):
+    for skill_id in ('bid-technical-writing', 'bid-review-remediation', 'bid-orchestrator'):
         shutil.copyfile(root / 'assets/ai-scoring.schema.json',
                         root / 'skills' / skill_id / 'assets/ai-scoring.schema.json')
     writing_schema = root / 'skills/bid-technical-writing/assets/output.schema.json'
@@ -115,7 +117,7 @@ def sync_standalone_resources(root=ROOT):
     for skill_id in DELIVERY_SCHEMA_SKILLS:
         shutil.copyfile(root / 'skills/bid-export-acceptance/assets/output.schema.json',
                         root / 'skills' / skill_id / 'assets/delivery.schema.json')
-    for skill_id in ('bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
+    for skill_id in ('bid-technical-writing', 'bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
         shutil.copyfile(root / 'skills/bid-scoring/assets/output.schema.json',
                         root / 'skills' / skill_id / 'assets/scoring.schema.json')
     for skill_id in ('bid-technical-writing', 'bid-orchestrator'):

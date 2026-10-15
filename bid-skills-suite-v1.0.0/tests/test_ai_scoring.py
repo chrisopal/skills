@@ -64,6 +64,15 @@ class AIScoringTests(unittest.TestCase):
         result = ai_scoring.check(self.project, invalid)
         self.assertTrue(any("draft不能包含语义评分结果" in item for item in result["errors"]))
 
+    def test_saved_and_workspace_reports_keep_usable_evidence_links(self):
+        value = self.complete()
+        saved = ai_scoring.render(self.project, value)
+        content = Path(saved["path"]).read_text(encoding="utf-8")
+        self.assertIn('href="../artifacts/11-technical-content.json"', content)
+        self.assertNotIn('/api/file?path=', content)
+        live = ai_scoring.render_html(self.project, value)
+        self.assertIn('/api/file?path=artifacts%2F11-technical-content.json', live)
+
     def test_wrong_maximum_and_score_deduction_are_rejected(self):
         value = self.complete()
         value["rows"][0]["max_score"] = 3

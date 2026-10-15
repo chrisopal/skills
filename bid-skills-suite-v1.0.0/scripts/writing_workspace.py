@@ -600,6 +600,12 @@ class WritingWorkspace:
         except Exception as exc:  # review actions are advisory and must not hide editor state.
             review_actions = {"available": False, "error": str(exc), "findings": [],
                               "latest_request": None, "host_execution": "manual_handoff"}
+        try:
+            from ai_scoring_actions import AIScoringActionService
+            ai_scoring = AIScoringActionService(self.project).view()
+        except Exception as exc:  # scoring actions are advisory and must not hide editor state.
+            ai_scoring = {"available": False, "error": str(exc), "latest_report": None,
+                          "latest_request": None, "host_execution": "manual_handoff"}
         return {"project": project_view, "outline": outline_view, "writing": writing_view,
                 "chapters": rows, "chapter": chapter, "requirements": requirements,
                 "score": scoring, "scoring": scoring, "evidence": evidence,
@@ -608,6 +614,7 @@ class WritingWorkspace:
                 "upstream": upstream, "coverage": self._coverage(), "settings": settings,
                 "chapter_policy": chapter_policy,
                 "review_actions": review_actions,
+                "ai_scoring": ai_scoring,
                 "ui": {"semantic_acceptance": "NOT_TESTED", "writable_state": "proposed/draft only"}}
 
     def review_action_request(self, request: dict) -> dict:
@@ -620,6 +627,28 @@ class WritingWorkspace:
         view = ReviewActionService(self.project).view()
         view["request"] = created
         return view
+
+    def ai_scoring_view(self) -> dict:
+        from ai_scoring_actions import AIScoringActionService
+        return AIScoringActionService(self.project).view()
+
+    def ai_scoring_request(self, request: dict) -> dict:
+        from ai_scoring_actions import AIScoringActionError, AIScoringActionService
+        try:
+            service = AIScoringActionService(self.project)
+            created = service.request(request)
+            view = service.view()
+        except AIScoringActionError as exc:
+            raise WorkspaceError(str(exc), exc.code, exc.status) from exc
+        view["request"] = created
+        return view
+
+    def ai_scoring_report(self, relative_path: str | None = None) -> str:
+        from ai_scoring_actions import AIScoringActionError, AIScoringActionService
+        try:
+            return AIScoringActionService(self.project).report_html(relative_path)
+        except AIScoringActionError as exc:
+            raise WorkspaceError(str(exc), exc.code, exc.status) from exc
 
     def _validate_save_request(self, request: dict) -> tuple[int, str, str, str]:
         if not isinstance(request, dict):
@@ -842,6 +871,21 @@ class _RequestHandler(BaseHTTPRequestHandler):
                 chapter_id = query.get("chapter_id", [None])[0]
                 self._send_json(200, self.workspace.state(chapter_id))
                 return
+            if parsed.path == "/api/ai-scoring":
+                self._send_json(200, self.workspace.ai_scoring_view())
+                return
+            if parsed.path == "/api/ai-scoring/report":
+                query = parse_qs(parsed.query)
+                relative_path = query.get("path", [None])[0]
+                document = self.workspace.ai_scoring_report(relative_path).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(document)))
+                self.send_header("Cache-Control", "no-store")
+                self.send_header("X-Content-Type-Options", "nosniff")
+                self.end_headers()
+                self.wfile.write(document)
+                return
             if parsed.path == "/api/settings":
                 self._send_json(200, self.workspace.settings())
                 return
@@ -899,6 +943,9 @@ class _RequestHandler(BaseHTTPRequestHandler):
                 return
             if self.path == "/api/review-actions":
                 self._send_json(200, self.workspace.review_action_request(self._json_body()))
+                return
+            if self.path == "/api/ai-scoring":
+                self._send_json(200, self.workspace.ai_scoring_request(self._json_body()))
                 return
             self._send_json(404, {"error": {"code": "not_found", "message": "路径不存在"}})
         except Exception as exc:

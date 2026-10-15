@@ -2,7 +2,7 @@
 name: bid-technical-writing
 description: 按明确任务卡编写有证据、有机制、有验收说明的技术正文与逐项响应。 适用于：编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。
 metadata:
-  version: "1.14.1"
+  version: "1.15.0"
   language: zh-CN
   sequence: '11'
   suite: bid-skills-suite
@@ -52,6 +52,8 @@ metadata:
 完整编标可生成全部要求章节、固定表和逐项需求/评分映射的候选稿；缺供应商事实保留空白或阻塞。宿主Agent对话修订记录受影响`chapter_id`/`requirement_id`/`FIG-ID`，以`base_revision`和hash CAS合并，并将目录变更传播到设计、证据、写作和图表；修改已评审文件即使只有一段也使15/16失效。
 
 可用`scripts/writing_workspace.py --project /absolute/project --port 8767`打开本地Markdown编辑界面，保存并重开核对。它不调用模型、不自动采纳正文；并行生成采用独立章节提案和一个合并者，共享正文保存必须检查版本/哈希。已有Word/PDF不会随编辑自动更新，需生成新版本。
+
+配置页的 AI 模拟评分入口按[评分与提升](references/AI_EXPERT_SCORING.md)创建版本绑定任务。宿主收到交接后先领取，再回读评分原文、实际正文和材料；仅改写选中且允许编辑的扣分项，保存后重新评分。按钮不会自行唤醒宿主，证据与价格缺口不能用润色消除。
 
 配图需求同时读取写作设置的`visuals`，将图型、风格、比例及数量偏好交13；用户选blueprint时将diagram_theme与layout_template交13，调用独立enterprise-diagrams参考版式，保留Draw.io可选路径；示例见[写作设置](assets/writing-settings.example.json)。编辑器与章节报告按父子关系展示目录；报告可用`render_writing_report.py`从当前产物生成，不以模板空值或旧文档证明已生成。
 

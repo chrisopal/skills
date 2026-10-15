@@ -33,7 +33,32 @@
         </div>
         <details class="settings-panel" id="settings-panel">
           <summary>写作设置</summary>
+          <section class="ai-scoring-panel" aria-labelledby="ai-scoring-heading">
+            <div class="ai-scoring-heading">
+              <div>
+                <p class="eyebrow">宿主交接工作区</p>
+                <h3 id="ai-scoring-heading">AI 模拟评分</h3>
+              </div>
+              <div class="ai-scoring-heading-meta"><span id="ai-scoring-version" class="meta-text">正文版本 —</span><span id="ai-scoring-status" class="status status-neutral" role="status">读取评分中</span></div>
+            </div>
+            <div id="ai-scoring-notice" class="ai-scoring-notice" role="status" aria-live="polite">评分结果仅在宿主完成评读后显示。</div>
+            <div class="ai-scoring-toolbar" aria-label="AI 模拟评分操作">
+              <button id="ai-score-button" class="button button-primary" type="button">模拟评分</button>
+              <button id="ai-report-button" class="button button-secondary" type="button" disabled>查看报告</button>
+              <button id="ai-refresh-button" class="button button-secondary" type="button">刷新结果</button>
+              <button id="ai-improve-button" class="button button-secondary" type="button" disabled>按选中扣分项提升</button>
+              <label class="ai-scoring-filter"><input id="ai-show-all-scoring" type="checkbox"> 显示全部评分项 <span id="ai-scoring-row-count" class="meta-text">显示 0 / 共 0 项</span></label>
+            </div>
+            <dl id="ai-scoring-metrics" class="ai-scoring-metrics" aria-label="评分摘要"></dl>
+            <p class="meta-text">AI 模拟分，非官方评审；资格、材料和否决条件另行审核。</p>
+            <div id="ai-scoring-rows" class="ai-scoring-rows"></div>
+            <details class="ai-scoring-details">
+              <summary>查看评分依据与宿主交接</summary>
+              <div id="ai-scoring-detail-content"></div>
+            </details>
+          </section>
           <form id="settings-form" class="settings-form">
+            <h3 class="settings-section settings-group-heading">写作策略</h3>
             <label for="tone-setting">语气</label>
             <select id="tone-setting"><option value="plain_chinese">平实中文</option><option value="formal_chinese">正式中文</option></select>
             <label for="length-mode-setting">篇幅策略</label>
@@ -80,7 +105,10 @@
               <p class="settings-guidance">留空或选择继承时使用总控推荐；界面图数量按章生效，生图上限只约束每一批任务。</p>
               <div id="chapter-overrides" class="chapter-overrides"></div>
             </section>
-            <p class="settings-guidance">总控读取执行设置后按章派发，子Agent各自保存草稿，由总控统一合并；保存设置本身不启动写作。可选择 Enterprise Diagrams 生成参考版式并选择颜色主题，或保留 Draw.io 等引擎。技术图默认自动选择引擎并输出 SVG：分层架构/网络/复杂流程优先 Draw.io，时序优先 PlantUML、泳道优先 Draw.io，简单流程优先 Mermaid。系统界面配图显示为“界面示意图”，默认调用当前宿主实际生图能力；配置保存后仍需按图任务执行并记录结果。</p>
+            <details class="settings-help">
+              <summary>查看设置说明</summary>
+              <p class="settings-guidance">总控读取执行设置后按章派发，子Agent各自保存草稿，由总控统一合并；保存设置本身不启动写作。可选择 Enterprise Diagrams 生成参考版式并选择颜色主题，或保留 Draw.io 等引擎。技术图默认自动选择引擎并输出 SVG：分层架构/网络/复杂流程优先 Draw.io，时序优先 PlantUML、泳道优先 Draw.io，简单流程优先 Mermaid。系统界面配图显示为“界面示意图”，默认调用当前宿主实际生图能力；配置保存后仍需按图任务执行并记录结果。</p>
+            </details>
             <button id="settings-save-button" class="button button-secondary" type="submit">保存并重载设置</button>
           </form>
         </details>

@@ -13,6 +13,7 @@ import datetime as dt
 import html
 import json
 import math
+import os
 import sys
 from decimal import Decimal, InvalidOperation
 from pathlib import Path
@@ -735,17 +736,20 @@ def _output_path(project: Path, value, directory: str):
     return path
 
 
-def render(project, payload, out="reports/ai-scoring.html"):
-    """Present the supplied judgments without changing scores or release state."""
+def _render_document(project, payload, out="reports/ai-scoring.html", *, write=True):
+    """Build the report document, optionally persisting it for the CLI."""
     from urllib.parse import quote
-    import os
     from render_review_report import CSS
 
     project = Path(project).resolve()
     result = check(project, payload)
     if not result["valid"]:
         raise ValueError("评分产物未通过校验：" + "; ".join(result["errors"]))
-    destination = _output_path(project, out, "reports")
+    destination = bidkit.safe(project, out)
+    if not destination.is_relative_to(project / "reports"):
+        raise ValueError(f"输出必须位于项目reports目录：{out}")
+    if write and destination.exists():
+        raise ValueError("拒绝覆盖既有输出：" + str(out))
     eligibility = result["eligibility"]
     summary = result["summary"]
     evaluated = payload["semantic_evaluation"] == "COMPLETED"
@@ -766,7 +770,10 @@ def render(project, payload, out="reports/ai-scoring.html"):
 
     def evidence(ref, label):
         relative = ref.get("relative_path") or sources[ref["source_id"]]["relative_path"]
-        href = quote(os.path.relpath(bidkit.safe(project, relative), destination.parent), safe="/")
+        if write:
+            href = quote(os.path.relpath(project / relative, destination.parent), safe="/")
+        else:
+            href = "/api/file?path=" + quote(relative, safe="")
         return (f'<div class="evidence"><p class="meta">{esc(label)} · '
                 f'<a href="{esc(href)}">{esc(Path(relative).name)}</a> · '
                 f'{esc(ref.get("location"))}</p><p class="quote">{esc(ref.get("quote"))}</p></div>')
@@ -859,10 +866,22 @@ body{background:var(--canvas)}main{width:min(1200px,100%);background:var(--panel
                 '<table class="scores"><thead><tr><th>评分项</th><th>模拟分 / 上限</th>'
                 '<th>状态与区间</th><th>理由、扣分与提升</th></tr></thead>'
                 f'<tbody>{"".join(rows_html)}</tbody></table></section></main></body></html>')
+    if not write:
+        return {"html": document, "bytes": len(document.encode("utf-8")), "valid": True}
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(document, encoding="utf-8")
     return {"path": str(destination), "bytes": destination.stat().st_size,
             "sha256": bidkit.digest(destination), "valid": True}
+
+
+def render_html(project, payload, out="reports/ai-scoring.html"):
+    """Render a validated report in memory without writing any project file."""
+    return _render_document(Path(project).resolve(), payload, out, write=False)["html"]
+
+
+def render(project, payload, out="reports/ai-scoring.html"):
+    """Present the supplied judgments without changing scores or release state."""
+    return _render_document(Path(project).resolve(), payload, out, write=True)
 
 
 def _read_json(path):

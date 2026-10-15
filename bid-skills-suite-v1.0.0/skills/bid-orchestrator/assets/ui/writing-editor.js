@@ -5,7 +5,11 @@
   var selectedId = null;
   var collapsedSections = Object.create(null);
   var dirty = false;
+  var settingsDirty = false;
   var reviewActionBusy = false;
+  var aiScoringBusy = false;
+  var aiSelectedTargets = Object.create(null);
+  var showAllScoringRows = false;
   var workspaceBusy = false;
   var reviewActionRetry = null;
   var unsavedBuffers = Object.create(null);
@@ -34,8 +38,240 @@
     errorBanner.hidden = !text;
   }
 
+  function hasUnsavedWork() {
+    return dirty || settingsDirty || Object.keys(unsavedBuffers).length > 0;
+  }
+
+  function requestId() {
+    return window.crypto && typeof window.crypto.randomUUID === "function"
+      ? window.crypto.randomUUID()
+      : "00000000-0000-4000-8000-" + String(Date.now()).slice(-12).padStart(12, "0");
+  }
+
+  function scoringView() {
+    return state && state.ai_scoring || {available: false, error: "评分状态尚未加载", latest_report: null,
+      latest_request: null, host_execution: "manual_handoff"};
+  }
+
+  function scoringRows() {
+    var report = scoringView().latest_report;
+    return report && Array.isArray(report.rows) ? report.rows : [];
+  }
+
+  function reportUrl(report) {
+    return report && report.report_url || "";
+  }
+
+  function scoringStatusLabel(status) {
+    return {awaiting_host: "待宿主执行", claimed: "宿主执行中", needs_input: "待补材料／确认", requires_input: "待补材料／确认",
+      completed: "已完成", stale: "版本已过期", failed: "执行失败", scored: "已评分",
+      unknown: "待核验", not_reviewed: "未评读", not_applicable: "不适用"}[status] || "待核验";
+  }
+
+  function scoringTypeLabel(type) {
+    return {subjective: "主观评分", objective: "客观材料", price: "价格评分"}[type] || text(type || "未确认");
+  }
+
+  function scoringRowCanImprove(row) {
+    return row && row.status === "scored" && row.scoring_type === "subjective"
+      && row.editable !== false
+      && row.route !== "requires_input"
+      && rowHasDeductions(row);
+  }
+
+  function rowHasDeductions(row) {
+    return Array.isArray(row && row.deductions) && row.deductions.some(function (deduction) {
+      return deduction && Number(deduction.points || 0) > 0;
+    });
+  }
+
+  function rowNeedsAttention(row) {
+    return row && (row.status === "unknown" || rowHasDeductions(row));
+  }
+
+  function copyWithFallback(value, button, input) {
+    if (!navigator.clipboard || !navigator.clipboard.writeText) {
+      input.focus(); input.select(); button.textContent = "请复制已选中的指令"; return;
+    }
+    navigator.clipboard.writeText(value).then(function () { button.textContent = "已复制"; })
+      .catch(function () { input.focus(); input.select(); button.textContent = "请复制已选中的指令"; });
+  }
+
+  function applyAiScoringResponse(data) {
+    var view = data && data.ai_scoring ? data.ai_scoring : data;
+    if (!view || typeof view !== "object") return;
+    state.ai_scoring = Object.assign({}, scoringView(), view);
+    if (data && data.request) state.ai_scoring.latest_request = data.request;
+    var validIds = Object.create(null);
+    scoringRows().forEach(function (row) { validIds[text(row.target_id)] = true; });
+    Object.keys(aiSelectedTargets).forEach(function (id) { if (!validIds[id]) delete aiSelectedTargets[id]; });
+  }
+
+  function renderAiScoringMetrics(summary) {
+    var root = document.getElementById("ai-scoring-metrics");
+    root.replaceChildren();
+    var metrics = [["已评模拟分", summary && summary.known_score, "分"],
+      ["已评分上限", summary && summary.scored_max, "分"],
+      ["待核验上限", summary && summary.unknown_max, "分"],
+      ["未评读上限", summary && summary.not_reviewed_max, "分"]];
+    metrics.forEach(function (metric) {
+      var item = document.createElement("div");
+      var label = document.createElement("dt"); label.textContent = metric[0];
+      var value = document.createElement("dd");
+      value.textContent = metric[1] == null ? "—" : text(metric[1]) + metric[2];
+      item.appendChild(label); item.appendChild(value); root.appendChild(item);
+    });
+  }
+
+  function renderAiScoringRows(rows) {
+    var root = document.getElementById("ai-scoring-rows");
+    root.replaceChildren();
+    if (!rows.length) {
+      var empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.textContent = showAllScoringRows ? "暂无宿主评分报告；可创建模拟评分交接任务。" : "当前没有扣分项或待核验项；勾选“显示全部评分项”查看完整结果。";
+      root.appendChild(empty);
+      return;
+    }
+    var wrapper = document.createElement("div"); wrapper.className = "ai-scoring-table-wrap";
+    var table = document.createElement("table"); table.className = "ai-scoring-table";
+    var caption = document.createElement("caption"); caption.className = "sr-only"; caption.textContent = "AI 模拟评分明细";
+    table.appendChild(caption);
+    var head = document.createElement("thead"); var headRow = document.createElement("tr");
+    ["选择", "评分项", "得分", "状态", "扣分与建议"].forEach(function (label) {
+      var cell = document.createElement("th"); cell.scope = "col"; cell.textContent = label; headRow.appendChild(cell);
+    });
+    head.appendChild(headRow); table.appendChild(head);
+    var body = document.createElement("tbody");
+    rows.forEach(function (row) {
+      var targetId = text(row.target_id);
+      var canImprove = scoringRowCanImprove(row);
+      var tr = document.createElement("tr");
+      if (aiSelectedTargets[targetId]) tr.className = "is-selected";
+      var selectCell = document.createElement("td");
+      var checkbox = document.createElement("input"); checkbox.type = "checkbox";
+      checkbox.checked = !!aiSelectedTargets[targetId]; checkbox.disabled = !canImprove || aiScoringBusy;
+      checkbox.setAttribute("aria-label", "选择提升项：" + text(row.title || targetId));
+      checkbox.addEventListener("change", function () {
+        if (checkbox.checked) aiSelectedTargets[targetId] = true; else delete aiSelectedTargets[targetId];
+        renderAiScoring();
+      });
+      selectCell.appendChild(checkbox); tr.appendChild(selectCell);
+      var titleCell = document.createElement("td");
+      var title = document.createElement("strong"); title.textContent = text(row.title || targetId); titleCell.appendChild(title);
+      var meta = document.createElement("span"); meta.className = "ai-scoring-row-meta";
+      meta.textContent = scoringTypeLabel(row.scoring_type); titleCell.appendChild(meta); tr.appendChild(titleCell);
+      var scoreCell = document.createElement("td"); scoreCell.className = "score-cell";
+      scoreCell.textContent = row.simulated_score == null || row.max_score == null ? "—" : text(row.simulated_score) + "/" + text(row.max_score);
+      tr.appendChild(scoreCell);
+      var statusCell = document.createElement("td");
+      var status = document.createElement("span"); status.className = "status status-" + (row.status === "scored" ? "success" : row.status === "unknown" ? "warning" : "neutral");
+      status.textContent = scoringStatusLabel(row.status); statusCell.appendChild(status);
+      var blockedRoute = row.editable === false || row.route === "requires_input" || row.scoring_type !== "subjective";
+      if (row.status === "scored" && rowHasDeductions(row) && blockedRoute) {
+        var material = document.createElement("span"); material.className = "ai-scoring-row-meta"; material.textContent = row.scoring_type === "price" ? "需价格输入" : "需材料或确认"; statusCell.appendChild(material);
+      }
+      tr.appendChild(statusCell);
+      var deductionCell = document.createElement("td");
+      var deductions = Array.isArray(row.deductions) ? row.deductions : [];
+      if (!deductions.length || !rowHasDeductions(row)) deductionCell.textContent = row.status === "unknown" ? (row.scoring_type === "price" ? "需价格输入" : "待核验") : "无扣分";
+      else deductions.forEach(function (deduction, index) {
+        var item = document.createElement("div"); item.className = "ai-deduction";
+        item.textContent = "−" + text(deduction.points == null ? "?" : deduction.points) + "分 · " + text(deduction.reason || "待说明");
+        if (deduction.action) { var action = document.createElement("span"); action.textContent = "；" + text(deduction.action); item.appendChild(action); }
+        if (index > 0) item.classList.add("is-secondary"); deductionCell.appendChild(item);
+      });
+      if (targetId || row.rationale || row.rubric_basis || (row.bid_refs || []).length || (row.tender_refs || []).length) {
+        var basis = document.createElement("details");
+        var basisSummary = document.createElement("summary"); basisSummary.textContent = "查看依据"; basis.appendChild(basisSummary);
+        if (targetId) { var target = document.createElement("p"); target.textContent = "评分项标识：" + targetId; basis.appendChild(target); }
+        if (row.rationale) { var rationale = document.createElement("p"); rationale.textContent = text(row.rationale); basis.appendChild(rationale); }
+        if (row.rubric_basis) { var rubric = document.createElement("p"); rubric.textContent = "评分规则：" + text(row.rubric_basis); basis.appendChild(rubric); }
+        var refs = (row.bid_refs || []).concat(row.tender_refs || []);
+        if (refs.length) { var refLine = document.createElement("p"); refLine.textContent = "原文依据：" + refs.map(function (ref) { return typeof ref === "string" ? ref : text(ref.id || ref.title || ref.relative_path); }).join("、"); basis.appendChild(refLine); }
+        deductionCell.appendChild(basis);
+      }
+      tr.appendChild(deductionCell); body.appendChild(tr);
+    });
+    table.appendChild(body); wrapper.appendChild(table); root.appendChild(wrapper);
+  }
+
+  function renderAiScoringDetails(view) {
+    var root = document.getElementById("ai-scoring-detail-content");
+    root.replaceChildren();
+    var report = view.latest_report;
+    if (view.host_execution) {
+      var execution = document.createElement("p"); execution.className = "meta-text";
+      execution.textContent = "执行方式：" + (view.host_execution === "manual_handoff" ? "待宿主执行" : text(view.host_execution)); root.appendChild(execution);
+    }
+    if (report) {
+      var reportMeta = document.createElement("p"); reportMeta.className = "meta-text";
+      reportMeta.textContent = "报告版本 " + text(report.revision || "—") + " · " + (report.current ? "当前正文版本" : "版本已变化")
+        + " · 校验" + (report.valid ? "通过" : "未通过"); root.appendChild(reportMeta);
+    }
+    var request = view.latest_request;
+    if (!request) {
+      var empty = document.createElement("p"); empty.className = "meta-text"; empty.textContent = "尚未创建宿主评分任务。"; root.appendChild(empty); return;
+    }
+    var requestLine = document.createElement("p");
+    requestLine.textContent = "最近任务：" + scoringStatusLabel(request.status) + (request.relative_path ? " · " + text(request.relative_path) : ""); root.appendChild(requestLine);
+    var prompt = request.prompt || request.host_prompt;
+    if (prompt) {
+      var handoff = document.createElement("div"); handoff.className = "ai-scoring-handoff";
+      var input = document.createElement("textarea"); input.readOnly = true; input.className = "review-action-prompt"; input.value = prompt; input.setAttribute("aria-label", "AI 评分宿主交接指令"); handoff.appendChild(input);
+      var copy = document.createElement("button"); copy.type = "button"; copy.className = "button button-secondary"; copy.textContent = "复制宿主交接指令";
+      copy.addEventListener("click", function () { copyWithFallback(prompt, copy, input); }); handoff.appendChild(copy); root.appendChild(handoff);
+    }
+    var limitation = document.createElement("p"); limitation.className = "meta-text"; limitation.textContent = "客观资格、价格和未知项需要真实材料或输入，不能通过正文润色代替。"; root.appendChild(limitation);
+  }
+
+  function renderAiScoring() {
+    var view = scoringView(); var report = view.latest_report; var request = view.latest_request;
+    var status = document.getElementById("ai-scoring-status");
+    var notice = document.getElementById("ai-scoring-notice");
+    var scoreButton = document.getElementById("ai-score-button");
+    var reportButton = document.getElementById("ai-report-button");
+    var refreshButton = document.getElementById("ai-refresh-button");
+    var improveButton = document.getElementById("ai-improve-button");
+    var rowCount = document.getElementById("ai-scoring-row-count");
+    var version = document.getElementById("ai-scoring-version");
+    var selected = Object.keys(aiSelectedTargets).filter(function (id) { return aiSelectedTargets[id]; });
+    var hasUnsaved = hasUnsavedWork();
+    var editorStale = !!(view.writing && state && state.writing && view.writing.sha256 !== state.writing.sha256);
+    var reportCurrent = !!(report && report.valid && report.current && reportUrl(report));
+    var requestPending = request && ["awaiting_host", "claimed"].indexOf(request.status) !== -1;
+    status.textContent = aiScoringBusy ? "正在处理" : request ? scoringStatusLabel(request.status) : report ? (reportCurrent ? "结果有效" : report.valid && report.current ? "待评分" : "结果待复核") : (view.available ? "可创建任务" : "待准备");
+    status.className = "status status-" + (aiScoringBusy ? "neutral" : view.error || request && request.status === "failed" ? "error" : reportCurrent ? "success" : "warning");
+    version.textContent = "正文版本 " + text(view.writing && view.writing.revision || state && state.writing && state.writing.revision || "—")
+      + (report ? " · 报告 " + text(report.revision || "—") + (report.current ? "（当前）" : "（过期）") : " · 暂无报告");
+    if (report && report.summary && report.summary.scope === "limited") version.textContent += " · 限定范围评读";
+    if (aiScoringBusy) notice.textContent = "正在与宿主交接，请稍候。";
+    else if (hasUnsaved) notice.textContent = "请先保存或放弃未保存的正文及设置，再发起评分或提升。";
+    else if (editorStale) notice.textContent = "宿主已更新正文，请重载工作稿后继续。当前报告可单独查看。";
+    else if (view.error) notice.textContent = text(typeof view.error === "object" ? view.error.message : view.error);
+    else if (requestPending) notice.textContent = "已创建任务，待宿主执行；本页不会把交接任务标记为评分完成。";
+    else if (request && request.status === "failed") notice.textContent = "上次任务未完成，可重新发起。" + text(request.failure_reason || "");
+    else if (request && ["needs_input", "requires_input"].indexOf(request.status) !== -1) notice.textContent = "该任务需补材料或人工确认；补齐后可重新评分。";
+    else if (request && request.status === "completed") notice.textContent = reportCurrent ? "宿主已完成评读，当前报告可查看。" : "宿主任务已完成，但报告版本需重新核验。";
+    else if (report && report.valid && report.current && !reportCurrent) notice.textContent = "当前评分输入已准备，等待宿主完成评读后才能查看报告。";
+    else if (report && !reportCurrent) notice.textContent = "已有评分报告，但它与当前正文版本不一致，请刷新或重新评分。";
+    else if (!report) notice.textContent = "暂无评分报告；模拟评分只创建宿主交接任务。";
+    else notice.textContent = "评分结果已加载。";
+    scoreButton.disabled = aiScoringBusy || workspaceBusy || !state || hasUnsaved || editorStale || !view.available || requestPending;
+    reportButton.disabled = aiScoringBusy || !reportCurrent;
+    refreshButton.disabled = aiScoringBusy || !state;
+    improveButton.disabled = aiScoringBusy || workspaceBusy || hasUnsaved || editorStale || requestPending || !reportCurrent || !selected.length;
+    var allRows = scoringRows();
+    var visibleRows = showAllScoringRows ? allRows : allRows.filter(rowNeedsAttention);
+    rowCount.textContent = "显示 " + visibleRows.length + " / 共 " + allRows.length + " 项";
+    renderAiScoringMetrics(report && report.summary || {});
+    renderAiScoringRows(visibleRows);
+    renderAiScoringDetails(view);
+  }
+
   function setBusy(busy) {
     workspaceBusy = busy;
+    bodyEditor.disabled = busy || !state;
     saveButton.disabled = busy || !state;
     reloadButton.disabled = busy;
     discardButton.disabled = busy || !dirty;
@@ -51,12 +287,13 @@
       button.disabled = busy;
     });
     renderReviewActions();
+    renderAiScoring();
   }
 
   function renderReviewActions() {
     var view = state && state.review_actions || {};
     var request = view.latest_request;
-    var hasUnsaved = dirty || Object.keys(unsavedBuffers).length > 0;
+    var hasUnsaved = hasUnsavedWork();
     var noTargets = document.getElementById("review-action-scope").value === "failed" && !(view.findings || []).length;
     var disabled = workspaceBusy || reviewActionBusy || hasUnsaved || !view.available || noTargets ||
       request && request.status === "claimed";
@@ -135,6 +372,63 @@
       })
       .catch(function (error) { showError(error.message); })
       .finally(function () { reviewActionBusy = false; renderReviewActions(); });
+  }
+
+  function parseResponse(response, fallback) {
+    return response.json().then(function (data) {
+      if (!response.ok) {
+        var error = new Error(data && data.error && data.error.message || fallback);
+        error.code = data && data.error && data.error.code; throw error;
+      }
+      return data;
+    });
+  }
+
+  function refreshAiScoring() {
+    if (!state || aiScoringBusy) return;
+    aiScoringBusy = true; showError(""); renderAiScoring();
+    fetch("/api/ai-scoring", {credentials: "same-origin"}).then(function (response) {
+      return parseResponse(response, "读取评分结果失败");
+    }).then(function (data) {
+      applyAiScoringResponse(data); renderAiScoring();
+    }).catch(function (error) {
+      showError(error.message); var view = scoringView(); view.error = error.message; state.ai_scoring = view;
+    }).finally(function () { aiScoringBusy = false; renderAiScoring(); });
+  }
+
+  function createAiScoringTask(action) {
+    if (!state || aiScoringBusy) return;
+    if (hasUnsavedWork()) { showError("请先保存或放弃正文及写作设置的未提交修改，再创建评分任务。"); renderAiScoring(); return; }
+    var view = scoringView();
+    var payload = {action: action, request_id: requestId(), expected_revision: state.writing.revision,
+      expected_sha256: state.writing.sha256};
+    if (action === "improve") {
+      var report = view.latest_report;
+      var targetIds = Object.keys(aiSelectedTargets).filter(function (id) { return aiSelectedTargets[id]; });
+      if (!report || !report.sha256 || !targetIds.length) return;
+      payload.scoring_sha256 = report.sha256; payload.target_ids = targetIds;
+    }
+    aiScoringBusy = true; showError(""); renderAiScoring();
+    fetch("/api/ai-scoring", {method: "POST", credentials: "same-origin", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload)})
+      .then(function (response) { return parseResponse(response, "创建评分任务失败"); })
+      .then(function (data) {
+        applyAiScoringResponse(data);
+        var request = data && data.request || scoringView().latest_request;
+        if (request) {
+          state.ai_scoring.latest_request = request;
+          if (request.status === "awaiting_host") document.getElementById("ai-scoring-notice").textContent = "已创建宿主交接任务，待宿主执行。";
+        }
+        setStatus("评分任务已创建", "warning");
+      })
+      .catch(function (error) { showError(error.message); setStatus("评分任务创建失败", "error"); })
+      .finally(function () { aiScoringBusy = false; renderAiScoring(); });
+  }
+
+  function openAiReport() {
+    var report = scoringView().latest_report;
+    var url = reportUrl(report);
+    if (!url) return;
+    window.open(url, "_blank", "noopener,noreferrer");
   }
 
   function updateVisualFieldState() {
@@ -819,6 +1113,7 @@
     renderChapterPolicy();
     renderReferences();
     renderReviewActions();
+    renderAiScoring();
   }
 
   function applySettings(settings) {
@@ -864,6 +1159,7 @@
       state = data;
       selectedId = data.chapter && data.chapter.id;
       dirty = Object.prototype.hasOwnProperty.call(unsavedBuffers, selectedId);
+      settingsDirty = false;
       document.getElementById("project-name").textContent = text(data.project && (data.project.project_name || data.project.project_id));
       applySettings(data.settings);
       renderChapterList();
@@ -880,7 +1176,8 @@
 
   function selectChapter(id) {
     if (id === selectedId) return;
-    if (saveInFlight) return;
+    if (saveInFlight || workspaceBusy) return;
+    if (settingsDirty) { showError("请先保存或放弃写作设置，再切换章节。"); return; }
     if (dirty) unsavedBuffers[selectedId] = bodyEditor.value;
     load(id);
   }
@@ -965,7 +1262,7 @@
     setBusy(true);
     fetch("/api/settings", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(request) })
       .then(function (response) { return response.json().then(function (data) { if (!response.ok) { var error = new Error(data.error && data.error.message || "设置保存失败"); error.code = data.error && data.error.code; throw error; } return data; }); })
-      .then(function () { setStatus("设置已保存并重载", "success"); return load(selectedId); })
+      .then(function () { settingsDirty = false; setStatus("设置已保存并重载", "success"); return load(selectedId); })
       .catch(function (error) { setStatus(error.code === "stale_settings" ? "设置发生冲突" : "设置保存失败", "error"); showError(error.message); })
       .finally(function () { setBusy(false); updateVisualFieldState(); });
   }
@@ -978,6 +1275,7 @@
     renderChapterPolicy();
     setStatus("有未保存修改", "warning");
     renderReviewActions();
+    renderAiScoring();
   });
   saveButton.addEventListener("click", save);
   document.getElementById("review-action-scope").addEventListener("change", renderReviewActions);
@@ -985,7 +1283,11 @@
     button.addEventListener("click", function () { requestReviewAction(button.dataset.reviewAction); });
   });
   discardButton.addEventListener("click", discardCurrent);
-  reloadButton.addEventListener("click", function () { if (!dirty || window.confirm("重载会丢弃当前未保存内容，继续吗？")) { delete unsavedBuffers[selectedId]; dirty = false; load(selectedId); } });
+  reloadButton.addEventListener("click", function () {
+    if (!hasUnsavedWork() || window.confirm("重载会丢弃当前未保存正文和设置，继续吗？")) {
+      delete unsavedBuffers[selectedId]; dirty = false; settingsDirty = false; load(selectedId);
+    }
+  });
   document.getElementById("visuals-enabled-setting").addEventListener("change", updateVisualFieldState);
   document.getElementById("diagram-engine-setting").addEventListener("change", updateVisualFieldState);
   document.getElementById("length-mode-setting").addEventListener("change", function () {
@@ -994,7 +1296,25 @@
       : "自动模式按评分复杂度缩放";
   });
   settingsForm.addEventListener("submit", saveSettings);
+  settingsForm.addEventListener("input", function () {
+    settingsDirty = true;
+    setStatus("有未保存修改", "warning");
+    renderReviewActions(); renderAiScoring();
+  });
+  settingsForm.addEventListener("change", function () {
+    settingsDirty = true;
+    setStatus("有未保存修改", "warning");
+    renderReviewActions(); renderAiScoring();
+  });
+  document.getElementById("ai-score-button").addEventListener("click", function () { createAiScoringTask("score"); });
+  document.getElementById("ai-report-button").addEventListener("click", openAiReport);
+  document.getElementById("ai-refresh-button").addEventListener("click", refreshAiScoring);
+  document.getElementById("ai-improve-button").addEventListener("click", function () { createAiScoringTask("improve"); });
+  document.getElementById("ai-show-all-scoring").addEventListener("change", function () {
+    showAllScoringRows = this.checked;
+    renderAiScoring();
+  });
   document.getElementById("theme-button").addEventListener("click", function () { document.documentElement.setAttribute("data-theme", document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark"); });
-  window.addEventListener("beforeunload", function (event) { if (dirty || saveInFlight || Object.keys(unsavedBuffers).length) { event.preventDefault(); event.returnValue = ""; } });
+  window.addEventListener("beforeunload", function (event) { if (hasUnsavedWork() || saveInFlight) { event.preventDefault(); event.returnValue = ""; } });
   load(null);
 }());

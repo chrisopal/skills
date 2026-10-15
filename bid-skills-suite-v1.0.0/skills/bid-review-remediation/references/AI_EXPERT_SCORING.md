@@ -54,6 +54,35 @@ python scripts/ai_scoring.py render --project /project \
 
 将扣分项移交[评审整改动作](REVIEW_ACTIONS.md)，复用 `fix/rewrite/improve`。用户可说“提升第9.3章”“优先修复高分值失分项”“重写技术方案”；动作绑定当前章节、评分项和原文，新增承诺/价格/材料真实性仍遵守原授权边界。实际修改后重新冻结、核心复审、模拟评分和导出，保存 r2 等新版本；新评分 JSON 的 `revision` 也须递增，不能只改文件名。工具不会覆盖已有 JSON 或 HTML。建议提高几分不等于修改后的实际提高。
 
+## 配置页操作与宿主领取
+
+通过 11 或 17 自带的 `writing_workspace.py` 打开项目，进入**写作设置 → AI 模拟评分**。
+
+1. **模拟评分**保存当前正文及输入绑定的交接任务和未评计划，显示待宿主执行。没有宿主唤醒接口时，展开“查看评分依据与宿主交接”，复制指令回到当前 Agent。
+2. 宿主先读取任务 JSON，使用 `ai_scoring_actions.py claim` 领取，再实际回读原文、正文与材料，填写任务指定的评分计划。完成后用真实执行记录调用 `finish`；前端刷新结果后显示完成态报告。
+3. **查看报告**只打开最新、当前且已完成的评分 JSON 所渲染的页面。无报告、损坏、过期和未评计划不能显示成有效结果；不从旧报告回退假装当前已评分。
+4. 默认表格显示扣分和待核验项，可切换显示全部评分项。勾选可改写的主观项后点**按选中扣分项提升**，宿主领取并修改指定章节、保存新稿，再生成当前评分。证照、业绩、价格、授权及无章节定位的问题保留补料状态。只重评选中项时标为 `limited`，其他项保留未评，不沿用旧分冒充整本重评。
+
+未保存正文或设置时先保存。刷新评分只更新评分面板，不重置编辑中的正文及设置；保存设置或正文会使旧结果过期。历史任务和报告继续保留，报告由 JSON 动态渲染，不执行项目中的任意 HTML。
+
+宿主修改正文后，刷新结果会显示服务器当前版本；编辑区仍保留原稿时必须重载后再发起新任务。提升校验只允许选中章节正文变化，编辑器同时生成的 Markdown 属于正文派生稿；原文、评分规则、材料、目录、图源和配置变更均须新建任务，不能给旧任务重新绑定输入。
+
+从已安装的 11／15／17 目录执行（将 UUID 和记录文件替换为任务中的实际值）：
+
+```bash
+python scripts/ai_scoring_actions.py status --project /project
+python scripts/ai_scoring_actions.py claim --project /project --request-id UUID
+python scripts/ai_scoring_actions.py finish --project /project \
+  --request-id UUID --evidence work/scoring-execution.json
+# 模型失败或中止时，保留执行记录，并释放待执行/已领取任务：
+python scripts/ai_scoring_actions.py fail --project /project \
+  --request-id UUID --evidence work/scoring-failure.json
+```
+
+执行记录至少包含真实 `project_id`、`request_id`、`tool_or_agent` 和非空 `performed_actions`。脚本检查版本、引用及范围，不认证模型语义。提升后重新评分不表示核心合规或成稿复核已通过；正式导出仍须完成当前版本 15／16。
+
+失败记录另需非空 `reason`。`fail` 只终止交接任务，不删除报告或修改正文；修复原因后可重新创建。待补材料任务不会被伪装为执行中，也不会锁死评分入口。损坏或过期的最新完成报告会阻止展示，不静默沿用历史分数；新建的未评计划则不遮蔽仍有效的完成报告。
+
 ## 最小验收
 
 - 全部计分叶子唯一对应，理由包含原文档次及现稿具体引用；未知、未评和 0 分分开。

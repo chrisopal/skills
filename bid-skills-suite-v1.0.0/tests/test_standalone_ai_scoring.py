@@ -17,7 +17,8 @@ from core_review_fixture import populate
 
 class StandaloneAIScoringTests(unittest.TestCase):
     def test_prepare_check_render_and_stale_rejection_in_isolated_packages(self):
-        for number, skill in [(15, "bid-review-remediation"), (17, "bid-orchestrator")]:
+        for number, skill in [(11, "bid-technical-writing"), (15, "bid-review-remediation"),
+                              (17, "bid-orchestrator")]:
             with self.subTest(skill=skill), tempfile.TemporaryDirectory() as temporary:
                 root = Path(temporary)
                 with zipfile.ZipFile(ROOT / f"installable-zips/{number:02d}-{skill}.zip") as archive:
@@ -28,6 +29,13 @@ class StandaloneAIScoringTests(unittest.TestCase):
                 script = root / skill / "scripts/ai_scoring.py"
                 env = dict(os.environ)
                 env.pop("PYTHONPATH", None)
+
+                status = subprocess.run(
+                    [sys.executable, str(root / skill / "scripts/ai_scoring_actions.py"),
+                     "status", "--project", str(project)], cwd=root, env=env,
+                    capture_output=True, text=True)
+                self.assertEqual(status.returncode, 0, status.stdout + status.stderr)
+                self.assertEqual(json.loads(status.stdout)["host_execution"], "manual_handoff")
 
                 def run(*args):
                     return subprocess.run([sys.executable, str(script), *args,

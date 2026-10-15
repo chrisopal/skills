@@ -47,6 +47,7 @@ LEGACY_STAGE_NAME_TO_ID = {
 
 CONTEXT_WINDOW = 12
 CONFIRMED_CONTEXT_PREFIX_MARKERS = (
+    "没有",
     "可能",
     "如果",
     "若",

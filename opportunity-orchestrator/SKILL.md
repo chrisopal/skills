@@ -23,6 +23,7 @@ python3 "$RUN" detail --opportunity-id "$OPP" --db "$DB" --output-dir /absolute/
 
 | 用户要完成的工作 | Skill | 交接结果 |
 |---|---|---|
+| 主打产品与目标客户研究、企业区域/展会论坛/渠道、话术及推广跟进分析 | [opportunity-gtm](../opportunity-gtm/SKILL.md) | 带来源的推广计划、候选与实际跟进；有效线索显式关联已有商机 |
 | 拜访/邮件/会议材料分析、资格判断与评估 | [opportunity-analysis-skill](../opportunity-analysis-skill/SKILL.md) | 事实、证据、建议阶段、评估与缺口 |
 | 决策链、竞争策略、跟进与行动复盘 | [opportunity-pursuit](../opportunity-pursuit/SKILL.md) | 推进计划、行动与完成结果 |
 | 需求方案、演示、POC与客户反馈 | [opportunity-solution-validation](../opportunity-solution-validation/SKILL.md) | 带版本的方案及验证结论 |

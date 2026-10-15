@@ -78,8 +78,33 @@ def main():
     p_receive.add_argument('--document-id', default='solution')
     p_receive.add_argument('--runtime', help='Explicit trusted presales runtime.py path')
 
+    for command, help_text in [('gtm-manage', 'Save GTM research, follow-up or explicit opportunity links'), ('gtm-brief', 'Prepare sourced research tasks from a product and ICP brief')]:
+        target = sub.add_parser(command, help=help_text)
+        target.add_argument('--input', required=True)
+        target.add_argument('--db')
+    p_gtm_query = sub.add_parser('gtm-query', help='Read GTM campaigns and actual follow-up analytics')
+    p_gtm_query.add_argument('--db')
+    p_gtm_query.add_argument('--campaign-id')
+    p_gtm_query.add_argument('--as-of')
+
     args = parser.parse_args()
     db_path = args.db or str(default_db_path())
+
+    if args.command in {'gtm-manage', 'gtm-brief', 'gtm-query'}:
+        try:
+            from .gtm import GTMStore, search_brief
+            if args.command == 'gtm-brief':
+                result = search_brief(json.loads(Path(args.input).read_text(encoding='utf-8')))
+            else:
+                store = GTMStore(db_path)
+                try:
+                    result = store.manage(json.loads(Path(args.input).read_text(encoding='utf-8'))) if args.command == 'gtm-manage' else store.detail(args.campaign_id, args.as_of) if args.campaign_id else store.campaigns()
+                finally:
+                    store.close()
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return
+        except (ValueError, TypeError, KeyError) as exc:
+            parser.exit(2, f"GTM请求失败：{exc}\n")
 
     if args.command == 'serve':
         from .workbench import serve

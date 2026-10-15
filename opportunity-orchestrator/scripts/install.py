@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Install the seven sibling skills with conflict preflight and no overwrite."""
+"""Install the sibling skills with conflict preflight and no overwrite."""
 import argparse
 import hashlib
 import json
@@ -11,7 +11,7 @@ import tempfile
 SKILLS = (
     "opportunity-analysis-skill", "opportunity-orchestrator", "opportunity-pursuit",
     "opportunity-solution-validation", "opportunity-commercial",
-    "opportunity-negotiation", "opportunity-closeout",
+    "opportunity-negotiation", "opportunity-closeout", "opportunity-gtm",
 )
 EXCLUDED_DIRS = {".git", ".venv", ".skill_data", "__pycache__", "outputs", "output", "projects", "node_modules", ".pytest_cache"}
 SOURCE_SUFFIXES = {".md", ".py", ".json", ".yaml", ".yml", ".toml", ".sql", ".css", ".html", ".js", ".txt"}

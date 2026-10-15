@@ -1,3 +1,12 @@
+## 2026-10-15 — GTM research, geographic sandbox and opportunity attribution v0.8.0
+
+- Scope/files: Add opportunity-gtm and reusable sourced demonstration; shared GTM store/CLI/HTTP, enterprise workbench assets, orchestrator routing/install and regression coverage. See docs/plans/2026-10-15-opportunity-gtm-{design,validation}.md.
+- Behavior: Product/ICP/region → public companies/events/forums/channels with sources → message drafts → immutable actual follow-up → qualified same-company opportunity link → live stage/score/valid signed amounts and region/channel/event analytics. China province outlines/34 labels and475 child labels drill down to cities; city points aggregate with keyboard/list alternatives; missing fit/cost stays unknown, currencies separate, future follow-up excluded even for future cutoff.
+- Fixes/simplification: Reuse existing SQLite transaction/request journal/security, sales lifecycle and UI tokens; no dependency or parallel CRM. Preserve unknown-budget/negative-quote semantics in shared analyzer; invalid GTM CLI data returns readable exit2. Won enterprise metrics require effective signature.
+- Verification: 113 runtime +12 orchestration tests, eight entry/suite/link checks, Python/JS syntax and whitespace. Independent sourced forward test and review finding remediated with regression. Actual browser new plan, qualified save/reload, link and signed358000 CNY read-back; six tabs/filter/map keyboard/zoom, light1366/1440/1920/390 and dark1440/390, no overflow or console error; visual94/pass.
+- Limits: Three public research enterprises have no actual engagement; fictional Huachen interactions/contract are simulation and retrospective association, not campaign causation. Agent performs research, no unattended search/outreach/signup/payment. Approximate city coordinates and explicit Taiwan city-data gap, live sales snapshot, no invented ROI/income/customer acceptance. Generated DB/screenshots and temporary research stay local.
+- Commit/push: Scoped verified sources accompany a Lore commit, published to feature/main without force with SHA read-back, then synchronized to installed-source checkout while preserving unrelated WIP.
+
 ## 2026-10-15 — Opportunity scope and commercial content review v0.7.0
 
 - Scope/files: Lifecycle/renderer/workbench JS, manage/lifecycle schemas, regression fixtures, case/rehearsal scripts and five task/flow guides; design and verification in docs/plans/2026-10-15-opportunity-scope-review*.md.

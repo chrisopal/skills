@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN" data-ui="enterprise" data-theme="light">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>GTM 推广工作台</title><link rel="stylesheet" href="/assets/gtm.css"></head>
+<body class="gtm-app">
+<header class="gtm-topbar"><div class="gtm-brand"><a href="/" class="gtm-nav">商机工作台 ↗</a><h1>GTM 推广</h1></div><div class="gtm-actions"><button class="gtm-btn" id="theme-toggle" type="button">切换深色</button><button class="gtm-btn" id="refresh" type="button">刷新</button><button class="gtm-btn gtm-primary" id="new-campaign" type="button">创建计划</button></div></header>
+<main class="gtm-main">
+<div id="notice" class="gtm-notice" role="status" hidden></div>
+<section class="gtm-panel gtm-campaign-bar"><label class="gtm-field">推广计划<select id="campaign-select" aria-label="推广计划"><option value="">加载中…</option></select></label><div id="campaign-summary" class="gtm-campaign-summary"><span class="gtm-muted">加载计划…</span></div><label class="gtm-field gtm-as-of">统计截至<input id="as-of" type="date"></label></section>
+<div id="workspace" hidden>
+<p class="gtm-muted">漏斗与分析统计整个推广计划；省市与关键词筛选联动沙盘、对象及跟进列表。</p><section id="funnel" class="gtm-funnel" aria-label="目标企业漏斗"></section>
+<section class="gtm-panel">
+<div class="gtm-section-head"><h2>区域与目标</h2><span id="result-count" class="gtm-muted"></span></div>
+<div class="gtm-filters"><label class="gtm-field">区域<select id="region-filter"><option value="">全部区域</option></select></label><label class="gtm-field">对象类型<select id="type-filter"><option value="">全部对象</option><option value="company">企业</option><option value="exhibition">展会</option><option value="forum">论坛</option><option value="channel">渠道</option></select></label><label class="gtm-field gtm-keyword">关键词<input id="keyword" type="search" placeholder="企业、城市、行业或适配理由"></label><button class="gtm-btn" id="clear-filters" type="button">清除筛选</button></div>
+<div class="gtm-geography"><div class="gtm-map-column"><div class="gtm-map-toolbar"><span class="gtm-muted"><span id="map-scope">中国行政区划沙盘</span></span><div class="gtm-actions"><button class="gtm-btn gtm-small" id="zoom-in" aria-label="放大地图" type="button">＋</button><button class="gtm-btn gtm-small" id="zoom-out" aria-label="缩小地图" type="button">−</button><button class="gtm-btn gtm-small" id="reset-map" type="button">重置</button></div></div><div class="gtm-map-controls"><label class="gtm-field">省级区域<select id="province-select"></select></label><label class="gtm-field">城市 / 下辖单位<select id="city-select"></select></label><button class="gtm-btn gtm-small" id="national-map" type="button">返回全国</button></div><div class="gtm-map-scroll"><svg id="map" class="gtm-map" viewBox="0 0 960 620" role="group" aria-label="中国省市及推广对象，使用省市选择框或 Tab 和回车选择"></svg></div><p class="gtm-map-help gtm-muted">全国显示省名；点击省份查看城市，点选城市筛选推广对象。窄屏可左右滑动地图。</p><div class="gtm-map-foot"><span><i class="gtm-dot company"></i>企业</span><span><i class="gtm-dot event"></i>活动 / 渠道</span><span id="unmapped-count"></span></div><details id="city-index" class="gtm-area-index"></details><p class="gtm-map-help gtm-muted">底图：<a href="https://datav.aliyun.com/portal/school/atlas/area_selector" target="_blank" rel="noopener noreferrer">DataV GeoAtlas</a> · 采集 2026-10-15。城市为近似中心点；直辖市及港澳显示区级单位，台湾市县点位缺失。</p></div><aside id="selection" class="gtm-selection" aria-live="polite"></aside></div>
+</section>
+<section class="gtm-panel gtm-records"><div id="tabs" class="gtm-tabs" role="tablist" aria-label="推广记录"></div><div id="tab-content" class="gtm-tab-content" role="tabpanel"></div></section>
+<details class="gtm-panel gtm-brief"><summary>检索任务与计划信息</summary><div id="brief-content" class="gtm-section-body"></div></details>
+</div>
+<div id="empty" class="gtm-panel gtm-empty" hidden><h2>暂无推广计划</h2><p class="gtm-muted">创建计划后，导入有来源的企业、活动和渠道候选。</p><button class="gtm-btn gtm-primary" id="empty-create" type="button">创建计划</button></div>
+</main>
+<dialog id="form-dialog" class="gtm-dialog" aria-labelledby="dialog-title"><div class="gtm-dialog-head"><h2 id="dialog-title"></h2><button id="close-dialog" class="gtm-btn" type="button">关闭</button></div><div id="dialog-body"></div></dialog>
+<script>window.WORKBENCH_TOKEN = __WORKBENCH_TOKEN__;</script><script src="/assets/gtm-map.js"></script><script src="/assets/gtm.js"></script>
+</body></html>

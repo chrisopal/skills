@@ -369,7 +369,7 @@
     $('theme-toggle').addEventListener('click', () => { const dark = document.documentElement.dataset.theme === 'dark'; document.documentElement.dataset.theme = dark ? 'light' : 'dark'; $('theme-toggle').textContent = dark ? '切换深色' : '切换浅色'; document.querySelectorAll('.wb-radar-frame').forEach(frame => { frame.src = '/radar/' + encodeURIComponent(state.selectedId) + '?category=' + frame.dataset.category + '&theme=' + document.documentElement.dataset.theme; }); });
     $('refresh-list').addEventListener('click', () => refreshCurrent().catch((error) => notice(error.message, 'error')));
     $('new-opportunity').addEventListener('click', startNew);
-    loadList().catch((error) => notice(error.message, 'error'));
+    loadList().then(() => { const requestedId = new URLSearchParams(location.search).get('opportunity_id'); if (requestedId) return selectOpportunity(requestedId); }).catch((error) => notice(error.message, 'error'));
   }
   setup();
 }());

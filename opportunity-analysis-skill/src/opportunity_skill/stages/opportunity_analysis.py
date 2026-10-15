@@ -4,7 +4,7 @@ import re
 from typing import Any
 
 from ..assessment import build_commercial_assessment
-from ..stage_management import infer_opportunity_stage
+from ..stage_management import infer_opportunity_stage, _text_has_any
 from ..utils import new_id
 from .account_profile_extraction import pick_first
 
@@ -21,13 +21,23 @@ def extract_core_need(text: str) -> str:
 
 
 def extract_budget_signal(text: str) -> tuple[str, str | None]:
-    budget_amount = None
-    amount_match = re.search(r"(\d+(?:\.\d+)?\s*(?:万|万元|百万|千万|亿|元))", text)
-    if amount_match and "预算" in text[max(0, amount_match.start() - 20):amount_match.end() + 20]:
-        budget_amount = amount_match.group(1)
-    if "预算" in text or "技改" in text or "立项" in text:
-        return "存在预算/立项信号", budget_amount
-    return "预算信息未明确", None
+    # A shared unknown qualifier in an enumerated list applies to budget too.
+    # Evaluate each sentence so a later positive statement can still supersede it.
+    candidates = []
+    positive = ('预算已批', '预算获批', '已立项', '立项通过', '预算已确认')
+    for sentence in re.split(r'[。；;\n]', text):
+        if re.search(r'均(?:未知|不明|未确认|未提供)', sentence) and not _text_has_any(sentence, positive, guard_confirmed_context=True):
+            continue
+        if re.search(r'(?:预算|立项|技改)[^，,。；;]{0,8}(?:未知|未明确|不明确|未提供|待确认)', sentence):
+            continue
+        if _text_has_any(sentence, ('预算', '技改', '立项'), guard_confirmed_context=True):
+            candidates.append(sentence)
+    for sentence in candidates:
+        amount_match = re.search(r'(\d+(?:\.\d+)?\s*(?:万元|百万|千万|万|亿|元))', sentence)
+        if amount_match and '预算' in sentence[max(0, amount_match.start() - 20):amount_match.end() + 20]:
+            return '存在预算/立项信号', amount_match.group(1)
+    return ('存在预算/立项信号', None) if candidates else ('预算信息未明确', None)
+
 
 
 def extract_timeline(text: str) -> str:

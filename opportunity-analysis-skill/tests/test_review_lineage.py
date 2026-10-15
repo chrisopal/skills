@@ -39,15 +39,22 @@ class ReviewLineageTests(unittest.TestCase):
         artifact = next(a for a in self.state()['artifacts'] if a['id'] == artifact_id)
         return {'artifact_id': artifact_id, 'sha256': artifact['sha256']}
 
+    def scope(self):
+        return {'type': 'confirm_fact', 'fact_id': 'solution_scope', 'artifact_id': 's1',
+                'value': '追溯接口范围', 'evidence': ['ev']}
+
     def artifact(self, artifact_id, kind, dependencies=(), version=1, document_id=None):
         path = Path(self.tmp.name) / (artifact_id + '.txt')
         path.write_text('simulated ' + artifact_id)
-        return {'type': 'register_artifact', 'artifact_id': artifact_id, 'kind': kind,
+        review = {} if kind == 'solution' else {'scope_review': {'scope_version':
+            max((f['version'] for f in self.state()['facts'] if f['fact_id'] == 'solution_scope'), default=1),
+            'summary': '模拟复核：已对照当前方案范围及依赖正文'}}
+        return {**review, 'type': 'register_artifact', 'artifact_id': artifact_id, 'kind': kind,
             'document_id': document_id or kind, 'version': version, 'file_path': str(path),
             'dependencies': list(dependencies), 'evidence': ['ev']}
 
     def chain(self, include_negotiation=True, include_handoff=True):
-        self.change(self.artifact('s1', 'solution'))
+        self.change(self.artifact('s1', 'solution'), self.scope())
         self.change(self.artifact('q1', 'quote', [self.binding('s1')]), self.authorize())
         if include_negotiation:
             self.change(self.artifact('n1', 'negotiation', [self.binding('q1')]))
@@ -75,7 +82,7 @@ class ReviewLineageTests(unittest.TestCase):
             'artifact_id': 'q1', 'evidence': ['ev']}
 
     def test_review_persists_across_restart_and_replays_without_audit_duplication(self):
-        self.change(self.artifact('s1', 'solution'))
+        self.change(self.artifact('s1', 'solution'), self.scope())
         revision = self.state()['revision']
         operation = self.review()
         receipt = self.change(operation, request_id='review-once')
@@ -93,7 +100,7 @@ class ReviewLineageTests(unittest.TestCase):
 
     def test_open_review_allows_solution_remediation_but_blocks_all_commercial_targets(self):
         self.change(self.artifact('s1', 'solution'), self.review(),
-            {'type': 'confirm_fact', 'fact_id': 'solution_scope', 'value': '追溯接口', 'evidence': ['ev']},
+            {'type': 'confirm_fact', 'fact_id': 'solution_scope', 'artifact_id': 's1', 'value': '追溯接口', 'evidence': ['ev']},
             self.transition('solution_cocreation'))
         self.change(self.artifact('q1', 'quote', [self.binding('s1')]), self.authorize())
         for stage in ['proposal_bidding', 'commercial_negotiation', 'contract_signing', 'won']:
@@ -103,7 +110,7 @@ class ReviewLineageTests(unittest.TestCase):
         self.assertEqual(self.state()['verification_status'], 'current')
 
     def test_nonblocking_review_does_not_gate_commercial_progress(self):
-        self.change(self.artifact('s1', 'solution'), self.review(blocking=False))
+        self.change(self.artifact('s1', 'solution'), self.scope(), self.review(blocking=False))
         self.change(self.artifact('q1', 'quote', [self.binding('s1')]), self.authorize(),
                     self.transition('proposal_bidding'))
         self.assertEqual(self.state()['current_stage_id'], 'proposal_bidding')
@@ -159,7 +166,7 @@ class ReviewLineageTests(unittest.TestCase):
         self.assertEqual(self.state()['reviews'][0]['verification_status'], 'current')
 
     def test_review_rejects_duplicate_and_invalid_fields(self):
-        self.change(self.artifact('s1', 'solution'))
+        self.change(self.artifact('s1', 'solution'), self.scope())
         for fields in [{'owner': ''}, {'due_date': 'unknown'}, {'blocking': 'true'},
                        {'requirement_ids': []}, {'artifact_id': 'foreign'}, {'evidence': ['foreign']}]:
             with self.subTest(fields=fields), self.assertRaises(ValueError):
@@ -191,7 +198,7 @@ class ReviewLineageTests(unittest.TestCase):
         self.assertEqual(artifacts['h1']['validity'], 'dependency_invalid')
 
     def test_dependencies_reject_missing_wrong_kind_hash_duplicate_and_unbound(self):
-        self.change(self.artifact('s1', 'solution'))
+        self.change(self.artifact('s1', 'solution'), self.scope())
         binding = self.binding('s1')
         invalid = [[], [{'artifact_id': 'foreign', 'sha256': binding['sha256']}],
                    [{**binding, 'sha256': '0' * 64}], [binding, binding], 's1']
@@ -209,7 +216,7 @@ class ReviewLineageTests(unittest.TestCase):
             self.change(self.artifact('q2', 'quote', [self.binding('q1')], version=2))
 
     def test_superseded_and_transitively_invalid_dependencies_rejected(self):
-        self.change(self.artifact('s1', 'solution'))
+        self.change(self.artifact('s1', 'solution'), self.scope())
         self.change(self.artifact('q1', 'quote', [self.binding('s1')]))
         self.change(self.artifact('s2', 'solution', version=2))
         with self.assertRaises(ValueError):
@@ -226,7 +233,7 @@ class ReviewLineageTests(unittest.TestCase):
         self.assertFalse(any(a['kind'] == 'negotiation' for a in self.state()['artifacts']))
 
     def test_existing_negotiation_cannot_be_omitted_or_bound_to_another_quote(self):
-        self.change(self.artifact('s1', 'solution'))
+        self.change(self.artifact('s1', 'solution'), self.scope())
         self.change(self.artifact('q1', 'quote', [self.binding('s1')]))
         self.change(self.artifact('n1', 'negotiation', [self.binding('q1')]))
         with self.assertRaises(ValueError):
@@ -236,7 +243,7 @@ class ReviewLineageTests(unittest.TestCase):
             self.change(self.artifact('c1', 'contract', [self.binding('q2'), self.binding('n1')]))
 
     def test_contract_cannot_mix_independent_current_quote_and_negotiation_documents(self):
-        self.change(self.artifact('s1', 'solution'))
+        self.change(self.artifact('s1', 'solution'), self.scope())
         self.change(self.artifact('q1', 'quote', [self.binding('s1')], document_id='quote-A'))
         self.change(self.artifact('q2', 'quote', [self.binding('s1')], document_id='quote-B'))
         self.change(self.artifact('n1', 'negotiation', [self.binding('q1')]))
@@ -296,7 +303,7 @@ class ReviewLineageTests(unittest.TestCase):
             'signature_facts': {'customer_signed': True, 'supplier_signed': True}, 'evidence': ['ev']}
 
     def test_unapproved_parallel_quote_cannot_drive_negotiation_signing_or_won(self):
-        self.change(self.artifact('s1', 'solution'))
+        self.change(self.artifact('s1', 'solution'), self.scope())
         self.change(self.artifact('q1', 'quote', [self.binding('s1')], document_id='quote-A'),
                     self.authorize(), self.transition('proposal_bidding'))
         self.change(self.artifact('qb', 'quote', [self.binding('s1')], document_id='quote-B'))
@@ -340,11 +347,13 @@ class ReviewLineageTests(unittest.TestCase):
 
     def test_noncommercial_backward_remediation_ignores_obsolete_commercial_gates(self):
         self.change(self.artifact('s1', 'solution'),
-            {'type': 'confirm_fact', 'fact_id': 'solution_scope', 'value': '接口范围', 'evidence': ['ev']})
+            {'type': 'confirm_fact', 'fact_id': 'solution_scope', 'artifact_id': 's1', 'value': '接口范围', 'evidence': ['ev']})
         self.change(self.artifact('q1', 'quote', [self.binding('s1')]), self.authorize(),
                     self.transition('proposal_bidding'))
         self.change(self.artifact('s2', 'solution', version=2))
-        self.change(self.transition('solution_cocreation'))
+        with self.assertRaises(ValueError):
+            self.change(self.transition('solution_cocreation'))
+        self.change({**self.scope(), 'artifact_id': 's2'}, self.transition('solution_cocreation'))
         state = self.state()
         self.assertEqual(state['current_stage_id'], 'solution_cocreation')
         self.assertEqual(state['history'][-1]['from_stage'], 'proposal_bidding')
@@ -366,17 +375,18 @@ class ReviewLineageTests(unittest.TestCase):
         self.assertEqual(self.state()['verification_status'], 'needs_review')
         self.assertTrue(any('contact_established' in b for b in self.state()['blockers']))
         self.change({'type': 'confirm_fact', 'fact_id': 'contact_established', 'value': True, 'evidence': ['ev']})
-        self.change(self.artifact('s1', 'solution'), self.artifact('s2', 'solution', version=2))
+        self.change(self.artifact('s1', 'solution'), self.artifact('s2', 'solution', version=2),
+                    {**self.scope(), 'artifact_id': 's2'})
         self.change(self.artifact('q1', 'quote', [self.binding('s2')]), self.authorize(),
                     self.transition('proposal_bidding'))
+        self.change({'type': 'confirm_fact', 'fact_id': 'solution_scope', 'value': 'unknown', 'evidence': ['ev']})
         with self.assertRaisesRegex(ValueError, 'solution_scope'):
             self.change(self.transition('solution_cocreation'))
 
     def test_registered_core_unknown_or_negative_facts_block_commercial_progress(self):
         self.chain(include_handoff=False)
         self.change(self.transition('commercial_negotiation'))
-        for fact_id, value in [('need_confirmed', False), ('continue_intent', 'unknown'),
-                               ('solution_scope', 'unknown')]:
+        for fact_id, value in [('need_confirmed', False), ('continue_intent', 'unknown')]:
             with self.subTest(fact_id=fact_id):
                 self.change({'type': 'confirm_fact', 'fact_id': fact_id, 'value': value, 'evidence': ['ev']})
                 self.assertEqual(self.state()['verification_status'], 'needs_review')

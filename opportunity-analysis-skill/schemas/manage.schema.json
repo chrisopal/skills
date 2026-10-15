@@ -58,9 +58,76 @@
               "value": {},
               "artifact_id": {
                 "type": "string",
-                "description": "Required for positive quote_authorized, binding exact current artifact hash."
+                "description": "Required for confirmed solution_scope text and positive quote_authorized; binds the exact current solution or quote hash. Explicit unknown scope remains unresolved."
               }
-            }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "fact_id": {
+                      "const": "solution_scope"
+                    },
+                    "value": {
+                      "type": "string",
+                      "not": {
+                        "pattern": "^\\s*(?:[Uu][Nn][Kk][Nn][Oo][Ww][Nn]|未知|待确认|不确定|不知道)\\s*$"
+                      }
+                    }
+                  },
+                  "required": [
+                    "fact_id",
+                    "value"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "artifact_id"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "fact_id": {
+                      "const": "quote_authorized"
+                    },
+                    "value": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "fact_id",
+                    "value"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "artifact_id"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "fact_id": {
+                      "const": "solution_scope"
+                    }
+                  },
+                  "required": [
+                    "fact_id"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "value": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  }
+                }
+              }
+            ]
           },
           {
             "type": "object",
@@ -196,6 +263,25 @@
                   "additionalProperties": false
                 },
                 "description": "Explicit current artifact bindings: quote→solution; negotiation→quote; contract→quote and any existing negotiation; handoff→any existing contract."
+              },
+              "scope_review": {
+                "type": "object",
+                "required": [
+                  "scope_version",
+                  "summary"
+                ],
+                "properties": {
+                  "scope_version": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "summary": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "additionalProperties": false,
+                "description": "Actual content read-back against the current solution_scope fact version. Required for commercial artifacts and contract-based handoff; not automatic semantic verification."
               }
             },
             "allOf": [
@@ -220,6 +306,46 @@
                       "minItems": 1
                     }
                   }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "kind": {
+                      "enum": [
+                        "quote",
+                        "negotiation",
+                        "contract"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "scope_review"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "kind": {
+                      "const": "handoff"
+                    },
+                    "dependencies": {
+                      "type": "array",
+                      "minItems": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "dependencies"
+                  ]
+                },
+                "then": {
+                  "required": [
+                    "scope_review"
+                  ]
                 }
               }
             ]

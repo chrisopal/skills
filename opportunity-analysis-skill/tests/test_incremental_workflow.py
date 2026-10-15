@@ -73,7 +73,7 @@ class IncrementalWorkflowTests(unittest.TestCase):
         source = self.root / '方案 空格.md'
         source.write_text('registered solution', encoding='utf-8')
         operations = [{'type': 'register_artifact', 'artifact_id': 's1', 'kind': 'solution', 'version': 1,
-            'file_path': str(source), 'evidence': ['ev1']}, {'type': 'confirm_fact', 'fact_id': 'solution_scope',
+            'file_path': str(source), 'evidence': ['ev1']}, {'type': 'confirm_fact', 'fact_id': 'solution_scope', 'artifact_id': 's1',
             'value': '工单管理', 'evidence': ['ev1']}, {'type': 'transition', 'to_stage': 'solution_cocreation',
             'reason': '方案已核验', 'evidence': ['ev1']}]
         self.manage(operations)

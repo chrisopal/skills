@@ -47,11 +47,11 @@ expected_revision 必须换成回读值，不能照抄0。新材料用于增量�
 
 | type | 主要字段 | 结果 |
 |---|---|---|
-| confirm_fact | fact_id、value、evidence；报价授权另含 artifact_id | 证据支持的事实修订；否定事实也保留，不能用未知满足阶段条件 |
+| confirm_fact | fact_id、value、evidence；范围确认及报价授权另含 artifact_id | 证据支持的事实修订；否定事实也保留，不能用未知满足阶段条件 |
 | set_owner | owner、reason | 保存商机负责人和实际转派历史；内部安排不要求客户证据 |
 | add_action | action_id（可选）、title、owner、due_date | 建立可执行行动 |
 | complete_action | action_id、result、evidence | 保存真实完成结果 |
-| register_artifact | artifact_id（可选）、kind、version、file_path、dependencies、evidence、metadata | 登记实际文件、版本和摘要 |
+| register_artifact | artifact_id（可选）、kind、version、file_path、dependencies、evidence、metadata、scope_review | 登记实际文件、版本和摘要及实际内容复核 |
 | record_competitor | competitor_id、name、position、strengths、weaknesses、response、status、evidence；可选price_amount/currency | 同ID更新当前竞争记录并追加版本历史；不自动调分 |
 | record_review | review_id、title、requirement_ids、artifact_id、owner、due_date、blocking、evidence | 登记当前方案的客户意见与整改责任 |
 | resolve_review | review_id、artifact_id、resolution、evidence | 绑定当前方案和关闭依据，保留处理历史 |
@@ -95,6 +95,18 @@ dependencies 为 `[{"artifact_id":"同一商机的上游成果ID","sha256":"回�
 record_contract 的 signing_date 使用 YYYY-MM-DD；parties 至少包含双方真实主体；amount 是非负数（零金额项目须明确业务依据）；currency 使用真实币种。signature_facts 中 customer_signed 与 supplier_signed 必须是布尔 true，且有经核验的实际依据。合同编号、生效条件、税口径等在合同 metadata 保留，不能以签单记录替代法律审核。
 
 签署文件存在、摘要一致和字段完整只证明运行层可核验的条件；不认证签署人、不判断签字真实与法律效力。中标、PO 模板、口头承诺不能提交为已签单。回款、收入、交付和客户验收另行记录。
+
+## 方案范围与商业文件内容复核
+
+`solution_scope` 的有效文本确认必须通过 artifact_id 指向当前有效 solution，记录文件摘要。未知范围保留 unresolved，不能推进。方案被替代、文件变化或范围重确认后，旧商业复核失效；正式阶段和历史不自动回退。
+
+登记 quote、negotiation、contract 以及依赖合同的 handoff 时，传入 `scope_review: {"scope_version": 2, "summary": "实际回读的核对结论"}`。scope_version 来自当前 solution_scope 事实的 version，不能使用方案文件版本代替。运行层保存对应事实记录ID、操作人和时间；引用登记操作的 evidence 追溯。quote 的 solution 依赖必须精确对应该范围绑定，其他商业文件沿有效依赖链回查。范围重确认即使方案摘要相同，也要求重新核对商业文件并登记新版本。
+
+复核必须实际打开文件，对照范围包含/排除、账号或数量、引用的方案/报价版本、价格税费、付款交付与条件。发现正文仍写旧版本时，先修订实际文件；不能只更新 dependencies 或填写“通过”。核验说明应写明读过什么、差异如何处理以及仍未确认的部分。该说明是可追溯的阅读判断，运行层不检测任意自然语言的语义一致性，也不认证复核者身份或代客户批准。
+
+更新顺序：注册新 solution → 回读并确认绑定该文件的范围 → 重新关闭受影响客户意见 → 实际修订并复核 quote → 重新授权该报价 → 修订复核 negotiation/contract/handoff。允许在一次 manage 中按序确认范围与登记文件；scope_version 使用本次将生成的事实版本，运行层核对是否准确。
+
+旧记录缺绑定或 scope_review 保持原样，回读显示 needs_review/unbound；不得推断历史已经审核。恢复时先核对源文件再逐级登记新的有效版本。已 won 的更正先显式 set_status active，保持原签署材料和记录；新合同必须对应新的真实签署记录，不能挪用旧签署。
 
 ## 客户评审闭环
 

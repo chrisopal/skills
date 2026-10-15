@@ -21,8 +21,9 @@ class LifecycleTests(unittest.TestCase):
         self.solution_dep = [{'artifact_id': 'base-s', 'sha256': hashlib.sha256(solution.read_bytes()).hexdigest()}]
         self.quote_dep = [{'artifact_id': 'base-q', 'sha256': hashlib.sha256(quote.read_bytes()).hexdigest()}]
         self.solution = {'type': 'register_artifact', 'artifact_id': 'base-s', 'kind': 'solution', 'version': 1, 'file_path': str(solution), 'evidence': ['ev1']}
+        self.scope = {'type': 'confirm_fact', 'fact_id': 'solution_scope', 'value': 'MES集成范围', 'artifact_id': 'base-s', 'evidence': ['ev1']}
         self.quote_authorization = {'type': 'confirm_fact', 'fact_id': 'quote_authorized', 'value': True, 'artifact_id': 'base-q', 'evidence': ['ev1']}
-        self.quote = {'type': 'register_artifact', 'artifact_id': 'base-q', 'kind': 'quote', 'version': 1, 'file_path': str(quote), 'dependencies': self.solution_dep, 'evidence': ['ev1']}
+        self.quote = {'type': 'register_artifact', 'artifact_id': 'base-q', 'kind': 'quote', 'version': 1, 'file_path': str(quote), 'dependencies': self.solution_dep, 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']}
 
     def tearDown(self):
         self.db.close()
@@ -74,10 +75,10 @@ class LifecycleTests(unittest.TestCase):
     def test_contract_requires_file_metadata_signatures_and_hash(self):
         path = Path(self.tmp.name) / 'signed.pdf'
         path.write_bytes(b'simulated signed contract for test')
-        artifact = {'type': 'register_artifact', 'artifact_id': 'contract-v1', 'kind': 'contract', 'version': 1, 'file_path': str(path), 'dependencies': self.quote_dep, 'evidence': ['ev1']}
+        artifact = {'type': 'register_artifact', 'artifact_id': 'contract-v1', 'kind': 'contract', 'version': 1, 'file_path': str(path), 'dependencies': self.quote_dep, 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']}
         contract = {'type': 'record_contract', 'artifact_id': 'contract-v1', 'signing_date': '2026-10-11', 'parties': ['客户公司', '供应商公司'], 'amount': 123, 'currency': 'CNY', 'signature_facts': {'customer_signed': True, 'supplier_signed': True}, 'evidence': ['ev1']}
         transition = {'type': 'transition', 'to_stage': 'won', 'reason': '双方签署已登记', 'evidence': ['ev1']}
-        self.change([self.solution, self.quote, self.quote_authorization, artifact, contract])
+        self.change([self.solution, self.scope, self.quote, self.quote_authorization, artifact, contract])
         path.write_bytes(b'changed')
         with self.assertRaises(ValueError):
             self.change([transition], request_id='stale-file', expected_revision=2)
@@ -111,13 +112,13 @@ class LifecycleTests(unittest.TestCase):
         negotiation = Path(self.tmp.name) / 'negotiation.txt'
         quote.write_text('quote v1')
         negotiation.write_text('negotiation v1')
-        self.change([self.solution, {'type': 'register_artifact', 'artifact_id': 'quote1', 'kind': 'quote', 'version': 1, 'file_path': str(quote), 'dependencies': self.solution_dep, 'evidence': ['ev1']},
+        self.change([self.solution, self.scope, {'type': 'register_artifact', 'artifact_id': 'quote1', 'kind': 'quote', 'version': 1, 'file_path': str(quote), 'dependencies': self.solution_dep, 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']},
                      {'type': 'confirm_fact', 'fact_id': 'quote_authorized', 'value': True, 'artifact_id': 'quote1', 'evidence': ['ev1']},
                      {'type': 'transition', 'to_stage': 'proposal_bidding', 'reason': '授权已报价', 'evidence': ['ev1']}])
         quote.write_text('changed')
         self.assertEqual(self.db.get_lifecycle(self.oid)['verification_status'], 'needs_review')
         with self.assertRaises(ValueError):
-            self.change([{'type': 'register_artifact', 'kind': 'negotiation', 'version': 1, 'file_path': str(negotiation), 'evidence': ['ev1']},
+            self.change([{'type': 'register_artifact', 'kind': 'negotiation', 'version': 1, 'file_path': str(negotiation), 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']},
                          {'type': 'transition', 'to_stage': 'commercial_negotiation', 'reason': '进入谈判', 'evidence': ['ev1']}], expected_revision=2, request_id='stale')
         quote.write_text('quote v1')
         self.change([{'type': 'confirm_fact', 'fact_id': 'quote_authorized', 'value': False, 'evidence': ['ev1']}], expected_revision=2, request_id='revoke')
@@ -136,10 +137,10 @@ class LifecycleTests(unittest.TestCase):
     def test_won_handoff_and_stale_file_readback(self):
         path = Path(self.tmp.name) / 'signed.txt'
         path.write_text('signed')
-        self.change([self.solution, self.quote, self.quote_authorization, {'type': 'register_artifact', 'artifact_id': 'c1', 'kind': 'contract', 'version': 1, 'file_path': str(path), 'dependencies': self.quote_dep, 'evidence': ['ev1']},
+        self.change([self.solution, self.scope, self.quote, self.quote_authorization, {'type': 'register_artifact', 'artifact_id': 'c1', 'kind': 'contract', 'version': 1, 'file_path': str(path), 'dependencies': self.quote_dep, 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']},
                      {'type': 'record_contract', 'artifact_id': 'c1', 'signing_date': '2026-10-11', 'parties': ['客户', '供应商'], 'amount': 0, 'currency': 'CNY', 'signature_facts': {'customer_signed': True, 'supplier_signed': True}, 'evidence': ['ev1']},
                      {'type': 'transition', 'to_stage': 'won', 'reason': '双方签署登记', 'evidence': ['ev1']}])
-        self.change([{'type': 'register_artifact', 'kind': 'handoff', 'version': 1, 'file_path': str(path), 'dependencies': [{'artifact_id': 'c1', 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}], 'evidence': ['ev1']}], expected_revision=2, request_id='handoff')
+        self.change([{'type': 'register_artifact', 'kind': 'handoff', 'version': 1, 'file_path': str(path), 'dependencies': [{'artifact_id': 'c1', 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()}], 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']}], expected_revision=2, request_id='handoff')
         path.write_text('changed after won')
         state = self.db.get_lifecycle(self.oid)
         self.assertEqual(state['status'], 'won')
@@ -179,9 +180,9 @@ class LifecycleTests(unittest.TestCase):
     def test_new_quote_version_needs_fresh_bound_authorization(self):
         path = Path(self.tmp.name) / 'quote.txt'
         path.write_text('quote')
-        self.change([self.solution, {'type': 'register_artifact', 'artifact_id': 'q1', 'kind': 'quote', 'version': 1, 'file_path': str(path), 'dependencies': self.solution_dep, 'evidence': ['ev1']},
+        self.change([self.solution, self.scope, {'type': 'register_artifact', 'artifact_id': 'q1', 'kind': 'quote', 'version': 1, 'file_path': str(path), 'dependencies': self.solution_dep, 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']},
                      {'type': 'confirm_fact', 'fact_id': 'quote_authorized', 'value': True, 'artifact_id': 'q1', 'evidence': ['ev1']},
-                     {'type': 'register_artifact', 'artifact_id': 'q2', 'kind': 'quote', 'version': 2, 'file_path': str(path), 'dependencies': self.solution_dep, 'evidence': ['ev1']}])
+                     {'type': 'register_artifact', 'artifact_id': 'q2', 'kind': 'quote', 'version': 2, 'file_path': str(path), 'dependencies': self.solution_dep, 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']}])
         with self.assertRaises(ValueError):
             self.change([{'type': 'transition', 'to_stage': 'proposal_bidding', 'reason': '报价', 'evidence': ['ev1']}], expected_revision=2, request_id='unauthorized-v2')
         self.change([{'type': 'confirm_fact', 'fact_id': 'quote_authorized', 'value': True, 'artifact_id': 'q2', 'evidence': ['ev1']},
@@ -190,18 +191,18 @@ class LifecycleTests(unittest.TestCase):
     def test_incomplete_contract_and_missing_files_are_rejected_atomically(self):
         path = Path(self.tmp.name) / 'contract.txt'
         path.write_text('contract')
-        artifact = {'type': 'register_artifact', 'artifact_id': 'c1', 'kind': 'contract', 'version': 1, 'file_path': str(path), 'dependencies': self.quote_dep, 'evidence': ['ev1']}
+        artifact = {'type': 'register_artifact', 'artifact_id': 'c1', 'kind': 'contract', 'version': 1, 'file_path': str(path), 'dependencies': self.quote_dep, 'scope_review': {'scope_version': 1, 'summary': '模拟文件正文与范围复核'}, 'evidence': ['ev1']}
         complete = {'type': 'record_contract', 'artifact_id': 'c1', 'signing_date': '2026-10-11', 'parties': ['客户', '供应商'], 'amount': 100, 'currency': 'CNY', 'signature_facts': {'customer_signed': True, 'supplier_signed': True}, 'evidence': ['ev1']}
         invalid = [dict(complete, signature_facts={'customer_signed': True, 'supplier_signed': False}),
                    dict(complete, parties=['仅一方']), dict(complete, signing_date='unknown'),
                    dict(complete, amount=float('nan'))]
         for index, record in enumerate(invalid):
             with self.subTest(index=index), self.assertRaises(ValueError):
-                self.change([self.solution, self.quote, self.quote_authorization, artifact, record], request_id='invalid-' + str(index))
+                self.change([self.solution, self.scope, self.quote, self.quote_authorization, artifact, record], request_id='invalid-' + str(index))
             self.assertEqual(self.db.get_lifecycle(self.oid)['revision'], 1)
             self.assertEqual(self.db.get_lifecycle(self.oid)['artifacts'], [])
         with self.assertRaises(ValueError):
-            self.change([self.solution, self.quote, dict(artifact, file_path=str(path) + '.missing')], request_id='missing-file')
+            self.change([self.solution, self.scope, self.quote, dict(artifact, file_path=str(path) + '.missing')], request_id='missing-file')
 
     def test_analysis_request_replay_does_not_duplicate_opportunities_or_revision(self):
         replay = self.db.save_structured_data(analyze(self.seed), request={'request_id': 'seed'})

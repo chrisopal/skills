@@ -192,7 +192,7 @@ def run_case(output, *, through=12):
                 required.append("negotiation")
             dependencies = [registered[k] for k in required]
             path = output / "documents" / filename
-            operations.append({"type": "register_artifact", "artifact_id": aid, "document_id": kind, "kind": kind, "version": version, "file_path": str(path), "dependencies": dependencies, "evidence": [ev], "metadata": {"simulated": True, "scenario_date": step["date"], "source_skill": step["skills"][0]}})
+            operations.append({"type": "register_artifact", "artifact_id": aid, "document_id": kind, "kind": kind, "version": version, "file_path": str(path), "dependencies": dependencies, "evidence": [ev], "metadata": {"simulated": True, "scenario_date": step["date"], "source_skill": step["skills"][0]}, **({"scope_review": {"scope_version": max(f["version"] for f in state()["facts"] if f["fact_id"] == "solution_scope"), "summary": "模拟逐项回读：正文对应方案V2、30账号和范围排除；价格付款与有效前提已核对"}} if kind != "solution" else {})})
             registered[kind] = {"artifact_id": aid, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
         if step.get("review_status") == "open":
             for review in case["reviews"]:
@@ -201,7 +201,7 @@ def run_case(output, *, through=12):
             for review in case["reviews"]:
                 operations.append({"type": "resolve_review", "review_id": review["review_id"], "artifact_id": "SOL-2", "resolution": review["resolution"], "evidence": [ev]})
         for key, value in step.get("facts", {}).items():
-            operations.append({"type": "confirm_fact", "fact_id": key, "value": value, "evidence": [ev]})
+            operations.append({"type": "confirm_fact", "fact_id": key, "value": value, "evidence": [ev], **({"artifact_id": registered["solution"]["artifact_id"]} if key == "solution_scope" else {})})
         if step.get("authorize"):
             operations.append({"type": "confirm_fact", "fact_id": "quote_authorized", "value": True, "artifact_id": step["authorize"], "evidence": [ev]})
         if step.get("complete"):

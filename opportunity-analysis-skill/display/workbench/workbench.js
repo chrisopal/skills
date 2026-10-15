@@ -69,15 +69,59 @@
   function notice(message, kind) {
     const node = $('notice'); node.hidden = !message; node.textContent = message || '';
     node.className = 'wb-notice' + (kind ? ' is-' + kind : '');
+    node.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+    if (message && kind === 'error') node.scrollIntoView({ block: 'nearest' });
+  }
+
+  function readableBlocker(message) {
+    const factLabels = { quote_authorized: '当前报价授权', budget_confirmed: '预算批准', solution_scope: '方案范围确认', contact_established: '客户联系', need_confirmed: '需求确认', requirement_owner: '需求负责人', continue_intent: '继续推进意愿' };
+    const kindLabels = { solution: '方案', quote: '报价', negotiation: '谈判纪要', contract: '合同', handoff: '交接包' };
+    if (message.startsWith('fact unresolved, missing or negative: ')) return '待确认：' + (factLabels[message.slice('fact unresolved, missing or negative: '.length).trim()] || message.slice('fact unresolved, missing or negative: '.length).trim());
+    if (message.startsWith('current artifact stale or missing: ') || message.startsWith('current artifact stale, unbound or missing: ')) {
+      const kind = message.slice(message.lastIndexOf(': ') + 2).trim();
+      return (kindLabels[kind] || kind) + '文件或依据版本需复核';
+    }
+    if (message.startsWith('current artifact does not match latest authorized quote: ')) return '成果依据的报价与最新授权不一致：' + (kindLabels[message.slice(message.lastIndexOf(': ') + 2).trim()] || message.slice(message.lastIndexOf(': ') + 2).trim());
+    if (message.startsWith('artifact does not match latest authorized quote: ') || message.startsWith('signed contract does not match latest authorized quote: ')) return '成果依据的报价与最新授权不一致：' + (kindLabels[message.slice(message.lastIndexOf(': ') + 2).trim()] || message.slice(message.lastIndexOf(': ') + 2).trim());
+    if (message === 'quote authorization is stale or unbound') return '报价授权已过期或未绑定当前版本';
+    if (message === 'authorized quote is stale or unbound') return '授权报价已过期或未绑定当前版本';
+    if (message === 'authorized quote is missing or unresolved') return '缺少已确认的报价授权';
+    if (message === 'signed contract stale, unbound, missing or superseded' || message === 'signed contract stale, missing or superseded') return '签署合同或依据版本已失效、未绑定或被替代';
+    if (message === 'signed contract record missing') return '缺少已签署合同登记';
+    const reasonPrefixes = { 'artifact superseded: ': '成果已被新版本替代：', 'artifact file stale or missing: ': '成果文件已变化或缺失：', 'dependency invalid: ': '上游成果需复核：', 'dependency missing: ': '上游成果缺失：', 'dependency hash mismatch: ': '上游文件摘要不符：', 'artifact dependency cycle: ': '成果依赖循环：', 'required dependency missing: ': '缺少依据版本：' };
+    for (const [prefix, label] of Object.entries(reasonPrefixes)) {
+      if (message.startsWith(prefix)) { const id = message.slice(prefix.length).split(' (')[0]; return label + (kindLabels[id] || id); }
+    }
+    if (message.startsWith('artifact content review is missing: ')) return '成果缺少范围内容复核：' + message.slice(message.lastIndexOf(': ') + 2).trim();
+    if (message.startsWith('artifact content review uses an outdated solution scope: ')) return '成果引用了过期的方案范围：' + message.slice(message.lastIndexOf(': ') + 2).trim();
+    if (message.startsWith('quote solution differs from confirmed solution scope: ')) return '报价引用的方案与已确认范围不一致：' + message.slice(message.lastIndexOf(': ') + 2).trim();
+    if (message.includes('solution scope') || message.includes('scope review') || message.includes('scope is stale') || message.includes('scope is missing')) return '方案范围已过期、未绑定或需要重新复核';
+    if (message.startsWith('blocking review requires resolution or revalidation: ')) return '评审意见待整改或复核：' + message.slice(message.lastIndexOf(': ') + 2).trim();
+    return message;
   }
 
   function readableError(message) {
-    const factLabels = {quote_authorized:'当前报价授权', budget_confirmed:'预算批准', solution_scope:'方案范围确认', contact_established:'客户联系', need_confirmed:'需求确认', requirement_owner:'需求负责人', continue_intent:'继续推进意愿'};
-    if (message.startsWith('missing confirmed facts: ')) return '尚未确认：' + message.slice(25).split(',').map(id => factLabels[id.trim()] || id.trim()).join('、') + '。请核验并登记依据后重试。';
-    if (message.includes('revision conflict')) return '当前数据版本已变化。';
-    if (message.includes('review') && message.includes('block')) return '仍有未关闭或需要复核的客户评审，请先处理评审意见。';
-    if (message.includes('artifact') && (message.includes('missing') || message.includes('invalid'))) return '缺少当前有效成果，请检查方案、报价或合同版本。';
-    return message;
+    const raw = String(message || '请求失败');
+    if (raw.startsWith('missing confirmed facts: ')) return '尚未确认：' + raw.slice('missing confirmed facts: '.length).split(',').map(id => ({ quote_authorized: '当前报价授权', budget_confirmed: '预算批准', solution_scope: '方案范围确认', contact_established: '客户联系', need_confirmed: '需求确认', requirement_owner: '需求负责人', continue_intent: '继续推进意愿' }[id.trim()] || id.trim())).join('、') + '。请核验并登记依据后重试。';
+    if (raw.startsWith('resolve lifecycle blockers before transition: ')) return '阶段推进前仍有前置条件未满足：' + raw.slice('resolve lifecycle blockers before transition: '.length).split('; ').map(readableBlocker).join('；') + '。请先补齐或修复后重试。';
+    if (raw.includes('won requires a recorded signed contract')) return '标记为赢单前，需要先登记一份已签署合同。';
+    if (raw.includes('reopen closed opportunity')) return '商机已关闭，请先显式重新打开后再执行此操作。';
+    if (raw.includes('resume paused opportunity')) return '商机已暂停，请先恢复推进后再执行阶段变更。';
+    if (raw.includes('artifact content review must reference the current solution scope version')) return '成果内容复核必须引用当前方案范围版本，请重新登记当前文件。';
+    if (raw.includes('solution scope artifact not found')) return '未找到绑定的方案成果，请选择当前有效方案后重试。';
+    if (raw.includes('solution scope must bind the current')) return '方案范围确认必须绑定当前有效方案文件。';
+    if (raw.includes('artifact content review is missing')) return '商业成果缺少范围内容复核，请先通过 CLI 登记实际阅读结论。';
+    if (raw.includes('scope') && (raw.includes('stale') || raw.includes('missing') || raw.includes('invalid') || raw.includes('unbound'))) return '方案范围已过期、缺失或未绑定当前方案，请重新确认范围。';
+    if (raw.includes('quote solution differs from confirmed solution scope')) return '报价引用的方案与已确认范围不一致，请重新登记报价文件。';
+    if (raw.includes('revision conflict')) return '当前数据版本已变化，请刷新后重试。';
+    if (raw.includes('review') && raw.includes('block')) return '仍有未关闭或需要复核的客户评审，请先处理评审意见。';
+    if (raw.includes('signature') || raw.includes('customer_signed') || raw.includes('supplier_signed')) return '合同签署事实不完整，请确认客户与供应商双方均已登记签署。';
+    if (raw.includes('permission') || raw.includes('not authorized') || raw.includes('unauthorized')) return '当前操作没有授权，请检查操作人和工作台权限。';
+    if (raw.includes('authorization') && (raw.includes('missing') || raw.includes('invalid') || raw.includes('stale') || raw.includes('unbound'))) return '报价授权已缺失、过期或未绑定当前版本，请重新核验授权。';
+    if (raw.includes('artifact') && (raw.includes('missing') || raw.includes('invalid') || raw.includes('stale') || raw.includes('unbound'))) return '缺少当前有效成果，请检查文件、授权和上游版本。';
+    if (raw.includes('file') && (raw.includes('missing') || raw.includes('stale'))) return '成果文件已变更或缺失，请重新登记当前文件。';
+    if (raw.includes('prerequisite') || raw.includes('prerequisites')) return '当前操作的前置条件未满足，请先处理页面提示的阻塞项。';
+    return raw;
   }
 
   async function api(path, options) {
@@ -139,17 +183,74 @@
   function addSubmit(form, label) { const actions = make('div', 'wb-form-actions'); const submit = make('button', 'wb-btn wb-btn-primary', label || '保存'); submit.type = 'submit'; actions.appendChild(submit); form.appendChild(actions); return submit; }
   function managePayload(detail, operations, form) { return { request_id: requestIdFor(form), opportunity_id: detail.opportunity.id, expected_revision: detail.lifecycle.revision, actor: valueOf(form, 'operator') || detail.lifecycle.owner || '工作台操作人', operations: operations }; }
   function evidenceRefs(form, name) { const value = valueOf(form, name || 'evidence'); return value ? value.split(',').map((item) => item.trim()).filter(Boolean) : []; }
+  function latestFact(life, factId) { return [...(life.facts || [])].reverse().find((fact) => fact.fact_id === factId) || null; }
+  function validSolutions(life) { return (life.artifacts || []).filter((artifact) => artifact.kind === 'solution' && artifact.validity === 'valid').sort((a, b) => Number(b.version || 0) - Number(a.version || 0)); }
+  function scopeVerification(fact) {
+    if (!fact) return 'needs_review';
+    if (fact.verification_status) return fact.verification_status;
+    return 'needs_review';
+  }
+  function scopeArtifact(life, fact) {
+    if (fact && fact.artifact_id) return (life.artifacts || []).find((artifact) => artifact.id === fact.artifact_id) || null;
+    return null;
+  }
+  function scopeReview(artifact) {
+    return artifact && artifact.scope_review || null;
+  }
+  function scopeReviewCell(artifact) {
+    if (!['quote', 'negotiation', 'contract', 'handoff'].includes(artifact.kind)) return '—';
+    const review = scopeReview(artifact);
+    if (!review) return '未登记范围复核';
+    const summary = String(review.summary || '已登记范围复核');
+    const disclosure = make('details');
+    disclosure.appendChild(make('summary', null, summary.length > 80 ? summary.slice(0, 80) + '…' : summary));
+    const meta = make('div');
+    meta.appendChild(make('p', null, '方案范围版本：v' + text(review.scope_version)));
+    meta.appendChild(make('p', null, '复核人：' + text(review.actor)));
+    meta.appendChild(make('p', null, '复核时间：' + text(review.time)));
+    meta.appendChild(make('p', null, '完整说明：' + summary));
+    if (review.scope_fact_id) meta.appendChild(make('p', null, '范围事实记录：' + review.scope_fact_id));
+    disclosure.appendChild(meta);
+    return disclosure;
+  }
+  function renderScopeSummary(life) {
+    const fact = latestFact(life, 'solution_scope');
+    const artifact = scopeArtifact(life, fact);
+    const status = scopeVerification(fact);
+    const body = make('div');
+    const meta = make('div', 'wb-statuses');
+    meta.appendChild(make('span', 'wb-tag ' + (status === 'current' ? 'wb-tag-primary' : ''), '范围：' + verifyLabel(status)));
+    meta.appendChild(make('span', 'wb-tag', (status === 'current' ? '已确认方案：' : '原确认方案：') + (artifact ? 'v' + text(artifact.version) : '未绑定')));
+    body.appendChild(meta);
+    if (status === 'current') body.appendChild(make('p', 'wb-scope-text', String(fact.value)));
+    else body.appendChild(make('p', 'wb-muted', '尚未确认方案范围，请绑定当前有效方案后登记。'));
+    const details = make('details', 'wb-disclosure');
+    details.appendChild(make('summary', null, '查看范围事实依据'));
+    const detailsBody = make('div');
+    if (fact) {
+      detailsBody.appendChild(make('p', null, '登记范围：' + text(fact.value)));
+      detailsBody.appendChild(make('p', null, '事实版本：v' + text(fact.version)));
+      detailsBody.appendChild(make('p', null, '绑定方案：' + text(fact.artifact_id)));
+      detailsBody.appendChild(make('p', null, '事实记录：' + text(fact.id)));
+      detailsBody.appendChild(make('p', null, '确认人 / 时间：' + text(fact.actor) + ' / ' + text(fact.time)));
+      detailsBody.appendChild(make('p', null, '证据 ID：' + ((fact.evidence || []).join('、') || '—')));
+      if (fact.verification_reasons && fact.verification_reasons.length) detailsBody.appendChild(make('p', null, '复核原因：' + fact.verification_reasons.map(readableBlocker).join('；')));
+    } else detailsBody.appendChild(make('p', 'wb-muted', '暂无方案范围事实记录。'));
+    details.appendChild(detailsBody); body.appendChild(details);
+    return body;
+  }
 
   function renderDetail(detail) {
     const view = $('detail-view'); while (view.firstChild) view.removeChild(view.firstChild); view.hidden = false; $('detail-empty').hidden = true;
     const opportunity = detail.opportunity, life = detail.lifecycle, assessment = detail.commercial_assessment || {};
-    const hero = make('div', 'wb-hero'); const heading = make('div'); heading.appendChild(make('div', 'wb-eyebrow', text(detail.account.company_name))); const scope = [...(life.facts || [])].reverse().find(f => f.fact_id === 'solution_scope' && f.status === 'confirmed' && typeof f.value === 'string'); heading.appendChild(make('h2', null, scope ? scope.value : text(opportunity.name || opportunity.core_need))); heading.appendChild(make('p', 'wb-muted', '主账修订号 ' + text(life.revision) + ' · 负责人 ' + text(life.owner))); hero.appendChild(heading);
+    const hero = make('div', 'wb-hero'); const heading = make('div'); heading.appendChild(make('div', 'wb-eyebrow', text(detail.account.company_name))); const scope = latestFact(life, 'solution_scope'); heading.appendChild(make('h2', null, scopeVerification(scope) === 'current' ? text(scope.value) : (scope ? '方案范围待复核' : text(opportunity.name || opportunity.core_need)))); heading.appendChild(make('p', 'wb-muted', '主账修订号 ' + text(life.revision) + ' · 负责人 ' + text(life.owner))); hero.appendChild(heading);
     const statuses = make('div', 'wb-statuses'); statuses.appendChild(make('span', 'wb-tag wb-tag-primary', stageLabel(life.current_stage_id))); statuses.appendChild(make('span', 'wb-tag', statusLabel(life.status))); hero.appendChild(statuses); view.appendChild(hero);
     const scoreStrip = make('div', 'wb-score-strip');
     [['综合参考分', assessment.overall_opportunity_score ?? opportunity.score], ['赢单可能性', assessment.win_likelihood_score], ['商机价值', assessment.deal_attractiveness_score], ['交付信心', assessment.delivery_confidence_score]].forEach(([label, score]) => {
       const cell = make('div', 'wb-score'); cell.appendChild(make('span', null, label)); cell.appendChild(make('strong', null, text(score) + ' / 100')); scoreStrip.appendChild(cell);
     }); view.appendChild(scoreStrip);
     const help = make('details', 'wb-disclosure'); help.appendChild(make('summary', null, '评分口径与原始名称')); help.appendChild(make('p', 'wb-muted', '启发式参考，不是统计成交概率。未知40表示缺少信息。原始名称：' + text(opportunity.name))); view.appendChild(help);
+    view.appendChild(section('方案范围', renderScopeSummary(life)));
 
     const columns = make('div', 'wb-columns'); const main = make('div'); const side = make('div');
     const assessmentRows = (assessment.dimensions || []).map((d) => [d.label, ratingLabel(d.rating), d.score, evidenceLabel(d.evidence_status), (d.evidence_refs || []).join(', ') || '—', d.rationale]);
@@ -175,8 +276,8 @@
     const reviewRows = (life.reviews || []).map((r) => [r.title, statusLabel(r.status), r.owner, r.due_date, verifyLabel(r.verification_status)]);
     main.appendChild(section('客户评审与闭环', reviewRows.length ? table(['评审项', '状态', '负责人', '截止', '当前校验'], reviewRows) : make('p', 'wb-muted', '尚无客户评审记录。')));
     const kindLabels = {solution:'方案',quote:'报价',negotiation:'谈判',contract:'合同',handoff:'交接'};
-    const artifactRows = (life.artifacts || []).map(a => { const binding = a.metadata && a.metadata.presales_binding; return [a.id, kindLabels[a.kind] || a.kind, 'v' + a.version, verifyLabel(a.validity), binding ? binding.project_id + ' / ' + binding.delivery_id + ' / ' + binding.content_id : '本地工作稿', (a.dependencies || []).map(d => d.artifact_id).join(', ') || '—']; });
-    main.appendChild(section('方案与商务成果', artifactRows.length ? table(['成果', '类型', '版本', '当前核验', '售前绑定', '上游版本'], artifactRows) : make('p', 'wb-muted', '尚未登记成果。实际文件通过 CLI 回收并核验。')));
+    const artifactRows = (life.artifacts || []).map(a => { const binding = a.metadata && a.metadata.presales_binding; return [a.id, kindLabels[a.kind] || a.kind, 'v' + a.version, verifyLabel(a.validity), binding ? binding.project_id + ' / ' + binding.delivery_id + ' / ' + binding.content_id : '本地工作稿', (a.dependencies || []).map(d => d.artifact_id).join(', ') || '—', scopeReviewCell(a)]; });
+    main.appendChild(section('方案与商务成果', artifactRows.length ? table(['成果', '类型', '版本', '当前核验', '售前绑定', '上游版本', '范围内容复核'], artifactRows) : make('p', 'wb-muted', '尚未登记成果。实际文件通过 CLI 回收并核验。')));
     const contracts = (life.contracts || []).map(c => [c.contract_id || c.id, c.artifact_id, c.signing_date, text(c.amount) + ' ' + text(c.currency)]);
     if (contracts.length) main.appendChild(section('签署登记', table(['记录', '合同成果', '签署日期', '金额'], contracts)));
     const actionRows = (life.actions || []).map(a => [a.title, statusLabel(a.status), a.owner, a.due_date, a.result || '—']);
@@ -217,6 +318,29 @@
       const submit = addSubmit(form); form.addEventListener('submit', async (event) => {
         event.preventDefault(); const refs = evidenceRefs(form), reviewId = valueOf(form, 'review_id'); if (!reviewId || !refs.length) { notice('评审闭环必须绑定评审记录和已有证据。', 'error'); return; }
         const action = valueOf(form, 'review_action'); const op = action === 'resolve_review' ? { type: action, review_id: reviewId, artifact_id: valueOf(form, 'artifact_id'), resolution: valueOf(form, 'resolution'), evidence: refs } : { type: action, review_id: reviewId, reason: valueOf(form, 'resolution'), evidence: refs };
+        try { await write('/api/manage', managePayload(detail, [op], form), submit); } catch (_) {}
+      });
+    }));
+    side.appendChild(formPanel('方案范围确认', (form) => {
+      const scopeFact = latestFact(life, 'solution_scope');
+      const solutions = validSolutions(life);
+      const choices = solutions.length ? solutions.map((artifact) => [artifact.id, (artifact.document_id || artifact.id) + ' / v' + artifact.version]) : [['', '暂无当前有效方案']];
+      form.appendChild(field('操作人', 'operator', 'text', life.owner || '', { required: true }));
+      form.appendChild(field('当前有效方案', 'scope_artifact_id', 'select', scopeFact && solutions.some((artifact) => artifact.id === scopeFact.artifact_id) ? scopeFact.artifact_id : (solutions[0] ? solutions[0].id : ''), { choices: choices, required: true }));
+      form.appendChild(field('方案范围', 'scope_text', 'textarea', scopeFact && typeof scopeFact.value === 'string' ? scopeFact.value : '', { required: true, full: true, placeholder: '填写实际阅读并确认的方案范围' }));
+      form.appendChild(field('证据 ID（逗号分隔）', 'scope_evidence', 'text', '', { required: true, full: true }));
+      form.appendChild(make('div', 'wb-form-hint', solutions.length ? '必须绑定当前有效方案，并填写已有证据 ID；重新确认会形成新的范围事实版本。' : '当前没有可绑定的有效方案，请先通过 CLI 登记并核验方案文件。'));
+      const submit = addSubmit(form, '确认范围');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const artifactId = valueOf(form, 'scope_artifact_id');
+        const scopeText = valueOf(form, 'scope_text');
+        const refs = evidenceRefs(form, 'scope_evidence');
+        if (!solutions.some((artifact) => artifact.id === artifactId) || !scopeText || !refs.length) {
+          notice('方案范围确认必须绑定当前有效方案、填写范围文本并关联已有证据。', 'error');
+          return;
+        }
+        const op = { type: 'confirm_fact', fact_id: 'solution_scope', value: scopeText, artifact_id: artifactId, evidence: refs };
         try { await write('/api/manage', managePayload(detail, [op], form), submit); } catch (_) {}
       });
     }));

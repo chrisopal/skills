@@ -216,8 +216,46 @@ assert(project([120,31]).every(Number.isFinite));assert(m.path(d.features[0].geo
         stage = infer_opportunity_stage({'text': raw, 'core_need': '客户需求待进一步澄清'})
         self.assertNotEqual(stage['stage_id'], 'proposal_bidding')
         self.assertFalse(stage['opportunity_confirmed'])
+        self.assertEqual(extract_budget_signal('预算待确认，但审批流程已明确。'), ('预算信息未明确', None))
+        self.assertEqual(extract_budget_signal('预算已批100万元，方案尚未形成。'), ('存在预算/立项信号', '100万元'))
+        self.assertEqual(extract_budget_signal('立项通过，预算金额均待确认。'), ('存在预算/立项信号', None))
         self.assertEqual(extract_budget_signal('预算未提供。后续预算已批100万元。'), ('存在预算/立项信号', '100万元'))
+        self.assertEqual(extract_budget_signal('去年预算已批100万元，今年预算待确认。'), ('预算信息未明确', None))
+        self.assertEqual(infer_opportunity_stage({'text': '如果合同已签，再安排交付。', 'core_need': 'MES'})['stage_id'], 'needs_discovery')
+        self.assertEqual(extract_budget_signal('没有预算已确认的证据。'), ('预算信息未明确', None))
+        self.assertEqual(extract_budget_signal('预算未获批。'), ('预算信息未明确', None))
         self.assertEqual(infer_opportunity_stage({'text': '已提交报价', 'core_need': '质检'})['stage_id'], 'proposal_bidding')
+
+    def test_discovery_rehearsal_keeps_enumerated_unknowns_and_requirements_unconfirmed(self):
+        from opportunity_skill.extractor import analyze
+        from opportunity_skill.stages.opportunity_analysis import extract_budget_signal
+
+        text = (
+            '客户：澄川精密部件（模拟）有限公司。所在地江苏苏州，汽车零部件制造。'
+            '本材料全部为虚构演练。质量负责人陈工（模拟）提出壳体外观划伤检查与装配缺件检测需求，'
+            '需要检测数据追溯及与MES接口。当前计划先收集不同缺陷样件，2026-10-20进行技术需求澄清，'
+            '再决定是否做POC。产品精度、预算金额、采购负责人、审批流程和供应商竞争情况均待确认；'
+            '尚未出方案、报价或签订合同。'
+        )
+        self.assertEqual(extract_budget_signal(text), ('预算信息未明确', None))
+
+        result = analyze({'materials': [{'content': text}]})
+        opportunity = result['structured_data']['opportunity']
+        self.assertEqual(opportunity['stage_id'], 'needs_discovery')
+        self.assertFalse(opportunity['opportunity_confirmed'])
+        self.assertEqual(opportunity['budget_signal'], '预算信息未明确')
+        self.assertIsNone(opportunity['budget_amount'])
+        pricing = next(
+            item for item in result['structured_data']['commercial_assessment']['dimensions']
+            if item['dimension_id'] == 'pricing_budget_fit'
+        )
+        self.assertNotIn('有预算/立项信号', pricing['rationale'])
+
+        from opportunity_skill.stage_management import infer_opportunity_stage
+        self.assertEqual(
+            infer_opportunity_stage({'text': '正在进行MES接口方案讨论', 'core_need': 'MES'})['stage_id'],
+            'solution_cocreation',
+        )
 
     def test_cli_actual_write_read_and_brief(self):
         run = Path(__file__).resolve().parents[2] / 'opportunity-orchestrator/scripts/run.py'

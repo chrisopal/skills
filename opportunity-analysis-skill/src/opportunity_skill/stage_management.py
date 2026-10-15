@@ -20,7 +20,7 @@ STAGE_DEFINITIONS: list[StageDefinition] = [
     StageDefinition("customer_contacted", "客户接触", 2, "已经发生初步沟通或识别到客户联系人。", ("沟通", "拜访", "客户交流", "联系人", "名片")),
     StageDefinition("needs_discovery", "需求澄清", 3, "已有需求方向和痛点，但推进意愿或负责人仍不完整。", ("需求", "痛点", "现状", "问题", "希望", "需要")),
     StageDefinition("opportunity_confirmed", "商机确认", 4, "客户、需求、负责人和继续推进意愿基本成立。", ("继续推进", "安排交流", "资料清单", "需求负责人", "项目负责人"), is_opportunity_confirmed=True),
-    StageDefinition("solution_cocreation", "方案共创", 5, "正在进行方案、技术、范围、POC 或接口讨论。", ("方案", "技术交流", "演示", "接口", "POC", "设备选型", "检测点位", "MES对接", "范围讨论"), is_opportunity_confirmed=True),
+    StageDefinition("solution_cocreation", "方案共创", 5, "正在进行方案、技术、范围、POC 或接口讨论。", ("方案", "技术交流", "演示", "接口方案", "接口讨论", "接口确认", "接口对接", "接口联调", "POC", "设备选型", "检测点位", "MES对接方案", "MES接口方案", "范围讨论"), is_opportunity_confirmed=True),
     StageDefinition(
         "budget_project_confirmed",
         "预算/立项确认",
@@ -108,6 +108,9 @@ _COMPLETED_FACT_SEQUENCE_SIGNALS = frozenset(
         "赢单",
     }
 )
+_ENUMERATED_UNKNOWN_QUALIFIERS = ("未知", "不明", "未确认", "未提供", "待确认", "待明确")
+_POSITIVE_CONFIRMATION_SUFFIXES = ("已批", "获批", "已确认", "已立项", "通过")
+_POSITIVE_CONFIRMATION_SIGNALS = _COMPLETED_FACT_SEQUENCE_SIGNALS | frozenset({"立项通过", "预算已确认"})
 
 
 def stage_names() -> list[str]:
@@ -140,6 +143,10 @@ def _normalize_context_snippet(snippet: str, *, strip_left: bool) -> str:
 
 def _contains_any_marker(snippet: str, markers: tuple[str, ...]) -> bool:
     return any(marker in snippet for marker in markers)
+
+
+def _has_enumerated_unknown_qualifier(text: str) -> bool:
+    return any(f"均{qualifier}" in text for qualifier in _ENUMERATED_UNKNOWN_QUALIFIERS)
 
 
 def _clause_bounds(text: str, index: int) -> tuple[int, int]:
@@ -212,13 +219,20 @@ def _signal_is_blocked(text: str, signal: str, start: int, *, guard_confirmed_co
     prefix = _normalize_context_snippet(text[max(sentence_start, start - CONTEXT_WINDOW):start], strip_left=False)
     suffix = _normalize_context_snippet(text[start + len(signal):min(sentence_end, start + len(signal) + CONTEXT_WINDOW)], strip_left=True)
 
-    if _contains_any_marker(prefix, CONFIRMED_CONTEXT_PREFIX_MARKERS) or _contains_any_marker(suffix, tuple(m for m in CONFIRMED_CONTEXT_PREFIX_MARKERS if m not in {"是否", "决定"})):
+    if _contains_any_marker(prefix, CONFIRMED_CONTEXT_PREFIX_MARKERS):
         return True
 
     if any(prefix.endswith(marker) for marker in CONFIRMED_CONTEXT_EDGE_MARKERS):
         return True
 
     if any(suffix.startswith(marker) for marker in CONFIRMED_CONTEXT_EDGE_MARKERS + CONFIRMED_CONTEXT_SUFFIX_MARKERS):
+        return True
+
+    signal_end = start + len(signal)
+    if signal in _POSITIVE_CONFIRMATION_SIGNALS or text[signal_end:signal_end + 4].startswith(_POSITIVE_CONFIRMATION_SUFFIXES):
+        return False
+
+    if _contains_any_marker(suffix, tuple(m for m in CONFIRMED_CONTEXT_PREFIX_MARKERS if m not in {"是否", "决定"})):
         return True
 
     return _contains_any_marker(prefix + suffix, CONFIRMED_CONTEXT_SEQUENCE_MARKERS)

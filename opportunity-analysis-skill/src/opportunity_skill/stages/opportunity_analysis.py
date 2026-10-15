@@ -4,7 +4,7 @@ import re
 from typing import Any
 
 from ..assessment import build_commercial_assessment
-from ..stage_management import infer_opportunity_stage, _text_has_any
+from ..stage_management import _has_enumerated_unknown_qualifier, _text_has_any, infer_opportunity_stage
 from ..utils import new_id
 from .account_profile_extraction import pick_first
 
@@ -26,9 +26,12 @@ def extract_budget_signal(text: str) -> tuple[str, str | None]:
     candidates = []
     positive = ('预算已批', '预算获批', '已立项', '立项通过', '预算已确认')
     for sentence in re.split(r'[。；;\n]', text):
-        if re.search(r'均(?:未知|不明|未确认|未提供)', sentence) and not _text_has_any(sentence, positive, guard_confirmed_context=True):
+        if _has_enumerated_unknown_qualifier(sentence) and not _text_has_any(sentence, positive, guard_confirmed_context=True):
             continue
-        if re.search(r'(?:预算|立项|技改)[^，,。；;]{0,8}(?:未知|未明确|不明确|未提供|待确认)', sentence):
+        if (
+            re.search(r'(?:预算|立项|技改)[^，,。；;]{0,8}(?:未知|未明确|不明确|未提供|待确认|待明确)', sentence)
+            and not _text_has_any(sentence, positive, guard_confirmed_context=True)
+        ):
             continue
         if _text_has_any(sentence, ('预算', '技改', '立项'), guard_confirmed_context=True):
             candidates.append(sentence)

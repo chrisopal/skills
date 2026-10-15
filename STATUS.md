@@ -1,3 +1,11 @@
+## 2026-10-15 — Forward GTM rehearsal from a blank campaign to a new opportunity
+
+- Scope/files: Shared stage/budget extraction and GTM regressions; validation record. Reuse existing context guards and SQLite/HTTP workbench, with no dependencies or extra management layer.
+- Fix: Enumerated “均待确认/均待明确” stays unknown; a bare MES interface requirement does not imply solution co-creation. Explicit budget approvals survive unrelated unknown clauses, while historical/template/conditional/negative guards still apply.
+- Verification: 114 runtime +12 orchestration tests pass on Python3.13; suite links, compilation and whitespace checks pass. Fresh isolated database: UI brief → sourced research →4 draft messages → future plan →4 simulated actual touches → newly analyzed same-company opportunity → UI explicit link. Funnel4/1/1/1/1/1/0, known CNY500 with1 unknown-cost touch; score55→52 after semantic correction, formal stage stays needs_discovery. Province/city filters, attribution, date cutoff and reload verified in browser.
+- Limits: Public company/event research is real; all customer interactions, costs and needs are simulation. No outreach, actual POC or contract. Global analysis scope is explicit; map filters object/follow-up lists. Generated evidence in output/gtm-rehearsal-20261015/ remains local; Python LSP not run.
+- Commit/push: This scoped Lore commit is published to main without force and synchronized to the installed-source branch; remote SHAs are read back after push, preserving unrelated WIP.
+
 ## 2026-10-15 — GTM research, geographic sandbox and opportunity attribution v0.8.0
 
 - Scope/files: Add opportunity-gtm and reusable sourced demonstration; shared GTM store/CLI/HTTP, enterprise workbench assets, orchestrator routing/install and regression coverage. See docs/plans/2026-10-15-opportunity-gtm-{design,validation}.md.

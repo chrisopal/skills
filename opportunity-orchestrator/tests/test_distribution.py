@@ -16,11 +16,11 @@ class DistributionTests(unittest.TestCase):
     def setUpClass(cls):
         spec.loader.exec_module(installer)
 
-    def test_install_preserves_all_seven_skills_and_runtime(self):
+    def test_install_preserves_all_skills_and_runtime(self):
         with tempfile.TemporaryDirectory() as temp:
             dest = Path(temp) / "skills"
             result = installer.install(dest)
-            self.assertEqual(len(result["installed"]), 7)
+            self.assertEqual(len(result["installed"]), len(installer.SKILLS))
             run = dest / "opportunity-orchestrator" / "scripts" / "run.py"
             completed = subprocess.run([sys.executable, str(run), "--help"], capture_output=True, text=True)
             self.assertEqual(completed.returncode, 0, completed.stderr)
@@ -28,9 +28,9 @@ class DistributionTests(unittest.TestCase):
             self.assertIn("serve", completed.stdout)
             self.assertIn("presales-receive", completed.stdout)
             source_assets = ROOT.parent / "opportunity-analysis-skill/display/workbench"
-            for name in ("index.html", "workbench.css", "workbench.js"):
+            for name in ("index.html", "workbench.css", "workbench.js", "gtm.html", "gtm.css", "gtm.js", "gtm-map.js", "china-map.json"):
                 self.assertEqual((dest / "opportunity-analysis-skill/display/workbench" / name).read_bytes(), (source_assets / name).read_bytes())
-            self.assertEqual(len(installer.install(dest)["unchanged"]), 7)
+            self.assertEqual(len(installer.install(dest)["unchanged"]), len(installer.SKILLS))
 
     def test_conflict_preflight_does_not_overwrite_or_partially_install(self):
         with tempfile.TemporaryDirectory() as temp:

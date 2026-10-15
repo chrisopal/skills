@@ -1,0 +1,468 @@
+{
+  "campaign_id": "GTM-VISION-2026",
+  "request_id": "GTM-VISION-SEED-20261015",
+  "expected_revision": 0,
+  "actor": "本地演练负责人",
+  "operations": [
+    {
+      "type": "create_campaign",
+      "name": "工业视觉质检 · 长三角推广演练",
+      "product": "工业视觉质检：外观缺陷与装配检查（具体能力待客户提供）",
+      "target_customer": "汽车零部件及装备制造企业；质量/工艺负责人；潜在系统集成伙伴",
+      "regions": [
+        "上海",
+        "苏州",
+        "宁波"
+      ],
+      "owner": "顾宁",
+      "simulation": true,
+      "currency": "CNY",
+      "value_proposition": "从样件、缺陷定义和产线节拍判断适配性；不承诺未验证的精度与收益",
+      "proof_points": [
+        "尚无产品实测与公开案例，推广前补齐"
+      ]
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-C1",
+        "title": "华域汽车：关于我们",
+        "url": "https://www.hasco-group.com/about/company.html/1000",
+        "publisher": "华域汽车",
+        "accessed_on": "2026-10-15",
+        "claim": "汽车零部件系统公司；业务包括座舱与车身、底盘、电驱动和热管理。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-C1-CITY",
+        "title": "华域汽车：官方网站",
+        "url": "https://www.hasco-group.com/",
+        "publisher": "华域汽车",
+        "accessed_on": "2026-10-15",
+        "claim": "官网列明地址为上海市静安区威海路489号。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-C2",
+        "title": "Neway CNC Equipment (Suzhou) Co., Ltd.",
+        "url": "https://www.newaycnc.com/",
+        "publisher": "Neway CNC Equipment (Suzhou) Co., Ltd.",
+        "accessed_on": "2026-10-15",
+        "claim": "官方英文公司名含Suzhou；产品包括CNC车床、加工中心和镗床；页面列示汽车与工程机械行业应用。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-C3",
+        "title": "拓普集团：公司简介",
+        "url": "https://www.tuopu.com/about/aboutus/",
+        "publisher": "拓普集团",
+        "accessed_on": "2026-10-15",
+        "claim": "总部位于宁波；研发制造汽车底盘、内外饰、热管理等零部件。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-E1",
+        "title": "AMTS 2027：展会概况",
+        "url": "https://www.shanghaiamts.com.cn/about",
+        "publisher": "AMTS 2027",
+        "accessed_on": "2026-10-15",
+        "claim": "展会日期2027年7月7日至9日；上海新国际博览中心；励进展览（上海）有限公司为主办方；涵盖部件制造、AI机器视觉等。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-E2",
+        "title": "Automechanika Shanghai 2026：官方网站",
+        "url": "https://automechanika-shanghai.hk.messefrankfurt.com/shanghai/zh-cn.html",
+        "publisher": "Automechanika Shanghai 2026",
+        "accessed_on": "2026-10-15",
+        "claim": "日期2026年12月2日至5日；国家会展中心（上海）；汽车零部件、检测和服务相关展会。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-E2-ORG",
+        "title": "2026年Automechanika Shanghai展览会议双核驱动",
+        "url": "https://automechanika-shanghai.hk.messefrankfurt.com/shanghai/zh-cn/press/press-releases/2026/AMS26_PR1.html",
+        "publisher": "2026年Automechanika Shanghai展览会议双核驱动",
+        "accessed_on": "2026-10-15",
+        "claim": "联合主办：法兰克福展览（上海）有限公司、中国机械国际合作股份有限公司。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-CH1",
+        "title": "上海市外商投资协会：汽车分会",
+        "url": "https://www.shfia.cn/cms/auto.html",
+        "publisher": "上海市外商投资协会",
+        "accessed_on": "2026-10-15",
+        "claim": "分会职能包括汽车行业培训、讲座、研讨、参访和会员交流；页面提供成员名单。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-F1",
+        "title": "第十二届智能制造与数字化创新论坛：官方详情",
+        "url": "https://www.shanghaiamts.com.cn/activities/570.html",
+        "publisher": "第十二届智能制造与数字化创新论坛",
+        "accessed_on": "2026-10-15",
+        "claim": "主题涉及汽车产业智能制造与AI应用。；详情页写明时间2026年10月23日；地点广州明珞数字制造与工业互联网全球总部。；主办单位：励进展览（上海）有限公司、广州明珞股份有限公司。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-F1-LIST",
+        "title": "AMTS 2026 官方旗舰论坛列表",
+        "url": "https://www.shanghaiamts.com.cn/events?cid=7",
+        "publisher": "AMTS 2026 官方旗舰论坛列表",
+        "accessed_on": "2026-10-15",
+        "claim": "同名第十二届智能制造与数字化创新论坛在列表中显示2026年10月22日、广东广州，与详情页日期存在冲突。",
+        "verification": "official"
+      }
+    },
+    {
+      "type": "upsert_source",
+      "record": {
+        "id": "SRC-SIM",
+        "title": "华辰演练底稿（虚构）",
+        "url": "https://example.invalid/huachen-simulation",
+        "publisher": "本地模拟案例",
+        "accessed_on": "2026-10-15",
+        "claim": "华辰装备及以下互动均为虚构演练，不代表公开企业参与。",
+        "verification": "unverified"
+      }
+    },
+    {
+      "type": "upsert_target",
+      "record": {
+        "id": "ACCT-001",
+        "name": "华域汽车系统股份有限公司",
+        "region": "上海",
+        "city": "上海",
+        "industry": "汽车零部件制造",
+        "source_ids": [
+          "SRC-C1",
+          "SRC-C1-CITY"
+        ],
+        "fit_reason": "汽车零部件及制造业务与工业视觉质检存在场景交集，可进一步验证具体工厂、工序和缺陷类型。",
+        "hypothesis": "待核实：具体工厂/工序、缺陷与样本、现有检测方案、责任部门、采购窗口、预算、合作意愿；不代表采购意愿",
+        "fit": {
+          "industry": 4,
+          "pain": null,
+          "access": null,
+          "evidence": 3
+        },
+        "location": {
+          "lon": 121.4737,
+          "lat": 31.2304,
+          "precision": "city"
+        },
+        "roles": [
+          "质量负责人",
+          "工艺负责人"
+        ]
+      }
+    },
+    {
+      "type": "upsert_target",
+      "record": {
+        "id": "ACCT-002",
+        "name": "纽威数控装备（苏州）股份有限公司",
+        "region": "苏州",
+        "city": "苏州",
+        "industry": "数控机床/装备制造",
+        "source_ids": [
+          "SRC-C2"
+        ],
+        "fit_reason": "机床制造与汽车行业应用可能涉及机加工零件检测，需验证其自用质检或设备集成合作是否适配。",
+        "hypothesis": "待核实：具体工厂地址、中文法人名称需另行核验、自用/集成伙伴角色、检测工序、样本、决策部门、采购窗口、预算；不代表采购意愿",
+        "fit": {
+          "industry": 4,
+          "pain": null,
+          "access": null,
+          "evidence": 3
+        },
+        "location": {
+          "lon": 120.5853,
+          "lat": 31.2989,
+          "precision": "city"
+        },
+        "roles": [
+          "质量负责人",
+          "工艺负责人"
+        ]
+      }
+    },
+    {
+      "type": "upsert_target",
+      "record": {
+        "id": "ACCT-003",
+        "name": "宁波拓普集团股份有限公司",
+        "region": "宁波",
+        "city": "宁波",
+        "industry": "汽车零部件制造",
+        "source_ids": [
+          "SRC-C3"
+        ],
+        "fit_reason": "底盘、内外饰与热管理产品制造存在可探索的外观/装配检测场景，需以真实样件验证。",
+        "hypothesis": "待核实：具体生产基地、检测目标与缺陷、产线节拍、现有供应商、技术/采购负责人、预算、合作意愿；不代表采购意愿",
+        "fit": {
+          "industry": 4,
+          "pain": null,
+          "access": null,
+          "evidence": 3
+        },
+        "location": {
+          "lon": 121.544,
+          "lat": 29.8683,
+          "precision": "city"
+        },
+        "roles": [
+          "质量负责人",
+          "工艺负责人"
+        ]
+      }
+    },
+    {
+      "type": "upsert_target",
+      "record": {
+        "id": "SIM-HUACHEN",
+        "name": "华辰装备有限公司",
+        "region": "苏州",
+        "city": "苏州",
+        "industry": "装备制造（虚构）",
+        "source_ids": [
+          "SRC-SIM"
+        ],
+        "fit_reason": "仅用于从推广跟进到原商机的模拟关联演练",
+        "hypothesis": "真实企业和需求均未核验，模拟客户。",
+        "fit": {
+          "industry": 4,
+          "pain": 4,
+          "access": 3,
+          "evidence": 4
+        },
+        "location": {
+          "lon": 120.5853,
+          "lat": 31.2989,
+          "precision": "city"
+        },
+        "roles": [
+          "售后业务负责人",
+          "IT负责人"
+        ]
+      }
+    },
+    {
+      "type": "upsert_event",
+      "record": {
+        "id": "EVT-001",
+        "name": "AMTS 2027 第二十二届上海国际汽车制造技术与装备及材料展览会",
+        "kind": "exhibition",
+        "region": "上海",
+        "city": "上海",
+        "source_ids": [
+          "SRC-E1"
+        ],
+        "fit_reason": "与汽车零部件制造及AI机器视觉主题相关，可研究技术交流/展示渠道；不等于已确认目标企业参会或可获客。；最终议程；目标企业参会情况；展位/赞助方案；获客效果",
+        "organizer": "励进展览（上海）有限公司",
+        "location": {
+          "lon": 121.4737,
+          "lat": 31.2304,
+          "precision": "city"
+        },
+        "starts_on": "2027-07-07",
+        "ends_on": "2027-07-09"
+      }
+    },
+    {
+      "type": "upsert_event",
+      "record": {
+        "id": "EVT-002",
+        "name": "Automechanika Shanghai 2026 上海国际汽车零配件、维修检测诊断设备及服务用品展览会",
+        "kind": "exhibition",
+        "region": "上海",
+        "city": "上海",
+        "source_ids": [
+          "SRC-E2",
+          "SRC-E2-ORG"
+        ],
+        "fit_reason": "汽车零部件生态相关；覆盖售后领域，工业产线质检的细分匹配度需查展商/议程验证。；制造端目标企业参会情况；具体相关论坛/展区；合作条件；获客效果",
+        "organizer": "法兰克福展览（上海）有限公司、中国机械国际合作股份有限公司",
+        "location": {
+          "lon": 121.4737,
+          "lat": 31.2304,
+          "precision": "city"
+        },
+        "starts_on": "2026-12-02",
+        "ends_on": "2026-12-05"
+      }
+    },
+    {
+      "type": "upsert_event",
+      "record": {
+        "id": "FORUM-001",
+        "name": "第十二届智能制造与数字化创新论坛",
+        "kind": "forum",
+        "region": "广州",
+        "city": "广州",
+        "source_ids": [
+          "SRC-F1",
+          "SRC-F1-LIST"
+        ],
+        "fit_reason": "汽车制造与AI应用主题相关，可作为扩展行业论坛候选；地理上不在上海/苏州/宁波，不能列作本地优先行动。；官方页面日期冲突，具体举办日期需主办方澄清；本产品议题适配程度；参与条件；实际出席企业；获客效果",
+        "organizer": "励进展览（上海）有限公司、广州明珞股份有限公司",
+        "location": {
+          "lon": 113.2644,
+          "lat": 23.1291,
+          "precision": "city"
+        }
+      }
+    },
+    {
+      "type": "upsert_event",
+      "record": {
+        "id": "CH-001",
+        "name": "上海市外商投资协会汽车分会",
+        "kind": "channel",
+        "region": "上海",
+        "city": "上海",
+        "source_ids": [
+          "SRC-CH1"
+        ],
+        "fit_reason": "可进一步核实是否接受视觉质检技术交流或会员合作；现有职能不证明其愿意推荐产品或提供名单。",
+        "location": {
+          "lon": 121.4737,
+          "lat": 31.2304,
+          "precision": "city"
+        }
+      }
+    },
+    {
+      "type": "upsert_event",
+      "record": {
+        "id": "SIM-EXCHANGE",
+        "name": "华辰产品技术交流（模拟）",
+        "kind": "forum",
+        "region": "苏州",
+        "city": "苏州",
+        "starts_on": "2026-10-14",
+        "ends_on": "2026-10-14",
+        "source_ids": [
+          "SRC-SIM"
+        ],
+        "fit_reason": "本地虚构产品交流演练，不是对外举办或已报名活动",
+        "location": {
+          "lon": 120.5853,
+          "lat": 31.2989,
+          "precision": "city"
+        }
+      }
+    },
+    {
+      "type": "upsert_message",
+      "record": {
+        "id": "MSG-QUALITY",
+        "title": "质量/工艺负责人 · 首次接触",
+        "target_id": "ACCT-003",
+        "role": "质量/工艺负责人",
+        "channel": "首次邮件草稿",
+        "opening": "看到贵司公开介绍涉及汽车底盘与内外饰制造，想了解是否有外观或装配检测的评估议题。",
+        "value": "先对齐样件、缺陷定义、节拍与复检流程，判断是否值得小范围评估。",
+        "proof": "产品精度、案例和收益数据尚未提供；需补齐真实证明，不作承诺。",
+        "cta": "若方向相关，是否方便安排20分钟交流，并确认适合的对接部门？",
+        "objection": "如已有方案或暂无需求，可先确认是否存在未覆盖场景；若不适配则结束本轮跟进。",
+        "source_ids": [
+          "SRC-C3"
+        ]
+      }
+    },
+    {
+      "type": "upsert_message",
+      "record": {
+        "id": "MSG-PARTNER",
+        "title": "集成合作负责人 · 首次接触",
+        "target_id": "ACCT-002",
+        "role": "集成合作负责人",
+        "channel": "伙伴交流草稿",
+        "opening": "贵司公开页面涉及数控机床和汽车行业应用，想核实是否适合交流机加工检测与设备集成的边界。",
+        "value": "先对齐样件、缺陷定义、节拍与复检流程，判断是否值得小范围评估。",
+        "proof": "产品精度、案例和收益数据尚未提供；需补齐真实证明，不作承诺。",
+        "cta": "若方向相关，是否方便安排20分钟交流，并确认适合的对接部门？",
+        "objection": "如已有方案或暂无需求，可先确认是否存在未覆盖场景；若不适配则结束本轮跟进。",
+        "source_ids": [
+          "SRC-C2"
+        ]
+      }
+    },
+    {
+      "type": "record_touch",
+      "record": {
+        "id": "SIM-TOUCH-01",
+        "target_id": "SIM-HUACHEN",
+        "event_id": "SIM-EXCHANGE",
+        "channel": "产品技术交流（模拟）",
+        "occurred_on": "2026-10-14",
+        "outcome": "contacted",
+        "summary": "模拟提交交流议题",
+        "evidence": "虚构华辰案例演练底稿；不是实际外联",
+        "next_action": "核验有效线索并显式关联原商机",
+        "owner": "顾宁"
+      }
+    },
+    {
+      "type": "record_touch",
+      "record": {
+        "id": "SIM-TOUCH-02",
+        "target_id": "SIM-HUACHEN",
+        "event_id": "SIM-EXCHANGE",
+        "channel": "产品技术交流（模拟）",
+        "occurred_on": "2026-10-14",
+        "outcome": "responded",
+        "summary": "模拟客户回应愿意核对应用场景",
+        "evidence": "虚构华辰案例演练底稿；不是实际外联",
+        "next_action": "核验有效线索并显式关联原商机",
+        "owner": "顾宁"
+      }
+    },
+    {
+      "type": "record_touch",
+      "record": {
+        "id": "SIM-TOUCH-03",
+        "target_id": "SIM-HUACHEN",
+        "event_id": "SIM-EXCHANGE",
+        "channel": "产品技术交流（模拟）",
+        "occurred_on": "2026-10-14",
+        "outcome": "meeting",
+        "summary": "模拟完成需求交流；实际方案与签署见独立商机主账",
+        "evidence": "虚构华辰案例演练底稿；不是实际外联",
+        "next_action": "核验有效线索并显式关联原商机",
+        "owner": "顾宁",
+        "actual_cost": 200,
+        "currency": "CNY"
+      }
+    }
+  ]
+}

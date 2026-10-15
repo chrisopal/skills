@@ -193,6 +193,26 @@ class _WorkbenchHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path
         try:
+            if path == "/gtm":
+                source = (WORKBENCH_ASSETS / "gtm.html").read_text(encoding="utf-8")
+                self._send(200, source.replace("__WORKBENCH_TOKEN__", json.dumps(self.server.session_token)), "text/html; charset=utf-8")
+                return
+            if path.startswith("/api/gtm/"):
+                from .gtm import GTMStore
+                store = GTMStore(self.server.db_path)
+                try:
+                    if path == "/api/gtm/campaigns":
+                        result = store.campaigns()
+                    elif path.startswith("/api/gtm/campaign/"):
+                        campaign_id = unquote(path.split("/", 4)[-1])
+                        result = {"detail": store.detail(campaign_id, parse_qs(parsed.query).get("as_of", [None])[0])}
+                    else:
+                        self._error(404, "route not found", code="not_found")
+                        return
+                    self._send(200, {"ok": True, **_redact_paths(result)})
+                finally:
+                    store.close()
+                return
             if path == "/":
                 source = (WORKBENCH_ASSETS / "index.html").read_text(encoding="utf-8")
                 config = json.dumps(self.server.session_token, ensure_ascii=False)
@@ -201,9 +221,9 @@ class _WorkbenchHandler(BaseHTTPRequestHandler):
             if path == "/css/default.css":
                 self._send(200, (ROOT / "display" / "css" / "default.css").read_bytes(), "text/css; charset=utf-8")
                 return
-            if path in {"/assets/workbench.css", "/assets/workbench.js"}:
+            if path in {"/assets/workbench.css", "/assets/workbench.js", "/assets/gtm.css", "/assets/gtm.js", "/assets/gtm-map.js", "/assets/china-map.json"}:
                 filename = path.rsplit("/", 1)[-1]
-                content_type = "text/css; charset=utf-8" if filename.endswith(".css") else "text/javascript; charset=utf-8"
+                content_type = "text/css; charset=utf-8" if filename.endswith(".css") else "application/json; charset=utf-8" if filename.endswith(".json") else "text/javascript; charset=utf-8"
                 self._send(200, (WORKBENCH_ASSETS / filename).read_bytes(), content_type)
                 return
             if path == "/healthz":
@@ -272,6 +292,16 @@ class _WorkbenchHandler(BaseHTTPRequestHandler):
             return
         parsed = urlparse(self.path)
         try:
+            if parsed.path == "/api/gtm/manage":
+                from .gtm import GTMStore
+                _require_request_id(payload)
+                store = GTMStore(self.server.db_path)
+                try:
+                    result = store.manage(payload)
+                    self._send(200, {"ok": True, **_redact_paths(result)})
+                finally:
+                    store.close()
+                return
             if parsed.path == "/api/analyze":
                 _validate_analyze(payload)
                 result = run_analyze(payload, self.server.db_path)

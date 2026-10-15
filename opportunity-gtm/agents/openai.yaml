@@ -1,0 +1,4 @@
+interface:
+  display_name: "GTM 市场推广"
+  short_description: "产品客群研究、企业区域沙盘、展会渠道与跟进商机关联"
+  default_prompt: "使用 $opportunity-gtm，根据主打产品与目标客户形成带来源的推广计划、地图沙盘、话术和跟进分析。"

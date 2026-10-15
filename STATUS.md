@@ -1,3 +1,11 @@
+## 2026-10-15 — Keep GTM regional analysis aligned with the map
+
+- Scope/files: GTM workbench JS/HTML/CSS, projection regression, GTM skill/data contract, design and validation records. Preserve the existing theme, map matcher, global API and region/channel/event summaries; no new dependency or service.
+- Behavior: Province/city and existing filters drive company, local event/channel, follow-up, opportunity and cost analysis. Keep the national funnel and per-metric national comparisons. Follow-up/cost/opportunity ownership uses the target location, preventing cross-region event leakage. Planned/future records remain visible separately; unknown costs and currencies retain their meaning.
+- Verification: 115 runtime +12 orchestration tests pass, including JS projection parity with canonical Python analytics, cutoff, cross-region selection, no-fit history, zero/missing/multi-currency cost and signed-amount deduplication. Suite, JS syntax, Python parsing and whitespace checks pass. Existing simulated case verified in Suzhou/Ningbo/Shanghai/Guangzhou/empty Nanjing, combinations, national reset and historical cutoff. Light390/1366/1440/1920 and dark390/1440 have no page overflow; mobile tables scroll within containers; console clean, visual95/pass.
+- Limits: Existing case interactions/costs are simulation; no new outreach, customer acceptance or signature. Live sales stage/score remain current snapshots. Generated databases, screenshots and raw receipts stay local in output/gtm-rehearsal-20261015/region-analytics/. No Python LSP/type-check claim.
+- Commit/push: This scoped Lore commit is published to main and synchronized to the installed-source branch, without staging unrelated WIP or generated outputs; remote receipts are read back.
+
 ## 2026-10-15 — Forward GTM rehearsal from a blank campaign to a new opportunity
 
 - Scope/files: Shared stage/budget extraction and GTM regressions; validation record. Reuse existing context guards and SQLite/HTTP workbench, with no dependencies or extra management layer.

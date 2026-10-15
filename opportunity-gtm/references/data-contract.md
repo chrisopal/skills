@@ -26,6 +26,8 @@ link派生`opportunity:{id,company_name,name,current_stage_id,current_stage_name
 
 analytics：`funnel:{candidates,contacted,responded,meeting,qualified,opportunities,won}`均按目标企业去重，前五项实际里程碑累积；`regions:[{name,candidates,contacted,qualified,opportunities,won}]`；`channels:[{name,touches,contacted,responded,qualified,costs:{CNY:number},missing_cost_count}]`按触达记录与企业去重；`events:[{id,name,targets,qualified,opportunities,costs,missing_cost_count}]`仅已记录活动关联；`costs:{currency:number},missing_cost_count,signed_amounts:{currency:number},unmapped_targets`。成本按实际结果记录，不分摊其他活动，不计算不可证明ROI。无成本记录显示未知而非0，币种分组。
 
+页面投影：`GTMLogic.scopeSnapshot(detail, visibleObjects)` 与 Python `_analytics` 做口径一致性回归。顶部全国漏斗使用原始 analytics；分析页以同一省市/区域/类型/关键词交集筛选企业和活动，指标同时保留全国值。跟进与商机关联仅按可见企业筛选，禁止以“企业或活动在本地”合并，防止异地活动带入客户与成本。活动行只统计当前企业集合的来源关联；全国可查看全部活动关联。跟进原记录可见，实际仅计 min(as_of,今天) 内非计划记录；关联仅计 linked_on<=as_of。空集合费用为未知，0费用记录保留0，币种分开，签署金额按商机去重。此投影不写回任何业务事实。
+
 `search_brief:{queries:[{kind:company|event|channel,query,checks:[string]}],missing_inputs:[string]}`依据产品/ICP/区域编写官方资料搜索任务；实际采集由Skill调用可用搜索工具后回写，HTTP不后台调用搜索。
 
 ## HTTP

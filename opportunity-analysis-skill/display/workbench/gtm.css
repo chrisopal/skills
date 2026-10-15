@@ -83,7 +83,7 @@
 .gtm-message { padding:20px; border-bottom:1px solid var(--ui-border); }
 .gtm-message p { white-space:pre-wrap; overflow-wrap:anywhere; margin:6px 0 14px; line-height:1.75; }
 .gtm-message .gtm-actions { margin-top:12px; }
-.gtm-analysis { padding:20px; display:grid; gap:24px; }
+.gtm-analysis { padding:20px; display:grid; grid-template-columns:minmax(0,1fr); gap:24px; }
 .gtm-money { display:flex; flex-wrap:wrap; gap:24px; }
 .gtm-money strong { display:block; font-size:18px; font-variant-numeric:tabular-nums; }
 .gtm-dialog { width:min(660px,calc(100vw - 32px)); max-height:calc(100vh - 40px); padding:0; color:var(--ui-text); background:var(--ui-surface); border:1px solid var(--ui-border-strong); border-radius:6px; }
@@ -127,3 +127,10 @@
 .gtm-area-choices { display:flex; flex-wrap:wrap; gap:8px; padding:12px 0; }
 .gtm-geography { grid-template-columns:minmax(0,2.6fr) minmax(280px,1fr); }
 @media(max-width:1000px) { .gtm-geography { grid-template-columns:1fr; } .gtm-selection { border-left:0; border-top:1px solid var(--ui-border); } }
+
+.gtm-analysis-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.gtm-scope-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--ui-border); border-radius:4px; }
+.gtm-scope-metrics .gtm-metric { border:0; border-right:1px solid var(--ui-border-subtle); border-bottom:1px solid var(--ui-border-subtle); min-width:0; overflow-wrap:anywhere; }
+.gtm-scope-metrics .gtm-metric strong { font-size:20px; }
+.gtm-scope-metrics .gtm-national-value { margin-top:4px; }
+@media(max-width:700px) { .gtm-scope-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }

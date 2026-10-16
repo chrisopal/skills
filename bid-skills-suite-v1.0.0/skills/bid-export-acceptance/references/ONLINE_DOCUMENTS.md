@@ -26,7 +26,7 @@ python scripts/online_documents.py pull --project /project --section-id SEC-ID
 python scripts/online_documents.py check --project /project --section-id SEC-ID
 ```
 
-首次写入可以新增章节；已有标题匹配必须唯一。稳定 `section_id` 与远端 block ID 的对应保存在项目 `work/online-document.json`，不能复制其他项目的绑定文件来续写。标题发生变化、映射歧义或遇到不支持的富文本时停止自动覆盖，由宿主对话确认映射或处理方式。
+首次写入可以新增章节；已有标题匹配必须唯一。标题有阿拉伯数字编号时，编号也必须与正式目录一致，章内“4. 应急响应措施”不能匹配正式“9.13 应急响应措施”；真正匹配的嵌套章节仍阻止覆盖其父章。稳定 `section_id` 与远端 block ID 的对应保存在项目 `work/online-document.json`，不能复制其他项目的绑定文件来续写。标题发生变化、映射歧义或遇到不支持的富文本时停止自动覆盖，由宿主对话确认映射或处理方式。
 
 普通段落、列表、内部小标题与矩形 Markdown 表格可以往返；表格写入为飞书原生表格。合并单元格、嵌套表格等复杂结构暂不自动转换。表格列宽不在当前往返保真承诺内；文字或内联格式丢失会阻止该次同步通过。
 
@@ -60,4 +60,4 @@ python scripts/online_documents.py check --project /project --section-id SEC-ID
 
 ## 当前版本验证范围
 
-见仓库[飞书接入验证记录](https://github.com/chrisopal/skills/blob/main/docs/plans/2026-10-16-online-bid-documents-validation.md)。两份既有标书使用隔离副本测试；应用身份首次图片上传失败保留为反例。用户重新授权后，青草沙 9.3 正文与三图真实上传、三份图片下载哈希比对及拉回检查通过。真人双账号协作尚未验收，脚本反例或单账号测试不能替代该验收。
+见仓库[飞书接入验证记录](https://github.com/chrisopal/skills/blob/main/docs/plans/2026-10-16-online-bid-documents-validation.md)。两份既有标书使用隔离副本测试；应用身份首次图片上传失败保留为反例。1.20.1 补验青草沙全部 37 章云端同步、拉回和当前评审依据；9.3 三图下载哈希一致。当前 9 项评分、30 条合规和 37 组材料逐项复审有效；技术模拟分 36/50，价格 50 分未知。原生 Word/PDF 实际导出 153 页、37 条目录、26 张表、15 张图，正文结构、目录目的页、图片身份和图注同页均核验，另完成全部页总览及 38 页可读尺寸抽查。合成材料、签章和工期保留性响应仍阻塞正式投标；没有把机器校验转换为业务通过。真人双账号协作、WorkBuddy 模型执行与 Windows 尚未验收，脚本反例或单账号测试不能替代该验收。

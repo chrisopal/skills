@@ -103,6 +103,47 @@ class ExportChecksTests(unittest.TestCase):
         self.assertEqual(receipt["visual_qa"], "NOT_RUN")
         self.assertEqual(receipt["coverage"]["docx"]["facts"]["absent"], [])
 
+    def test_page_reference_in_body_is_not_stripped_as_running_footer(self):
+        import fitz
+
+        expected = export_checks._expected({
+            "title": "Index", "export_settings": {
+                "cover": {"enabled": False},
+                "header": {"text": "", "page_field": False},
+                "footer": {"page_field": True, "page_prefix": "Page ", "page_suffix": ""},
+            },
+            "sections": [{"title": "1. Index", "paragraphs": ["See", "Page 7", "after"]}],
+        })
+        path = self.root / "body-page-reference.pdf"
+        with fitz.open() as document:
+            page = document.new_page()
+            for y, text in ((80, "1. Index"), (100, "See"), (120, "Page 7"),
+                            (140, "after"), (820, "Page 1")):
+                page.insert_text((50, y), text)
+            document.save(path)
+        _, findings = export_checks._pdf_snapshot(path, expected)
+        self.assertEqual(findings, [])
+
+    def test_body_page_reference_cannot_prove_missing_running_footer(self):
+        import fitz
+
+        expected = export_checks._expected({
+            "title": "Index", "export_settings": {
+                "cover": {"enabled": False},
+                "header": {"text": "", "page_field": False},
+                "footer": {"page_field": True, "page_prefix": "Page ", "page_suffix": ""},
+            },
+            "sections": [{"title": "1. Index", "paragraphs": ["Page 1"]}],
+        })
+        path = self.root / "missing-running-footer.pdf"
+        with fitz.open() as document:
+            page = document.new_page()
+            page.insert_text((50, 80), "1. Index")
+            page.insert_text((50, 120), "Page 1")
+            document.save(path)
+        _, findings = export_checks._pdf_snapshot(path, expected)
+        self.assertTrue(any("PDF第1页缺少声明的页码" in value for value in findings))
+
     def test_missing_heading_image_and_fact_cannot_pass(self):
         spec = self.spec()
         actual_spec = json.loads(spec.read_text(encoding="utf-8"))

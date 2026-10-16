@@ -98,10 +98,13 @@ def _expected(spec: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("document-spec.title必须是非空文本")
     if not isinstance(sections, list) or not sections:
         raise ValueError("document-spec.sections必须是非空数组")
-    from build_docx import header_footer_settings
+    from build_docx import header_footer_settings, _validate_style
     settings = spec.get("export_settings", {})
     if not isinstance(settings, dict):
         raise ValueError("export_settings必须是对象")
+    if not isinstance(spec.get('style', {}), dict) or not isinstance(settings.get('style', {}), dict):
+        raise ValueError("style和export_settings.style必须是对象")
+    typography, _ = _validate_style({**spec.get('style', {}), **settings.get('style', {})})
     cover = settings.get("cover", {})
     toc = settings.get("toc", {})
     if not isinstance(cover, dict) or not isinstance(toc, dict):
@@ -196,6 +199,7 @@ def _expected(spec: dict[str, Any]) -> dict[str, Any]:
         "facts": _facts(spec),
         "toc_enabled": toc_enabled,
         "header_footer": [header_footer_settings(settings.get(name, {}), name) for name in ("header", "footer")],
+        "page_margins_cm": typography['page_margins_cm'],
         "toc_title": str(toc.get("title", "目录")) if toc_enabled else None,
         "ordered_text": ordered,
     }
@@ -390,13 +394,34 @@ def _pdf_snapshot(path: Path, expected: dict[str, Any]) -> tuple[dict[str, Any],
     import fitz
 
     findings: list[str] = []
+    lines = []
+    running = expected.get('header_footer', [])
+    margins = expected.get('page_margins_cm', {'top': 2.3, 'bottom': 2.3})
     with fitz.open(path) as document:
         pages = len(document)
         text = "\n".join(page.get_text("text") for page in document)
         image_count = sum(len(page.get_image_info()) for page in document)
         for index, page in enumerate(document):
-            page_text = _normal(page.get_text('text'))
-            for name, settings in zip(('header', 'footer'), expected.get('header_footer', [])):
+            running_lines = {'header': [], 'footer': []}
+            for block in page.get_text('dict')['blocks']:
+                for line in block.get('lines', []):
+                    value = ''.join(span['text'] for span in line['spans'])
+                    zone = ('header' if line['bbox'][3] <= margins['top'] * 72 / 2.54
+                            else 'footer' if line['bbox'][1] >= page.rect.height - margins['bottom'] * 72 / 2.54
+                            else None)
+                    ignore = False
+                    if zone:
+                        running_lines[zone].append(value)
+                        item = running[0 if zone == 'header' else 1] if running else {}
+                        normalized = _normal(value)
+                        ignore = bool(item.get('text') and normalized == _normal(item['text']))
+                        if item.get('page_field'):
+                            pattern = re.escape(_normal(item.get('text', '') + item.get('page_prefix', ''))) + r'\d+' + re.escape(_normal(item.get('page_suffix', '')))
+                            ignore |= bool(re.fullmatch(pattern, normalized))
+                    if not ignore:
+                        lines.append(value)
+            for name, settings in zip(('header', 'footer'), running):
+                page_text = _normal('\n'.join(running_lines[name]))
                 if settings.get('text') and _normal(settings['text']) not in page_text:
                     findings.append(f'PDF第{index + 1}页缺少声明的{name}文字')
                 if settings.get('page_field'):
@@ -404,21 +429,8 @@ def _pdf_snapshot(path: Path, expected: dict[str, Any]) -> tuple[dict[str, Any],
                     if not re.search(pattern, page_text):
                         findings.append(f'PDF第{index + 1}页缺少声明的页码')
     findings.extend(_bad_text_findings(text))
-    # Page headers/footers can interrupt a paragraph spanning two pages.
-    running = expected.get('header_footer', [])
-    lines = []
-    for line in text.splitlines():
-        normalized = _normal(line)
-        ignore = False
-        for item in running:
-            if item.get('text') and normalized == _normal(item['text']):
-                ignore = True
-            if item.get('page_field'):
-                page_pattern = re.escape(_normal(item.get('text', '') + item.get('page_prefix', ''))) + r'\d+' + re.escape(_normal(item.get('page_suffix', '')))
-                if re.fullmatch(page_pattern, normalized):
-                    ignore = True
-        if not ignore:
-            lines.append(line)
+    # Strip matching running text only in page margins. A body/index line such
+    # as "第75页" is content, even when it has the same shape as the footer.
     text = '\n'.join(lines)
     if not _normal(text):
         findings.append("PDF文字层未知或为空，不能自动通过")

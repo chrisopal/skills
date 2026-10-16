@@ -667,7 +667,19 @@ def _simple_table_semantics(table: ElementTree.Element) -> list[list[Any]]:
 
 
 def _remote_mapping(root: ElementTree.Element, sections: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, Any]]:
-    headings = _heading_info(root)
+    sections_by_title = {_title_key(section.get("title")): section for section in sections}
+    headings = []
+    for heading in _heading_info(root):
+        section = sections_by_title.get(_title_key(heading.get("title")), {})
+        expected_number = str(section.get("number") or "").strip()
+        numbered = re.match(r"^\s*(\d+(?:\.\d+)*)(?=\s|[、.)：:])", str(heading.get("title") or ""))
+        # A numbered subsection can share an outline title without being that
+        # chapter (e.g. internal 4. versus outline 9.13). Never adopt its blocks.
+        if numbered and re.fullmatch(r"\d+(?:\.\d+)*", expected_number):
+            if numbered.group(1) != expected_number:
+                continue
+        headings.append(heading)
+    mapped_heading_indices = {heading["index"] for heading in headings}
     outline_titles = {_title_key(section.get("title")): str(section.get("id")) for section in sections}
     title_counts: dict[str, int] = {}
     for heading in headings:
@@ -699,6 +711,7 @@ def _remote_mapping(root: ElementTree.Element, sections: Sequence[Mapping[str, A
             for candidate in _heading_info(root)
             if heading["index"] < candidate["index"] < end
             and candidate["level"] > heading["level"]
+            and candidate["index"] in mapped_heading_indices
             and _title_key(candidate["title"]) in outline_titles
             and outline_titles[_title_key(candidate["title"])] != str(section["id"])
         ]

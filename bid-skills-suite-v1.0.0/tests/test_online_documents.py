@@ -13,7 +13,7 @@ from xml.etree import ElementTree
 SUITE_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SUITE_ROOT / "scripts"))
 
-from online_documents import FeishuCliClient, OnlineDocumentError, OnlineDocumentService  # noqa: E402
+from online_documents import FeishuCliClient, OnlineDocumentError, OnlineDocumentService, _remote_mapping  # noqa: E402
 from writing_workspace import WritingWorkspace  # noqa: E402
 
 
@@ -608,6 +608,35 @@ class OnlineDocumentsTest(unittest.TestCase):
             result = client._run(["lark-cli"], document="doxcn-demo001", identity="user", write=True)
         self.assertFalse(result["ok"])
         self.assertTrue(result["data"]["local_resource_failures"])
+
+
+class NumberedChapterMappingTests(unittest.TestCase):
+    def test_internal_numbered_homonym_is_not_an_outline_chapter(self):
+        sections = [
+            {"id": "MAIN", "number": "9", "title": "服务方案"},
+            {"id": "EMERGENCY", "number": "9.13", "title": "应急响应措施"},
+        ]
+        root = ElementTree.fromstring(
+            '<document><h1 id="main">服务方案</h1><p id="intro">总述</p>'
+            '<h2 id="internal">4. 应急响应措施</h2><p id="summary">摘要</p></document>'
+        )
+        mapping = _remote_mapping(root, sections)
+        self.assertNotIn("EMERGENCY", mapping)
+        self.assertIsNone(mapping["MAIN"]["unsafe_reason"])
+        self.assertEqual(mapping["MAIN"]["last_block_id"], "summary")
+
+    def test_matching_numbered_child_still_protects_parent(self):
+        sections = [
+            {"id": "MAIN", "number": "9", "title": "服务方案"},
+            {"id": "EMERGENCY", "number": "9.13", "title": "应急响应措施"},
+        ]
+        root = ElementTree.fromstring(
+            '<document><h1 id="main">服务方案</h1><p id="intro">总述</p>'
+            '<h2 id="child">9.13 应急响应措施</h2><p id="body">完整正文</p></document>'
+        )
+        mapping = _remote_mapping(root, sections)
+        self.assertEqual(mapping["EMERGENCY"]["heading_block_id"], "child")
+        self.assertEqual(mapping["MAIN"]["unsafe_reason"], "nested_outline_section")
 
 
 if __name__ == "__main__":

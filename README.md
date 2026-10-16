@@ -12,7 +12,7 @@
 
 - [`presales-solution-skills`](./presales-solution-skills/README.md)：通用 B 端售前10技能，从混合资料、需求脑图、方案与逐页内容到本地PPT制作和实际文件审核，含版本失效工具与测试。
 
-- [`bid-skills-suite-v1.0.0`](./bid-skills-suite-v1.0.0/README.md)：17 个投标编制 Skills，总控串联解析、分类、目录、写作、配图、评审与 Word/PDF 导出；支持 AI 模拟专家评分、定向提升及飞书在线章节协作，含通用安装及 WorkBuddy 使用说明。
+- [`bid-skills-suite-v1.0.0`](./bid-skills-suite-v1.0.0/README.md)：17 个投标编制 Skills，总控串联解析、分类、目录、写作、配图、评审与 Word/PDF 导出；支持原招标固定表单保留、缺项高亮、AI 模拟专家评分、定向提升及飞书在线章节协作，含通用安装及 WorkBuddy 使用说明。
 - [`enterprise-diagrams`](./enterprise-diagrams/README.md)：独立企业技术图 Skill，8 类布局、6 套主题、可编辑 JSON + SVG；可接入投标套件，保留 Draw.io。
 
 - [`xiaohongshu-skill`](./xiaohongshu-skill/SKILL.md)：小红书内容读取与发布；针对成片发布增加清单预检、封面设置、草稿恢复和重复提交保护，保留上游来源与许可。

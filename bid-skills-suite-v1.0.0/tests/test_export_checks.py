@@ -103,6 +103,195 @@ class ExportChecksTests(unittest.TestCase):
         self.assertEqual(receipt["visual_qa"], "NOT_RUN")
         self.assertEqual(receipt["coverage"]["docx"]["facts"]["absent"], [])
 
+    def test_fixed_form_docx_acceptance_checks_merge_spans_and_missing_highlight(self):
+        from docx import Document
+        from docx.oxml.ns import qn
+
+        spec = self.spec()
+        value = json.loads(spec.read_text(encoding="utf-8"))
+        value["sections"][0]["images"] = []
+        value["sections"][0]["tables"] = [{
+            "headers": [["事项", "", "响应"], ["编号", "名称", "结果"]],
+            "header_rows": 2,
+            "rows": [["", "", ""]],
+            "widths_cm": [3, 5, 5],
+            "merges": [
+                {"row": 0, "column": 0, "row_span": 1, "col_span": 2},
+                {"row": 1, "column": 0, "row_span": 2, "col_span": 1},
+            ],
+            "missing_cells": [{"row": 2, "column": 2, "label": "响应结论"}],
+        }]
+        spec.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+        docx = self.build_docx(spec, "fixed-form.docx")
+        expected = export_checks._expected(value)
+        expected["image_bindings"] = []
+        _, findings = export_checks._docx_snapshot(docx, expected)
+        self.assertEqual(findings, [])
+
+        tampered = self.root / "fixed-form-no-highlight.docx"
+        document = Document(docx)
+        cell = document.tables[1].cell(2, 2)
+        highlight = cell.paragraphs[0].runs[0]._r.rPr.find(qn("w:highlight"))
+        highlight.getparent().remove(highlight)
+        document.save(tampered)
+        _, findings = export_checks._docx_snapshot(tampered, expected)
+        self.assertTrue(any("待补充高亮" in finding for finding in findings), findings)
+
+    def test_declared_fixed_form_sources_are_bound_and_match_section_tables(self):
+        import hashlib
+
+        table = {
+            "headers": [["字段", ""], ["名称", "值"]],
+            "header_rows": 2,
+            "rows": [["", ""]],
+            "merges": [{"row": 0, "column": 0, "row_span": 1, "col_span": 2}],
+            "missing_cells": [{"row": 2, "column": 1, "label": "填报值"}],
+        }
+        paths = {}
+        for name, payload in (("template.docx", b"template"), ("filled.docx", b"filled")):
+            path = self.root / name
+            path.write_bytes(payload)
+            paths[name] = hashlib.sha256(payload).hexdigest()
+        table_path = self.root / "table.json"
+        table_path.write_text(json.dumps({"paragraphs": [], "tables": [table]}, ensure_ascii=False))
+        paths["table.json"] = hashlib.sha256(table_path.read_bytes()).hexdigest()
+        commercial_path = self.root / "artifacts/12-commercial-content.json"
+        commercial_path.parent.mkdir()
+        commercial_path.write_text(json.dumps({"project_id": "EXPORT-TEST", "data": {"forms": [{
+            "id": "FORM-1", "section_id": "FORM-1",
+            "template_path": "template.docx", "filled_template_path": "filled.docx",
+            "table_spec_path": "table.json", "fields": [],
+        }]}}, ensure_ascii=False), encoding="utf-8")
+        paths["artifacts/12-commercial-content.json"] = hashlib.sha256(
+            commercial_path.read_bytes()).hexdigest()
+        spec = {
+            "sections": [{
+                "section_id": "FORM-1", "paragraphs": [], "tables": [table],
+            }],
+            "inputs": [{"relative_path": name, "sha256": digest}
+                       for name, digest in paths.items()],
+        }
+        self.assertEqual(export_checks._check_current_chapters(spec, self.root), [])
+
+        table_path.write_text(json.dumps({"paragraphs": [], "tables": [{
+            **table, "merges": []
+        }]}), encoding="utf-8")
+        findings = export_checks._check_current_chapters(spec, self.root)
+        self.assertTrue(any("table.json" in finding and "未绑定" in finding for finding in findings))
+
+    def test_declared_fixed_form_source_path_cannot_escape_or_be_missing(self):
+        base = {"sections": [{"paragraphs": [], "tables": []}], "inputs": []}
+        for field, value, marker in (
+            ("template_path", "../outside.docx", "路径越界"),
+            ("filled_template_path", "missing.docx", "文件缺失"),
+            ("table_spec_path", "missing.json", "文件缺失"),
+        ):
+            with self.subTest(field=field):
+                spec = json.loads(json.dumps(base))
+                spec["sections"][0][field] = value
+                findings = export_checks._check_current_chapters(spec, self.root)
+                self.assertTrue(any(marker in finding for finding in findings), findings)
+
+    def test_multiple_forms_match_ordered_subsequences_inside_shared_section(self):
+        import hashlib
+
+        def table(name, *, merged=False):
+            value = {
+                "headers": [[name, ""]] if merged else ["字段", "值"],
+                "rows": [[name + "-row", ""]] if merged else [[name, "响应"]],
+                "paragraphs_before": [name + "-before"],
+                "paragraphs_after": [name + "-after"],
+            }
+            if merged:
+                value["widths_cm"] = [3, 5]
+                value["merges"] = [{"row": 0, "column": 0, "row_span": 1, "col_span": 2}]
+            return value
+
+        technical = table("技术表")
+        form_one_a = table("表单一-A", merged=True)
+        form_one_b = table("表单一-B")
+        form_two = table("表单二")
+        tail = table("章节尾表")
+        section = {
+            "section_id": "SHARED",
+            "paragraphs": ["技术正文前", "表单一段落", "技术正文中", "表单二段落", "技术正文后"],
+            "tables": [technical, form_one_a, form_one_b, form_two, tail],
+        }
+        owners = [
+            ("form-one.json", {
+                "section_id": "SHARED", "table_spec_path": "form-one.json",
+                "table_spec": {"paragraphs": ["表单一段落"], "tables": [form_one_a, form_one_b]},
+            }),
+            ("form-two.json", {
+                "section_id": "SHARED", "table_spec_path": "form-two.json",
+                "table_spec": {"paragraphs": ["表单二段落"], "tables": [form_two]},
+            }),
+        ]
+        bindings = {}
+        for filename, owner in owners:
+            path = self.root / filename
+            path.write_text(json.dumps(owner["table_spec"], ensure_ascii=False), encoding="utf-8")
+            bindings[filename] = hashlib.sha256(path.read_bytes()).hexdigest()
+        sections_by_id = {"SHARED": section}
+        cursors = {}
+        for filename, owner in owners:
+            self.assertEqual(
+                export_checks._check_declared_fixed_form_paths(
+                    owner, filename, sections_by_id=sections_by_id, bindings=bindings,
+                    project_root=self.root, sequence_cursors=cursors),
+                [],
+            )
+
+        missing_paragraph = dict(section, paragraphs=["技术正文前", "表单二段落", "技术正文后"])
+        findings = export_checks._check_declared_fixed_form_paths(
+            owners[0][1], "form-one.json", sections_by_id={"SHARED": missing_paragraph},
+            bindings=bindings, project_root=self.root, sequence_cursors={})
+        self.assertTrue(any("paragraphs" in finding for finding in findings), findings)
+
+        missing_table = dict(section, tables=[technical, form_one_a, form_two, tail])
+        findings = export_checks._check_declared_fixed_form_paths(
+            owners[0][1], "form-one.json", sections_by_id={"SHARED": missing_table},
+            bindings=bindings, project_root=self.root, sequence_cursors={})
+        self.assertTrue(any("tables" in finding for finding in findings), findings)
+
+        swapped = dict(section, tables=[technical, form_one_b, form_one_a, form_two, tail])
+        findings = export_checks._check_declared_fixed_form_paths(
+            owners[0][1], "form-one.json", sections_by_id={"SHARED": swapped},
+            bindings=bindings, project_root=self.root, sequence_cursors={})
+        self.assertTrue(any("tables" in finding for finding in findings), findings)
+
+        bad_merge = json.loads(json.dumps(owners[0][1]["table_spec"]))
+        bad_merge["tables"][0]["merges"] = []
+        bad_path = self.root / "form-one-bad-merge.json"
+        bad_path.write_text(json.dumps(bad_merge, ensure_ascii=False), encoding="utf-8")
+        bad_owner = dict(owners[0][1], table_spec_path="form-one-bad-merge.json")
+        bad_bindings = dict(bindings, **{
+            "form-one-bad-merge.json": hashlib.sha256(bad_path.read_bytes()).hexdigest()
+        })
+        findings = export_checks._check_declared_fixed_form_paths(
+            bad_owner, "form-one-bad-merge.json", sections_by_id=sections_by_id,
+            bindings=bad_bindings, project_root=self.root, sequence_cursors={})
+        self.assertTrue(any("tables" in finding for finding in findings), findings)
+
+    def test_docx_merge_snapshot_ignores_vertical_horizontal_continuation(self):
+        from docx import Document
+
+        spec = self.spec()
+        value = json.loads(spec.read_text(encoding="utf-8"))
+        value["sections"][0]["images"] = []
+        value["sections"][0]["tables"] = [{
+            "headers": [["合并标题", ""]],
+            "rows": [["", ""]],
+            "merges": [{"row": 0, "column": 0, "row_span": 2, "col_span": 2}],
+        }]
+        spec.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8")
+        docx = self.build_docx(spec, "vertical-horizontal-merge.docx")
+        document = Document(docx)
+        self.assertEqual(
+            export_checks._docx_table_merges(document.tables[1]),
+            [{"row": 0, "column": 0, "row_span": 2, "col_span": 2}],
+        )
+
     def test_page_reference_in_body_is_not_stripped_as_running_footer(self):
         import fitz
 
@@ -143,6 +332,73 @@ class ExportChecksTests(unittest.TestCase):
             document.save(path)
         _, findings = export_checks._pdf_snapshot(path, expected)
         self.assertTrue(any("PDF第1页缺少声明的页码" in value for value in findings))
+
+    def test_pdf_expected_order_includes_table_level_before_and_after(self):
+        import fitz
+
+        expected = export_checks._expected({
+            "title": "Table order",
+            "export_settings": {
+                "cover": {"enabled": False},
+                "header": {"text": "", "page_field": False},
+                "footer": {"text": "", "page_field": False},
+            },
+            "sections": [{
+                "title": "Fixed form",
+                "paragraphs": [],
+                "tables": [
+                    {"headers": ["字段", "值"], "rows": [["A", "1"]],
+                     "paragraphs_before": ["表一脚注"],
+                     "paragraphs_after": ["表一签署区"]},
+                    {"headers": ["字段", "值"], "rows": [["B", "2"]],
+                     "paragraphs_before": ["表二脚注"],
+                     "paragraphs_after": ["表二签署区"]},
+                ],
+            }],
+        })
+        path = self.root / "table-order-wrong.pdf"
+        with fitz.open() as document:
+            page = document.new_page()
+            # Every string is present, but table one’s after text comes after
+            # table two’s before text, so the fixed form order is invalid.
+            values = ["Fixed form", "表一脚注", "字段", "值", "A", "1",
+                      "表二脚注", "表一签署区", "字段", "值", "B", "2", "表二签署区"]
+            for y, value in enumerate(values, start=1):
+                page.insert_text((50, 40 + y * 18), value)
+            document.save(path)
+        _, findings = export_checks._pdf_snapshot(path, expected)
+        self.assertTrue(any("正文/标题/表格/图注或顺序不一致" in value for value in findings), findings)
+
+    def test_pdf_expected_order_expands_merge_for_docx_but_reads_anchor_once(self):
+        import fitz
+
+        expected = export_checks._expected({
+            "title": "Merged form",
+            "export_settings": {
+                "cover": {"enabled": False},
+                "header": {"text": "", "page_field": False},
+                "footer": {"text": "", "page_field": False},
+            },
+            "sections": [{
+                "title": "Fixed form",
+                "paragraphs": [],
+                "tables": [{
+                    "headers": [["事项", ""], ["编号", "名称"]],
+                    "header_rows": 2,
+                    "rows": [["", ""]],
+                    "merges": [{"row": 0, "column": 0, "row_span": 1, "col_span": 2}],
+                    "missing_cells": [{"row": 2, "column": 1, "label": "填报值"}],
+                }],
+            }],
+        })
+        path = self.root / "merged-form.pdf"
+        with fitz.open() as document:
+            page = document.new_page()
+            for y, value in enumerate(("Fixed form", "事项", "编号", "名称", "【待补充：填报值】"), start=1):
+                page.insert_text((50, 40 + y * 18), value, fontname="china-s")
+            document.save(path)
+        _, findings = export_checks._pdf_snapshot(path, expected)
+        self.assertEqual(findings, [])
 
     def test_missing_heading_image_and_fact_cannot_pass(self):
         spec = self.spec()
@@ -203,6 +459,26 @@ class ExportChecksTests(unittest.TestCase):
         self.assertTrue(any('当前目录' in f for f in receipt['findings']))
         self.assertTrue(any('漏当前正文' in f for f in receipt['findings']))
 
+    def test_markdown_quote_markers_do_not_require_literal_export_but_text_does(self):
+        import hashlib
+
+        spec = self.spec()
+        value = json.loads(spec.read_text())
+        value['sections'][0]['section_id'] = 'A'
+        (self.root / 'artifacts').mkdir()
+        writing = self.root / 'artifacts/11-technical-content.json'
+        for body, missing in [('> Body paragraph', False),
+                              ('> > **Body paragraph**', False),
+                              ('> Body paragraph\n> Required safety condition', True),
+                              ('Threshold > 5', True)]:
+            with self.subTest(body=body):
+                writing.write_text(json.dumps({'project_id': 'EXPORT-TEST', 'data': {
+                    'chapters': [{'section_id': 'A', 'body_markdown': body}]}}))
+                value['inputs'] = [{'relative_path': 'artifacts/11-technical-content.json',
+                                    'sha256': hashlib.sha256(writing.read_bytes()).hexdigest()}]
+                findings = export_checks._check_current_chapters(value, self.root)
+                self.assertEqual(bool(findings), missing, findings)
+
     def test_other_project_artifacts_cannot_pass_receipt(self):
         import hashlib
         spec = self.spec()
@@ -235,7 +511,6 @@ class ExportChecksTests(unittest.TestCase):
         self.assertTrue(any('PDF第1页缺少声明的页码' in f for f in receipt['findings']))
 
     def test_internal_signing_trace_cannot_pass_even_when_in_spec(self):
-        from docx import Document
         import fitz
         spec = self.spec()
         value = json.loads(spec.read_text())

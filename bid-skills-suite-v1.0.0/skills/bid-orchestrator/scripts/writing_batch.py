@@ -225,7 +225,7 @@ class WritingBatch:
         if chapter is None:
             chapter = {"id": task["chapter_id"], "section_id": task["section_id"], "title": section.get("title", ""),
                        "body_markdown": "", "requirement_ids": task["requirement_ids"], "evidence_ids": [], "design_ids": []}
-        current_state = self.workspace.state(task["chapter_id"])
+        current_state = self.workspace.state(task["chapter_id"], include_advisories=False)
         references = current_state["references"]
         return {"schema_version": SCHEMA_VERSION, "batch_id": self.batch_id, "project_id": state["project_id"],
                 "section_id": task["section_id"], "chapter_id": task["chapter_id"], "attempt": attempt,
@@ -283,7 +283,7 @@ class WritingBatch:
                 chapter = next((item for item in writing_chapters if isinstance(item, dict) and
                                 (item.get("section_id") == section_id or item.get("id") == section_id)), None)
                 chapter_id = (chapter or {}).get("id", section_id)
-                view = self.workspace.state(chapter_id)
+                view = self.workspace.state(chapter_id, include_advisories=False)
                 chapter = view["chapter"]
                 requirement_ids = _list_ids(section.get("requirement_ids", []), f"{section_id}.requirement_ids") if section.get("requirement_ids", []) else []
                 scoring_ids = _list_ids(chapter.get("scoring_ids", section.get("scoring_ids", [])), f"{section_id}.scoring_ids") if (chapter.get("scoring_ids", section.get("scoring_ids", []))) else []
@@ -499,7 +499,7 @@ class WritingBatch:
                         raise WorkspaceError("正文产物在保存前已被其他进程修改", "stale_write", 409)
                     result = self.workspace.save({"expected_revision": expected_head_revision,
                                                  "expected_sha256": expected_head_sha, "chapter_id": task["chapter_id"],
-                                                 "body_markdown": candidate["body_markdown"]})
+                                                 "body_markdown": candidate["body_markdown"]}, include_advisories=False)
                     new_writing = result["writing"]
                     new_chapter = result.get("chapter") or {}
                     new_sha = new_writing["sha256"]

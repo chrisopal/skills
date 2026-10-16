@@ -140,6 +140,34 @@
                   "string",
                   "null"
                 ]
+              },
+              "section_id": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "对应08章节ID，禁止无匹配时默认归到最后一章"
+              },
+              "template_path": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "06原始可编辑Markdown模板相对路径"
+              },
+              "filled_template_path": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "本次填报Markdown相对路径"
+              },
+              "table_spec_path": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "本次填报结构JSON相对路径，含paragraphs/tables及来源"
               }
             },
             "required": [

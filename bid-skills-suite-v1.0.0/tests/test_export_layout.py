@@ -250,6 +250,174 @@ class ExportLayoutTests(unittest.TestCase):
                 build_docx.build(spec, output, root)
             self.assertFalse(output.exists())
 
+    def test_fixed_form_table_preserves_merges_missing_highlight_and_widths(self):
+        from docx import Document
+        from docx.oxml.ns import qn
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = self._write_spec(root)
+            value = json.loads(spec.read_text(encoding='utf-8'))
+            value['sections'][1]['tables'] = [{
+                'headers': [['事项', '', '响应'], ['编号', '名称', '结果']],
+                'header_rows': 2,
+                'rows': [['', '', '']],
+                'widths_cm': [3, 5, 5],
+                'merges': [
+                    {'row': 0, 'column': 0, 'row_span': 1, 'col_span': 2},
+                    {'row': 1, 'column': 0, 'row_span': 2, 'col_span': 1},
+                ],
+                'missing_cells': [{'row': 2, 'column': 2, 'label': '响应结论'}],
+            }]
+            spec.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+            output = root / 'fixed-form.docx'
+            build_docx.build(spec, output, root)
+            document = Document(output)
+            table = document.tables[0]
+            self.assertEqual([[cell.text.strip() for cell in row.cells] for row in table.rows], [
+                ['事项', '事项', '响应'], ['编号', '名称', '结果'],
+                ['编号', '', '【待补充：响应结论】'],
+            ])
+            self.assertTrue(all(row._tr.get_or_add_trPr().find(qn('w:tblHeader')) is not None
+                                for row in table.rows[:2]))
+            self.assertTrue(table.rows[0]._tr.xpath('.//w:gridSpan[@w:val="2"]'))
+            self.assertTrue(table.rows[1]._tr.xpath('.//w:vMerge[@w:val="restart"]'))
+            missing_run = next(run for run in table.cell(2, 2).paragraphs[0].runs
+                               if run.text)
+            highlight = missing_run._r.rPr.find(qn('w:highlight'))
+            self.assertEqual(highlight.get(qn('w:val')), 'yellow')
+            self.assertAlmostEqual(table.columns[0].width.cm, 3, places=2)
+
+    def test_fixed_form_table_rejects_unsafe_merge_inputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for merges, rows in [
+                ([{'row': 0, 'column': 0, 'row_span': 2, 'col_span': 2},
+                  {'row': 1, 'column': 1, 'row_span': 1, 'col_span': 1}], [['x', '']]),
+                ([{'row': 0, 'column': 0, 'row_span': 1, 'col_span': 2}], [['x', 'occupied']]),
+                ([{'row': 5, 'column': 0, 'row_span': 1, 'col_span': 1}], [['x', '']]),
+            ]:
+                with self.subTest(merges=merges):
+                    spec = self._write_spec(root)
+                    value = json.loads(spec.read_text(encoding='utf-8'))
+                    value['sections'][1]['tables'] = [{
+                        'headers': ['A', 'B'], 'rows': rows,
+                        'merges': merges,
+                    }]
+                    spec.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+                    with self.assertRaises(ValueError):
+                        build_docx.build(spec, root / ('invalid-' + str(len(merges)) + '.docx'), root)
+
+    def test_merged_anchor_rebuild_keeps_newlines_and_span_width(self):
+        from docx import Document
+        from docx.oxml.ns import qn
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = self._write_spec(root)
+            value = json.loads(spec.read_text(encoding='utf-8'))
+            value['sections'][1]['tables'] = [{
+                'headers': [['标题\n第二行', '', '结果']],
+                'rows': [['', '', '通过']],
+                'widths_cm': [3, 5, 4],
+                'merges': [{'row': 0, 'column': 0, 'row_span': 1, 'col_span': 2}],
+            }]
+            spec.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+            output = root / 'merged-anchor.docx'
+            build_docx.build(spec, output, root)
+            table = Document(output).tables[0]
+            anchor = table.cell(0, 0)
+            self.assertEqual(anchor.text, '标题\n第二行')
+            self.assertEqual(len(anchor.paragraphs), 1)
+            tcw = anchor._tc.tcPr.find(qn('w:tcW'))
+            self.assertIsNotNone(tcw)
+            self.assertAlmostEqual(anchor.width.cm, 8, places=1)
+            self.assertEqual(tcw.get(qn('w:type')), 'dxa')
+            self.assertTrue(table.rows[0]._tr.xpath('.//w:gridSpan[@w:val="2"]'))
+
+    def test_fixed_form_table_can_omit_header_and_serialize_markdown(self):
+        from docx import Document
+        from fixed_form_tables import effective_grid, table_to_markdown
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = self._write_spec(root)
+            value = json.loads(spec.read_text(encoding='utf-8'))
+            table = {
+                'headers': [], 'header_rows': 0,
+                'rows': [['字段', ''], ['', '']],
+                'merges': [{'row': 0, 'column': 0, 'row_span': 2, 'col_span': 1}],
+                'missing_cells': [{'row': 1, 'column': 1, 'label': '填写值'}],
+            }
+            value['sections'][1]['tables'] = [table]
+            spec.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+            output = root / 'no-header.docx'
+            build_docx.build(spec, output, root)
+            document = Document(output)
+            self.assertFalse(document.tables[0].rows[0]._tr.xpath('.//w:tblHeader'))
+            self.assertEqual(effective_grid(table), [['字段', ''], ['字段', '【待补充：填写值】']])
+            markdown = table_to_markdown(table)
+            self.assertIn('rowspan="2"', markdown)
+            self.assertIn('<mark>【待补充：填写值】</mark>', markdown)
+
+            pipe = table_to_markdown({'headers': ['A', 'B'], 'rows': [['x|y', '<unsafe>']]})
+            self.assertIn('| x&#124;y | &lt;unsafe&gt; |', pipe)
+            self.assertNotIn('<unsafe>', pipe)
+
+    def test_sections_set_a4_orientation_and_use_local_content_width(self):
+        from docx import Document
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = self._write_spec(root)
+            value = json.loads(spec.read_text(encoding='utf-8'))
+            value['sections'][0]['orientation'] = 'portrait'
+            value['sections'][0]['tables'] = []
+            value['sections'][1]['orientation'] = 'landscape'
+            value['sections'][1]['tables'][0]['widths_cm'] = [12, 12]
+            spec.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+            output = root / 'orientations.docx'
+            build_docx.build(spec, output, root)
+            document = Document(output)
+            self.assertEqual(len(document.sections), 2)
+            self.assertTrue(document.sections[0].page_height > document.sections[0].page_width)
+            self.assertTrue(document.sections[1].page_width > document.sections[1].page_height)
+            self.assertAlmostEqual(document.sections[1].page_width.cm, 29.7, places=1)
+            self.assertAlmostEqual(document.tables[0].columns[0].width.cm, 12, places=1)
+
+    def test_table_level_footnotes_and_signatures_stay_between_two_tables(self):
+        from docx.oxml.ns import qn
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = self._write_spec(root)
+            value = json.loads(spec.read_text(encoding='utf-8'))
+            value['sections'][1]['paragraphs'] = []
+            value['sections'][1]['images'] = []
+            value['sections'][1]['tables'] = [
+                {'headers': ['字段', '值'], 'rows': [['A', '1']],
+                 'paragraphs_before': ['表一脚注'],
+                 'paragraphs_after': ['表一签署区']},
+                {'headers': ['字段', '值'], 'rows': [['B', '2']],
+                 'paragraphs_before': ['表二脚注'],
+                 'paragraphs_after': ['表二签署区']},
+            ]
+            spec.write_text(json.dumps(value, ensure_ascii=False), encoding='utf-8')
+            output = root / 'table-order.docx'
+            build_docx.build(spec, output, root)
+            from docx import Document
+            document = Document(output)
+            body_order = []
+            for child in document.element.body.iterchildren():
+                if child.tag == qn('w:tbl'):
+                    body_order.append('TABLE')
+                elif child.tag == qn('w:p'):
+                    text = ''.join(node.text or '' for node in child.iter(qn('w:t')))
+                    if text in {'表一脚注', '表一签署区', '表二脚注', '表二签署区'}:
+                        body_order.append(text)
+            self.assertEqual(body_order, ['表一脚注', 'TABLE', '表一签署区',
+                                          '表二脚注', 'TABLE', '表二签署区'])
+
     def test_invalid_export_options_and_image_bounds_fail_before_output(self):
         png = base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ1kAAAAASUVORK5CYII=')
         invalid_configs = [

@@ -99,6 +99,22 @@ def _expected(spec: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(sections, list) or not sections:
         raise ValueError("document-spec.sections必须是非空数组")
     from build_docx import header_footer_settings, _validate_style
+    from fixed_form_tables import expanded_grid, normalize_table_spec
+
+    def ordered_table_values(normalized):
+        covered = {
+            (row, column)
+            for merge in normalized['merges']
+            for row in range(merge['row'], merge['row'] + merge['row_span'])
+            for column in range(merge['column'], merge['column'] + merge['col_span'])
+            if (row, column) != (merge['row'], merge['column'])
+        }
+        return [
+            value
+            for row, values in enumerate(normalized['grid'])
+            for column, value in enumerate(values)
+            if (row, column) not in covered and str(value).strip()
+        ]
     settings = spec.get("export_settings", {})
     if not isinstance(settings, dict):
         raise ValueError("export_settings必须是对象")
@@ -143,14 +159,20 @@ def _expected(spec: dict[str, Any]) -> dict[str, Any]:
 
     headings = []
     paragraphs = []
+    section_orientations = []
     ordered = list(cover_paragraphs)
     for table in tables:
-        ordered.extend(value for row in table["rows"] for value in row)
+        ordered.extend(value for row in table["rows"] for value in row if str(value).strip())
     for index, section in enumerate(sections):
         if not isinstance(section, dict) or not isinstance(section.get("title"), str):
             raise ValueError(f"sections[{index}]必须是包含title的对象")
         title = section["title"]
         level = max(1, min(int(section.get("level", 1)), 3))
+        orientation = section.get('orientation', 'portrait')
+        if orientation not in ('portrait', 'landscape'):
+            raise ValueError(f"sections[{index}].orientation须为portrait或landscape")
+        if not section_orientations or section_orientations[-1] != orientation:
+            section_orientations.append(orientation)
         headings.append({"text": title, "level": level})
         ordered.append(title)
         section_paragraphs = section.get("paragraphs", [])
@@ -161,20 +183,47 @@ def _expected(spec: dict[str, Any]) -> dict[str, Any]:
                 text = str(value)
                 paragraphs.append(text)
                 ordered.append(text)
+        for extra_name in ('paragraphs_before',):
+            values = section.get(extra_name, [])
+            if not isinstance(values, list):
+                raise ValueError(f"sections[{index}].{extra_name}必须是数组")
+            for value in values:
+                if str(value).strip():
+                    text = str(value)
+                    paragraphs.append(text)
+                    ordered.append(text)
         for table in section.get("tables", []):
-            if (
-                not isinstance(table, dict)
-                or not isinstance(table.get("headers"), list)
-                or not isinstance(table.get("rows", []), list)
-            ):
-                raise ValueError(f"sections[{index}].tables中的表格无效")
-            rows = [[str(value) for value in table["headers"]]] + [
-                [str(value) for value in row] for row in table.get("rows", [])
-            ]
-            if any(len(row) != len(rows[0]) for row in rows):
-                raise ValueError(f"sections[{index}]表格列数不一致")
-            tables.append({"kind": "section", "rows": rows})
-            ordered.extend(value for row in rows for value in row)
+            normalized = normalize_table_spec(table, label=f"sections[{index}].tables")
+            rows = expanded_grid(normalized)
+            for value in normalized["paragraphs_before"]:
+                if str(value).strip():
+                    text = str(value)
+                    paragraphs.append(text)
+                    ordered.append(text)
+            tables.append({
+                "kind": "section",
+                "rows": rows,
+                "header_rows": normalized["header_rows"],
+                "merges": normalized["merges"],
+                "missing_cells": normalized["missing_cells"],
+                "page_break_before": normalized["page_break_before"],
+                "paragraphs_before": normalized["paragraphs_before"],
+                "paragraphs_after": normalized["paragraphs_after"],
+            })
+            ordered.extend(ordered_table_values(normalized))
+            for value in normalized["paragraphs_after"]:
+                if str(value).strip():
+                    text = str(value)
+                    paragraphs.append(text)
+                    ordered.append(text)
+        values = section.get('paragraphs_after', [])
+        if not isinstance(values, list):
+            raise ValueError(f"sections[{index}].paragraphs_after必须是数组")
+        for value in values:
+            if str(value).strip():
+                text = str(value)
+                paragraphs.append(text)
+                ordered.append(text)
         for image in section.get("images", []):
             if not isinstance(image, dict):
                 raise ValueError(f"sections[{index}].images中的图片无效")
@@ -201,6 +250,7 @@ def _expected(spec: dict[str, Any]) -> dict[str, Any]:
         "header_footer": [header_footer_settings(settings.get(name, {}), name) for name in ("header", "footer")],
         "page_margins_cm": typography['page_margins_cm'],
         "toc_title": str(toc.get("title", "目录")) if toc_enabled else None,
+        "section_orientations": section_orientations,
         "ordered_text": ordered,
     }
 
@@ -254,12 +304,86 @@ def _artifact_meta(path: Path, project_root: Path, pages: int | None = None) -> 
     return {"path": relative, "sha256": _sha256(path), "bytes": path.stat().st_size, "pages": pages}
 
 
+def _docx_table_cells(table):
+    """Return the physical table cells with their logical start and spans."""
+    from docx.oxml.ns import qn
+
+    rows = []
+    for row in table.rows:
+        cells = []
+        column = 0
+        for tc in row._tr.tc_lst:
+            tc_pr = tc.tcPr
+            grid_span = tc_pr.find(qn("w:gridSpan")) if tc_pr is not None else None
+            col_span = int(grid_span.get(qn("w:val"), "1")) if grid_span is not None else 1
+            v_merge = tc_pr.find(qn("w:vMerge")) if tc_pr is not None else None
+            v_value = None if v_merge is None else v_merge.get(qn("w:val"), "continue")
+            cells.append({"column": column, "col_span": col_span, "v_merge": v_value, "tc": tc})
+            column += col_span
+        rows.append(cells)
+    return rows
+
+
+def _docx_table_merges(table) -> list[dict[str, int]]:
+    """Extract Word gridSpan/vMerge rectangles in the table's logical grid."""
+    rows = _docx_table_cells(table)
+    merges = []
+    for row_index, cells in enumerate(rows):
+        for cell in cells:
+            # Word may repeat gridSpan on each vertical continuation row.
+            # That physical cell is part of the restart rectangle above, not
+            # another horizontal merge.
+            if cell["col_span"] > 1 and cell["v_merge"] == "continue":
+                continue
+            if cell["col_span"] == 1 and cell["v_merge"] != "restart":
+                continue
+            row_span = 1
+            if cell["v_merge"] == "restart":
+                next_row = row_index + 1
+                while next_row < len(rows):
+                    continuation = next(
+                        (candidate for candidate in rows[next_row]
+                         if candidate["column"] == cell["column"]),
+                        None,
+                    )
+                    if (continuation is None
+                            or continuation["v_merge"] == "restart"
+                            or continuation["v_merge"] is None
+                            or continuation["col_span"] != cell["col_span"]):
+                        break
+                    row_span += 1
+                    next_row += 1
+            if row_span > 1 or cell["col_span"] > 1:
+                merges.append({"row": row_index, "column": cell["column"],
+                               "row_span": row_span, "col_span": cell["col_span"]})
+    return sorted(merges, key=lambda value: (value["row"], value["column"]))
+
+
+def _docx_cell_has_yellow_highlight(cell) -> bool:
+    from docx.oxml.ns import qn
+
+    for run in cell._tc.iter(qn("w:r")):
+        rpr = run.find(qn("w:rPr"))
+        if rpr is None:
+            continue
+        highlight = rpr.find(qn("w:highlight"))
+        if highlight is not None and highlight.get(qn("w:val")) == "yellow":
+            return True
+    return False
+
+
 def _docx_snapshot(path: Path, expected: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
     from docx import Document
     from docx.opc.constants import RELATIONSHIP_TYPE as RT
 
     findings: list[str] = []
     document = Document(path)
+    actual_section_orientations = [
+        'landscape' if section.page_width > section.page_height else 'portrait'
+        for section in document.sections
+    ]
+    if actual_section_orientations != expected.get('section_orientations', []):
+        findings.append('DOCX章节方向或分节数量不一致')
     paragraphs = [paragraph.text for paragraph in document.paragraphs]
     heading_records = []
     for paragraph in document.paragraphs:
@@ -281,9 +405,15 @@ def _docx_snapshot(path: Path, expected: dict[str, Any]) -> tuple[dict[str, Any]
     paragraph_present, paragraph_absent = _subsequence(expected["paragraphs"], paragraphs)
     if paragraph_absent:
         findings.append("DOCX缺少正文段落：" + "、".join(paragraph_absent))
-    actual_tables = [
-        [[cell.text for cell in row.cells] for row in table.rows] for table in document.tables
+    actual_table_records = [
+        {
+            "rows": [[cell.text for cell in row.cells] for row in table.rows],
+            "merges": _docx_table_merges(table),
+            "table": table,
+        }
+        for table in document.tables
     ]
+    actual_tables = [record["rows"] for record in actual_table_records]
     table_present, table_absent = [], []
     for index, want in enumerate(expected["tables"]):
         rows = [[_normal(value) for value in row] for row in want["rows"]]
@@ -294,6 +424,22 @@ def _docx_snapshot(path: Path, expected: dict[str, Any]) -> tuple[dict[str, Any]
             findings.append(f"DOCX表格内容或顺序不一致：table-{index + 1}")
         else:
             table_present.append(f"table-{index + 1}")
+            expected_merges = sorted(want.get("merges", []),
+                                     key=lambda value: (value["row"], value["column"]))
+            actual_merges = actual_table_records[index]["merges"]
+            if actual_merges != expected_merges:
+                findings.append(f"DOCX表格合并结构不一致：table-{index + 1}")
+            for missing in want.get("missing_cells", []):
+                row = missing["row"]
+                column = missing["column"]
+                expected_value = missing["placeholder"]
+                actual_value = actual_tables[index][row][column] if row < len(actual_tables[index]) and column < len(actual_tables[index][row]) else ""
+                cell = actual_table_records[index]["table"].cell(row, column)
+                if (_normal(actual_value) != _normal(expected_value)
+                        or not _docx_cell_has_yellow_highlight(cell)):
+                    findings.append(
+                        f"DOCX表格缺少待补充高亮：table-{index + 1}({row},{column})"
+                    )
     if len(actual_tables) > len(expected["tables"]):
         findings.append("DOCX包含document-spec未声明的表格")
     if table_absent and not any("表格内容" in item for item in findings):
@@ -359,6 +505,7 @@ def _docx_snapshot(path: Path, expected: dict[str, Any]) -> tuple[dict[str, Any]
             "headings": len(heading_records),
             "tables": len(actual_tables),
             "images": inline_images,
+            "section_orientations": actual_section_orientations,
         },
         "coverage": {
             "headings": {
@@ -477,10 +624,102 @@ def _tool_versions() -> dict[str, Any]:
     return versions
 
 
+def _check_declared_fixed_form_paths(
+        owner, label, *, sections_by_id, bindings, project_root, sequence_cursors=None):
+    """Check form template inputs and, when declared, their table spec."""
+    from fixed_form_tables import effective_grid, normalize_table_spec
+
+    findings = []
+    section = sections_by_id.get(owner.get('section_id')) if isinstance(owner, dict) else None
+    for field in ('template_path', 'filled_template_path', 'table_spec_path'):
+        if field not in owner:
+            continue
+        raw_path = owner.get(field)
+        if raw_path is None:
+            continue
+        field_label = f'{label}.{field}'
+        if not isinstance(raw_path, str) or not raw_path.strip():
+            findings.append(field_label + '必须是非空相对路径')
+            continue
+        relative_path = Path(raw_path)
+        if relative_path.is_absolute() or '..' in relative_path.parts:
+            findings.append(field_label + '路径越界：' + raw_path)
+            continue
+        path = (project_root / relative_path).resolve()
+        if not path.is_relative_to(project_root.resolve()):
+            findings.append(field_label + '路径越界：' + raw_path)
+            continue
+        if not path.is_file():
+            findings.append(field_label + '文件缺失：' + raw_path)
+            continue
+        relative = _relative(path, project_root)
+        if bindings.get(relative) != _sha256(path):
+            findings.append('导出输入未绑定当前版本：' + relative)
+        if field != 'table_spec_path':
+            continue
+        if section is None:
+            findings.append(field_label + '缺少可对应的section_id')
+            continue
+        try:
+            table_spec = _read_json(path)
+            if (not isinstance(table_spec.get('paragraphs'), list)
+                    or not isinstance(table_spec.get('tables'), list)):
+                raise ValueError('必须包含paragraphs和tables数组')
+            declared_paragraphs = [str(value) for value in table_spec['paragraphs']]
+            exported_paragraphs = [str(value) for value in section.get('paragraphs', [])]
+            cursor_key = section.get('section_id', owner.get('section_id'))
+            cursors = sequence_cursors if sequence_cursors is not None else {}
+            paragraph_cursor, table_cursor = cursors.get(cursor_key, (0, 0))
+
+            def consume_sequence(expected, actual, cursor, kind):
+                for value in expected:
+                    try:
+                        cursor = next(
+                            index for index in range(cursor, len(actual))
+                            if actual[index] == value
+                        ) + 1
+                    except StopIteration as exc:
+                        raise ValueError(f'{kind}未按顺序完整出现在导出章节') from exc
+                return cursor
+
+            paragraph_cursor = consume_sequence(
+                declared_paragraphs, exported_paragraphs, paragraph_cursor, 'paragraphs')
+            declared_tables = table_spec['tables']
+            exported_tables = section.get('tables', [])
+            for table_index, declared in enumerate(declared_tables):
+                declared_normalized = normalize_table_spec(
+                    declared, label=f'{field_label}.tables[{table_index}]')
+                match_index = None
+                for candidate_index in range(table_cursor, len(exported_tables)):
+                    exported_normalized = normalize_table_spec(
+                        exported_tables[candidate_index],
+                        label=f'section[{section.get("section_id", "") }].tables[{candidate_index}]')
+                    if (effective_grid(declared_normalized) == effective_grid(exported_normalized)
+                            and declared_normalized['header_rows'] == exported_normalized['header_rows']
+                            and declared_normalized['widths_cm'] == exported_normalized['widths_cm']
+                            and declared_normalized['merges'] == exported_normalized['merges']
+                            and declared_normalized['missing_cells'] == exported_normalized['missing_cells']
+                            and declared_normalized['page_break_before'] == exported_normalized['page_break_before']
+                            and declared_normalized['paragraphs_before'] == exported_normalized['paragraphs_before']
+                            and declared_normalized['paragraphs_after'] == exported_normalized['paragraphs_after']):
+                        match_index = candidate_index
+                        break
+                if match_index is None:
+                    raise ValueError(f'tables[{table_index}]未按顺序完整出现在导出章节，或内容/合并结构不一致')
+                table_cursor = match_index + 1
+            cursors[cursor_key] = (paragraph_cursor, table_cursor)
+        except (OSError, ValueError, json.JSONDecodeError, TypeError) as exc:
+            findings.append(field_label + '无效：' + str(exc))
+    return findings
+
+
 def _check_current_chapters(spec, project_root):
+    from fixed_form_tables import effective_grid, normalize_table_spec
+
     outline = project_root / 'artifacts/08-outline.json'
     writing = project_root / 'artifacts/11-technical-content.json'
     findings = []
+    sections = spec['sections']
     commercial = project_root / 'artifacts/12-commercial-content.json'
     current_paths = [p for p in (outline, writing, commercial) if p.is_file()]
     for path in current_paths:
@@ -491,7 +730,14 @@ def _check_current_chapters(spec, project_root):
         relative = _relative(path, project_root)
         if bindings.get(relative) != _sha256(path):
             findings.append('导出输入未绑定当前版本：' + relative)
-    sections = spec['sections']
+    sections_by_id = {item.get('section_id'): item for item in sections
+                      if isinstance(item, dict) and item.get('section_id')}
+    fixed_form_cursors = {}
+    for section_index, section in enumerate(sections):
+        findings.extend(_check_declared_fixed_form_paths(
+            section, f'导出章节[{section_index}]', sections_by_id=sections_by_id,
+            bindings=bindings, project_root=project_root,
+            sequence_cursors=fixed_form_cursors))
     if outline.is_file():
         from outline_view import ordered_sections
         expected_ids = [item['id'] for item in ordered_sections(_read_json(outline)['data']['sections'])]
@@ -504,8 +750,28 @@ def _check_current_chapters(spec, project_root):
             findings.append('导出源商务产物项目身份不一致')
         if bindings.get(_relative(commercial, project_root)) != _sha256(commercial):
             findings.append('导出输入未绑定当前商务版本')
-        exported = ''.join(str(p) for section in sections for p in section.get('paragraphs', []))
-        exported += ''.join(str(v) for section in sections for table in section.get('tables', []) for row in [table['headers']] + table.get('rows', []) for v in row)
+        for form_index, form in enumerate(value.get('data', {}).get('forms', [])):
+            if isinstance(form, dict):
+                findings.extend(_check_declared_fixed_form_paths(
+                    form, f'商务表单[{form_index}]', sections_by_id=sections_by_id,
+                    bindings=bindings, project_root=project_root,
+                    sequence_cursors=fixed_form_cursors))
+        exported = ''.join(
+            str(p) for section in sections for p in section.get('paragraphs', [])
+        )
+        exported += ''.join(
+            str(p) for section in sections for p in section.get('paragraphs_before', [])
+        )
+        exported += ''.join(
+            str(value) for section in sections for table in section.get('tables', [])
+            for normalized in [normalize_table_spec(table)]
+            for value in (normalized['paragraphs_before']
+                          + [item for row in effective_grid(normalized) for item in row]
+                          + normalized['paragraphs_after'])
+        )
+        exported += ''.join(
+            str(p) for section in sections for p in section.get('paragraphs_after', [])
+        )
         for form in value.get('data', {}).get('forms', []):
             for field in form.get('fields', []):
                 expected_value = field.get('value')
@@ -515,10 +781,16 @@ def _check_current_chapters(spec, project_root):
     for chapter in (_read_json(writing)['data']['chapters'] if writing.is_file() else []):
         section = by_id.get(chapter['section_id'], {})
         content = ''.join(str(value) for value in section.get('paragraphs', []))
+        content += ''.join(str(value) for value in section.get('paragraphs_before', []))
         for table in section.get('tables', []):
-            content += ''.join(str(v) for row in [table['headers']] + table.get('rows', []) for v in row)
+            normalized = normalize_table_spec(table)
+            content += ''.join(normalized['paragraphs_before'])
+            content += ''.join(str(value) for row in effective_grid(normalized) for value in row)
+            content += ''.join(normalized['paragraphs_after'])
+        content += ''.join(str(value) for value in section.get('paragraphs_after', []))
         for line in chapter.get('body_markdown', chapter.get('body', '')).splitlines():
             line = re.sub(r'!\[[^]]*\]\([^)]*\)', '', line)
+            line = re.sub(r'^ {0,3}(?:>[ \t]?)+', '', line)
             line = re.sub(r'^\s{0,3}#{1,6}\s*', '', line).replace('**', '')
             if re.fullmatch(r'[| :\-]+', line or ' '):
                 continue

@@ -86,6 +86,26 @@ def _alignment(value, label):
     return value
 
 
+def _section_orientation(value, label):
+    if value not in ('portrait', 'landscape'):
+        raise ValueError(f'{label}须为portrait或landscape')
+    return value
+
+
+def _configure_page_section(section, orientation, margins):
+    from docx.shared import Cm
+
+    _section_orientation(orientation, 'section.orientation')
+    if orientation == 'landscape':
+        section.page_width = Cm(29.7)
+        section.page_height = Cm(21)
+    else:
+        section.page_width = Cm(21)
+        section.page_height = Cm(29.7)
+    for edge, value in margins.items():
+        setattr(section, edge + '_margin', Cm(value))
+
+
 def _validate_cover_image(image, asset_root: Path, content_width: float, usable_height: float):
     _check_fields(image, {'path', 'width_cm', 'height_cm'}, 'cover.image')
     path_value = image.get('path')
@@ -480,6 +500,19 @@ def _set_cell_shading(cell, fill):
     shading.set(qn('w:fill'), fill)
 
 
+def _set_run_highlight(run, color='yellow'):
+    """Mark a missing fixed-form value without changing the cell fill."""
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+
+    rpr = run._r.get_or_add_rPr()
+    highlight = rpr.find(qn('w:highlight'))
+    if highlight is None:
+        highlight = OxmlElement('w:highlight')
+        rpr.append(highlight)
+    highlight.set(qn('w:val'), color)
+
+
 def _set_cell_padding(cell, *, top=90, start=120, bottom=90, end=120):
     """Set compact but readable cell padding in twips."""
     from docx.oxml import OxmlElement
@@ -688,7 +721,6 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
     table_alternate_fill = typography['table_alternate_fill']
     table_cell_padding = typography['table_cell_padding']
     margins = typography['page_margins_cm']
-    usable_height = 29.7 - margins['top'] - margins['bottom']
     asset_root = Path(asset_root)
     export_settings = _resolve_export_settings(spec, export_settings_path, style=typography,
                                                 asset_root=asset_root, content_width=content_width)
@@ -703,8 +735,7 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
     if defaults is not None:
         for script in ('ascii','hAnsi','cs'):defaults.set(qn('w:'+script),latin_font)
         defaults.set(qn('w:eastAsia'),font)
-    section.page_width=Cm(21);section.page_height=Cm(29.7)
-    for edge,value in margins.items():setattr(section,edge+'_margin',Cm(value))
+    _configure_page_section(section, 'portrait', margins)
     for name in ['Normal','Title','Subtitle','Heading 1','Heading 2','Heading 3']:
         font_size=(body_size if name=='Normal' else title_size if name=='Title' else
                    subtitle_size if name=='Subtitle' else heading_sizes[int(name[-1])-1])
@@ -783,7 +814,7 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
             image_paragraph.paragraph_format.keep_with_next = True
             image_paragraph.paragraph_format.space_before = Pt(6)
             image_paragraph.paragraph_format.space_after = Pt(3)
-        notice = document.add_paragraph('本文件由基础排版脚本生成，不代表真实投标通过审核。客户指定版式、目录域与签署要求需在正式交付前另行落实。')
+        notice = document.add_paragraph('本文档为工作稿。正式交付前请完成内容审核、版式核对和签署检查。')
         notice.paragraph_format.first_line_indent = Pt(0)
         _set_paragraph_alignment(notice, cover['alignment'])
         if cover['own_page']:
@@ -797,7 +828,18 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
         # The cover's explicit page break already starts the body on a new page.
         pass
     bookmark_id = 1
-    for item in spec['sections']:
+    from docx.enum.section import WD_SECTION
+    current_section = section
+    current_orientation = None
+    for section_index, item in enumerate(spec['sections']):
+        orientation = _section_orientation(item.get('orientation', 'portrait'),
+                                           f'sections[{section_index}].orientation')
+        if section_index and orientation != current_orientation:
+            current_section = document.add_section(WD_SECTION.NEW_PAGE)
+        _configure_page_section(current_section, orientation, margins)
+        current_orientation = orientation
+        section_content_width = current_section.page_width.cm - current_section.left_margin.cm - current_section.right_margin.cm
+        section_usable_height = current_section.page_height.cm - current_section.top_margin.cm - current_section.bottom_margin.cm
         level=max(1,min(int(item.get('level',1)),3))
         heading = document.add_heading(item['title'], level=level)
         heading.paragraph_format.keep_with_next = True
@@ -805,16 +847,31 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
             _insert_bookmark(heading, bookmark_id, f'_Toc{bookmark_id}')
             bookmark_id += 1
         last_item_paragraph = None
-        for text in item.get('paragraphs',[]):
-            if not str(text).strip():continue
-            paragraph=document.add_paragraph(str(text))
-            paragraph.paragraph_format.first_line_indent=Pt(body_size*indent)
-            paragraph.paragraph_format.alignment=(WD_ALIGN_PARAGRAPH.JUSTIFY
-                if alignment=='justify' else WD_ALIGN_PARAGRAPH.LEFT)
+        for extra_name in ('paragraphs_before', 'paragraphs_after'):
+            if not isinstance(item.get(extra_name, []), list):
+                raise ValueError(f'sections[{section_index}].{extra_name}必须是数组')
+        def add_body_paragraph(value):
+            nonlocal last_item_paragraph
+            if not str(value).strip():
+                return
+            paragraph = document.add_paragraph(str(value))
+            paragraph.paragraph_format.first_line_indent = Pt(body_size * indent)
+            paragraph.paragraph_format.alignment = (WD_ALIGN_PARAGRAPH.JUSTIFY
+                if alignment == 'justify' else WD_ALIGN_PARAGRAPH.LEFT)
             last_item_paragraph = paragraph
+
+        for text in item.get('paragraphs',[]):
+            add_body_paragraph(text)
         if item.get('images') and last_item_paragraph is not None:
             last_item_paragraph.paragraph_format.keep_with_next = True
+        for text in item.get('paragraphs_before', []):
+            add_body_paragraph(text)
         for table_index, table_spec in enumerate(item.get('tables',[])):
+            try:
+                from fixed_form_tables import normalize_table_spec
+            except ImportError:  # pragma: no cover - package import fallback
+                from .fixed_form_tables import normalize_table_spec
+            normalized = normalize_table_spec(table_spec, label=f'sections表格{table_index + 1}')
             if table_index:
                 # An explicit separator prevents adjacent grids being merged on save.
                 separator = document.add_paragraph()
@@ -822,43 +879,61 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
                 separator.paragraph_format.space_after = Pt(0)
                 separator.paragraph_format.line_spacing = Pt(1)
                 separator.paragraph_format.first_line_indent = Pt(0)
-            headers=table_spec['headers'];rows=table_spec['rows']
-            if not headers or any(len(row)!=len(headers) for row in rows):raise ValueError('表格列数不一致')
-            widths = table_spec.get('widths_cm')
-            if widths is not None:
-                if (not isinstance(widths, list) or len(widths) != len(headers)
-                        or any(isinstance(w, bool) or not isinstance(w, (int, float))
-                               or not math.isfinite(w) or w <= 0 for w in widths)
-                        or sum(widths) > content_width):
-                    raise ValueError('表格列宽必须为正数，与列数一致且不超过当前页面正文宽度')
-            table=document.add_table(rows=1,cols=len(headers));table.style='Table Grid'
+            if normalized['page_break_before']:
+                page_break = document.add_paragraph()
+                page_break.paragraph_format.page_break_before = True
+            for text in normalized['paragraphs_before']:
+                add_body_paragraph(text)
+            grid = normalized['grid']
+            header_rows = normalized['header_rows']
+            widths = normalized['widths_cm']
+            if widths is not None and sum(widths) > section_content_width:
+                raise ValueError('表格列宽必须为正数，与列数一致且不超过当前页面正文宽度')
+            table=document.add_table(rows=len(grid),cols=len(grid[0]));table.style='Table Grid'
             table.alignment = WD_TABLE_ALIGNMENT.CENTER
             if table_border_color:
                 _set_table_borders(table, table_border_color)
             if widths is not None:
                 table.autofit = False
                 for column, width in zip(table.columns, widths):column.width = Cm(width)
-            trPr=table.rows[0]._tr.get_or_add_trPr();repeat=OxmlElement('w:tblHeader');trPr.append(repeat)
-            for i,v in enumerate(headers):table.rows[0].cells[i].text=str(v)
-            for values in rows:
-                cells=table.add_row().cells
-                for i,v in enumerate(values):cells[i].text=str(v)
+                for row in table.rows:
+                    for column, width in enumerate(widths):
+                        row.cells[column].width = Cm(width)
+            for row_index, values in enumerate(grid):
+                for column, value in enumerate(values):
+                    table.cell(row_index, column).text = value
+            # Merge only after every source cell has been populated.  The
+            # validator rejects covered non-empty cells, so this cannot lose
+            # source content silently.
+            for merge in normalized['merges']:
+                start = table.cell(merge['row'], merge['column'])
+                end = table.cell(merge['row'] + merge['row_span'] - 1,
+                                 merge['column'] + merge['col_span'] - 1)
+                start.merge(end)
+                # python-docx preserves an empty paragraph from every cell
+                # consumed by the merge. Rebuild the anchor from the source
+                # grid so fixed forms keep one paragraph and source newlines.
+                start.text = grid[merge['row']][merge['column']]
+                if widths is not None:
+                    span_width = sum(widths[merge['column']:
+                                            merge['column'] + merge['col_span']])
+                    start.width = Cm(span_width)
+            for row in table.rows[:header_rows]:
+                trPr = row._tr.get_or_add_trPr()
+                trPr.append(OxmlElement('w:tblHeader'))
             for row_index, row in enumerate(table.rows):
                 row_tr_pr = row._tr.get_or_add_trPr()
                 row_tr_pr.append(OxmlElement('w:cantSplit'))
-                if row_index == 0:
+                if row_index < header_rows:
                     for cell in row.cells:
                         for paragraph in cell.paragraphs:
                             paragraph.paragraph_format.keep_with_next = True
-            if widths is not None:
-                for row in table.rows:
-                    for cell, width in zip(row.cells, widths):cell.width = Cm(width)
             for row_index, row in enumerate(table.rows):
-                for cell in row.cells:
+                for column_index, cell in enumerate(row.cells):
                     cell.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
                     if table_cell_padding:
                         _set_cell_padding(cell, **table_cell_padding)
-                    if row_index == 0 and table_header_fill:
+                    if row_index < header_rows and table_header_fill:
                         _set_cell_shading(cell, table_header_fill)
                     elif row_index % 2 == 0 and table_alternate_fill:
                         _set_cell_shading(cell, table_alternate_fill)
@@ -871,6 +946,13 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
                         for run in paragraph.runs:
                             _set_run_font(run, east_asia_font=font, latin_font=latin_font,
                                           size_pt=table_size)
+                            if any(item['row'] == row_index and item['column'] == column_index
+                                   for item in normalized['missing_cells']):
+                                _set_run_highlight(run)
+            for text in normalized['paragraphs_after']:
+                add_body_paragraph(text)
+        for text in item.get('paragraphs_after', []):
+            add_body_paragraph(text)
         for image_index, image in enumerate(item.get('images',[])):
             if not isinstance(image, dict):
                 raise ValueError('图片配置必须是对象')
@@ -881,7 +963,7 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
                 texts = [str(t) for t in item.get('paragraphs', []) if str(t).strip()]
                 # Estimate only the preceding paragraphs kept with this figure.
                 # Actual font wrapping and pagination still require rendered QA.
-                width_pt = content_width * 72 / 2.54
+                width_pt = section_content_width * 72 / 2.54
                 if len(texts) <= 1:
                     title_lines = max(1, math.ceil(len(item['title']) * heading_sizes[level - 1] / width_pt))
                     leading_space_cm += (title_lines * heading_sizes[level - 1] * spacing + heading_before + heading_after) * 2.54 / 72
@@ -894,7 +976,7 @@ def build(spec_path: Path, out_path: Path, asset_root: Path, export_settings_pat
             leading_space_cm += body_size * spacing * 2.54 / 72
             image_path, image_width, image_height = _validate_inline_image(
                 {'path': str(rel), **{key: image[key] for key in ('width_cm', 'height_cm') if key in image}},
-                asset_root, content_width, usable_height, caption_text, caption_size,
+                asset_root, section_content_width, section_usable_height, caption_text, caption_size,
                 caption_line_spacing, leading_space_cm)
             kwargs = {'width': Cm(image_width)}
             if image_height is not None:

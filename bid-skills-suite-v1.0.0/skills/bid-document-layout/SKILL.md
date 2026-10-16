@@ -37,6 +37,10 @@ metadata:
 
 如果原文规定投标文件全篇字体、字号和行距，覆盖标题/副标题/三级标题/表格/图注等全部适用部分，不擅自收窄为正文。基础生成器仅生成工作稿，保留内部说明和页眉页脚；暗标禁用这些内容、横向或复杂固定表等要求须由宿主工具落实，不能将基础输出作为正式符合证明。
 
+### 固定表格与缺项高亮
+
+06/12的模板结构优先于排版偏好。接收 `table_spec_path` 的原始网格，基础生成器支持显式列宽、`merges`、`header_rows` 和 `missing_cells`，不能把表格转成逐行段落。Markdown 简单表和合并 HTML 表由相同规格生成，避免另写一套内容。目录、评分页码必须在实际排版后刷新。缺项在原单元格黄色高亮并明确字段；不得用空白、模板示例或静默删列遮住缺失。导出验收除文字齐全，还检查实际表格、合并结构、高亮与原页视觉对照。见 [固定表单保留](references/FIXED_FORMS.md)。
+
 ### 导出配置
 
 可复用的封面、目录、页眉和页脚偏好见 [导出配置](references/EXPORT_LAYOUT.md) 与 `assets/layout-templates/export-settings.example.json`。将确认后的配置保存到用户项目 `profiles/export-settings.json`，再传给 `scripts/build_docx.py --export-settings`；也可将同一对象嵌入 document-spec 的 `export_settings` 字段。配置顶层 `style` 复用 document-spec 的现有正文样式校验，并按字段覆盖 spec 样式。配置支持封面标题/副标题、按序元数据行、对齐、独立分页、封面图片、TOC 层级与字体、header/footer 文本及 `PAGE` 字段。未知字段、重复元数据标签、重复 JSON 键、越界图片路径和超出版心的图片尺寸应拒绝生成。

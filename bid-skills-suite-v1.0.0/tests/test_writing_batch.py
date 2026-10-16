@@ -96,6 +96,17 @@ class WritingBatchTest(unittest.TestCase):
         value["summary"] = "外部写入"
         path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+    def test_batch_execution_does_not_refresh_editor_advisory_reports(self) -> None:
+        with patch("review_actions.ReviewActionService.view") as review_view, \
+                patch("ai_scoring_actions.AIScoringActionService.view") as scoring_view:
+            batch = self._batch()
+            batch.prepare(["SEC-1", "SEC-2"], effective_mode="parallel")
+            self._ready(batch, "SEC-1", "native-a", "第一章修订正文")
+            self._ready(batch, "SEC-2", "native-b", "第二章修订正文")
+            batch.merge()
+            review_view.assert_not_called()
+            scoring_view.assert_not_called()
+
     def test_prepare_context_and_slots_honor_parallel_limit(self) -> None:
         batch = self._batch()
         result = batch.prepare(["SEC-1", "SEC-2"], effective_mode="parallel")
@@ -247,9 +258,9 @@ class WritingBatchTest(unittest.TestCase):
         self._ready(batch, "SEC-1", "agent-1", "one")
         original_save = batch.workspace.save
 
-        def edit_then_save(request: dict) -> dict:
+        def edit_then_save(request: dict, **kwargs) -> dict:
             self._external_edit()
-            return original_save(request)
+            return original_save(request, **kwargs)
 
         with patch.object(batch.workspace, "save", side_effect=edit_then_save):
             with self.assertRaises(WorkspaceError) as caught:
@@ -266,12 +277,12 @@ class WritingBatchTest(unittest.TestCase):
         original_save = batch.workspace.save
         calls = 0
 
-        def save_with_second_call_edit(request: dict) -> dict:
+        def save_with_second_call_edit(request: dict, **kwargs) -> dict:
             nonlocal calls
             calls += 1
             if calls == 2:
                 self._external_edit()
-            return original_save(request)
+            return original_save(request, **kwargs)
 
         with patch.object(batch.workspace, "save", side_effect=save_with_second_call_edit):
             with self.assertRaises(WorkspaceError) as caught:

@@ -65,6 +65,12 @@ metadata:
 
    输出格式约束和待填写模板索引，交08和12／14；未发现强制目录时明确检索范围和状态，禁止写“没有任何格式要求”。
 
+## 固定表格必须保留结构
+
+PDF 文字层把列名拆成逐行文字时，不得直接作为正文交出。回看原页图像/网格，恢复列顺序、行、合并单元格、多行表头、编号、脚注、签署区及重复填报页。简单表保存为 Markdown 表格；含合并单元格的表保存为内嵌 HTML table（rowspan/colspan），同时保留可编辑结构 JSON。`original_text` 仍是追溯底稿，不当作已复原表格。
+
+`template_path` 指向实际未填 Markdown 模板；每份模板标记原件页码。不能复原的结构明确列缺口，禁止用字段列表或图片替代可编辑表格后宣称保真。具体结构与检查见 [固定表单保留](references/FIXED_FORMS.md)。
+
 ## 产物与交接
 
 按[执行质量复核](references/EXECUTION_QUALITY.md)对照项目文件组成与通用范本，区分mandatory/reference/unknown。未实际重建模板时template_path留null；填写路径前检查实际文件，不创建悬空索引。

@@ -87,6 +87,10 @@ Word 来源的自动引文核验使用随包 `review_checks.py` 的精确节点�
 
    仅打包用户允许交付的文件，内部证据与决策台账默认另存。提供文件路径和交付结论，不自动向外部发送或提交。
 
+## 固定表单验收
+
+对照06原页及12填报规格检查表格行列、合并、多行表头、脚注及签署区。只有文字都能搜到不算格式通过。必填缺失项须在实际 Word/PDF 原填写位置保留醒目“【待补充：字段】”；核对黄色高亮仍可见。存在必填缺项则正式交付继续阻塞，测试报告可以单独记录格式功能通过，不能把模拟数据当真实材料。见 [固定表单保留](references/FIXED_FORMS.md)。
+
 ## 产物与交接
 
 保存 `16-delivery-manifest.json`（机器可读）和同名 `.md`（可读报告），使用 [JSON模板](assets/output.template.json) 与 [报告模板](assets/report.template.md)。字段必须符合 [JSON Schema](assets/output.schema.json)。不要把模板空值直接当结果；详细演示见 [合成示例](assets/example.output.json)。

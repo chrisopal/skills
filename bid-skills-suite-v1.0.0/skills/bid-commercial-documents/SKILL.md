@@ -65,6 +65,12 @@ metadata:
 
    交付填报草稿和字段来源表，经授权审核采纳后进入14；身份信息脱敏只用于内部演示，不擅自破坏正式模板要求。
 
+## 按原表填报与缺项提示
+
+按06模板原位置填值，保留全部列、合并关系、固定说明及签署区；不把整份模板原文写进企业 `fields.value` 后逐行导出。`section_id` 明确关联目录，匹配失败须报错，不默认堆到末章。分别记录 `template_path`、`filled_template_path`、`table_spec_path`，指向真实文件。Markdown 与 Word 由同一结构规格生成；合并表使用 HTML table。
+
+确实缺少的内容仍保留 `value:null / state:missing`；Markdown 用 `<mark>【待补充：字段名】</mark>`，Word 在原填写单元格写同文案并黄色高亮。未授权签章保留签署区并提示待办，不生成真实签名。已有模拟值必须标注模拟，不能因为表格完整就认定材料有效。缺项清单交15；正式交付不得带未处理的必填缺项。见 [固定表单保留](references/FIXED_FORMS.md)。
+
 ## 产物与交接
 
 保存 `12-commercial-content.json`（机器可读）和同名 `.md`（可读报告），使用 [JSON模板](assets/output.template.json) 与 [报告模板](assets/report.template.md)。字段必须符合 [JSON Schema](assets/output.schema.json)。不要把模板空值直接当结果；详细演示见 [合成示例](assets/example.output.json)。

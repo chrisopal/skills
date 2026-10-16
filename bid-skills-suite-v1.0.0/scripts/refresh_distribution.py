@@ -41,6 +41,10 @@ for _skill in ('bid-technical-writing', 'bid-review-remediation', 'bid-export-ac
     DISTRIBUTED_SCRIPTS[_skill] = tuple(dict.fromkeys(DISTRIBUTED_SCRIPTS[_skill]))
 for _skill in ('bid-export-acceptance', 'bid-orchestrator'):
     DISTRIBUTED_SCRIPTS[_skill] += ('export_checks.py', 'outline_view.py')
+for _skill in ('bid-format-extraction', 'bid-commercial-documents', 'bid-document-layout', 'bid-export-acceptance', 'bid-orchestrator'):
+    DISTRIBUTED_SCRIPTS.setdefault(_skill, ())
+    DISTRIBUTED_SCRIPTS[_skill] += ('fixed_form_tables.py',)
+
 DISTRIBUTED_DOCS = {
     'bid-source-intake': ('OCR_SETUP.md', 'TENDER_ROUTING.md', 'EXECUTION_QUALITY.md'),
     'bid-project-profile': ('TENDER_ROUTING.md',),
@@ -86,6 +90,9 @@ for _skill in ('bid-evidence-matching', 'bid-technical-writing', 'bid-review-rem
     DISTRIBUTED_DOCS[_skill] += ('ONLINE_DOCUMENTS.md',)
 for _skill in ('bid-visuals',):
     DISTRIBUTED_DOCS[_skill] += ('ONLINE_DOCUMENTS.md',)
+
+for _skill in ('bid-format-extraction', 'bid-commercial-documents', 'bid-document-layout', 'bid-export-acceptance', 'bid-review-remediation', 'bid-orchestrator'):
+    DISTRIBUTED_DOCS[_skill] += ('FIXED_FORMS.md',)
 
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),

@@ -1,8 +1,8 @@
 ---
 name: bid-evidence-matching
-description: 建立要求与真实企业证据的对应关系，明确适用、待核验和缺失，而非只有相似度结果。 适用于：匹配资质业绩人员、证书筛选、素材选用、材料缺口、证据有效期、设备检测报告。
+description: 导入并分类企业文件、文字和指定知识库，生成Markdown Wiki，按投标要求匹配资质、业绩、人员与技术参考，保留原件、版本、适用性及材料缺口。
 metadata:
-  version: 1.1.0
+  version: "1.21.0"
   language: zh-CN
   sequence: '9'
   suite: bid-skills-suite
@@ -30,6 +30,10 @@ metadata:
 输入：需求／评分／资格矩阵、08章节任务卡、已授权企业原件和素材台账、投标截止等适用时间。
 
 资料接入按 [本地文件、宿主知识库与项目 Wiki](references/KNOWLEDGE.md) 执行。本技能自带 `scripts/knowledge.py`：`add-local` 保存上传材料，`import-host` 保存实际宿主检索快照，`search` 查询本地已登记内容。先校验索引哈希，再回读命中的完整原文和定位，建立 M-ID 及选用关系。Wiki 供阅读，检索命中仍是候选；资质、合同和检测报告需要完整证明原件。
+
+附件、文字和目录批量导入统一保存为八类材料卡；自动分类只是建议，歧义进入待分类，可按用户修订重新分类。PDF/DOCX/PPTX表格和内嵌图片保留结构及定位，扫描未读与旧格式转换单列缺口。主体、证号、日期和社保月份等字段须回读原文；用户文字、历史标书和技术说明不能代替法定证明。材料补充不受阶段限制，写作期间也可导入。
+
+用户指定知识库时用 `scripts/knowledge_connections.py` 保存连接范围并创建实际检索交接，宿主调用已授权工具后再导入结果。配置、授权失败、无命中、快照保存分开记录；不安装虚构接口，不擅自复制全库。将本章已核对材料交 `scripts/knowledge_context.py prepare`，把候选知识与正式09选用决定分开保留。
 
 上游技能：`bid-requirements, bid-scoring, bid-compliance, bid-format-extraction, bid-outline-planning`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 

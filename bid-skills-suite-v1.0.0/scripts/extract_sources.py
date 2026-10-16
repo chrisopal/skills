@@ -11,6 +11,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import knowledge_formats
+
 OCR_MIN_CONFIDENCE = 0.80
 ARTIFACT_ID = "ART-01-NATIVE"
 
@@ -211,19 +213,35 @@ def extract(
         )
         block_index = [0]
 
-        def add(text: str, location: str, page: int | None = None, method: str = "native") -> None:
+        def add_block(
+            text: str,
+            location: str,
+            page: int | None = None,
+            method: str = "native",
+            **extra: object,
+        ) -> None:
             if text.strip():
                 block_index[0] += 1
-                blocks.append(
-                    {
-                        "block_id": f"{sid}-B{block_index[0]:05d}",
-                        "source_id": sid,
-                        "location": location,
-                        "page": page,
-                        "text": text,
-                        "method": method,
-                    }
-                )
+                block = {
+                    "block_id": f"{sid}-B{block_index[0]:05d}",
+                    "source_id": sid,
+                    "location": location,
+                    "page": page,
+                    "text": text,
+                    "method": method,
+                }
+                block.update(extra)
+                blocks.append(block)
+
+        def add(text: str, location: str, page: int | None = None, method: str = "native") -> None:
+            add_block(text, location, page, method)
+
+        def add_structured(record: dict, *, page: int | None = None, method: str = "native") -> None:
+            payload = dict(record)
+            text = str(payload.pop("text", ""))
+            location = str(payload.pop("location"))
+            record_page = payload.pop("page", page)
+            add_block(text, location, record_page, method, **payload)
 
         def ocr_page(image: bytes, page_number: int, reason: str, mandatory: bool) -> None:
             nonlocal review, source_failed
@@ -292,6 +310,21 @@ def extract(
                         for row_number, cells in enumerate(table.rows, 1):
                             for column_number, cell in enumerate(cells.cells, 1):
                                 add(cell.text, f"body[{body_index}]/table/r{row_number}/c{column_number}")
+                        try:
+                            table_spec, table_text = knowledge_formats.docx_table_spec(table)
+                            add_structured(
+                                {
+                                    "location": f"body[{body_index}]/table",
+                                    "text": table_text,
+                                    "content_kind": "table",
+                                    "table": table_spec,
+                                }
+                            )
+                        except (ValueError, TypeError) as exc:
+                            review = True
+                            warnings.append(
+                                f"{sid}: body[{body_index}] DOCX表格结构无法安全保留，需人工复核（{exc}）。"
+                            )
                 seen: set[object] = set()
                 for section in doc.sections:
                     for part_kind, part_getter, reference_getter in (
@@ -324,12 +357,53 @@ def extract(
                             ]
                             for number, paragraph in enumerate(paragraphs, 1):
                                 add(paragraph.text, f"{part_kind}/p{number}")
+                            for table_number, table_element in enumerate(part.element.tbl_lst, 1):
+                                table = Table(table_element, part)
+                                for row_number, cells in enumerate(table.rows, 1):
+                                    for column_number, cell in enumerate(cells.cells, 1):
+                                        add(
+                                            cell.text,
+                                            f"{part_kind}/table[{table_number}]/r{row_number}/c{column_number}",
+                                        )
+                                try:
+                                    table_spec, table_text = knowledge_formats.docx_table_spec(table)
+                                    add_structured(
+                                        {
+                                            "location": f"{part_kind}/table[{table_number}]",
+                                            "text": table_text,
+                                            "content_kind": "table",
+                                            "table": table_spec,
+                                        }
+                                    )
+                                except (ValueError, TypeError) as exc:
+                                    review = True
+                                    warnings.append(
+                                        f"{sid}: {part_kind}/table[{table_number}] DOCX表格结构无法安全保留，"
+                                        f"需人工复核（{exc}）。"
+                                    )
                 review = True
                 warnings.append(
                     sid
                     + (": DOCX页码依赖渲染，原生提取不保证文本框、修订、批注及"
                        "复杂合并表完整，需复核。")
                 )
+                for image in knowledge_formats.extract_docx_assets(
+                    path, project / "assets" / "knowledge", sid
+                ):
+                    add_structured(image, method="embedded")
+                    review = True
+                if any(block.get("content_kind") == "asset" and block["source_id"] == sid for block in blocks):
+                    warnings.append(sid + ": DOCX含嵌入图片；未执行图中文字识别，需视觉复核。")
+            elif suffix == ".pptx":
+                parsed_pptx = knowledge_formats.extract_pptx(
+                    path, project / "assets" / "knowledge", sid
+                )
+                for record in parsed_pptx["blocks"]:
+                    add_structured(record, method="embedded" if record.get("content_kind") == "asset" else "native")
+                review = review or parsed_pptx["review"]
+                warnings.extend(parsed_pptx["warnings"])
+                if any(record.get("content_kind") == "asset" for record in parsed_pptx["blocks"]):
+                    warnings.append(sid + ": PPTX含嵌入图片；未执行图中文字识别，需视觉复核。")
             elif suffix == ".pdf":
                 import fitz
 
@@ -350,6 +424,35 @@ def extract(
                             else "原生文字层"
                         )
                         add(text, f"P{page_number}", page_number)
+                        finder = getattr(page, "find_tables", None)
+                        if callable(finder):
+                            try:
+                                found = finder()
+                                tables = getattr(found, "tables", found)
+                                for table_number, found_table in enumerate(tables or [], 1):
+                                    extracted = found_table.extract()
+                                    rows = [["" if value is None else str(value) for value in row]
+                                            for row in extracted]
+                                    spec = knowledge_formats._table_spec(rows, header_rows=1)
+                                    add_structured(
+                                        {
+                                            "location": f"P{page_number}/table[{table_number}]",
+                                            "page": page_number,
+                                            "text": knowledge_formats.table_text(spec),
+                                            "content_kind": "table",
+                                            "table": spec,
+                                        }
+                                    )
+                            except (AttributeError, TypeError, ValueError, RuntimeError) as exc:
+                                review = True
+                                warnings.append(
+                                    f"{sid}: P{page_number} PDF表格结构提取失败，未猜测表格（{exc}）。"
+                                )
+                        else:
+                            review = True
+                            warnings.append(
+                                f"{sid}: P{page_number} 当前PyMuPDF不支持find_tables，表格需人工复核。"
+                            )
                         if ocr == "paddle-service" and (needs_ocr or supplemental_ocr):
                             ocr_page(
                                 _render_pdf_page(page),
@@ -395,7 +498,7 @@ def extract(
                     )
             else:
                 raise ValueError(
-                    "此脚本不支持该格式；请使用已授权宿主工具或保留原件后受控转换"
+                    "此格式未读取；原件已按来源登记保留，请使用已授权宿主工具进行受控转换后重试"
                 )
             if not any(block["source_id"] == sid for block in blocks):
                 review = True

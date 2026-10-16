@@ -2,7 +2,7 @@
 name: bid-source-intake
 description: 将多份原件整理为可追溯的结构化原文，同时明确未读、扫描、图像和解析异常范围。 适用于：整理招标文件、读取附件、PDF/DOCX解析、扫描件处理、多文件归集、检查是否漏页。
 metadata:
-  version: 1.3.0
+  version: "1.21.0"
   language: zh-CN
   sequence: '1'
   suite: bid-skills-suite
@@ -34,6 +34,8 @@ metadata:
 ## 执行步骤
 
 原生解析优先；PDF 扫描／含图页及 PNG/JPEG 可用显式启用的 PaddleOCR 服务补读，操作见 [OCR 配置与测试](references/OCR_SETUP.md)。地址和 Key 从宿主环境提供，不写入产物。按页保留置信度、失败范围和来源哈希；原生提取与 OCR 均不自动取得人工审核状态。使用 `--source-id` 只处理指定原件；企业知识材料不得作为客户要求。
+
+DOCX/PPTX保留可识别表格行列与合并关系、内嵌原图及稳定位置；PPTX正文与备注分开，不把备注当招标正式条款。旧DOC/PPT缺转换能力、嵌图未识别及疑难表格明确记录缺口，不能以文字提取成功宣称格式已还原。企业附件复用解析能力后交09分类，不并入招标要求。
 
 1. **建立来源清单**
 

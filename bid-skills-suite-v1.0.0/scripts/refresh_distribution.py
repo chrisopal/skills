@@ -94,6 +94,18 @@ for _skill in ('bid-visuals',):
 for _skill in ('bid-format-extraction', 'bid-commercial-documents', 'bid-document-layout', 'bid-export-acceptance', 'bid-review-remediation', 'bid-orchestrator'):
     DISTRIBUTED_DOCS[_skill] += ('FIXED_FORMS.md',)
 
+# Knowledge references are checked by writing and review in standalone installs.
+for _skill in ('bid-outline-planning', 'bid-evidence-matching', 'bid-technical-writing',
+               'bid-review-remediation', 'bid-export-acceptance', 'bid-orchestrator'):
+    DISTRIBUTED_SCRIPTS[_skill] += (
+        'knowledge.py', 'knowledge_connections.py', 'knowledge_context.py',
+        'knowledge_formats.py', 'extract_sources.py', 'paddle_ocr.py',
+        'fixed_form_tables.py', 'bidkit.py',
+    )
+    DISTRIBUTED_SCRIPTS[_skill] = tuple(dict.fromkeys(DISTRIBUTED_SCRIPTS[_skill]))
+    DISTRIBUTED_DOCS[_skill] = tuple(dict.fromkeys(DISTRIBUTED_DOCS[_skill] + ('KNOWLEDGE.md',)))
+DISTRIBUTED_SCRIPTS['bid-source-intake'] += ('knowledge_formats.py', 'fixed_form_tables.py')
+
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
     'bid-technical-writing': ('ui',),

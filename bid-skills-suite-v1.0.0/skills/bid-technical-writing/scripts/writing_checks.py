@@ -313,7 +313,16 @@ def check_project(project, outline_path, writing_path, visuals_path=None):
     except (ValueError, TypeError) as exc:
         policy = {'passed': False, 'chapters': [], 'blocking_issues': [str(exc)],
                   'recommendation_issues': [], 'semantic_acceptance': 'NOT_TESTED'}
+    from knowledge_context import check as check_knowledge
+    try:
+        knowledge_state = check_knowledge(project, writing_path=_relative(project, writing_path))
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        knowledge_state = {'valid': False, 'errors': ['知识引用无法检查：' + str(exc)],
+                           'warnings': [], 'affected_sections': []}
+    errors.extend(knowledge_state['errors'])
+    warnings.extend(knowledge_state['warnings'])
     return {'project_id': identity, 'writing_sha256': digest(writing_path),
+            'knowledge_references': knowledge_state,
             'writing_policy': policy, 'writing_policy_valid': policy['passed'],
             'structural_valid': not errors, 'errors': errors, 'warnings': warnings,
             'requirement_count': len(req_ids), 'outline_mapped_count': len(req_ids & mapped['requirement_ids']),

@@ -2,7 +2,7 @@
 name: bid-review-remediation
 description: 逐项审核评分条件、关键材料和资格／否决条件，支持对已写标书按原文规则进行AI模拟专家评分、解释扣分并安排提升；复核整改后形成当前版本的交付建议。
 metadata:
-  version: "1.6.0"
+  version: "1.21.0"
   language: zh-CN
   sequence: '15'
   suite: bid-skills-suite
@@ -45,6 +45,8 @@ metadata:
 8. 重算版本并核对三张表覆盖全集；输出JSON及可读报告。未完成逐项评审、关键缺口或版本过期时不得建议正式交付；正式外发授权仍独立。
 
 ## AI 模拟专家评分
+
+存在企业知识引用时，先按[知识接入](references/KNOWLEDGE.md)运行 `scripts/knowledge_context.py check`，核对正文、来源与连接版本。引用过期需重核；模拟引用不允许正式交付。对证明引用仍按09检查完整原件、主体、有效期、独立数量及所有者确认，不能以Wiki材料卡或引用完整性替代证明核验。
 
 用户要求“模拟专家打分／估计得分”，或完整编标进入15时，按[AI模拟专家评分](references/AI_EXPERT_SCORING.md)由当前宿主模型实际读取评分原文、现稿与材料，生成独立`reviews/15-ai-scoring-rN.json`及HTML。逐项给出模拟分、区间、扣分和提升动作；未知价格、无法核验的演示和材料保持未知，部分章节不冒充整本总分。脚本只准备、检查、展示，不调用模型或自动打分。模拟分不替代核心矩阵或资格／否决门禁，修改后重新评审及评分。
 

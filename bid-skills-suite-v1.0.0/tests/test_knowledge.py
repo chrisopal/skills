@@ -11,9 +11,9 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'scripts'))
-import bidkit
-import knowledge
-from refresh_distribution import distribution_files
+import bidkit  # noqa: E402
+import knowledge  # noqa: E402
+from refresh_distribution import distribution_files  # noqa: E402
 
 
 class KnowledgeTests(unittest.TestCase):
@@ -237,6 +237,8 @@ class KnowledgeTests(unittest.TestCase):
         source.write_text('独立安装的设备运维资料。', encoding='utf-8')
         for sequence, name in ((9, 'bid-evidence-matching'), (17, 'bid-orchestrator')):
             with self.subTest(skill=name):
+                project = self.root / f'project-{sequence}'
+                bidkit.init_project(project, f'TEST-STANDALONE-{sequence}')
                 install = self.root / name
                 package = self.root / f'{sequence:02d}-{name}.zip'
                 source_dir = ROOT / 'skills' / name
@@ -247,7 +249,7 @@ class KnowledgeTests(unittest.TestCase):
                     archive.extractall(install)
                 script = install / name / 'scripts/knowledge.py'
                 result = subprocess.run(
-                    [sys.executable, str(script), 'add-local', '--project', str(self.project),
+                    [sys.executable, str(script), 'add-local', '--project', str(project),
                      '--file', str(source)], cwd=install, capture_output=True, text=True,
                 )
                 self.assertEqual(result.returncode, 0, result.stderr)

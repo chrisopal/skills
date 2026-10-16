@@ -2,7 +2,7 @@
 name: bid-technical-writing
 description: 按明确任务卡编写有证据、有机制、有验收说明的技术正文与逐项响应。 适用于：编写技术标、章节草稿、技术响应表、偏离表、改写润色、整本技术内容。
 metadata:
-  version: "1.16.0"
+  version: "1.21.0"
   language: zh-CN
   sequence: '11'
   suite: bid-skills-suite
@@ -40,6 +40,8 @@ metadata:
 输入：08目录任务卡、10确认方案、09素材、03／04／05原始要求，以及用户写作偏好。
 
 项目知识来源和读取方式见 [知识接入](references/KNOWLEDGE.md)。优先使用09已选材料，按章节读取 `artifacts/knowledge/index.json` 及相关 source/content 快照；把实际采用文件及哈希写入 inputs。宿主知识库只有真实检索并落盘后才成为可追溯输入；新增参考材料交09核验。搜索摘要截断时回读全文，Wiki 内容不能自动升级成资质、业绩或已实现能力。
+
+使用企业材料写章时，先以本章需求及评分条件调用 `scripts/knowledge_context.py prepare`，必要时传主体、有效日期和社保月份硬条件；宿主回读原文后编写正文，再用 `bind` 将实际正文片段与确切知识原文绑定。不要把检索命中等同于已用或满足；引用检查只验证来源和版本，不认证专业判断。新增相关材料、连接范围变化或正文修改后运行 `check`，重核受影响章节；不直接覆盖人工正文。并行子Agent只读同版参考包，统一合并者保存引用；内部引用台账不直接放入对外正文。
 
 上游技能：`bid-requirements, bid-scoring, bid-compliance, bid-outline-planning, bid-evidence-matching, bid-solution-design`。独立使用时接收用户提供的等价文件，记录实际输入，不要求虚构完整流程状态。检查原件和产物版本；缺关键信息时给出范围受限的草稿及缺口。
 

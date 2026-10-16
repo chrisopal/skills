@@ -278,3 +278,13 @@ python -m unittest discover -s tests -v
 - 青草沙实际160页、37章、19固定格式、35表（含封面）、15图；独立回读37目录内链、14评分页码、145逐项响应、图像身份与42缺项高亮通过。负责人及六人成员卡分别分页，原21篇幅建议清零、90日工期口径统一。核心复审有效但正式交付仍阻塞；技术模拟36/50，价格50未知。
 - 完整unittest458项：457通过、1缺可选CairoSVG跳过；17Skill/34Schema/17ZIP/760校验项，8Python编译、helper/checker Ruff及diff通过。build_docx全文件Ruff遗留23条（HEAD基线33），未冒充全绿。Codex/WorkBuddy各17目录500文件同源；本轮不重复声称WorkBuddy模型执行、Windows或真实投标通过。
 - 实际Word/PDF、160页总览与抽样截图、独立报告只留本机。新增表单未同步飞书；格式通过不消除42缺项和真实材料/签署门禁。详见[本轮验证](../docs/plans/2026-10-16-bid-fixed-form-validation.md)。
+
+
+## 2026-10-16：1.21.0 企业材料、Markdown Wiki与写作引用
+
+- 实现：材料文件/文件夹/文字导入、八类材料与待分类、可复核字段及分类修订、合并表和原图Wiki、指定知识库宿主交接、逐章候选/引用/失效检查。复用09证据采纳及现有审核门禁，分类或检索命中不自动成为有效证明；模拟资料保留标识并阻止正式交付。更新相关Skill、README、KNOWLEDGE和独立分发，无新依赖或应用服务变化。
+- 工程：已有Python3.12环境执行 `python -m pytest tests -q`，503 passed、1 skipped、169 subtests passed；跳过原因为可选CairoSVG未安装，5条既有PyMuPDF/SWIG弃用提示。知识相关模块、提取/写作检查及知识测试Ruff通过；既有review_checks的E731未作无关清理。17 Skill/34 Schema/17 ZIP同源、17 quick_validate、变更Python编译和diff检查通过。
+- 两标书：独立副本保留东台30章与青草沙37章，仅各2章加入本地PPTX及模拟指定知识库引用，共4章8条。每项目11个混合文件覆盖8类，10个原件保留，损坏DOCX拒绝并回滚、旧PPT保留转换缺口；月份/主体硬筛选、正文修改定向失效、引用原文及哈希回读有效。两份目录/写作结构0错误，未重写其他63章，未改原始项目或飞书。
+- 实物：每项目生成1页专项Word/PDF，均含2张可编辑表和1张合成图；合并、黄色缺料提示、中文字体、图注和图片身份回读通过，全部2页实际查看。修复本机PDF渲染字体发现后重新输出，并在导出规程要求实际字形复核。专项样张不冒充整本重新导出，历史整本评分结论未提升。
+- 安装：Codex/WorkBuddy各17目录540文件与源码逐文件哈希一致，各更新63文件，旧文件备份在发现目录外。本轮未重新启动WorkBuddy模型执行。
+- 边界：真实客户知识库未指定，远端授权/版本检查、OCR模型、真人协作、整本专家语义评分及整本Word/PDF重导出均为Not run；协议快照仍标host_call_verified=false、remote_freshness=NOT_CHECKED。原有材料及质量评审缺口保留，模拟资料正式门禁拒绝。全部企业模拟原件和本地输出不进Git。详见 [专项验证](docs/MATERIAL_KNOWLEDGE_VALIDATION.md)。

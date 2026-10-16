@@ -435,6 +435,16 @@ def check(project, review, snapshot_path):
         writing_policy = {'passed': False, 'blocking_issues': ['写作策略无法检查：' + str(exc)]}
     blockers.extend(writing_policy['blocking_issues'])
     warnings.extend(writing_policy.get('recommendation_issues', []))
+    from knowledge_context import check as check_knowledge
+    try:
+        knowledge_state = check_knowledge(project)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        knowledge_state = {'valid': False, 'errors': ['知识引用无法检查：' + str(exc)],
+                           'warnings': [], 'simulated_citations': 0}
+    errors.extend(knowledge_state['errors'])
+    warnings.extend(knowledge_state['warnings'])
+    if knowledge_state.get('simulated_citations'):
+        blockers.append('正文采用模拟知识材料，仅可完成测试交付')
     quality_gate = {'quality_gate': 'NOT_RUN', 'errors': [], 'blockers': [],
                     'warnings': [], 'semantic_acceptance': 'NOT_RUN',
                     'binding_ready': False,
@@ -462,6 +472,7 @@ def check(project, review, snapshot_path):
         blockers.extend(quality_gate.get('blockers', []))
         warnings.extend(quality_gate.get('warnings', []))
     return {'current': current['current'], 'matrix_complete': not errors,
+            'knowledge_references': knowledge_state,
             'writing_policy': writing_policy,
             'errors': errors, 'release_blockers': list(dict.fromkeys(blockers)),
             'warnings': list(dict.fromkeys(warnings)),

@@ -2,7 +2,7 @@
 name: bid-review-remediation
 description: 逐项审核评分条件、关键材料和资格／否决条件，支持对已写标书按原文规则进行AI模拟专家评分、解释扣分并安排提升；复核整改后形成当前版本的交付建议。
 metadata:
-  version: "1.21.0"
+  version: "1.21.1"
   language: zh-CN
   sequence: '15'
   suite: bid-skills-suite

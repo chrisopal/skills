@@ -22,7 +22,7 @@
 | 路径 | 类型 | 约束说明 |
 |---|---|---|
 | `data.documents` | `array` | 数组项字段：source_id, filename, relative_path, sha256, bytes, role, revision, duplicate_group, status |
-| `data.blocks` | `array` | 数组项字段：block_id, source_id, location, page, text, method |
+| `data.blocks` | `array` | 数组项至少包含 block_id, source_id, location, page, text, method；原生 DOCX/PPTX 可带 `content_kind`（text/table/asset/notes）、`table`、`asset`、`is_note`。`table` 必须对应 `content_kind: table`，`content_kind: table` 必须有 `table`；`content_kind: asset` 必须有 `asset`，现有 DOCX 的 asset-only 记录可暂不带 `content_kind`；备注必须同时是 `content_kind: notes` 与 `is_note: true`。`method: embedded` 表示从文档包提取资源，不代表已识别图片内文字。|
 | `data.page_audit` | `array` | 数组项字段：source_id, page, status, method, note |
 | `data.coverage` | `string` | 取值：unknown, partial, complete |
 

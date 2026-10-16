@@ -1,5 +1,4 @@
 import copy
-import json
 import sys
 import tempfile
 import unittest
@@ -9,9 +8,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(ROOT / "tests"))
 
-import ai_scoring
-import bidkit
-from core_review_fixture import populate
+import ai_scoring  # noqa: E402
+import bidkit  # noqa: E402
+from core_review_fixture import populate  # noqa: E402
 
 
 class AIScoringTests(unittest.TestCase):
@@ -63,6 +62,27 @@ class AIScoringTests(unittest.TestCase):
         invalid["rows"][0]["range"] = {"low": 0, "high": 0}
         result = ai_scoring.check(self.project, invalid)
         self.assertTrue(any("draft不能包含语义评分结果" in item for item in result["errors"]))
+
+    def test_evidence_form_name_does_not_turn_warranty_into_price_score(self):
+        path = self.project / "artifacts/04-scoring.json"
+        scoring = bidkit.read(path)
+        scoring["data"]["items"][0].update(
+            title="质保期", rule_text="每增加8个月得0.5分，不足8个月不得分。",
+            evidence_requirements=["响应函/报价一览表中承诺的质保期"])
+        bidkit.atomic(path, scoring)
+        value = self.draft()
+        self.assertEqual(value["rows"][0]["scoring_type"], "objective")
+        self.assertTrue(ai_scoring.check(self.project, value)["valid"])
+
+        scoring["data"]["items"][0].update(
+            title="投标报价", rule_text="按基准价与报价比例计算价格分。",
+            evidence_requirements=["报价一览表"])
+        bidkit.atomic(path, scoring)
+        value = self.draft()
+        self.assertEqual(value["rows"][0]["scoring_type"], "price")
+        value["rows"][0]["scoring_type"] = "objective"
+        self.assertTrue(any("scoring_type必须是price" in error for error in
+                            ai_scoring.check(self.project, value)["errors"]))
 
     def test_saved_and_workspace_reports_keep_usable_evidence_links(self):
         value = self.complete()

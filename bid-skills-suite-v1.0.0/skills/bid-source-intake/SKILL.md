@@ -2,7 +2,7 @@
 name: bid-source-intake
 description: 将多份原件整理为可追溯的结构化原文，同时明确未读、扫描、图像和解析异常范围。 适用于：整理招标文件、读取附件、PDF/DOCX解析、扫描件处理、多文件归集、检查是否漏页。
 metadata:
-  version: "1.21.0"
+  version: "1.21.1"
   language: zh-CN
   sequence: '1'
   suite: bid-skills-suite

@@ -174,11 +174,12 @@ def _load_inputs(project: Path):
 
 
 def _infer_type(item: dict) -> str:
-    value = " ".join(str(item.get(k, "")) for k in
-                     ("title", "rule_text", "evidence_requirements")).lower()
+    # A warranty may be evidenced in a quotation form without scoring its price.
+    value = " ".join(str(item.get(k, "")) for k in ("title", "rule_text")).lower()
     if any(word in value for word in ("价格", "报价", "最低价", "price", "quote")):
         return "price"
-    if any(word in value for word in ("公式", "按", "每份", "每项", "否则0", "比例", "计算")):
+    value += " " + str(item.get("evidence_requirements", "")).lower()
+    if any(word in value for word in ("公式", "按", "每份", "每项", "每增加", "否则0", "比例", "计算")):
         return "objective"
     return "subjective"
 
@@ -785,7 +786,6 @@ def _render_document(project, payload, out="reports/ai-scoring.html", *, write=T
 
     rows_html = []
     for row in payload["rows"]:
-        scored = row["status"] == "scored"
         interval = row.get("range")
         band = (f'{number(interval["low"])}—{number(interval["high"])} 分'
                 if interval else "尚无估计区间")

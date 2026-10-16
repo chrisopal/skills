@@ -1711,3 +1711,16 @@
 - 验证：完整pytest 503通过、1项可选CairoSVG跳过、169 subtests通过；知识相关脚本/测试Ruff、变更Python编译、17 Skill/34 Schema/17 ZIP同源、17 frontmatter和diff检查通过。东台30章/青草沙37章保留，各2章实际保存并绑定，共8条引用；其余63章不变，两份目录/写作0错误。两份专项Word/PDF共2页、4张可编辑表和2图，实际文件回读及全部页面查看通过。Codex/WorkBuddy各17目录540文件哈希一致，旧文件外部备份。
 - 决策与简化：继续使用现有原件解析、09证据矩阵、章节账和宿主已授权知识工具，不新增向量库或某平台API客户端；自动分类/关键词搜索仅提供候选，原文不支持的字段归一化保留待核对。源码和文档验证后按仓库约定提交并推送当前分支，生成原件、Word/PDF及一次性脚本仅留本地。
 - 风险/后续：真实客户知识库授权/远端新鲜度、OCR、WorkBuddy模型、真人协作、整本专家语义复评及整本重导出未运行；协议快照未冒充实际宿主调用。既有材料缺口及模拟标识不转为正式通过，无关backend/uv.lock保持；应用lint/build不适用。详见bid-skills-suite-v1.0.0/docs/MATERIAL_KNOWLEDGE_VALIDATION.md。
+
+## 2026-10-16 — 投标 Skill 1.21.1 原生 DOCX/PPTX 结构契约修复
+
+- 完成内容：修复 `bid-source-intake` 的结构化输出契约，保留原生表格行列/合并信息、嵌入图片资源、PPTX 备注和 `embedded` 提取方式；schema 增加 `content_kind`、`table`、`asset`、`is_note` 的一致性条件，同时兼容现有 DOCX producer 的 asset-only 记录。契约测试改用标准库 base64 解码的匿名有效 PNG，不新增 Pillow 依赖，并补充矛盾元数据负向回归。套件版本更新为 1.21.1，刷新 01 独立分发和校验清单。
+- 验证：指定 source-intake/knowledge 格式回归 12 passed；刷新前完整 pytest 为 506 passed、1 skipped、1 failed，唯一失败是 01 ZIP 未刷新。刷新后完整 pytest 为 507 passed、1 skipped、5 warnings、169 subtests passed；`scripts/check_suite.py` 通过 17 Skill、34 Schema、0 errors；JSON schema 解析与 `git diff --check` 通过。
+- 边界：匿名合成 DOCX/PPTX 只证明结构提取、schema 和本地资源写入契约；不证明扫描/OCR、图片内文字识别、复杂版式还原、真实招标材料完整性、宿主模型执行或业务验收。未改根应用 `backend/uv.lock`，未提交私人 EAM 文件，无新增依赖。
+
+
+## 2026-10-16 — 投标 Skill 1.21.1 评分类型误判回归
+
+- 完成内容：修正AI评分将“报价一览表内的质保期”误归为价格分的问题；价格判断仅使用评分标题与规则，不使用证明材料文件名，质保每增加月份按客观档位处理。真实价格项仍强制价格类型及报价/基准价/公式。补匿名回归、更新README与评审Skill版本，删除同一评分模块的未用局部变量和测试未用导入，刷新17独立分发，无新增依赖。
+- 验证：新增用例修改前确实失败，修改后AI评分18项通过；最终完整pytest为508 passed、1 optional CairoSVG skipped、5 warnings、169 subtests passed。评分脚本及两份变更测试Ruff通过；17 Skill/34 Schema检查通过。
+- 风险/后续：机器分类仅提供候选，仍需按原文逐条语义复核；私人EAM验证保留本地，正式资格、签署支付、采购平台、现场与价格基准未验收。应用lint/build不适用，backend/uv.lock未触碰；仅提交可复用源码及匿名测试，按仓库约定推送当前分支，不合并main。

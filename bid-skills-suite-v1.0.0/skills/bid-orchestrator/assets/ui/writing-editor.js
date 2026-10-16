@@ -42,6 +42,58 @@
     return dirty || settingsDirty || Object.keys(unsavedBuffers).length > 0;
   }
 
+  function renderOnline() {
+    var view = state && state.online_document || {};
+    var binding = view.binding || view;
+    var bound = !!view.bound;
+    var unknownWrite = Object.keys(view.pending_write_unknown || {}).length > 0;
+    var status = document.getElementById("online-status");
+    status.textContent = view.error ? "连接异常" : (unknownWrite ? "上次写入待核对" : (bound ? "已绑定 · 待核对" : "未绑定"));
+    status.className = "status status-" + (view.error || unknownWrite ? "warning" : "neutral");
+    var url = binding.url || binding.document_url || "";
+    var link = document.getElementById("online-open");
+    link.hidden = !bound || !/^https:\/\//.test(url);
+    if (!link.hidden) link.href = url; else link.removeAttribute("href");
+    var urlInput = document.getElementById("online-url");
+    if (document.activeElement !== urlInput) urlInput.value = url;
+    if (binding.identity) document.getElementById("online-identity").value = binding.identity;
+    var pending = view.pending_differences || [];
+    var pendingCount = new Set(pending.map(function (item) { return item.section_id; })).size;
+    var detail = view.error || (bound ? "已绑定飞书；状态来自上次回读。" +
+      (pendingCount ? "存在 " + pendingCount + " 章待同步或核对。" : "保存时重新检查目标章节版本。") + " 已有章请在飞书合并修改后拉回；自动写入支持新增章。" :
+      "支持新增章写入与云端拉回；已有章在飞书合并修改。协作成员及权限在飞书管理。");
+    document.getElementById("online-notice").textContent = detail;
+    document.querySelectorAll("#online-form input, #online-form select, #online-bind").forEach(function (field) {
+      field.disabled = workspaceBusy || hasUnsavedWork();
+    });
+    ["fetch", "pull", "push"].forEach(function (action) {
+      document.getElementById("online-" + action).disabled = workspaceBusy || !bound || hasUnsavedWork();
+    });
+  }
+
+  function onlineAction(action, event) {
+    if (event) event.preventDefault();
+    if (workspaceBusy || hasUnsavedWork()) { showError("请先保存或放弃未保存的正文与设置。"); return; }
+    var request = {action: action, chapter_id: selectedId,
+      section_id: state && state.chapter && state.chapter.section_id};
+    if (action === "bind") {
+      request.url = document.getElementById("online-url").value;
+      request.identity = document.getElementById("online-identity").value;
+    }
+    setBusy(true); showError("");
+    document.getElementById("online-notice").textContent = "正在访问飞书，请稍候…";
+    fetch("/api/online-document", {method:"POST", credentials:"same-origin",
+      headers:{"Content-Type":"application/json"}, body:JSON.stringify(request)})
+      .then(function (response) { return response.json().then(function (data) {
+        if (!response.ok) throw new Error(data.error && data.error.message || "在线文档操作失败");
+        return data;
+      }); })
+      .then(function (data) { state = data; renderChapterList(); renderEditor(); renderOnline();
+        setStatus(action === "pull" ? "已读取云端章节" : (action === "push" ? "章节已同步" : "云端已回读"), "success"); })
+      .catch(function (error) { showError(error.message); setStatus("在线操作未完成", "warning"); })
+      .finally(function () { setBusy(false); });
+  }
+
   function requestId() {
     return window.crypto && typeof window.crypto.randomUUID === "function"
       ? window.crypto.randomUUID()
@@ -288,6 +340,7 @@
     });
     renderReviewActions();
     renderAiScoring();
+    renderOnline();
   }
 
   function renderReviewActions() {
@@ -1164,6 +1217,7 @@
       applySettings(data.settings);
       renderChapterList();
       renderEditor();
+      renderOnline();
       var hasUnsavedBuffer = Object.prototype.hasOwnProperty.call(unsavedBuffers, selectedId);
       var hasUpstreamErrors = data.upstream && data.upstream.errors && data.upstream.errors.length;
       setStatus(hasUnsavedBuffer ? "有未保存修改" : (hasUpstreamErrors ? "上游待复核" : "已加载"),
@@ -1192,7 +1246,9 @@
       chapter_id: selectedId, body_markdown: bodyEditor.value };
     fetch("/api/save", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(request) })
       .then(function (response) { return response.json().then(function (data) { if (!response.ok) { var error = new Error(data.error && data.error.message || "保存失败"); error.code = data.error && data.error.code; throw error; } return data; }); })
-      .then(function (data) { delete unsavedBuffers[selectedId]; state = data; dirty = false; renderChapterList(); renderEditor(); setStatus("已保存草稿", "success"); showError(""); })
+      .then(function (data) { delete unsavedBuffers[selectedId]; state = data; dirty = false; renderChapterList(); renderEditor(); renderOnline();
+        setStatus(data.online_error ? "本地已保存 · 云端未同步" : (data.online_saved ? "已保存并同步飞书" : "已保存草稿"), data.online_error ? "warning" : "success");
+        showError(data.online_error ? data.online_error.message + " 本地候选已保留；先读取云端并合并，或核对写入结果。" : ""); })
       .catch(function (error) { setStatus(error.code === "stale_write" ? "发生冲突" : "保存失败", "error"); showError(error.message + " 编辑区内容已保留，请重载后手动合并。"); })
       .finally(function () { saveInFlight = false; setBusy(false); discardButton.disabled = !dirty; });
   }
@@ -1278,6 +1334,10 @@
     renderAiScoring();
   });
   saveButton.addEventListener("click", save);
+  document.getElementById("online-form").addEventListener("submit", function (event) { onlineAction("bind", event); });
+  ["fetch", "pull", "push"].forEach(function (action) {
+    document.getElementById("online-" + action).addEventListener("click", function () { onlineAction(action); });
+  });
   document.getElementById("review-action-scope").addEventListener("change", renderReviewActions);
   document.querySelectorAll("[data-review-action]").forEach(function (button) {
     button.addEventListener("click", function () { requestReviewAction(button.dataset.reviewAction); });

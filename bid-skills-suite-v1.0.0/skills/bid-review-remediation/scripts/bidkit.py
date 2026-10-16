@@ -93,6 +93,9 @@ def scan_content(project):
     if settings.is_file():
         if settings.is_symlink():raise ValueError('写作设置快照不接收符号链接')
         files.append({'relative_path':'work/writing-settings.json','sha256':digest(settings),'bytes':settings.stat().st_size})
+    online=safe(project,'work/online-review-basis.json')
+    if online.is_file():
+        files.append({'relative_path':'work/online-review-basis.json','sha256':digest(online),'bytes':online.stat().st_size})
     return files
 
 def snapshot(project,out):

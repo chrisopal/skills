@@ -33,6 +33,24 @@
         </div>
         <details class="settings-panel" id="settings-panel">
           <summary>写作设置</summary>
+          <section class="online-panel" aria-labelledby="online-heading">
+            <div class="online-heading"><h3 id="online-heading">在线协作</h3><span id="online-status" class="status status-neutral" role="status">未绑定</span></div>
+            <form id="online-form" class="online-form">
+              <label for="online-url">飞书文档链接</label>
+              <input id="online-url" type="url" placeholder="https://企业.feishu.cn/docx/…" autocomplete="off" required>
+              <label for="online-identity">访问身份</label>
+              <select id="online-identity"><option value="user">已授权用户</option><option value="bot">应用（需有文档权限）</option></select>
+              <button id="online-bind" class="button button-secondary" type="submit">绑定文档</button>
+            </form>
+            <p id="online-notice" class="online-notice" role="status" aria-live="polite">支持新增章写入与云端拉回；已有章在飞书合并修改。协作成员及权限在飞书管理。</p>
+            <div class="online-toolbar">
+              <a id="online-open" class="button button-secondary" target="_blank" rel="noopener noreferrer" hidden>打开在线文档</a>
+              <button id="online-fetch" class="button button-secondary" type="button" disabled>核对云端版本</button>
+              <button id="online-pull" class="button button-secondary" type="button" disabled>读取当前章节</button>
+              <button id="online-push" class="button button-secondary" type="button" disabled>同步当前章节</button>
+            </div>
+            <details class="online-help"><summary>接力编写与平台支持</summary><p>接力前先读取云端章节；同步遇到人工修改会停止覆盖并保留本地候选。图片随章节上传，评论保留在在线文档。腾讯文档、Office 为待接入适配器。文档权限不等于已获得招标原件与企业材料权限。</p></details>
+          </section>
           <section class="ai-scoring-panel" aria-labelledby="ai-scoring-heading">
             <div class="ai-scoring-heading">
               <div>

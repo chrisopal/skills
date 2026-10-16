@@ -2,7 +2,7 @@
 name: bid-export-acceptance
 description: 生成并核验实际Word／PDF交付文件，确保成稿对应已审核版本且没有漏页、乱码或内部信息泄漏。 适用于：导出标书、Word/PDF成稿、交付打包、检查目录页码、实际文件验收。
 metadata:
-  version: 1.2.2
+  version: "1.3.0"
   language: zh-CN
   sequence: '16'
   suite: bid-skills-suite
@@ -18,6 +18,10 @@ metadata:
 ## 新版质量闭环
 
 完整编标及新版回归先读[质量闭环规程](references/QUALITY_WORKFLOW.md)，由总控预检、拆解逐条评分条件和共同事实、按缺口定向整改，再复核当前Word/PDF。已有确认继续有效；脚本通过不替代语义、真实性或视觉验收。计划、评审与导出收据必须实际落盘并绑定当前版本。
+
+## 在线协作成稿
+
+已绑定在线文档时按[在线标书协作](references/ONLINE_DOCUMENTS.md)回读有效正文与图片，再执行当前版本评审和导出。存在未同步、冲突、未知写入或范围受限评审时不能宣称整本可交付。在线链接、上传返回值及历史报告均不替代实际 Word/PDF 回读。
 
 ## 触发与边界
 

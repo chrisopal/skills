@@ -20,6 +20,9 @@ from writing_workspace import WritingWorkspace  # noqa: E402
 class FakeClient:
     """Small in-memory Feishu-shaped client for adapter contract tests."""
 
+    atomic_replace = True
+    strict_unique_titles = False
+
     def __init__(self, xml: str, *, references: dict | None = None):
         self.xml = xml
         self.revision = 7
@@ -28,8 +31,14 @@ class FakeClient:
         self.update_calls: list[dict] = []
         self.result = "success"
         self.mutate_before_update = False
+        self.mutate_on_success = True
+        self.update_ok = True
+        self.local_resource_failures: list[dict] = []
+        self.fail_fetch_after: int | None = None
 
     def fetch(self, document: str, *, identity: str, revision_id: int = -1) -> dict:
+        if self.fail_fetch_after is not None and len(self.fetch_calls) >= self.fail_fetch_after:
+            raise RuntimeError("post-write fetch unavailable")
         self.fetch_calls.append({"document": document, "identity": identity, "revision_id": revision_id})
         return {"ok": True, "identity": identity, "data": {"document": {
             "document_id": "doxcn-demo001", "revision_id": self.revision,
@@ -44,6 +53,8 @@ class FakeClient:
                                   "start_block_id": start_block_id, "end_block_id": end_block_id})
         if self.result != "success":
             return {"ok": True, "data": {"result": self.result, "updated_blocks_count": 1}}
+        if not self.mutate_on_success:
+            return {"ok": True, "data": {"result": "success", "updated_blocks_count": 1}}
         if revision_id != self.revision:
             return {"ok": True, "data": {"result": "failed", "warnings": ["revision conflict"]}}
         root = ElementTree.fromstring(self.xml)
@@ -67,7 +78,8 @@ class FakeClient:
             raise AssertionError(f"unexpected update command {command}")
         self.xml = ElementTree.tostring(root, encoding="unicode")
         self.revision += 1
-        return {"ok": True, "data": {"result": "success", "updated_blocks_count": len(incoming)}}
+        return {"ok": self.update_ok, "data": {"result": "success", "updated_blocks_count": len(incoming),
+                "local_resource_failures": copy.deepcopy(self.local_resource_failures)}}
 
     def remote_edit(self, text: str) -> None:
         root = ElementTree.fromstring(self.xml)
@@ -169,6 +181,18 @@ class OnlineDocumentsTest(unittest.TestCase):
         self.assertEqual(mapping["SEC-1"]["last_block_id"], "old-duplicate")
         self.assertEqual(mapping["SEC-2"]["heading_block_id"], "chapter-2")
 
+    def test_bind_accepts_rootless_feishu_block_sequence(self) -> None:
+        self.client.xml = (
+            '<title id="doc-title">远程标书</title>'
+            '<p id="before">保留内容</p>'
+            '<h1 id="chapter-1">技术方案</h1>'
+            '<p id="body-1">远程正文</p>'
+        )
+        self.service.bind("doxcn-demo001")
+        mapping = self.service.status()["current_mapping"]
+        self.assertEqual(mapping["SEC-1"]["heading_block_id"], "chapter-1")
+        self.assertEqual(mapping["SEC-1"]["last_block_id"], "body-1")
+
     def test_push_replaces_only_target_and_embeds_local_raster(self) -> None:
         self.service.bind("doxcn-demo001")
         result = self.service.push("SEC-1")
@@ -182,6 +206,22 @@ class OnlineDocumentsTest(unittest.TestCase):
         self.assertNotIn("旧重复标题", self.client.xml)
         self.assertIn("last_synced", self.service.status()["current_mapping"]["SEC-1"])
 
+    def test_heading_containing_body_deduplicates_and_roundtrips_nested_child(self) -> None:
+        payload = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        payload["data"]["chapters"][0]["body_markdown"] = "## 1. 技术方案\n### 子章节\n子章节正文"
+        self._write("artifacts/11-technical-content.json", payload)
+        self.service.bind("doxcn-demo001")
+        self.service.push("SEC-1")
+        content = self.client.update_calls[0]["content"]
+        self.assertEqual(content.count("技术方案"), 1)
+        self.assertIn("<h3>子章节</h3>", content)
+        with patch.object(WritingWorkspace, "_schema_errors", return_value=[]):
+            self.service.pull("SEC-1")
+        written = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        body = next(x for x in written["data"]["chapters"] if x["section_id"] == "SEC-1")["body_markdown"]
+        self.assertNotIn("技术方案", body)
+        self.assertIn("## 子章节", body)
+
     def test_push_is_idempotent_and_rerun_does_not_append_duplicate(self) -> None:
         self.service.bind("doxcn-demo001")
         self.service.push("SEC-1")
@@ -189,10 +229,151 @@ class OnlineDocumentsTest(unittest.TestCase):
         self.assertEqual(second["status"], "unchanged")
         self.assertEqual(len(self.client.update_calls), 1)
 
+    def test_new_chapter_insert_uses_adjacent_remote_heading_level(self) -> None:
+        self.service.bind("doxcn-demo001")
+        result = self.service.push("SEC-3")
+        self.assertEqual(result["status"], "pushed")
+        self.assertTrue(self.client.update_calls[0]["content"].startswith("<h2>"))
+
+    def test_post_write_refresh_failure_persists_reconciliation_guard(self) -> None:
+        self.service.bind("doxcn-demo001")
+        self.client.fail_fetch_after = 2
+        with self.assertRaisesRegex(RuntimeError, "post-write"):
+            self.service.push("SEC-1")
+        self.assertIn("SEC-1", self.service.status()["pending_write_unknown"])
+        with self.assertRaisesRegex(OnlineDocumentError, "结果未知"):
+            self.service.push("SEC-1")
+
+    def test_image_bytes_are_part_of_local_sync_hash(self) -> None:
+        self.service.bind("doxcn-demo001")
+        self.service.push("SEC-1")
+        first_hash = self.service.status()["current_mapping"]["SEC-1"]["last_synced"]["local_hash"]
+        (self.project / "assets/figure.png").write_bytes(b"changed-png")
+        status = self.service.status()
+        second_hash, _ = self.service._local_hash("SEC-1")
+        self.assertNotEqual(first_hash, second_hash)
+        self.assertTrue(any(item["kind"] == "local_unpublished" for item in status["pending_differences"]))
+
     def test_push_rejects_remote_change_since_last_snapshot(self) -> None:
         self.service.bind("doxcn-demo001")
         self.client.remote_edit("第三方修改")
         with self.assertRaisesRegex(OnlineDocumentError, "远程章节已变化"):
+            self.service.push("SEC-1")
+        self.assertEqual(self.client.update_calls, [])
+
+    def test_rebind_same_target_preserves_first_baseline_and_blocks_human_remote_edit(self) -> None:
+        self.service.bind("doxcn-demo001")
+        payload = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        payload["data"]["chapters"][0]["body_markdown"] = "人类本地修改"
+        self._write("artifacts/11-technical-content.json", payload)
+        self.client.remote_edit("人类远程修改")
+        self.service.fetch()
+        self.service.bind("https://feishu.cn/docx/doxcn-demo001?view=1")
+        with self.assertRaisesRegex(OnlineDocumentError, "远程章节已变化"):
+            self.service.push("SEC-1")
+        self.assertEqual(self.client.update_calls, [])
+
+    def test_binding_switch_is_rejected_before_network_fetch(self) -> None:
+        self.service.bind("doxcn-demo001")
+        calls = len(self.client.fetch_calls)
+        with self.assertRaisesRegex(OnlineDocumentError, "其他在线文档"):
+            self.service.bind("doxcn-other002")
+        self.assertEqual(len(self.client.fetch_calls), calls)
+
+    def test_success_without_remote_mutation_is_rejected_without_receipt(self) -> None:
+        self.service.bind("doxcn-demo001")
+        self.client.mutate_on_success = False
+        with self.assertRaisesRegex(OnlineDocumentError, "回读正文不一致"):
+            self.service.push("SEC-1")
+        self.assertNotIn("last_synced", self.service.status()["current_mapping"]["SEC-1"])
+
+    def test_existing_replace_requires_provider_atomic_capability(self) -> None:
+        self.service.bind("doxcn-demo001")
+        self.client.atomic_replace = False
+        with self.assertRaisesRegex(OnlineDocumentError, "原子版本校验"):
+            self.service.push("SEC-1")
+        self.assertEqual(self.client.update_calls, [])
+
+    def test_strict_duplicate_title_receipt_is_pending_and_not_current(self) -> None:
+        self.service.bind("doxcn-demo001")
+        self.service.push("SEC-1")
+        self.client.strict_unique_titles = True
+        status = self.service.status()
+        self.assertTrue(any(item["kind"] == "duplicate_title_unsafe" for item in status["pending_differences"]))
+        with self.assertRaisesRegex(OnlineDocumentError, "duplicate_title_unsafe"):
+            self.service.check_current(["SEC-1"])
+
+    def test_strict_duplicate_title_is_rejected_on_pull(self) -> None:
+        self.client.strict_unique_titles = True
+        self.service.bind("doxcn-demo001")
+        with self.assertRaisesRegex(OnlineDocumentError, "重复章节标题"):
+            self.service.pull("SEC-1")
+
+    def test_nested_subchapter_is_fail_closed(self) -> None:
+        self.client.xml = self.client.xml.replace(
+            '<p block-id="old-duplicate">旧重复标题</p>',
+            '<h3 block-id="nested">实施安排</h3><p block-id="nested-body">子章节正文</p>',
+        )
+        self.service.bind("doxcn-demo001")
+        with self.assertRaisesRegex(OnlineDocumentError, "嵌套子章节"):
+            self.service.push("SEC-1")
+        self.assertEqual(self.client.update_calls, [])
+
+    def test_internal_remote_headings_can_pull_without_outline_child_mapping(self) -> None:
+        self.client.xml = (
+            '<document project-id="P-001"><title block-id="title">远程标书</title>'
+            '<h2 block-id="chapter-1">技术方案</h2>'
+            '<h3 block-id="internal">内部段落</h3><p block-id="internal-body">正文</p>'
+            '<h2 block-id="chapter-2">实施安排</h2><p block-id="other-body">其他</p></document>'
+        )
+        self.service.bind("doxcn-demo001")
+        with patch.object(WritingWorkspace, "_schema_errors", return_value=[]):
+            self.service.pull("SEC-1")
+        payload = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        body = next(x for x in payload["data"]["chapters"] if x["section_id"] == "SEC-1")["body_markdown"]
+        self.assertIn("## 内部段落", body)
+
+    def test_mapped_nested_child_remains_unsafe_after_prior_pull_receipt(self) -> None:
+        self.client.xml = (
+            '<document project-id="P-001"><title block-id="title">远程标书</title>'
+            '<h2 block-id="chapter-1">技术方案</h2>'
+            '<h3 block-id="internal">内部段落</h3><p block-id="internal-body">正文</p>'
+            '<h2 block-id="chapter-2">实施安排</h2><p block-id="other-body">其他</p></document>'
+        )
+        self.service.bind("doxcn-demo001")
+        with patch.object(WritingWorkspace, "_schema_errors", return_value=[]):
+            self.service.pull("SEC-1")
+        self.client.xml = self.client.xml.replace(
+            '<h3 block-id="internal">内部段落</h3>',
+            '<h3 block-id="internal">实施安排</h3>',
+        )
+        with self.assertRaisesRegex(OnlineDocumentError, "嵌套子章节"):
+            self.service.pull("SEC-1")
+
+    def test_mapped_child_heading_is_rejected_on_pull(self) -> None:
+        self.client.xml = self.client.xml.replace(
+            '<p block-id="old-duplicate">旧重复标题</p>',
+            '<h3 block-id="nested">实施安排</h3><p block-id="nested-body">子章节正文</p>',
+        )
+        self.service.bind("doxcn-demo001")
+        with self.assertRaisesRegex(OnlineDocumentError, "嵌套子章节"):
+            self.service.pull("SEC-1")
+
+    def test_strict_provider_rejects_duplicate_chapter_titles(self) -> None:
+        self.client.strict_unique_titles = True
+        # The fixture has two matching titles; the provider must not select the
+        # last one and silently replace an ambiguous range.
+        self.client.xml = self.remote_xml.replace(
+            '</document>', '<h2 block-id="chapter-1-old">技术方案</h2><p block-id="old-duplicate">重复</p></document>')
+        self.service.bind("doxcn-demo001")
+        with self.assertRaisesRegex(OnlineDocumentError, "重复章节标题"):
+            self.service.push("SEC-1")
+        self.assertEqual(self.client.update_calls, [])
+
+    def test_target_comments_are_fail_closed(self) -> None:
+        self.client.references = {"comments": {"c1": {"block-id": "old-duplicate"}}}
+        self.service.bind("doxcn-demo001")
+        with self.assertRaisesRegex(OnlineDocumentError, "评论引用"):
             self.service.push("SEC-1")
         self.assertEqual(self.client.update_calls, [])
 
@@ -203,6 +384,16 @@ class OnlineDocumentsTest(unittest.TestCase):
             self.service.push("SEC-1")
         self.assertEqual(len(self.client.update_calls), 1)
         self.assertNotIn("last_synced", self.service.status()["current_mapping"]["SEC-1"])
+        with self.assertRaisesRegex(OnlineDocumentError, "结果未知"):
+            self.service.push("SEC-1")
+
+    def test_ok_false_resource_failure_is_not_treated_as_success(self) -> None:
+        self.service.bind("doxcn-demo001")
+        self.client.update_ok = False
+        self.client.local_resource_failures = [{"kind": "image", "status": "upload_failed"}]
+        with self.assertRaisesRegex(OnlineDocumentError, "禁止自动重试"):
+            self.service.push("SEC-1")
+        self.assertNotIn("last_synced", self.service.status()["current_mapping"]["SEC-1"])
 
     def test_check_current_blocks_local_and_remote_differences_but_can_scope(self) -> None:
         self.service.bind("doxcn-demo001")
@@ -212,6 +403,13 @@ class OnlineDocumentsTest(unittest.TestCase):
             self.service.check_current(["SEC-1"])
         self.service.push("SEC-1")
         self.client.remote_edit("第三方修改")
+        with self.assertRaisesRegex(OnlineDocumentError, "remote_changed"):
+            self.service.check_current(["SEC-1"])
+
+    def test_reference_map_change_with_same_xml_is_remote_difference(self) -> None:
+        self.service.bind("doxcn-demo001")
+        self.service.push("SEC-1")
+        self.client.references = {"comments": {"c1": {"block-id": "before"}}}
         with self.assertRaisesRegex(OnlineDocumentError, "remote_changed"):
             self.service.check_current(["SEC-1"])
 
@@ -226,17 +424,97 @@ class OnlineDocumentsTest(unittest.TestCase):
         self.assertIn("旧重复标题", chapter["body_markdown"])
         self.assertEqual(self.client.update_calls, [])
 
+    def test_pull_disables_advisories_while_online_lock_is_held(self) -> None:
+        self.service.bind("doxcn-demo001")
+        self.client.xml = self.client.xml.replace('<img block-id="remote-image" src="resource-1"/>', "")
+        state_calls: list[dict] = []
+        save_calls: list[dict] = []
+        original_state = WritingWorkspace.state
+        original_save = WritingWorkspace.save
+
+        def state_probe(workspace, *args, **kwargs):
+            state_calls.append(kwargs)
+            return original_state(workspace, *args, **kwargs)
+
+        def save_probe(workspace, request, *args, **kwargs):
+            save_calls.append(kwargs)
+            return original_save(workspace, request, *args, **kwargs)
+
+        with patch.object(WritingWorkspace, "state", new=state_probe), \
+                patch.object(WritingWorkspace, "save", new=save_probe), \
+                patch.object(WritingWorkspace, "_schema_errors", return_value=[]):
+            self.service.pull("SEC-1")
+        self.assertGreaterEqual(len(state_calls), 1)
+        self.assertTrue(all(call == {"include_advisories": False} for call in state_calls))
+        self.assertEqual(save_calls, [{"include_advisories": False}])
+
     def test_pull_reuses_known_local_image_resource(self) -> None:
         self.service.bind("doxcn-demo001")
-        self.client.xml = self.client.xml.replace(
-            '<p block-id="old-duplicate">旧重复标题</p>',
-            '<img block-id="old-duplicate" src="resource-1"/>',
-        )
+        self.service.push("SEC-1")
         with patch.object(WritingWorkspace, "_schema_errors", return_value=[]):
             self.service.pull("SEC-1")
         payload = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
         chapter = next(x for x in payload["data"]["chapters"] if x["section_id"] == "SEC-1")
         self.assertIn("![图1](assets/figure.png)", chapter["body_markdown"])
+
+    def test_markdown_table_pushes_native_xml_and_roundtrips(self) -> None:
+        payload = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        payload["data"]["chapters"][0]["body_markdown"] = (
+            "| **指标** | 方法 |\n| --- | --- |\n| 目标 | 分层 |\n| 结果 | 可追溯 |"
+        )
+        self._write("artifacts/11-technical-content.json", payload)
+        self.service.bind("doxcn-demo001")
+        result = self.service.push("SEC-1")
+        self.assertEqual(result["status"], "pushed")
+        content = self.client.update_calls[0]["content"]
+        self.assertIn("<table>", content)
+        self.assertIn("<thead><tr><th><p><b>指标</b></p></th><th><p>方法</p></th></tr></thead>", content)
+        self.assertIn("<tbody><tr><td><p>目标</p></td><td><p>分层</p></td></tr>", content)
+        with patch.object(WritingWorkspace, "_schema_errors", return_value=[]):
+            self.service.pull("SEC-1")
+        written = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        body = next(x for x in written["data"]["chapters"] if x["section_id"] == "SEC-1")["body_markdown"]
+        self.assertIn("| **指标** | 方法 |", body)
+        self.assertIn("| 目标 | 分层 |", body)
+        self.assertIn("| 结果 | 可追溯 |", body)
+
+    def test_markdown_table_must_be_rectangular(self) -> None:
+        payload = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        payload["data"]["chapters"][0]["body_markdown"] = "| A | B |\n| --- | --- |\n| only |"
+        self._write("artifacts/11-technical-content.json", payload)
+        self.service.bind("doxcn-demo001")
+        with self.assertRaisesRegex(OnlineDocumentError, "矩形"):
+            self.service.push("SEC-1")
+        self.assertEqual(self.client.update_calls, [])
+
+    def test_pull_roundtrips_native_simple_table_and_rejects_merged_table(self) -> None:
+        self.client.xml = (
+            '<document project-id="P-001"><title block-id="title">远程标书</title>'
+            '<h2 block-id="chapter-1">技术方案</h2>'
+            '<table id="table-1"><colgroup><col width="160"/><col width="244"/></colgroup>'
+            '<thead><tr><th vertical-align="top"><p id="head-1">指标</p></th>'
+            '<th vertical-align="top"><p id="head-2">方法</p></th></tr></thead>'
+            '<tbody><tr><td vertical-align="top"><p id="body-1">目标</p></td>'
+            '<td vertical-align="top"><p id="body-2">分层</p></td></tr></tbody></table>'
+            '<h2 block-id="chapter-2">实施安排</h2><p block-id="other-body">其他</p></document>'
+        )
+        self.service.bind("doxcn-demo001")
+        with patch.object(WritingWorkspace, "_schema_errors", return_value=[]):
+            self.service.pull("SEC-1")
+        payload = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        body = next(x for x in payload["data"]["chapters"] if x["section_id"] == "SEC-1")["body_markdown"]
+        self.assertIn("| 指标 | 方法 |", body)
+        self.assertIn("| --- | --- |", body)
+        self.assertIn("| 目标 | 分层 |", body)
+
+        self.client.xml = self.client.xml.replace(
+            '<th vertical-align="top"><p id="head-1">指标</p></th>',
+            '<th colspan="2"><p id="head-1">指标</p></th>'
+        )
+        before = (self.project / "artifacts/11-technical-content.json").read_bytes()
+        with self.assertRaisesRegex(OnlineDocumentError, "合并单元格"):
+            self.service.pull("SEC-1")
+        self.assertEqual((self.project / "artifacts/11-technical-content.json").read_bytes(), before)
 
     def test_pull_rejects_unsupported_remote_resource_without_local_write(self) -> None:
         self.service.bind("doxcn-demo001")
@@ -252,6 +530,25 @@ class OnlineDocumentsTest(unittest.TestCase):
         with self.assertRaisesRegex(OnlineDocumentError, "未登记"):
             self.service.pull("SEC-1")
         self.assertEqual((self.project / "artifacts/11-technical-content.json").read_bytes(), before)
+
+    def test_table_inline_format_loss_fails_readback_verification(self) -> None:
+        payload = json.loads((self.project / "artifacts/11-technical-content.json").read_text())
+        payload["data"]["chapters"][0]["body_markdown"] = (
+            "| **指标** | 方法 |\n| --- | --- |\n| 目标 | 分层 |"
+        )
+        self._write("artifacts/11-technical-content.json", payload)
+        self.service.bind("doxcn-demo001")
+        original_update = self.client.update
+
+        def strip_inline(*args, **kwargs):
+            result = original_update(*args, **kwargs)
+            self.client.xml = self.client.xml.replace("<b>指标</b>", "指标")
+            return result
+
+        self.client.update = strip_inline
+        with self.assertRaisesRegex(OnlineDocumentError, "回读正文不一致"):
+            self.service.push("SEC-1")
+        self.assertNotIn("last_synced", self.service.status()["current_mapping"]["SEC-1"])
 
     def test_path_safe_local_image_and_malformed_remote_xml(self) -> None:
         self.service.bind("doxcn-demo001")
@@ -285,6 +582,32 @@ class OnlineDocumentsTest(unittest.TestCase):
                 client._run(["lark-cli"], document="https://feishu.cn/docx/doxcn-demo001",
                             identity="user", write=True)
         self.assertNotIn("doxcn-demo001", str(caught.exception))
+
+    def test_cli_json_error_extracts_safe_code_and_message(self) -> None:
+        client = FeishuCliClient(cwd=self.project)
+        completed = type("Completed", (), {
+            "returncode": 1, "stdout": json.dumps({"error": {
+                "code": "app_scope_not_applied", "message": "token=doxcn-demo001 denied",
+            }}), "stderr": "",
+        })()
+        with patch("online_documents.subprocess.run", return_value=completed):
+            with self.assertRaises(OnlineDocumentError) as caught:
+                client._run(["lark-cli"], document="https://feishu.cn/docx/doxcn-demo001",
+                            identity="user", write=True)
+        self.assertIn("app_scope_not_applied", str(caught.exception))
+        self.assertNotIn("doxcn-demo001", str(caught.exception))
+
+    def test_cli_partial_json_response_is_returned_for_reconciliation(self) -> None:
+        client = FeishuCliClient(cwd=self.project)
+        completed = type("Completed", (), {
+            "returncode": 1, "stdout": json.dumps({"ok": False, "data": {
+                "result": "success", "local_resource_failures": [{"kind": "image"}],
+            }}), "stderr": "",
+        })()
+        with patch("online_documents.subprocess.run", return_value=completed):
+            result = client._run(["lark-cli"], document="doxcn-demo001", identity="user", write=True)
+        self.assertFalse(result["ok"])
+        self.assertTrue(result["data"]["local_resource_failures"])
 
 
 if __name__ == "__main__":

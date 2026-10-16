@@ -41,6 +41,8 @@ def load_inputs(project):
 
 def prepare(project):
     project = Path(project).resolve()
+    from online_review import basis as online_basis
+    online_basis(project)
     stages, _ = load_inputs(project)
     matrix = {}
     for area in STAGES:
@@ -243,6 +245,8 @@ def source_text(project, source, cache):
 
 
 def check(project, review, snapshot_path):
+    from online_review import basis as online_basis
+    online_basis(project)
     project = Path(project).resolve()
     errors, blockers, warnings = [], [], []
     from validate_output import validate

@@ -77,6 +77,16 @@ for _skill in ('bid-technical-writing', 'bid-review-remediation', 'bid-orchestra
     DISTRIBUTED_DOCS[_skill] += ('AI_EXPERT_SCORING.md',)
     DISTRIBUTED_DOCS[_skill] = tuple(dict.fromkeys(DISTRIBUTED_DOCS[_skill]))
 
+# Shared review guards also run in standalone 09/16 installations.
+for _skill in ('bid-evidence-matching', 'bid-technical-writing', 'bid-review-remediation',
+               'bid-export-acceptance', 'bid-orchestrator'):
+    DISTRIBUTED_SCRIPTS[_skill] += ('online_documents.py', 'online_review.py', 'writing_workspace.py',
+                                  'outline_view.py', 'writing_policy.py')
+    DISTRIBUTED_SCRIPTS[_skill] = tuple(dict.fromkeys(DISTRIBUTED_SCRIPTS[_skill]))
+    DISTRIBUTED_DOCS[_skill] += ('ONLINE_DOCUMENTS.md',)
+for _skill in ('bid-visuals',):
+    DISTRIBUTED_DOCS[_skill] += ('ONLINE_DOCUMENTS.md',)
+
 DISTRIBUTED_ASSET_DIRS = {
     'bid-project-profile': ('tender-routing',),
     'bid-technical-writing': ('ui',),

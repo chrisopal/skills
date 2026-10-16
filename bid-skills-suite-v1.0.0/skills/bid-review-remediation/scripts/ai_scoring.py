@@ -247,6 +247,8 @@ def prepare(project, scope: str = "full"):
     project = Path(project).resolve()
     if scope not in SCOPES:
         raise ValueError("scope必须是full或limited")
+    from online_review import basis as online_basis
+    online = online_basis(project, scope)
     scoring, items, leaves, _ = _load_inputs(project)
     files, fingerprint = _inventory(project)
     review = _review_binding(project)
@@ -297,6 +299,7 @@ def prepare(project, scope: str = "full"):
                 "revision": scoring.get("revision"),
             },
             "review": review,
+            **({"online_document": online} if online is not None else {}),
         },
         "evaluator": {"kind": "host_agent", "host": None, "model": None},
         "evaluated_at": None,
@@ -600,8 +603,10 @@ def check(project, payload):
         if payload.get("status") not in {"draft", "completed", "blocked"}:
             errors.append("评分产物status无效")
         scoring, items, leaves, by_id = _load_inputs(project)
-        files, fingerprint = _inventory(project)
         inputs = payload.get("inputs") or {}
+        from online_review import verify as verify_online
+        verify_online(project, inputs.get("online_document"), scope, payload.get("rows"))
+        files, fingerprint = _inventory(project)
         if inputs.get("content_fingerprint") != fingerprint:
             errors.append("项目内容已新增或变更，评分输入快照过期")
         if inputs.get("content_inventory") != files:

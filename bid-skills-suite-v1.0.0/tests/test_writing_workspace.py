@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import contextmanager
 import hashlib
 import json
 import threading
@@ -21,6 +22,30 @@ from writing_workspace import WritingWorkspace  # noqa: E402
 
 
 class WritingWorkspaceTest(unittest.TestCase):
+    def test_save_releases_local_lock_before_advisory_state(self) -> None:
+        workspace = self._workspace()
+        state = workspace.state()
+        locked = False
+
+        @contextmanager
+        def observed_lock(project):
+            nonlocal locked
+            locked = True
+            try:
+                yield
+            finally:
+                locked = False
+
+        def read_state(*args, **kwargs):
+            self.assertFalse(locked, "advisory cloud reads must not hold the local write lock")
+            return {"saved": True}
+
+        with patch("writing_workspace._file_lock", observed_lock), patch.object(workspace, "state", read_state):
+            result = workspace.save({"expected_revision": state["writing"]["revision"],
+                                     "expected_sha256": state["writing"]["sha256"],
+                                     "chapter_id": "CH-1", "body_markdown": "更新后的正文"})
+        self.assertTrue(result["saved"])
+
     def setUp(self) -> None:
         self.temp = TemporaryDirectory()
         self.project = Path(self.temp.name)
@@ -109,6 +134,33 @@ class WritingWorkspaceTest(unittest.TestCase):
         self.assertTrue(list((self.project / "work/writing-history").glob("*.json")))
         self.assertIn("# 技术方案", (self.project / "artifacts/11-technical-content.md").read_text())
         self.assertTrue((self.project / "work/writing-audit.jsonl").is_file())
+
+    def test_online_save_failure_keeps_local_candidate_and_reports_unsynced(self) -> None:
+        from online_documents import OnlineDocumentError
+        workspace = self._workspace()
+        writing = workspace.state("CH-1")["writing"]
+        with patch("online_documents.OnlineDocumentService") as service:
+            service.return_value.status.return_value = {"bound": True}
+            service.return_value.push.side_effect = OnlineDocumentError("远程有人工修改", "remote_changed", 409)
+            result = workspace.save_and_sync({"expected_revision": writing["revision"],
+                "expected_sha256": writing["sha256"], "chapter_id": "CH-1", "body_markdown": "保留候选"})
+        self.assertEqual(result["chapter"]["body_markdown"], "保留候选")
+        self.assertEqual(result["online_error"]["code"], "remote_changed")
+        self.assertFalse(result.get("online_saved", False))
+
+    def test_online_save_pushes_selected_section_after_local_save(self) -> None:
+        workspace = self._workspace()
+        writing = workspace.state("CH-1")["writing"]
+        with patch("online_documents.OnlineDocumentService") as service:
+            service.return_value.status.return_value = {"bound": True}
+            result = workspace.save_and_sync({"expected_revision": writing["revision"],
+                "expected_sha256": writing["sha256"], "chapter_id": "CH-1", "body_markdown": "新候选"})
+            service.return_value.push.assert_called_once_with("SEC-1")
+        self.assertTrue(result["online_saved"])
+
+    def test_online_route_rejects_invalid_operation_without_remote_write(self) -> None:
+        with self.assertRaises(WorkspaceError):
+            self._workspace().online_action({"action": "overwrite"})
 
     def test_derived_markdown_failure_rolls_back_authoritative_json(self) -> None:
         workspace = self._workspace()

@@ -60,6 +60,19 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; }
+.online-panel { border-bottom: 1px solid var(--ui-border); padding: 16px 0; margin-bottom: 16px; }
+.online-heading, .online-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.online-heading { justify-content: space-between; margin-bottom: 12px; }
+.online-heading h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.online-form { display: grid; grid-template-columns: auto minmax(160px,1fr); align-items: center; gap: 8px 12px; }
+.online-form input, .online-form select { width: 100%; min-width: 0; min-height: 34px; padding: 4px 8px; border: 1px solid var(--ui-border-control); border-radius: 4px; color: var(--ui-text); background: var(--ui-surface); font: inherit; }
+.online-form button { grid-column: 2; justify-self: start; }
+.online-notice, .online-help p { color: var(--ui-text-secondary); overflow-wrap: anywhere; }
+.online-help { margin-top: 12px; }
+.online-help summary { color: var(--ui-action-text); cursor: pointer; }
+.online-form :focus-visible, .online-help summary:focus-visible { outline: 2px solid var(--ui-action-text); outline-offset: 2px; }
+.online-toolbar [hidden] { display: none; }
+@media(max-width:600px) { .online-form { grid-template-columns: minmax(0,1fr); } .online-form button { grid-column: 1; } }
 .review-actions { border: 1px solid var(--ui-border); border-radius: 6px; padding: 12px; margin-bottom: 16px; background: var(--ui-surface-muted); }
 .review-actions-heading, .review-action-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .review-actions-heading { justify-content: space-between; }

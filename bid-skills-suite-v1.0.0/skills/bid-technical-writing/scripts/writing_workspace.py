@@ -533,7 +533,7 @@ class WritingWorkspace:
             current = sections.get(current.get("parent_id"))
         return list(dict.fromkeys(result))
 
-    def state(self, chapter_id: str | None = None) -> dict:
+    def state(self, chapter_id: str | None = None, *, include_advisories: bool = True) -> dict:
         project_meta = _read_json(self.project_meta_path)
         outline = self._load_artifact(self.outline_path)
         writing = self._load_artifact(self.writing_path)
@@ -594,18 +594,23 @@ class WritingWorkspace:
         chapter_policy = (resolve_policy(selected_section, outline['data']['sections'],
                                          scoring['data']['items'], requirements['data']['requirements'], settings)
                           if selected_section else None)
-        try:
-            from review_actions import ReviewActionService
-            review_actions = ReviewActionService(self.project).view()
-        except Exception as exc:  # review actions are advisory and must not hide editor state.
-            review_actions = {"available": False, "error": str(exc), "findings": [],
+        review_actions = {"available": False, "host_execution": "deferred"}
+        ai_scoring = {"available": False, "host_execution": "deferred"}
+        # Pull already holds the online lock; advisory checks may read cloud
+        # state again and must run only after that transaction is released.
+        if include_advisories:
+            try:
+                from review_actions import ReviewActionService
+                review_actions = ReviewActionService(self.project).view()
+            except Exception as exc:  # review actions are advisory and must not hide editor state.
+                review_actions = {"available": False, "error": str(exc), "findings": [],
+                                  "latest_request": None, "host_execution": "manual_handoff"}
+            try:
+                from ai_scoring_actions import AIScoringActionService
+                ai_scoring = AIScoringActionService(self.project).view()
+            except Exception as exc:  # scoring actions are advisory and must not hide editor state.
+                ai_scoring = {"available": False, "error": str(exc), "latest_report": None,
                               "latest_request": None, "host_execution": "manual_handoff"}
-        try:
-            from ai_scoring_actions import AIScoringActionService
-            ai_scoring = AIScoringActionService(self.project).view()
-        except Exception as exc:  # scoring actions are advisory and must not hide editor state.
-            ai_scoring = {"available": False, "error": str(exc), "latest_report": None,
-                          "latest_request": None, "host_execution": "manual_handoff"}
         return {"project": project_view, "outline": outline_view, "writing": writing_view,
                 "chapters": rows, "chapter": chapter, "requirements": requirements,
                 "score": scoring, "scoring": scoring, "evidence": evidence,
@@ -613,9 +618,54 @@ class WritingWorkspace:
                 "references": self._references(chapter, requirements, scoring, evidence),
                 "upstream": upstream, "coverage": self._coverage(), "settings": settings,
                 "chapter_policy": chapter_policy,
+                "online_document": self.online_status(),
                 "review_actions": review_actions,
                 "ai_scoring": ai_scoring,
                 "ui": {"semantic_acceptance": "NOT_TESTED", "writable_state": "proposed/draft only"}}
+
+    def online_status(self) -> dict:
+        from online_documents import OnlineDocumentError, OnlineDocumentService
+        try:
+            return OnlineDocumentService(self.project).status()
+        except OnlineDocumentError as exc:
+            return {"bound": False, "error": str(exc), "code": exc.code}
+
+    def online_action(self, request: dict) -> dict:
+        from online_documents import OnlineDocumentError, OnlineDocumentService
+        if not isinstance(request, dict):
+            raise WorkspaceError("在线文档请求必须是对象")
+        service = OnlineDocumentService(self.project)
+        action = request.get("action")
+        try:
+            if action == "bind":
+                service.bind(request.get("url", ""), identity=request.get("identity", "user"))
+            elif action == "fetch":
+                service.fetch()
+            elif action in {"pull", "push"}:
+                section_id = request.get("section_id")
+                if not isinstance(section_id, str) or not section_id:
+                    raise WorkspaceError("请选择目标章节")
+                getattr(service, action)(section_id)
+            else:
+                raise WorkspaceError("在线文档操作无效")
+        except OnlineDocumentError as exc:
+            raise WorkspaceError(str(exc), exc.code, exc.status) from exc
+        return self.state(request.get("chapter_id"))
+
+    def save_and_sync(self, request: dict) -> dict:
+        """Keep local candidates even if the remote CAS/write/readback fails."""
+        from online_documents import OnlineDocumentError, OnlineDocumentService
+        result = self.save(request)
+        service = OnlineDocumentService(self.project)
+        try:
+            if service.status().get("bound"):
+                service.push(result["chapter"]["section_id"])
+                result = self.state(request["chapter_id"])
+                result["online_saved"] = True
+        except OnlineDocumentError as exc:
+            result["online_error"] = {"code": exc.code, "message": str(exc)}
+            result["online_document"] = self.online_status()
+        return result
 
     def review_action_request(self, request: dict) -> dict:
         """Create a host handoff and return the refreshed state view plus request."""
@@ -695,7 +745,7 @@ class WritingWorkspace:
                           chapter.get("body_markdown", "").rstrip(), ""])
         return "\n".join(lines).rstrip() + "\n"
 
-    def save(self, request: dict) -> dict:
+    def save(self, request: dict, *, include_advisories: bool = True) -> dict:
         expected_revision, expected_sha, chapter_id, body = self._validate_save_request(request)
         with _file_lock(self.project):
             current = self._load_artifact(self.writing_path)
@@ -789,7 +839,9 @@ class WritingWorkspace:
                         "保存发生部分写入，正文落盘状态需人工检查；派生文件恢复失败。",
                         "partial_save", 500) from exc
                 raise WorkspaceError("保存失败，已回滚正文和派生文件，请重试。", "save_rolled_back", 500) from exc
-            return self.state(chapter_id)
+        # Advisory state may read the online document.  Release the local write
+        # lock first so a concurrent cloud pull cannot invert the lock order.
+        return self.state(chapter_id, include_advisories=include_advisories)
 
 
 class _RequestHandler(BaseHTTPRequestHandler):
@@ -889,6 +941,9 @@ class _RequestHandler(BaseHTTPRequestHandler):
             if parsed.path == "/api/settings":
                 self._send_json(200, self.workspace.settings())
                 return
+            if parsed.path == "/api/online-document":
+                self._send_json(200, self.workspace.online_status())
+                return
             if parsed.path == "/api/file":
                 path = _safe_path(self.workspace.project, parse_qs(parsed.query).get("path", [""])[0], "文件路径", True)
                 if path.suffix.lower() not in {".json", ".md", ".pdf", ".txt", ".png", ".jpg", ".jpeg", ".svg"}:
@@ -936,7 +991,10 @@ class _RequestHandler(BaseHTTPRequestHandler):
             return
         try:
             if self.path == "/api/save":
-                self._send_json(200, self.workspace.save(self._json_body()))
+                self._send_json(200, self.workspace.save_and_sync(self._json_body()))
+                return
+            if self.path == "/api/online-document":
+                self._send_json(200, self.workspace.online_action(self._json_body()))
                 return
             if self.path == "/api/settings":
                 self._send_json(200, self.workspace.save_settings(self._json_body()))

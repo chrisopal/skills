@@ -2,7 +2,7 @@
 name: bid-review-remediation
 description: 逐项审核评分条件、关键材料和资格／否决条件，支持对已写标书按原文规则进行AI模拟专家评分、解释扣分并安排提升；复核整改后形成当前版本的交付建议。
 metadata:
-  version: 1.5.0
+  version: "1.6.0"
   language: zh-CN
   sequence: '15'
   suite: bid-skills-suite
@@ -16,6 +16,10 @@ metadata:
 ## 新版质量闭环
 
 完整编标及新版回归先读[质量闭环规程](references/QUALITY_WORKFLOW.md)，由总控预检、拆解逐条评分条件和共同事实、按缺口定向整改，再复核当前Word/PDF。已有确认继续有效；脚本通过不替代语义、真实性或视觉验收。计划、评审与导出收据必须实际落盘并绑定当前版本。
+
+## 在线协作评审
+
+已绑定在线文档时先读[在线标书协作](references/ONLINE_DOCUMENTS.md)，重新拉取并核对正文、图片和同步收据。整本评审要求所有已写章同步；限定 AI 评分只引用已同步章，其他项保留未评。云端变化使旧结论失效；平台评论不是正式批准，部分写入不能算通过。
 
 ## 输入与范围
 

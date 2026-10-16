@@ -1681,3 +1681,10 @@
 - 验证：完整 `python -m unittest discover -s tests -q` 共 439 项，438 通过、1 项缺可选 CairoSVG 跳过；`check_suite.py` 17 Skill/34 Schema/17 ZIP 与 737 校验项同源、17 quick_validate、7 Python 编译、JS 语法及 diff 检查通过。独立 Sol 对最后表格格式丢失及已映射子章反例复核通过。两份隔离标书实际测试：东台新章写入并回读、审核评论、模拟接力修订、4 列原生表格拉回、旧评分失效及重新评读；S-05 当前模拟 7.5/9，其余 91 分未评。1440px 浅色、1920/390px 深色真实浏览器检查无横向溢出、控制台无错误，在线核对操作成功。Codex/WorkBuddy 各 17 安装目录的 489 个源文件逐一哈希一致，原版本备份在发现目录外。
 - 决策与简化：复用已安装 lark-cli 与宿主 Skills，不新增依赖、模型服务、应用 API/数据库/部署。CLI revision 参数未提供可依赖的原子条件覆盖，已有章改写返回 requires_native_merge，先在飞书原生编辑器合并再拉回；自动同步只新增章或确认未变章。未知写入、部分成功、同名标题、未知资源及嵌套已映射章节均阻止覆盖，刷新/重绑不洗掉冲突；本地保存和在线读取锁顺序已回归验证。
 - 风险/后续：用户身份授权过期，本次显式用应用身份；青草沙 3 张图真实上传因缺应用权限失败，未标为整章同步，个人自动授权也缺成员权限。图片完整闭环、真人双账号/并发、WorkBuddy 模型执行、Windows、完整当前 Word/PDF 验收未运行；核心资格/材料/否决及正式交付仍阻塞，不把脚本通过或模拟小计当专家认可。详见 docs/plans/2026-10-16-online-bid-documents-validation.md。生成证据只留本机，未改 Bid Agent 应用和无关 WIP；按本轮明确授权提交，并快进推送当前分支及 main。
+
+
+## 2026-10-16 — 飞书用户授权与青草沙三图补验
+
+- 完成内容：用户亲自完成 docs/drive 授权后，由宿主完成 device-flow 回调并核验 user/verified/ready/valid。使用用户身份另建隔离测试文档，通过现有适配器写入青草沙 9.3 正文、流程图、界面示意图与功能架构图；没有重绑旧失败项目或自动重放未知写入。更新 README、ONLINE_DOCUMENTS、六个独立 Skill 同源引用及验证记录，保留首次应用身份权限失败的历史。
+- 验证：实际推送返回 pushed；三份云端图片均下载成功且 SHA256 与本地图逐一相同；pull 返回 pulled，三图保留在本地正文，assert_current 返回 current。refresh_distribution/check_suite 通过 17 Skill/34 Schema/17 ZIP/737 校验项；53 个本地文档链接、12 个 Codex/WorkBuddy 安装引用哈希及 diff 检查通过。回执和下载文件只留 output/tender-analysis/online-documents-20261016/qingcaosha-user-auth。
+- 风险/后续：用户授权不等于应用身份权限修复，未修改后台应用 scope、邀请成员或变更分享。真人双账号/并发、WorkBuddy 模型执行、当前整本评分和 Word/PDF 验收仍未运行，既有正式交付阻塞不变。此次只有文档变更，未重跑此前已通过的 439 项工程回归、应用 lint/build 或生图；未新增依赖、应用代码或接口。验证后按既有明确授权提交推送当前分支及 main，不公开授权凭证、文档 token、原件或生成证据。

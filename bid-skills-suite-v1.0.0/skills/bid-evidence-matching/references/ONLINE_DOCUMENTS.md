@@ -8,6 +8,8 @@
 
 默认使用已授权用户身份。应用身份只适用于明确选择该身份且应用可访问的文档；应用创建成功不代表个人账号自动获权。写入正文和上传图片可能需要不同的权限范围，任一步失败都不能显示“整章已同步”。授权过期、缺范围、无文档权限、超时及部分写入分别返回错误，并保留本地候选与审计。
 
+用户授权过期时，由宿主按 `lark-shared` 的分步流程发起 `lark-cli auth login --domain docs --domain drive --no-wait --json`，展示返回的原始链接和二维码；用户完成后由宿主用本次 `device_code` 完成登录，并执行 `auth status --json --verify`。不要把授权信息写进 Skill、README 或项目正文。用户身份和应用身份的权限分别核验，用户授权成功不代表应用身份的同项权限已修复。
+
 用户指定飞书 Docx/Wiki 链接后，总控识别提供方并执行绑定；腾讯文档和 Office 已登记扩展入口，但当前尚未实现读写，选择时明确拒绝，不伪装接入成功。
 
 ## 正常使用
@@ -58,4 +60,4 @@ python scripts/online_documents.py check --project /project --section-id SEC-ID
 
 ## 当前版本验证范围
 
-见仓库[飞书接入验证记录](https://github.com/chrisopal/skills/blob/main/docs/plans/2026-10-16-online-bid-documents-validation.md)。两份既有标书使用隔离副本测试；实际云端图片上传受应用权限限制，真人双账号协作尚未验收。脚本反例通过不替代这些平台验收。
+见仓库[飞书接入验证记录](https://github.com/chrisopal/skills/blob/main/docs/plans/2026-10-16-online-bid-documents-validation.md)。两份既有标书使用隔离副本测试；应用身份首次图片上传失败保留为反例。用户重新授权后，青草沙 9.3 正文与三图真实上传、三份图片下载哈希比对及拉回检查通过。真人双账号协作尚未验收，脚本反例或单账号测试不能替代该验收。

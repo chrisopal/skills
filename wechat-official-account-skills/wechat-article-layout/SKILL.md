@@ -78,6 +78,8 @@ Consume the writer's `正文插图` brief. Choose or generate an inline illustra
 
 Do not add decorative images.
 
+For a group of Skills, default to one overview image plus brief explanation. Keep additional screenshots only when each answers a distinct reader question; do not allocate one screenshot per Skill unless the user requests a detailed tutorial. Apply the audience-first storytelling rules in `../references/human-writing-playbook.md` when choosing what to show.
+
 If an article includes a named enterprise assistant or workflow screen and no real screenshot is available, prefer generating a `高保真系统原型图` in addition to any abstract structure diagram. The prototype should look like a believable SaaS product screenshot or Figma-level UI mockup, not a poster.
 
 Generate accepted inline illustrations with the host agent's `imagegen` tool by default. Prefer this sequence:

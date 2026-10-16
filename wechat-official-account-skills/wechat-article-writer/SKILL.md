@@ -25,6 +25,10 @@ Before drafting:
 
 Write like a thoughtful practitioner talking to a specific reader.
 
+Before outlining, write an internal reader card: the concrete role and working context, the decision or pressure they face, what they should understand or do differently after reading, and the evidence supporting that takeaway. Follow the audience-first storytelling rules in `../references/human-writing-playbook.md`. Do not paste this planning card into the article.
+
+Organize the story around that reader's decisions and consequences. An accurate account of what the author built, tested, or generated is insufficient when the reader cannot see how to apply it in their own work.
+
 The article should help readers:
 
 - first understand a real enterprise problem or workflow conflict

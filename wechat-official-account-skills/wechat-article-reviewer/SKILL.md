@@ -54,6 +54,8 @@ In tone review, explicitly check for:
 
 This reviewer remains the broad final editor. It should not substitute for the dedicated human-tone pass.
 
+Check the writer's internal reader card against the actual article. If the draft mainly lists what the author executed or what each Skill outputs, but does not help the target role make a recognizable decision, mark it `需要重写` even when its facts and screenshots are correct. Apply the audience-first storytelling rules in `../references/human-writing-playbook.md`; distinguish necessary capability limits from process detail that belongs in the audit package.
+
 For practice reviews, verify that the original goal, observed cost, changed responsibilities, reused work, actual outputs and applicable limits are clear where relevant. Do not require a project reversal for tutorials or explanations. Reject generated prototypes presented as actual screenshots, exposed customer material, or blocked/demo artifacts presented as successful delivery. Treat engagement explanations as hypotheses unless the available comparisons support causality; a ratio of displayed shares to reads is not a unique-reader share rate.
 
 ## Output Format

@@ -1,3 +1,11 @@
+## 2026-10-16 — Keep WeChat articles useful to their target reader
+
+- Scope/files: Writer, article reviewer, layout entrypoints; shared human-writing playbook and review checklist. Require an internal reader card and stories built around the reader's decisions, AI use and usable takeaway.
+- Simplification: One shared audience-first rule; a group of Skills defaults to one overview image and brief explanation. Execution logs, file catalogs and rehearsal details stay in the audit package; material capability and demo boundaries remain concise and visible.
+- Validation: Tracked bundle validator passes10 Skills, existing human-tone tests3 pass, source link/whitespace checks pass; independent editor and a forward rewrite exercise pass. Local article v3 has4 sections/3 body images; mobile319 and desktop1024 load all images without overflow. Generated article/images/reviews stay local under projects/wechat-opportunity-gtm-20261016/.
+- Limits: System quick_validate cannot import PyYAML; use the existing dependency-free bundle validator and link checks, without adding dependencies. No global Skill install, WeChat upload/publication or business-effect claim.
+- Commit/push: This verified scope is committed with Lore trailers and pushed to the configured feature branch; remote SHA is read back before reporting completion. Unrelated validator/pipeline WIP remains untouched.
+
 ## 2026-10-15 — Keep GTM regional analysis aligned with the map
 
 - Scope/files: GTM workbench JS/HTML/CSS, projection regression, GTM skill/data contract, design and validation records. Preserve the existing theme, map matcher, global API and region/channel/event summaries; no new dependency or service.

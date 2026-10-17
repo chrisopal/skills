@@ -1,0 +1,128 @@
+/* Enterprise Workbench UI 1.1.0. Token-only: no resets or component overrides.
+   Generated from tokens.json by scripts/generate_tokens.py; do not edit by hand. */
+
+html[data-ui="enterprise"] {
+  --ui-font-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --ui-font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  --ui-font-body: 14px;
+  --ui-font-label: 13px;
+  --ui-font-meta: 12px;
+  --ui-font-title: 24px;
+  --ui-font-section: 16px;
+  --ui-line-body: 1.57;
+  --ui-weight-body: 400;
+  --ui-weight-emphasis: 600;
+  --ui-space-1: 4px;
+  --ui-space-2: 8px;
+  --ui-space-3: 12px;
+  --ui-space-4: 16px;
+  --ui-space-5: 20px;
+  --ui-space-6: 24px;
+  --ui-space-8: 32px;
+  --ui-space-10: 40px;
+  --ui-radius-control: 4px;
+  --ui-radius-panel: 6px;
+  --ui-radius-dialog: 6px;
+  --ui-radius-tag: 3px;
+  --ui-radius-composer: 8px;
+  --ui-control-sm: 28px;
+  --ui-control-md: 34px;
+  --ui-control-lg: 40px;
+  --ui-sidebar-width: 220px;
+  --ui-sidebar-collapsed: 56px;
+  --ui-header-height: 48px;
+  --ui-nav-item-height: 36px;
+  --ui-page-padding: 24px 32px;
+  --ui-page-padding-mobile: 16px;
+  --ui-panel-padding: 16px 20px;
+  --ui-motion-fast: 150ms;
+  --ui-motion-ease: ease;
+  --ui-border-width: 1px;
+  --ui-brand: #1677FF;
+  --ui-on-action: #FFFFFF;
+  --ui-overlay: rgba(11, 18, 32, 0.48);
+  --ui-shadow-panel: none;
+  --ui-layout-page-inset-inline: 32px;
+  --ui-layout-page-inset-block: 24px;
+  --ui-layout-page-inset-narrow: 16px;
+  --ui-layout-section-gap: 24px;
+  --ui-layout-group-gap: 16px;
+  --ui-layout-panel-inset: 20px;
+  --ui-layout-field-gap: 20px;
+  --ui-layout-action-gap: 8px;
+  --ui-layout-icon-gap: 4px;
+  --ui-layout-content-overview-max: 1440px;
+  --ui-layout-content-reading-max: 960px;
+  --ui-layout-content-form-max: 800px;
+  --ui-density-control-height: 34px;
+  --ui-density-cell-padding-block: 12px;
+  --ui-density-cell-padding-inline: 16px;
+  --ui-canvas: #F5F7FA;
+  --ui-surface: #FFFFFF;
+  --ui-surface-muted: #F5F7FA;
+  --ui-surface-sunken: #EEF1F5;
+  --ui-surface-hover: #EDF0F4;
+  --ui-text: #0B1220;
+  --ui-text-secondary: #526075;
+  --ui-text-tertiary: #68758A;
+  --ui-inverse-surface: #0B1220;
+  --ui-on-inverse: #FFFFFF;
+  --ui-border: #D9DEE7;
+  --ui-border-subtle: #E7EAF0;
+  --ui-border-strong: #A7B2C3;
+  --ui-border-control: #68758A;
+  --ui-action-text: #0966D9;
+  --ui-action-text-hover: #0754B5;
+  --ui-action-solid: #0966D9;
+  --ui-action-solid-hover: #0754B5;
+  --ui-selected-bg: #EDF4FF;
+  --ui-success: #18794E;
+  --ui-warning: #A9650A;
+  --ui-danger: #C32F3F;
+  --ui-danger-bg: #FFF1F2;
+  --ui-danger-border: #F0B8C0;
+  --ui-disabled-bg: #EEF1F5;
+  --ui-disabled-text: #68758A;
+  --ui-shadow-popover: 0 4px 16px rgba(11, 18, 32, 0.10);
+  --ui-shadow-dialog: 0 12px 36px rgba(11, 18, 32, 0.16);
+}
+
+html[data-ui="enterprise"][data-theme="dark"],
+html.dark[data-ui="enterprise"] {
+  --ui-canvas: #101722;
+  --ui-surface: #182230;
+  --ui-surface-muted: #1D2939;
+  --ui-surface-sunken: #121B28;
+  --ui-surface-hover: #263449;
+  --ui-text: #EDF2F9;
+  --ui-text-secondary: #B8C5D8;
+  --ui-text-tertiary: #9AAAC0;
+  --ui-inverse-surface: #EDF2F9;
+  --ui-on-inverse: #101722;
+  --ui-border: #35445A;
+  --ui-border-subtle: #2A384B;
+  --ui-border-strong: #64758D;
+  --ui-border-control: #9AAAC0;
+  --ui-action-text: #80B5FF;
+  --ui-action-text-hover: #A8CDFF;
+  --ui-action-solid: #1558B0;
+  --ui-action-solid-hover: #1A65C8;
+  --ui-selected-bg: #1B304D;
+  --ui-success: #74D6A3;
+  --ui-warning: #F5C06B;
+  --ui-danger: #FF939B;
+  --ui-danger-bg: #3C242E;
+  --ui-danger-border: #784351;
+  --ui-disabled-bg: #1D2939;
+  --ui-disabled-text: #9AAAC0;
+  --ui-shadow-popover: 0 4px 16px rgba(0, 0, 0, 0.24);
+  --ui-shadow-dialog: 0 12px 36px rgba(0, 0, 0, 0.32);
+}
+
+html[data-ui="enterprise"][data-density="compact"] {
+  --ui-layout-panel-inset: 16px;
+  --ui-layout-field-gap: 16px;
+  --ui-density-control-height: 28px;
+  --ui-density-cell-padding-block: 8px;
+  --ui-density-cell-padding-inline: 12px;
+}

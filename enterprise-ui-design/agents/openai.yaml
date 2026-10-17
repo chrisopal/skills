@@ -1,0 +1,5 @@
+interface:
+  display_name: "Enterprise UI Design"
+  short_description: "规划、生成、升级与审查统一的企业级前端 UI 设计系统"
+  brand_color: "#1677FF"
+  default_prompt: "Use $enterprise-ui-design to plan and implement this frontend in the Enterprise Workbench UI style."

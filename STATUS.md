@@ -1,3 +1,12 @@
+## 2026-10-17 — Enterprise UI Design v1.1 spatial contract and runnable reference
+
+- Scope/files: Added maintained `enterprise-ui-design/` from the installed v1.0 baseline; updated entrypoint, style/mode/checklist references, semantic layout/density tokens, deterministic CSS emitter, regression fixture/tests and reusable work-order reference source. Design/validation records are in `docs/plans/2026-10-17-enterprise-ui-design-*.md`.
+- Simplification: One shell/page/section/component spatial contract replaces scattered spacing decisions; explicit inset ownership, outer/text key lines, content widths and density rules. Named MateClaw button convention moved to an optional reference. Existing40 common +28 light +28 dark token values stay compatible; no dependency or downstream app migration.
+- Verification: 7 token tests, system quick_validate under existing Python3.13,17 local links, Python AST/JS syntax and CSS reproducibility pass. Real Chromium:320 assertions across28 width/theme/density combinations; filters/pagination/edit/validation/storage-failure/save/reload/focus/navigation/low-height checks pass, console clean. Actual screenshots inspected; no reference-image similarity score. Independent review findings corrected and directly rechecked.
+- Installation/evidence: Verified installed baseline had not drifted, synchronized v1.1 into `~/.codex/skills/enterprise-ui-design/`, and read back matching SHA256 for all reusable files. Baseline, screenshots, logs, browser results and install receipt stay local in `projects/enterprise-ui-design-20261017/`; visual state in `.omx/state/enterprise-ui-design/`.
+- Commit/push: Only this reusable source, design/validation records and status entry belong to the scoped Lore commit on `codex/enterprise-dtx-skill-suite-runtime`; final commit/remote read-back is reported with delivery. Unrelated WIP and generated artifacts are excluded.
+- Limits: Simulated local data, no existing business UI migration/API/deployment/customer acceptance. Cross-browser, screen-reader, native browser200% zoom and fresh-session auto-routing are not claimed; equivalent narrow layout was checked. No app build pipeline applies to the standalone HTML reference.
+
 ## 2026-10-16 — Keep WeChat articles useful to their target reader
 
 - Scope/files: Writer, article reviewer, layout entrypoints; shared human-writing playbook and review checklist. Require an internal reader card and stories built around the reader's decisions, AI use and usable takeaway.

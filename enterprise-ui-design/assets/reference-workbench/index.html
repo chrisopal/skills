@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh-CN" data-ui="enterprise" data-theme="light" data-density="standard">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>设备维护工单 · Enterprise UI Reference</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="../tokens.css">
+    <link rel="stylesheet" href="workbench.css">
+  </head>
+  <body>
+    <div class="workbench">
+      <header class="topbar">
+        <button class="icon-button mobile-menu-button" type="button" aria-label="打开导航" aria-expanded="false" aria-controls="primary-navigation">
+          <span aria-hidden="true">☰</span>
+        </button>
+        <a class="topbar__brand" href="./" aria-label="设备运维工作台首页">
+          <span class="topbar__mark" aria-hidden="true">MW</span>
+          <span>设备运维工作台</span>
+        </a>
+        <div class="topbar__context" aria-label="当前工作区">
+          <span class="topbar__context-label">工作区</span>
+          <span class="topbar__context-value">华东制造基地</span>
+        </div>
+        <div class="topbar__tools">
+          <label class="topbar__select-label" for="theme-select">主题</label>
+          <select class="control control--small" id="theme-select" aria-label="主题">
+            <option value="light">浅色</option>
+            <option value="dark">深色</option>
+          </select>
+          <label class="topbar__select-label" for="density-select">密度</label>
+          <select class="control control--small" id="density-select" aria-label="密度">
+            <option value="standard">标准</option>
+            <option value="compact">紧凑</option>
+          </select>
+        </div>
+      </header>
+
+      <aside class="sidebar" id="primary-navigation" aria-label="主导航">
+        <div class="sidebar__mobile-header">
+          <span class="sidebar__title">导航</span>
+          <button class="icon-button sidebar-close-button" type="button" aria-label="关闭导航">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <nav>
+          <a class="nav-item nav-item--active" href="#work-orders" aria-current="page">
+            <span class="nav-item__icon" aria-hidden="true">▤</span>
+            <span>维护工单</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="main-content" id="work-orders">
+        <div class="page-heading">
+          <div>
+            <div class="breadcrumb" aria-label="当前位置">
+              <span>工作台</span>
+              <span aria-hidden="true">/</span>
+              <span>维护工单</span>
+            </div>
+            <h1>设备维护工单</h1>
+          </div>
+          <div class="page-heading__meta">
+            <span class="simulation-badge" title="数据和保存范围均为当前浏览器本地演示">
+              <span class="simulation-badge__dot" aria-hidden="true"></span>
+              模拟数据 · 本地保存
+            </span>
+          </div>
+        </div>
+
+        <section class="panel work-order-panel" aria-labelledby="list-title">
+          <div class="panel__header">
+            <div>
+              <h2 id="list-title">工单列表</h2>
+              <p class="panel__summary" id="result-summary" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <form class="filters" id="filter-form">
+            <div class="field field--query">
+              <label for="query-input">关键词</label>
+              <input class="control" id="query-input" name="query" type="search" autocomplete="off" placeholder="工单号、设备或负责人">
+            </div>
+            <div class="field">
+              <label for="status-filter">状态</label>
+              <select class="control" id="status-filter" name="status">
+                <option value="all">全部状态</option>
+                <option value="待处理">待处理</option>
+                <option value="处理中">处理中</option>
+                <option value="待验收">待验收</option>
+                <option value="已完成">已完成</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="priority-filter">优先级</label>
+              <select class="control" id="priority-filter" name="priority">
+                <option value="all">全部优先级</option>
+                <option value="紧急">紧急</option>
+                <option value="高">高</option>
+                <option value="中">中</option>
+                <option value="低">低</option>
+              </select>
+            </div>
+            <div class="filter-actions">
+              <button class="button button--primary" type="submit">查询</button>
+              <button class="button button--secondary" type="button" id="reset-filter-button">重置</button>
+            </div>
+          </form>
+
+          <div class="table-scroll" tabindex="0" aria-label="工单表格，可横向滚动">
+            <table class="work-order-table">
+              <caption class="sr-only">设备维护工单列表</caption>
+              <thead>
+                <tr>
+                  <th scope="col">工单编号</th>
+                  <th scope="col">设备 / 位置</th>
+                  <th scope="col">优先级</th>
+                  <th scope="col">当前状态</th>
+                  <th scope="col">负责人</th>
+                  <th scope="col">更新时间</th>
+                  <th scope="col" class="table-action-column">操作</th>
+                </tr>
+              </thead>
+              <tbody id="work-order-body"></tbody>
+            </table>
+          </div>
+
+          <div class="table-footer">
+            <span class="table-footer__count" id="page-summary" aria-live="polite"></span>
+            <nav class="pagination" aria-label="工单列表分页">
+              <button class="button button--secondary button--small" type="button" id="previous-page-button" aria-label="上一页">上一页</button>
+              <span id="page-indicator" aria-live="polite"></span>
+              <button class="button button--secondary button--small" type="button" id="next-page-button" aria-label="下一页">下一页</button>
+            </nav>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="order-dialog" id="order-dialog" aria-labelledby="dialog-title">
+      <form class="dialog__form" id="order-form" method="dialog" novalidate>
+        <div class="dialog__header">
+          <div>
+            <span class="dialog__eyebrow">工单详情</span>
+            <h2 id="dialog-title">查看工单</h2>
+          </div>
+          <button class="icon-button" type="button" id="dialog-close-button" aria-label="关闭工单详情">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="dialog__body">
+          <dl class="detail-grid" id="order-details"></dl>
+          <div class="form-section">
+            <div class="form-section__header">
+              <h3>处理信息</h3>
+            </div>
+            <div class="field">
+              <label for="owner-input">负责人 <span class="required" aria-hidden="true">*</span></label>
+              <input class="control" id="owner-input" name="owner" type="text" autocomplete="off" maxlength="24" required aria-describedby="owner-error">
+              <p class="field-error" id="owner-error" role="alert"></p>
+            </div>
+            <div class="field">
+              <label for="note-input">处理备注</label>
+              <textarea class="control control--textarea" id="note-input" name="note" rows="4" maxlength="240" aria-describedby="note-count note-error"></textarea>
+              <div class="field-help-row">
+                <span class="character-count" id="note-count">0 / 240</span>
+              </div>
+              <p class="field-error" id="note-error" role="alert"></p>
+            </div>
+            <p class="save-feedback" id="save-feedback" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+        <div class="dialog__actions">
+          <button class="button button--secondary" type="button" id="dialog-cancel-button">取消</button>
+          <button class="button button--primary" type="submit">保存修改</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="workbench.js" defer></script>
+  </body>
+</html>

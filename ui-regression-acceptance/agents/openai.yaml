@@ -1,0 +1,6 @@
+interface:
+  display_name: "界面逐控件回归验收"
+  short_description: "按业务契约逐项验证控件功能、数据显示、视觉布局与真实浏览器证据"
+  default_prompt: "使用 $ui-regression-acceptance 先独立盘点源码与实际页面，冻结页面/控件/检查范围，再依据业务/API与UI规范执行四维真实浏览器验收；核对运行版本、保存回读和复跑证据，报告失败与未测项。"
+policy:
+  allow_implicit_invocation: true

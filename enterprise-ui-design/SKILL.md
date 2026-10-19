@@ -51,6 +51,8 @@ For page layout, padding, alignment, grouping, or density work, also read [refer
 
 ## Task-first copy and readable density
 
+For business-friendly wording, terminology cleanup, or application-wide copy review, read [references/business-copy.md](references/business-copy.md). Cover child pages, Tabs, dialogs, workflows and dynamic feedback through an explicit inventory; preserve business-state meaning and report untested branches. Keyword replacement is not acceptance.
+
 For enterprise workbenches, do not add explanatory copy by default. Show business data, current state and actions. Remove slogans, page-purpose subtitles, repeated metric definitions, click instructions and implementation terminology (server-side, snapshots, internal codes) from the normal reading path. Do not fill empty space with prose.
 
 - Every persistent sentence must change the user's current decision or action. If removing it changes neither, delete it.

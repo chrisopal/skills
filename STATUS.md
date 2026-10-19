@@ -1,3 +1,12 @@
+## 2026-10-19 — Preserve business meaning during application-wide copy cleanup
+
+- Scope/files: `enterprise-ui-design/SKILL.md`, `references/business-copy.md`, `references/checklist.md`; route business-copy work to one reusable guide and evidence checklist.
+- Simplification: Remove non-actionable explanations by reader/task context, not keyword replacement. Inventory parent/child pages, Tabs, dialogs, workflows and dynamic messages; preserve essential warnings, administrator terminology and distinctions between draft/approval, dispatch/receipt and partial/full completion.
+- Verification: Source and installed system quick_validate pass; 7 existing token tests and CSS reproducibility pass; 11 source and 20 installed local reference links checked; whitespace clean. New reference is byte-identical across both locations.
+- Installation: Applied only this change to the installed skill; preserved its pre-existing component/flow enhancements and all unrelated repository WIP.
+- Commit/push: Scoped Lore commit on the configured feature branch; delivery reports the commit and remote read-back after push.
+- Limits: Skill instructions and existing regressions validated; no claim of application-wide browser acceptance, user comprehension testing or real business E2E. Missing runtime coverage must remain untested/blocked in downstream work.
+
 ## 2026-10-18 — Make per-page/per-control UI acceptance coverage reviewable
 
 - Scope/files: Imported installed `ui-regression-acceptance/` as maintained source; updated entrypoint/agent prompt, four references, coverage checker and25 regression tests. Review/validation records are `docs/plans/2026-10-18-ui-regression-acceptance-*.md`.

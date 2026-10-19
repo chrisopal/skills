@@ -12,7 +12,7 @@ Use for design review, UI audit, consistency checks, noncompliant components, or
 
 Identify the surface and user task. Capture the actual UI at the relevant viewport and theme, inspect each accepted screenshot, and connect it to the component/theme source. Cover the states implicated by the request: default, hover/focus/disabled/error/loading, dark, portal, mobile, empty/populated, or unauthorized.
 
-Reject blank, loading, stale, cropped, wrong-window, or blocked captures. If only source is available, say which visual claims remain unverified. Screenshots can reveal visual/accessibility risk but cannot prove semantic structure, keyboard order, assistive-technology behavior, or full compliance.
+Reject blank, stale, wrong-window, or unintentionally blocked captures. A loading capture proves only that loading state. User-supplied crops can establish local findings; label missing context, viewport, DPR and capture time as unknown, and never use them to pass a whole page or journey. If only source is available, say which visual claims remain unverified. Screenshots can reveal visual/accessibility risk but cannot prove semantic structure, keyboard order, assistive-technology behavior, or full compliance.
 
 ## Finding contract
 
@@ -27,6 +27,10 @@ Each finding includes:
 For notice clutter, redundancy or explanatory copy, apply [notice-economy.md](notice-economy.md). Record necessity, semantic duplicate group, owning surface and show/clear conditions; check asynchronous terminal states and read-only/preview branches. Misleading current-state or impossible-action guidance is P1; ordinary non-blocking repetition is P2. Source findings remain source-only until actually reproduced.
 
 Audit these lenses: task clarity, information hierarchy, density, token roles, typography/spacing, components/states, forms, tables, dialogs/portals, responsive scroll ownership, keyboard/focus, language expansion, and specialist-surface boundaries.
+
+For component suitability and interaction audits, use the [business scenario catalog](business-component-patterns.md), its relevant specialist guide and [component review template](component-review-template.md). Test the actual choice and scope: Gantt versus calendar, tree versus grouped table, Tabs versus a stepper, inline versus modal drawer, and persistent errors versus transient feedback. Record applicable check IDs and evidence; a component library name does not prove the composition is appropriate.
+
+For workflow, work-item, toolbar or aesthetic complaints, apply [task-flow-and-hierarchy.md](task-flow-and-hierarchy.md) and its [review template](task-flow-review-template.md). Trace the actual journey, not just isolated pages. Record business-state truth, unaided task walk-through and visual composition separately. A materially misleading stage, unclear object scope or detached current-task action is P1 unless evidence establishes a P0 blocker. Do not invent a missing primary action on read-only/waiting pages or infer CSS sizes from screenshot pixels.
 
 For layout, padding, alignment or grouping audits, apply [spatial-system.md](spatial-system.md): inspect inset ownership at each container level, content-width strategy, outer versus text key lines, repeated padding, first/last table cells, label/error alignment and wrapped action groups. Record computed styles and bounding boxes where these establish the finding. Distinguish an intentional inset or optical adjustment from an actual defect; a raw pixel value differing from a default is not automatically a violation. Use screenshot review to judge hierarchy and rhythm. Without a supplied/accepted reference image, report conformance to the contract, not a similarity score.
 

@@ -22,6 +22,8 @@ Portals/teleports mounted under `body` must inherit or receive the same theme. D
 
 Protect functional seams before changing structure: auth submission, RBAC/guards, route/deep-link behavior, cached views, form payloads, API state, i18n, workspace/tenant context, keyboard focus, and mobile navigation. Add or run behavioral regression checks at the seam touched by the UI change.
 
+For component changes, consult the [business scenario catalog](business-component-patterns.md) and relevant specialist guide. Preserve useful table, tab, drawer, calendar and professional-canvas behavior; replace a pattern only when the task or evidence justifies it. Record data/selection/save scope and observable checks in the [component review template](component-review-template.md).
+
 ## Delivery slices
 
 1. Semantic tokens and component-library bridge, no page restructuring.
@@ -31,6 +33,8 @@ Protect functional seams before changing structure: auth submission, RBAC/guards
 5. One route family per reviewable change; document specialist exceptions.
 
 Keep visual-only changes separate from new business features. For a project that tracks upstream, minimize edits to upstream-owned templates, identify stable integration seams, and record the update/reapplication gate. When upstream adds a page, shared tokens should make it acceptable before any page-specific patch.
+
+For an unintuitive workflow, prioritize the affected task journey rather than mechanically completing every shell slice first. Apply [task-flow-and-hierarchy.md](task-flow-and-hierarchy.md): map existing business facts, separate current work from supporting detail, and reconnect actions to their object scope while preserving route, state and permission contracts. If the UI needs unavailable responsibility or progress data, record that contract gap instead of fabricating it in the frontend.
 
 ## Verification loop
 

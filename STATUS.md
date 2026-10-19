@@ -1,3 +1,11 @@
+## 2026-10-19 — Synchronize Enterprise UI business-pattern and task-flow guidance
+
+- Scope/files: `enterprise-ui-design/SKILL.md`, `agents/openai.yaml`, updated audit/checklist/create/style/upgrade references, ten business-component/task-flow references, and the reusable `assets/reference-order-flow/` sample from the installed Skill.
+- Behavior: Route component selection and multi-stage workflow review through task, object scope, state, action, evidence and visual-composition contracts; preserve the existing notice-economy guidance and token baseline.
+- Verification: Source and installed Skill Creator `quick_validate.py` pass with temporary PyYAML only; both token suites pass 7/7; 69 local Markdown links, Python/JavaScript syntax, `git diff --check`, source/installed parity and HTTP serving of the four order-flow assets pass.
+- Limits: The order-flow reference uses explicit simulation data and does not establish host application implementation, browser business E2E, customer acceptance or deployment. System Python lacks PyYAML; no repository dependency was added.
+- Commit/push: Scoped Lore commit on `codex/enterprise-dtx-skill-suite-runtime`; only `enterprise-ui-design` and this status entry are staged, with unrelated WIP preserved. Remote SHA is read back after push.
+
 ## 2026-10-19 — Require necessary notices across design, development and final review
 
 - Scope/files: Enterprise UI Design entrypoint, business-copy, style-standard, audit-and-refine and checklist; new shared `references/notice-economy.md`.

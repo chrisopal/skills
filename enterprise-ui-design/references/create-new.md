@@ -22,6 +22,10 @@ Write the blueprint to the repository's design-doc location when one exists; oth
 
 A direct build request continues after this blueprint. A planning-only request stops after a build-ready blueprint.
 
+For each primary task, use the [business component catalog](business-component-patterns.md) and record the selected combination, exceptions, data/selection/save scope and applicable check IDs. Read only the relevant planning/chart, table, navigation/drawer or form/feedback guide. Use the [component review template](component-review-template.md) to carry these decisions into verification.
+
+For multi-stage tasks and work-item details, extend this blueprint with the journey/state matrix in [task-flow-and-hierarchy.md](task-flow-and-hierarchy.md): operator, object scope, parallel/returned work, next permitted action, blockers, handoff and completion evidence. Choose a wizard, stage overview, task list or history according to the real task; a stepper is not mandatory. Acceptance must include the unaided task walk-through and visual composition gates, not only layout measurements.
+
 ## Implementation order
 
 1. Establish theme tokens and the application shell.

@@ -1,6 +1,6 @@
 ---
 name: enterprise-ui-design
-description: Create, upgrade, or audit enterprise admin and workbench frontends, including page layouts, padding, alignment, grouping, density, themes, and responsive components. Preserve the host product and component library. Not for marketing pages, native-mobile-only UI, or backend-only work.
+description: Create, upgrade, or audit enterprise admin and workbench frontends. Select and verify business UI patterns including Gantt, calendars, tables/grids, Tabs, drawers/dialogs, forms, feedback, charts, order stages, and end-to-end task flows. Improve visual hierarchy, layouts, density, themes, and responsive behavior while preserving the host product and component library. Not for marketing pages, native-mobile-only UI, or backend-only work.
 ---
 
 # Enterprise UI Design
@@ -21,14 +21,18 @@ Always read [references/style-standard.md](references/style-standard.md). Before
 
 For page layout, padding, alignment, grouping, or density work, also read [references/spatial-system.md](references/spatial-system.md). It defines the shared spatial contract for all three modes. Its linked runnable reference uses simulation data; it is a pattern, not a host application's implementation.
 
+For multi-stage business flows, work-item details, next-action clarity, toolbar hierarchy, or a request that a page is unintuitive or unattractive, also read [references/task-flow-and-hierarchy.md](references/task-flow-and-hierarchy.md). Use its evidence-based acceptance gates and [review template](references/task-flow-review-template.md); passing spacing/overflow tests does not establish task clarity or visual quality.
+
+When selecting or reviewing components, start at [references/business-component-patterns.md](references/business-component-patterns.md), then read only the relevant scenario guide: planning/charts, table variants, Tabs/drawers/navigation, forms/feedback, or order/approval progress. Each guide defines suitable and unsuitable uses, component combinations, state/interaction contracts and observable acceptance checks. Record the choice, host-component mapping and evidence with the [component review template](references/component-review-template.md). The linked runnable order-flow reference is one simulated example; other guides do not claim runnable implementations.
+
 ## Execution contract
 
 1. Resolve target, outcome, scope, and mutation authority. Ask one question only if target or outcome is missing.
 2. Inspect the framework, component library, theme boundary, routes, states, assets, tests, and running UI. Product behavior outranks style.
-3. Produce a **UI Blueprint** before code: identify page types, content-width strategy, page/container/text key lines, inset ownership, density, and responsive reflow. Direct build/upgrade requests continue without another checkpoint.
+3. Produce a **UI Blueprint** before code: identify page types, content-width strategy, page/container/text key lines, inset ownership, density, and responsive reflow. Record scenario-to-component choices, exceptions, data/selection/save scope and interaction/state checks. For task flows, map the operator, object scope, business stages and parallel branches, current work, next permitted action, blockers, handoffs and completion evidence to actual contracts. Direct build/upgrade requests continue without another checkpoint.
 4. Reuse components and theme APIs. Add a scoped adapter before page overrides; add no dependency.
 5. Implement the smallest working slice. Controls must be real or labeled fixture-only—never invent search, notifications, SSO, tenants, metrics, or permissions.
-6. Verify behavior and visuals separately. Measure rendered insets, gaps, alignment, and overflow, then inspect screenshots in relevant themes/densities and responsive states; run the host's applicable checks. Do not claim pixel similarity without a reference image.
+6. Verify business-state truth, task comprehension and visual composition separately. Measure rendered insets, gaps, alignment, and overflow, then inspect screenshots and walk the task in relevant themes/densities and responsive states; run the host's applicable checks. Do not claim pixel similarity without a reference image or user comprehension from a model review alone.
 7. Report **designed**, **implemented**, **runtime-verified**, **business-E2E-verified**, **built**, and **deployed** as separate states.
 
 ## Invariants
@@ -48,6 +52,8 @@ For page layout, padding, alignment, grouping, or density work, also read [refer
 | Pale action with white text in dark mode | Use the tested semantic foreground/background pair, then measure the actual rendered state. |
 | Hidden mobile sidebar remains focusable | Remove it from keyboard interaction while closed and verify open/close/focus behavior. |
 | “Looks consistent” audit | Return screenshot-linked findings, severity, exact remediation, recheck evidence, and a pass/conditional/fail verdict. |
+| Tidy controls, confusing workflow | Map stage, scope, next action and blockers; inspect the populated journey, including parallel and returned work. A status badge alone is not a workflow. |
+| Every utility looks equally important | Separate task commands, query controls and view utilities; keep commands recognizable while reducing auxiliary visual weight. Do not invent a primary action for a read-only page. |
 
 ## Task-first copy and readable density
 

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN" data-ui="enterprise" data-theme="light" data-density="standard">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>企业订单阶段样板 · Enterprise UI Reference</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="../tokens.css">
+    <link rel="stylesheet" href="order-flow.css">
+    <link rel="stylesheet" href="order-flow-stage.css">
+  </head>
+  <body class="order-flow-reference">
+    <main class="page-shell">
+      <header class="page-header">
+        <div>
+          <p class="breadcrumb" aria-label="当前位置"><span>业务组件参考</span><span aria-hidden="true">/</span><span>订单详情</span></p>
+          <h1>企业订单阶段</h1>
+        </div>
+        <div class="page-header__meta">
+          <span class="simulation-badge"><span class="simulation-badge__dot" aria-hidden="true"></span>交互样板 · 模拟数据</span>
+        </div>
+      </header>
+
+      <section class="toolbar" aria-label="样板工具">
+        <div class="toolbar__group">
+          <label class="toolbar__label" for="scenario-select">样例</label>
+          <select class="control control--small" id="scenario-select">
+            <option value="report-pending">报告待审</option>
+            <option value="partial-testing">部分检测完成</option>
+            <option value="returned-correction">退回补正</option>
+            <option value="waiting-reviewer">等待他人</option>
+            <option value="read-failure">读取失败</option>
+            <option value="archived">已归档</option>
+          </select>
+        </div>
+        <div class="toolbar__group">
+          <label class="toolbar__label" for="theme-select">主题</label>
+          <select class="control control--small" id="theme-select">
+            <option value="light">浅色</option>
+            <option value="dark">深色</option>
+          </select>
+        </div>
+        <div class="toolbar__group">
+          <label class="toolbar__label" for="direction-select">阶段方向</label>
+          <select class="control control--small" id="direction-select">
+            <option value="auto">按容器自适应</option>
+            <option value="vertical">强制纵向</option>
+          </select>
+        </div>
+      </section>
+
+      <article class="order-view" aria-labelledby="order-title">
+        <section class="order-summary" aria-labelledby="order-title">
+          <div class="order-summary__heading">
+            <div>
+              <p class="eyebrow">订单详情</p>
+              <h2 id="order-title">ORD-2026-1018 · 华东实验室综合检测</h2>
+            </div>
+            <span class="status-chip" id="order-status"></span>
+          </div>
+          <dl class="summary-grid">
+            <div><dt>委托客户</dt><dd>恒星精密制造（上海）有限公司</dd></div>
+            <div><dt>承接机构</dt><dd>华东检测中心 · 质量实验室</dd></div>
+            <div><dt>样品</dt><dd>2 份 · 样品 A、样品 B</dd></div>
+            <div><dt>报告范围</dt><dd>有机物、金属元素 · 综合报告</dd></div>
+          </dl>
+        </section>
+
+        <section class="task-section" aria-labelledby="task-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">当前任务</p>
+              <h2 id="task-title"></h2>
+            </div>
+            <span class="task-mode" id="task-mode"></span>
+          </div>
+          <div class="task-grid">
+            <dl class="task-facts">
+              <div><dt>业务范围</dt><dd id="task-scope"></dd></div>
+              <div><dt>责任 / 等待</dt><dd id="task-owner"></dd></div>
+              <div><dt>必要前提</dt><dd id="task-prerequisite"></dd></div>
+              <div><dt>报告子流程</dt><dd id="task-subflow"></dd></div>
+            </dl>
+            <div class="task-action">
+              <p class="task-reason" id="task-reason"></p>
+              <button class="button button--primary" id="task-action-button" type="button"></button>
+            </div>
+          </div>
+        </section>
+
+        <section class="stage-section stage-region" aria-labelledby="stage-title">
+          <div class="section-heading section-heading--stage">
+            <div>
+              <p class="eyebrow">阶段概览</p>
+              <h2 id="stage-title">订单办理进度</h2>
+            </div>
+          </div>
+          <ol class="stage-list" id="stage-list" aria-label="订单办理阶段"></ol>
+        </section>
+
+        <section class="execution-section" aria-labelledby="execution-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">并行执行</p>
+              <h2 id="execution-title">样品与检测场景</h2>
+            </div>
+            <p class="section-note" id="execution-note"></p>
+          </div>
+          <div class="execution-list" id="execution-list"></div>
+        </section>
+
+        <details class="history-section">
+          <summary>查看追溯记录 <span class="summary-hint">（样板事实）</span></summary>
+          <ol class="history-list" id="history-list"></ol>
+        </details>
+      </article>
+    </main>
+
+    <dialog class="detail-dialog" id="detail-dialog" aria-labelledby="dialog-title">
+      <form class="dialog-form" method="dialog" id="dialog-form">
+        <header class="dialog-header">
+          <div>
+            <p class="eyebrow">样板对象查看</p>
+            <h2 id="dialog-title">查看当前事实</h2>
+          </div>
+          <button class="icon-button" type="button" id="dialog-close" aria-label="关闭查看窗口">×</button>
+        </header>
+        <div class="dialog-body">
+          <p class="dialog-notice">这是本地模拟查看，不提交真实审批、不改变订单状态。</p>
+          <dl class="dialog-facts" id="dialog-facts"></dl>
+          <div class="dialog-scope">
+            <h3>对象 / 范围</h3>
+            <p id="dialog-scope-text"></p>
+          </div>
+        </div>
+        <footer class="dialog-actions">
+          <button class="button button--secondary" type="submit">关闭</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <script src="order-flow.js" defer></script>
+  </body>
+</html>

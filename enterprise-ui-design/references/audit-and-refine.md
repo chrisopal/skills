@@ -24,6 +24,8 @@ Each finding includes:
 - Evidence: screenshot/state plus exact file/component/token.
 - Remediation: one concrete shared-layer or local fix and its verification condition.
 
+For notice clutter, redundancy or explanatory copy, apply [notice-economy.md](notice-economy.md). Record necessity, semantic duplicate group, owning surface and show/clear conditions; check asynchronous terminal states and read-only/preview branches. Misleading current-state or impossible-action guidance is P1; ordinary non-blocking repetition is P2. Source findings remain source-only until actually reproduced.
+
 Audit these lenses: task clarity, information hierarchy, density, token roles, typography/spacing, components/states, forms, tables, dialogs/portals, responsive scroll ownership, keyboard/focus, language expansion, and specialist-surface boundaries.
 
 For layout, padding, alignment or grouping audits, apply [spatial-system.md](spatial-system.md): inspect inset ownership at each container level, content-width strategy, outer versus text key lines, repeated padding, first/last table cells, label/error alignment and wrapped action groups. Record computed styles and bounding boxes where these establish the finding. Distinguish an intentional inset or optical adjustment from an actual defect; a raw pixel value differing from a default is not automatically a violation. Use screenshot review to judge hierarchy and rhythm. Without a supplied/accepted reference image, report conformance to the contract, not a similarity score.

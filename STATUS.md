@@ -1,3 +1,11 @@
+## 2026-10-19 — Require necessary notices across design, development and final review
+
+- Scope/files: Enterprise UI Design entrypoint, business-copy, style-standard, audit-and-refine and checklist; new shared `references/notice-economy.md`.
+- Constraint: Default to no explanatory notice. Record necessity, semantic duplicate group, owning surface and show/clear conditions; retire stale asynchronous feedback and avoid impossible guidance in read-only/preview modes. Keep current errors, recovery and material business risks. Honor audit/confirmation/repair boundaries.
+- Verification: Source and installed quick_validate pass; 7 existing token tests and CSS reproducibility pass; changed reference links and whitespace checked. The new guide matches both copies; pre-existing installed guides and unrelated repository WIP are preserved.
+- Publication: Scoped Lore commit on the configured feature branch; commit and remote read-back are reported after push. Application audit reports and browser artifacts remain in LIMS.
+- Limits: Instruction update only; no application UI repair, semantic auto-detector, full browser acceptance or business E2E claim. Source-only findings remain distinct from reproduced runtime evidence.
+
 ## 2026-10-19 — Preserve business meaning during application-wide copy cleanup
 
 - Scope/files: `enterprise-ui-design/SKILL.md`, `references/business-copy.md`, `references/checklist.md`; route business-copy work to one reusable guide and evidence checklist.

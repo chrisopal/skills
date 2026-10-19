@@ -1742,3 +1742,9 @@
 - 完成内容：修正AI评分将“报价一览表内的质保期”误归为价格分的问题；价格判断仅使用评分标题与规则，不使用证明材料文件名，质保每增加月份按客观档位处理。真实价格项仍强制价格类型及报价/基准价/公式。补匿名回归、更新README与评审Skill版本，删除同一评分模块的未用局部变量和测试未用导入，刷新17独立分发，无新增依赖。
 - 验证：新增用例修改前确实失败，修改后AI评分18项通过；最终完整pytest为508 passed、1 optional CairoSVG skipped、5 warnings、169 subtests passed。评分脚本及两份变更测试Ruff通过；17 Skill/34 Schema检查通过。
 - 风险/后续：机器分类仅提供候选，仍需按原文逐条语义复核；私人EAM验证保留本地，正式资格、签署支付、采购平台、现场与价格基准未验收。应用lint/build不适用，backend/uv.lock未触碰；仅提交可复用源码及匿名测试，按仓库约定推送当前分支，不合并main。
+
+## 2026-10-19 — 投标 Skill 精简跨宿主 ZIP
+
+- 完成内容：新增 scripts/package_portable.py、assets/portable-install.py、docs/PORTABLE_INSTALL.md 和匿名安装回归，更新套件 README。单个 ZIP 内含17个投标 Skill、enterprise-diagrams、18个自包含单技能包、离线安装器、依赖清单和逐包SHA256；保留513个运行文件，不带测试、展示截图、客户资料、成稿、缓存或虚拟环境。运行内容不变，不新增依赖，不为瘦身引入跨技能链接。
+- 验证：实包1,939,419字节，运行原文件5,679,756字节；相同输入可重现同一ZIP。隔离环境验证三种宿主路径、可选自定义目录、dry-run不写入、18技能逐字节一致、总控CLI可启动、同名目录不覆盖及篡改/越界包拒绝。完整pytest为516 passed、1 optional CairoSVG skipped、169 subtests passed；17 Skill/34 Schema、变更Python Ruff/编译及diff检查通过。
+- 风险/后续：本轮验证安装结构和脚本，不等于WorkBuddy/Claude Code模型实际编标；Windows运行、宿主GUI导入、OCR和办公工具未重跑，工具授权仍需宿主提供。ZIP和校验文件仅作本地交付，不提交二进制；源码按仓库规则提交推送codex/bid-portable-zip-20261019，不合并main，无关WIP未触碰。

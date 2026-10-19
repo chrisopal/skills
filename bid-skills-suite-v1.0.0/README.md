@@ -14,6 +14,18 @@
 
 [安装](#通用-npx-安装) · [逐步截图](#模拟案例从招标原文到-wordpdf) · [使用指令](#第一次使用) · [绘图配置](#画图skill-和渲染工具分别准备) · [模拟原文与样稿](examples/readme-demo/README.md)
 
+## 精简 ZIP 离线安装
+
+不想克隆整个仓库时，可生成一个精简 ZIP，内含 **17 个投标 Skill + enterprise-diagrams** 的单技能包、SHA256 清单、通用 Python 安装器和运行依赖清单。只保留运行需要的规程、脚本、Schema、参考和模板，排除测试、展示截图、客户项目、历史成稿、缓存和开发环境。
+
+```bash
+python3 scripts/package_portable.py --out /absolute/path/bid-skills-portable.zip
+```
+
+解压总包，WorkBuddy 可逐个上传 `packages/` 下的单 Skill ZIP；Claude Code 可运行 `python3 install.py --agent claude-code`，WorkBuddy 可运行 `python3 install.py --agent workbuddy`，其他宿主用 `--dest` 指定其技能发现目录。建议先追加 `--dry-run` 校验。安装器校验所有包后才写入，遇到已有同名目录就停止，不覆盖自定义内容；不自动安装模型、依赖或办公软件。
+
+总包不作为单个 Skill 导入。完整操作见 [精简包安装说明](docs/PORTABLE_INSTALL.md)，该说明也随 ZIP 分发。打包时需保留相邻的 `enterprise-diagrams/`，运行无需源码仓库。单包脚本各自保留依赖，不通过跨 Skill 符号链接瘦身。
+
 ## 通用 npx 安装
 
 电脑需先有 Node.js/npm。使用开放生态的 [Skills CLI](https://github.com/vercel-labs/skills#readme) 安装完整目录，保留每个 Skill 的脚本、模板和参考文件。以下固定到本次验证的安装器版本 `1.7.2`，从本仓库 `main` 获取 Skill。

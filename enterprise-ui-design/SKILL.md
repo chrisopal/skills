@@ -25,6 +25,8 @@ For multi-stage business flows, work-item details, next-action clarity, toolbar 
 
 When selecting or reviewing components, start at [references/business-component-patterns.md](references/business-component-patterns.md), then read only the relevant scenario guide: planning/charts, table variants, Tabs/drawers/navigation, forms/feedback, or order/approval progress. Each guide defines suitable and unsuitable uses, component combinations, state/interaction contracts and observable acceptance checks. Record the choice, host-component mapping and evidence with the [component review template](references/component-review-template.md). The linked runnable order-flow reference is one simulated example; other guides do not claim runnable implementations.
 
+For sidebar/menu icon work, read the [navigation icon rules](references/navigation-and-task-surfaces.md#导航图标专项). Inventory labels, routes, business meanings and actual glyphs across the full menu, including permission-dependent items; justify semantic reuse rather than enforcing arbitrary uniqueness.
+
 ## Execution contract
 
 1. Resolve target, outcome, scope, and mutation authority. Ask one question only if target or outcome is missing.

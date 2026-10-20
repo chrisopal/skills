@@ -1,3 +1,10 @@
+## 2026-10-20 — Distinguish navigation icons by business meaning
+
+- Scope: Enterprise UI Design entrypoint, navigation/task surfaces, style standard and checklist; installed copy synchronized. Add NAV-ICON-01/02 for full menu inventories, semantic duplicate review, actual SVG aliases and rendered 16px readability.
+- Design: Reuse the host icon family and labels; allow justified same-semantic reuse. Preserve routes, groups, permissions and active/focus behavior. Check scrolling/conditional menus, light/dark, desktop/390px and mobile close/focus return.
+- Verification: Source and installed Skill Creator validation pass; 7 token tests, reproducible CSS, changed local links, byte parity and whitespace pass. Applied to LIMS: six repeated groups found, seven mappings differentiated; four simulated browser contexts pass. No dependency or token change.
+- Publication: Scoped Lore commit and push to configured Skills branch; unrelated WIP/artifacts excluded. This guidance update does not establish whole-application acceptance or production deployment.
+
 ## 2026-10-20 — Check business information structure and restrained list tools
 
 - Scope: UI regression entrypoint/control matrix and new information-hierarchy-and-toolbars guide; installed copy synchronized. Add IA, FORM-READ, TOOLBAR and NOTICE checks tied to actual contracts, page instances and roles.

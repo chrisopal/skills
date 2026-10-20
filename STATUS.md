@@ -1,3 +1,10 @@
+## 2026-10-20 — Check business information structure and restrained list tools
+
+- Scope: UI regression entrypoint/control matrix and new information-hierarchy-and-toolbars guide; installed copy synchronized. Add IA, FORM-READ, TOOLBAR and NOTICE checks tied to actual contracts, page instances and roles.
+- Checks: Distinguish current work, samples/execution/resources/reports/history; label read-only fields, preserve business counts, reduce duplicate tools and notices, inspect desktop/390px and light/dark states, execute menu actions and focus return. No new checker schema or dependency.
+- Verification: Existing25 coverage regressions, Skill Creator quick_validate, local links, source/installed byte parity and diff whitespace pass. Applied guide to the supplied commission/report examples: detects unlabeled resource lines, inline metadata, equal-weight utilities and duplicated prerequisites; these remain product findings until runtime repair.
+- Publication: Scoped Lore commit/push on the configured Skills feature branch; unrelated WIP and generated artifacts excluded. Application fixes and browser evidence follow in LIMS; this commit alone does not claim product acceptance.
+
 ## 2026-10-19 — Synchronize Enterprise UI business-pattern and task-flow guidance
 
 - Scope/files: `enterprise-ui-design/SKILL.md`, `agents/openai.yaml`, updated audit/checklist/create/style/upgrade references, ten business-component/task-flow references, and the reusable `assets/reference-order-flow/` sample from the installed Skill.

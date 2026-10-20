@@ -1,3 +1,10 @@
+## 2026-10-20 — Structure read-only business details and regional empty states
+
+- Scope: Enterprise UI Design entrypoint, forms/feedback, spatial contract and checklist; UI acceptance entrypoint, information hierarchy and spacing guides. Installed copies synchronized only after confirming no source drift outside bytecode caches; existing navigation rules and unrelated WIP preserved.
+- Rules: Semantic subject/task groups with visible label/value relationships, responsive short fields and full-row narratives; retain tables/timelines/editors by task. Add READ-01～03, FORM-READ-03/04, EMPTY-01～03 and SPACE-07/08; distinguish no records/filter-empty/no permission/missing object/failure/loading, and zero queues from missing reports. Measure four-side insets and alignment; center empty content inside its owned region with clear header/status/error/recovery hierarchy and necessary notices only.
+- Verification: Both source and installed Skill Creator validations pass; 7 token and25 coverage regressions, reproducible CSS, local links/anchors, source/installed byte parity and whitespace pass. Complete route/child/Tab/dialog/role inventories and populated/empty/error/loading screenshots in desktop/390px light/dark remain downstream execution requirements.
+- Publication: Scoped Lore commit and push to the configured Skills feature branch; generated artifacts and unrelated wechat edits excluded. No new dependency, checker schema, application code or deployment. Documentation/checker tests do not establish application browser or business acceptance.
+
 ## 2026-10-20 — Distinguish navigation icons by business meaning
 
 - Scope: Enterprise UI Design entrypoint, navigation/task surfaces, style standard and checklist; installed copy synchronized. Add NAV-ICON-01/02 for full menu inventories, semantic duplicate review, actual SVG aliases and rendered 16px readability.

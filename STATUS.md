@@ -1,3 +1,9 @@
+## 2026-10-21 — Publish verified enterprise UI guidance on main
+
+- Scope: Integrate only `enterprise-ui-design` v1.2 and its companion `ui-regression-acceptance` guidance from `165d6d01`; preserve all other main content and parallel working changes.
+- Verification: 13 token tests, 25 coverage tests, reproducible CSS generation, whitespace checks and complete 37-file installed/source parity pass.
+- Publication: Scoped integration commit prepared for main; push and remote readback performed after commit. No LIMS changes or generated acceptance artifacts included.
+
 ## 2026-10-18 — Make per-page/per-control UI acceptance coverage reviewable
 
 - Scope/files: Imported installed `ui-regression-acceptance/` as maintained source; updated entrypoint/agent prompt, four references, coverage checker and25 regression tests. Review/validation records are `docs/plans/2026-10-18-ui-regression-acceptance-*.md`.

@@ -33,3 +33,5 @@
 ## 与业务和视觉契约联合执行
 
 本表给出操作链；字段类型/长度/精度、状态与权限分支、字体/宽度/对齐等断言还须按 business-contract-matrix.md 从本项目契约提取。具体边界、跨字段、异步竞态和视觉规则的用例选择见 [范围盘点与用例设计](inventory-and-cases.md)。不要以这张通用控件表替代具体业务规则。
+
+详情分组、只读字段、阶段/Tab、列表辅助工具和重复提示同时按 [信息结构与工具栏检查](information-hierarchy-and-toolbars.md) 分配 IA、FORM-READ、TOOLBAR、NOTICE 检查，覆盖所在页面及子页面的真实组合状态。

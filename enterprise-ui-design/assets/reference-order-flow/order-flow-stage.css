@@ -1,0 +1,410 @@
+.order-flow-reference .stage-region {
+  container-type: inline-size;
+}
+
+.order-flow-reference .stage-list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  list-style: none;
+  padding: var(--ui-space-2) 0 0;
+}
+
+.order-flow-reference .stage-item {
+  position: relative;
+  min-width: 0;
+  padding: 0 var(--ui-space-2);
+  text-align: center;
+}
+
+.order-flow-reference .stage-item::before,
+.order-flow-reference .stage-item::after {
+  position: absolute;
+  top: 14px;
+  height: 2px;
+  background: var(--ui-border-strong);
+  content: '';
+}
+
+.order-flow-reference .stage-item::before {
+  right: 50%;
+  left: 0;
+}
+
+.order-flow-reference .stage-item::after {
+  right: 0;
+  left: 50%;
+}
+
+.order-flow-reference .stage-item:first-child::before,
+.order-flow-reference .stage-item:last-child::after {
+  display: none;
+}
+
+.order-flow-reference .stage-item[data-connector='complete']::after,
+.order-flow-reference .stage-item[data-connector='complete'] + .stage-item::before {
+  background: var(--ui-success);
+}
+
+.order-flow-reference .stage-node {
+  position: relative;
+  z-index: 1;
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--ui-text-tertiary);
+  background: var(--ui-surface);
+  border: 2px solid var(--ui-border-strong);
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: var(--ui-weight-emphasis);
+}
+
+.order-flow-reference .stage-item[data-status='complete'] .stage-node {
+  color: var(--ui-success);
+  background: var(--ui-surface);
+  border-color: var(--ui-success);
+}
+
+.order-flow-reference .stage-item[data-status='current'] .stage-node {
+  color: var(--ui-on-action);
+  background: var(--ui-action-solid);
+  border-color: var(--ui-action-solid);
+  box-shadow: 0 0 0 3px var(--ui-selected-bg);
+}
+
+.order-flow-reference .stage-item[data-status='returned'] .stage-node,
+.order-flow-reference .stage-item[data-status='error'] .stage-node {
+  color: var(--ui-danger);
+  background: var(--ui-danger-bg);
+  border-color: var(--ui-danger);
+}
+
+.order-flow-reference .stage-copy {
+  display: grid;
+  gap: var(--ui-space-1);
+  margin-top: var(--ui-space-2);
+}
+
+.order-flow-reference .stage-name {
+  font-weight: var(--ui-weight-emphasis);
+}
+
+.order-flow-reference .stage-status {
+  color: var(--ui-text-secondary);
+  font-size: var(--ui-font-meta);
+}
+
+.order-flow-reference .stage-item[data-status='current'] .stage-status {
+  color: var(--ui-action-text);
+}
+
+.order-flow-reference .stage-item[data-status='returned'] .stage-status,
+.order-flow-reference .stage-item[data-status='error'] .stage-status {
+  color: var(--ui-danger);
+}
+
+.order-flow-reference .execution-list {
+  display: grid;
+  gap: var(--ui-layout-group-gap);
+}
+
+.order-flow-reference .execution-line {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.75fr) minmax(0, 2fr) auto;
+  align-items: center;
+  gap: var(--ui-space-4);
+  padding-top: var(--ui-layout-group-gap);
+  border-top: var(--ui-border-width) solid var(--ui-border-subtle);
+}
+
+.order-flow-reference .execution-line:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.order-flow-reference .execution-line__name {
+  font-weight: var(--ui-weight-emphasis);
+}
+
+.order-flow-reference .execution-line__meta {
+  display: block;
+  margin-top: var(--ui-space-1);
+  color: var(--ui-text-tertiary);
+  font-size: var(--ui-font-meta);
+}
+
+.order-flow-reference .progress-track {
+  height: 8px;
+  overflow: hidden;
+  background: var(--ui-surface-sunken);
+  border-radius: var(--ui-radius-tag);
+}
+
+.order-flow-reference .progress-track > span {
+  display: block;
+  height: 100%;
+  background: var(--ui-action-solid);
+  border-radius: inherit;
+}
+
+.order-flow-reference .progress-track[data-tone='success'] > span {
+  background: var(--ui-success);
+}
+
+.order-flow-reference .progress-track[data-tone='danger'] > span {
+  background: var(--ui-danger);
+}
+
+.order-flow-reference .progress-unknown {
+  color: var(--ui-text-tertiary);
+  font-size: var(--ui-font-meta);
+}
+
+.order-flow-reference .execution-line__status {
+  min-width: 86px;
+  color: var(--ui-text-secondary);
+  text-align: right;
+}
+
+.order-flow-reference .execution-line[data-tone='danger'] .execution-line__status {
+  color: var(--ui-danger);
+}
+
+.order-flow-reference .history-section summary {
+  cursor: pointer;
+  color: var(--ui-action-text);
+  font-weight: var(--ui-weight-emphasis);
+}
+
+.order-flow-reference .history-list {
+  display: grid;
+  gap: var(--ui-space-2);
+  margin-top: var(--ui-layout-group-gap);
+  padding-left: var(--ui-space-6);
+  color: var(--ui-text-secondary);
+}
+
+.order-flow-reference .history-list li::marker {
+  color: var(--ui-text-tertiary);
+  font-size: var(--ui-font-meta);
+}
+
+.order-flow-reference .detail-dialog {
+  width: min(calc(100% - var(--ui-space-8)), 560px);
+  padding: 0;
+  color: var(--ui-text);
+  background: var(--ui-surface);
+  border: var(--ui-border-width) solid var(--ui-border);
+  border-radius: var(--ui-radius-dialog);
+  box-shadow: var(--ui-shadow-dialog);
+}
+
+.order-flow-reference .detail-dialog::backdrop {
+  background: var(--ui-overlay);
+}
+
+.order-flow-reference .dialog-form {
+  display: grid;
+  max-height: min(680px, calc(100vh - var(--ui-space-8)));
+}
+
+.order-flow-reference .dialog-header,
+.order-flow-reference .dialog-body,
+.order-flow-reference .dialog-actions {
+  padding: var(--ui-layout-panel-inset);
+}
+
+.order-flow-reference .dialog-header {
+  align-items: center;
+  border-bottom: var(--ui-border-width) solid var(--ui-border-subtle);
+}
+
+.order-flow-reference .dialog-body {
+  overflow: auto;
+}
+
+.order-flow-reference .dialog-notice {
+  padding: var(--ui-space-3);
+  color: var(--ui-warning);
+  background: var(--ui-surface-muted);
+  border-left: 3px solid var(--ui-warning);
+}
+
+.order-flow-reference .dialog-facts {
+  padding-top: var(--ui-layout-group-gap);
+}
+
+.order-flow-reference .dialog-scope {
+  display: grid;
+  gap: var(--ui-space-2);
+  margin-top: var(--ui-layout-group-gap);
+  padding-top: var(--ui-layout-group-gap);
+  border-top: var(--ui-border-width) solid var(--ui-border-subtle);
+}
+
+.order-flow-reference .dialog-actions {
+  justify-content: flex-end;
+  border-top: var(--ui-border-width) solid var(--ui-border-subtle);
+}
+
+@container (max-width: 720px) {
+  .order-flow-reference .stage-list,
+  html[data-direction='vertical'] .order-flow-reference .stage-list {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-top: 0;
+  }
+
+  .order-flow-reference .stage-item,
+  html[data-direction='vertical'] .order-flow-reference .stage-item {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    column-gap: var(--ui-space-3);
+    align-items: center;
+    padding: 0;
+    text-align: left;
+  }
+
+  .order-flow-reference .stage-item::before,
+  .order-flow-reference .stage-item::after,
+  html[data-direction='vertical'] .order-flow-reference .stage-item::before,
+  html[data-direction='vertical'] .order-flow-reference .stage-item::after {
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: 14px;
+    width: 2px;
+    height: 50%;
+  }
+
+  .order-flow-reference .stage-item::before,
+  html[data-direction='vertical'] .order-flow-reference .stage-item::before {
+    top: 0;
+  }
+
+  .order-flow-reference .stage-item::after,
+  html[data-direction='vertical'] .order-flow-reference .stage-item::after {
+    top: 50%;
+    bottom: 0;
+  }
+
+  .order-flow-reference .stage-item:first-child::before,
+  .order-flow-reference .stage-item:last-child::after {
+    display: none;
+  }
+
+  .order-flow-reference .stage-copy,
+  html[data-direction='vertical'] .order-flow-reference .stage-copy {
+    margin: 0;
+    padding: var(--ui-space-3) 0;
+  }
+}
+
+html[data-direction='vertical'] .order-flow-reference .stage-list {
+  grid-template-columns: 1fr;
+  gap: 0;
+  padding-top: 0;
+}
+
+html[data-direction='vertical'] .order-flow-reference .stage-item {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  column-gap: var(--ui-space-3);
+  align-items: center;
+  padding: 0;
+  text-align: left;
+}
+
+html[data-direction='vertical'] .order-flow-reference .stage-item::before,
+html[data-direction='vertical'] .order-flow-reference .stage-item::after {
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: 14px;
+  width: 2px;
+  height: 50%;
+}
+
+html[data-direction='vertical'] .order-flow-reference .stage-item::before {
+  top: 0;
+}
+
+html[data-direction='vertical'] .order-flow-reference .stage-item::after {
+  top: 50%;
+  bottom: 0;
+}
+
+html[data-direction='vertical'] .order-flow-reference .stage-item:first-child::before,
+html[data-direction='vertical'] .order-flow-reference .stage-item:last-child::after {
+  display: none;
+}
+
+html[data-direction='vertical'] .order-flow-reference .stage-copy {
+  margin: 0;
+  padding: var(--ui-space-3) 0;
+}
+
+@media (max-width: 767px) {
+  .order-flow-reference .page-shell {
+    width: auto;
+    padding: var(--ui-layout-page-inset-narrow);
+  }
+
+  .order-flow-reference .page-header,
+  .order-flow-reference .task-grid {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .order-flow-reference .page-header__meta {
+    align-self: flex-start;
+  }
+
+  .order-flow-reference .summary-grid,
+  .order-flow-reference .task-facts,
+  .order-flow-reference .dialog-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .order-flow-reference .task-action {
+    flex-basis: auto;
+    padding-top: var(--ui-layout-group-gap);
+    padding-left: 0;
+    border-top: var(--ui-border-width) solid var(--ui-border-subtle);
+    border-left: 0;
+  }
+
+  .order-flow-reference .execution-line {
+    grid-template-columns: 1fr auto;
+    gap: var(--ui-space-2);
+  }
+
+  .order-flow-reference .execution-line__progress {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .order-flow-reference .execution-line__status {
+    align-self: center;
+  }
+
+  .order-flow-reference .button,
+  .order-flow-reference .control {
+    min-height: max(var(--ui-control-lg), 44px);
+  }
+
+  .order-flow-reference .icon-button {
+    width: max(var(--ui-control-lg), 44px);
+    height: max(var(--ui-control-lg), 44px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-flow-reference *,
+  .order-flow-reference *::before,
+  .order-flow-reference *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

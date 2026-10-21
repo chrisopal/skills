@@ -246,18 +246,6 @@
     scenario.history.forEach(function (entry) { elements.historyList.appendChild(createElement('li', null, entry)); });
   }
 
-  function setTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-  }
-
-  function setProfile(profile) {
-    document.documentElement.dataset.uiProfile = profile;
-  }
-
-  function setDensity(density) {
-    document.documentElement.dataset.density = density;
-  }
-
   function setDirection(direction) {
     if (direction === 'vertical') document.documentElement.dataset.direction = 'vertical';
     else delete document.documentElement.dataset.direction;
@@ -320,9 +308,6 @@
       state.scenarioId = event.target.value;
       renderScenario();
     });
-    elements.profileSelect.addEventListener('change', function (event) { setProfile(event.target.value); });
-    elements.themeSelect.addEventListener('change', function (event) { setTheme(event.target.value); });
-    elements.densitySelect.addEventListener('change', function (event) { setDensity(event.target.value); });
     elements.directionSelect.addEventListener('change', function (event) { setDirection(event.target.value); });
     elements.taskButton.addEventListener('click', openDetails);
     byId('dialog-close').addEventListener('click', closeDetails);
@@ -335,9 +320,10 @@
   function initialize() {
     cacheElements();
     bindEvents();
-    elements.profileSelect.value = 'enterprise';
-    elements.themeSelect.value = 'light';
-    elements.densitySelect.value = 'standard';
+    var config = window.EnterpriseDesign.get().requested;
+    elements.profileSelect.value = config.profile;
+    elements.themeSelect.value = config.theme;
+    elements.densitySelect.value = config.density;
     elements.directionSelect.value = 'auto';
     renderScenario();
   }

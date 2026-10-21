@@ -1,3 +1,10 @@
+## 2026-10-21 — Decouple enterprise brands and complete the v1.3 reference system
+
+- Scope: `enterprise-ui-design/` plus the v1.3 plan/validation records. Reuse v1.2 business guides and fixtures; preserve frozen v1 values and unrelated WIP. Add independent blue/teal brands, Enterprise/Precision/Analytics profiles, generated effective configuration, one runtime adapter, opt-in recipes and 8 simulated surfaces / 33 states.
+- Simplification: One token truth and configuration entry; remove duplicate order-flow preference listeners. Add candidate scan, duplicate-safe coverage gate, SYS rules and distinct technical/visual-task/behavior reports. No dependency, component-library or framework addition.
+- Verification: 32 unit tests, deterministic CSS/JSON/JS, Skill Creator, Python/JS syntax, local links and scoped scan pass. Browser evidence includes all 24 component requests, 94 matrix records with complete requested-axis pairwise sampling, native 200% zoom, local save read-back and draft/filter/page/selection/focus preservation. Font evidence records OS fallback and the missing independent700 resource; no Inter download claim. See `docs/plans/2026-10-21-enterprise-ui-design-v1.3-validation.md` and local `projects/enterprise-ui-v13-20261021/` evidence.
+- Publication: Scoped local Lore commit after verification. The latest explicit task instruction overrides automatic remote publication: no push, merge, deploy or installed-copy overwrite. Generated screenshots/logs remain local; no LIMS mutation or host/customer E2E acceptance claim.
+
 ## 2026-10-20 — Structure read-only business details and regional empty states
 
 - Scope: Enterprise UI Design entrypoint, forms/feedback, spatial contract and checklist; UI acceptance entrypoint, information hierarchy and spacing guides. Installed copies synchronized only after confirming no source drift outside bytecode caches; existing navigation rules and unrelated WIP preserved.

@@ -1,0 +1,33 @@
+# Whole-site planning and review
+
+Discover → Blueprint → Resolve Design System → Implement → Technical Audit → Visual/Task Review → Polish → Recheck is a subflow of the existing Create/Upgrade/Audit modes, not another entrypoint. A first working slice is an implementation milestone; whole-site delivery completes only when the approved ledger is covered.
+
+## Persistent scope
+
+Use the project's existing DESIGN.md for common decisions once. Pages record only differences: main task, visual focus, content groups, primary/secondary or parallel actions, widths/scroll, state/permission scope and reused components. Maintain one machine-readable ledger using the runnable [surfaces.json](../assets/reference-workbench/surfaces.json) shape: route/surface ID, family, task, permission, shared components, states, supported configurations, migration status, evidence. Inventory child routes, deep links, embedded Tabs, dialogs, Drawers, steps, errors, authentication and real permission branches. Reconcile against router/menu plus runtime paths; menus alone are incomplete.
+
+| Family / suitable use | Composition and key lines | Density, reflow and states | Wrong use / acceptance |
+|---|---|---|---|
+| Overview / genuine queue decisions | PageHeader + continuous metric rows + next task; outer section and inner text lines | Metrics content-driven; stack on narrow; populated/empty/loading/error/denied | No filler cards or fabricated trend; numbers have source, precision and units |
+| List/tree table / compare, find, batch | Header → FilterBar → toolbar → DataRegion → pagination; first/last cells align with inner text | Internal table scroll; wrap filters/actions; compact internal cells only; selection/filter/sort/page/partial | No full-page horizontal scroll or detached batch scope; return restores query/page/selection |
+| Read-only detail / identify object and facts | Object/status → semantic DetailGroups → related records/history; labels and values align | Responsive columns, prose full width; missing/long fields/error/permission | No disabled-input imitation or text pile; record identity and scope persist |
+| Edit/configuration / change and validate | Groups + labels + dependent fields + errors + ActionGroup; errors align with fields | Stack narrow; draft/invalid/submitting/failed/saved; low-height actions reachable | Save scope/dirty guard explicit; failure retains draft; screenshot cannot prove save |
+| Workflow/review / act at current stage | Current object → stages and parallel branches → current task/allowed action/blocker | Reflow stage rail; returned/waiting/partial/error/complete; preserve work scope | Tabs are peers, not progress; no invented action while waiting; inspect real journey |
+| Analysis/planning / compare time or relationships | Data label/unit/filter → justified chart/calendar/Gantt + accessible data alternative | Reflow legend/filter, chart owned min space; empty/uncertain/error | No decorative chart; Canvas/SVG redraw on config; honor specialist interactions |
+| Search/state/auth / recover or proceed | Named region + brief fact + actual recovery; owned padding, no false data | Narrow text/action wrap; no-result differs from no-data; login/denied distinct | Permission fixture is not authorization testing; recovery must work in declared scope |
+
+Use [layout-recipes.css](../assets/layout-recipes.css) for opt-in Stack, Inline/ActionGroup, Section, PageHeader, DetailGroup and continuous metric rows; reuse existing Page/FilterBar/DataRegion host components instead of creating an all-purpose framework. Shared grammar does not require identical headers, card count or primary buttons. Read-only surfaces can have no main command. Natural whitespace after content is valid; do not score whitespace ratio.
+
+## Rules, findings and distinct conclusions
+
+Reuse specialist PLAN/VIZ/TABLE/NAV/SURFACE/FORM/FEEDBACK/READ/EMPTY/NOTICE IDs; [audit-rules.json](audit-rules.json) adds only SYS-01–08 for cross-cutting system rules. Every rule specifies applicability, severity, expected result, method, evidence and exception. Findings identify surface/state, source/component, observed result, root cause (token/duplicate component/pattern mismatch/local defect), fix location and recheck. Prefer shared repair, then repeat the full task path.
+
+Use [review-report.template.json](review-report.template.json) plus a short Markdown report. Technical audit, visual/task review, behavior regression each return Pass / Fail / Not tested / Not applicable. N/A needs a reason. Pass needs concrete evidence. Open P0/P1 prevents overall Pass regardless of any score. Exceptions need scope, reason, owner/confirmation source, evidence and recheck condition. No global ignore replacing investigation.
+
+The model's task walkthrough is a heuristic review, not a real user study. Screenshot proves composition, DOM/computed styles prove rendered properties, interaction proves state/focus behavior, persisted read-back proves local save, and a host API read-back proves that API result; keep those claims distinct.
+
+## Matrix selection
+
+Run all generated combinations through resolver/constraints and the core component fixture. Browser default configuration covers every page family; state evidence records its actual configuration; select documented risk/pairwise combinations across pages, and add known high-risk combinations (dark non-default brand, compact narrow, unsupported Analytics/light fallback). Reference viewports: 390/768/1440/1920, 200% browser zoom, long Chinese/English/IDs, low-height dialog. List exact executed combinations and remaining gaps; don't turn sampling into full coverage or produce duplicate screenshots for volume.
+
+The reference ledger is simulated maintenance/approval work, not a LIMS route inventory. A host migration must create and finish its own ledger under separate project authorization.

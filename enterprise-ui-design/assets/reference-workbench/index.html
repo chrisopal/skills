@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>设备维护工单 · Enterprise UI Reference</title>
     <link rel="icon" href="data:,">
-    <link rel="stylesheet" href="../tokens.css">
-    <link rel="stylesheet" href="workbench.css">
+    <script src="../design-config.js?v=1.3.0"></script>
+    <script src="../design-system.js?v=1.3.0"></script>
+    <link rel="stylesheet" href="../tokens.css?v=1.3.0">
+    <link rel="stylesheet" href="../layout-recipes.css?v=1.3.0">
+    <link rel="stylesheet" href="workbench.css?v=1.3.0">
   </head>
   <body>
     <div class="workbench">
@@ -26,8 +29,10 @@
           <label class="topbar__select-label" for="profile-select">Profile</label>
           <select class="control control--small" id="profile-select" aria-label="视觉 Profile">
             <option value="enterprise">企业基线</option>
+            <option value="precision">精密工作台</option>
             <option value="analytics">数据分析（深色）</option>
           </select>
+          <label class="topbar__select-label" for="brand-select">品牌</label><select id="brand-select" class="control control--small" aria-label="品牌"><option value="blue">蓝色</option><option value="teal">青绿测试</option></select>
           <label class="topbar__select-label" for="theme-select">主题</label>
           <select class="control control--small" id="theme-select" aria-label="主题">
             <option value="light">浅色</option>
@@ -53,11 +58,17 @@
             <span class="nav-item__icon" aria-hidden="true">▤</span>
             <span>维护工单</span>
           </a>
+        <a class="nav-item" href="#overview">运行概览</a>
+          <a class="nav-item" href="#record">工单详情</a>
+          <a class="nav-item" href="#configuration">维护配置</a>
+          <a class="nav-item" href="../reference-order-flow/">订单办理 ↗</a>
+          <a class="nav-item" href="#analysis">运行分析</a>
+          <a class="nav-item" href="#components">组件与状态</a>
         </nav>
       </aside>
 
       <main class="main-content" id="work-orders">
-        <div class="page-heading">
+        <div class="page-heading" data-list-only>
           <div>
             <div class="breadcrumb" aria-label="当前位置">
               <span>工作台</span>
@@ -74,7 +85,7 @@
           </div>
         </div>
 
-        <section class="panel work-order-panel" aria-labelledby="list-title">
+        <section data-surface="list" class="panel work-order-panel" aria-labelledby="list-title">
           <div class="panel__header">
             <div>
               <h2 id="list-title">工单列表</h2>
@@ -118,7 +129,7 @@
               <caption class="sr-only">设备维护工单列表</caption>
               <thead>
                 <tr>
-                  <th scope="col">工单编号</th>
+                  <th scope="col"><span class="sr-only">选择记录</span></th><th scope="col">工单编号</th>
                   <th scope="col">设备 / 位置</th>
                   <th scope="col">优先级</th>
                   <th scope="col">当前状态</th>
@@ -139,6 +150,39 @@
               <button class="button button--secondary button--small" type="button" id="next-page-button" aria-label="下一页">下一页</button>
             </nav>
           </div>
+        </section>
+
+        <section data-surface="overview" class="ui-stack" hidden aria-labelledby="overview-title">
+          <header class="ui-page-header"><h1 id="overview-title">运行概览</h1><span class="simulation-badge">模拟数据</span></header>
+          <section class="panel ui-section"><h2>维护队列</h2><dl class="ui-metric-rows" id="overview-metrics"></dl></section>
+          <section class="panel ui-section"><h2>下一项工作</h2><p id="next-work"></p><a class="ui-link" href="#work-orders">打开维护工单 →</a></section>
+        </section>
+        <section data-surface="record" class="ui-stack" hidden aria-labelledby="record-title">
+          <header class="ui-page-header"><h1 id="record-title">工单详情</h1><span class="simulation-badge">模拟数据</span></header>
+          <section class="panel ui-section"><div class="ui-inline"><h2 id="record-subject"></h2><span class="status" id="record-status"></span></div><dl class="ui-detail-group" id="record-facts"></dl></section>
+          <section class="panel ui-section"><h2>处理记录</h2><p id="record-note"></p><div class="ui-actions"><button class="button button--primary" id="record-edit" type="button">编辑当前工单</button><a class="ui-link" href="#work-orders">返回列表</a></div></section>
+        </section>
+        <section data-surface="configuration" class="ui-stack ui-reading" hidden aria-labelledby="configuration-title">
+          <header class="ui-page-header"><h1 id="configuration-title">维护配置</h1><span class="simulation-badge">模拟 · 仅本机</span></header>
+          <form id="configuration-form" class="panel ui-section ui-stack" novalidate>
+            <h2>提醒与责任范围</h2>
+            <div class="field"><label for="configuration-name">方案名称</label><input id="configuration-name" class="control" required maxlength="80" value="华东设备例行维护" aria-describedby="configuration-error"></div>
+            <div class="field"><label for="configuration-days">提前提醒天数</label><input id="configuration-days" class="control" type="number" min="1" max="30" value="3" required></div>
+            <label class="ui-inline"><input id="configuration-enabled" type="checkbox" checked>启用本机模拟提醒</label>
+            <p id="configuration-error" class="field-error" role="alert"></p>
+            <p id="configuration-feedback" class="save-feedback" role="status"></p>
+            <div class="ui-actions"><button class="button button--primary" type="submit">保存配置</button><button class="button button--secondary" id="configuration-reset" type="button">恢复已保存</button></div>
+          </form>
+        </section>
+        <section data-surface="analysis" class="ui-stack" hidden aria-labelledby="analysis-title">
+          <header class="ui-page-header"><h1 id="analysis-title">运行分析</h1><span class="simulation-badge">模拟数据</span></header>
+          <section class="panel ui-section"><div class="ui-page-header"><h2>工单处理状态</h2><span class="ui-meta">单位：条</span></div><canvas id="status-chart" role="img" aria-label="模拟维护工单状态条形图；下方提供同值表格"></canvas><table class="ui-summary-table"><caption class="sr-only">图表数据</caption><thead><tr><th>状态</th><th>工单数</th></tr></thead><tbody id="chart-table"></tbody></table></section>
+        </section>
+        <section data-surface="components" class="ui-stack" hidden aria-labelledby="components-title">
+          <header class="ui-page-header"><h1 id="components-title">组件与状态</h1><span class="simulation-badge">验证场 · 模拟状态</span></header>
+          <section class="panel ui-section ui-stack"><h2>交互与反馈</h2><div class="ui-actions"><button class="button button--primary" id="component-action" type="button">主要动作</button><button class="button button--secondary" id="component-secondary" type="button">次要动作</button><button class="button button--secondary" type="button" disabled>不可用</button><button class="button button--secondary" id="drawer-open" type="button">打开侧面板</button><span class="ui-help"><button class="icon-button" type="button" aria-describedby="help-tooltip">?</button><span role="tooltip" id="help-tooltip">此处检验键盘焦点与浮层配色</span></span></div><p id="component-feedback" role="status"></p>
+            <table class="ui-summary-table" id="component-table"><caption>记录与选中态</caption><thead><tr><th>设备</th><th>温度</th></tr></thead><tbody><tr aria-selected="true" class="ui-selected"><td><span class="status">运行中</span> 冷却塔 CT-01</td><td class="ui-number">−12.50 <span class="ui-unit">℃</span></td></tr></tbody></table>
+            <svg id="component-svg" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-8" fill="none" stroke="var(--ui-action-text)" stroke-width="2"/></svg><label class="field">普通输入<input class="control" value="长中文设备名称／Mixed identifier EQUIPMENT-2026-0000000000000001"></label><div class="field"><label for="component-invalid">验证错误</label><input id="component-invalid" class="control" aria-invalid="true" value="" aria-describedby="component-error"><p id="component-error" class="field-error">请输入设备标识。</p></div><div class="ui-inline"><span class="status">处理中</span><span class="ui-danger">失败：等待重试</span></div><div role="tablist" aria-label="状态分组" class="ui-tabs"><button role="tab" aria-selected="true" aria-controls="state-panel" id="state-tab" data-state-tab="states">状态</button><button role="tab" aria-selected="false" aria-controls="font-panel" id="font-tab" data-state-tab="fonts" tabindex="-1">字体样本</button></div><div role="tabpanel" id="state-panel" aria-labelledby="state-tab"><label class="field">模拟场景<select class="control" id="fixture-state"><option value="populated">有数据</option><option value="empty">无记录</option><option value="loading">加载中</option><option value="error">加载失败</option><option value="denied">无权限</option><option value="signed-out">未登录</option></select></label><div class="ui-state" id="fixture-feedback" aria-live="polite"></div></div><div role="tabpanel" id="font-panel" aria-labelledby="font-tab" hidden><p>中文设备维护 / Maintenance 2026 / μm ℃ ± ≤ ≥ m²</p><p class="ui-number">−1,234.50 <span class="ui-unit">%</span></p><code>EQUIPMENT-2026-LONG-IDENTIFIER-00000000000000000001</code></div></section>
         </section>
       </main>
     </div>
@@ -183,7 +227,9 @@
       </form>
     </dialog>
 
-    <script src="workbench-fixtures.js" defer></script>
-    <script src="workbench.js" defer></script>
+    <dialog id="fixture-drawer" class="order-dialog ui-drawer" aria-labelledby="drawer-title"><div class="dialog__header"><h2 id="drawer-title">维护范围</h2><button class="icon-button" id="drawer-close" type="button" aria-label="关闭侧面板">×</button></div><div class="dialog__body"><p>华东基地 · 设备维护组</p><p>此侧面板继承根配置，独立于页面内容区。</p></div></dialog>
+    <script src="workbench-fixtures.js?v=1.3.0" defer></script>
+    <script src="workbench.js?v=1.3.0" defer></script>
+    <script src="workbench-surfaces.js?v=1.3.0" defer></script>
   </body>
 </html>

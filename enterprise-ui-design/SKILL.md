@@ -5,6 +5,8 @@ description: Create, upgrade, or audit enterprise admin and workbench frontends.
 
 # Enterprise UI Design
 
+v1.3 — compatible extension of v1.2; preserve the frozen public v1 token contract.
+
 Build from product truth and apply one visual grammar. Do not invent alternatives unless requested.
 
 ## Route the request
@@ -18,6 +20,8 @@ Build from product truth and apply one visual grammar. Do not invent alternative
 If audit and implementation are both requested, capture the baseline, then fix it through Upgrade. Plan/review/audit-only requests remain read-only.
 
 Always read [references/style-standard.md](references/style-standard.md). Before completion, apply [references/checklist.md](references/checklist.md). Use [assets/tokens.json](assets/tokens.json) as token truth and [assets/tokens.css](assets/tokens.css) only as a starter.
+
+For cross-page scope, style/brand switching or design-system migration, read [site planning](references/site-planning.md) and [the effective configuration contract](references/design-system-contract.md). Reuse the existing project DESIGN.md and components. The [rule registry](references/audit-rules.json), [review JSON template](references/review-report.template.json) and runnable candidate/coverage checker keep technical audit, visual/task review and behavior regression separate.
 
 For hierarchy, mixed-script rendering or font claims, read [references/typography.md](references/typography.md). For page composition, content density and state distinction, read [references/product-polish.md](references/product-polish.md). Use [references/analytics-style.md](references/analytics-style.md) only when the optional dark Analytics Profile is in scope.
 
@@ -36,8 +40,8 @@ For sidebar/menu icon work, read the [navigation icon rules](references/navigati
 1. Resolve target, outcome, scope, and mutation authority. Ask one question only if target or outcome is missing.
 2. Inspect the framework, component library, theme boundary, routes, states, assets, tests, and running UI. Product behavior outranks style.
 3. Produce a **UI Blueprint** before code: identify page types, content-width strategy, page/container/text key lines, inset ownership, density, and responsive reflow. Record scenario-to-component choices, exceptions, data/selection/save scope and interaction/state checks. For task flows, map the operator, object scope, business stages and parallel branches, current work, next permitted action, blockers, handoffs and completion evidence to actual contracts. Direct build/upgrade requests continue without another checkpoint.
-4. Select the visual Profile separately from theme and density. Enterprise is the default; Analytics is an optional dark data surface with explicit fallback. Reuse components and theme APIs, add a scoped adapter before page overrides, and add no dependency. Apply the generated token cascade and copy profile/theme/density to portals.
-5. Implement the smallest working slice. Controls must be real or labeled fixture-only—never invent search, notifications, SSO, tenants, metrics, or permissions.
+4. Resolve Brand, Profile, theme and density independently through [the configuration contract](references/design-system-contract.md). Blue is the default brand, not an invariant. Select the visual Profile separately from theme and density. Enterprise is the default; Analytics is an optional dark data surface with explicit fallback. Reuse components and theme APIs, add a scoped adapter before page overrides, and add no dependency. Apply the generated token cascade and copy profile/theme/density to portals.
+5. Implement the smallest working slice, then complete every approved surface/state in the [site ledger](references/site-planning.md); a first slice is not a whole-site deliverable. Controls must be real or labeled fixture-only—never invent search, notifications, SSO, tenants, metrics, or permissions.
 6. Verify business-state truth, task comprehension and visual composition separately. Measure rendered insets, gaps, alignment, and overflow; inspect role typography and actual rendered fonts; then inspect screenshots and walk the task in relevant Profile/theme/density combinations and responsive states. Run the host's applicable checks. Do not claim pixel similarity without a reference image or user comprehension from a model review alone.
 7. Report **designed**, **implemented**, **runtime-verified**, **business-E2E-verified**, **built**, and **deployed** as separate states.
 
@@ -48,7 +52,7 @@ For sidebar/menu icon work, read the [navigation icon rules](references/navigati
 - Do not normalize with broad `button`, `svg`, `div`, `canvas`, or wildcard class selectors. Portals/teleports must receive the same theme intentionally.
 - No routine gradients, glass, glow, oversized radii, card lift, decorative motion, or dashboard filler. A confirmed 3D brand asset is a local exception.
 - Never claim visual compliance from code inspection, accessibility compliance from screenshots, or E2E readiness from a build alone.
-- `assets/tokens.json` is the token truth. The generated CSS order is Enterprise base → theme → optional Profile → density; unsupported Profile/theme combinations use the declared fallback. Keep data-series colors separate from business-state colors.
+- `assets/tokens.json` is the token truth. The unique effective order is foundation → theme → supported Profile → explicit brand → density, followed by effective alias/recipe resolution; unsupported Profile/theme combinations use the declared fallback. Keep data-series colors separate from business-state colors.
 
 ## Common failure corrections
 

@@ -2,7 +2,6 @@
   'use strict';
 
   var STORAGE_KEY = 'enterprise-ui-reference-workbench-orders-v1';
-  var PREFERENCES_KEY = 'enterprise-ui-reference-workbench-preferences-v1';
   var PAGE_SIZE = 5;
 
   var state = {
@@ -58,27 +57,6 @@
     return writeStorage(STORAGE_KEY, JSON.stringify(orders));
   }
 
-  function loadPreferences() {
-    var saved = safeParse(readStorage(PREFERENCES_KEY), {});
-    var profile = saved && (saved.profile === 'analytics' || saved.profile === 'enterprise') ? saved.profile : 'enterprise';
-    var theme = saved && (saved.theme === 'dark' || saved.theme === 'light') ? saved.theme : 'light';
-    var density = saved && (saved.density === 'compact' || saved.density === 'standard') ? saved.density : 'standard';
-    document.documentElement.dataset.uiProfile = profile;
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.dataset.density = density;
-    elements.profileSelect.value = profile;
-    elements.themeSelect.value = theme;
-    elements.densitySelect.value = density;
-  }
-
-  function savePreferences() {
-    writeStorage(PREFERENCES_KEY, JSON.stringify({
-      profile: document.documentElement.dataset.uiProfile || 'enterprise',
-      theme: document.documentElement.dataset.theme,
-      density: document.documentElement.dataset.density
-    }));
-  }
-
   function text(value) {
     return value === null || value === undefined ? '' : String(value);
   }
@@ -121,7 +99,7 @@
       var emptyRow = document.createElement('tr');
       emptyRow.className = 'table-empty';
       var emptyCell = document.createElement('td');
-      emptyCell.colSpan = 7;
+      emptyCell.colSpan = 8;
       var emptyTitle = document.createElement('div');
       emptyTitle.className = 'table-empty__title';
       emptyTitle.textContent = '没有匹配的工单';
@@ -165,6 +143,10 @@
         statusCell.appendChild(status);
         row.appendChild(statusCell);
 
+        row.setAttribute('aria-selected', 'false');
+        var select = document.createElement('input'); select.type = 'checkbox'; select.setAttribute('aria-label', '选中 ' + order.id);
+        select.addEventListener('change', function () { row.setAttribute('aria-selected', String(select.checked)); window.dispatchEvent(new CustomEvent('workbench-selection-change', { detail: order.id })); });
+        var selectionCell = document.createElement('td'); selectionCell.appendChild(select); row.insertBefore(selectionCell, row.firstChild);
         row.appendChild(createCell(order.owner));
         row.appendChild(createCell(order.updated));
 
@@ -258,6 +240,7 @@
   function openOrder(id, trigger) {
     var order = getOrder(id);
     if (!order) return;
+    window.dispatchEvent(new CustomEvent('workbench-selection-change', { detail: id }));
     state.activeOrderId = id;
     state.lastTrigger = trigger || document.activeElement;
     fillDialog(order);
@@ -274,6 +257,8 @@
 
   function closeDialog() {
     if (!elements.dialog.open) return;
+    var original = getOrder(state.activeOrderId);
+    if (original && (elements.ownerInput.value.trim() !== (original.owner === '未分配' ? '' : original.owner) || elements.noteInput.value.trim() !== (original.note || '')) && !window.confirm('工单修改尚未保存，确认关闭？')) return;
     if (typeof elements.dialog.close === 'function') {
       elements.dialog.close();
     } else {
@@ -335,6 +320,7 @@
     }
     state.orders = changedOrders;
     applyFilters();
+    window.dispatchEvent(new Event('workbench-orders-change'));
     state.lastTrigger = findOrderTrigger(order.id) || elements.resetFilterButton;
     elements.saveFeedback.textContent = '已保存到当前浏览器。';
     window.setTimeout(closeDialog, 500);
@@ -389,18 +375,6 @@
     elements.dialogCloseButton.addEventListener('click', closeDialog);
     elements.dialogCancelButton.addEventListener('click', closeDialog);
     elements.noteInput.addEventListener('input', updateNoteCount);
-    elements.themeSelect.addEventListener('change', function () {
-      document.documentElement.dataset.theme = elements.themeSelect.value;
-      savePreferences();
-    });
-    elements.profileSelect.addEventListener('change', function () {
-      document.documentElement.dataset.uiProfile = elements.profileSelect.value;
-      savePreferences();
-    });
-    elements.densitySelect.addEventListener('change', function () {
-      document.documentElement.dataset.density = elements.densitySelect.value;
-      savePreferences();
-    });
     elements.dialog.addEventListener('close', function () {
       state.activeOrderId = null;
       if (state.lastTrigger && document.contains(state.lastTrigger)) state.lastTrigger.focus();
@@ -455,10 +429,10 @@
   function init() {
     cacheElements();
     state.orders = loadOrders();
-    loadPreferences();
     bindEvents();
     toggleNavigation(false, false);
     applyFilters();
+    window.WorkbenchReference = { orders: function () { return state.orders; }, open: openOrder };
   }
 
   if (document.readyState === 'loading') {

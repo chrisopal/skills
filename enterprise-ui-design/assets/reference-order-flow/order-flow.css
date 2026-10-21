@@ -39,14 +39,14 @@
 
 .order-flow-reference h1 {
   font-size: var(--ui-font-title);
-  line-height: 1.25;
-  font-weight: var(--ui-weight-emphasis);
+  line-height: var(--ui-type-title-line);
+  font-weight: var(--ui-type-title-weight);
 }
 
 .order-flow-reference h2 {
   font-size: var(--ui-font-section);
-  line-height: 1.4;
-  font-weight: var(--ui-weight-emphasis);
+  line-height: var(--ui-type-section-line);
+  font-weight: var(--ui-type-section-weight);
   overflow-wrap: anywhere;
 }
 
@@ -145,6 +145,15 @@
   color: var(--ui-text-secondary);
   font-size: var(--ui-font-label);
   font-weight: var(--ui-weight-emphasis);
+  white-space: nowrap;
+}
+
+.order-flow-reference .return-link { color: var(--ui-action-text); text-underline-offset: 3px; }
+
+@media (max-width: 640px) {
+  .order-flow-reference .control,
+  .order-flow-reference .button,
+  .order-flow-reference .icon-button { min-height: var(--ui-control-lg); }
 }
 
 .order-flow-reference .control {

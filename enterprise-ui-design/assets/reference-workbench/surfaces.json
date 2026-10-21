@@ -1,0 +1,176 @@
+{
+  "schema": "enterprise-ui-design/surfaces/v1",
+  "scope": "Simulated local reference only; not LIMS migration",
+  "design": "references/design-system-contract.md",
+  "surfaces": [
+    {
+      "id": "overview",
+      "family": "工作台/概览",
+      "route": "#overview",
+      "task": "识别当前维护队列并进入下一张工单",
+      "permission": "fixture role, no server authorization",
+      "sharedComponents": [
+        "root design adapter",
+        "semantic tokens",
+        "native HTML controls"
+      ],
+      "states": [
+        "populated"
+      ],
+      "supportedConfigurations": "generated design-config.json combinations",
+      "migration": "implemented fixture; evidence recorded separately",
+      "evidence": null
+    },
+    {
+      "id": "list",
+      "family": "列表/表格",
+      "route": "#work-orders",
+      "task": "筛选、比较、分页并选择维护工单",
+      "permission": "fixture role, no server authorization",
+      "sharedComponents": [
+        "root design adapter",
+        "semantic tokens",
+        "native HTML controls"
+      ],
+      "states": [
+        "populated",
+        "filtered",
+        "empty",
+        "paged",
+        "selected"
+      ],
+      "supportedConfigurations": "generated design-config.json combinations",
+      "migration": "implemented fixture; evidence recorded separately",
+      "evidence": null
+    },
+    {
+      "id": "record",
+      "family": "只读详情",
+      "route": "#record",
+      "task": "核对所选设备、责任人与处理记录，再决定是否编辑",
+      "permission": "fixture role, no server authorization",
+      "sharedComponents": [
+        "root design adapter",
+        "semantic tokens",
+        "native HTML controls"
+      ],
+      "states": [
+        "populated"
+      ],
+      "supportedConfigurations": "generated design-config.json combinations",
+      "migration": "implemented fixture; evidence recorded separately",
+      "evidence": null
+    },
+    {
+      "id": "configuration",
+      "family": "配置表单",
+      "route": "#configuration",
+      "task": "修改本机提醒方案；校验并保存或恢复已保存值",
+      "permission": "fixture role, no server authorization",
+      "sharedComponents": [
+        "root design adapter",
+        "semantic tokens",
+        "native HTML controls"
+      ],
+      "states": [
+        "draft",
+        "invalid",
+        "saved",
+        "storage-error"
+      ],
+      "supportedConfigurations": "generated design-config.json combinations",
+      "migration": "implemented fixture; evidence recorded separately",
+      "evidence": null
+    },
+    {
+      "id": "analysis",
+      "family": "数据分析",
+      "route": "#analysis",
+      "task": "比较工单状态数量并以同值表格核对",
+      "permission": "fixture role, no server authorization",
+      "sharedComponents": [
+        "root design adapter",
+        "semantic tokens",
+        "native HTML controls"
+      ],
+      "states": [
+        "populated",
+        "theme-update"
+      ],
+      "supportedConfigurations": "generated design-config.json combinations",
+      "migration": "implemented fixture; evidence recorded separately",
+      "evidence": null
+    },
+    {
+      "id": "components",
+      "family": "组件与状态",
+      "route": "#components",
+      "task": "验证主次动作、反馈、键盘 Tabs 与浮层配置消费",
+      "permission": "fixture role, no server authorization",
+      "sharedComponents": [
+        "root design adapter",
+        "semantic tokens",
+        "native HTML controls"
+      ],
+      "states": [
+        "populated",
+        "empty",
+        "loading",
+        "error",
+        "denied",
+        "signed-out",
+        "tabs",
+        "tooltip",
+        "drawer"
+      ],
+      "supportedConfigurations": "generated design-config.json combinations",
+      "migration": "implemented fixture; evidence recorded separately",
+      "evidence": null
+    },
+    {
+      "id": "order-dialog",
+      "family": "编辑浮层",
+      "route": "#work-orders",
+      "task": "保留当前工单范围，编辑负责人和记录，校验并本地保存",
+      "permission": "fixture role, no server authorization",
+      "sharedComponents": [
+        "root design adapter",
+        "semantic tokens",
+        "native HTML controls"
+      ],
+      "states": [
+        "draft",
+        "invalid",
+        "saved",
+        "low-height"
+      ],
+      "supportedConfigurations": "generated design-config.json combinations",
+      "migration": "implemented fixture; evidence recorded separately",
+      "evidence": null
+    },
+    {
+      "id": "workflow",
+      "family": "多阶段办理",
+      "route": "../reference-order-flow/",
+      "task": "识别订单范围、并行执行与当前允许办理动作",
+      "permission": "fixture role, no server authorization",
+      "sharedComponents": [
+        "root design adapter",
+        "semantic tokens",
+        "native HTML controls"
+      ],
+      "states": [
+        "report-pending",
+        "partial-testing",
+        "returned-correction",
+        "waiting-reviewer",
+        "read-failure",
+        "archived",
+        "dialog"
+      ],
+      "supportedConfigurations": "generated design-config.json combinations",
+      "migration": "implemented fixture; evidence recorded separately",
+      "evidence": null
+    }
+  ]
+}

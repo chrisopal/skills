@@ -1,7 +1,9 @@
-/* Enterprise Workbench UI 1.2.0. Token-only: no resets or component overrides.
+/* Enterprise Workbench UI 1.3.0. Token-only: no resets or component overrides.
    Generated from tokens.json by scripts/generate_tokens.py; do not edit by hand.
    Profile cascade: enterprise base -> theme -> optional profile -> density.
+   Explicit brand follows profile and owns action semantics only.
    Unsupported profile/theme combinations inherit the declared profile fallback.
+   Missing brand preserves the profile/theme action palette; explicit brand selectors override it.
    Root-scoped tokens inherit into body portals; nested providers must transfer resolved variables. */
 
 html[data-ui="enterprise"] {
@@ -65,6 +67,9 @@ html[data-ui="enterprise"] {
   --ui-font-reading: 16px;
   --ui-line-data: 1.45;
   --ui-line-reading: 1.7;
+  --ui-line-title: 1.25;
+  --ui-line-section: 1.4;
+  --ui-line-metric: 1.15;
   --ui-weight-label: 500;
   --ui-weight-nav: 500;
   --ui-weight-section: 600;
@@ -82,6 +87,85 @@ html[data-ui="enterprise"] {
   --ui-data-series-5: #B9385B;
   --ui-data-series-6: #237D3A;
   --ui-focus-ring: 2px solid var(--ui-action-text);
+  --ui-z-header: 20;
+  --ui-z-sidebar: 30;
+  --ui-z-popover: 100;
+  --ui-z-dialog: 200;
+  --ui-z-toast: 300;
+  --ui-focus-offset: 2px;
+  --ui-motion-standard: 220ms;
+  --ui-type-body-family: var(--ui-font-sans);
+  --ui-type-body-size: var(--ui-font-body);
+  --ui-type-body-weight: var(--ui-weight-body);
+  --ui-type-body-line: var(--ui-line-body);
+  --ui-type-body-tracking: 0;
+  --ui-type-body-numeric: normal;
+  --ui-type-label-family: var(--ui-font-sans);
+  --ui-type-label-size: var(--ui-font-label);
+  --ui-type-label-weight: var(--ui-weight-label);
+  --ui-type-label-line: var(--ui-line-body);
+  --ui-type-label-tracking: 0;
+  --ui-type-label-numeric: normal;
+  --ui-type-meta-family: var(--ui-font-sans);
+  --ui-type-meta-size: var(--ui-font-meta);
+  --ui-type-meta-weight: var(--ui-weight-body);
+  --ui-type-meta-line: var(--ui-line-data);
+  --ui-type-meta-tracking: 0;
+  --ui-type-meta-numeric: normal;
+  --ui-type-title-family: var(--ui-font-sans);
+  --ui-type-title-size: var(--ui-font-title);
+  --ui-type-title-weight: var(--ui-weight-page-title);
+  --ui-type-title-line: var(--ui-line-title);
+  --ui-type-title-tracking: 0;
+  --ui-type-title-numeric: normal;
+  --ui-type-section-family: var(--ui-font-sans);
+  --ui-type-section-size: var(--ui-font-section);
+  --ui-type-section-weight: var(--ui-weight-section);
+  --ui-type-section-line: var(--ui-line-section);
+  --ui-type-section-tracking: 0;
+  --ui-type-section-numeric: normal;
+  --ui-type-metric-family: var(--ui-font-sans);
+  --ui-type-metric-size: var(--ui-font-metric);
+  --ui-type-metric-weight: var(--ui-weight-metric);
+  --ui-type-metric-line: var(--ui-line-metric);
+  --ui-type-metric-tracking: 0;
+  --ui-type-metric-numeric: tabular-nums;
+  --ui-type-reading-family: var(--ui-font-sans);
+  --ui-type-reading-size: var(--ui-font-reading);
+  --ui-type-reading-weight: var(--ui-weight-body);
+  --ui-type-reading-line: var(--ui-line-reading);
+  --ui-type-reading-tracking: 0;
+  --ui-type-reading-numeric: normal;
+  --ui-type-nav-family: var(--ui-font-sans);
+  --ui-type-nav-size: var(--ui-font-nav);
+  --ui-type-nav-weight: var(--ui-weight-nav);
+  --ui-type-nav-line: var(--ui-line-body);
+  --ui-type-nav-tracking: 0;
+  --ui-type-nav-numeric: normal;
+  --ui-type-table-heading-family: var(--ui-font-sans);
+  --ui-type-table-heading-size: var(--ui-font-label);
+  --ui-type-table-heading-weight: var(--ui-weight-section);
+  --ui-type-table-heading-line: var(--ui-line-data);
+  --ui-type-table-heading-tracking: 0;
+  --ui-type-table-heading-numeric: normal;
+  --ui-type-record-family: var(--ui-font-sans);
+  --ui-type-record-size: var(--ui-font-body);
+  --ui-type-record-weight: var(--ui-weight-emphasis);
+  --ui-type-record-line: var(--ui-line-data);
+  --ui-type-record-tracking: 0;
+  --ui-type-record-numeric: normal;
+  --ui-type-unit-family: var(--ui-font-sans);
+  --ui-type-unit-size: var(--ui-font-meta);
+  --ui-type-unit-weight: var(--ui-weight-label);
+  --ui-type-unit-line: var(--ui-line-data);
+  --ui-type-unit-tracking: 0;
+  --ui-type-unit-numeric: tabular-nums;
+  --ui-type-code-family: var(--ui-font-mono);
+  --ui-type-code-size: var(--ui-font-meta);
+  --ui-type-code-weight: var(--ui-weight-body);
+  --ui-type-code-line: var(--ui-line-data);
+  --ui-type-code-tracking: 0;
+  --ui-type-code-numeric: normal;
   --ui-canvas: #F5F7FA;
   --ui-surface: #FFFFFF;
   --ui-surface-muted: #F5F7FA;
@@ -190,7 +274,116 @@ html.dark[data-ui="enterprise"][data-ui-profile="analytics"]:not([data-theme="li
   --ui-data-series-6: #8AD99C;
 }
 
-html[data-ui="enterprise"][data-density="compact"] {
+html[data-ui="enterprise"][data-ui-profile="precision"][data-theme="light"] {
+  --ui-font-body: 14px;
+  --ui-font-label: 13px;
+  --ui-font-title: 24px;
+  --ui-font-section: 16px;
+  --ui-line-body: 1.6;
+  --ui-line-reading: 1.75;
+  --ui-weight-label: 600;
+  --ui-weight-section: 700;
+  --ui-weight-page-title: 700;
+  --ui-radius-control: 6px;
+  --ui-radius-panel: 10px;
+  --ui-radius-dialog: 12px;
+  --ui-radius-tag: 4px;
+  --ui-layout-section-gap: 28px;
+  --ui-layout-group-gap: 20px;
+  --ui-layout-panel-inset: 24px;
+  --ui-layout-field-gap: 20px;
+  --ui-canvas: #F1F5F9;
+  --ui-surface: #FFFFFF;
+  --ui-surface-muted: #F8FAFC;
+  --ui-surface-sunken: #E9EFF5;
+  --ui-surface-hover: #EDF7F7;
+  --ui-border: #CBD5E1;
+  --ui-border-subtle: #E2E8F0;
+}
+
+html[data-ui="enterprise"][data-ui-profile="precision"][data-theme="dark"],
+html.dark[data-ui="enterprise"][data-ui-profile="precision"]:not([data-theme="light"]) {
+  --ui-font-body: 14px;
+  --ui-font-label: 13px;
+  --ui-font-title: 24px;
+  --ui-font-section: 16px;
+  --ui-line-body: 1.6;
+  --ui-line-reading: 1.75;
+  --ui-weight-label: 600;
+  --ui-weight-section: 700;
+  --ui-weight-page-title: 700;
+  --ui-radius-control: 6px;
+  --ui-radius-panel: 10px;
+  --ui-radius-dialog: 12px;
+  --ui-radius-tag: 4px;
+  --ui-layout-section-gap: 28px;
+  --ui-layout-group-gap: 20px;
+  --ui-layout-panel-inset: 24px;
+  --ui-layout-field-gap: 20px;
+  --ui-canvas: #0C151C;
+  --ui-surface: #14232C;
+  --ui-surface-muted: #1B303A;
+  --ui-surface-sunken: #101D25;
+  --ui-surface-hover: #23414A;
+  --ui-border: #3B5962;
+  --ui-border-subtle: #2B4650;
+  --ui-data-series-1: #72B7FF;
+  --ui-data-series-2: #54D6C7;
+  --ui-data-series-3: #C2AEFF;
+  --ui-data-series-4: #F5C36A;
+  --ui-data-series-5: #FF8DAE;
+  --ui-data-series-6: #8AD99C;
+}
+
+html[data-ui="enterprise"][data-ui-brand="blue"]:not([data-theme="dark"]),
+html[data-ui="enterprise"][data-ui-brand="blue"][data-theme="light"] {
+  --ui-brand: #1677FF;
+  --ui-action-text: #0966D9;
+  --ui-action-text-hover: #0754B5;
+  --ui-action-solid: #0966D9;
+  --ui-action-solid-hover: #0754B5;
+  --ui-on-action: #FFFFFF;
+  --ui-selected-bg: #EDF4FF;
+  --ui-focus-ring: 2px solid #0966D9;
+}
+
+html[data-ui="enterprise"][data-ui-brand="blue"][data-theme="dark"],
+html.dark[data-ui="enterprise"][data-ui-brand="blue"]:not([data-theme="light"]) {
+  --ui-action-text: #80B5FF;
+  --ui-action-text-hover: #A8CDFF;
+  --ui-action-solid: #1558B0;
+  --ui-action-solid-hover: #1A65C8;
+  --ui-selected-bg: #1B304D;
+  --ui-focus-ring: 2px solid #80B5FF;
+}
+
+html[data-ui="enterprise"][data-ui-brand="teal"]:not([data-theme="dark"]),
+html[data-ui="enterprise"][data-ui-brand="teal"][data-theme="light"] {
+  --ui-brand: #008F8C;
+  --ui-action-text: #006F6C;
+  --ui-action-text-hover: #005654;
+  --ui-action-solid: #007A76;
+  --ui-action-solid-hover: #00635F;
+  --ui-on-action: #FFFFFF;
+  --ui-selected-bg: #E5F7F5;
+  --ui-focus-ring: 2px solid #006F6C;
+}
+
+html[data-ui="enterprise"][data-ui-brand="teal"][data-theme="dark"],
+html.dark[data-ui="enterprise"][data-ui-brand="teal"]:not([data-theme="light"]) {
+  --ui-brand: #57D6CC;
+  --ui-action-text: #67E2D8;
+  --ui-action-text-hover: #9AF0E8;
+  --ui-action-solid: #0B6F6A;
+  --ui-action-solid-hover: #0D827C;
+  --ui-selected-bg: #163D3D;
+  --ui-focus-ring: 2px solid #67E2D8;
+}
+
+html[data-ui="enterprise"][data-density="compact"][data-ui-profile],
+html[data-ui="enterprise"][data-density="compact"]:not([data-ui-profile]),
+html.dark[data-ui="enterprise"][data-density="compact"][data-ui-profile]:not([data-theme="light"]),
+html.dark[data-ui="enterprise"][data-density="compact"]:not([data-ui-profile]):not([data-theme="light"]) {
   --ui-layout-panel-inset: 16px;
   --ui-layout-field-gap: 16px;
   --ui-density-control-height: 28px;

@@ -1,3 +1,11 @@
+## 2026-10-21 — Make enterprise task journeys reviewable through recovery and handoffs
+
+- Scope/files: Extend `enterprise-ui-design/` guidance, agent prompt, six UX audit rules, flow/report templates and existing audit command; add independent journey scope and 23 regressions. Plan and validation: `docs/plans/2026-10-21-enterprise-ui-journey-ux*.md`.
+- Behavior/simplification: Reuse the existing flow guide and report; reconcile every planned main/recovery/handoff step, separate UX from visual/business conclusions, preserve unknown outcomes, and require repair/recheck evidence for closed critical findings. No new dependency/framework; v1.3 visual assets and frozen Token contract remain byte-identical.
+- Verification:55 tests pass in source and installed trees;1,089 malformed-shape probes produce no uncaught exception. Positive CLI passes; missing/unexecuted cases reject. Independent simulated R17 review correctly stays Not ready with15 planned steps and3 open P1; focused recheck approves repaired gate issues. Skill validation, syntax/JSON,123 internal links, deterministic generation and whitespace checks pass.
+- Installation: Back up the unchanged52-file v1.3 installation, synchronize54 reusable files and verify SHA-256 parity; repeat installed tests and validators. Local evidence/backup/receipt: `projects/enterprise-ui-ux-20261021-163738/`, excluded from commit.
+- Publication/limits: This entry accompanies the scoped Lore commit; fast-forward main, verify the merged tree, non-force push and remote-SHA readback are recorded in the local receipt. Preserve unrelated WIP. This is Skill verification plus a simulated forward exercise; no fresh host-browser, real-user or customer acceptance claim.
+
 ## 2026-10-21 — Make Enterprise UI v1.3 available in the installed Skill and main
 
 - Scope/files: Selectively integrate `enterprise-ui-design/` and its two v1.3 plan/validation documents from `91f90620`; retain main history, prior status entries and unrelated working changes. No generated screenshots, logs or temporary projects are included.

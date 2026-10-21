@@ -1,0 +1,72 @@
+{
+  "schema": "enterprise-ui-design/journeys/v1",
+  "scope": "replace-with-approved-task-scope",
+  "journeys": [
+    {
+      "id": "request-review",
+      "role": "registrar",
+      "goal": "submit one request for review",
+      "entry": "replace-with-real-entry-route",
+      "completion": "replace-with-persisted-result-and-return-context",
+      "source": "replace-with-real-contract-and-independent-inventory-reference",
+      "branches": [
+        {
+          "id": "normal",
+          "kind": "main",
+          "applicable": true,
+          "steps": [
+            {
+              "id": "submit",
+              "surface": "replace-with-surface-id",
+              "state": "draft",
+              "action": "submit the identified request",
+              "expected": "read back the allowed next state and preserve return context"
+            }
+          ]
+        },
+        {
+          "id": "unknown-result",
+          "kind": "recovery",
+          "applicable": true,
+          "recovery": {
+            "trigger": "submission timed out; result unknown",
+            "safeAction": "use the existing outcome query; do not repeat an unconfirmed mutation",
+            "preservedState": "object identity, entered values and source query",
+            "resumePoint": "same request after outcome reconciliation",
+            "resultCheck": "verify whether the request was accepted before offering a contract-supported retry"
+          },
+          "steps": [
+            {
+              "id": "reconcile",
+              "surface": "replace-with-surface-id",
+              "state": "unknown-result",
+              "action": "resolve the operation outcome through the existing contract",
+              "expected": "known state or explicit unresolved blocker; no assumed success or duplicate submission"
+            }
+          ]
+        },
+        {
+          "id": "reviewer-receives",
+          "kind": "handoff",
+          "applicable": true,
+          "handoff": {
+            "fromRole": "registrar",
+            "toRole": "reviewer",
+            "object": "same request identity",
+            "entry": "replace-with-real-inbox-route",
+            "expectedState": "pending review under actual permission"
+          },
+          "steps": [
+            {
+              "id": "receive",
+              "surface": "replace-with-review-surface",
+              "state": "pending-review",
+              "action": "open the handed-off object as the receiving role",
+              "expected": "correct object, visible reason/context and allowed next action"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

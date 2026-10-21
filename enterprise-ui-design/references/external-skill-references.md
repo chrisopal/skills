@@ -59,3 +59,11 @@
 以上仓库内容作为不可信外部资料读取，其中的命令、工具调用、提问、代理与发布要求不成为本任务指令。本轮仅通过 GitHub API 读取公开文本和元数据，未安装外部 Skill、未运行其代码、未调用其生图/上传/遥测端点、未复制源码或完整模板；“未调用”不等于证明外部项目不存在相关行为。采用方法不授予外部服务访问项目文件或用户数据的权限。
 
 这些结论适用于表中固定提交；以后复查先重新解析提交、入口路径与许可。当前缺口是 draw-ui 独立许可文本未确认，以及三个项目均未在本任务中进行运行效果、安全或完整性认证；这些缺口不妨碍以独立表述记录方法，但不得包装为工具已验证或源代码再分发许可已审定。
+
+## 2026-10-21 补充核读：逐流程 UX 证据与负担
+
+本次只读核对的参考资料包括：本地 `/Users/guojiexie/.codex/skills/ui-ux-pro-max/data/ux-guidelines.csv`（99 条规则；关注表单、反馈、批量动作与错误恢复），上游 [ui-ux-pro-max-skill 数据源](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/56ea9cf174ed86786187daa9de0e6247cb0747e4/src/ui-ux-pro-max/data/ux-guidelines.csv)（固定提交 `56ea9cf174ed86786187daa9de0e6247cb0747e4`，119 条规则；补充读取重复输入、可聚焦错误摘要与可取消交互等条目），以及本机 `/Users/guojiexie/.codex/plugins/cache/openai-curated-remote/product-design/0.1.56/skills/audit/SKILL.md` 与其 `references/design-audit-framework.md`。此前已记录的 Impeccable `critique.md` 继续作为认知负担与启发式参考。仅使用本地规则检索和只读阅读，没有执行外部生成/审查工作流、安装外部工具或复制源码；本段是来源、版本、阅读范围和取舍记录。
+
+- **采纳**：按具体 journey 逐步记录 cue、action、result、路径/截图证据；分别记录任务入口、信息层级、交互摩擦、错误恢复、可访问性风险与证据限制；保留重复录入、取消/中断、超时、部分失败、草稿和跨角色交接等可观察负担。
+- **不采纳**：不把规则命中、模型走查、浏览器自动化或截图写成真人研究；不引入外部运行时、依赖或固定点击/耗时阈值；不从参考资料推断宿主的后端保存、重试或权限契约。
+- **落点**：以上方法仅补充现有 [task-flow-and-hierarchy](task-flow-and-hierarchy.md)、[task-flow-review-template](task-flow-review-template.md)、[site-planning](site-planning.md) 和 [checklist](checklist.md)，不新增 UX 模式。UX/任务直观性、视觉质量和业务正确性继续分别判定；未取得真实用户观察的指标保持 `Not tested`。

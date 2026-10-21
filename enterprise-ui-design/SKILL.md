@@ -19,6 +19,8 @@ If audit and implementation are both requested, capture the baseline, then fix i
 
 Always read [references/style-standard.md](references/style-standard.md). Before completion, apply [references/checklist.md](references/checklist.md). Use [assets/tokens.json](assets/tokens.json) as token truth and [assets/tokens.css](assets/tokens.css) only as a starter.
 
+For hierarchy, mixed-script rendering or font claims, read [references/typography.md](references/typography.md). For page composition, content density and state distinction, read [references/product-polish.md](references/product-polish.md). Use [references/analytics-style.md](references/analytics-style.md) only when the optional dark Analytics Profile is in scope.
+
 For page layout, padding, alignment, grouping, or density work, also read [references/spatial-system.md](references/spatial-system.md). It defines the shared spatial contract for all three modes. Its linked runnable reference uses simulation data; it is a pattern, not a host application's implementation.
 
 For multi-stage business flows, work-item details, next-action clarity, toolbar hierarchy, or a request that a page is unintuitive or unattractive, also read [references/task-flow-and-hierarchy.md](references/task-flow-and-hierarchy.md). Use its evidence-based acceptance gates and [review template](references/task-flow-review-template.md); passing spacing/overflow tests does not establish task clarity or visual quality.
@@ -34,9 +36,9 @@ For sidebar/menu icon work, read the [navigation icon rules](references/navigati
 1. Resolve target, outcome, scope, and mutation authority. Ask one question only if target or outcome is missing.
 2. Inspect the framework, component library, theme boundary, routes, states, assets, tests, and running UI. Product behavior outranks style.
 3. Produce a **UI Blueprint** before code: identify page types, content-width strategy, page/container/text key lines, inset ownership, density, and responsive reflow. Record scenario-to-component choices, exceptions, data/selection/save scope and interaction/state checks. For task flows, map the operator, object scope, business stages and parallel branches, current work, next permitted action, blockers, handoffs and completion evidence to actual contracts. Direct build/upgrade requests continue without another checkpoint.
-4. Reuse components and theme APIs. Add a scoped adapter before page overrides; add no dependency.
+4. Select the visual Profile separately from theme and density. Enterprise is the default; Analytics is an optional dark data surface with explicit fallback. Reuse components and theme APIs, add a scoped adapter before page overrides, and add no dependency. Apply the generated token cascade and copy profile/theme/density to portals.
 5. Implement the smallest working slice. Controls must be real or labeled fixture-only—never invent search, notifications, SSO, tenants, metrics, or permissions.
-6. Verify business-state truth, task comprehension and visual composition separately. Measure rendered insets, gaps, alignment, and overflow, then inspect screenshots and walk the task in relevant themes/densities and responsive states; run the host's applicable checks. Do not claim pixel similarity without a reference image or user comprehension from a model review alone.
+6. Verify business-state truth, task comprehension and visual composition separately. Measure rendered insets, gaps, alignment, and overflow; inspect role typography and actual rendered fonts; then inspect screenshots and walk the task in relevant Profile/theme/density combinations and responsive states. Run the host's applicable checks. Do not claim pixel similarity without a reference image or user comprehension from a model review alone.
 7. Report **designed**, **implemented**, **runtime-verified**, **business-E2E-verified**, **built**, and **deployed** as separate states.
 
 ## Invariants
@@ -46,6 +48,7 @@ For sidebar/menu icon work, read the [navigation icon rules](references/navigati
 - Do not normalize with broad `button`, `svg`, `div`, `canvas`, or wildcard class selectors. Portals/teleports must receive the same theme intentionally.
 - No routine gradients, glass, glow, oversized radii, card lift, decorative motion, or dashboard filler. A confirmed 3D brand asset is a local exception.
 - Never claim visual compliance from code inspection, accessibility compliance from screenshots, or E2E readiness from a build alone.
+- `assets/tokens.json` is the token truth. The generated CSS order is Enterprise base → theme → optional Profile → density; unsupported Profile/theme combinations use the declared fallback. Keep data-series colors separate from business-state colors.
 
 ## Common failure corrections
 
@@ -86,4 +89,4 @@ For existing project-specific action conventions, see [references/project-except
 
 ## Maintain the reusable source
 
-After editing JSON tokens, run `python3 scripts/generate_tokens.py`, then `python3 scripts/generate_tokens.py --check` and `python3 -m unittest discover -s tests -v` from this Skill directory. Existing v1.0 token values remain compatible; new spatial rules use additive semantic tokens. These checks validate token emission and invariants, not visual quality or business behavior.
+After editing JSON tokens, run `python3 scripts/generate_tokens.py`, then `python3 scripts/generate_tokens.py --check` and `python3 -m unittest discover -s tests -v` from this Skill directory. Existing v1.0 token values remain compatible; role typography, Profile semantics and new spatial rules are additive. These checks validate token emission and invariants, not visual quality or business behavior. The runnable references are simulated fixtures, not host application acceptance.

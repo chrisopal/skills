@@ -1,4 +1,4 @@
-# 企业工作台 UI 规范 · v1.1
+# 企业工作台 UI 规范 · v1.2
 
 **定位：克制、扁平、统一、信息清楚的企业工作台。**
 
@@ -7,6 +7,8 @@
 相同风格不等于相同业务界面：保留目标项目的名称、Logo、路由、菜单、权限、数据流和成熟交互，不复制 MateClaw/MBC 的业务内容。聊天、图谱、工作流画布和媒体预览保留专业布局。
 
 本 Skill 的 `assets/tokens.json` 是机器可读真值，`assets/tokens.css` 是框架无关变量起点；实现时按目标项目的主题系统映射，不能盲目覆盖全局样式。
+
+`tokens.json` 保留 v1 的公共值与主题值，并以新增角色 Token、Profile 和状态语义扩展。生成 CSS 的覆盖顺序是 Enterprise 基线 → Theme → 可选 Profile → Density。Enterprise 支持浅/深色并默认回退；Analytics 仅支持深色，浅色选择显式回退 Enterprise。运行时将 `data-ui-profile` 与 `data-theme`、`data-density` 一起传给 portal/Teleport 根节点，避免浮层混入另一套主题。
 
 ## 目录
 
@@ -86,6 +88,8 @@
 
 默认字体为 Inter + 系统中文字体回退，不强制新装字体包或外部字体网络依赖。数值/标识符可以使用等宽字体；指标值建议启用等宽数字，不把普通正文全部改成代码字体。
 
+新增角色 Token 只表达起点：`font-nav`、`font-label`、`font-section`、`font-title`、`font-metric`、`font-meta`、`font-reading`，以及对应 `weight-*`、`line-data`、`line-reading` 和 `font-variant-data`。正文/表格默认14px/400，标签13–14px/400–500，区块14–16px/600，页面标题22–24px/600–700，指标28–36px/700。`weight-emphasis` 不升级为800；紧凑密度不缩小正文。实际字体证据和混排检查见 [Typography Roles](typography.md)。
+
 间距使用 4px 基数：4、8、12、16、20、24、32、40px。34px 控件、36px 导航项等明确组件尺寸是有意例外。不要用零散的 13/17/27px 间距去补偿结构问题。新布局按 [空间、布局与对齐](spatial-system.md) 选择有用途的语义 Token；保留旧 Token 值供已有项目兼容。标准/紧凑密度独立于浅/深主题，不自动随手机断点切换，不缩小正文字号。
 
 ## 5. 页面框架
@@ -100,6 +104,10 @@
 - 尽量减少同屏滚动容器数量；保留必要的导航、表格和聊天历史独立滚动。
 
 ## 6. 页面与组件模式
+
+### 产品级构图与 Profile
+
+按 [Product Polish](product-polish.md) 从真实任务、状态和工作面组织页面。单指标由内容驱动，不用固定高度铺满栅格；用字重、对齐、少量表面差异和分隔线建层级，不给每条信息套框。零值、无记录、筛选为空、加载、失败和无权限必须分开表达。Profile 只改已声明的视觉语义，不新增业务指标、流程或权限；数据系列色不能代替成功/警告/危险状态。需要深色数据表面时再读 [Analytics Profile](analytics-style.md)。
 
 ### 登录
 

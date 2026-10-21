@@ -16,11 +16,26 @@ def render(tokens):
 
     parts = [
         f'/* Enterprise Workbench UI {tokens["meta"]["version"]}. Token-only: no resets or component overrides.\n'
-        '   Generated from tokens.json by scripts/generate_tokens.py; do not edit by hand. */',
+        '   Generated from tokens.json by scripts/generate_tokens.py; do not edit by hand.\n'
+        '   Profile cascade: enterprise base -> theme -> optional profile -> density.\n'
+        '   Unsupported profile/theme combinations inherit the declared profile fallback.\n'
+        '   Root-scoped tokens inherit into body portals; nested providers must transfer resolved variables. */',
         rule('html[data-ui="enterprise"]', tokens['common'] | tokens['modes']['light']),
-        rule('html[data-ui="enterprise"][data-theme="dark"],\nhtml.dark[data-ui="enterprise"]',
+        rule('html[data-ui="enterprise"][data-theme="dark"],\nhtml.dark[data-ui="enterprise"]:not([data-theme="light"])',
              tokens['modes']['dark']),
     ]
+    for name, profile in tokens.get('profiles', {}).items():
+        for theme, values in profile.get('modes', {}).items():
+            if name == 'enterprise':
+                parts.append(rule(
+                    f'html[data-ui="enterprise"][data-theme="{theme}"],\n'
+                    f'html.{theme}[data-ui="enterprise"]:not([data-theme="light"])', values))
+                continue
+            selectors = (
+                f'html[data-ui="enterprise"][data-ui-profile="{name}"][data-theme="{theme}"],\n'
+                f'html.{theme}[data-ui="enterprise"][data-ui-profile="{name}"]:not([data-theme="light"])'
+            )
+            parts.append(rule(selectors, values))
     for name, values in tokens.get('densities', {}).items():
         if values:
             parts.append(rule(f'html[data-ui="enterprise"][data-density="{name}"]', values))

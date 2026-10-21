@@ -2,6 +2,8 @@
 
 Use for design review, UI audit, consistency checks, noncompliant components, or targeted visual repair.
 
+Read [product-polish.md](product-polish.md) for hierarchy and state composition. Read [typography.md](typography.md) for rendered-font evidence. If the surface uses the optional dark Analytics Profile, read [analytics-style.md](analytics-style.md) and test its declared fallback.
+
 ## Authority boundary
 
 - **Audit/review/check:** read-only report.
@@ -34,7 +36,7 @@ For workflow, work-item, toolbar or aesthetic complaints, apply [task-flow-and-h
 
 For layout, padding, alignment or grouping audits, apply [spatial-system.md](spatial-system.md): inspect inset ownership at each container level, content-width strategy, outer versus text key lines, repeated padding, first/last table cells, label/error alignment and wrapped action groups. Record computed styles and bounding boxes where these establish the finding. Distinguish an intentional inset or optical adjustment from an actual defect; a raw pixel value differing from a default is not automatically a violation. Use screenshot review to judge hierarchy and rhythm. Without a supplied/accepted reference image, report conformance to the contract, not a similarity score.
 
-Measure actual color pairs for normal, hover, disabled, feedback, and dark states. Inspect computed styles when cascade/specificity matters. Verify that visually hidden mobile navigation is not keyboard reachable and that dialogs restore focus.
+Measure actual color pairs for normal, hover, focus, disabled, feedback, and dark states. Inspect computed styles when cascade/specificity matters, including Enterprise → theme → Profile → density and portal inheritance. Verify that visually hidden mobile navigation is not keyboard reachable and that dialogs restore focus.
 
 ## Fix loop
 

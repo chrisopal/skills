@@ -1683,3 +1683,9 @@
 - 完成：ui-regression-acceptance 新增 SPACE-01～06，分别核对组件 gap、容器 padding、同层均衡、分组节奏、换行、条件状态和焦点裁切；共享缺陷须列全量页面实例，截图必须实际查看。
 - 验证：现有 25 项测试、frontmatter 与本次相对引用检查通过；无新增依赖，Python quick_validate 因未安装 PyYAML 不声明通过。
 - 范围：仅 Skill 三份规则与本状态记录；按仓库要求提交并推送当前配置分支，其他 WIP 保留。LIMS 的实际修复及验收在产品仓库单独进行。
+## 2026-10-21 — Enterprise UI Design Profile and typography contract v1.2
+
+- Scope: source Skill only; preserve v1 token values and Create/Upgrade/Audit, add role typography, product-polish guidance, optional dark Analytics Profile, explicit theme/profile/density cascade and portal inheritance, plus simulated reference selectors.
+- Files: `enterprise-ui-design/SKILL.md`, `assets/tokens.json`/generated `tokens.css`, generator/tests, `references/{typography,product-polish,analytics-style,style-standard,spatial-system,checklist,create-new,upgrade-existing,audit-and-refine}.md`, and both runnable reference fixtures. No LIMS files or installed Skill copy changed.
+- Verification: token generation, `--check`, 13 unittest cases, Skill Creator validation, Python/JS syntax, local Markdown link check and `git diff --check` passed. The source Skill and installed `~/.codex/skills/enterprise-ui-design` copy are byte-for-byte aligned. References use simulated data; the requested dark radar image was not received, so no screenshot similarity claim is made.
+- Publication: scoped source and this status entry are committed and pushed on `codex/enterprise-dtx-skill-suite-runtime`; unrelated WIP and generated artifacts remain excluded. `/Users/guojiexie/Development/LIMS/design/enterprise-ui-skill-source.json` is absent in the current LIMS checkout, so no LIMS source-hash comparison is available; LIMS profile mapping and browser/application validation remain parent-task work.

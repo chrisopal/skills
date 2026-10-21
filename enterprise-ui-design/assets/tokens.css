@@ -1,5 +1,8 @@
-/* Enterprise Workbench UI 1.1.0. Token-only: no resets or component overrides.
-   Generated from tokens.json by scripts/generate_tokens.py; do not edit by hand. */
+/* Enterprise Workbench UI 1.2.0. Token-only: no resets or component overrides.
+   Generated from tokens.json by scripts/generate_tokens.py; do not edit by hand.
+   Profile cascade: enterprise base -> theme -> optional profile -> density.
+   Unsupported profile/theme combinations inherit the declared profile fallback.
+   Root-scoped tokens inherit into body portals; nested providers must transfer resolved variables. */
 
 html[data-ui="enterprise"] {
   --ui-font-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -57,6 +60,28 @@ html[data-ui="enterprise"] {
   --ui-density-control-height: 34px;
   --ui-density-cell-padding-block: 12px;
   --ui-density-cell-padding-inline: 16px;
+  --ui-font-nav: 14px;
+  --ui-font-metric: 32px;
+  --ui-font-reading: 16px;
+  --ui-line-data: 1.45;
+  --ui-line-reading: 1.7;
+  --ui-weight-label: 500;
+  --ui-weight-nav: 500;
+  --ui-weight-section: 600;
+  --ui-weight-page-title: 600;
+  --ui-weight-metric: 700;
+  --ui-font-variant-data: tabular-nums;
+  --ui-state-success: var(--ui-success);
+  --ui-state-warning: var(--ui-warning);
+  --ui-state-danger: var(--ui-danger);
+  --ui-state-info: var(--ui-action-text);
+  --ui-data-series-1: #1677FF;
+  --ui-data-series-2: #008787;
+  --ui-data-series-3: #7052D9;
+  --ui-data-series-4: #9C6500;
+  --ui-data-series-5: #B9385B;
+  --ui-data-series-6: #237D3A;
+  --ui-focus-ring: 2px solid var(--ui-action-text);
   --ui-canvas: #F5F7FA;
   --ui-surface: #FFFFFF;
   --ui-surface-muted: #F5F7FA;
@@ -88,7 +113,7 @@ html[data-ui="enterprise"] {
 }
 
 html[data-ui="enterprise"][data-theme="dark"],
-html.dark[data-ui="enterprise"] {
+html.dark[data-ui="enterprise"]:not([data-theme="light"]) {
   --ui-canvas: #101722;
   --ui-surface: #182230;
   --ui-surface-muted: #1D2939;
@@ -117,6 +142,52 @@ html.dark[data-ui="enterprise"] {
   --ui-disabled-text: #9AAAC0;
   --ui-shadow-popover: 0 4px 16px rgba(0, 0, 0, 0.24);
   --ui-shadow-dialog: 0 12px 36px rgba(0, 0, 0, 0.32);
+}
+
+html[data-ui="enterprise"][data-theme="dark"],
+html.dark[data-ui="enterprise"]:not([data-theme="light"]) {
+  --ui-data-series-1: #72B7FF;
+  --ui-data-series-2: #54D6C7;
+  --ui-data-series-3: #B59AFF;
+  --ui-data-series-4: #F5C36A;
+  --ui-data-series-5: #FF8DAE;
+  --ui-data-series-6: #8AD99C;
+}
+
+html[data-ui="enterprise"][data-ui-profile="analytics"][data-theme="dark"],
+html.dark[data-ui="enterprise"][data-ui-profile="analytics"]:not([data-theme="light"]) {
+  --ui-canvas: #0B1020;
+  --ui-surface: #121A2B;
+  --ui-surface-muted: #17233A;
+  --ui-surface-sunken: #0E1627;
+  --ui-surface-hover: #1D2D4A;
+  --ui-text: #F4F7FF;
+  --ui-text-secondary: #B8C7E7;
+  --ui-text-tertiary: #8D9BB5;
+  --ui-inverse-surface: #F4F7FF;
+  --ui-on-inverse: #0B1020;
+  --ui-border: #2C3B5B;
+  --ui-border-subtle: #22314C;
+  --ui-border-strong: #5A6E98;
+  --ui-border-control: #89A1D0;
+  --ui-action-text: #95B7FF;
+  --ui-action-text-hover: #B7D1FF;
+  --ui-action-solid: #2D68C7;
+  --ui-action-solid-hover: #3D7AD8;
+  --ui-selected-bg: #1D3359;
+  --ui-success: #72D5A1;
+  --ui-warning: #F5C36A;
+  --ui-danger: #FF8D9A;
+  --ui-danger-bg: #3B2234;
+  --ui-danger-border: #754253;
+  --ui-disabled-bg: #1B263D;
+  --ui-disabled-text: #94A4C4;
+  --ui-data-series-1: #72B7FF;
+  --ui-data-series-2: #54D6C7;
+  --ui-data-series-3: #B59AFF;
+  --ui-data-series-4: #F5C36A;
+  --ui-data-series-5: #FF8DAE;
+  --ui-data-series-6: #8AD99C;
 }
 
 html[data-ui="enterprise"][data-density="compact"] {

@@ -250,6 +250,14 @@
     document.documentElement.dataset.theme = theme;
   }
 
+  function setProfile(profile) {
+    document.documentElement.dataset.uiProfile = profile;
+  }
+
+  function setDensity(density) {
+    document.documentElement.dataset.density = density;
+  }
+
   function setDirection(direction) {
     if (direction === 'vertical') document.documentElement.dataset.direction = 'vertical';
     else delete document.documentElement.dataset.direction;
@@ -284,7 +292,9 @@
 
   function cacheElements() {
     elements.scenarioSelect = byId('scenario-select');
+    elements.profileSelect = byId('profile-select');
     elements.themeSelect = byId('theme-select');
+    elements.densitySelect = byId('density-select');
     elements.directionSelect = byId('direction-select');
     elements.orderStatus = byId('order-status');
     elements.taskTitle = byId('task-title');
@@ -310,7 +320,9 @@
       state.scenarioId = event.target.value;
       renderScenario();
     });
+    elements.profileSelect.addEventListener('change', function (event) { setProfile(event.target.value); });
     elements.themeSelect.addEventListener('change', function (event) { setTheme(event.target.value); });
+    elements.densitySelect.addEventListener('change', function (event) { setDensity(event.target.value); });
     elements.directionSelect.addEventListener('change', function (event) { setDirection(event.target.value); });
     elements.taskButton.addEventListener('click', openDetails);
     byId('dialog-close').addEventListener('click', closeDetails);
@@ -323,7 +335,9 @@
   function initialize() {
     cacheElements();
     bindEvents();
+    elements.profileSelect.value = 'enterprise';
     elements.themeSelect.value = 'light';
+    elements.densitySelect.value = 'standard';
     elements.directionSelect.value = 'auto';
     renderScenario();
   }

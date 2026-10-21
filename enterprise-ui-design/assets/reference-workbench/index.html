@@ -23,6 +23,11 @@
           <span class="topbar__context-value">华东制造基地</span>
         </div>
         <div class="topbar__tools">
+          <label class="topbar__select-label" for="profile-select">Profile</label>
+          <select class="control control--small" id="profile-select" aria-label="视觉 Profile">
+            <option value="enterprise">企业基线</option>
+            <option value="analytics">数据分析（深色）</option>
+          </select>
           <label class="topbar__select-label" for="theme-select">主题</label>
           <select class="control control--small" id="theme-select" aria-label="主题">
             <option value="light">浅色</option>
@@ -178,6 +183,7 @@
       </form>
     </dialog>
 
+    <script src="workbench-fixtures.js" defer></script>
     <script src="workbench.js" defer></script>
   </body>
 </html>

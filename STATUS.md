@@ -1,3 +1,11 @@
+## 2026-10-21 — Make Enterprise UI v1.3 available in the installed Skill and main
+
+- Scope/files: Selectively integrate `enterprise-ui-design/` and its two v1.3 plan/validation documents from `91f90620`; retain main history, prior status entries and unrelated working changes. No generated screenshots, logs or temporary projects are included.
+- Installation: The installed v1.2 copy matched its 37-file source baseline. Backed it up locally before updating; all52 reusable v1.3 files now hash-match the integration source at `~/.codex/skills/enterprise-ui-design/`.
+- Verification:32 tests pass independently in the integration and installed trees; deterministic token/runtime generation, both Skill validators, Python/JavaScript syntax,117 local document links, exact source parity and whitespace checks pass. Prior browser evidence is unchanged because the integrated Skill bytes match `91f90620`; this integration does not claim a new browser run.
+- Simplification/limits: Reuse the verified token resolver, shared configuration adapter and reference surfaces without code changes or dependencies. Host backend/RBAC, customer UAT, cross-platform fonts and full accessibility remain outside the verified scope.
+- Publication: This entry accompanies the scoped Lore integration commit. Publish main without force and record remote-SHA readback plus unchanged-WIP checks in the local installation receipt under `projects/enterprise-ui-v13-install-main-20261021-145537/`.
+
 ## 2026-10-21 — Publish verified enterprise UI guidance on main
 
 - Scope: Integrate only `enterprise-ui-design` v1.2 and its companion `ui-regression-acceptance` guidance from `165d6d01`; preserve all other main content and parallel working changes.

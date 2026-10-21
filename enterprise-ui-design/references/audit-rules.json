@@ -1,0 +1,89 @@
+{
+  "schema": "enterprise-ui-design/rules/v1",
+  "existingNamespaces": [
+    "PLAN",
+    "VIZ",
+    "TABLE",
+    "NAV",
+    "SURFACE",
+    "FORM",
+    "FEEDBACK",
+    "READ",
+    "EMPTY",
+    "NOTICE"
+  ],
+  "rules": [
+    {
+      "id": "SYS-01",
+      "severity": "P1",
+      "applies": "brand switch",
+      "expected": "Action/hover/selected/focus follow effective brand; statuses and series retain meanings",
+      "method": "all-combination resolver and computed styles",
+      "evidence": "pair contrasts + brand-only geometry comparison",
+      "exception": "A scoped business encoding color with provenance"
+    },
+    {
+      "id": "SYS-02",
+      "severity": "P1",
+      "applies": "role typography",
+      "expected": "Same role uses family,size,weight,line,tracking and numeric contract",
+      "method": "computed styles + platform rendered fonts",
+      "evidence": "mixed script font evidence",
+      "exception": "Document/report fonts separately authorized"
+    },
+    {
+      "id": "SYS-03",
+      "severity": "P1",
+      "applies": "layout inset",
+      "expected": "Shell/page/section/component have one owner and aligned text key lines",
+      "method": "bounding boxes and computed inset",
+      "evidence": "viewport screenshot and geometry",
+      "exception": "Named intentional inset with scope/reason"
+    },
+    {
+      "id": "SYS-04",
+      "severity": "P2",
+      "applies": "low data or empty region",
+      "expected": "Content-driven height; empty block padded; natural trailing whitespace valid",
+      "method": "computed geometry + visual/task review",
+      "evidence": "populated/empty/loading/error screenshots",
+      "exception": "Measured specialist chart/workspace height"
+    },
+    {
+      "id": "SYS-05",
+      "severity": "P1",
+      "applies": "interactive control",
+      "expected": "Default action,selected,focus,disabled distinguishable",
+      "method": "keyboard + computed color + screenshot",
+      "evidence": "actual role/state observations",
+      "exception": "None based only on hover"
+    },
+    {
+      "id": "SYS-06",
+      "severity": "P1",
+      "applies": "configuration consumer",
+      "expected": "Body portal,canvas,SVG and library adapter follow effective config",
+      "method": "switch actual portal/chart + inspect pixels/styles",
+      "evidence": "adapter callback + chart revision/pixel and portal proof",
+      "exception": "Absent architecture N/A with reason; host adapter untested"
+    },
+    {
+      "id": "SYS-07",
+      "severity": "P1",
+      "applies": "whole-site requested",
+      "expected": "Every route,child,tab,overlay,state and permission branch inventoried",
+      "method": "coverage checker plus runtime path",
+      "evidence": "explicit surface/state ledger and evidence",
+      "exception": "User-confirmed restricted scope"
+    },
+    {
+      "id": "SYS-08",
+      "severity": "P0",
+      "applies": "style switch during work",
+      "expected": "Keep draft,selection,filter,page,focus,scroll and business state",
+      "method": "real interaction with unsubmitted form",
+      "evidence": "before/after values and active element",
+      "exception": "Business structural change separately decided"
+    }
+  ]
+}

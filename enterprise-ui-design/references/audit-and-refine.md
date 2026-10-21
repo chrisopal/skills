@@ -36,7 +36,7 @@ For workflow, work-item, toolbar or aesthetic complaints, apply [task-flow-and-h
 
 For layout, padding, alignment or grouping audits, apply [spatial-system.md](spatial-system.md): inspect inset ownership at each container level, content-width strategy, outer versus text key lines, repeated padding, first/last table cells, label/error alignment and wrapped action groups. Record computed styles and bounding boxes where these establish the finding. Distinguish an intentional inset or optical adjustment from an actual defect; a raw pixel value differing from a default is not automatically a violation. Use screenshot review to judge hierarchy and rhythm. Without a supplied/accepted reference image, report conformance to the contract, not a similarity score.
 
-Measure actual color pairs for normal, hover, focus, disabled, feedback, and dark states. Inspect computed styles when cascade/specificity matters, including Enterprise → theme → Profile → density and portal inheritance. Verify that visually hidden mobile navigation is not keyboard reachable and that dialogs restore focus.
+Measure actual color pairs for normal, hover, focus, disabled, feedback, and dark states. Inspect computed styles when cascade/specificity matters, including foundation → theme → supported Profile → explicit brand → density and portal inheritance. Verify that visually hidden mobile navigation is not keyboard reachable and that dialogs restore focus.
 
 ## Fix loop
 
@@ -61,3 +61,7 @@ Do not “clean up nearby UI” outside the report scope. A fix that changes rou
 7. Evidence limits, untested states, and remaining exceptions.
 
 A passing audit requires accepted rendered evidence for every in-scope state, no open P0/P1, and explicit limits. A green build or screenshot count alone cannot produce Pass.
+
+## Site scope and resolved configuration
+
+Apply [site planning](site-planning.md) within this mode: Discover → Blueprint → Resolve Design System → Implement → Technical Audit → Visual/Task Review → Polish → Recheck. Use one existing DESIGN.md, a real route/surface/state ledger, and the [configuration/migration contract](design-system-contract.md). Cover approved child routes, Tabs, overlays, permissions and important states. A first slice is not whole-site completion. Brand, Profile, light/dark and density are independent; preserve legacy defaults until explicitly migrated. Run the executable registry/coverage checks and report technical, visual/task and behavior conclusions separately. Audit-only remains read-only.

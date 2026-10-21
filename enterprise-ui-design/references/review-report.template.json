@@ -1,0 +1,49 @@
+{
+  "schema": "enterprise-ui-design/review/v1",
+  "scope": "replace with actual inventory scope",
+  "version": null,
+  "environment": null,
+  "conclusions": {
+    "technical": {
+      "status": "Not tested",
+      "evidence": [],
+      "reason": "Not executed"
+    },
+    "visual_task": {
+      "status": "Not tested",
+      "evidence": [],
+      "reason": "Not executed"
+    },
+    "behavior": {
+      "status": "Not tested",
+      "evidence": [],
+      "reason": "Not executed"
+    }
+  },
+  "coverage": [
+    {
+      "surface": "surface-id",
+      "state": "state-id",
+      "configuration": null,
+      "viewport": null,
+      "status": "Not tested",
+      "reason": "Not executed",
+      "evidence": []
+    }
+  ],
+  "findings": [
+    {
+      "id": "SYS-01",
+      "surface": "surface-id",
+      "state": "state-id",
+      "fileOrComponent": null,
+      "severity": "P1",
+      "actual": null,
+      "repairLocation": null,
+      "recheck": null,
+      "status": "open",
+      "evidence": []
+    }
+  ],
+  "exceptions": []
+}

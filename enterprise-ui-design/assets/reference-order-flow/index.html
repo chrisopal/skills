@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>企业订单阶段样板 · Enterprise UI Reference</title>
     <link rel="icon" href="data:,">
-    <link rel="stylesheet" href="../tokens.css">
-    <link rel="stylesheet" href="order-flow.css">
-    <link rel="stylesheet" href="order-flow-stage.css">
+    <script src="../design-config.js?v=1.3.0"></script>
+    <script src="../design-system.js?v=1.3.0"></script>
+    <link rel="stylesheet" href="../tokens.css?v=1.3.0">
+    <link rel="stylesheet" href="order-flow.css?v=1.3.0">
+    <link rel="stylesheet" href="order-flow-stage.css?v=1.3.0">
   </head>
   <body class="order-flow-reference">
     <main class="page-shell">
       <header class="page-header">
         <div>
           <p class="breadcrumb" aria-label="当前位置"><span>业务组件参考</span><span aria-hidden="true">/</span><span>订单详情</span></p>
-          <h1>企业订单阶段</h1>
+          <h1>企业订单阶段</h1><a class="return-link" href="../reference-workbench/#work-orders">返回维护工作台</a>
         </div>
         <div class="page-header__meta">
           <span class="simulation-badge"><span class="simulation-badge__dot" aria-hidden="true"></span>交互样板 · 模拟数据</span>
@@ -37,8 +39,11 @@
           <label class="toolbar__label" for="profile-select">Profile</label>
           <select class="control control--small" id="profile-select">
             <option value="enterprise">企业基线</option>
-            <option value="analytics">数据分析（深色）</option>
+            <option value="precision">精密工作台</option><option value="analytics">数据分析（深色）</option>
           </select>
+        </div>
+        <div class="toolbar__group">
+          <label class="toolbar__label" for="brand-select">品牌</label><select class="control control--small" id="brand-select" aria-label="品牌"><option value="blue">蓝色</option><option value="teal">青绿测试</option></select>
         </div>
         <div class="toolbar__group">
           <label class="toolbar__label" for="theme-select">主题</label>
@@ -153,6 +158,6 @@
       </form>
     </dialog>
 
-    <script src="order-flow.js" defer></script>
+    <script src="order-flow.js?v=1.3.0" defer></script>
   </body>
 </html>

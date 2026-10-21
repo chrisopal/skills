@@ -45,3 +45,7 @@ Render the same states and viewports before/after. After each slice, compare scr
 For spacing/density changes, record computed insets/gaps and key-line geometry, then inspect the whole composition. Verify long labels, populated tables, multi-line filters, empty results and low-height dialogs in the selected Profile/theme/density. Compact must not shrink body type, erase group hierarchy or become the automatic mobile setting. Preserve focused controls/drafts through reflow.
 
 Completion means the accepted route scope is upgraded and verified. It does not mean every page is migrated unless every route/state was explicitly covered. Report remaining route families and rollback instructions.
+
+## Site scope and resolved configuration
+
+Apply [site planning](site-planning.md) within this mode: Discover → Blueprint → Resolve Design System → Implement → Technical Audit → Visual/Task Review → Polish → Recheck. Use one existing DESIGN.md, a real route/surface/state ledger, and the [configuration/migration contract](design-system-contract.md). Cover approved child routes, Tabs, overlays, permissions and important states. A first slice is not whole-site completion. Brand, Profile, light/dark and density are independent; preserve legacy defaults until explicitly migrated. Run the executable registry/coverage checks and report technical, visual/task and behavior conclusions separately. Audit-only remains read-only.

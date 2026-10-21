@@ -8,7 +8,7 @@
 
 本 Skill 的 `assets/tokens.json` 是机器可读真值，`assets/tokens.css` 是框架无关变量起点；实现时按目标项目的主题系统映射，不能盲目覆盖全局样式。
 
-`tokens.json` 保留 v1 的公共值与主题值，并以新增角色 Token、Profile 和状态语义扩展。生成 CSS 的覆盖顺序是 Enterprise 基线 → Theme → 可选 Profile → Density。Enterprise 支持浅/深色并默认回退；Analytics 仅支持深色，浅色选择显式回退 Enterprise。运行时将 `data-ui-profile` 与 `data-theme`、`data-density` 一起传给 portal/Teleport 根节点，避免浮层混入另一套主题。
+`tokens.json` 保留 v1 的公共值与主题值，并以新增角色 Token、Profile 和状态语义扩展。有效配置按 Foundation → Theme → 受支持 Profile → 显式 Brand → Density 解析；别名与组件值在有效配置上解析，见 [配置契约](design-system-contract.md)。Enterprise 支持浅/深色并默认回退；Analytics 仅支持深色，浅色选择显式回退 Enterprise。运行时将 `data-ui-profile` 与 `data-theme`、`data-density` 一起传给 portal/Teleport 根节点，避免浮层混入另一套主题。
 
 ## 目录
 
@@ -27,7 +27,7 @@
 
 ### 必须
 
-1. 普通交互只使用一套蓝色体系，灰阶负责信息层级。
+1. 普通交互使用所选品牌的语义动作配对，灰阶负责信息层级；蓝色只是默认，品牌不替代业务状态色。
 2. 优先用间距、对齐、字号与细边框区分结构，不靠卡片层层嵌套。
 3. 普通页面与面板使用纯色背景，不做渐变、玻璃模糊、发光或厚重阴影。
 4. 主内容是状态、数据和操作；工作台不放无助于操作的营销 Banner。
@@ -107,7 +107,7 @@
 
 ### 产品级构图与 Profile
 
-按 [Product Polish](product-polish.md) 从真实任务、状态和工作面组织页面。单指标由内容驱动，不用固定高度铺满栅格；用字重、对齐、少量表面差异和分隔线建层级，不给每条信息套框。零值、无记录、筛选为空、加载、失败和无权限必须分开表达。Profile 只改已声明的视觉语义，不新增业务指标、流程或权限；数据系列色不能代替成功/警告/危险状态。需要深色数据表面时再读 [Analytics Profile](analytics-style.md)。
+按 [Product Polish](product-polish.md) 从真实任务、状态和工作面组织页面。单指标由内容驱动，不用固定高度铺满栅格；用字重、对齐、少量表面差异和分隔线建层级，不给每条信息套框。零值、无记录、筛选为空、加载、失败和无权限必须分开表达。Profile 改已声明的排版、表面、边框、圆角、节奏和组件视觉语义，不新增业务指标、流程或权限；数据系列色不能代替成功/警告/危险状态。需要深色数据表面时再读 [Analytics Profile](analytics-style.md)。
 
 ### 登录
 

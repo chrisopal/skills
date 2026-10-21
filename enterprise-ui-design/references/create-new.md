@@ -52,3 +52,7 @@ Correct first slice: shell → work-order list with real filters/states → work
 - No console errors or page-level overflow were introduced.
 - Populated long-content states confirm measured page/text alignment, intentional nested insets and usable wrapped actions; screenshots also confirm hierarchy and spatial rhythm. A token check alone cannot establish this.
 - Static checks and the production build are read back; fixture, API, deployment, and business-E2E boundaries are stated.
+
+## Site scope and resolved configuration
+
+Apply [site planning](site-planning.md) within this mode: Discover → Blueprint → Resolve Design System → Implement → Technical Audit → Visual/Task Review → Polish → Recheck. Use one existing DESIGN.md, a real route/surface/state ledger, and the [configuration/migration contract](design-system-contract.md). Cover approved child routes, Tabs, overlays, permissions and important states. A first slice is not whole-site completion. Brand, Profile, light/dark and density are independent; preserve legacy defaults until explicitly migrated. Run the executable registry/coverage checks and report technical, visual/task and behavior conclusions separately. Audit-only remains read-only.

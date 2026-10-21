@@ -1,8 +1,8 @@
-# 空间、布局与对齐 · v1.2
+# 空间、布局与对齐 · v1.3（兼容 v1.2）
 
 Create、Upgrade、Audit 共用本规范。目标是让不同页面具有一致的空间秩序，同时保留业务需要的密度与专业工作面。这里的数值是本 Skill 的起点；接入现有设计系统时，优先映射其合理 Token，不为一个数值差异重写组件。
 
-Profile、主题和密度是三条独立轴：Profile 只覆盖声明的语义视觉值，主题提供明暗背景与前景，密度只覆盖控件、面板和表格间距。默认级联为 Enterprise 基线 → theme → optional Profile → density；Analytics 的浅色组合回退 Enterprise，不把移动断点自动当作 compact。Portal、Teleport、Dialog 和菜单必须继承同一组 `data-ui-profile`、`data-theme`、`data-density` 属性。
+Brand、Profile、主题和密度是独立轴，见[有效配置契约](design-system-contract.md)：Profile 只覆盖声明的语义视觉值，主题提供明暗背景与前景，密度只覆盖控件、面板和表格间距。默认解析为 Foundation → theme → supported Profile → explicit brand → density；Analytics 的浅色组合回退 Enterprise，不把移动断点自动当作 compact。Portal、Teleport、Dialog 和菜单必须继承同一组 `data-ui-profile`、`data-theme`、`data-density` 属性。
 
 ## 1. 先确定四层空间责任
 

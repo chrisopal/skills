@@ -1,5 +1,6 @@
 """Check the emitted CSS contract, not documentation wording."""
 import json
+import copy
 from pathlib import Path
 import re
 import subprocess
@@ -7,9 +8,16 @@ import sys
 import tempfile
 import unittest
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
+sys.path.insert(0, str(ROOT / "scripts"))
+from resolve_tokens import (  # noqa: E402
+    TokenConfigError,
+    build_runtime_config,
+    resolve_config,
+    validate_contrast,
+    validate_ownership,
+)
 
 def blocks(css):
     return [(selector.strip(), dict(re.findall(r"--ui-([\w-]+):\s*([^;]+);", body)))
@@ -81,6 +89,20 @@ class TokenContract(unittest.TestCase):
             self.assertLessEqual(float(value.removesuffix('px')),
                                  float(self.tokens['common'][key].removesuffix('px')))
 
+    def test_density_selector_can_override_profile_values_in_css(self):
+        density_selector = next(selector for selector, _ in self.rules
+                                if '[data-density="compact"]' in selector)
+        self.assertIn('[data-ui-profile]', density_selector)
+        self.assertIn(':not([data-ui-profile])', density_selector)
+
+        profile_selector = next(selector for selector, _ in self.rules
+                                if 'data-ui-profile="precision"' in selector)
+        # Every selector branch has the html element; counting attributes is
+        # enough to prove compact density is not weaker than profile overrides.
+        density_specificity = max(branch.count('[') for branch in density_selector.split(','))
+        profile_specificity = max(branch.count('[') for branch in profile_selector.split(','))
+        self.assertGreaterEqual(density_specificity, profile_specificity)
+
     def test_profiles_are_explicit_and_unsupported_themes_fall_back(self):
         profiles = self.tokens['profiles']
         self.assertEqual(profiles['enterprise']['supported-themes'], ['light', 'dark'])
@@ -129,7 +151,7 @@ class TokenContract(unittest.TestCase):
         density_selector = next(selector for selector, _ in self.rules
                                 if '[data-density="compact"]' in selector)
         self.assertNotIn('data-density', profile_selector)
-        self.assertNotIn('data-ui-profile', density_selector)
+        self.assertNotIn('data-ui-profile="analytics"', density_selector)
         self.assertIn('Profile cascade: enterprise base -> theme -> optional profile -> density.', css)
 
     def test_reusable_css_has_no_unresolved_variables(self):
@@ -149,6 +171,42 @@ class TokenContract(unittest.TestCase):
             output.write_text(output.read_text().replace('--ui-layout-panel-inset: 20px;', '--ui-layout-panel-inset: 99px;'))
             stale = subprocess.run([sys.executable, str(generator), '--output', str(output), '--check'], capture_output=True)
             self.assertNotEqual(stale.returncode, 0)
+
+    def test_precision_is_observable_without_changing_body_size(self):
+        enterprise = resolve_config(self.tokens, profile='enterprise', theme='light')
+        precision = resolve_config(self.tokens, profile='precision', theme='light')
+        self.assertEqual(precision['values']['font-body'], '14px')
+        self.assertEqual(precision['values']['font-title'], '24px')
+        self.assertNotEqual(precision['values']['weight-page-title'], enterprise['values']['weight-page-title'])
+        self.assertNotEqual(precision['values']['radius-panel'], enterprise['values']['radius-panel'])
+        self.assertNotEqual(precision['values']['layout-section-gap'], enterprise['values']['layout-section-gap'])
+        self.assertNotEqual(precision['values']['surface-muted'], enterprise['values']['surface-muted'])
+
+    def test_explicit_brand_owns_action_semantics_but_not_status_or_series(self):
+        analytics = resolve_config(self.tokens, profile='analytics', theme='dark')
+        teal = resolve_config(self.tokens, brand='teal', profile='analytics', theme='dark')
+        self.assertEqual(analytics['values']['action-text'], '#95B7FF')
+        self.assertNotEqual(teal['values']['action-text'], analytics['values']['action-text'])
+        self.assertEqual(teal['values']['success'], analytics['values']['success'])
+        self.assertEqual(teal['values']['data-series-1'], analytics['values']['data-series-1'])
+        broken = copy.deepcopy(self.tokens)
+        broken['brands']['teal']['tokens']['success'] = '#00FF00'
+        with self.assertRaises(TokenConfigError):
+            validate_ownership(broken)
+
+    def test_runtime_contains_every_axis_combination_and_contrast_passes(self):
+        runtime = build_runtime_config(self.tokens)
+        self.assertEqual(len(runtime['combinations']), 2 * 3 * 2 * 2)
+        self.assertEqual(runtime['defaults']['effective'], {
+            'brand': 'blue', 'profile': 'enterprise', 'theme': 'light', 'density': 'standard'
+        })
+        self.assertTrue(any(
+            item['requested']['profile'] == 'analytics'
+            and item['requested']['theme'] == 'light'
+            and item['effective']['profile'] == 'enterprise'
+            for item in runtime['combinations']
+        ))
+        validate_contrast(self.tokens)
 
 
 if __name__ == "__main__":

@@ -35,6 +35,8 @@ For business-detail reading or empty-state layout, read [forms and feedback](ref
 
 For sidebar/menu icon work, read the [navigation icon rules](references/navigation-and-task-surfaces.md#导航图标专项). Inventory labels, routes, business meanings and actual glyphs across the full menu, including permission-dependent items; justify semantic reuse rather than enforcing arbitrary uniqueness.
 
+For defect-driven design involving identity labels, configurable forms, action eligibility, query/export consistency or detail navigation, read [Feishu-derived design contracts](references/feishu-lessons.md). Apply only the relevant EUI-F rules in the Blueprint; retain their project boundaries and separate engineering evidence from human acceptance.
+
 ## Execution contract
 
 1. Resolve target, outcome, scope, and mutation authority. Ask one question only if target or outcome is missing.

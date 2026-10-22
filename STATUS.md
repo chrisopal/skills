@@ -1,3 +1,9 @@
+## 2026-10-22 — Carry observed UI defects into design and regression guidance
+
+- Scope: Two Skill entrypoints and two Feishu-derived references; preserve current main journey rules and unrelated work.
+- Rules: Identity/display separation, published form semantics, action eligibility, object scope, query/export consistency, detail navigation and evidence boundaries; project examples remain scoped and human acceptance stays separate.
+- Validation: Full existing Python suites, Skill metadata and local Markdown references checked before the scoped main commit/push. No product fix or customer acceptance is claimed by this documentation update.
+
 ## 2026-10-21 — Make enterprise task journeys reviewable through recovery and handoffs
 
 - Scope/files: Extend `enterprise-ui-design/` guidance, agent prompt, six UX audit rules, flow/report templates and existing audit command; add independent journey scope and 23 regressions. Plan and validation: `docs/plans/2026-10-21-enterprise-ui-journey-ux*.md`.

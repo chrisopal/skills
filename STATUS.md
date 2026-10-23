@@ -1,3 +1,10 @@
+## 2026-10-23 — 补齐统计视图设计与真实浏览器检查契约
+
+- 范围：`enterprise-ui-design/references/statistical-views.md`、`ui-regression-acceptance/references/statistical-view-checks.md`，并从两个 Skill 入口及现有计划/运营布局参考建立路由。
+- 内容：明确指标/对比/趋势/组成/分布/关系的图类配方，单位、粒度、分母、数据源、时间边界、缺失/零/异常和真实数据回读；直方图按数值分箱定义，柱图不得冒充直方图。支持的显式图类在小数据下保持可见，不支持能力如实显示缺口；覆盖浅深主题、390px、图表/数据表往返与状态分辨。
+- 验证：两个 Skill Creator 元数据校验通过；enterprise-ui-design 55 项、ui-regression-acceptance 25 项 Python 测试通过；48 个本次范围内 Markdown 本地链接、改动文件行数与尾随空白检查通过；未修改 LIMS、未提交或推送。
+- 限制：仅更新可复用 Skills 文档，未声称任何宿主应用已实现、生产数据已接通或通过真实浏览器验收；实际分母、权限与图表能力仍需按项目契约绑定。
+
 ## 2026-10-23 — Make operational UI layout feedback actionable before implementation
 
 - Scope: Two Skill entrypoints and focused operational-layout references map all 20 Feishu UI items into 12 design/check families plus the existing recoverable-error rule. Cover KPI priority/status, responsive grids, single metric entry, readable tables/drawers, row/sort behavior, compact empty regions, editor/preview proximity, permissions, read-only fields, dates and chart/table reflow.

@@ -1,3 +1,10 @@
+## 2026-10-23 — 通用表列布局契约与真实浏览器走查
+
+- 范围：更新 `enterprise-ui-design` 的表格工作区契约与入口引用，以及 `ui-regression-acceptance` 的通用表列布局走查和入口引用；普通只读表/通用主列表覆盖真实渲染测量、局部滚动、调宽、独立重排、视图持久化、默认/重新适配、权限过滤、键盘/触屏和基础语义保留。
+- 边界：专业编辑网格、报告冻结排版和语义矩阵须在接入账中声明例外并使用自己的列宽/键盘模型；宿主 LIMS 的实现与运行验收单独记录。
+- 验证：两个 Skill Creator `quick_validate.py`、enterprise-ui-design 55 项测试、ui-regression-acceptance 25 项测试、Token 一致性、38 个 Markdown 本地目标、交叉引用标题、改动文件行数/尾随空白及 `git diff --check` 均通过。
+- 发布方式：本条与两个技能的契约同步提交到远端 main；发布后回读远端提交，并核对本机安装文件摘要。
+
 ## 2026-10-23 — 补齐统计视图设计与真实浏览器检查契约
 
 - 范围：`enterprise-ui-design/references/statistical-views.md`、`ui-regression-acceptance/references/statistical-view-checks.md`，并从两个 Skill 入口及现有计划/运营布局参考建立路由。

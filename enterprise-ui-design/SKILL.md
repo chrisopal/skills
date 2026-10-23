@@ -37,6 +37,8 @@ For sidebar/menu icon work, read the [navigation icon rules](references/navigati
 
 For defect-driven design involving identity labels, configurable forms, action eligibility, query/export consistency or detail navigation, read [Feishu-derived design contracts](references/feishu-lessons.md). Apply only the relevant EUI-F rules in the Blueprint; retain their project boundaries and separate engineering evidence from human acceptance.
 
+For KPI hierarchy, responsive metric grids, cramped tables, sort affordances, compact empty queues, analytics editor/preview layout, permissions summaries or chart/table reflow, read [operational layout decisions](references/operational-layout-lessons.md). Choose applicable EUI-O rules and validate the suggested layout against the real task; do not turn sample column counts or record counts into universal rules.
+
 ## Execution contract
 
 1. Resolve target, outcome, scope, and mutation authority. Ask one question only if target or outcome is missing.

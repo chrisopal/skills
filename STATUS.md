@@ -1,3 +1,9 @@
+## 2026-10-23 — Make operational UI layout feedback actionable before implementation
+
+- Scope: Two Skill entrypoints and focused operational-layout references map all 20 Feishu UI items into 12 design/check families plus the existing recoverable-error rule. Cover KPI priority/status, responsive grids, single metric entry, readable tables/drawers, row/sort behavior, compact empty regions, editor/preview proximity, permissions, read-only fields, dates and chart/table reflow.
+- Boundaries: Reuse host components and existing evidence schemas; preserve the Token contract. Do not generalize four-column examples, record-count layout switches or requests to fill blank space into universal rules. Human acceptance remains separate.
+- Verification: 55 enterprise UI and 25 regression auditor tests pass; both Skill metadata validators, deterministic token/runtime check, 150 local Markdown targets, all 20 source-record mappings and whitespace check pass. Documentation verification does not claim LIMS runtime or production acceptance; scoped commit/push follows integration.
+
 ## 2026-10-22 — Carry observed UI defects into design and regression guidance
 
 - Scope: Two Skill entrypoints and two Feishu-derived references; preserve current main journey rules and unrelated work.

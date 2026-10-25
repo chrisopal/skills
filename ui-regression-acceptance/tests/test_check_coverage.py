@@ -76,6 +76,50 @@ class CoverageTests(unittest.TestCase):
         self.assertEqual(result['verdict'], 'INCOMPLETE', result)
         self.assertTrue(any(text in error for error in result['errors']), result)
 
+    def add_detail_checks(self):
+        """Synthetic ledger only: keep semantic and spacing claims independent."""
+        checks = {
+            'business': ['DETAIL-01.business'],
+            'interaction': ['DETAIL-03.interaction'],
+            'display': ['DETAIL-02.display'],
+            'layout': ['DETAIL-02.layout', 'SPACE-09'],
+        }
+        for container in (self.data, self.scope):
+            control = container['controls'][0]
+            for dimension, ids in checks.items():
+                control['checks'].extend(ids)
+                control['dimensions'][dimension].extend(ids)
+        for ids in checks.values():
+            for check in ids:
+                result = copy.deepcopy(self.data['results'][0])
+                result.update(check=check, contractRefs=['detail-recipe#' + check])
+                self.data['results'].append(result)
+        self.freeze_scope()
+
+    def test_detail_rule_ids_preserve_existing_schema_contract(self):
+        self.add_detail_checks()
+        result = self.audit()
+        self.assertEqual(result['verdict'], 'PASS', result)
+        self.assertEqual(result['applicableChecks'], 21)
+
+    def test_readable_fields_do_not_offset_failed_content_action_spacing(self):
+        self.add_detail_checks()
+        spacing = next(r for r in self.data['results'] if r['check'] == 'SPACE-09')
+        spacing.update(status='FAIL', expected='separate object decision region',
+                       actual='synthetic last excerpt touches object approval action')
+        result = self.audit()
+        self.assertEqual(result['verdict'], 'FAIL', result)
+        self.assertEqual(result['counts']['FAIL'], 1)
+        self.assertEqual(result['executionCoverage'], 1)
+
+    def test_omitting_detail_spacing_cannot_shrink_frozen_scope(self):
+        self.add_detail_checks()
+        self.data['results'] = [r for r in self.data['results'] if r['check'] != 'SPACE-09']
+        result = self.audit()
+        self.assertEqual(result['verdict'], 'INCOMPLETE', result)
+        self.assertLess(result['executionCoverage'], 1)
+        self.assertEqual(result['applicableChecks'], 21)
+
     def test_complete_manifest_and_ledger_pass(self):
         result = self.audit()
         self.assertEqual(result['verdict'], 'PASS', result)

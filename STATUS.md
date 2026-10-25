@@ -1,3 +1,10 @@
+## 2026-10-25 — Make detail reading and decision spacing component defaults
+
+- Scope: `enterprise-ui-design/` entrypoint, forms/feedback recipe, spatial contract and checklist; `ui-regression-acceptance/` entrypoint, hierarchy/spacing guides and coverage regressions. Isolated branch `codex/ui-detail-layout-contract-20261025` starts from fetched `origin/main` (`fff3af1e`); source and installed skill baselines matched, preserving existing operational/table/journey guidance and unrelated WIP.
+- Rules: READ-04–07 map to DETAIL-01–04 and SPACE-09: adjacent title/state with one state owner, bounded Descriptions/DetailList with aligned short fields and separate narratives, accurately named/disclosed checksums, excerpt identity/location/body/action hierarchy, and one component/parent owner for content-to-decision spacing. Existing component defaults precede page CSS patches; no universal column count or primary button. Positive/negative scenarios preserve actual object, permissions and action scope.
+- Verification: 55 design tests and 28 coverage tests pass, including three synthetic regressions for schema-compatible detail IDs, spacing FAIL dominance and frozen-scope omissions. Both Skill Creator validations, 57 changed-document local links, deterministic token/config check and whitespace pass. Two installed skills synchronized and read back byte-identical (excluding bytecode caches); no dependency, token or checker schema change.
+- Publication: Verified sources and this entry are committed/pushed only to the isolated feature branch; final delivery records the exact commit and remote read-back. No main merge or LIMS source change. Checker/unit tests certify record handling, not application visual acceptance; main browser walkthrough is separate work.
+
 ## 2026-10-23 — 列布局审核边界补充
 
 - 设计与走查补充：短列宽容器下调宽不得牵动相邻列；实际渲染宽度与保存值一致。默认布局须来自独立业务目录，覆盖设置调序/显隐、刷新、恢复默认再刷新。

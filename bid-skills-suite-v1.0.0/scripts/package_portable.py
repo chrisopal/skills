@@ -42,7 +42,8 @@ def build(root: Path, out: Path) -> dict:
     registry = json.loads((root / 'registry.json').read_text(encoding='utf-8'))
     sources = [(item['id'], root / 'skills' / item['id']) for item in registry['skills']]
     sources.append(('enterprise-diagrams', root.parent / 'enterprise-diagrams'))
-    manifest = {'suite_version': registry['version'], 'skills': [], 'runtime_bytes': 0}
+    manifest = {'suite_version': registry['version'], 'package_format': 'skill-root-v2',
+                'skills': [], 'runtime_bytes': 0}
     top = f'bid-skills-{registry["version"]}-portable'
     out.parent.mkdir(parents=True, exist_ok=True)
     # Outer ZIP stores already compressed packages to avoid duplicate runtime trees.
@@ -54,7 +55,7 @@ def build(root: Path, out: Path) -> dict:
                 for path in files:
                     data = path.read_bytes()
                     manifest['runtime_bytes'] += len(data)
-                    put(skill_zip, f'{name}/{path.relative_to(directory).as_posix()}', data)
+                    put(skill_zip, path.relative_to(directory).as_posix(), data)
             data = buffer.getvalue()
             filename = f'packages/{name}.zip'
             manifest['skills'].append({'id': name, 'archive': filename, 'files': len(files),

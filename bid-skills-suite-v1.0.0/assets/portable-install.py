@@ -33,12 +33,15 @@ def verify(root: Path) -> list[tuple[str, Path]]:
             for member in package.infolist():
                 path = PurePosixPath(member.filename)
                 if (path.is_absolute() or '..' in path.parts or '\\' in member.filename
-                        or not path.parts or path.parts[0] != name
+                        or ':' in member.filename
+                        or path.as_posix() != member.filename.rstrip('/')
+                        or not path.parts or path.parts[0] not in {
+                            'SKILL.md', 'registry.json', 'agents', 'scripts', 'references', 'assets'}
                         or stat.S_ISLNK(member.external_attr >> 16)
                         or member.filename in names):
                     raise ValueError(f'Unsafe archive entry: {name}')
                 names.add(member.filename)
-            if f'{name}/SKILL.md' not in names or package.testzip() is not None:
+            if 'SKILL.md' not in names or package.testzip() is not None:
                 raise ValueError(f'Invalid Skill package: {name}')
         packages.append((name, archive))
     if not packages:
@@ -54,9 +57,9 @@ def install(root: Path, destination: Path, dry_run: bool = False) -> int:
             raise FileExistsError(f'Already exists; back up and move it first: {target}')
     if not dry_run:
         destination.mkdir(parents=True, exist_ok=True)
-        for _, archive in packages:
+        for name, archive in packages:
             with zipfile.ZipFile(archive) as package:
-                package.extractall(destination)
+                package.extractall(destination / name)
     print(f'{"Verified" if dry_run else "Installed"}: {len(packages)} Skills -> {destination}')
     return len(packages)
 

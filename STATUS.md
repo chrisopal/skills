@@ -1748,3 +1748,9 @@
 - 完成内容：新增 scripts/package_portable.py、assets/portable-install.py、docs/PORTABLE_INSTALL.md 和匿名安装回归，更新套件 README。单个 ZIP 内含17个投标 Skill、enterprise-diagrams、18个自包含单技能包、离线安装器、依赖清单和逐包SHA256；保留513个运行文件，不带测试、展示截图、客户资料、成稿、缓存或虚拟环境。运行内容不变，不新增依赖，不为瘦身引入跨技能链接。
 - 验证：实包1,939,419字节，运行原文件5,679,756字节；相同输入可重现同一ZIP。隔离环境验证三种宿主路径、可选自定义目录、dry-run不写入、18技能逐字节一致、总控CLI可启动、同名目录不覆盖及篡改/越界包拒绝。完整pytest为516 passed、1 optional CairoSVG skipped、169 subtests passed；17 Skill/34 Schema、变更Python Ruff/编译及diff检查通过。
 - 风险/后续：本轮验证安装结构和脚本，不等于WorkBuddy/Claude Code模型实际编标；Windows运行、宿主GUI导入、OCR和办公工具未重跑，工具授权仍需宿主提供。ZIP和校验文件仅作本地交付，不提交二进制；源码按仓库规则提交推送codex/bid-portable-zip-20261019，不合并main，无关WIP未触碰。
+
+## 2026-10-26 — WorkBuddy 上传包入口层级修正
+
+- 完成内容：精简套件单技能 ZIP 改为根目录直接包含 SKILL.md，去掉额外技能目录层；安装器验证根目录资源并解压至独立同名目录，继续保护已有技能。更新README、离线安装说明及回归测试，提供单独总控上传包与明确需先解压的18技能合集，未改技能正文、运行依赖或业务门禁。
+- 验证：新增根入口用例在修改前失败，修改后9项打包/安装回归通过；实际交付合集1,919,781字节，18个包逐一验证根入口、YAML名称/描述、CRC并从实际解压包隔离安装成功。保留513个运行文件且逐字节一致；17 Skill/34 Schema检查、Python编译和diff检查通过。
+- 风险/后续：本轮为结构与实际脚本安装验证，未操作WorkBuddy GUI上传或宿主模型，未验证Windows运行；完整业务回归未重跑（本次仅改打包，当前环境缺DOCX/PDF测试依赖），Ruff未运行（环境无该工具）。生成ZIP仅留Downloads用于交付，可复用源码提交推送原分支，不合并main。

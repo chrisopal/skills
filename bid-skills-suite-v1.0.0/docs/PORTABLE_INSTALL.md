@@ -1,12 +1,12 @@
 # 投标 Skill 精简离线安装包
 
-包含 **17 个投标 Skill + enterprise-diagrams 独立绘图 Skill**。解压下载的 ZIP 后，`packages/` 中每个 ZIP 是一个完整 Skill，包含自己的 SKILL.md、脚本、参考、Schema 和模板。保留 Draw.io、Mermaid 等可选引擎配置。
+包含 **17 个投标 Skill + enterprise-diagrams 独立绘图 Skill**。解压下载的 ZIP 后，`packages/` 中每个 ZIP 是一个完整 Skill，**根目录直接包含 `SKILL.md`**，同层有 scripts/、references/、assets/ 等资源，不再套一层技能文件夹。保留 Draw.io、Mermaid 等可选引擎配置。
 
 精简仅删除分发内容中的测试、展示截图、示例成稿、缓存和开发文件；保留运行时资源与绘图模板。没有附带客户原件、企业材料、模型、API Key 或 Python 环境。总包不是单个 Skill，**不要把整个总包上传为一个 Skill**。
 
 ## WorkBuddy
 
-解压总包，在 WorkBuddy 的“技能 → 添加技能 → 上传技能”中逐个选择 `packages/` 下的 ZIP。按实际版本的界面入口操作；安装后确认 18 个技能已启用，新建任务调用 `bid-orchestrator`。
+先解压总包，在 WorkBuddy 的“技能 → 添加技能 → 上传技能”中逐个选择 `packages/` 下的 ZIP，例如 `bid-orchestrator.zip`。**不要上传外层套件总包**，外层只负责汇集多个 ZIP，没有可直接发现的 SKILL.md。按实际版本的界面入口操作；安装后确认 18 个技能已启用，新建任务调用 `bid-orchestrator`。
 
 也可在当前解压目录执行（Python 3.10+）：
 
@@ -35,7 +35,7 @@ python3 install.py --dest /absolute/path/to/project/.claude/skills --dry-run
 python3 install.py --dest /absolute/path/to/project/.claude/skills
 ```
 
-Windows 将 `python3` 换为 `py -3` 或实际 Python 命令，路径也换为本机路径。无 Python 时可逐个解压 `packages/*.zip` 到宿主技能目录，使其结构为 `技能目录/bid-orchestrator/SKILL.md`，不能额外多套一层目录。安装器先校验所有 ZIP 的 SHA256 与路径，再写入；已有任何同名 Skill 或符号链接就停止，不覆盖，请先备份并移开旧目录。只校验完整包时，可对一个空目录运行 `--dry-run`，不会创建该目录。
+Windows 将 `python3` 换为 `py -3` 或实际 Python 命令，路径也换为本机路径。无 Python 时为每个 ZIP 新建同名技能子目录，再解压进去，例如把 `bid-orchestrator.zip` 解压至 `技能目录/bid-orchestrator/`，最终结构为 `技能目录/bid-orchestrator/SKILL.md`；不要把全部 ZIP 的内容解压到同一目录。安装器先校验所有 ZIP 的 SHA256 与路径，再写入各自的技能子目录；已有任何同名 Skill 或符号链接就停止，不覆盖，请先备份并移开旧目录。只校验完整包时，可对一个空目录运行 `--dry-run`，不会创建该目录。
 
 ## 运行准备与开始使用
 

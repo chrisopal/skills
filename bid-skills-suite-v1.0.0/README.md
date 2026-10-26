@@ -24,7 +24,7 @@ python3 scripts/package_portable.py --out /absolute/path/bid-skills-portable.zip
 
 解压总包，WorkBuddy 可逐个上传 `packages/` 下的单 Skill ZIP；Claude Code 可运行 `python3 install.py --agent claude-code`，WorkBuddy 可运行 `python3 install.py --agent workbuddy`，其他宿主用 `--dest` 指定其技能发现目录。建议先追加 `--dry-run` 校验。安装器校验所有包后才写入，遇到已有同名目录就停止，不覆盖自定义内容；不自动安装模型、依赖或办公软件。
 
-总包不作为单个 Skill 导入。完整操作见 [精简包安装说明](docs/PORTABLE_INSTALL.md)，该说明也随 ZIP 分发。打包时需保留相邻的 `enterprise-diagrams/`，运行无需源码仓库。单包脚本各自保留依赖，不通过跨 Skill 符号链接瘦身。
+总包不作为单个 Skill 导入。单 Skill ZIP 已使用根目录 `SKILL.md` 布局，供要求根目录入口的上传界面识别；手动解压时需为每个 ZIP 建立同名技能子目录，避免资源混在一起。完整操作见 [精简包安装说明](docs/PORTABLE_INSTALL.md)，该说明也随 ZIP 分发。打包时需保留相邻的 `enterprise-diagrams/`，运行无需源码仓库。单包脚本各自保留依赖，不通过跨 Skill 符号链接瘦身。
 
 ## 通用 npx 安装
 

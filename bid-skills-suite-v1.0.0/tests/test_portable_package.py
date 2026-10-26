@@ -85,6 +85,16 @@ def test_bundle_is_reproducible_and_carries_checksum(bundle, tmp_path):
         archive.read_bytes()).hexdigest()
 
 
+def test_gui_upload_packages_have_skill_at_zip_root(bundle):
+    _, unpacked, _ = bundle
+    packages = list((unpacked / 'packages').glob('*.zip'))
+    assert len(packages) == 18
+    for path in packages:
+        with zipfile.ZipFile(path) as package:
+            assert 'SKILL.md' in package.namelist(), path.name
+            assert not any(name.startswith(path.stem + '/') for name in package.namelist())
+
+
 @pytest.mark.parametrize('entry', ['demo/../../escape', 'demo/..\\escape'])
 def test_unsafe_archive_rejected_before_any_install(entry, tmp_path):
     spec = importlib.util.spec_from_file_location('portable_install', ROOT / 'assets/portable-install.py')
@@ -93,7 +103,7 @@ def test_unsafe_archive_rejected_before_any_install(entry, tmp_path):
     (tmp_path / 'packages').mkdir()
     archive = tmp_path / 'packages/demo.zip'
     with zipfile.ZipFile(archive, 'w') as package:
-        package.writestr('demo/SKILL.md', 'demo')
+        package.writestr('SKILL.md', 'demo')
         package.writestr(entry, 'escape')
     manifest = {'skills': [{'id': 'demo', 'archive': 'packages/demo.zip',
                             'sha256': hashlib.sha256(archive.read_bytes()).hexdigest()}]}

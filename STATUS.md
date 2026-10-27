@@ -1801,5 +1801,7 @@
 ## 2026-10-27 — Table vertical alignment and section spacing
 
 - Scope: two UI Skills references only; ordinary table body groups default to vertical middle, preserving semantic horizontal alignment and documented grid/print exceptions.
-- Acceptance: SPACE-09/10 measure mixed-content center deltas, Tab-to-first-control distance and separate section/inset/action gaps across desktop/390px and light/dark states.
+- Acceptance: SPACE-10/11 measure mixed-content center deltas, Tab-to-first-control distance and separate section/inset/action gaps across desktop/390px and light/dark states.
 - Validation: existing Skill tests, frontmatter validator and diff whitespace checks; no product UI execution claimed. Isolated origin/main worktree excludes existing detail-layout and unrelated branch WIP.
+
+- ID correction: preserve existing SPACE-09 content/decision spacing in installed parallel work; table centering uses SPACE-10 and Tab spacing uses SPACE-11. Source and installed declarations checked for uniqueness.

@@ -1797,3 +1797,9 @@
 - 完成内容：修正AI评分将“报价一览表内的质保期”误归为价格分的问题；价格判断仅使用评分标题与规则，不使用证明材料文件名，质保每增加月份按客观档位处理。真实价格项仍强制价格类型及报价/基准价/公式。补匿名回归、更新README与评审Skill版本，删除同一评分模块的未用局部变量和测试未用导入，刷新17独立分发，无新增依赖。
 - 验证：新增用例修改前确实失败，修改后AI评分18项通过；最终完整pytest为508 passed、1 optional CairoSVG skipped、5 warnings、169 subtests passed。评分脚本及两份变更测试Ruff通过；17 Skill/34 Schema检查通过。
 - 风险/后续：机器分类仅提供候选，仍需按原文逐条语义复核；私人EAM验证保留本地，正式资格、签署支付、采购平台、现场与价格基准未验收。应用lint/build不适用，backend/uv.lock未触碰；仅提交可复用源码及匿名测试，按仓库约定推送当前分支，不合并main。
+
+## 2026-10-27 — Table vertical alignment and section spacing
+
+- Scope: two UI Skills references only; ordinary table body groups default to vertical middle, preserving semantic horizontal alignment and documented grid/print exceptions.
+- Acceptance: SPACE-09/10 measure mixed-content center deltas, Tab-to-first-control distance and separate section/inset/action gaps across desktop/390px and light/dark states.
+- Validation: existing Skill tests, frontmatter validator and diff whitespace checks; no product UI execution claimed. Isolated origin/main worktree excludes existing detail-layout and unrelated branch WIP.

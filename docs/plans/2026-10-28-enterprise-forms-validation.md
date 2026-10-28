@@ -33,7 +33,7 @@
 - 安装目标 `/Users/guojiexie/.codex/skills/enterprise-ui-design`。同步前全量备份，比较 SHA256；四份既有本地增强文件以 origin 基线三方合入。checklist 的末尾追加冲突逐项核对后同时保留 DETAIL 与 SaaS 清单。
 - 保留本机独有 `references/detail-layout-system.md`，未把本机未提交增强混入本轮 Git 提交。63 个预期文件逐一 SHA256 回读一致；安装目录 156 条 Markdown 本地文件目标存在，测试/元数据/生成检查通过。
 - 原工作区 `/Users/guojiexie/Development/skills` 的 tracked binary diff SHA256 与 status 与开始时完全一致。本轮只在隔离 worktree 修改。
-- 可复用源码、测试和记录提交并推送上述功能分支；未额外合并 main。生成截图、日志及收据不提交。
+- 可复用源码、测试和记录已以 `4ec92d51` 推送功能分支。后续按用户明确要求进行 main 快进整合；合并前再次 fetch，远端基线仍为 `c74460d8`，55 项回归、Token 生成和 diff 检查再次通过。采用非强制推送并回读远端 SHA，运行收据记录实际发布结果。生成截图、日志及收据不提交。
 
 ## 证据与未测范围
 

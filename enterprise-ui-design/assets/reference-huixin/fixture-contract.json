@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "scope": "local-simulated-laboratory-ui",
+  "routes": ["overview", "resources", "receipt"],
+  "configuration": {"profile":"huixin", "density":"standard", "brands":["huixin","indigo","violet"], "themes":["light","dark"], "defaultBrand":"huixin", "defaultTheme":"light", "preserveOnSwitch":["business DOM","focus","input values","scroll","filter","method tab","open modal"]},
+  "receipt": {"id":"SR-2026-1029-008", "sample":"建筑用砂 · 河砂", "commission":"WT-2026-1029-021", "customer":"华东建筑材料有限公司", "expectedQuantity":8, "unit":"袋", "quantity":{"required":true,"type":"integer","minimum":0,"maximum":8}, "requiredFields":["receiver","receivedDate","quantity","condition"], "conditions":["intact","damaged"], "discrepancyRequiredWhen":"quantity !== 8 || condition === damaged", "reasonMinimumLength":4, "hiddenReason":"retain draft; omit effective receipt when no discrepancy", "draftStorageKey":"enterprise-huixin-receipt-draft-v1", "confirmation":"first attempt fails before result; explicit retry succeeds locally", "draftIsSubmission":false},
+  "chart": {"title":"本周样品接收", "unit":"份", "dates":["10/23","10/24","10/25","10/26","10/27","10/28","10/29"], "received":[24,32,21,38,29,42,34], "completed":[21,27,19,31,26,35,30]},
+  "resources": {"methods":["GEO-LEN","OD"], "equipmentCount":2, "recordsExpandable":true, "templatesCount":0},
+  "accessibility": {"mobileNavigation":"native dialog", "confirmation":"native dialog appended to body, focus returned to trigger", "methodTabs":"ArrowLeft/ArrowRight/Home/End", "chart":"SVG title/description plus data table", "filters":"visible labels and clear action"}
+}

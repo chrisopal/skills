@@ -67,8 +67,7 @@ class TokenContract(unittest.TestCase):
                        for v, w in zip(c, (.2126, .7152, .0722)))
         for name, profile in self.tokens['profiles'].items():
             for theme in profile['supported-themes']:
-                palette = (self.tokens['common'] | self.tokens['modes'][theme]
-                           | profile.get('modes', {}).get(theme, {}))
+                palette = resolve_config(self.tokens, profile=name, theme=theme)['values']
                 for key, value in palette.items():
                     if not key.startswith('data-series-'):
                         continue
@@ -196,7 +195,7 @@ class TokenContract(unittest.TestCase):
 
     def test_runtime_contains_every_axis_combination_and_contrast_passes(self):
         runtime = build_runtime_config(self.tokens)
-        self.assertEqual(len(runtime['combinations']), 2 * 3 * 2 * 2)
+        self.assertEqual(len(runtime['combinations']), 5 * 4 * 2 * 2)
         self.assertEqual(runtime['defaults']['effective'], {
             'brand': 'blue', 'profile': 'enterprise', 'theme': 'light', 'density': 'standard'
         })

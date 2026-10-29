@@ -9,12 +9,12 @@
 - [ ] 使用所选品牌的单一动作体系和语义 Token（蓝色仅默认），没有新增零散视觉色值。
 - [ ] `action-text` 与 `action-solid/on-action` 分开使用；没有暗色浅蓝按钮配白字。
 - [ ] `inverse-surface/on-inverse` 成对验证。
-- [ ] 页面、普通面板、按钮无装饰渐变/毛玻璃/光晕/厚阴影。
+- [ ] 通用Profile的页面、普通面板、按钮无装饰渐变/毛玻璃/光晕/厚阴影；显式Huixin仅使用已声明的受控材质，未扩大到其它Profile。
 - [ ] 3D Logo 仅属于明确品牌例外，不把 3D 装饰扩展到日常控件。
-- [ ] 14px 正文、紧凑标题、4px 控件/6px 面板圆角和间距体系统一。
+- [ ] 14px正文及所选Profile的字号/几何统一：通用默认4px控件/6px面板圆角；显式Huixin按其三层合同覆盖，不修改frozen v1。
 - [ ] 已按 [Typography Roles](typography.md) 选择正文、标签、区块、页面标题、指标和元信息角色；没有全局加粗、负字距或假粗体。
 - [ ] 中英数字与单位的 requested/loaded/rendered 字体证据分开记录；`μm`、`℃`、`±`、`≤`、`≥`、上下标及 tabular 数字经过实际检查或明确未测。
-- [ ] 品牌、Profile、主题、密度分开选择；Enterprise 回退和 Analytics 支持的主题组合已记录，Portal/Teleport 继承属性一致。
+- [ ] 品牌、Profile、主题、密度分开选择；Enterprise回退、Analytics及显式Huixin支持的主题组合已记录，Portal/Teleport 继承属性一致。
 
 - [ ] 导航图标已按[专项规则](navigation-and-task-surfaces.md#导航图标专项)建立完整语义清单，覆盖折叠/滚动/权限项；检查键及实际图形的重复，合理复用有依据。
 - [ ] 在实际导航尺寸、浅深色、桌面/390px 中检查图标辨识、同族线宽/对齐、文字、选中与焦点；路由/权限及移动关闭返回经过操作验证。
@@ -94,7 +94,7 @@
 - [ ] 表单构图符合任务；身份、编辑、只读结果和历史归属清楚，字段边界、组距与正文→动作有统一空间责任。
 - [ ] 已走查长标签/量差/错误摘要定位、步骤返回、明细增删、抽屉关闭恢复及桌面/390px/窄容器浅深主题；未以纯换色或控件渲染代表表单专业性。
 - [ ] 按钮/输入/选择器的 default、hover、active、focus、disabled、loading 状态都检查过。
-- [ ] Profile/theme/density 组合至少覆盖 Enterprise 浅/深色与 Analytics 深色；Analytics 浅色按声明回退，不产生混合主题。
+- [ ] 按本次范围验证Profile/theme/density组合；通用基线覆盖Enterprise浅/深色与Analytics深色，Analytics浅色按声明回退。采用Huixin时另执行下述三层检查，不产生混合主题。
 - [ ] 弹窗、Drawer、下拉菜单、Tooltip 等 body Portal 继承正确主题。
 - [ ] 原生自研弹窗与组件库弹窗使用同一中性遮罩和表面层级。
 - [ ] 空、加载、错误、无权限、无数据状态均有可理解反馈。
@@ -139,3 +139,16 @@
 
 - [ ] 按 [SaaS 体验模式](saas-experience-patterns.md) 选择适用 SAAS 检查：对象、任务、阻塞、下一步、摘要到依据的路径可观察；按需展开保留必要事实。
 - [ ] 保存范围、临时/个人/团队视图与来源时间准确；未实现的 AI、跨角色、服务端恢复不写成已通过。
+
+## Huixin 三层检查（仅显式采用时）
+
+按[框架](huixin-framework.md)、[组件](huixin-components.md)与[颜色主题](huixin-themes.md)记录证据，不适用写理由；来源包历史实测不计为本轮通过。
+
+- [ ] Blueprint明确Huixin Profile、独立brand/theme/density和宿主组件映射；没有引入第二套组件库或`data-hx-theme`运行时。
+- [ ] 仅`tokens.json`维护真值：common含字体/尺寸/材质几何且无字面颜色，modes仅含颜色/透明度；生成资源无手改分叉。
+- [ ] 实测正文14、标题28、侧栏232、顶栏70、页面28、卡片24，以及控件40/紧凑32、圆角8/16/18；表格最小行高56/44、环图200，未混用来源52/128别名。
+- [ ] 同一密度/视口下更换huixin/indigo/violet与light/dark后，字号、边距、尺寸、阴影偏移/模糊与渐变角度不变；正文、业务DOM、输入值、焦点、筛选、选中及草稿保留。
+- [ ] `#overview`、`#resources`、`#receipt`的本地fixture仅作为模拟UI证据；宿主实际接口、权限、查询/保存/审批路径单独验收。
+- [ ] 主按钮默认/hover、两个渐变端点、正文/辅助文字、状态字/状态底、选中/错误/焦点/边界在实际浅深表面测量；玻璃先按实际背景合成，状态色与数据系列色保持分离。
+- [ ] body浮层继承根有效值；嵌套Provider跨层浮层显式transfer有效变量；Canvas经既有bridge重绘，未声称已完成Element Plus/Ant Design集成。
+- [ ] 390px实测重排、表格局部滚动、移动菜单关闭后不可聚焦；键盘Tab/箭头/Home/End、弹窗Esc与焦点恢复按适用组件实走，未用桌面截图推断通过。

@@ -58,7 +58,7 @@ async (page) => {
   }, configs);
   cssResults.forEach(item => check(item.actual === item.expected, 'CSS-only mismatch ' + JSON.stringify(item)));
   await go('components');
-  // All 24 declared combinations, including the 4 explicit fallback requests, on core components.
+  // Every declared combination, including explicit fallback requests, on core components.
   for (const request of configs) {
     await page.mouse.move(0,0);
     const result = await page.evaluate(request => {
@@ -181,6 +181,21 @@ async (page) => {
     {brand:'blue',profile:'enterprise',theme:'light',density:'compact'},
     {brand:'teal',profile:'precision',theme:'dark',density:'standard'}
   ];
+  // Extend the original risk cases when the public configuration registry grows.
+  // Greedy pairwise selection keeps multi-page coverage bounded without stale axes.
+  const requestedAxes=['brand','profile','theme','density'];
+  const pairsOf=config=>requestedAxes.flatMap((a,i)=>requestedAxes.slice(i+1).map(b=>JSON.stringify([a,b,config[a],config[b]])));
+  const uncovered=new Set(configs.flatMap(pairsOf));
+  for(const config of [defaults,...risks])for(const pair of pairsOf(config))uncovered.delete(pair);
+  while(uncovered.size){
+    const candidate=configs.reduce((best,config)=>{
+      const score=pairsOf(config).filter(pair=>uncovered.has(pair)).length;
+      return score>best.score?{config,score}:best;
+    },{score:0});
+    check(candidate.score>0,'pairwise registry can be sampled');
+    risks.push(candidate.config);
+    for(const pair of pairsOf(candidate.config))uncovered.delete(pair);
+  }
   const pairwise={covered:0,total:0,missing:[]},axes=['brand','profile','theme','density'];
   for(let a=0;a<axes.length;a++)for(let b=a+1;b<axes.length;b++){
     const pairs=new Set(configs.map(config=>JSON.stringify([config[axes[a]],config[axes[b]]])));

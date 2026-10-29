@@ -1,0 +1,89 @@
+<!doctype html>
+<html data-ui="enterprise" lang="zh-CN" data-ui-profile="huixin" data-ui-brand="huixin" data-theme="light" data-density="standard">
+<head>
+ <meta charset="utf-8"><meta name="ui-reference-version" content="huixin-reference-1.4.0"><link rel="icon" href="data:,"><meta name="viewport" content="width=device-width,initial-scale=1"><title>慧新 · 实验室工作台</title>
+ <script src="../design-config.js"></script><script src="../design-system.js"></script>
+ <script>
+  (function () {
+   var saved = {};
+   try { saved = JSON.parse(localStorage.getItem('enterprise-ui-design-preferences-v1') || '{}') || {}; } catch (_) {}
+   EnterpriseDesign.apply({profile:'huixin',density:'standard',brand:['huixin','indigo','violet'].includes(saved.brand)?saved.brand:'huixin',theme:['light','dark'].includes(saved.theme)?saved.theme:'light'},{persist:false});
+  }());
+ </script>
+ <link rel="stylesheet" href="../tokens.css"><link rel="stylesheet" href="../huixin-framework.css"><link rel="stylesheet" href="../huixin-components.css"><link rel="stylesheet" href="app.css"><script src="app.js" defer></script>
+</head>
+<body class="hx-ui">
+<a href="#main" class="hx-btn hx-skip">跳到工作区</a>
+<div class="hx-shell">
+ <aside class="hx-nav" aria-label="主导航">
+  <div class="hx-brand"><span class="hx-brand-mark"><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-laboratories"></use></svg></span><span>慧新 LIMS</span></div>
+  <div class="hx-nav-group">实验室工作台</div>
+  <nav class="hx-route-links">
+   <a class="hx-nav-item" href="#overview"><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-chart"></use></svg>工作概览</a>
+   <a class="hx-nav-item" href="#resources"><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-methods"></use></svg>检测与资源</a>
+   <a class="hx-nav-item" href="#receipt"><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-samples"></use></svg>样品签收</a>
+  </nav>
+  <div class="hx-nav-foot">材料检测中心<br>收样与检测岗位</div>
+ </aside>
+ <div class="hx-workspace">
+  <header class="hx-header">
+   <div class="hx-inline"><button class="hx-btn hx-mobile-menu" id="open-menu" aria-haspopup="dialog">菜单</button><span class="hx-breadcrumb">材料检测中心 <span aria-hidden="true">/</span> <strong id="route-label">工作概览</strong></span><span class="hx-local-label">本地模拟 · 数据仅保存在本浏览器</span></div>
+   <div class="hx-inline hx-theme-tools" aria-label="界面外观"><div class="hx-palette" role="group" aria-label="品牌配色"><button class="hx-btn" data-brand="huixin" aria-pressed="true">慧新青</button><button class="hx-btn" data-brand="indigo" aria-pressed="false">靛蓝</button><button class="hx-btn" data-brand="violet" aria-pressed="false">紫色</button></div><button class="hx-btn" id="theme-toggle" aria-label="切换至深色主题">深色</button></div>
+  </header>
+  <main id="main" class="hx-main" tabindex="-1">
+   <section id="overview" class="hx-page" aria-labelledby="overview-title">
+    <div class="hx-page-heading"><div><div class="hx-eyebrow">2026年10月29日 · 星期四</div><h1 id="overview-title">工作概览</h1></div><a class="hx-btn hx-btn-primary" href="#receipt"><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-check"></use></svg>办理样品签收</a></div>
+    <div class="hx-stack">
+     <div class="hx-kpis" aria-label="当前任务统计">
+      <article class="hx-card hx-kpi hx-kpi-primary"><div><span>待签收样品</span><strong id="metric-pending">3 <small>批</small></strong></div><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-samples"></use></svg></article>
+      <article class="hx-card hx-kpi"><div><span class="hx-muted">本周接收</span><strong id="metric-received">220 <small>份</small></strong></div><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-materials"></use></svg></article>
+      <article class="hx-card hx-kpi"><div><span class="hx-muted">本周完成</span><strong id="metric-completed">189 <small>份</small></strong></div><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-reports"></use></svg></article>
+      <article class="hx-card hx-kpi"><div><span class="hx-muted">可用设备</span><strong>2 <small>台</small></strong></div><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-equipment"></use></svg></article>
+     </div>
+     <article class="hx-card"><div class="hx-card-title"><h2>本周样品接收</h2><div class="hx-chart-legend"><span><i class="hx-legend-mark"></i>接收</span><span><i class="hx-legend-mark hx-legend-mark-secondary"></i>完成</span></div></div><div class="hx-chart-wrap"><svg id="weekly-chart" class="hx-chart" viewBox="0 0 1000 260" role="img" aria-labelledby="chart-title chart-desc"><title id="chart-title">本周接收与完成数量</title><desc id="chart-desc">单位份。完整每日数值可在下方图表数据中查看。</desc></svg></div><details class="hx-chart-data"><summary>图表数据</summary><div class="hx-table-scroll" tabindex="0" role="region" aria-label="每日样品数据"><table class="hx-table hx-table-compact"><thead><tr><th scope="col">日期</th><th scope="col" class="hx-end">接收（份）</th><th scope="col" class="hx-end">完成（份）</th></tr></thead><tbody id="chart-data"></tbody></table></div></details></article>
+     <article class="hx-table-card"><div class="hx-toolbar"><h2>待签收任务</h2><label class="hx-inline-field" for="task-search">查找样品<input class="hx-input" type="search" id="task-search" placeholder="样品名称或委托号"></label><button class="hx-btn" id="clear-filter">清除</button><span class="hx-meta hx-tool-end" id="task-count" aria-live="polite">3 条任务</span></div><div class="hx-table-scroll" tabindex="0" role="region" aria-label="待签收任务"><table class="hx-table hx-task-table"><thead><tr><th scope="col">样品 / 委托号</th><th scope="col">委托单位</th><th scope="col">登记数量</th><th scope="col">状态</th><th scope="col" class="hx-end">操作</th></tr></thead><tbody id="task-rows"></tbody></table></div><div class="hx-empty" id="task-empty" hidden><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-filter"></use></svg><p>没有匹配的待签收任务</p><button class="hx-btn" id="empty-clear-filter">清除筛选</button></div></article>
+    </div>
+   </section>
+   <section id="resources" class="hx-page" aria-labelledby="resources-title" hidden>
+    <div class="hx-page-heading"><h1 id="resources-title">检测与资源</h1><span class="hx-tag hx-tag-success">方法有效</span></div>
+    <div class="hx-stack">
+     <article class="hx-card"><div class="hx-object-heading"><span class="hx-object-icon"><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-methods"></use></svg></span><div><div class="hx-eyebrow">建筑用砂 · 几何性能</div><h2>颗粒形状与粒径分析</h2><span class="hx-meta">检测方法及关联资源</span></div></div>
+      <div class="hx-tabs" role="tablist" aria-label="检测方法"><button class="hx-tab" id="tab-geolen" role="tab" aria-selected="true" aria-controls="panel-geolen" tabindex="0">GEO-LEN <span>长度测量</span></button><button class="hx-tab" id="tab-od" role="tab" aria-selected="false" aria-controls="panel-od" tabindex="-1">OD <span>外径测量</span></button></div>
+      <div class="hx-method-panel" id="panel-geolen" role="tabpanel" aria-labelledby="tab-geolen"><dl class="hx-facts"><div><dt>方法编号</dt><dd>GEO-LEN</dd></div><div><dt>检测项目</dt><dd>颗粒长度</dd></div><div><dt>检测依据</dt><dd>GB/T 14684—2022</dd></div><div><dt>结果单位</dt><dd>mm</dd></div><div class="hx-full"><dt>适用范围</dt><dd>建筑用砂的颗粒几何尺寸测量；记录原始读数及测量位置。</dd></div></dl></div>
+      <div class="hx-method-panel" id="panel-od" role="tabpanel" aria-labelledby="tab-od" hidden><dl class="hx-facts"><div><dt>方法编号</dt><dd>OD</dd></div><div><dt>检测项目</dt><dd>颗粒外径</dd></div><div><dt>检测依据</dt><dd>实验室作业指导书 ZY-018</dd></div><div><dt>结果单位</dt><dd>mm</dd></div><div class="hx-full"><dt>适用范围</dt><dd>规则颗粒外径的多方向测量；保留每次读数及对应方向。</dd></div></dl></div>
+     </article>
+     <article class="hx-table-card"><div class="hx-toolbar"><h2>关联设备</h2><span class="hx-meta hx-tool-end">2 台</span></div><div class="hx-table-scroll" tabindex="0" role="region" aria-label="关联设备"><table class="hx-table hx-table-compact hx-equipment-table"><thead><tr><th scope="col">设备名称 / 编号</th><th scope="col">量程</th><th scope="col">分辨力</th><th scope="col">校准有效期</th><th scope="col">状态</th></tr></thead><tbody><tr><td><strong>数显游标卡尺</strong><span class="hx-cell-meta">EQ-CL-001</span></td><td>0–150 mm</td><td>0.01 mm</td><td>2027-03-18</td><td><span class="hx-tag hx-tag-success">可用</span></td></tr><tr><td><strong>影像测量仪</strong><span class="hx-cell-meta">EQ-IM-006</span></td><td>0–200 mm</td><td>0.001 mm</td><td>2027-06-12</td><td><span class="hx-tag hx-tag-success">可用</span></td></tr></tbody></table></div></article>
+     <div class="hx-grid">
+      <article class="hx-card"><div class="hx-card-title"><h2>记录与依据</h2><span class="hx-tag">2 项</span></div><details class="hx-record" open><summary><span>颗粒长度原始记录</span><span class="hx-meta">V2.1</span></summary><dl class="hx-facts"><div><dt>记录编号</dt><dd>JL-GEO-003</dd></div><div><dt>生效日期</dt><dd>2026-08-01</dd></div><div class="hx-full"><dt>记录范围</dt><dd>样品标识、测量设备、单次读数、平均值及复核人。异常读数保留原值并填写原因。</dd></div></dl></details><details class="hx-record"><summary><span>外径测量作业指导书</span><span class="hx-meta">V1.3</span></summary><dl class="hx-facts"><div><dt>文件编号</dt><dd>ZY-018</dd></div><div><dt>生效日期</dt><dd>2026-05-15</dd></div><div class="hx-full"><dt>操作要求</dt><dd>校准后按不同方向测量三次，分别记录每次读数；不得用平均值替代原始记录。</dd></div></dl></details></article>
+      <article class="hx-card hx-template-card"><div class="hx-card-title"><h2>报告模板</h2><span class="hx-tag">0 项</span></div><div class="hx-empty hx-template-empty"><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-templates"></use></svg><p>尚未关联报告模板</p></div></article>
+     </div>
+    </div>
+   </section>
+   <section id="receipt" class="hx-page" aria-labelledby="receipt-title" hidden>
+    <div class="hx-page-heading"><div class="hx-inline"><h1 id="receipt-title">样品签收单</h1><span class="hx-tag hx-tag-warning" id="receipt-status">待签收</span></div><a class="hx-link" href="#overview">返回待办</a></div>
+    <div class="hx-receipt-layout">
+     <article class="hx-card hx-receipt-main"><div class="hx-object-heading"><span class="hx-object-icon"><svg class="hx-icon" aria-hidden="true"><use href="../huixin-icons.svg#hx-samples"></use></svg></span><div><h2>建筑用砂 · 河砂</h2><span class="hx-meta">SR-2026-1029-008</span></div></div>
+      <dl class="hx-facts hx-identity-facts"><div><dt>委托编号</dt><dd>WT-2026-1029-021</dd></div><div><dt>委托单位</dt><dd>华东建筑材料有限公司</dd></div><div><dt>登记数量</dt><dd>8 袋</dd></div><div><dt>送样人</dt><dd>陈工 · 2026-10-29</dd></div></dl>
+      <form id="receipt-form" novalidate>
+       <div class="hx-banner hx-banner-error" id="error-summary" tabindex="-1" hidden><strong>请检查以下字段</strong><ul id="error-links"></ul></div>
+       <fieldset class="hx-form-section"><legend>签收信息</legend><div class="hx-form-grid">
+        <label class="hx-field" for="receiver">签收人 <span class="hx-required">必填</span><input class="hx-input" id="receiver" name="receiver" autocomplete="name" maxlength="40" required aria-describedby="receiver-error"><span class="hx-error" id="receiver-error" hidden></span></label>
+        <label class="hx-field" for="receivedDate">签收日期 <span class="hx-required">必填</span><input class="hx-input" id="receivedDate" name="receivedDate" type="date" value="2026-10-29" required aria-describedby="receivedDate-error"><span class="hx-error" id="receivedDate-error" hidden></span></label>
+        <label class="hx-field" for="quantity">实收数量（袋） <span class="hx-required">必填</span><input class="hx-input hx-short-input" id="quantity" name="quantity" type="number" inputmode="numeric" min="0" max="8" step="1" value="8" required aria-describedby="quantity-help quantity-error"><span class="hx-help" id="quantity-help">登记数量：8 袋</span><span class="hx-error" id="quantity-error" hidden></span></label>
+        <label class="hx-field" for="condition">包装与样品状态 <span class="hx-required">必填</span><select class="hx-input" id="condition" name="condition" required aria-describedby="condition-error"><option value="intact">包装完好</option><option value="damaged">包装破损 / 样品异常</option></select><span class="hx-error" id="condition-error" hidden></span></label>
+       </div></fieldset>
+       <fieldset class="hx-form-section" id="discrepancy-section" hidden><legend>差异说明</legend><label class="hx-field" for="reason">差异原因 <span class="hx-required">必填</span><textarea class="hx-input" id="reason" name="reason" maxlength="500" aria-describedby="reason-help reason-error"></textarea><span class="hx-help" id="reason-help">数量不一致或样品异常时，请填写至少 4 个字的说明。</span><span class="hx-error" id="reason-error" hidden></span></label></fieldset>
+       <fieldset class="hx-form-section"><legend>补充记录</legend><label class="hx-field" for="notes">签收备注 <span class="hx-optional">选填</span><textarea class="hx-input" id="notes" name="notes" maxlength="1000" placeholder="补充交接事项"></textarea></label></fieldset>
+       <div class="hx-form-foot"><p class="hx-meta" id="draft-state" role="status" aria-live="polite">尚未保存草稿</p><div class="hx-actions"><button class="hx-btn" type="button" id="reload-draft">载入草稿</button><button class="hx-btn" type="button" id="save-draft">保存草稿</button><button class="hx-btn hx-btn-primary" type="submit" id="review-receipt">核对并签收</button></div></div>
+      </form>
+     </article>
+     <aside class="hx-card hx-receipt-aside"><div class="hx-card-title"><h2>办理记录</h2></div><ol class="hx-timeline"><li><strong>样品已登记</strong><span class="hx-meta">2026-10-29 09:15 · 陈工</span></li><li id="receipt-history-current"><strong>等待签收</strong><span class="hx-meta">待确认实收数量与样品状态</span></li></ol><details class="hx-storage-details"><summary>恢复演练</summary><label class="hx-check"><input type="checkbox" id="simulate-failure" checked>首次签收模拟失败</label></details></aside>
+    </div>
+   </section>
+  </main>
+ </div>
+</div>
+<dialog id="mobile-nav" class="hx-dialog" aria-labelledby="mobile-nav-title"><div class="hx-dialog-head"><h2 id="mobile-nav-title">工作台导航</h2><button class="hx-btn" data-close="mobile-nav" aria-label="关闭导航">关闭</button></div><nav class="hx-dialog-body hx-mobile-routes" aria-label="移动导航"><a class="hx-btn" href="#overview">工作概览</a><a class="hx-btn" href="#resources">检测与资源</a><a class="hx-btn" href="#receipt">样品签收</a></nav></dialog>
+<dialog id="confirm-dialog" class="hx-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-description"><div class="hx-dialog-head"><h2 id="confirm-title">核对样品签收</h2><button class="hx-btn" data-close="confirm-dialog" aria-label="关闭核对">关闭</button></div><div class="hx-dialog-body"><p id="confirm-description">建筑用砂 · 河砂</p><dl class="hx-confirm-facts" id="confirm-facts"></dl><div class="hx-banner hx-banner-error" id="submit-failure" role="alert" hidden>本次模拟签收未完成，输入已保留。可以重试。</div></div><div class="hx-dialog-foot"><button class="hx-btn" data-close="confirm-dialog">返回修改</button><button class="hx-btn hx-btn-primary" id="confirm-submit">确认签收</button></div></dialog>
+</body>
+</html>

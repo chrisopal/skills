@@ -11,6 +11,7 @@ from resolve_tokens import (
     _canonical_token_key,
     load_tokens,
     runtime_json,
+    validate_contrast,
     validate_tokens,
 )
 
@@ -60,7 +61,7 @@ def render_css(tokens: dict) -> str:
         f"/* Enterprise Workbench UI {tokens['meta']['version']}. Token-only: no resets or component overrides.\n"
         "   Generated from tokens.json by scripts/generate_tokens.py; do not edit by hand.\n"
         "   Profile cascade: enterprise base -> theme -> optional profile -> density.\n"
-        "   Explicit brand follows profile and owns action semantics only.\n"
+        "   Explicit brand follows profile and owns action/navigation colors only.\n"
         "   Unsupported profile/theme combinations inherit the declared profile fallback.\n"
         "   Missing brand preserves the profile/theme action palette; explicit brand selectors override it.\n"
         "   Root-scoped tokens inherit into body portals; nested providers must transfer resolved variables. */",
@@ -110,6 +111,13 @@ def render_css(tokens: dict) -> str:
             )
             parts.append(_rule(density_selector, _css_layer(
                 tokens, values, theme="light")))
+    for name, profile in tokens.get("profiles", {}).items():
+        for density, values in profile.get("densities", {}).items():
+            selector = (
+                f'html[data-ui="enterprise"][data-ui-profile="{name}"][data-density="{density}"],\n'
+                f'html.dark[data-ui="enterprise"][data-ui-profile="{name}"][data-density="{density}"]:not([data-theme="light"])'
+            )
+            parts.append(_rule(selector, _css_layer(tokens, values, profile=name)))
     return "\n\n".join(parts) + "\n"
 
 
@@ -130,6 +138,7 @@ def main() -> int:
                         help="Fail if CSS/runtime files are missing or stale; do not write.")
     args = parser.parse_args()
     tokens = load_tokens(args.tokens)
+    validate_contrast(tokens)
     expected_css = render_css(tokens)
     expected_config = runtime_json(tokens)
     expected_js = render_runtime_js(expected_config)

@@ -36,7 +36,9 @@ class RuntimeConfigContract(unittest.TestCase):
             "ui", "brand", "profile", "theme", "density", "effective", "values",
             "semantics", "components", "layout",
         })
-        self.assertEqual(len(disk["combinations"]), 24)
+        self.assertEqual(len(disk["combinations"]), 80)
+        legacy = [c for c in disk["combinations"] if c["requested"]["brand"] in ("blue", "teal") and c["requested"]["profile"] in ("enterprise", "analytics", "precision")]
+        self.assertEqual(len(legacy), 24)
 
     def test_generated_js_is_the_same_config_for_no_flash_load(self):
         source = (ROOT / "assets" / "design-config.js").read_text(encoding="utf-8")

@@ -5,7 +5,7 @@ description: Create, upgrade, or audit enterprise admin and workbench frontends.
 
 # Enterprise UI Design
 
-v1.3 — compatible extension of v1.2; preserve the frozen public v1 token contract.
+v1.4 — compatible extension of v1.3; preserve the frozen public v1 token contract.
 
 Build from product truth and apply one visual grammar. Do not invent alternatives unless requested.
 
@@ -20,6 +20,8 @@ Build from product truth and apply one visual grammar. Do not invent alternative
 If audit and implementation are both requested, capture the baseline, then fix it through Upgrade. Plan/review/audit-only requests remain read-only.
 
 Always read [references/style-standard.md](references/style-standard.md). Before completion, apply [references/checklist.md](references/checklist.md). Use [assets/tokens.json](assets/tokens.json) as token truth and [assets/tokens.css](assets/tokens.css) only as a starter.
+
+For the explicitly selected **Huixin Profile**, use three layers: [framework and typography](references/huixin-framework.md), [components and interaction](references/huixin-components.md), and [color-only themes](references/huixin-themes.md). Load only the layers needed for the task. Their scoped geometry/material overrides take precedence over generic typography/spatial defaults; Enterprise remains the default. The [Huixin reference](assets/reference-huixin/index.html) contains simulated overview, resource and receipt fixtures, not a host-system migration.
 
 For cross-page scope, style/brand switching or design-system migration, read [site planning](references/site-planning.md) and [the effective configuration contract](references/design-system-contract.md). Reuse the existing project DESIGN.md and components. The [rule registry](references/audit-rules.json), [review JSON template](references/review-report.template.json) and runnable candidate/coverage checker keep technical audit, visual/task review and behavior regression separate.
 
@@ -48,7 +50,7 @@ For KPI hierarchy, responsive metric grids, cramped tables, sort affordances, co
 1. Resolve target, outcome, scope, and mutation authority. Ask one question only if target or outcome is missing.
 2. Inspect the framework, component library, theme boundary, routes, states, assets, tests, and running UI. Product behavior outranks style.
 3. Produce a **UI Blueprint** before code: identify page types, content-width strategy, page/container/text key lines, inset ownership, density, and responsive reflow. Record scenario-to-component choices, exceptions, data/selection/save scope and interaction/state checks. For each in-scope journey, record role, goal, entry, completion, real contract/source, main path and applicable recovery/handoff branches; map each step's cue, action, expected result and evidence path to the actual contract. Direct build/upgrade requests continue without another checkpoint.
-4. Resolve Brand, Profile, theme and density independently through [the configuration contract](references/design-system-contract.md). Blue is the default brand, not an invariant. Select the visual Profile separately from theme and density. Enterprise is the default; Analytics is an optional dark data surface with explicit fallback. Reuse components and theme APIs, add a scoped adapter before page overrides, and add no dependency. Apply the generated token cascade and copy profile/theme/density to portals.
+4. Resolve Brand, Profile, theme and density independently through [the configuration contract](references/design-system-contract.md). Blue is the default brand, not an invariant. Select the visual Profile separately from theme and density. Enterprise is the default; Analytics is an optional dark data surface with explicit fallback. Huixin is an explicit light/dark Profile with fixed framework/components and independently replaceable palettes. Reuse components and theme APIs, add a scoped adapter before page overrides, and add no dependency. Apply the generated token cascade and copy profile/theme/density to portals.
 5. Implement the smallest working slice, then complete every approved surface/state in the [site ledger](references/site-planning.md); a first slice is not a whole-site deliverable. Controls must be real or labeled fixture-only—never invent search, notifications, SSO, tenants, metrics, or permissions.
 6. Verify business-state truth, UX/task comprehension and visual composition separately. Measure rendered insets, gaps, alignment, and overflow; inspect role typography and actual rendered fonts; then inspect screenshots and walk the task in relevant Profile/theme/density combinations and responsive states. Record interruption, timeout, partial failure, draft preservation, handoff and resume evidence where the contract supports them. A heuristic or model review never implies a real-user study; record user observations only when actually observed, with unknown metrics left Not tested. Run the host's applicable checks. Do not claim pixel similarity without a reference image or user comprehension from a model review alone.
 7. Report **designed**, **implemented**, **runtime-verified**, **business-E2E-verified**, **built**, and **deployed** as separate states.
@@ -58,7 +60,7 @@ For KPI hierarchy, responsive metric grids, cramped tables, sort affordances, co
 - Preserve brand, IA, auth, RBAC, routes, data contracts, i18n, keyboard behavior, and professional work surfaces unless explicitly changed.
 - Keep `brand`, `action-text`, `action-solid/on-action`, and `inverse-surface/on-inverse` distinct. Validate hover, focus, disabled, error, and dark states—not only defaults.
 - Do not normalize with broad `button`, `svg`, `div`, `canvas`, or wildcard class selectors. Portals/teleports must receive the same theme intentionally.
-- No routine gradients, glass, glow, oversized radii, card lift, decorative motion, or dashboard filler. A confirmed 3D brand asset is a local exception.
+- Generic Profiles have no routine gradients, glass, glow, oversized radii, card lift, decorative motion, or dashboard filler. A confirmed 3D brand asset is a local exception. Explicit Huixin selection permits only its declared restrained glass/gradient recipes and geometry; this does not change other Profiles or permit decorative filler.
 - Never claim visual compliance from code inspection, accessibility compliance from screenshots, or E2E readiness from a build alone.
 - Treat an unknown-result submit as unresolved: verify the outcome before retrying, and do not invent an API or persistence contract to make the result look successful.
 - A narrow audit covers only its declared journeys. A whole-site review uses the approved complete flow inventory and ledger; it does not turn an unapproved global inventory into a gate.
@@ -95,7 +97,7 @@ For enterprise workbenches, do not add explanatory copy by default. Show busines
 
 Actions must be recognizable before hover. Use the existing component library's primary/secondary hierarchy for commands; repetitive row actions may use its recognizable action-button style with action color and visible focus. Do not promote every row command to a filled primary button or render it as muted body text. Reserve navigation links for navigation and keep their link cue. Hover and pointer cursor alone are insufficient.
 
-Keep actions for one record in a compact group with 8px gaps; align the group as a unit, never distribute individual buttons across the row with space-between. Wrap on narrow screens. Maintain visible keyboard focus and distinct disabled states in light and dark themes. Clickable metrics or rows need a persistent directional or link cue. Do not add explanatory text to compensate for unclear affordance.
+Keep actions for one record in a compact group with 8px gaps (explicit Huixin uses 12px); align the group as a unit, never distribute individual buttons across the row with space-between. Wrap on narrow screens. Maintain visible keyboard focus and distinct disabled states in light and dark themes. Clickable metrics or rows need a persistent directional or link cue. Do not add explanatory text to compensate for unclear affordance.
 
 Walk the dashboard, every tab, populated record actions and dialogs; check default, hover, focus, disabled and narrow-layout states. Report browser verification separately from source inspection and tests.
 

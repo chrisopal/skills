@@ -1812,3 +1812,8 @@
 - Validation: existing Skill tests, frontmatter validator and diff whitespace checks; no product UI execution claimed. Isolated origin/main worktree excludes existing detail-layout and unrelated branch WIP.
 
 - ID correction: preserve existing SPACE-09 content/decision spacing in installed parallel work; table centering uses SPACE-10 and Tab spacing uses SPACE-11. Source and installed declarations checked for uniqueness.
+## 2026-10-29 — Huixin 三层设计与独立换色
+
+- Enterprise UI Design1.4.0：合并来源v2的框架/组件/主题，单一Token源、显式Huixin Profile、三种配色及浅深色；修正重复别名、对比度、compact表格与原生日期主题。新增三份参考、作用域CSS/35图标及概览/检测资源/签收三个可操作模拟页面，无新依赖。
+- 验证：源码63＋验收工具25测试通过；80配置生成一致；新页108主题/视口组合18,472浏览器断言＋178 Provider断言；旧工作台1,684断言、60/60配对覆盖；独立范围49控件、190项适用检查全部通过，6项N/A。截图/原始证据留本机，详见docs/plans/2026-10-29-huixin-three-layer-validation.md。
+- 完整备份后同步本机77个维护文件，SHA逐项一致，安装后63测试和生成检查通过；保留无关WIP。本条随已授权功能提交推送并快进合main，交付时回读远端SHA。范围仅Skill/模拟参考，不声称宿主接入、生产部署或真人验收。

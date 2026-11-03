@@ -65,6 +65,10 @@ class TokenContract(unittest.TestCase):
             c = [int(color[i:i+2], 16) / 255 for i in (1, 3, 5)]
             return sum((v / 12.92 if v <= .04045 else ((v + .055) / 1.055) ** 2.4) * w
                        for v, w in zip(c, (.2126, .7152, .0722)))
+        exceptions = {
+            (item['profile'], item['theme'], item['foreground'], item['background']): item
+            for item in self.tokens['layer-contract']['contrast-exceptions']
+        }
         for name, profile in self.tokens['profiles'].items():
             for theme in profile['supported-themes']:
                 palette = resolve_config(self.tokens, profile=name, theme=theme)['values']
@@ -73,8 +77,13 @@ class TokenContract(unittest.TestCase):
                         continue
                     for surface in ('surface', 'surface-muted'):
                         a, b = sorted([lum(value), lum(palette[surface])])
-                        self.assertGreaterEqual((b + .05) / (a + .05), 3,
-                                                (name, theme, key, surface))
+                        actual = (b + .05) / (a + .05)
+                        if actual < 3:
+                            exception = exceptions[(name, theme, key, surface)]
+                            self.assertGreaterEqual(actual + .0001, exception['approvedRatio'],
+                                                    (name, theme, key, surface))
+                        else:
+                            self.assertGreaterEqual(actual, 3, (name, theme, key, surface))
 
     def test_density_is_independent_of_theme_and_preserves_page_hierarchy(self):
         compact = self.tokens['densities']['compact']
@@ -155,6 +164,7 @@ class TokenContract(unittest.TestCase):
 
     def test_reusable_css_has_no_unresolved_variables(self):
         defined = set(self.tokens['common']) | set(self.tokens['modes']['light'])
+        defined.update(self.tokens['profiles']['huixin']['common'])
         for path in (ROOT / 'assets').rglob('*.css'):
             used = set(re.findall(r'var\(--ui-([\w-]+)', path.read_text()))
             self.assertFalse(used - defined, (str(path), used - defined))

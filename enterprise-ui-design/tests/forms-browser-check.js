@@ -175,6 +175,7 @@ async (page) => {
   await frame();
   check(await page.locator('#forms-navigation').evaluate(node => node.inert && getComputedStyle(node).visibility === 'hidden'), 'closed mobile navigation is inert and hidden');
   await page.locator('#forms-menu-open').click();
+  await page.waitForFunction(() => document.activeElement === document.getElementById('forms-menu-close'));
   check(await page.locator('#forms-menu-close').evaluate(node => node === document.activeElement), 'mobile navigation receives focus');
   await page.keyboard.press('Escape');
   check(await page.locator('#forms-menu-open').evaluate(node => node === document.activeElement), 'mobile escape returns focus');

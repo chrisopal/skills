@@ -138,7 +138,13 @@ def main() -> int:
                         help="Fail if CSS/runtime files are missing or stale; do not write.")
     args = parser.parse_args()
     tokens = load_tokens(args.tokens)
-    validate_contrast(tokens)
+    warnings = validate_contrast(tokens)
+    for warning in warnings:
+        print(
+            "Approved Huixin contrast shortfall: "
+            f"{warning['theme']} {warning['foreground']} on {warning['background']} "
+            f"{warning['actual']:.2f}:1 < {warning['minimum']}:1; {warning['reason']}"
+        )
     expected_css = render_css(tokens)
     expected_config = runtime_json(tokens)
     expected_js = render_runtime_js(expected_config)

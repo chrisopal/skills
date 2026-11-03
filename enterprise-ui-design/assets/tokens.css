@@ -1,4 +1,4 @@
-/* Enterprise Workbench UI 1.4.0. Token-only: no resets or component overrides.
+/* Enterprise Workbench UI 1.5.0. Token-only: no resets or component overrides.
    Generated from tokens.json by scripts/generate_tokens.py; do not edit by hand.
    Profile cascade: enterprise base -> theme -> optional profile -> density.
    Explicit brand follows profile and owns action/navigation colors only.
@@ -469,7 +469,7 @@ html[data-ui="enterprise"][data-ui-profile="huixin"][data-theme="light"] {
   --ui-font-display: 22px;
   --ui-line-tight: 1.3;
   --ui-weight-medium: 500;
-  --ui-field-group-gap: 16px;
+  --ui-field-group-gap: 20px;
   --ui-space-1: 4px;
   --ui-space-2: 8px;
   --ui-space-3: 12px;
@@ -549,7 +549,9 @@ html[data-ui="enterprise"][data-ui-profile="huixin"][data-theme="light"] {
   --ui-glass-blur: 18px;
   --ui-backdrop-blur: 5px;
   --ui-dialog-wide-width: 74rem;
-  --ui-query-search-width: 22rem;
+  --ui-query-search-width: 16rem;
+  --ui-query-search-min-width: 12.5rem;
+  --ui-query-search-max-width: 20rem;
   --ui-query-select-width: 10rem;
   --ui-layer-sticky: 3;
   --ui-dialog-action-min-width: 80px;
@@ -572,8 +574,9 @@ html[data-ui="enterprise"][data-ui-profile="huixin"][data-theme="light"] {
   --ui-table-cell-inline: 16px;
   --ui-avatar-object: 40px;
   --ui-density-control-height: 40px;
-  --ui-density-cell-padding-block: 16px;
+  --ui-density-cell-padding-block: 12px;
   --ui-density-cell-padding-inline: 16px;
+  --ui-table-compact-cell-padding-block: 4px;
   --ui-line-title: 1.3;
   --ui-line-section: 1.5;
   --ui-line-metric: 1.3;
@@ -594,35 +597,35 @@ html[data-ui="enterprise"][data-ui-profile="huixin"][data-theme="light"] {
   --ui-surface-sunken: #EDF4F8;
   --ui-surface-hover: #ECF6FA;
   --ui-text: #203945;
-  --ui-text-secondary: #526B79;
-  --ui-text-tertiary: #526B79;
+  --ui-text-secondary: #637B88;
+  --ui-text-tertiary: #81949F;
   --ui-inverse-surface: #0F1729;
   --ui-on-inverse: #FFFFFF;
   --ui-border: #CDDFE9;
   --ui-border-subtle: #E5EDF1;
-  --ui-border-strong: #526F80;
-  --ui-border-control: #6A8797;
+  --ui-border-strong: #8CB6C9;
+  --ui-border-control: #C3DAE6;
   --ui-success: #197652;
-  --ui-warning: #7B5500;
-  --ui-danger: #B82F40;
+  --ui-warning: #946900;
+  --ui-danger: #CB4551;
   --ui-danger-bg: #FDEEF0;
   --ui-danger-border: #EACAD0;
   --ui-disabled-bg: #F2F4F7;
   --ui-disabled-text: #98A2B3;
   --ui-success-bg: #E8F6EF;
-  --ui-info: #2469A8;
+  --ui-info: #297CCA;
   --ui-info-bg: #EDF5FD;
   --ui-warning-bg: #FFF7E4;
   --ui-warning-border: #E8D9B8;
   --ui-neutral-dot: #98A2B3;
   --ui-on-danger: #FFFFFF;
-  --ui-data-series-1: #007D96;
-  --ui-data-series-2: #4568B5;
-  --ui-data-series-3: #2B7E6B;
-  --ui-data-series-4: #936723;
-  --ui-data-series-5: #8560A3;
-  --ui-data-series-6: #387A8B;
-  --ui-data-series-7: #586F7C;
+  --ui-data-series-1: #079BB5;
+  --ui-data-series-2: #5A83DB;
+  --ui-data-series-3: #68B7A4;
+  --ui-data-series-4: #D5AD6C;
+  --ui-data-series-5: #9C84BE;
+  --ui-data-series-6: #5D9FAC;
+  --ui-data-series-7: #7C929E;
   --ui-hx-nav-text: #bdd2dc;
   --ui-hx-nav-muted: #8eb1bf;
   --ui-hx-nav-active: #ffffff;
@@ -667,7 +670,7 @@ html.dark[data-ui="enterprise"][data-ui-profile="huixin"]:not([data-theme="light
   --ui-font-display: 22px;
   --ui-line-tight: 1.3;
   --ui-weight-medium: 500;
-  --ui-field-group-gap: 16px;
+  --ui-field-group-gap: 20px;
   --ui-space-1: 4px;
   --ui-space-2: 8px;
   --ui-space-3: 12px;
@@ -747,7 +750,9 @@ html.dark[data-ui="enterprise"][data-ui-profile="huixin"]:not([data-theme="light
   --ui-glass-blur: 18px;
   --ui-backdrop-blur: 5px;
   --ui-dialog-wide-width: 74rem;
-  --ui-query-search-width: 22rem;
+  --ui-query-search-width: 16rem;
+  --ui-query-search-min-width: 12.5rem;
+  --ui-query-search-max-width: 20rem;
   --ui-query-select-width: 10rem;
   --ui-layer-sticky: 3;
   --ui-dialog-action-min-width: 80px;
@@ -770,8 +775,9 @@ html.dark[data-ui="enterprise"][data-ui-profile="huixin"]:not([data-theme="light
   --ui-table-cell-inline: 16px;
   --ui-avatar-object: 40px;
   --ui-density-control-height: 40px;
-  --ui-density-cell-padding-block: 16px;
+  --ui-density-cell-padding-block: 12px;
   --ui-density-cell-padding-inline: 16px;
+  --ui-table-compact-cell-padding-block: 4px;
   --ui-line-title: 1.3;
   --ui-line-section: 1.5;
   --ui-line-metric: 1.3;
@@ -798,8 +804,8 @@ html.dark[data-ui="enterprise"][data-ui-profile="huixin"]:not([data-theme="light
   --ui-on-inverse: #0E1117;
   --ui-border: #345C72;
   --ui-border-subtle: #23485D;
-  --ui-border-strong: #8FB3C7;
-  --ui-border-control: #7094A8;
+  --ui-border-strong: #6F9EB6;
+  --ui-border-control: #406E86;
   --ui-success: #8BD6BF;
   --ui-warning: #EDBB76;
   --ui-danger: #F28C97;
@@ -896,11 +902,11 @@ html.dark[data-ui="enterprise"][data-ui-brand="teal"]:not([data-theme="light"]) 
 html[data-ui="enterprise"][data-ui-brand="huixin"]:not([data-theme="dark"]),
 html[data-ui="enterprise"][data-ui-brand="huixin"][data-theme="light"] {
   --ui-brand: #00405C;
-  --ui-action-text: #00617D;
+  --ui-action-text: #006887;
   --ui-action-text-hover: #00405C;
   --ui-action-solid: #00617D;
   --ui-action-solid-hover: #004F68;
-  --ui-action-end: #00788D;
+  --ui-action-end: #007F96;
   --ui-selected-bg: #E6F4F9;
   --ui-hx-nav-start: #00405C;
   --ui-hx-nav-end: #00283A;
@@ -919,6 +925,7 @@ html.dark[data-ui="enterprise"][data-ui-brand="huixin"]:not([data-theme="light"]
   --ui-action-text-hover: #A0E6F0;
   --ui-action-solid: #006C87;
   --ui-action-solid-hover: #00556D;
+  --ui-action-end: #007F96;
   --ui-selected-bg: #173F51;
 }
 
@@ -995,4 +1002,5 @@ html[data-ui="enterprise"][data-ui-profile="huixin"][data-density="compact"],
 html.dark[data-ui="enterprise"][data-ui-profile="huixin"][data-density="compact"]:not([data-theme="light"]) {
   --ui-density-control-height: 32px;
   --ui-table-row-height: 44px;
+  --ui-density-cell-padding-block: 4px;
 }

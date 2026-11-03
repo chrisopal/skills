@@ -135,6 +135,8 @@
 - [ ] 同一记录操作按组紧凑排列，窄屏换行，不逐个两端拉散。
 - [ ] 默认、悬停、焦点、禁用状态可区分；注明真实浏览器走查范围与未验证项。
 
+- [ ] 详情类入口完整盘点并按 [DETAIL-D01～06](detail-layout-system.md) 选择变体；结果/条件邻近、权限、历史版本、自身容器响应及逐项前后变化均有运行证据。
+
 ## SaaS 任务与信息流
 
 - [ ] 按 [SaaS 体验模式](saas-experience-patterns.md) 选择适用 SAAS 检查：对象、任务、阻塞、下一步、摘要到依据的路径可观察；按需展开保留必要事实。
@@ -147,8 +149,10 @@
 - [ ] Blueprint明确Huixin Profile、独立brand/theme/density和宿主组件映射；没有引入第二套组件库或`data-hx-theme`运行时。
 - [ ] 仅`tokens.json`维护真值：common含字体/尺寸/材质几何且无字面颜色，modes仅含颜色/透明度；生成资源无手改分叉。
 - [ ] 实测正文14、标题28、侧栏232、顶栏70、页面28、卡片24，以及控件40/紧凑32、圆角8/16/18；表格最小行高56/44、环图200，未混用来源52/128别名。
+- [ ] HX-P01–HX-P12已逐项记录computed值、胜出样式来源、browser zoom、presentationScale、DPR和实际证据；查询wrapper/input为256px基准/320px上限、select160px且不增长，行操作32px，行padding预算上限12/4，Dialog仅body滚动且按20×24/24/16×24与字段20/label8验收。
 - [ ] 同一密度/视口下更换huixin/indigo/violet与light/dark后，字号、边距、尺寸、阴影偏移/模糊与渐变角度不变；正文、业务DOM、输入值、焦点、筛选、选中及草稿保留。
 - [ ] `#overview`、`#resources`、`#receipt`的本地fixture仅作为模拟UI证据；宿主实际接口、权限、查询/保存/审批路径单独验收。
 - [ ] 主按钮默认/hover、两个渐变端点、正文/辅助文字、状态字/状态底、选中/错误/焦点/边界在实际浅深表面测量；玻璃先按实际背景合成，状态色与数据系列色保持分离。
+- [ ] 供应包批准的Huixin源色对比度短缺由`layer-contract.contrast-exceptions`逐项报告（未静默加深、未全局放宽）；例外值改变、意外退化和其它Profile仍触发回归失败。
 - [ ] body浮层继承根有效值；嵌套Provider跨层浮层显式transfer有效变量；Canvas经既有bridge重绘，未声称已完成Element Plus/Ant Design集成。
 - [ ] 390px实测重排、表格局部滚动、移动菜单关闭后不可聚焦；键盘Tab/箭头/Home/End、弹窗Esc与焦点恢复按适用组件实走，未用桌面截图推断通过。

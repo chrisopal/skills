@@ -69,6 +69,8 @@ class HuixinLayers(unittest.TestCase):
         for key in ('row-height','row-data-height','hx-chart-donut-size'):
             t=copy.deepcopy(self.tokens);t['profiles']['huixin']['common'][key]='52px'
             with self.assertRaises(TokenConfigError):validate_tokens(t)
+        self.assertFalse({'row-height', 'row-data-height', 'row-data-height-compact', 'hx-chart-donut-size'}
+                         & set(self.tokens['profiles']['huixin']['common']))
 
     def test_theme_and_density_cannot_take_business_or_framework_ownership(self):
         t=copy.deepcopy(self.tokens)
@@ -83,18 +85,45 @@ class HuixinLayers(unittest.TestCase):
             with self.assertRaises(TokenConfigError):validate_tokens(t)
 
     def test_declared_pairs_and_every_series_meet_contrast(self):
-        validate_contrast(self.tokens)
+        warnings = validate_contrast(self.tokens)
+        self.assertTrue(any(item['foreground'] == 'border-control' for item in warnings))
+        exceptions = {
+            (item['profile'], item['theme'], item['foreground'], item['background']): item
+            for item in self.tokens['layer-contract']['contrast-exceptions']
+        }
         for mode in ('light','dark'):
             v=resolve_config(self.tokens,profile='huixin',brand='huixin',theme=mode)['values']
             for i in range(1,8):
                 for surface in ('surface','surface-muted'):
-                    self.assertGreaterEqual(contrast_ratio(v[f'data-series-{i}'],v[surface]),3)
+                    ratio = contrast_ratio(v[f'data-series-{i}'], v[surface])
+                    if ratio < 3:
+                        exception = exceptions[('huixin', mode, f'data-series-{i}', surface)]
+                        self.assertGreaterEqual(ratio + 0.0001, exception['approvedRatio'])
+                    else:
+                        self.assertGreaterEqual(ratio, 3)
         t=copy.deepcopy(self.tokens)
         t['brands']['violet']['tokens']['action-end']='#CCCCEE'
         with self.assertRaises(TokenConfigError):validate_contrast(t)
         t=copy.deepcopy(self.tokens)
-        t['profiles']['huixin']['modes']['light']['text-tertiary']='#81949F'
+        t['profiles']['huixin']['modes']['light']['text-tertiary']='#8194A0'
         with self.assertRaises(TokenConfigError):validate_contrast(t)
+
+    def test_source_palette_and_axis_ownership_are_exact(self):
+        light = self.tokens['profiles']['huixin']['modes']['light']
+        dark = self.tokens['profiles']['huixin']['modes']['dark']
+        self.assertEqual(light['border-control'], '#C3DAE6')
+        self.assertEqual(light['border-strong'], '#8CB6C9')
+        self.assertEqual(light['text-secondary'], '#637B88')
+        self.assertEqual(dark['border-control'], '#406E86')
+        self.assertEqual(self.tokens['brands']['huixin']['tokens']['action-end'], '#007F96')
+        self.assertEqual(self.tokens['brands']['huixin']['modes']['dark']['action-end'], '#007F96')
+
+    def test_source_sprite_is_byte_identical_to_supplied_v2(self):
+        import hashlib
+        source = Path('/Users/guojiexie/Downloads/artifact-template-huixin-glass-ui/assets/v2/icons.svg')
+        if source.exists():
+            digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+            self.assertEqual(digest(ROOT / 'assets/huixin-icons.svg'), digest(source))
 
     def test_style_consumers_use_defined_tokens_and_no_literal_palette(self):
         v=resolve_config(self.tokens,profile='huixin',brand='huixin')['values']

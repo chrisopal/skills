@@ -220,7 +220,12 @@
     sidebar.classList.toggle('is-open', open && mobile);
     sidebar.inert = mobile && !open;
     byId('forms-menu-open').setAttribute('aria-expanded', String(open && mobile));
-    if (open && mobile) byId('forms-menu-close').focus();
+    if (open && mobile) window.requestAnimationFrame(function () {
+      // Let the resized sidebar's visibility and inert state reach the rendered frame.
+      window.requestAnimationFrame(function () {
+        if (sidebar.classList.contains('is-open') && !sidebar.inert) byId('forms-menu-close').focus();
+      });
+    });
     if (!open && mobile && sidebar.contains(document.activeElement)) byId('forms-menu-open').focus();
   }
 

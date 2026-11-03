@@ -1,4 +1,4 @@
-"""Regression tests for the v1.3 resolver and runtime bridge."""
+"""Regression tests for the v1.5 resolver and runtime bridge."""
 from __future__ import annotations
 
 import copy
@@ -34,7 +34,7 @@ class RuntimeConfigContract(unittest.TestCase):
         self.assertEqual(disk["schema"], "enterprise-ui-design/config/v1")
         self.assertEqual(set(disk["defaults"]), {
             "ui", "brand", "profile", "theme", "density", "effective", "values",
-            "semantics", "components", "layout",
+            "semantics", "components", "layout", "contrastExceptions",
         })
         self.assertEqual(len(disk["combinations"]), 80)
         legacy = [c for c in disk["combinations"] if c["requested"]["brand"] in ("blue", "teal") and c["requested"]["profile"] in ("enterprise", "analytics", "precision")]

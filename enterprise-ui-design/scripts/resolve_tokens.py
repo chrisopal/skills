@@ -457,9 +457,40 @@ def contrast_ratio(foreground: str, background: str) -> float:
     return (high + 0.05) / (low + 0.05)
 
 
-def validate_contrast(tokens: Mapping[str, Any]) -> None:
-    """Check declared foreground/background pairs for every supported axis tuple."""
+def _contrast_exception(
+    tokens: Mapping[str, Any], profile: str, theme: str,
+    foreground: str, background: str,
+) -> Mapping[str, Any] | None:
+    for exception in tokens.get("layer-contract", {}).get("contrast-exceptions", []):
+        if (exception.get("profile") == profile and exception.get("theme") == theme
+                and exception.get("foreground") == foreground
+                and exception.get("background") == background):
+            return exception
+    return None
+
+
+def _contrast_warning(
+    brand: str, profile: str, theme: str, density: str,
+    foreground: str, background: str, minimum: float, actual: float,
+    exception: Mapping[str, Any],
+) -> dict[str, Any]:
+    return {
+        "brand": brand,
+        "profile": profile,
+        "theme": theme,
+        "density": density,
+        "foreground": foreground,
+        "background": background,
+        "actual": round(actual, 4),
+        "minimum": minimum,
+        "reason": exception["reason"],
+    }
+
+
+def validate_contrast(tokens: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Check pairs, allowing only exact source-palette exceptions and report them."""
     pairs = tokens.get("contrast-pairs", [])
+    warnings = []
     for brand, profile, theme, density in itertools.product(
         _brand_names(tokens), _profile_names(tokens), _theme_names(tokens), _density_names(tokens)
     ):
@@ -475,11 +506,34 @@ def validate_contrast(tokens: Mapping[str, Any]) -> None:
             if foreground not in values or background not in values:
                 raise TokenConfigError(f"contrast pair references missing token: {pair!r}")
             actual = contrast_ratio(values[foreground], values[background])
+            exception = _contrast_exception(
+                tokens, result["effective"]["profile"], result["effective"]["theme"],
+                foreground, background,
+            )
+            if exception:
+                if (values[foreground] != exception.get("foregroundValue")
+                        or values[background] != exception.get("backgroundValue")):
+                    raise TokenConfigError(
+                        "contrast exception no longer matches approved source palette for "
+                        f"{result['effective']['profile']}/{result['effective']['theme']}/"
+                        f"{foreground} on {background}"
+                    )
             if actual < float(minimum):
+                if exception and actual + 0.0001 >= float(exception["approvedRatio"]):
+                    warnings.append(_contrast_warning(
+                        brand, profile, theme, density, foreground, background,
+                        float(minimum), actual, exception,
+                    ))
+                    continue
                 raise TokenConfigError(
                     f"contrast {actual:.2f} < {minimum} for {brand}/{profile}/{theme}/{density}: "
                     f"{foreground} on {background}"
                 )
+    unique = {}
+    for warning in warnings:
+        key = tuple(warning[key] for key in ("profile", "theme", "foreground", "background"))
+        unique[key] = warning
+    return list(unique.values())
 
 
 def _fallback_name(tokens: Mapping[str, Any], axis: str, requested: str | None) -> tuple[str, str | None]:
@@ -678,6 +732,9 @@ def build_runtime_config(tokens: Mapping[str, Any]) -> dict[str, Any]:
             "semantics": resolved["semantics"],
             "components": resolved["components"],
             "layout": resolved["layout"],
+            "contrastExceptions": copy.deepcopy(
+                tokens.get("layer-contract", {}).get("contrast-exceptions", [])
+            ),
         })
     profile_metadata = {}
     for name, definition in tokens.get("profiles", {}).items():
@@ -700,6 +757,9 @@ def build_runtime_config(tokens: Mapping[str, Any]) -> dict[str, Any]:
             "semantics": default_resolution["semantics"],
             "components": default_resolution["components"],
             "layout": default_resolution["layout"],
+        "contrastExceptions": copy.deepcopy(
+            tokens.get("layer-contract", {}).get("contrast-exceptions", [])
+        ),
         },
         "supported": {
             "brands": {

@@ -1,3 +1,10 @@
+## 2026-11-03 — Make Enterprise UI Design v1.5 available on main
+
+- Scope: integrate only `enterprise-ui-design/` from verified release `e3013ec5ce5b6096b807c66e97520f14c5494014` into main based on `767aa52d`; preserve main's other skills and its status history. The resulting skill tree is byte-identical to the published feature release. The source branch's unrelated history is excluded.
+- Changes: v1.5 Huixin geometry/palette, detail-layout guidance, portable optional companion references, native dialog visibility and responsive navigation focus fixes. Reuse the existing token resolver and components; no dependency addition.
+- Verification on the integration tree:65 unit tests, deterministic Token generation, Skill Creator, local Markdown paths, Python/JSON/JavaScript syntax and whitespace pass. Chrome156 Huixin fixture:18,476 assertions,178 provider assertions,108 matrix records,50 controls; forms fixture:158 assertions and24 matrix records. Evidence remains local under `/tmp/enterprise-ui-main-20261103-*`.
+- Publication: scoped Lore integration commit targets remote main; compare its HEAD with `git ls-remote` after push. Original working-tree changes remain untouched. Approved Huixin palette contrast shortfalls remain explicitly reported; no host/customer E2E or accessibility certification is claimed.
+
 ## 2026-10-28 — Enterprise UI 表单构图与 SaaS 信息体验
 
 - 从已更新的 origin/main `c74460d8` 创建隔离功能分支，补表单构图合同、FORM-06～11 和来源明确的 SaaS 体验指南/SAAS-01～06；新增五种可操作表单与一个任务收件箱信息流。复用语义 Token，无新依赖，不修改宿主 LIMS。

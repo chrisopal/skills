@@ -1,4 +1,4 @@
-# Huixin · 独立颜色主题层
+# Huixin · 独立颜色主题层（v1.5）
 
 仅在Huixin采用或换色任务中读取。配合[框架](huixin-framework.md)、[组件](huixin-components.md)和[运行时契约](design-system-contract.md)使用。三层共享一个 `assets/tokens.json`；不复制来源包的theme.tokens.json、独立导出脚本或`data-hx-theme`运行时。
 
@@ -20,6 +20,8 @@ EnterpriseDesign.apply({ brand: 'huixin', theme: 'light' });
 
 已有 `data-ui-profile`、`data-ui-brand`、`data-theme`、`data-density`由同一个适配器更新。不同Profile可采用同一品牌；不要把Huixin颜色扩展当作替换全站默认的授权。公共focus-ring兼容值固定2px/solid；新品牌使用引用固定几何的配方，不得以换色扩大焦点环。新增颜色只能经Token验证/生成进入配置，不把任意hex直接写到页面或运行时。
 
+v1.5采用供应包的Huixin颜色字面量，不把它们暗中替换成更深的可访问版本：浅色`border-control/#C3DAE6`、`border-strong/#8CB6C9`、`text-secondary/#637B88`，深色控件边`#406E86`，Huixin品牌`action-end/#007F96`。这些颜色只属于`profiles.huixin.modes`与`brands.huixin`；其它Profiles/brands和冻结v1 Foundation不变。
+
 ## 语义角色与材质
 
 使用canvas、surface、glass-surface、surface-muted/hover、text/secondary/tertiary、border/control、action-text、action-solid/on-action、selected-bg和focus-ring等现有语义角色。标题、侧栏、导航选中、表头与浮层完整映射，不能只给按钮换色。品牌识别色不等于可读的小字颜色，浅色动作背景必须有经过验证的文字配对。
@@ -37,7 +39,7 @@ SVG消费语义变量，Canvas通过现有 `EnterpriseDesign.bridge` 重绘图�
 ## 换色验收
 
 1. 生成与单测：运行 `python3 scripts/generate_tokens.py`、`python3 scripts/generate_tokens.py --check`、`python3 -m unittest discover -s tests -v`。确认modes无几何覆盖、common无字面颜色、引用可解析、frozen v1与默认blue/teal兼容。脚本结果只覆盖其断言。
-2. 对比度：按light/dark及各品牌测量正文/辅助文字、action default/hover、渐变起止两端、状态字/状态底、错误、选中、focus和控件边界，在canvas/surface/glass及浮层的实际背景上检查。普通文本4.5:1、关键非文本边界/状态3:1；半透明色先合成，不能只测渐变起色或默认主按钮。
+2. 对比度：按light/dark及各品牌测量正文/辅助文字、action default/hover、渐变起止两端、状态字/状态底、错误、选中、focus和控件边界，在canvas/surface/glass及浮层的实际背景上检查。普通文本4.5:1、关键非文本边界/状态3:1；半透明色先合成，不能只测渐变起色或默认主按钮。供应包源色的已批准短缺（例如浅色`text-secondary`在白色上4.45:1、`border-control`/`border-strong`在白色上1.45:1/2.18:1）登记在`layer-contract.contrast-exceptions`，生成器会逐项报告；例外只匹配Huixin的精确profile/theme/前景/背景和值，值变化或其它Profile退化仍失败。
 3. 同一数据/视口/密度换色，比较sidebar232、header70、page28、card24、body14、title28、control40/32、table56/44、donut200等有效计算值及材质几何。品牌/theme控制只传颜色维度，逐项验证DOM/输入/焦点/查询/选择/草稿保留。
 4. 实走390px菜单、表格局部横滚、Tabs键盘与弹窗Esc/焦点恢复，检查body及嵌套浮层和Canvas。覆盖当前任务声明的状态，未测保持Not tested。
 

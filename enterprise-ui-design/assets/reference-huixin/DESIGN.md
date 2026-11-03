@@ -1,5 +1,11 @@
 # Huixin workbench UI Blueprint
 
+## Publication regression repair · 2026-11-03
+
+- Apply Enterprise UI Design v1.5 Upgrade, `style-standard.md` and `huixin-components.md` to the existing simulated dialogs.
+- Native dialog visibility belongs to its `open` state. Apply the grid layout only while open; closed mobile navigation and confirmation dialogs must leave the visual and keyboard flow.
+- Preserve the declared dialog geometry, theme inheritance, body scrolling and return focus. Verify initial closed state, close/cancel, simulated failure/retry, Escape and mobile navigation with `tests/run-huixin-browser.cjs`.
+
 Approved scope: a local simulated laboratory workbench with three routes. Profile `huixin`, brand `huixin|indigo|violet`, light/dark, standard density. All combinations use the shared EnterpriseDesign runtime; framework and component styles contain no color constants. Supplied Huixin Glass is a scoped, explicitly selected profile exception to the Enterprise default material.
 
 ## Shell and layout

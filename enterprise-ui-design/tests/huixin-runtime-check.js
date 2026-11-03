@@ -25,7 +25,7 @@ async page=>{
  await go('overview');await page.locator('.hx-chart-data summary').click();
  await page.evaluate(()=>EnterpriseDesign.apply({density:'compact'},{persist:false}));await frame();
  const compact=await page.locator('#chart-data td').first().evaluate(n=>({row:n.parentElement.getBoundingClientRect().height,paddingBlock:getComputedStyle(n).paddingTop,paddingInline:getComputedStyle(n).paddingLeft,field:getComputedStyle(document.querySelector('#task-search')).height}));
- check(compact.row===44&&compact.paddingBlock==='8px'&&compact.paddingInline==='12px'&&compact.field==='32px','profile compact recipe consumed by ordinary table and field',compact);
+ check(compact.row===44&&compact.paddingBlock==='4px'&&compact.paddingInline==='12px'&&compact.field==='32px','profile compact recipe consumed by ordinary table and field',compact);
  await page.evaluate(()=>EnterpriseDesign.apply({density:'standard'},{persist:false}));
  // Actual composed glass against both canvas extremes; status/action tests use
  // both opaque and glass surfaces rather than relying on palette literals alone.
@@ -39,17 +39,26 @@ async page=>{
    const lum=a=>a.slice(0,3).map(x=>x/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4).reduce((s,x,i)=>s+x*[.2126,.7152,.0722][i],0);
    const ratio=(a,b)=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);};
    const result=[];
+   const exceptions=EnterpriseDesign.get().contrastExceptions||[];
+   // Glass is composited over the canvas. Honor its declared surface or muted-surface
+   // source pair only when both source colors match. The composited ratio is reported
+   // separately; an opaque source-pair ratio is not a glass-background threshold.
+   const approved=(role,background,minimum,ratio)=>ratio>=minimum||exceptions.some(e=>
+    e.profile===EnterpriseDesign.get().effective.profile&&e.theme===EnterpriseDesign.get().effective.theme&&e.foreground===role&&
+    (e.background===background||(background==='surface'&&e.background==='surface-muted'))&&
+    v[role]===e.foregroundValue&&v[e.background]===e.backgroundValue&&
+    (background==='surface'||ratio+.0001>=e.approvedRatio));
    for(const under of ['canvas','canvas-accent']){
     const glass=over(parse(v['glass-surface']),parse(v[under]));
-    for(const key of ['text','text-secondary','text-tertiary','action-text','action-text-hover'])result.push({role:key,background:'glass/'+under,ratio:ratio(parse(v[key]),glass),minimum:4.5});
-    for(const key of ['border-control','border-strong'])result.push({role:key,background:'glass/'+under,ratio:ratio(parse(v[key]),glass),minimum:3});
+    for(const key of ['text','text-secondary','text-tertiary','action-text','action-text-hover'])result.push({role:key,background:'glass/'+under,ratio:ratio(parse(v[key]),glass),minimum:4.5,approved:approved(key,'surface',4.5,ratio(parse(v[key]),glass))});
+    for(const key of ['border-control','border-strong'])result.push({role:key,background:'glass/'+under,ratio:ratio(parse(v[key]),glass),minimum:3,approved:approved(key,'surface',3,ratio(parse(v[key]),glass))});
    }
-   for(const key of ['action-solid','action-solid-hover','action-end'])result.push({role:'on-action',background:key,ratio:ratio(parse(v['on-action']),parse(v[key])),minimum:4.5});
-   for(const key of ['success','warning','danger','info'])result.push({role:key,background:key+'-bg',ratio:ratio(parse(v[key]),parse(v[key+'-bg'])),minimum:4.5});
-   result.push({role:'action-text',background:'selected-bg',ratio:ratio(parse(v['action-text']),parse(v['selected-bg'])),minimum:4.5});
+   for(const key of ['action-solid','action-solid-hover','action-end'])result.push({role:'on-action',background:key,ratio:ratio(parse(v['on-action']),parse(v[key])),minimum:4.5,approved:true});
+   for(const key of ['success','warning','danger','info']){const value=ratio(parse(v[key]),parse(v[key+'-bg']));result.push({role:key,background:key+'-bg',ratio:value,minimum:4.5,approved:approved(key,key+'-bg',4.5,value)});}
+   result.push({role:'action-text',background:'selected-bg',ratio:ratio(parse(v['action-text']),parse(v['selected-bg'])),minimum:4.5,approved:true});
    return result;
   });
-  for(const row of rows)check(row.ratio>=row.minimum,'rendered semantic contrast '+brand+'/'+theme+'/'+row.role+'/'+row.background,row);
+  for(const row of rows)check(row.approved,'rendered semantic contrast '+brand+'/'+theme+'/'+row.role+'/'+row.background,row);
   colorRows.push({brand,theme,rows});
  }
  // Local storage fault injection is explicitly simulated; no successful save

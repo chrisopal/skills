@@ -3,7 +3,7 @@ window.__UI_DESIGN_CONFIG__ = {
   "schema": "enterprise-ui-design/config/v1",
   "meta": {
     "name": "Enterprise Workbench UI",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "date": "2026-10-29",
     "format": "Project-local CSS value map; keys become --ui-<key>. Not a DTCG interchange schema.",
     "source": "MBC-inspired enterprise style with contrast corrections verified in MateClaw",
@@ -518,7 +518,149 @@ window.__UI_DESIGN_CONFIG__ = {
         "collapsedWidth": "56px",
         "headerHeight": "48px"
       }
-    }
+    },
+    "contrastExceptions": [
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "text-secondary",
+        "background": "surface",
+        "approvedRatio": 4.4498803325,
+        "foregroundValue": "#637B88",
+        "backgroundValue": "#FFFFFF",
+        "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "text-secondary",
+        "background": "table-head",
+        "approvedRatio": 3.9662364916,
+        "foregroundValue": "#637B88",
+        "backgroundValue": "#ECF3F6",
+        "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "text-tertiary",
+        "background": "surface-muted",
+        "approvedRatio": 2.9485014541,
+        "foregroundValue": "#81949F",
+        "backgroundValue": "#F4F8FB",
+        "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "border-control",
+        "background": "surface",
+        "approvedRatio": 1.4491137399,
+        "foregroundValue": "#C3DAE6",
+        "backgroundValue": "#FFFFFF",
+        "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "border-strong",
+        "background": "surface",
+        "approvedRatio": 2.1762383179,
+        "foregroundValue": "#8CB6C9",
+        "backgroundValue": "#FFFFFF",
+        "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+      },
+      {
+        "profile": "huixin",
+        "theme": "dark",
+        "foreground": "border-control",
+        "background": "surface",
+        "approvedRatio": 2.7168492469,
+        "foregroundValue": "#406E86",
+        "backgroundValue": "#0C293B",
+        "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "danger",
+        "background": "danger-bg",
+        "approvedRatio": 4.1390726888,
+        "foregroundValue": "#CB4551",
+        "backgroundValue": "#FDEEF0",
+        "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "info",
+        "background": "info-bg",
+        "approvedRatio": 3.9501981899,
+        "foregroundValue": "#297CCA",
+        "backgroundValue": "#EDF5FD",
+        "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "data-series-3",
+        "background": "surface",
+        "approvedRatio": 2.3600615659,
+        "foregroundValue": "#68B7A4",
+        "backgroundValue": "#FFFFFF",
+        "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "data-series-3",
+        "background": "surface-muted",
+        "approvedRatio": 2.2102074243,
+        "foregroundValue": "#68B7A4",
+        "backgroundValue": "#F4F8FB",
+        "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "data-series-4",
+        "background": "surface",
+        "approvedRatio": 2.0951399495,
+        "foregroundValue": "#D5AD6C",
+        "backgroundValue": "#FFFFFF",
+        "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "data-series-4",
+        "background": "surface-muted",
+        "approvedRatio": 1.9621072341,
+        "foregroundValue": "#D5AD6C",
+        "backgroundValue": "#F4F8FB",
+        "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "data-series-6",
+        "background": "surface",
+        "approvedRatio": 2.9912835918,
+        "foregroundValue": "#5D9FAC",
+        "backgroundValue": "#FFFFFF",
+        "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+      },
+      {
+        "profile": "huixin",
+        "theme": "light",
+        "foreground": "data-series-6",
+        "background": "surface-muted",
+        "approvedRatio": 2.8013494641,
+        "foregroundValue": "#5D9FAC",
+        "backgroundValue": "#F4F8FB",
+        "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+      }
+    ]
   },
   "supported": {
     "brands": {
@@ -1438,7 +1580,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/enterprise/light/compact",
@@ -1953,7 +2237,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/enterprise/dark/standard",
@@ -2468,7 +2894,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/enterprise/dark/compact",
@@ -2983,7 +3551,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/analytics/light/standard",
@@ -3500,7 +4210,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/analytics/light/compact",
@@ -4017,7 +4869,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/analytics/dark/standard",
@@ -4532,7 +5526,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/analytics/dark/compact",
@@ -5047,7 +6183,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/precision/light/standard",
@@ -5562,7 +6840,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/precision/light/compact",
@@ -6077,7 +7497,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/precision/dark/standard",
@@ -6592,7 +8154,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/precision/dark/compact",
@@ -7107,7 +8811,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/huixin/light/standard",
@@ -7179,7 +9025,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -7196,15 +9042,15 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
         "state-info": "#0966D9",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
         "focus-ring": "2px solid #0966D9",
         "z-header": "20",
         "z-sidebar": "30",
@@ -7294,7 +9140,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -7336,12 +9182,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -7371,7 +9217,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -7400,33 +9246,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
         "action-text": "#0966D9",
         "action-text-hover": "#0754B5",
         "action-solid": "#0966D9",
         "action-solid-hover": "#0754B5",
         "selected-bg": "#EDF4FF",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -7575,7 +9424,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -7622,7 +9471,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/huixin/light/compact",
@@ -7694,7 +9685,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -7711,15 +9702,15 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
         "state-info": "#0966D9",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
         "focus-ring": "2px solid #0966D9",
         "z-header": "20",
         "z-sidebar": "30",
@@ -7809,7 +9800,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -7851,12 +9842,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -7886,7 +9877,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -7915,33 +9906,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
         "action-text": "#0966D9",
         "action-text-hover": "#0754B5",
         "action-solid": "#0966D9",
         "action-solid-hover": "#0754B5",
         "selected-bg": "#EDF4FF",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -8090,7 +10084,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -8137,7 +10131,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/huixin/dark/standard",
@@ -8209,7 +10345,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -8324,7 +10460,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -8366,7 +10502,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -8443,8 +10579,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#80B5FF",
         "action-text-hover": "#A8CDFF",
         "action-solid": "#1558B0",
@@ -8456,7 +10592,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -8605,7 +10744,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -8652,7 +10791,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "blue/huixin/dark/compact",
@@ -8724,7 +11005,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -8839,7 +11120,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -8881,7 +11162,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -8958,8 +11239,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#80B5FF",
         "action-text-hover": "#A8CDFF",
         "action-solid": "#1558B0",
@@ -8971,7 +11252,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -9120,7 +11404,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -9167,7 +11451,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/enterprise/light/standard",
@@ -9682,7 +12108,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/enterprise/light/compact",
@@ -10197,7 +12765,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/enterprise/dark/standard",
@@ -10712,7 +13422,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/enterprise/dark/compact",
@@ -11227,7 +14079,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/analytics/light/standard",
@@ -11744,7 +14738,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/analytics/light/compact",
@@ -12261,7 +15397,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/analytics/dark/standard",
@@ -12776,7 +16054,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/analytics/dark/compact",
@@ -13291,7 +16711,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/precision/light/standard",
@@ -13806,7 +17368,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/precision/light/compact",
@@ -14321,7 +18025,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/precision/dark/standard",
@@ -14836,7 +18682,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/precision/dark/compact",
@@ -15351,7 +19339,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/huixin/light/standard",
@@ -15423,7 +19553,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -15440,15 +19570,15 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
         "state-info": "#006F6C",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
         "focus-ring": "2px solid #006F6C",
         "z-header": "20",
         "z-sidebar": "30",
@@ -15538,7 +19668,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -15580,12 +19710,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -15615,7 +19745,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -15644,33 +19774,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
         "action-text": "#006F6C",
         "action-text-hover": "#005654",
         "action-solid": "#007A76",
         "action-solid-hover": "#00635F",
         "selected-bg": "#E5F7F5",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -15819,7 +19952,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -15866,7 +19999,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/huixin/light/compact",
@@ -15938,7 +20213,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -15955,15 +20230,15 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
         "state-info": "#006F6C",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
         "focus-ring": "2px solid #006F6C",
         "z-header": "20",
         "z-sidebar": "30",
@@ -16053,7 +20328,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -16095,12 +20370,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -16130,7 +20405,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -16159,33 +20434,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
         "action-text": "#006F6C",
         "action-text-hover": "#005654",
         "action-solid": "#007A76",
         "action-solid-hover": "#00635F",
         "selected-bg": "#E5F7F5",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -16334,7 +20612,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -16381,7 +20659,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/huixin/dark/standard",
@@ -16453,7 +20873,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -16568,7 +20988,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -16610,7 +21030,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -16687,8 +21107,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#67E2D8",
         "action-text-hover": "#9AF0E8",
         "action-solid": "#0B6F6A",
@@ -16700,7 +21120,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -16849,7 +21272,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -16896,7 +21319,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "teal/huixin/dark/compact",
@@ -16968,7 +21533,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -17083,7 +21648,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -17125,7 +21690,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -17202,8 +21767,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#67E2D8",
         "action-text-hover": "#9AF0E8",
         "action-solid": "#0B6F6A",
@@ -17215,7 +21780,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -17364,7 +21932,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -17411,7 +21979,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/enterprise/light/standard",
@@ -17502,14 +22212,14 @@ window.__UI_DESIGN_CONFIG__ = {
         "state-success": "#18794E",
         "state-warning": "#A9650A",
         "state-danger": "#C32F3F",
-        "state-info": "#00617D",
+        "state-info": "#006887",
         "data-series-1": "#1677FF",
         "data-series-2": "#008787",
         "data-series-3": "#7052D9",
         "data-series-4": "#9C6500",
         "data-series-5": "#B9385B",
         "data-series-6": "#237D3A",
-        "focus-ring": "2px solid #00617D",
+        "focus-ring": "2px solid #006887",
         "z-header": "20",
         "z-sidebar": "30",
         "z-popover": "100",
@@ -17635,8 +22345,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #00617D, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #004F68, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #00617D, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #004F68, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -17670,12 +22380,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#0B1220",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#FFFFFF",
         "canvas-accent": "#F5F7FA",
         "table-head": "#F5F7FA",
         "success-bg": "#E6F4F9",
-        "info": "#00617D",
+        "info": "#006887",
         "info-bg": "#E6F4F9",
         "warning-bg": "#F5F7FA",
         "warning-border": "#D9DEE7",
@@ -17719,7 +22429,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "border-subtle": "#E7EAF0",
         "border-strong": "#A7B2C3",
         "border-control": "#68758A",
-        "action-text": "#00617D",
+        "action-text": "#006887",
         "action-text-hover": "#00405C",
         "action-solid": "#00617D",
         "action-solid-hover": "#004F68",
@@ -17839,7 +22549,7 @@ window.__UI_DESIGN_CONFIG__ = {
           }
         },
         "focus": {
-          "ring": "2px solid #00617D",
+          "ring": "2px solid #006887",
           "offset": "2px",
           "style": "solid"
         },
@@ -17863,7 +22573,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "height": "34px",
           "radius": "4px",
           "actionGap": "8px",
-          "focus": "2px solid #00617D"
+          "focus": "2px solid #006887"
         },
         "field": {
           "height": "34px",
@@ -17926,7 +22636,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/enterprise/light/compact",
@@ -18017,14 +22869,14 @@ window.__UI_DESIGN_CONFIG__ = {
         "state-success": "#18794E",
         "state-warning": "#A9650A",
         "state-danger": "#C32F3F",
-        "state-info": "#00617D",
+        "state-info": "#006887",
         "data-series-1": "#1677FF",
         "data-series-2": "#008787",
         "data-series-3": "#7052D9",
         "data-series-4": "#9C6500",
         "data-series-5": "#B9385B",
         "data-series-6": "#237D3A",
-        "focus-ring": "2px solid #00617D",
+        "focus-ring": "2px solid #006887",
         "z-header": "20",
         "z-sidebar": "30",
         "z-popover": "100",
@@ -18150,8 +23002,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #00617D, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #004F68, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #00617D, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #004F68, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -18185,12 +23037,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#0B1220",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#FFFFFF",
         "canvas-accent": "#F5F7FA",
         "table-head": "#F5F7FA",
         "success-bg": "#E6F4F9",
-        "info": "#00617D",
+        "info": "#006887",
         "info-bg": "#E6F4F9",
         "warning-bg": "#F5F7FA",
         "warning-border": "#D9DEE7",
@@ -18234,7 +23086,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "border-subtle": "#E7EAF0",
         "border-strong": "#A7B2C3",
         "border-control": "#68758A",
-        "action-text": "#00617D",
+        "action-text": "#006887",
         "action-text-hover": "#00405C",
         "action-solid": "#00617D",
         "action-solid-hover": "#004F68",
@@ -18354,7 +23206,7 @@ window.__UI_DESIGN_CONFIG__ = {
           }
         },
         "focus": {
-          "ring": "2px solid #00617D",
+          "ring": "2px solid #006887",
           "offset": "2px",
           "style": "solid"
         },
@@ -18378,7 +23230,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "height": "28px",
           "radius": "4px",
           "actionGap": "8px",
-          "focus": "2px solid #00617D"
+          "focus": "2px solid #006887"
         },
         "field": {
           "height": "28px",
@@ -18441,7 +23293,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/enterprise/dark/standard",
@@ -18665,8 +23659,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #006C87, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #00556D, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #006C87, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #00556D, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -18700,7 +23694,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#EDF2F9",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#182230",
         "canvas-accent": "#1D2939",
         "table-head": "#1D2939",
@@ -18956,7 +23950,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/enterprise/dark/compact",
@@ -19180,8 +24316,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #006C87, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #00556D, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #006C87, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #00556D, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -19215,7 +24351,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#EDF2F9",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#182230",
         "canvas-accent": "#1D2939",
         "table-head": "#1D2939",
@@ -19471,7 +24607,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/analytics/light/standard",
@@ -19564,14 +24842,14 @@ window.__UI_DESIGN_CONFIG__ = {
         "state-success": "#18794E",
         "state-warning": "#A9650A",
         "state-danger": "#C32F3F",
-        "state-info": "#00617D",
+        "state-info": "#006887",
         "data-series-1": "#1677FF",
         "data-series-2": "#008787",
         "data-series-3": "#7052D9",
         "data-series-4": "#9C6500",
         "data-series-5": "#B9385B",
         "data-series-6": "#237D3A",
-        "focus-ring": "2px solid #00617D",
+        "focus-ring": "2px solid #006887",
         "z-header": "20",
         "z-sidebar": "30",
         "z-popover": "100",
@@ -19697,8 +24975,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #00617D, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #004F68, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #00617D, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #004F68, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -19732,12 +25010,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#0B1220",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#FFFFFF",
         "canvas-accent": "#F5F7FA",
         "table-head": "#F5F7FA",
         "success-bg": "#E6F4F9",
-        "info": "#00617D",
+        "info": "#006887",
         "info-bg": "#E6F4F9",
         "warning-bg": "#F5F7FA",
         "warning-border": "#D9DEE7",
@@ -19781,7 +25059,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "border-subtle": "#E7EAF0",
         "border-strong": "#A7B2C3",
         "border-control": "#68758A",
-        "action-text": "#00617D",
+        "action-text": "#006887",
         "action-text-hover": "#00405C",
         "action-solid": "#00617D",
         "action-solid-hover": "#004F68",
@@ -19901,7 +25179,7 @@ window.__UI_DESIGN_CONFIG__ = {
           }
         },
         "focus": {
-          "ring": "2px solid #00617D",
+          "ring": "2px solid #006887",
           "offset": "2px",
           "style": "solid"
         },
@@ -19925,7 +25203,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "height": "34px",
           "radius": "4px",
           "actionGap": "8px",
-          "focus": "2px solid #00617D"
+          "focus": "2px solid #006887"
         },
         "field": {
           "height": "34px",
@@ -19988,7 +25266,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/analytics/light/compact",
@@ -20081,14 +25501,14 @@ window.__UI_DESIGN_CONFIG__ = {
         "state-success": "#18794E",
         "state-warning": "#A9650A",
         "state-danger": "#C32F3F",
-        "state-info": "#00617D",
+        "state-info": "#006887",
         "data-series-1": "#1677FF",
         "data-series-2": "#008787",
         "data-series-3": "#7052D9",
         "data-series-4": "#9C6500",
         "data-series-5": "#B9385B",
         "data-series-6": "#237D3A",
-        "focus-ring": "2px solid #00617D",
+        "focus-ring": "2px solid #006887",
         "z-header": "20",
         "z-sidebar": "30",
         "z-popover": "100",
@@ -20214,8 +25634,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #00617D, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #004F68, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #00617D, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #004F68, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -20249,12 +25669,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#0B1220",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#FFFFFF",
         "canvas-accent": "#F5F7FA",
         "table-head": "#F5F7FA",
         "success-bg": "#E6F4F9",
-        "info": "#00617D",
+        "info": "#006887",
         "info-bg": "#E6F4F9",
         "warning-bg": "#F5F7FA",
         "warning-border": "#D9DEE7",
@@ -20298,7 +25718,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "border-subtle": "#E7EAF0",
         "border-strong": "#A7B2C3",
         "border-control": "#68758A",
-        "action-text": "#00617D",
+        "action-text": "#006887",
         "action-text-hover": "#00405C",
         "action-solid": "#00617D",
         "action-solid-hover": "#004F68",
@@ -20418,7 +25838,7 @@ window.__UI_DESIGN_CONFIG__ = {
           }
         },
         "focus": {
-          "ring": "2px solid #00617D",
+          "ring": "2px solid #006887",
           "offset": "2px",
           "style": "solid"
         },
@@ -20442,7 +25862,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "height": "28px",
           "radius": "4px",
           "actionGap": "8px",
-          "focus": "2px solid #00617D"
+          "focus": "2px solid #006887"
         },
         "field": {
           "height": "28px",
@@ -20505,7 +25925,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/analytics/dark/standard",
@@ -20729,8 +26291,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #006C87, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #00556D, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #006C87, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #00556D, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -20764,7 +26326,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#F4F7FF",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#121A2B",
         "canvas-accent": "#17233A",
         "table-head": "#17233A",
@@ -21020,7 +26582,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/analytics/dark/compact",
@@ -21244,8 +26948,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #006C87, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #00556D, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #006C87, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #00556D, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -21279,7 +26983,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#F4F7FF",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#121A2B",
         "canvas-accent": "#17233A",
         "table-head": "#17233A",
@@ -21535,7 +27239,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/precision/light/standard",
@@ -21626,14 +27472,14 @@ window.__UI_DESIGN_CONFIG__ = {
         "state-success": "#18794E",
         "state-warning": "#A9650A",
         "state-danger": "#C32F3F",
-        "state-info": "#00617D",
+        "state-info": "#006887",
         "data-series-1": "#1677FF",
         "data-series-2": "#008787",
         "data-series-3": "#7052D9",
         "data-series-4": "#9C6500",
         "data-series-5": "#B9385B",
         "data-series-6": "#237D3A",
-        "focus-ring": "2px solid #00617D",
+        "focus-ring": "2px solid #006887",
         "z-header": "20",
         "z-sidebar": "30",
         "z-popover": "100",
@@ -21759,8 +27605,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #00617D, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #004F68, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #00617D, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #004F68, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -21794,12 +27640,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#0B1220",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#FFFFFF",
         "canvas-accent": "#F8FAFC",
         "table-head": "#F8FAFC",
         "success-bg": "#E6F4F9",
-        "info": "#00617D",
+        "info": "#006887",
         "info-bg": "#E6F4F9",
         "warning-bg": "#F8FAFC",
         "warning-border": "#CBD5E1",
@@ -21843,7 +27689,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "border-subtle": "#E2E8F0",
         "border-strong": "#A7B2C3",
         "border-control": "#68758A",
-        "action-text": "#00617D",
+        "action-text": "#006887",
         "action-text-hover": "#00405C",
         "action-solid": "#00617D",
         "action-solid-hover": "#004F68",
@@ -21963,7 +27809,7 @@ window.__UI_DESIGN_CONFIG__ = {
           }
         },
         "focus": {
-          "ring": "2px solid #00617D",
+          "ring": "2px solid #006887",
           "offset": "2px",
           "style": "solid"
         },
@@ -21987,7 +27833,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "height": "34px",
           "radius": "6px",
           "actionGap": "8px",
-          "focus": "2px solid #00617D"
+          "focus": "2px solid #006887"
         },
         "field": {
           "height": "34px",
@@ -22050,7 +27896,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/precision/light/compact",
@@ -22141,14 +28129,14 @@ window.__UI_DESIGN_CONFIG__ = {
         "state-success": "#18794E",
         "state-warning": "#A9650A",
         "state-danger": "#C32F3F",
-        "state-info": "#00617D",
+        "state-info": "#006887",
         "data-series-1": "#1677FF",
         "data-series-2": "#008787",
         "data-series-3": "#7052D9",
         "data-series-4": "#9C6500",
         "data-series-5": "#B9385B",
         "data-series-6": "#237D3A",
-        "focus-ring": "2px solid #00617D",
+        "focus-ring": "2px solid #006887",
         "z-header": "20",
         "z-sidebar": "30",
         "z-popover": "100",
@@ -22274,8 +28262,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #00617D, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #004F68, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #00617D, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #004F68, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -22309,12 +28297,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#0B1220",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#FFFFFF",
         "canvas-accent": "#F8FAFC",
         "table-head": "#F8FAFC",
         "success-bg": "#E6F4F9",
-        "info": "#00617D",
+        "info": "#006887",
         "info-bg": "#E6F4F9",
         "warning-bg": "#F8FAFC",
         "warning-border": "#CBD5E1",
@@ -22358,7 +28346,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "border-subtle": "#E2E8F0",
         "border-strong": "#A7B2C3",
         "border-control": "#68758A",
-        "action-text": "#00617D",
+        "action-text": "#006887",
         "action-text-hover": "#00405C",
         "action-solid": "#00617D",
         "action-solid-hover": "#004F68",
@@ -22478,7 +28466,7 @@ window.__UI_DESIGN_CONFIG__ = {
           }
         },
         "focus": {
-          "ring": "2px solid #00617D",
+          "ring": "2px solid #006887",
           "offset": "2px",
           "style": "solid"
         },
@@ -22502,7 +28490,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "height": "28px",
           "radius": "6px",
           "actionGap": "8px",
-          "focus": "2px solid #00617D"
+          "focus": "2px solid #006887"
         },
         "field": {
           "height": "28px",
@@ -22565,7 +28553,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/precision/dark/standard",
@@ -22789,8 +28919,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #006C87, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #00556D, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #006C87, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #00556D, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -22824,7 +28954,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#EDF2F9",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#14232C",
         "canvas-accent": "#1B303A",
         "table-head": "#1B303A",
@@ -23080,7 +29210,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/precision/dark/compact",
@@ -23304,8 +29576,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #006C87, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #00556D, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #006C87, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #00556D, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
@@ -23339,7 +29611,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(11, 18, 32, 0.48)",
         "hx-chart-glow": "0 3px 10px rgba(11, 18, 32, 0.48)",
         "text-heading": "#EDF2F9",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "#14232C",
         "canvas-accent": "#1B303A",
         "table-head": "#1B303A",
@@ -23595,7 +29867,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/huixin/light/standard",
@@ -23667,7 +30081,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -23684,16 +30098,16 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
-        "state-info": "#00617D",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
-        "focus-ring": "2px solid #00617D",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
+        "state-info": "#006887",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
+        "focus-ring": "2px solid #006887",
         "z-header": "20",
         "z-sidebar": "30",
         "z-popover": "100",
@@ -23782,7 +30196,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -23819,17 +30233,17 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #00617D, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #004F68, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #00617D, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #004F68, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -23854,12 +30268,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(18,71,91,0.025)",
         "hx-chart-glow": "0 3px 10px rgba(0,97,125,0.1)",
         "text-heading": "#12475B",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "rgba(255,255,255,0.88)",
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -23888,33 +30302,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
-        "action-text": "#00617D",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
+        "action-text": "#006887",
         "action-text-hover": "#00405C",
         "action-solid": "#00617D",
         "action-solid-hover": "#004F68",
         "selected-bg": "#E6F4F9",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -24023,7 +30440,7 @@ window.__UI_DESIGN_CONFIG__ = {
           }
         },
         "focus": {
-          "ring": "2px solid #00617D",
+          "ring": "2px solid #006887",
           "offset": "2px",
           "style": "solid"
         },
@@ -24047,7 +30464,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "height": "40px",
           "radius": "8px",
           "actionGap": "12px",
-          "focus": "2px solid #00617D"
+          "focus": "2px solid #006887"
         },
         "field": {
           "height": "40px",
@@ -24063,7 +30480,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -24110,7 +30527,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/huixin/light/compact",
@@ -24182,7 +30741,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -24199,16 +30758,16 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
-        "state-info": "#00617D",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
-        "focus-ring": "2px solid #00617D",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
+        "state-info": "#006887",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
+        "focus-ring": "2px solid #006887",
         "z-header": "20",
         "z-sidebar": "30",
         "z-popover": "100",
@@ -24297,7 +30856,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -24334,17 +30893,17 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #00617D, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #004F68, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #00617D, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #004F68, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -24369,12 +30928,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(18,71,91,0.025)",
         "hx-chart-glow": "0 3px 10px rgba(0,97,125,0.1)",
         "text-heading": "#12475B",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "rgba(255,255,255,0.88)",
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -24403,33 +30962,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
-        "action-text": "#00617D",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
+        "action-text": "#006887",
         "action-text-hover": "#00405C",
         "action-solid": "#00617D",
         "action-solid-hover": "#004F68",
         "selected-bg": "#E6F4F9",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -24538,7 +31100,7 @@ window.__UI_DESIGN_CONFIG__ = {
           }
         },
         "focus": {
-          "ring": "2px solid #00617D",
+          "ring": "2px solid #006887",
           "offset": "2px",
           "style": "solid"
         },
@@ -24562,7 +31124,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "height": "32px",
           "radius": "8px",
           "actionGap": "12px",
-          "focus": "2px solid #00617D"
+          "focus": "2px solid #006887"
         },
         "field": {
           "height": "32px",
@@ -24578,7 +31140,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -24625,7 +31187,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/huixin/dark/standard",
@@ -24697,7 +31401,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -24812,7 +31516,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -24849,12 +31553,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #006C87, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #00556D, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #006C87, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #00556D, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -24884,7 +31588,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(0,0,0,0.1)",
         "hx-chart-glow": "0 3px 10px rgba(69,214,237,0.18)",
         "text-heading": "#E6F4FB",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "rgba(12,41,59,0.94)",
         "canvas-accent": "#103448",
         "table-head": "#103247",
@@ -24931,8 +31635,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#7AD5E3",
         "action-text-hover": "#A0E6F0",
         "action-solid": "#006C87",
@@ -24944,7 +31648,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -25093,7 +31800,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -25140,7 +31847,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "huixin/huixin/dark/compact",
@@ -25212,7 +32061,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -25327,7 +32176,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -25364,12 +32213,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "hx-nav-group-gap": "22px",
         "hx-toolbar-blur": "18px",
         "control-icon": "36px",
-        "action-gradient": "linear-gradient(110deg, #006C87, #00788D)",
-        "action-gradient-hover": "linear-gradient(110deg, #00556D, #00788D)",
+        "action-gradient": "linear-gradient(110deg, #006C87, #007F96)",
+        "action-gradient-hover": "linear-gradient(110deg, #00556D, #007F96)",
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -25399,7 +32248,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-control": "0 1px 2px rgba(0,0,0,0.1)",
         "hx-chart-glow": "0 3px 10px rgba(69,214,237,0.18)",
         "text-heading": "#E6F4FB",
-        "action-end": "#00788D",
+        "action-end": "#007F96",
         "glass-surface": "rgba(12,41,59,0.94)",
         "canvas-accent": "#103448",
         "table-head": "#103247",
@@ -25446,8 +32295,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#7AD5E3",
         "action-text-hover": "#A0E6F0",
         "action-solid": "#006C87",
@@ -25459,7 +32308,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -25608,7 +32460,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -25655,7 +32507,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/enterprise/light/standard",
@@ -26170,7 +33164,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/enterprise/light/compact",
@@ -26685,7 +33821,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/enterprise/dark/standard",
@@ -27200,7 +34478,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/enterprise/dark/compact",
@@ -27715,7 +35135,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/analytics/light/standard",
@@ -28232,7 +35794,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/analytics/light/compact",
@@ -28749,7 +36453,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/analytics/dark/standard",
@@ -29264,7 +37110,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/analytics/dark/compact",
@@ -29779,7 +37767,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/precision/light/standard",
@@ -30294,7 +38424,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/precision/light/compact",
@@ -30809,7 +39081,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/precision/dark/standard",
@@ -31324,7 +39738,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/precision/dark/compact",
@@ -31839,7 +40395,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/huixin/light/standard",
@@ -31911,7 +40609,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -31928,15 +40626,15 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
         "state-info": "#354E9E",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
         "focus-ring": "2px solid #354E9E",
         "z-header": "20",
         "z-sidebar": "30",
@@ -32026,7 +40724,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -32068,12 +40766,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -32103,7 +40801,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -32132,33 +40830,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
         "action-text": "#354E9E",
         "action-text-hover": "#293D80",
         "action-solid": "#3E4FAA",
         "action-solid-hover": "#303F8B",
         "selected-bg": "#EEF0FC",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -32307,7 +41008,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -32354,7 +41055,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/huixin/light/compact",
@@ -32426,7 +41269,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -32443,15 +41286,15 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
         "state-info": "#354E9E",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
         "focus-ring": "2px solid #354E9E",
         "z-header": "20",
         "z-sidebar": "30",
@@ -32541,7 +41384,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -32583,12 +41426,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -32618,7 +41461,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -32647,33 +41490,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
         "action-text": "#354E9E",
         "action-text-hover": "#293D80",
         "action-solid": "#3E4FAA",
         "action-solid-hover": "#303F8B",
         "selected-bg": "#EEF0FC",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -32822,7 +41668,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -32869,7 +41715,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/huixin/dark/standard",
@@ -32941,7 +41929,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -33056,7 +42044,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -33098,7 +42086,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -33175,8 +42163,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#BAC6FF",
         "action-text-hover": "#DCE2FF",
         "action-solid": "#495AB6",
@@ -33188,7 +42176,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -33337,7 +42328,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -33384,7 +42375,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "indigo/huixin/dark/compact",
@@ -33456,7 +42589,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -33571,7 +42704,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -33613,7 +42746,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -33690,8 +42823,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#BAC6FF",
         "action-text-hover": "#DCE2FF",
         "action-solid": "#495AB6",
@@ -33703,7 +42836,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -33852,7 +42988,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -33899,7 +43035,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/enterprise/light/standard",
@@ -34414,7 +43692,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/enterprise/light/compact",
@@ -34929,7 +44349,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/enterprise/dark/standard",
@@ -35444,7 +45006,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/enterprise/dark/compact",
@@ -35959,7 +45663,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/analytics/light/standard",
@@ -36476,7 +46322,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/analytics/light/compact",
@@ -36993,7 +46981,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/analytics/dark/standard",
@@ -37508,7 +47638,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/analytics/dark/compact",
@@ -38023,7 +48295,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/precision/light/standard",
@@ -38538,7 +48952,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/precision/light/compact",
@@ -39053,7 +49609,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/precision/dark/standard",
@@ -39568,7 +50266,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/precision/dark/compact",
@@ -40083,7 +50923,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "48px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/huixin/light/standard",
@@ -40155,7 +51137,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -40172,15 +51154,15 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
         "state-info": "#6B3EA2",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
         "focus-ring": "2px solid #6B3EA2",
         "z-header": "20",
         "z-sidebar": "30",
@@ -40270,7 +51252,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -40312,12 +51294,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -40347,7 +51329,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -40376,33 +51358,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
         "action-text": "#6B3EA2",
         "action-text-hover": "#502D7D",
         "action-solid": "#7042AD",
         "action-solid-hover": "#5C358E",
         "selected-bg": "#F3EDFA",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -40551,7 +51536,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -40598,7 +51583,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/huixin/light/compact",
@@ -40670,7 +51797,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -40687,15 +51814,15 @@ window.__UI_DESIGN_CONFIG__ = {
         "weight-metric": "700",
         "font-variant-data": "tabular-nums",
         "state-success": "#197652",
-        "state-warning": "#7B5500",
-        "state-danger": "#B82F40",
+        "state-warning": "#946900",
+        "state-danger": "#CB4551",
         "state-info": "#6B3EA2",
-        "data-series-1": "#007D96",
-        "data-series-2": "#4568B5",
-        "data-series-3": "#2B7E6B",
-        "data-series-4": "#936723",
-        "data-series-5": "#8560A3",
-        "data-series-6": "#387A8B",
+        "data-series-1": "#079BB5",
+        "data-series-2": "#5A83DB",
+        "data-series-3": "#68B7A4",
+        "data-series-4": "#D5AD6C",
+        "data-series-5": "#9C84BE",
+        "data-series-6": "#5D9FAC",
         "focus-ring": "2px solid #6B3EA2",
         "z-header": "20",
         "z-sidebar": "30",
@@ -40785,7 +51912,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -40827,12 +51954,12 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
         "canvas-image": "radial-gradient(ellipse at 90% 0%, #EAF5FA, transparent 48%)",
-        "chart-bar-gradient": "linear-gradient(0deg, #007D96, #B2EEF1)",
+        "chart-bar-gradient": "linear-gradient(0deg, #079BB5, #B2EEF1)",
         "hx-metric-card-height": "132px",
         "query-search-group-width": "30rem",
         "query-search-input-width": "16rem",
@@ -40862,7 +51989,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "canvas-accent": "#EAF5FA",
         "table-head": "#ECF3F6",
         "success-bg": "#E8F6EF",
-        "info": "#2469A8",
+        "info": "#297CCA",
         "info-bg": "#EDF5FD",
         "warning-bg": "#FFF7E4",
         "warning-border": "#E8D9B8",
@@ -40891,33 +52018,36 @@ window.__UI_DESIGN_CONFIG__ = {
         "shadow-dialog-color": "rgba(10,52,72,0.18)",
         "shadow-control-color": "rgba(18,71,91,0.025)",
         "hx-chart-glow-color": "rgba(0,97,125,0.1)",
-        "data-series-7": "#586F7C",
+        "data-series-7": "#7C929E",
         "canvas": "#FAFCFE",
         "surface": "#FFFFFF",
         "surface-muted": "#F4F8FB",
         "surface-sunken": "#EDF4F8",
         "surface-hover": "#ECF6FA",
         "text": "#203945",
-        "text-secondary": "#526B79",
-        "text-tertiary": "#526B79",
+        "text-secondary": "#637B88",
+        "text-tertiary": "#81949F",
         "inverse-surface": "#0F1729",
         "on-inverse": "#FFFFFF",
         "border": "#CDDFE9",
         "border-subtle": "#E5EDF1",
-        "border-strong": "#526F80",
-        "border-control": "#6A8797",
+        "border-strong": "#8CB6C9",
+        "border-control": "#C3DAE6",
         "action-text": "#6B3EA2",
         "action-text-hover": "#502D7D",
         "action-solid": "#7042AD",
         "action-solid-hover": "#5C358E",
         "selected-bg": "#F3EDFA",
         "success": "#197652",
-        "warning": "#7B5500",
-        "danger": "#B82F40",
+        "warning": "#946900",
+        "danger": "#CB4551",
         "danger-bg": "#FDEEF0",
         "danger-border": "#EACAD0",
         "disabled-bg": "#F2F4F7",
-        "disabled-text": "#98A2B3"
+        "disabled-text": "#98A2B3",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -41066,7 +52196,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -41113,7 +52243,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/huixin/dark/standard",
@@ -41185,7 +52457,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "40px",
-        "density-cell-padding-block": "16px",
+        "density-cell-padding-block": "12px",
         "density-cell-padding-inline": "16px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -41300,7 +52572,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -41342,7 +52614,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -41419,8 +52691,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#DCC2FF",
         "action-text-hover": "#EFDEFF",
         "action-solid": "#784DB0",
@@ -41432,7 +52704,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -41581,7 +52856,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "16px",
+          "cellPaddingBlock": "12px",
           "cellPaddingInline": "16px",
           "numberVariant": "tabular-nums",
           "rowHeight": "56px",
@@ -41628,7 +52903,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     },
     {
       "key": "violet/huixin/dark/compact",
@@ -41700,7 +53117,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "layout-content-reading-max": "960px",
         "layout-content-form-max": "800px",
         "density-control-height": "32px",
-        "density-cell-padding-block": "8px",
+        "density-cell-padding-block": "4px",
         "density-cell-padding-inline": "12px",
         "font-nav": "14px",
         "font-metric": "34px",
@@ -41815,7 +53232,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "font-display": "22px",
         "line-tight": "1.3",
         "weight-medium": "500",
-        "field-group-gap": "16px",
+        "field-group-gap": "20px",
         "space-1-5": "6px",
         "space-7": "28px",
         "space-12": "48px",
@@ -41857,7 +53274,7 @@ window.__UI_DESIGN_CONFIG__ = {
         "glass-blur": "18px",
         "backdrop-blur": "5px",
         "dialog-wide-width": "74rem",
-        "query-search-width": "22rem",
+        "query-search-width": "16rem",
         "query-select-width": "10rem",
         "layer-sticky": "3",
         "dialog-action-min-width": "80px",
@@ -41934,8 +53351,8 @@ window.__UI_DESIGN_CONFIG__ = {
         "on-inverse": "#0E1117",
         "border": "#345C72",
         "border-subtle": "#23485D",
-        "border-strong": "#8FB3C7",
-        "border-control": "#7094A8",
+        "border-strong": "#6F9EB6",
+        "border-control": "#406E86",
         "action-text": "#DCC2FF",
         "action-text-hover": "#EFDEFF",
         "action-solid": "#784DB0",
@@ -41947,7 +53364,10 @@ window.__UI_DESIGN_CONFIG__ = {
         "danger-bg": "#402D3C",
         "danger-border": "#79505D",
         "disabled-bg": "#102B3D",
-        "disabled-text": "#7695A6"
+        "disabled-text": "#7695A6",
+        "query-search-min-width": "12.5rem",
+        "query-search-max-width": "20rem",
+        "table-compact-cell-padding-block": "4px"
       },
       "semantics": {
         "font": {
@@ -42096,7 +53516,7 @@ window.__UI_DESIGN_CONFIG__ = {
           "zIndex": "200"
         },
         "table": {
-          "cellPaddingBlock": "8px",
+          "cellPaddingBlock": "4px",
           "cellPaddingInline": "12px",
           "numberVariant": "tabular-nums",
           "rowHeight": "44px",
@@ -42143,7 +53563,149 @@ window.__UI_DESIGN_CONFIG__ = {
           "collapsedWidth": "56px",
           "headerHeight": "70px"
         }
-      }
+      },
+      "contrastExceptions": [
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "surface",
+          "approvedRatio": 4.4498803325,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin source palette; report the 4.45:1 shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-secondary",
+          "background": "table-head",
+          "approvedRatio": 3.9662364916,
+          "foregroundValue": "#637B88",
+          "backgroundValue": "#ECF3F6",
+          "reason": "Supplied Huixin table annotation color; report the shortfall without darkening the approved color."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "text-tertiary",
+          "background": "surface-muted",
+          "approvedRatio": 2.9485014541,
+          "foregroundValue": "#81949F",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin tertiary annotation color; retain source and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 1.4491137399,
+          "foregroundValue": "#C3DAE6",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "border-strong",
+          "background": "surface",
+          "approvedRatio": 2.1762383179,
+          "foregroundValue": "#8CB6C9",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin strong border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "dark",
+          "foreground": "border-control",
+          "background": "surface",
+          "approvedRatio": 2.7168492469,
+          "foregroundValue": "#406E86",
+          "backgroundValue": "#0C293B",
+          "reason": "Supplied Huixin dark control border; non-text boundary is below 3:1 and must remain explicitly reported."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "danger",
+          "background": "danger-bg",
+          "approvedRatio": 4.1390726888,
+          "foregroundValue": "#CB4551",
+          "backgroundValue": "#FDEEF0",
+          "reason": "Supplied Huixin danger pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "info",
+          "background": "info-bg",
+          "approvedRatio": 3.9501981899,
+          "foregroundValue": "#297CCA",
+          "backgroundValue": "#EDF5FD",
+          "reason": "Supplied Huixin info pair; retain source palette and report the shortfall."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface",
+          "approvedRatio": 2.3600615659,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-3",
+          "background": "surface-muted",
+          "approvedRatio": 2.2102074243,
+          "foregroundValue": "#68B7A4",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface",
+          "approvedRatio": 2.0951399495,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-4",
+          "background": "surface-muted",
+          "approvedRatio": 1.9621072341,
+          "foregroundValue": "#D5AD6C",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface",
+          "approvedRatio": 2.9912835918,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#FFFFFF",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        },
+        {
+          "profile": "huixin",
+          "theme": "light",
+          "foreground": "data-series-6",
+          "background": "surface-muted",
+          "approvedRatio": 2.8013494641,
+          "foregroundValue": "#5D9FAC",
+          "backgroundValue": "#F4F8FB",
+          "reason": "Supplied Huixin chart series color; report the non-text shortfall without recoloring the series."
+        }
+      ]
     }
   ]
 }

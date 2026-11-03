@@ -68,7 +68,7 @@ SVG 图表不能把固定设计宽度（例如 600 单位）直接压缩进窄�
 
 ## 5. 可执行验收清单
 
-在[组件评审模板](component-review-template.md)中记录以下断言；对应真实浏览器证据和数据回读由 `ui-regression-acceptance` 的[统计视图检查](../../ui-regression-acceptance/references/statistical-view-checks.md)执行。
+在[组件评审模板](component-review-template.md)中记录以下断言，按本节清单执行真实浏览器检查和数据回读。若已安装 `ui-regression-acceptance` 且包含 `references/statistical-view-checks.md`，可补充使用其统计视图检查；本技能独立使用时仍须保留下列断言的实际证据。
 
 | ID | 检查动作 | 通过条件 |
 |---|---|---|

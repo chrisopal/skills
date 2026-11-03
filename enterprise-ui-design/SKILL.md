@@ -5,7 +5,12 @@ description: Create, upgrade, or audit enterprise admin and workbench frontends.
 
 # Enterprise UI Design
 
-v1.4 — compatible extension of v1.3; preserve the frozen public v1 token contract.
+v1.5 — incremental extension of v1.4; preserve the frozen public v1 token contract.
+
+The v1.5 Huixin update incorporates the supplied Huixin Glass UI source palette and
+implementation-consistency rules. It is opt-in to `profile: 'huixin'` and the
+`brand: 'huixin'` preset; other Profiles, brands, and the Foundation v1 map remain
+unchanged. The single `assets/tokens.json` plus generator remains the authored source.
 
 Build from product truth and apply one visual grammar. Do not invent alternatives unless requested.
 
@@ -20,6 +25,17 @@ Build from product truth and apply one visual grammar. Do not invent alternative
 If audit and implementation are both requested, capture the baseline, then fix it through Upgrade. Plan/review/audit-only requests remain read-only.
 
 Always read [references/style-standard.md](references/style-standard.md). Before completion, apply [references/checklist.md](references/checklist.md). Use [assets/tokens.json](assets/tokens.json) as token truth and [assets/tokens.css](assets/tokens.css) only as a starter.
+
+For Huixin v1.5 geometry and palette updates, also apply the HX-P01–HX-P12 registry
+in [references/huixin-components.md](references/huixin-components.md): record computed
+style, winning source, browser zoom, presentation scale and devicePixelRatio separately.
+The query wrapper/input uses a 256px baseline with a 320px cap; selects use 160px and
+query controls never grow to consume the row. Standard/compact table rows are 56/44px
+with 12/4px vertical padding budgets (upper bounds; content may grow naturally), row actions are 32px, and dialog scrolling is
+body-only with 20×24 / 24 / 16×24 header/body/footer insets and 20px field groups with
+8px label gaps. Source-approved palette shortfalls are reported explicitly by the
+generator and runtime checks; they are scoped to Huixin and do not weaken other
+Profiles or the unexpected-degradation regression.
 
 For the explicitly selected **Huixin Profile**, use three layers: [framework and typography](references/huixin-framework.md), [components and interaction](references/huixin-components.md), and [color-only themes](references/huixin-themes.md). Load only the layers needed for the task. Their scoped geometry/material overrides take precedence over generic typography/spatial defaults; Enterprise remains the default. The [Huixin reference](assets/reference-huixin/index.html) contains simulated overview, resource and receipt fixtures, not a host-system migration.
 
@@ -40,6 +56,8 @@ For modern enterprise SaaS interaction, task inboxes, summary-to-evidence readin
 For business-detail reading or empty-state layout, read [forms and feedback](references/forms-and-feedback.md#只读详情与空状态构图) with the spatial contract. Use semantic subject/task groups, visible label/value relationships and responsive read-only fields; measure the owned empty region and block insets instead of accepting a text pile or a border-hugging message. Preserve tables, history timelines and specialist editors where their tasks require them.
 
 For sidebar/menu icon work, read the [navigation icon rules](references/navigation-and-task-surfaces.md#导航图标专项). Inventory labels, routes, business meanings and actual glyphs across the full menu, including permission-dependent items; justify semantic reuse rather than enforcing arbitrary uniqueness.
+
+For any detail layout, result-first review, or whole-site detail migration, also apply [the detail layout system](references/detail-layout-system.md): inventory all entry containers, choose A–E variants, preserve source/permission invariants and complete the before/change/after ledger.
 
 For defect-driven design involving identity labels, configurable forms, action eligibility, query/export consistency or detail navigation, read [Feishu-derived design contracts](references/feishu-lessons.md). Apply only the relevant EUI-F rules in the Blueprint; retain their project boundaries and separate engineering evidence from human acceptance.
 

@@ -1,11 +1,16 @@
 ---
 name: enterprise-ui-design
-description: Create, upgrade, or audit enterprise admin and workbench frontends. Select and verify business UI patterns including Gantt, calendars, tables/grids, Tabs, drawers/dialogs, forms, feedback, charts, order stages, and end-to-end task flows. Improve visual hierarchy, layouts, density, themes, and responsive behavior while preserving the host product and component library. Not for marketing pages, native-mobile-only UI, or backend-only work.
+description: Create, upgrade, or audit enterprise admin and workbench frontends. Select and verify business UI patterns including Gantt, calendars, tables/grids, Tabs, drawers/dialogs, forms, feedback, charts, order stages, and end-to-end task flows and workflow usability. Improve visual hierarchy, layouts, density, themes, and responsive behavior while preserving the host product and component library. Not for marketing pages, native-mobile-only UI, or backend-only work.
 ---
 
 # Enterprise UI Design
 
-v1.3 — compatible extension of v1.2; preserve the frozen public v1 token contract.
+v1.5 — incremental extension of v1.4; preserve the frozen public v1 token contract.
+
+The v1.5 Huixin update incorporates the supplied Huixin Glass UI source palette and
+implementation-consistency rules. It is opt-in to `profile: 'huixin'` and the
+`brand: 'huixin'` preset; other Profiles, brands, and the Foundation v1 map remain
+unchanged. The single `assets/tokens.json` plus generator remains the authored source.
 
 Build from product truth and apply one visual grammar. Do not invent alternatives unless requested.
 
@@ -21,28 +26,51 @@ If audit and implementation are both requested, capture the baseline, then fix i
 
 Always read [references/style-standard.md](references/style-standard.md). Before completion, apply [references/checklist.md](references/checklist.md). Use [assets/tokens.json](assets/tokens.json) as token truth and [assets/tokens.css](assets/tokens.css) only as a starter.
 
+For Huixin v1.5 geometry and palette updates, also apply the HX-P01–HX-P12 registry
+in [references/huixin-components.md](references/huixin-components.md): record computed
+style, winning source, browser zoom, presentation scale and devicePixelRatio separately.
+The query wrapper/input uses a 256px baseline with a 320px cap; selects use 160px and
+query controls never grow to consume the row. Standard/compact table rows are 56/44px
+with 12/4px vertical padding budgets (upper bounds; content may grow naturally), row actions are 32px, and dialog scrolling is
+body-only with 20×24 / 24 / 16×24 header/body/footer insets and 20px field groups with
+8px label gaps. Source-approved palette shortfalls are reported explicitly by the
+generator and runtime checks; they are scoped to Huixin and do not weaken other
+Profiles or the unexpected-degradation regression.
+
+For the explicitly selected **Huixin Profile**, use three layers: [framework and typography](references/huixin-framework.md), [components and interaction](references/huixin-components.md), and [color-only themes](references/huixin-themes.md). Load only the layers needed for the task. Their scoped geometry/material overrides take precedence over generic typography/spatial defaults; Enterprise remains the default. The [Huixin reference](assets/reference-huixin/index.html) contains simulated overview, resource and receipt fixtures, not a host-system migration.
+
 For cross-page scope, style/brand switching or design-system migration, read [site planning](references/site-planning.md) and [the effective configuration contract](references/design-system-contract.md). Reuse the existing project DESIGN.md and components. The [rule registry](references/audit-rules.json), [review JSON template](references/review-report.template.json) and runnable candidate/coverage checker keep technical audit, visual/task review and behavior regression separate.
 
 For hierarchy, mixed-script rendering or font claims, read [references/typography.md](references/typography.md). For page composition, content density and state distinction, read [references/product-polish.md](references/product-polish.md). Use [references/analytics-style.md](references/analytics-style.md) only when the optional dark Analytics Profile is in scope.
 
 For page layout, padding, alignment, grouping, or density work, also read [references/spatial-system.md](references/spatial-system.md). It defines the shared spatial contract for all three modes. Its linked runnable reference uses simulation data; it is a pattern, not a host application's implementation.
 
-For multi-stage business flows, work-item details, next-action clarity, toolbar hierarchy, or a request that a page is unintuitive or unattractive, also read [references/task-flow-and-hierarchy.md](references/task-flow-and-hierarchy.md). Use its evidence-based acceptance gates and [review template](references/task-flow-review-template.md); passing spacing/overflow tests does not establish task clarity or visual quality.
+For multi-stage business flows, work-item details, next-action clarity, toolbar hierarchy, or a request that a page is unintuitive or unattractive, also read [references/task-flow-and-hierarchy.md](references/task-flow-and-hierarchy.md). Use its per-journey ledger, step evidence and recovery/handoff guidance with the [review template](references/task-flow-review-template.md); passing spacing/overflow tests does not establish task clarity or visual quality.
 
-When selecting or reviewing components, start at [references/business-component-patterns.md](references/business-component-patterns.md), then read only the relevant scenario guide: planning/charts, table variants, Tabs/drawers/navigation, forms/feedback, or order/approval progress. Each guide defines suitable and unsuitable uses, component combinations, state/interaction contracts and observable acceptance checks. Record the choice, host-component mapping and evidence with the [component review template](references/component-review-template.md). The linked runnable order-flow reference is one simulated example; other guides do not claim runnable implementations.
+When selecting or reviewing components, start at [references/business-component-patterns.md](references/business-component-patterns.md), then read only the relevant scenario guide: planning/charts, [statistical views](references/statistical-views.md), [tables and data workspaces](references/tables-and-data-workspaces.md), Tabs/drawers/navigation, forms/feedback, or order/approval progress. Each guide defines suitable and unsuitable uses, component combinations, state/interaction contracts and observable acceptance checks. Record the choice, host-component mapping and evidence with the [component review template](references/component-review-template.md). The linked runnable order-flow reference is one simulated example; the form guide also links runnable simulated patterns.
+
+For form design or an unprofessional-looking input page, read the [form composition contract](references/forms-and-feedback.md#编辑表单的构图合同). Choose grouped entry, compact settings, a dependent-step application, master-detail entry or local drawer editing by task. Verify field boundaries, label/control alignment, section rhythm and action ownership in editable, read-only and error states; use the [interactive form references](assets/reference-forms/index.html) as simulated patterns, not host business implementations.
+
+For modern enterprise SaaS interaction, task inboxes, summary-to-evidence reading or personal/shared view behavior, read [SaaS experience patterns](references/saas-experience-patterns.md). Apply source-backed task hierarchy and progressive disclosure through the host contract, not decorative trends. Record the applicable SAAS checks with the existing journey review; the [task inbox reference](assets/reference-forms/index.html#task-inbox) is local fixture data.
 
 For business-detail reading or empty-state layout, read [forms and feedback](references/forms-and-feedback.md#只读详情与空状态构图) with the spatial contract. Use semantic subject/task groups, visible label/value relationships and responsive read-only fields; measure the owned empty region and block insets instead of accepting a text pile or a border-hugging message. Preserve tables, history timelines and specialist editors where their tasks require them.
 
 For sidebar/menu icon work, read the [navigation icon rules](references/navigation-and-task-surfaces.md#导航图标专项). Inventory labels, routes, business meanings and actual glyphs across the full menu, including permission-dependent items; justify semantic reuse rather than enforcing arbitrary uniqueness.
 
+For any detail layout, result-first review, or whole-site detail migration, also apply [the detail layout system](references/detail-layout-system.md): inventory all entry containers, choose A–E variants, preserve source/permission invariants and complete the before/change/after ledger.
+
+For defect-driven design involving identity labels, configurable forms, action eligibility, query/export consistency or detail navigation, read [Feishu-derived design contracts](references/feishu-lessons.md). Apply only the relevant EUI-F rules in the Blueprint; retain their project boundaries and separate engineering evidence from human acceptance.
+
+For KPI hierarchy, responsive metric grids, cramped tables, sort affordances, compact empty queues, analytics editor/preview layout, permissions summaries or chart/table reflow, read [operational layout decisions](references/operational-layout-lessons.md). Choose applicable EUI-O rules and validate the suggested layout against the real task; do not turn sample column counts or record counts into universal rules.
+
 ## Execution contract
 
 1. Resolve target, outcome, scope, and mutation authority. Ask one question only if target or outcome is missing.
 2. Inspect the framework, component library, theme boundary, routes, states, assets, tests, and running UI. Product behavior outranks style.
-3. Produce a **UI Blueprint** before code: identify page types, content-width strategy, page/container/text key lines, inset ownership, density, and responsive reflow. Record scenario-to-component choices, exceptions, data/selection/save scope and interaction/state checks. For task flows, map the operator, object scope, business stages and parallel branches, current work, next permitted action, blockers, handoffs and completion evidence to actual contracts. Direct build/upgrade requests continue without another checkpoint.
-4. Resolve Brand, Profile, theme and density independently through [the configuration contract](references/design-system-contract.md). Blue is the default brand, not an invariant. Select the visual Profile separately from theme and density. Enterprise is the default; Analytics is an optional dark data surface with explicit fallback. Reuse components and theme APIs, add a scoped adapter before page overrides, and add no dependency. Apply the generated token cascade and copy profile/theme/density to portals.
+3. Produce a **UI Blueprint** before code: identify page types, content-width strategy, page/container/text key lines, inset ownership, density, and responsive reflow. Record scenario-to-component choices, exceptions, data/selection/save scope and interaction/state checks. For each in-scope journey, record role, goal, entry, completion, real contract/source, main path and applicable recovery/handoff branches; map each step's cue, action, expected result and evidence path to the actual contract. Direct build/upgrade requests continue without another checkpoint.
+4. Resolve Brand, Profile, theme and density independently through [the configuration contract](references/design-system-contract.md). Blue is the default brand, not an invariant. Select the visual Profile separately from theme and density. Enterprise is the default; Analytics is an optional dark data surface with explicit fallback. Huixin is an explicit light/dark Profile with fixed framework/components and independently replaceable palettes. Reuse components and theme APIs, add a scoped adapter before page overrides, and add no dependency. Apply the generated token cascade and copy profile/theme/density to portals.
 5. Implement the smallest working slice, then complete every approved surface/state in the [site ledger](references/site-planning.md); a first slice is not a whole-site deliverable. Controls must be real or labeled fixture-only—never invent search, notifications, SSO, tenants, metrics, or permissions.
-6. Verify business-state truth, task comprehension and visual composition separately. Measure rendered insets, gaps, alignment, and overflow; inspect role typography and actual rendered fonts; then inspect screenshots and walk the task in relevant Profile/theme/density combinations and responsive states. Run the host's applicable checks. Do not claim pixel similarity without a reference image or user comprehension from a model review alone.
+6. Verify business-state truth, UX/task comprehension and visual composition separately. Measure rendered insets, gaps, alignment, and overflow; inspect role typography and actual rendered fonts; then inspect screenshots and walk the task in relevant Profile/theme/density combinations and responsive states. Record interruption, timeout, partial failure, draft preservation, handoff and resume evidence where the contract supports them. A heuristic or model review never implies a real-user study; record user observations only when actually observed, with unknown metrics left Not tested. Run the host's applicable checks. Do not claim pixel similarity without a reference image or user comprehension from a model review alone.
 7. Report **designed**, **implemented**, **runtime-verified**, **business-E2E-verified**, **built**, and **deployed** as separate states.
 
 ## Invariants
@@ -50,8 +78,10 @@ For sidebar/menu icon work, read the [navigation icon rules](references/navigati
 - Preserve brand, IA, auth, RBAC, routes, data contracts, i18n, keyboard behavior, and professional work surfaces unless explicitly changed.
 - Keep `brand`, `action-text`, `action-solid/on-action`, and `inverse-surface/on-inverse` distinct. Validate hover, focus, disabled, error, and dark states—not only defaults.
 - Do not normalize with broad `button`, `svg`, `div`, `canvas`, or wildcard class selectors. Portals/teleports must receive the same theme intentionally.
-- No routine gradients, glass, glow, oversized radii, card lift, decorative motion, or dashboard filler. A confirmed 3D brand asset is a local exception.
+- Generic Profiles have no routine gradients, glass, glow, oversized radii, card lift, decorative motion, or dashboard filler. A confirmed 3D brand asset is a local exception. Explicit Huixin selection permits only its declared restrained glass/gradient recipes and geometry; this does not change other Profiles or permit decorative filler.
 - Never claim visual compliance from code inspection, accessibility compliance from screenshots, or E2E readiness from a build alone.
+- Treat an unknown-result submit as unresolved: verify the outcome before retrying, and do not invent an API or persistence contract to make the result look successful.
+- A narrow audit covers only its declared journeys. A whole-site review uses the approved complete flow inventory and ledger; it does not turn an unapproved global inventory into a gate.
 - `assets/tokens.json` is the token truth. The unique effective order is foundation → theme → supported Profile → explicit brand → density, followed by effective alias/recipe resolution; unsupported Profile/theme combinations use the declared fallback. Keep data-series colors separate from business-state colors.
 
 ## Common failure corrections
@@ -85,7 +115,7 @@ For enterprise workbenches, do not add explanatory copy by default. Show busines
 
 Actions must be recognizable before hover. Use the existing component library's primary/secondary hierarchy for commands; repetitive row actions may use its recognizable action-button style with action color and visible focus. Do not promote every row command to a filled primary button or render it as muted body text. Reserve navigation links for navigation and keep their link cue. Hover and pointer cursor alone are insufficient.
 
-Keep actions for one record in a compact group with 8px gaps; align the group as a unit, never distribute individual buttons across the row with space-between. Wrap on narrow screens. Maintain visible keyboard focus and distinct disabled states in light and dark themes. Clickable metrics or rows need a persistent directional or link cue. Do not add explanatory text to compensate for unclear affordance.
+Keep actions for one record in a compact group with 8px gaps (explicit Huixin uses 12px); align the group as a unit, never distribute individual buttons across the row with space-between. Wrap on narrow screens. Maintain visible keyboard focus and distinct disabled states in light and dark themes. Clickable metrics or rows need a persistent directional or link cue. Do not add explanatory text to compensate for unclear affordance.
 
 Walk the dashboard, every tab, populated record actions and dialogs; check default, hover, focus, disabled and narrow-layout states. Report browser verification separately from source inspection and tests.
 

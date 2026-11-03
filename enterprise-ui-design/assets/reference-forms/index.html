@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN" data-ui="enterprise" data-ui-profile="enterprise" data-ui-brand="blue" data-theme="light" data-density="standard">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>业务表单构图参考 · Enterprise UI Reference</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="../tokens.css?v=1.3.0">
+    <link rel="stylesheet" href="../layout-recipes.css?v=1.3.0">
+    <link rel="stylesheet" href="forms.css?v=1.3.0">
+  </head>
+  <body>
+    <div class="forms-demo" id="forms-demo">
+      <header class="forms-demo__topbar">
+        <button class="forms-demo__icon-button forms-demo__mobile-menu" id="forms-menu-open" type="button" aria-label="打开导航" aria-expanded="false" aria-controls="forms-navigation"><span aria-hidden="true">☰</span></button>
+        <a class="forms-demo__brand" href="#sample-receiving" aria-label="业务表单构图参考首页">
+          <span class="forms-demo__brand-mark" aria-hidden="true">EF</span>
+          <span>业务表单构图参考</span>
+        </a>
+        <span class="forms-demo__topbar-context">Enterprise UI · Forms</span>
+        <div class="forms-demo__topbar-tools" aria-label="显示设置">
+          <label for="forms-profile">Profile</label>
+          <select id="forms-profile" class="forms-demo__control forms-demo__control--small" aria-label="视觉 Profile">
+            <option value="enterprise">企业基线</option>
+            <option value="precision">精密工作台</option>
+            <option value="analytics">数据分析（深色）</option>
+          </select>
+          <label for="forms-brand">品牌</label>
+          <select id="forms-brand" class="forms-demo__control forms-demo__control--small" aria-label="品牌">
+            <option value="blue">蓝色</option>
+            <option value="teal">青绿色</option>
+          </select>
+          <label for="forms-theme">主题</label>
+          <select id="forms-theme" class="forms-demo__control forms-demo__control--small" aria-label="主题">
+            <option value="light">浅色</option>
+            <option value="dark">深色</option>
+          </select>
+          <label for="forms-density">密度</label>
+          <select id="forms-density" class="forms-demo__control forms-demo__control--small" aria-label="密度">
+            <option value="standard">标准</option>
+            <option value="compact">紧凑</option>
+          </select>
+        </div>
+      </header>
+
+      <aside class="forms-demo__sidebar" id="forms-navigation" aria-label="表单构图导航">
+        <div class="forms-demo__sidebar-head"><button class="forms-demo__icon-button forms-demo__sidebar-close" id="forms-menu-close" type="button" aria-label="关闭导航"><span aria-hidden="true">×</span></button></div>
+        <p class="forms-demo__sidebar-title">任务构图</p>
+        <nav class="forms-demo__nav" aria-label="表单与任务构图">
+          <a href="#sample-receiving" class="forms-demo__nav-link is-active" data-view="sample-receiving" aria-current="page"><span class="forms-demo__nav-index">01</span><span><strong>样品签收</strong><small>分组编辑 · 主要参考</small></span></a>
+          <a href="#team-settings" class="forms-demo__nav-link" data-view="team-settings"><span class="forms-demo__nav-index">02</span><span><strong>团队设置</strong><small>紧凑配置</small></span></a>
+          <a href="#purchase-request" class="forms-demo__nav-link" data-view="purchase-request"><span class="forms-demo__nav-index">03</span><span><strong>采购申请</strong><small>多步骤输入</small></span></a>
+          <a href="#purchase-items" class="forms-demo__nav-link" data-view="purchase-items"><span class="forms-demo__nav-index">04</span><span><strong>采购明细</strong><small>主从编辑</small></span></a>
+          <a href="#object-drawer" class="forms-demo__nav-link" data-view="object-drawer"><span class="forms-demo__nav-index">05</span><span><strong>对象编辑</strong><small>窄抽屉</small></span></a>
+          <a href="#task-inbox" class="forms-demo__nav-link" data-view="task-inbox"><span class="forms-demo__nav-index">06</span><span><strong>任务收件箱</strong><small>摘要 · 依据 · 办理</small></span></a>
+        </nav>
+        <div class="forms-demo__sidebar-note">
+          <span class="forms-demo__status-dot" aria-hidden="true"></span>
+          <span><strong>本地示例</strong><small>仅保存在当前浏览器</small></span>
+        </div>
+      </aside>
+
+      <main class="forms-demo__main">
+        <div class="forms-demo__page-head">
+          <div>
+            <div class="forms-demo__breadcrumb"><span>Enterprise UI</span><span aria-hidden="true">/</span><span>表单构图</span></div>
+            <h1>可操作的业务表单</h1>
+            <p class="forms-demo__page-summary">五种表单构图与一条从异常发现到办理的信息流。</p>
+          </div>
+          <div class="forms-demo__local-badge"><span class="forms-demo__status-dot" aria-hidden="true"></span>本地示例 · 不连接后端</div>
+        </div>
+
+        <section class="forms-demo__view" data-view-panel="sample-receiving" aria-labelledby="sample-receiving-title">
+          <div class="forms-demo__view-heading">
+            <div><h2 id="sample-receiving-title">样品签收</h2><p>主体身份与办理字段分开，历史和附件按需查看。</p></div>
+            <span class="forms-demo__badge forms-demo__badge--blue">待本地确认</span>
+          </div>
+          <div class="forms-demo__sample-layout">
+            <section class="forms-demo__panel forms-demo__identity-panel" aria-labelledby="sample-identity-title">
+              <div class="forms-demo__panel-head"><div><h3 id="sample-identity-title">样品身份</h3></div><code>SP-2026-0048</code></div>
+              <dl class="forms-demo__detail-grid">
+                <div><dt>样品名称</dt><dd>不锈钢管材 · 316L</dd></div>
+                <div><dt>送样单位</dt><dd>华东精密制造有限公司</dd></div>
+                <div><dt>送样批次</dt><dd>LOT-316L-1028</dd></div>
+                <div><dt>到样时间</dt><dd>2026-10-28 09:42</dd></div>
+                <div><dt>检验项目</dt><dd>材质成分、尺寸公差</dd></div>
+                <div><dt>当前状态</dt><dd><span class="forms-demo__badge forms-demo__badge--amber">待签收</span></dd></div>
+              </dl>
+              <div class="forms-demo__identity-rule"><span>来源</span><strong>采购单 PO-2026-118 · 质量部</strong></div>
+            </section>
+
+            <form class="forms-demo__panel forms-demo__form-panel" id="sample-form" novalidate>
+              <div class="forms-demo__panel-head"><div><h3>签收办理</h3></div><span class="forms-demo__required-note">* 必填</span></div><div class="forms-demo__error-summary" id="sample-error-summary" role="alert" tabindex="-1" hidden></div>
+              <div class="forms-demo__field-grid">
+                <div class="forms-demo__field"><label for="sample-receiver">签收人 <span aria-hidden="true">*</span></label><input id="sample-receiver" name="receiver" class="forms-demo__control" required value="林晓梅" autocomplete="name" aria-describedby="sample-receiver-error"><p class="forms-demo__field-error" id="sample-receiver-error" role="alert"></p></div>
+                <div class="forms-demo__field"><label for="sample-location">入库位置 <span aria-hidden="true">*</span></label><select id="sample-location" name="location" class="forms-demo__control" required aria-describedby="sample-location-error"><option value="A-02-03">A-02-03 · 待检区</option><option value="A-02-04">A-02-04 · 待检区</option><option value="B-01-01">B-01-01 · 常温库</option></select><p class="forms-demo__field-error" id="sample-location-error" role="alert"></p></div>
+                <div class="forms-demo__field"><label for="sample-quantity">实收数量 <span class="forms-demo__unit">件</span> <span aria-hidden="true">*</span></label><input id="sample-quantity" name="quantity" class="forms-demo__control" type="number" min="0" step="1" required value="23" aria-describedby="sample-quantity-help sample-quantity-error"><p class="forms-demo__field-help" id="sample-quantity-help">应收 24 件 · 零值也可按实际情况保存</p><p class="forms-demo__field-error" id="sample-quantity-error" role="alert"></p></div>
+                <div class="forms-demo__field"><label for="sample-condition">外观状态 <span aria-hidden="true">*</span></label><select id="sample-condition" name="condition" class="forms-demo__control" required aria-describedby="sample-condition-error"><option value="轻微磕碰">轻微磕碰</option><option value="完好">完好</option><option value="异常待判">异常待判</option></select><p class="forms-demo__field-error" id="sample-condition-error" role="alert"></p></div>
+                <div class="forms-demo__field forms-demo__field--full"><label for="sample-note">数量差异说明</label><textarea id="sample-note" name="note" class="forms-demo__control forms-demo__textarea" rows="3" maxlength="240" aria-describedby="sample-note-help sample-note-error">外箱破损 1 件，已单独封存待复核。</textarea><div class="forms-demo__field-help-row"><span class="forms-demo__field-help" id="sample-note-help">与应收数量不一致时，填写差异原因。</span><span class="forms-demo__character-count" id="sample-note-count">0 / 240</span></div><p class="forms-demo__field-error" id="sample-note-error" role="alert"></p></div>
+              </div>
+              <div class="forms-demo__form-footer"><p class="forms-demo__save-state" id="sample-save-state" role="status" aria-live="polite"></p><div class="forms-demo__actions"><button class="forms-demo__button forms-demo__button--secondary" id="sample-print" type="button">打印签收单</button><button class="forms-demo__button forms-demo__button--primary" type="submit">保存收货记录（本地）</button></div></div>
+            </form>
+
+            <section class="forms-demo__panel forms-demo__support-panel" aria-labelledby="sample-support-title">
+              <div class="forms-demo__panel-head"><div><h3 id="sample-support-title">依据与记录</h3></div><span class="forms-demo__meta">2 项附件</span></div>
+              <div class="forms-demo__attachment-list"><div class="forms-demo__attachment"><span class="forms-demo__file-icon" aria-hidden="true">PDF</span><span><strong>送样单_PO-2026-118.pdf</strong><small>本地示例 · 送样单字段</small></span><details class="forms-demo__attachment-preview"><summary>查看示例资料</summary><p>送样单示例：样品 SP-2026-0048，批次 LOT-316L-1028，送样单位为华东精密制造有限公司。</p></details></div><div class="forms-demo__attachment"><span class="forms-demo__file-icon forms-demo__file-icon--image" aria-hidden="true">JPG</span><span><strong>外箱照片_01.jpg</strong><small>本地示例 · 差异依据</small></span><details class="forms-demo__attachment-preview"><summary>查看示例资料</summary><p>外箱照片示例说明：外箱一角有磕碰，1 件单独封存待复核；此处不读取真实文件。</p></details></div></div>
+              <details class="forms-demo__disclosure"><summary>查看历史责任</summary><ol class="forms-demo__history"><li><span>09:42</span><span><strong>周凯</strong> 创建送样记录<small>来自采购单 PO-2026-118</small></span></li><li><span>10:03</span><span><strong>林晓梅</strong> 领取待签收任务<small>质量部 · 当前办理人</small></span></li></ol></details>
+            </section>
+          </div>
+        </section>
+
+        <section class="forms-demo__view" data-view-panel="team-settings" aria-labelledby="team-settings-title" hidden>
+          <div class="forms-demo__view-heading"><div><h2 id="team-settings-title">团队设置</h2><p>短字段、即时状态和一组明确的提交动作。</p></div><span class="forms-demo__badge forms-demo__badge--green">已启用</span></div>
+          <form class="forms-demo__panel forms-demo__form-panel forms-demo__form-panel--narrow" id="team-form" novalidate>
+            <div class="forms-demo__panel-head"><div><h3>团队资料</h3></div><span class="forms-demo__meta">华东制造基地 · 8 位成员</span></div><div class="forms-demo__error-summary" id="team-error-summary" role="alert" tabindex="-1" hidden></div>
+
+            <div class="forms-demo__settings-grid">
+              <div class="forms-demo__field"><label for="team-name">团队名称 <span aria-hidden="true">*</span></label><input id="team-name" name="teamName" class="forms-demo__control" required maxlength="40" value="质量检测组" aria-describedby="team-name-error"><p class="forms-demo__field-error" id="team-name-error" role="alert"></p></div>
+              <div class="forms-demo__field"><label for="team-lead">默认负责人 <span aria-hidden="true">*</span></label><select id="team-lead" name="teamLead" class="forms-demo__control" required aria-describedby="team-lead-error"><option value="林晓梅">林晓梅 · 质检主管</option><option value="周凯">周凯 · 质检工程师</option><option value="赵文博">赵文博 · 质检工程师</option></select><p class="forms-demo__field-error" id="team-lead-error" role="alert"></p></div>
+              <div class="forms-demo__field forms-demo__field--full"><label for="team-description">工作范围</label><textarea id="team-description" name="description" class="forms-demo__control forms-demo__textarea" rows="3" maxlength="180" aria-describedby="team-description-help team-description-count">原材料来料检验、样品签收与异常复核。</textarea><div class="forms-demo__field-help-row"><span class="forms-demo__field-help" id="team-description-help">供团队成员在任务列表中识别范围。</span><span class="forms-demo__character-count" id="team-description-count">0 / 180</span></div></div>
+            </div>
+            <div class="forms-demo__setting-row"><div><strong>接收新任务提醒</strong><p>在本机示例中显示待处理数量。</p></div><label class="forms-demo__switch"><input id="team-notify" name="notify" type="checkbox" checked><span aria-hidden="true"></span><span class="forms-demo__sr-only">接收新任务提醒</span></label></div>
+            <div class="forms-demo__form-footer"><p class="forms-demo__save-state" id="team-save-state" role="status" aria-live="polite"></p><div class="forms-demo__actions"><button class="forms-demo__button forms-demo__button--secondary" id="team-restore" type="button">恢复已保存</button><button class="forms-demo__button forms-demo__button--primary" type="submit">保存设置（本地）</button></div></div>
+          </form>
+        </section>
+
+        <section class="forms-demo__view" data-view-panel="purchase-request" aria-labelledby="purchase-request-title" hidden>
+          <div class="forms-demo__view-heading"><div><h2 id="purchase-request-title">采购申请</h2><p>只有存在前后依赖的低频申请才使用步骤，返回不会丢失输入。</p></div><span class="forms-demo__badge forms-demo__badge--blue">草稿</span></div>
+          <div class="forms-demo__stepper" role="list" aria-label="采购申请步骤"><div class="forms-demo__step is-current" data-step-marker="1" role="listitem"><span>1</span><strong>申请信息</strong><small>对象与原因</small></div><div class="forms-demo__step-line" aria-hidden="true"></div><div class="forms-demo__step" data-step-marker="2" role="listitem"><span>2</span><strong>预算与明细</strong><small>金额与归属</small></div><div class="forms-demo__step-line" aria-hidden="true"></div><div class="forms-demo__step" data-step-marker="3" role="listitem"><span>3</span><strong>确认提交</strong><small>核对摘要</small></div></div>
+          <form class="forms-demo__panel forms-demo__form-panel" id="purchase-request-form" novalidate>
+            <div class="forms-demo__error-summary" id="request-error-summary" role="alert" tabindex="-1" hidden></div>
+            <div class="forms-demo__wizard-step" data-wizard-step="1"><div class="forms-demo__panel-head"><div><h3>申请信息</h3></div><span class="forms-demo__required-note">* 必填</span></div><div class="forms-demo__field-grid"><div class="forms-demo__field"><label for="request-title">申请主题 <span aria-hidden="true">*</span></label><input id="request-title" name="requestTitle" class="forms-demo__control" required maxlength="80" value="十月实验耗材补充" aria-describedby="request-title-error"><p class="forms-demo__field-error" id="request-title-error" role="alert"></p></div><div class="forms-demo__field"><label for="request-type">申请类型 <span aria-hidden="true">*</span></label><select id="request-type" name="requestType" class="forms-demo__control" required aria-describedby="request-type-error"><option value="实验耗材">实验耗材</option><option value="设备备件">设备备件</option><option value="办公用品">办公用品</option></select><p class="forms-demo__field-error" id="request-type-error" role="alert"></p></div><div class="forms-demo__field"><label for="request-department">使用部门 <span aria-hidden="true">*</span></label><select id="request-department" name="department" class="forms-demo__control" required aria-describedby="request-department-error"><option value="质量检测组">质量检测组</option><option value="材料实验室">材料实验室</option></select><p class="forms-demo__field-error" id="request-department-error" role="alert"></p></div><div class="forms-demo__field"><label for="request-needed">期望到货日 <span aria-hidden="true">*</span></label><input id="request-needed" name="neededDate" class="forms-demo__control" type="date" required value="2026-11-08" aria-describedby="request-needed-error"><p class="forms-demo__field-error" id="request-needed-error" role="alert"></p></div><div class="forms-demo__field forms-demo__field--full"><label for="request-reason">申请原因 <span aria-hidden="true">*</span></label><textarea id="request-reason" name="reason" class="forms-demo__control forms-demo__textarea" rows="4" required maxlength="300" aria-describedby="request-reason-help request-reason-error">十月来料检验批次增加，现有试剂预计在 11 月初用尽。</textarea><div class="forms-demo__field-help-row"><span class="forms-demo__field-help" id="request-reason-help">说明业务需要，不填写供应商承诺。</span><span class="forms-demo__character-count" id="request-reason-count">0 / 300</span></div><p class="forms-demo__field-error" id="request-reason-error" role="alert"></p></div></div><div class="forms-demo__wizard-actions"><span></span><button class="forms-demo__button forms-demo__button--primary" type="button" data-wizard-next="2">下一步：预算与明细 <span aria-hidden="true">→</span></button></div></div>
+            <div class="forms-demo__wizard-step" data-wizard-step="2" hidden><div class="forms-demo__panel-head"><div><h3>预算与明细</h3></div><span class="forms-demo__meta">金额单位：元</span></div><div class="forms-demo__field-grid"><div class="forms-demo__field"><label for="request-budget">预算金额 <span aria-hidden="true">*</span></label><input id="request-budget" name="budget" class="forms-demo__control" type="number" min="0" step="0.01" required value="6800" aria-describedby="request-budget-help request-budget-error"><p class="forms-demo__field-help" id="request-budget-help">含税预算上限</p><p class="forms-demo__field-error" id="request-budget-error" role="alert"></p></div><div class="forms-demo__field"><label for="request-cost-center">成本中心 <span aria-hidden="true">*</span></label><select id="request-cost-center" name="costCenter" class="forms-demo__control" required aria-describedby="request-cost-center-error"><option value="QC-2207">QC-2207 · 质量检测</option><option value="RD-1002">RD-1002 · 材料研发</option></select><p class="forms-demo__field-error" id="request-cost-center-error" role="alert"></p></div><div class="forms-demo__field forms-demo__field--full"><label for="request-items">采购明细 <span aria-hidden="true">*</span></label><input id="request-items" name="items" class="forms-demo__control" required maxlength="160" value="316L 检测试剂 4 瓶；一次性取样袋 2 包" aria-describedby="request-items-help request-items-error"><p class="forms-demo__field-help" id="request-items-help">此处仅作摘要，明细表在独立构图中展示。</p><p class="forms-demo__field-error" id="request-items-error" role="alert"></p></div></div><div class="forms-demo__wizard-actions"><button class="forms-demo__button forms-demo__button--secondary" type="button" data-wizard-back="1">← 返回申请信息</button><button class="forms-demo__button forms-demo__button--primary" type="button" data-wizard-next="3">下一步：确认提交 <span aria-hidden="true">→</span></button></div></div>
+            <div class="forms-demo__wizard-step" data-wizard-step="3" hidden><div class="forms-demo__panel-head"><div><h3>确认提交</h3></div><span class="forms-demo__badge forms-demo__badge--amber">待确认</span></div><div class="forms-demo__review-grid" id="request-review-summary"></div><div class="forms-demo__review-note">这是当前浏览器中的流程演示。确认后只保存本机草稿，不会创建采购单或发送审批。</div><div class="forms-demo__wizard-actions"><button class="forms-demo__button forms-demo__button--secondary" type="button" data-wizard-back="2">← 返回预算与明细</button><button class="forms-demo__button forms-demo__button--primary" type="submit">保存申请草稿（本地）</button></div></div>
+            <p class="forms-demo__save-state" id="request-save-state" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="forms-demo__view" data-view-panel="purchase-items" aria-labelledby="purchase-items-title" hidden>
+          <div class="forms-demo__view-heading"><div><h2 id="purchase-items-title">采购明细</h2><p>主记录给出范围，从属行负责重复编辑和可见汇总。</p></div><span class="forms-demo__badge forms-demo__badge--blue" id="items-view-count">3 行明细</span></div>
+          <section class="forms-demo__panel forms-demo__master-panel" aria-labelledby="items-panel-title"><div class="forms-demo__panel-head"><div><h3 id="items-panel-title">十月实验耗材补充</h3></div><div class="forms-demo__master-actions"><span class="forms-demo__meta" id="items-count">3 行</span><button class="forms-demo__button forms-demo__button--secondary forms-demo__button--small" id="item-add" type="button">＋ 添加明细</button></div></div><div class="forms-demo__error-summary" id="items-error-summary" role="alert" tabindex="-1" hidden></div><div class="forms-demo__master-summary"><div><span>申请部门</span><strong>质量检测组</strong></div><div><span>成本中心</span><strong>QC-2207</strong></div><div><span>预算上限</span><strong>¥ 6,800.00</strong></div><div><span>当前合计</span><strong class="forms-demo__total" id="items-total">¥ 4,760.00</strong></div></div><div class="forms-demo__table-wrap"><table class="forms-demo__items-table"><caption class="forms-demo__sr-only">采购申请明细编辑表格</caption><thead><tr><th scope="col">物料名称</th><th scope="col">规格</th><th scope="col">数量</th><th scope="col">含税单价</th><th scope="col">金额</th><th scope="col"><span class="forms-demo__sr-only">操作</span></th></tr></thead><tbody id="items-body"></tbody></table></div><div class="forms-demo__master-footer"><p class="forms-demo__save-state" id="items-save-state" role="status" aria-live="polite"></p><div class="forms-demo__actions"><button class="forms-demo__button forms-demo__button--secondary" id="items-recalculate" type="button">重新计算</button><button class="forms-demo__button forms-demo__button--primary" id="items-save" type="button">保存明细（本地）</button></div></div></section>
+        </section>
+
+        <section class="forms-demo__view" data-view-panel="object-drawer" aria-labelledby="object-drawer-title" hidden>
+          <div class="forms-demo__view-heading"><div><h2 id="object-drawer-title">对象编辑</h2><p>保留背景上下文，只在当前对象范围内修改一个设置。</p></div><span class="forms-demo__badge forms-demo__badge--green">背景可见</span></div>
+          <section class="forms-demo__panel forms-demo__object-panel" aria-labelledby="object-summary-title"><div class="forms-demo__panel-head"><div><h3 id="object-summary-title">样品自动分配规则</h3></div><span class="forms-demo__badge forms-demo__badge--green" id="drawer-current-enabled">启用</span></div><div class="forms-demo__object-summary"><div><span>适用对象</span><strong>待检样品 · 常规材质</strong></div><div><span>最近更新</span><strong>林晓梅 · 2026-10-27</strong></div><div><span>分配位置</span><strong id="drawer-current-location">A-02-03</strong></div></div><div class="forms-demo__object-action"><div><strong>修改对象规则</strong><p>仅改变当前规则，不影响已入库样品。</p></div><button class="forms-demo__button forms-demo__button--primary" id="drawer-open" type="button">打开编辑抽屉</button></div><p class="forms-demo__save-state" id="drawer-page-state" role="status" aria-live="polite"></p></section>
+        </section>
+
+        <section class="forms-demo__view" data-view-panel="task-inbox" aria-labelledby="task-inbox-title" hidden>
+          <div class="forms-demo__view-heading"><div><h2 id="task-inbox-title">任务收件箱</h2><p>先识别阻塞，再核对依据，最后进入办理。</p></div><span class="forms-demo__badge">10月28日 · 本地示例</span></div>
+          <div class="forms-demo__inbox-layout">
+            <section class="forms-demo__panel forms-demo__inbox-list" aria-labelledby="inbox-list-title">
+              <div class="forms-demo__panel-head"><h3 id="inbox-list-title">待我处理 <span id="inbox-count" class="forms-demo__meta">3 项</span></h3></div>
+              <label class="forms-demo__sr-only" for="inbox-search">搜索任务</label><input class="forms-demo__control" id="inbox-search" type="search" placeholder="搜索样品或任务编号">
+              <div class="forms-demo__inbox-filter"><label for="inbox-filter">显示范围</label><select id="inbox-filter" class="forms-demo__control forms-demo__control--small"><option value="all">全部任务</option><option value="blocked">有阻塞</option></select></div>
+              <div id="inbox-records" class="forms-demo__inbox-records" aria-label="任务列表"></div><p id="inbox-empty" class="forms-demo__field-help" role="status" hidden>没有匹配任务，请调整关键词或显示范围。</p>
+            </section>
+            <section class="forms-demo__panel forms-demo__inbox-detail" aria-labelledby="inbox-object-title">
+              <div class="forms-demo__panel-head"><div><span class="forms-demo__meta" id="inbox-id"></span><h3 id="inbox-object-title"></h3></div><span id="inbox-status" class="forms-demo__badge forms-demo__badge--amber"></span></div>
+              <p class="forms-demo__inbox-decision" id="inbox-decision"></p>
+              <dl class="forms-demo__detail-grid"><div><dt>责任人</dt><dd id="inbox-owner"></dd></div><div><dt>下一步</dt><dd id="inbox-next"></dd></div></dl>
+              <div class="forms-demo__inbox-evidence"><h4>当前依据</h4><p id="inbox-evidence"></p><p class="forms-demo__field-help" id="inbox-source"></p></div>
+              <details class="forms-demo__inbox-history"><summary>查看处理轨迹</summary><ol class="forms-demo__history" id="inbox-history"></ol></details>
+              <div class="forms-demo__form-footer"><span class="forms-demo__meta">任务筛选仅影响当前视图</span><a class="forms-demo__button forms-demo__button--primary" id="inbox-handoff" href="#sample-receiving">进入签收办理 <span aria-hidden="true">→</span></a></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="forms-demo__drawer" id="object-drawer-dialog" aria-labelledby="drawer-dialog-title">
+      <form class="forms-demo__drawer-form" id="drawer-form" method="dialog" novalidate>
+        <div class="forms-demo__drawer-head"><div><h2 id="drawer-dialog-title">样品自动分配规则</h2></div><button class="forms-demo__icon-button" id="drawer-close" type="button" aria-label="关闭编辑抽屉"><span aria-hidden="true">×</span></button></div>
+        <div class="forms-demo__drawer-body"><div class="forms-demo__drawer-context"><span>规则编号</span><strong>RULE-0238</strong><span class="forms-demo__badge forms-demo__badge--green">启用</span></div><div class="forms-demo__error-summary" id="drawer-error-summary" role="alert" tabindex="-1" hidden></div><div class="forms-demo__field"><label for="drawer-location">默认入库位置 <span aria-hidden="true">*</span></label><select id="drawer-location" name="drawerLocation" class="forms-demo__control" required aria-describedby="drawer-location-error"><option value="" disabled>请选择入库位置</option><option value="A-02-03" selected>A-02-03 · 待检区</option><option value="A-02-04">A-02-04 · 待检区</option><option value="B-01-01">B-01-01 · 常温库</option></select><p class="forms-demo__field-error" id="drawer-location-error" role="alert"></p></div><div class="forms-demo__field"><label for="drawer-condition">匹配条件 <span aria-hidden="true">*</span></label><select id="drawer-condition" name="drawerCondition" class="forms-demo__control" required aria-describedby="drawer-condition-error"><option value="" disabled>请选择匹配条件</option><option value="常规材质" selected>常规材质</option><option value="易损材质">易损材质</option><option value="冷藏样品">冷藏样品</option></select><p class="forms-demo__field-error" id="drawer-condition-error" role="alert"></p></div><div class="forms-demo__setting-row"><div><strong>自动启用</strong><p>新样品进入待检区时应用此规则。</p></div><label class="forms-demo__switch"><input id="drawer-enabled" name="drawerEnabled" type="checkbox" checked><span aria-hidden="true"> </span><span class="forms-demo__sr-only">自动启用</span></label></div><p class="forms-demo__save-state" id="drawer-save-state" role="status" aria-live="polite"></p></div>
+        <div class="forms-demo__drawer-actions"><button class="forms-demo__button forms-demo__button--secondary" id="drawer-cancel" type="button">取消</button><button class="forms-demo__button forms-demo__button--primary" type="submit">保存规则（本地）</button></div>
+      </form>
+    </dialog>
+
+    <script src="forms.js?v=1.3.0" defer></script>
+  </body>
+</html>

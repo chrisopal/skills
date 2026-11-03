@@ -18,6 +18,12 @@
       "status": "Not tested",
       "evidence": [],
       "reason": "Not executed"
+    },
+    "ux": {
+      "status": "Not tested",
+      "method": "heuristic",
+      "evidence": [],
+      "reason": "Journey not walked; a visual conclusion does not establish task completion"
     }
   },
   "coverage": [
@@ -45,5 +51,26 @@
       "evidence": []
     }
   ],
-  "exceptions": []
+  "exceptions": [],
+  "journeyCoverage": [
+    {
+      "journey": "request-review",
+      "branch": "normal",
+      "step": "submit",
+      "status": "Not tested",
+      "reason": "Not executed",
+      "evidence": [],
+      "cue": null,
+      "action": null,
+      "result": null,
+      "friction": null
+    }
+  ],
+  "userStudy": {
+    "status": "Not tested",
+    "reason": "No target-user observation",
+    "participants": 0,
+    "evidence": [],
+    "metrics": []
+  }
 }

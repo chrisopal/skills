@@ -27,6 +27,8 @@ BRAND_KEYS = {
     "on-action",
     "selected-bg",
     "focus-ring",
+    "action-end", "hx-nav-start", "hx-nav-end", "hx-brand-start", "hx-brand-end",
+    "hx-nav-active-start", "hx-nav-active-end",
 }
 STATUS_KEYS = {"success", "warning", "danger", "danger-bg", "danger-border"}
 SERIES_PREFIX = "data-series-"
@@ -36,6 +38,7 @@ DENSITY_KEYS = {
     "density-control-height",
     "density-cell-padding-block",
     "density-cell-padding-inline",
+    "table-row-height",
 }
 REF_PATTERN = re.compile(r"^@([A-Za-z0-9_.-]+)$")
 CSS_REF_PATTERN = re.compile(r"var\(--ui-([A-Za-z0-9_-]+)\)")
@@ -52,7 +55,14 @@ class TokenConfigError(ValueError):
 
 
 def load_tokens(path: Path | str = ROOT / "assets" / "tokens.json") -> dict[str, Any]:
-    return json.loads(Path(path).read_text(encoding="utf-8"))
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise TokenConfigError(f"duplicate token key: {key}")
+            result[key] = value
+        return result
+    return json.loads(Path(path).read_text(encoding="utf-8"), object_pairs_hook=unique_object)
 
 
 def _profile_names(tokens: Mapping[str, Any]) -> list[str]:
@@ -79,6 +89,8 @@ def _all_token_keys(tokens: Mapping[str, Any]) -> set[str]:
         keys.update(profile.get("common", {}))
         for values in profile.get("modes", {}).values():
             keys.update(values)
+        for values in profile.get("densities", {}).values():
+            keys.update(values)
     for brand in tokens.get("brands", {}).values():
         keys.update(brand.get("tokens", {}))
         for values in brand.get("modes", {}).values():
@@ -97,6 +109,9 @@ def _iter_values(tokens: Mapping[str, Any]) -> Iterable[tuple[str, Any]]:
                     for key, value in definition.get("common", {}).items())
         for theme, values in definition.get("modes", {}).items():
             yield from ((f"profiles.{profile}.modes.{theme}.{key}", value)
+                        for key, value in values.items())
+        for density, values in definition.get("densities", {}).items():
+            yield from ((f"profiles.{profile}.densities.{density}.{key}", value)
                         for key, value in values.items())
     for brand, definition in tokens.get("brands", {}).items():
         yield from ((f"brands.{brand}.tokens.{key}", value)
@@ -285,6 +300,13 @@ def validate_ownership(tokens: Mapping[str, Any]) -> None:
                 f"densities.{density} references undefined common tokens: {', '.join(sorted(missing))}"
             )
     for profile, definition in tokens.get("profiles", {}).items():
+        for density, values in definition.get("densities", {}).items():
+            if density not in tokens.get("densities", {}):
+                raise TokenConfigError(f"profiles.{profile}.densities: unknown density {density}")
+            unknown = set(values) - density_keys
+            missing = set(values) - set(tokens.get("common", {}))
+            if unknown or missing:
+                raise TokenConfigError(f"profiles.{profile}.densities.{density}: non-density or undefined tokens: {sorted(unknown | missing)}")
         fallback = definition.get("fallback")
         if fallback and fallback not in tokens.get("profiles", {}):
             raise TokenConfigError(f"profiles.{profile}.fallback is unknown: {fallback}")
@@ -374,6 +396,51 @@ def validate_tokens(tokens: Mapping[str, Any]) -> None:
     validate_references(tokens)
     validate_ownership(tokens)
     validate_semantics(tokens)
+    validate_layer_boundaries(tokens)
+
+
+COLOR_VALUE = re.compile(r"(?:#[0-9a-fA-F]{6}(?:[0-9a-fA-F]{2})?|rgba\(\s*\d+(?:\s*,\s*\d+){2}\s*,\s*(?:0?\.\d+|[01])\s*\))")
+
+
+def _is_color(value: Any) -> bool:
+    if not isinstance(value, str) or not COLOR_VALUE.fullmatch(value):
+        return False
+    if value.startswith("rgba"):
+        return all(float(channel) <= 255 for channel in value[5:-1].split(",")[:3])
+    return True
+
+
+def validate_layer_boundaries(tokens: Mapping[str, Any]) -> None:
+    """Enforce the opt-in three-layer contract without rewriting frozen v1."""
+    contract = tokens.get("layer-contract")
+    if not contract:
+        return
+    profile = tokens.get("profiles", {}).get(contract.get("profile"))
+    if not profile:
+        raise TokenConfigError("layer-contract.profile is unknown")
+    # The v1 focus-ring is a public composite. Preserve its 2px/solid geometry
+    # while allowing its color (or the derived compatibility recipe) to vary.
+    focus_recipe = "var(--ui-border-width-strong) solid var(--ui-action-text)"
+    for brand, definition in tokens.get("brands", {}).items():
+        for palette in [definition.get("tokens", {}), *definition.get("modes", {}).values()]:
+            for key, value in palette.items():
+                if key == "focus-ring":
+                    if value != focus_recipe and not re.fullmatch(r"2px solid #[0-9a-fA-F]{6}", str(value)):
+                        raise TokenConfigError(f"brand cannot change focus geometry: {brand}.{key}")
+                elif not _is_color(value):
+                    raise TokenConfigError(f"brand token must be color-only: {brand}.{key}")
+    for key, value in profile.get("common", {}).items():
+        if re.search(r"#[0-9a-fA-F]{3,8}\b|rgba?\(", str(value)):
+            raise TokenConfigError(f"framework token contains literal color: {key}")
+    for theme, palette in profile.get("modes", {}).items():
+        for key, value in palette.items():
+            if not _is_color(value):
+                raise TokenConfigError(f"theme token must be color-only: {theme}.{key}")
+            if key in profile.get("common", {}):
+                raise TokenConfigError(f"theme overrides framework token: {theme}.{key}")
+    for key in ("row-height", "row-data-height", "row-data-height-compact", "hx-chart-donut-size"):
+        if key in profile.get("common", {}):
+            raise TokenConfigError(f"competing geometry token: {key}")
 
 
 def _luminance(color: str) -> float:
@@ -390,26 +457,83 @@ def contrast_ratio(foreground: str, background: str) -> float:
     return (high + 0.05) / (low + 0.05)
 
 
-def validate_contrast(tokens: Mapping[str, Any]) -> None:
-    """Check declared foreground/background pairs for every supported axis tuple."""
+def _contrast_exception(
+    tokens: Mapping[str, Any], profile: str, theme: str,
+    foreground: str, background: str,
+) -> Mapping[str, Any] | None:
+    for exception in tokens.get("layer-contract", {}).get("contrast-exceptions", []):
+        if (exception.get("profile") == profile and exception.get("theme") == theme
+                and exception.get("foreground") == foreground
+                and exception.get("background") == background):
+            return exception
+    return None
+
+
+def _contrast_warning(
+    brand: str, profile: str, theme: str, density: str,
+    foreground: str, background: str, minimum: float, actual: float,
+    exception: Mapping[str, Any],
+) -> dict[str, Any]:
+    return {
+        "brand": brand,
+        "profile": profile,
+        "theme": theme,
+        "density": density,
+        "foreground": foreground,
+        "background": background,
+        "actual": round(actual, 4),
+        "minimum": minimum,
+        "reason": exception["reason"],
+    }
+
+
+def validate_contrast(tokens: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Check pairs, allowing only exact source-palette exceptions and report them."""
     pairs = tokens.get("contrast-pairs", [])
+    warnings = []
     for brand, profile, theme, density in itertools.product(
         _brand_names(tokens), _profile_names(tokens), _theme_names(tokens), _density_names(tokens)
     ):
         result = resolve_config(tokens, brand=brand, profile=profile, theme=theme, density=density)
         values = result["values"]
-        for pair in pairs:
+        effective_pairs = list(pairs)
+        if result["effective"]["profile"] == tokens.get("layer-contract", {}).get("profile"):
+            effective_pairs += tokens["layer-contract"].get("contrast-pairs", [])
+        for pair in effective_pairs:
             if len(pair) != 3:
                 raise TokenConfigError(f"invalid contrast pair: {pair!r}")
             foreground, background, minimum = pair
             if foreground not in values or background not in values:
                 raise TokenConfigError(f"contrast pair references missing token: {pair!r}")
             actual = contrast_ratio(values[foreground], values[background])
+            exception = _contrast_exception(
+                tokens, result["effective"]["profile"], result["effective"]["theme"],
+                foreground, background,
+            )
+            if exception:
+                if (values[foreground] != exception.get("foregroundValue")
+                        or values[background] != exception.get("backgroundValue")):
+                    raise TokenConfigError(
+                        "contrast exception no longer matches approved source palette for "
+                        f"{result['effective']['profile']}/{result['effective']['theme']}/"
+                        f"{foreground} on {background}"
+                    )
             if actual < float(minimum):
+                if exception and actual + 0.0001 >= float(exception["approvedRatio"]):
+                    warnings.append(_contrast_warning(
+                        brand, profile, theme, density, foreground, background,
+                        float(minimum), actual, exception,
+                    ))
+                    continue
                 raise TokenConfigError(
                     f"contrast {actual:.2f} < {minimum} for {brand}/{profile}/{theme}/{density}: "
                     f"{foreground} on {background}"
                 )
+    unique = {}
+    for warning in warnings:
+        key = tuple(warning[key] for key in ("profile", "theme", "foreground", "background"))
+        unique[key] = warning
+    return list(unique.values())
 
 
 def _fallback_name(tokens: Mapping[str, Any], axis: str, requested: str | None) -> tuple[str, str | None]:
@@ -560,6 +684,7 @@ def resolve_config(
         values.update(brand_definition.get("tokens", {}))
         values.update(brand_definition.get("modes", {}).get(effective["theme"], {}))
     values.update(tokens.get("densities", {}).get(effective["density"], {}))
+    values.update(profile_definition.get("densities", {}).get(effective["density"], {}))
 
     # Resolve aliases and CSS var references against the complete effective map.
     raw_values = values
@@ -607,6 +732,9 @@ def build_runtime_config(tokens: Mapping[str, Any]) -> dict[str, Any]:
             "semantics": resolved["semantics"],
             "components": resolved["components"],
             "layout": resolved["layout"],
+            "contrastExceptions": copy.deepcopy(
+                tokens.get("layer-contract", {}).get("contrast-exceptions", [])
+            ),
         })
     profile_metadata = {}
     for name, definition in tokens.get("profiles", {}).items():
@@ -629,6 +757,9 @@ def build_runtime_config(tokens: Mapping[str, Any]) -> dict[str, Any]:
             "semantics": default_resolution["semantics"],
             "components": default_resolution["components"],
             "layout": default_resolution["layout"],
+        "contrastExceptions": copy.deepcopy(
+            tokens.get("layer-contract", {}).get("contrast-exceptions", [])
+        ),
         },
         "supported": {
             "brands": {

@@ -1,3 +1,10 @@
+## 2026-11-03 — Publish the installed Enterprise UI Design v1.5
+
+- Scope: synchronize `enterprise-ui-design/` from the installed v1.5 while retaining repository detail-layout and table-spacing guidance. Include Huixin tokens, reusable icons/components, simulated forms/workbench fixtures, journey evidence rules and validators. Unrelated skills and local artifacts remain outside the commit.
+- Repair: retain native closed-dialog visibility by applying grid layout only to open dialogs; restore mobile-menu focus after the resized navigation is rendered; make two companion-skill references optional. Rendered Huixin contrast checks honor only the matching declared source-color exceptions and report composited ratios; no palette recoloring or generic-profile relaxation.
+- Verification: Skill Creator validation, local Markdown paths, Python/JSON/JavaScript syntax, generated-token reproducibility and 65 unit tests pass. Chrome156 simulated Huixin checks:18,476 assertions,178 provider assertions,108 matrix records,50 controls; forms:158 assertions and24 matrix records. Evidence stays local under `/tmp/enterprise-ui-publish-20261103-*`.
+- Publication: this record accompanies the scoped Lore release commit on `codex/enterprise-dtx-skill-suite-runtime`; verify the remote head after push. The two preceding local commits contain the v1.3 system and commission-timeline guidance and are included in the branch push. No merge to main, LIMS source change, host/customer E2E or accessibility certification is claimed; approved Huixin contrast shortfalls remain explicitly reported.
+
 ## 2026-10-21 — Decouple enterprise brands and complete the v1.3 reference system
 
 - Scope: `enterprise-ui-design/` plus the v1.3 plan/validation records. Reuse v1.2 business guides and fixtures; preserve frozen v1 values and unrelated WIP. Add independent blue/teal brands, Enterprise/Precision/Analytics profiles, generated effective configuration, one runtime adapter, opt-in recipes and 8 simulated surfaces / 33 states.

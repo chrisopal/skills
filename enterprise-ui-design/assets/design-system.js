@@ -20,6 +20,7 @@
     var combination = data.combinations.find(function (item) { return axes.every(function (axis) { return item.requested[axis] === normalized[axis]; }); });
     return { requested: normalized, effective: combination.effective, values: combination.values,
       components: combination.components, semantics: combination.semantics, layout: combination.layout,
+      contrastExceptions: combination.contrastExceptions || [],
       warnings: warnings.concat(combination.fallbacks) };
   }
   function transfer(target, config) {

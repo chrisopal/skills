@@ -1,5 +1,5 @@
 interface:
   display_name: "Enterprise UI Design"
-  short_description: "企业全站 UI 规划、品牌风格切换与分层审查"
+  short_description: "企业全站 UI 规划、逐流程 UX 易用性与异常恢复审查"
   brand_color: "#1677FF"
-  default_prompt: "Use $enterprise-ui-design to plan and implement this frontend with independent brand, visual profile, theme and density across the approved surface inventory."
+  default_prompt: "Use $enterprise-ui-design to plan and implement this frontend with independent brand, visual profile, theme and density across the approved surface inventory, and review each scoped user journey for usability, recovery and handoff evidence."

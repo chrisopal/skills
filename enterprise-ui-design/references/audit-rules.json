@@ -84,6 +84,60 @@
       "method": "real interaction with unsubmitted form",
       "evidence": "before/after values and active element",
       "exception": "Business structural change separately decided"
+    },
+    {
+      "id": "UX-01",
+      "severity": "P1",
+      "applies": "approved journey scope",
+      "expected": "Every required main/recovery/handoff step has separate observed cue, action, result and evidence; applicability decided before execution",
+      "method": "independent inventory reconciliation + task walkthrough",
+      "evidence": "scope manifest + per-step observations",
+      "exception": "Named narrow scope; predeclared recovery/handoff N/A with reason"
+    },
+    {
+      "id": "UX-02",
+      "severity": "P2",
+      "applies": "task operating burden",
+      "expected": "Previously supplied information is reused where the contract permits; necessary decisions remain clear without needless recall or backtracking",
+      "method": "observe relevant novice/frequent-user task; inspect repeated entry and navigation",
+      "evidence": "specific repeated actions and their task impact; real measurements only when available",
+      "exception": "Required reconfirmation or professional decision with business rationale"
+    },
+    {
+      "id": "UX-03",
+      "severity": "P1",
+      "applies": "interrupted or failed work",
+      "expected": "Draft, object and return context follow the save contract; recovery preserves work and resumes at an explicit point",
+      "method": "interrupt, leave/return and trigger applicable partial failures",
+      "evidence": "actual before/after values, failed items, retry/resume result",
+      "exception": "Read-only work with no mutable draft; recovery applicability documented"
+    },
+    {
+      "id": "UX-04",
+      "severity": "P1",
+      "applies": "cross-role handoff",
+      "expected": "Receiver finds the same object and current state with permitted next action and necessary context",
+      "method": "walk both roles through handoff and relevant return branch",
+      "evidence": "sender result, receiver entry/object/state and role-specific actions",
+      "exception": "Single-role task with no handoff, predeclared with reason"
+    },
+    {
+      "id": "UX-05",
+      "severity": "P1",
+      "applies": "mutation with unknown result",
+      "expected": "Reconcile the outcome through an existing contract before allowing an unsafe repeat mutation",
+      "method": "inspect timeout, delayed result and supported outcome/retry path",
+      "evidence": "outcome readback or explicit unresolved blocker; no invented retry API",
+      "exception": "Confirmed idempotent retry supported and verified by the host contract"
+    },
+    {
+      "id": "UX-06",
+      "severity": "P1",
+      "applies": "UX conclusions and user measurement",
+      "expected": "Separate heuristic/simulation/runtime review from actual target-user observations; retain measurement definition, sample and evidence",
+      "method": "review observation provenance, unknowns and metrics",
+      "evidence": "independent UX verdict; user study remains Not tested without observed participants",
+      "exception": "No requirement to recruit users for a heuristic-only scope; limit the claim"
     }
   ]
 }

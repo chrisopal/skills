@@ -5,7 +5,7 @@ description: Create, upgrade, or audit enterprise admin and workbench frontends.
 
 # Enterprise UI Design
 
-v1.5 — incremental extension of v1.4; preserve the frozen public v1 token contract.
+v1.9 — unified detail composition and meaningful traceability; preserve the frozen public v1 token contract.
 
 The v1.5 Huixin update incorporates the supplied Huixin Glass UI source palette and
 implementation-consistency rules. It is opt-in to `profile: 'huixin'` and the
@@ -57,7 +57,7 @@ For business-detail reading or empty-state layout, read [forms and feedback](ref
 
 For sidebar/menu icon work, read the [navigation icon rules](references/navigation-and-task-surfaces.md#导航图标专项). Inventory labels, routes, business meanings and actual glyphs across the full menu, including permission-dependent items; justify semantic reuse rather than enforcing arbitrary uniqueness.
 
-For any detail layout, result-first review, or whole-site detail migration, also apply [the detail layout system](references/detail-layout-system.md): inventory all entry containers, choose A–E variants, preserve source/permission invariants and complete the before/change/after ledger.
+For any detail layout, result-first review, or whole-site detail migration, apply [the detail layout system](references/detail-layout-system.md): choose the object, record, task or document composition, keep optional provenance last, and verify affected entry containers against the detail ledger.
 
 For defect-driven design involving identity labels, configurable forms, action eligibility, query/export consistency or detail navigation, read [Feishu-derived design contracts](references/feishu-lessons.md). Apply only the relevant EUI-F rules in the Blueprint; retain their project boundaries and separate engineering evidence from human acceptance.
 

@@ -12,7 +12,7 @@ Return a keep / adapt / retire map:
 
 - **Keep:** behavior, business IA, brand assets, mature components, professional work surfaces, and intentional exceptions.
 - **Adapt:** theme tokens, component-library provider, shell, page hierarchy, shared patterns, portal host, focus and responsive behavior.
-- **Retire:** conflicting palette roles, routine gradients/glass/glow, oversized radii/shadows, card filler, decorative motion, and inaccessible hidden UI.
+- **Retire:** conflicting palette roles, routine gradients/glass/glow in generic Profiles, oversized radii/shadows, card filler, decorative motion, and inaccessible hidden UI. If the selected Profile is Huixin, retain only its declared scoped material recipes and still retire any unapproved decorative treatment.
 
 For spatial updates, read [spatial-system.md](spatial-system.md). Trace actual shell → page → section → component padding before edits, including component-library defaults. Record which layer owns each inset, which key lines align outer boxes versus text, and how content width changes with navigation/panels. Keep existing spacing tokens working; adopt the new semantic contract one page family at a time rather than globally resetting margins or padding.
 

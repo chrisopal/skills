@@ -5,7 +5,11 @@ description: Create, upgrade, or audit enterprise admin and workbench frontends.
 
 # Enterprise UI Design
 
-v1.9 — unified detail composition and meaningful traceability; preserve the frozen public v1 token contract.
+v1.9.1 — unified detail composition, meaningful traceability and explicit rule precedence; preserve the frozen public v1 token contract.
+
+This update clarifies fluid layouts, dashboard reading order, state-preserving Tabs,
+chart semantics and shared-component audit scope through the existing references;
+it adds no tokens or universal geometry/material recipes.
 
 The v1.5 Huixin update incorporates the supplied Huixin Glass UI source palette and
 implementation-consistency rules. It is opt-in to `profile: 'huixin'` and the
@@ -13,6 +17,8 @@ implementation-consistency rules. It is opt-in to `profile: 'huixin'` and the
 unchanged. The single `assets/tokens.json` plus generator remains the authored source.
 
 Build from product truth and apply one visual grammar. Do not invent alternatives unless requested.
+
+When guidance overlaps, use [the precedence and scope contract](references/precedence-and-scope.md): host business/accessibility/component contracts and the named project Blueprint take priority, then an explicitly selected Profile, then generic references. `assets/tokens.json` remains the only authored token source; fixtures and project exceptions are scoped evidence, not universal recipes.
 
 ## Route the request
 
@@ -26,7 +32,7 @@ If audit and implementation are both requested, capture the baseline, then fix i
 
 Always read [references/style-standard.md](references/style-standard.md). Before completion, apply [references/checklist.md](references/checklist.md). Use [assets/tokens.json](assets/tokens.json) as token truth and [assets/tokens.css](assets/tokens.css) only as a starter.
 
-For Huixin v1.5 geometry and palette updates, also apply the HX-P01–HX-P12 registry
+For Huixin v1.6 geometry and palette updates, also apply the HX-P01–HX-P12 registry
 in [references/huixin-components.md](references/huixin-components.md): record computed
 style, winning source, browser zoom, presentation scale and devicePixelRatio separately.
 The query wrapper/input uses a 256px baseline with a 320px cap; selects use 160px and
@@ -53,11 +59,11 @@ For form design or an unprofessional-looking input page, read the [form composit
 
 For modern enterprise SaaS interaction, task inboxes, summary-to-evidence reading or personal/shared view behavior, read [SaaS experience patterns](references/saas-experience-patterns.md). Apply source-backed task hierarchy and progressive disclosure through the host contract, not decorative trends. Record the applicable SAAS checks with the existing journey review; the [task inbox reference](assets/reference-forms/index.html#task-inbox) is local fixture data.
 
+For any detail layout, result-first review, or whole-site detail migration, apply [the detail layout system](references/detail-layout-system.md): choose the object, record, task or document composition, keep optional provenance last, and verify affected entry containers against the detail ledger.
+
 For business-detail reading or empty-state layout, read [forms and feedback](references/forms-and-feedback.md#只读详情与空状态构图) with the spatial contract. Use semantic subject/task groups, visible label/value relationships and responsive read-only fields; measure the owned empty region and block insets instead of accepting a text pile or a border-hugging message. Preserve tables, history timelines and specialist editors where their tasks require them.
 
 For sidebar/menu icon work, read the [navigation icon rules](references/navigation-and-task-surfaces.md#导航图标专项). Inventory labels, routes, business meanings and actual glyphs across the full menu, including permission-dependent items; justify semantic reuse rather than enforcing arbitrary uniqueness.
-
-For any detail layout, result-first review, or whole-site detail migration, apply [the detail layout system](references/detail-layout-system.md): choose the object, record, task or document composition, keep optional provenance last, and verify affected entry containers against the detail ledger.
 
 For defect-driven design involving identity labels, configurable forms, action eligibility, query/export consistency or detail navigation, read [Feishu-derived design contracts](references/feishu-lessons.md). Apply only the relevant EUI-F rules in the Blueprint; retain their project boundaries and separate engineering evidence from human acceptance.
 

@@ -86,6 +86,33 @@
       "exception": "Business structural change separately decided"
     },
     {
+      "id": "SYS-09",
+      "severity": "P1",
+      "applies": "shared rows, master-detail surfaces, or collapsible groups",
+      "expected": "Sibling surfaces share a content start line; each gap/inset has one owner; collapsed groups size to visible content",
+      "method": "computed styles + bounding boxes before/after collapse and at actual container widths",
+      "evidence": "row/surface start coordinates, owner map, collapsed/expanded heights, and scroll-owner proof",
+      "exception": "Named intentional offset or fixed specialist workspace with scope and reason"
+    },
+    {
+      "id": "SYS-10",
+      "severity": "P2",
+      "applies": "CSS Grid/Flex layout anomaly",
+      "expected": "Stretch, implicit minimums, flex-basis, default margins, and duplicate gaps are understood before applying a local fix",
+      "method": "computed style inspection and container-width reflow check",
+      "evidence": "winning source plus actual container width; no global reset or arbitrary negative spacing",
+      "exception": "Host component contract requires a documented scoped override"
+    },
+    {
+      "id": "SYS-11",
+      "severity": "P2",
+      "applies": "business identity display",
+      "expected": "Readable business identity leads; internal IDs, permission codes, and audit identifiers remain clearly labeled and available as secondary detail",
+      "method": "populated list/detail/search walkthrough with long and duplicate names",
+      "evidence": "visible label/value relationship and secondary identifier access",
+      "exception": "Technical console explicitly scoped for identifier-first work"
+    },
+    {
       "id": "UX-01",
       "severity": "P1",
       "applies": "approved journey scope",

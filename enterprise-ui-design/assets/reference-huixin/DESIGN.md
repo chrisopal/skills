@@ -2,7 +2,7 @@
 
 ## Publication regression repair · 2026-11-03
 
-- Apply Enterprise UI Design v1.5 Upgrade, `style-standard.md` and `huixin-components.md` to the existing simulated dialogs.
+- Apply Enterprise UI Design v1.9.1 Upgrade, `style-standard.md` and `huixin-components.md` to the existing simulated dialogs.
 - Native dialog visibility belongs to its `open` state. Apply the grid layout only while open; closed mobile navigation and confirmation dialogs must leave the visual and keyboard flow.
 - Preserve the declared dialog geometry, theme inheritance, body scrolling and return focus. Verify initial closed state, close/cancel, simulated failure/retry, Escape and mobile navigation with `tests/run-huixin-browser.cjs`.
 

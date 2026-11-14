@@ -8,6 +8,8 @@
 
 本 Skill 的 `assets/tokens.json` 是机器可读真值，`assets/tokens.css` 是框架无关变量起点；实现时按目标项目的主题系统映射，不能盲目覆盖全局样式。
 
+规则发生重叠时，按[规则优先级与适用范围](precedence-and-scope.md)处理。本文的数字是通用起点；显式 Profile、项目 Blueprint 和宿主组件契约只在其声明范围内覆盖，不形成新的全局配方。
+
 `tokens.json` 保留 v1 的公共值与主题值，并以新增角色 Token、Profile 和状态语义扩展。有效配置按 Foundation → Theme → 受支持 Profile → 显式 Brand → Density 解析；别名与组件值在有效配置上解析，见 [配置契约](design-system-contract.md)。Enterprise 支持浅/深色并默认回退；Analytics 仅支持深色，浅色选择显式回退 Enterprise。运行时将 `data-ui-profile` 与 `data-theme`、`data-density` 一起传给 portal/Teleport 根节点，避免浮层混入另一套主题。
 
 显式选择 Huixin Profile 时，按[框架](huixin-framework.md)、[组件](huixin-components.md)、[颜色主题](huixin-themes.md)三层采用；本页及字体/空间专项中的通用数值是默认值，Huixin 只在声明范围覆盖。正文14px、业务行为、语义配对、焦点与响应式验收仍适用。Huixin 的受控玻璃/渐变不扩展为其它 Profile 的规则。

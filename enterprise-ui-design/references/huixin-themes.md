@@ -1,4 +1,4 @@
-# Huixin · 独立颜色主题层（v1.5）
+# Huixin · 独立颜色主题层（v1.6）
 
 仅在Huixin采用或换色任务中读取。配合[框架](huixin-framework.md)、[组件](huixin-components.md)和[运行时契约](design-system-contract.md)使用。三层共享一个 `assets/tokens.json`；不复制来源包的theme.tokens.json、独立导出脚本或`data-hx-theme`运行时。
 
@@ -20,7 +20,7 @@ EnterpriseDesign.apply({ brand: 'huixin', theme: 'light' });
 
 已有 `data-ui-profile`、`data-ui-brand`、`data-theme`、`data-density`由同一个适配器更新。不同Profile可采用同一品牌；不要把Huixin颜色扩展当作替换全站默认的授权。公共focus-ring兼容值固定2px/solid；新品牌使用引用固定几何的配方，不得以换色扩大焦点环。新增颜色只能经Token验证/生成进入配置，不把任意hex直接写到页面或运行时。
 
-v1.5采用供应包的Huixin颜色字面量，不把它们暗中替换成更深的可访问版本：浅色`border-control/#C3DAE6`、`border-strong/#8CB6C9`、`text-secondary/#637B88`，深色控件边`#406E86`，Huixin品牌`action-end/#007F96`。这些颜色只属于`profiles.huixin.modes`与`brands.huixin`；其它Profiles/brands和冻结v1 Foundation不变。
+v1.6继续采用供应包的Huixin颜色字面量，不把它们暗中替换成更深的可访问版本：浅色`border-control/#C3DAE6`、`border-strong/#8CB6C9`、`text-secondary/#637B88`，深色控件边`#406E86`，Huixin品牌`action-end/#007F96`。这些颜色只属于`profiles.huixin.modes`与`brands.huixin`；其它Profiles/brands和冻结v1 Foundation不变。
 
 ## 语义角色与材质
 

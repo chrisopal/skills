@@ -16,12 +16,12 @@
 | Status tag | 最小24px、字12px、圆角6px | 文字/图形+颜色，不仅靠色 |
 | Dialog | 圆角18px；header 20×24px、body24px、footer16×24px | 仅body滚动；字段组gap20px、label gap8px；标题/正文/操作分区 |
 | Popover / Tooltip | 圆角8px、1px边 | hover/focus可获得必要信息 |
-| Drawer / Detail | 独立表面，与列表gap20px | 对象与选中行一致；关闭入口可达 |
+| Drawer / Detail | 独立表面；与列表gap20px为本Profile基线 | 对象与选中行一致；关闭入口可达；按宿主空间责任映射，不作为所有主从布局的固定间距 |
 | Chart | 趋势区260px预算、环图200px | 真实系列/单位/缺失值，含数据替代入口 |
 
 表格规范键为 `table-row-height`：56px取代来源`row-height:52px`；紧凑44px。普通行的上下padding预算上限为12px，紧凑行收至4px；行内操作32px，不与40px查询/弹窗操作混用。多行对象按内容自然增高，不能用固定min-height额外预留空白。环图规范键为 `chart-donut-size:200px`，来源128px别名不再提供。不要为了锁死截图而固定所有数据行高度。compact只更改已声明密度值，正文不变，手机不自动compact。
 
-## v1.5 实现一致性规则（HX-P01–HX-P12）
+## v1.6 实现一致性规则（HX-P01–HX-P12）
 
 | ID | 走查要求 |
 |---|---|
@@ -43,6 +43,8 @@
 ## 限定材质例外
 
 Huixin明确选择才允许克制的卡片玻璃表面、浅阴影、画布/导航/主按钮渐变。这是对通用无玻璃/无日常渐变规则的局部Profile覆盖。不得外推到Enterprise/Precision/Analytics，不加入卡片上浮、呼吸光晕、夸张3D图表或重复透明层。
+
+图表的浅渐变填充、端点或轨道装饰是显式 Huixin 下按任务选择的局部配方，不要求每张图采用，不新增全局默认。保留真实零线、缺口、比例、状态及文字；非 Huixin 回退使用宿主的平面数据表达。图表从最近有效 Provider/容器取得 Profile、主题与系列 Token，局部主题变化同步更新 SVG/Canvas；不可只监听全局根节点导致嵌套主题串色。
 
 `profiles.huixin.common`保存模糊半径、阴影偏移/范围与渐变角度等配方几何，以语义角色引用颜色；`modes`/brand只提供颜色与alpha。浅深色不得使用不同偏移/模糊来冒充纯换色。冻结列使用不透明surface，避免下层文字透出；复杂背景下提高玻璃表面不透明度。遮罩保持中性，不染暖棕。渐变两端和合成后的实际背景都需要对比度验证。
 

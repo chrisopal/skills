@@ -43,7 +43,7 @@ Measure actual color pairs for normal, hover, focus, disabled, feedback, and dar
 When fixes are authorized:
 
 1. Turn each P0/P1 into an observable regression or visual comparison.
-2. Prefer token/shared-component repair; use a local override only when the component is an intentional exception.
+2. Prefer token/shared-component repair; use a local override only when the component is an intentional exception. Before a shared repair, inventory its real consumers and variants (including generic versus business-specific tables, Tabs, charts and portal hosts). Verify the affected consumer families and permission/state branches; a single page cannot certify all callers. Record untested consumers and scope the fix locally when wider behavior is not established.
 3. Render the same state and viewport again.
 4. Re-evaluate only against the accepted target plus regression evidence.
 5. Continue until no P0/P1 remains in scope or a named blocker prevents verification.
